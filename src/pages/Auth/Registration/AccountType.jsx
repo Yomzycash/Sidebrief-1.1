@@ -19,3 +19,5 @@ const AccountType = () => {
 };
 
 export default AccountType;
+
+
