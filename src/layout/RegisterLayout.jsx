@@ -15,7 +15,9 @@ const RegisterLayout = ({ children }) => {
           </p>
         </LayoutLeftContent>
       </LayoutLeft>
-      {children}
+      <LayoutRight>
+        <div>{children}</div>
+      </LayoutRight>
     </Layout>
   );
 };
@@ -49,7 +51,7 @@ const LayoutLeftContent = styled.div`
   /* margin: 5% 10%; */
   img {
     max-width: 80%;
-    max-height: 384px;
+    max-height: 284px;
   }
   p:nth-of-type(1) {
     font-size: clamp(30px, 4vw, 36px);
@@ -60,5 +62,15 @@ const LayoutLeftContent = styled.div`
     font-size: clamp(18px, 2vw, 20px);
     color: var(--TextGrey);
     font-weight: 400;
+  }
+`;
+
+const LayoutRight = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  div {
+    width: 80%;
+    margin: 3rem auto;
   }
 `;

@@ -5,6 +5,7 @@ const Home = () => {
   return (
     <div>
       <NavLink to="register">Register</NavLink>
+      <NavLink to="signin">Sign In</NavLink>
     </div>
   );
 };

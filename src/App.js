@@ -3,6 +3,7 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import Home from "./pages/Home";
 import { AccountType } from "./pages/Auth/Registration";
 import UserRegistration from "./pages/Auth/Registration/UserRegistration";
+import SignIn from "./pages/Auth/SignIn/SignIn";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route index element={<AccountType />} />
             <Route path="user" element={<UserRegistration />} />
           </Route>
+          <Route path="signin" element={<SignIn />} />
         </Route>
       </Routes>
     </div>
