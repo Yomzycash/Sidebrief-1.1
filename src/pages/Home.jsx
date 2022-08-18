@@ -1,9 +1,10 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
   return (
     <div>
-        <h1>kljkdjlfkdjfkl</h1>
+      <NavLink to="register">Register</NavLink>
     </div>
   );
 };
