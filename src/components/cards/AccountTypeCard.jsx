@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { NavLink } from "react-router-dom";
 
-const AccountTypeCard = ({ title, body }) => {
+const AccountTypeCard = ({ title, body, to }) => {
   return (
-    <AccountType>
-      <Title>{title}</Title>
-      <Body> {body}</Body>
-    </AccountType>
+    <NavLink to={to} style={{ textDecoration: "none" }}>
+      <AccountType to={to}>
+        <Title>{title}</Title>
+        <Body> {body}</Body>
+      </AccountType>
+    </NavLink>
   );
 };
 
@@ -25,7 +28,6 @@ const AccountType = styled.div`
   gap: 0.5rem;
 `;
 const Title = styled.p`
-  /* font-size: clamp(var(--SFontsize, 2vw, var(--LFontsize))); */
   font-size: clamp(18px, 2vw, 20px);
   font-weight: 600;
   color: var(--SecondaryBlack);

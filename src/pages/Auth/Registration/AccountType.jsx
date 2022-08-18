@@ -12,6 +12,7 @@ const AccountType = () => {
       <AccountTypeCard
         title="As an individual"
         body="Register your business with ease  lorem ipsum dolor imit"
+        to="/register/user"
       />
     </div>
   );

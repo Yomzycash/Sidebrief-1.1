@@ -26,7 +26,7 @@ const Title = styled.div`
   font-weight: 700;
 `;
 const Body = styled.div`
-  font-size: clamp(14px, 2vw, 20px);
+  font-size: clamp(14px, 1.5vw, 20px);
   color: var(--PrimaryBlack);
   font-weight: 400;
 `;
