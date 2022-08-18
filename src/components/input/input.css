@@ -1,0 +1,26 @@
+.blurredWrapper{
+  border-color: red;
+  padding: 16px 10px;
+  border-radius: 8px;
+  border: solid red 2px;
+  display: flex;
+  flex-direction: row;
+}
+
+.wrapper{
+  border-color: blue;
+  margin-top: 10px;
+}
+.inputLabel{
+  color: #4E5152;
+  font-size: 18px;
+  margin-bottom: 10px;
+  
+}
+.leftIcon{
+  border: solid blue 2px;
+  margin-right: 20px;
+}
+.inputLabel{
+
+}
