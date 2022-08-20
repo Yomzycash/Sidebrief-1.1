@@ -76,7 +76,7 @@ const PartnerRegistration = () => {
 								label="Operational country"
 								OptionValues={countries}
 							/>
-							<DateInput label={"Date of birth"} />
+							{/* <DateInput label={"Date of birth"} /> */}
 							<InputWithLabel
 								placeholder="example@example.com"
 								label="Email"
