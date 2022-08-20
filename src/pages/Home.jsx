@@ -1,11 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { LogoNav } from "../components/navbar";
 
 const Home = () => {
   return (
-    <div>
-      <NavLink to="register">Register</NavLink>
-      <NavLink to="signin">Sign In</NavLink>
+    <div className="home">
+      <LogoNav />
     </div>
   );
 };

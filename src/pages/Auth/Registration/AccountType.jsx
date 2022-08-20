@@ -1,19 +1,19 @@
 import React from "react";
 import { AccountTypeCard } from "../../../components/cards";
-import { NavBar } from "../../../components/navbar";
-import { PrimaryText } from "../../../components/texts";
+import { HeadText } from "../../../components/texts";
 import styled from "styled-components";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { LogoNav } from "../../../components/navbar";
 
 const AccountType = () => {
   return (
     <AccountTypeCont>
       <AccountTypeHead>
-        <NavBar />
+        <LogoNav />
       </AccountTypeHead>
       <AccountTypeBody>
         <Top>
-          <PrimaryText
+          <HeadText
             title="Get started with Sidebrief"
             body="How would you like to use your account"
           />
@@ -28,17 +28,20 @@ const AccountType = () => {
           <AccountTypeCard
             title="As an individual"
             body="Register your business with ease  lorem ipsum dolor imit"
-            to="/register/user"
+            // to="/register/user"
+            to="/user"
           />
           <AccountTypeCard
             title="As a Reseller"
             body="Register your business with ease  lorem ipsum dolor imit"
-            to="/register/reseller"
+            // to="/register/reseller"
+            to="/reseller"
           />
           <AccountTypeCard
             title="As a Partner"
             body="Register your business with ease  lorem ipsum dolor imit"
-            to="/register/partner"
+            // to="/register/partner"
+            to="/partner"
           />
         </Bottom>
       </AccountTypeBody>
@@ -56,8 +59,8 @@ export default AccountType;
 const AccountTypeCont = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  gap: 4rem;
-  padding: 2.5rem 5%;
+  gap: 3rem;
+  padding: 1.5rem 5% 4rem;
 `;
 
 const AccountTypeHead = styled.div`
@@ -89,11 +92,10 @@ const Middle = styled.div`
     flex-flow: row nowrap;
     align-items: center;
     justify-content: center;
-    font-size: clamp(14px, 2vw, 16px);
+    font-size: clamp(14px, 1.5vw, 16px);
     background-color: var(--PrimaryBlue);
     color: var(--SecondaryBlue);
     gap: 0.5rem;
-    max-width: 380px;
     border-radius: 1rem;
     padding: 1rem;
     @media screen and (max-width: 550px) {
@@ -116,6 +118,10 @@ const Bottom = styled.div`
   }
 `;
 const AccountFooter = styled.div`
+  width: 380px;
+  @media screen and (max-width: 550px) {
+    margin: 0 auto;
+  }
   display: none;
   flex-flow: row wrap;
   justify-content: flex-start;
@@ -126,5 +132,9 @@ const AccountFooter = styled.div`
   }
   @media screen and (max-width: 550px) {
     display: flex;
+    width: 380px;
+    @media screen and (max-width: 550px) {
+      margin: 0 auto;
+    }
   }
 `;

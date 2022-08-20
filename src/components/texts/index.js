@@ -1,3 +1,3 @@
-import PrimaryText from "./PrimaryText";
+import HeadText from "./HeadText";
 
-export { PrimaryText };
+export { HeadText };

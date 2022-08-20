@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "../../../components/button";
 import { DropDownInput, InputWithLabel } from "../../../components/input";
@@ -7,8 +7,12 @@ import { HeadText } from "../../../components/texts";
 import TextsWithLink from "../../../components/texts/TextsWithLink";
 import { AuthLayout } from "../../../layout";
 
-const PartnerRegistration = () => {
+const ResellerRegistration = () => {
   const [errors] = useState([]);
+  const [navSticked, setNavSticked] = useState(false);
+  const [hide, setHide] = useState(false);
+
+  const TestRef = useRef();
 
   const countries = [
     {
@@ -25,15 +29,31 @@ const PartnerRegistration = () => {
     },
   ];
 
+  var observer = new IntersectionObserver((e) => {
+    if (e[0].intersectionRatio === 0) {
+      setNavSticked(true);
+    } else if (e[0].intersectionRatio === 1) {
+      setNavSticked(false);
+    }
+  });
+
+  // if (TestRef.current !== undefined) {
+  setTimeout(() => {
+    observer.observe(TestRef.current);
+  }, 500);
+  // }
+
   return (
-    <AuthLayout register={true} hideLeftAt="1000px">
+    <AuthLayout register={true}>
       <Registration>
-        <LogoNav stick={0} />
+        <TestBlock ref={TestRef} id="testdiv" />
+        <LogoNav stick={0} navSticked={navSticked} />
         <Form>
           <HeadText
             title="Get started with Sidebrief"
-            body="Create a partner account to scale your business now"
+            body="Create a reseller  account to scale your business now"
             align="flex-start"
+            marginT="8px"
           />
           <Body>
             <div>
@@ -100,13 +120,16 @@ const PartnerRegistration = () => {
 //     secureTextEntry,
 //     type,
 
-export default PartnerRegistration;
+export default ResellerRegistration;
 
 const Registration = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 8px;
   height: max-content;
+`;
+const TestBlock = styled.div`
+  height: 1px;
+  width: 100%;
 `;
 const Form = styled.div`
   display: flex;

@@ -1,8 +1,8 @@
 import React from "react";
-import { RegisterLayout } from "../../../layout";
+import { AuthLayout } from "../../../layout";
 
 const UserRegistration = () => {
-  return <RegisterLayout>User Registration Page</RegisterLayout>;
+  return <AuthLayout>User Registration Page</AuthLayout>;
 };
 
 export default UserRegistration;
