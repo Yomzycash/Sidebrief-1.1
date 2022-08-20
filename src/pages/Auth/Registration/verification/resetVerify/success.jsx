@@ -1,31 +1,15 @@
 import React from "react";
-import Navbar from "../../../../../components/navbar";
-import {
-	SuccessWrapper,
-	Image,
-	ParagraphText,
-	TextWrapper,
-} from "../../../../../layout/successAction/styled";
-import success from "../../../../../asset/images/Success.png";
-import { PrimaryText } from "../../../../../components/text/text";
+import { Success } from "layout";
 
-const Success = () => {
+const ResetSuccess = () => {
 	return (
-		<>
-			<Navbar />
-
-			<SuccessWrapper>
-				<Image src={success} alt="success" />
-				<TextWrapper>
-					<PrimaryText>Account Creation Success</PrimaryText>
-					<ParagraphText>
-						Your Sidebrief account has been successfully created. We
-						are redirecting you to your dashboard.
-					</ParagraphText>
-				</TextWrapper>
-			</SuccessWrapper>
-		</>
+		<Success
+			title={"Password Reset Success"}
+			paragraph={
+				"Your Sidebrief account passsword has been changed successfully."
+			}
+		/>
 	);
 };
 
-export default Success;
+export default ResetSuccess;

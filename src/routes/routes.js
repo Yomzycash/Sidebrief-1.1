@@ -7,6 +7,12 @@ const EmailSuccess = lazy(() =>
 const EmailVerify = lazy(() =>
 	import("pages/Auth/Registration/verification/EmailVerify/verify")
 );
+const ResetSuccess = lazy(() =>
+	import("pages/Auth/Registration/verification/resetVerify/success")
+);
+const ResetVerify = lazy(() =>
+	import("pages/Auth/Registration/verification/resetVerify/verify")
+);
 const AccountType = lazy(() =>
 	import("pages/Auth/Registration/accountType/accountType")
 );
@@ -40,6 +46,18 @@ const routes = [
 		path: "/emailverify",
 		exact: true,
 		component: EmailVerify,
+		protected: false,
+	},
+	{
+		path: "/resetsuccess",
+		exact: true,
+		component: ResetSuccess,
+		protected: false,
+	},
+	{
+		path: "/resetverify",
+		exact: true,
+		component: ResetVerify,
 		protected: false,
 	},
 	{
