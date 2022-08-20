@@ -1,4 +1,3 @@
-
 import React from "react";
 import styled from "styled-components";
 import SidebriefLogo1 from "../../asset/images/SidebriefLogo.png";
@@ -46,4 +45,3 @@ const NavBarCont = styled.div`
     max-width: ${(props) => props.imgMaxwidth || "134px"};
   }
 `;
-

@@ -2,15 +2,15 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "../../../components/button";
 import { DropDownInput, InputWithLabel } from "../../../components/input";
-import LogoNav from "../../../components/navbar/LogoNav";
+import { LogoNav } from "../../../components/navbar";
 import { HeadText } from "../../../components/texts";
-import TextsWithLink from "../../../components/texts/TextWithLinks";
+import TextsWithLink from "../../../components/texts/TextsWithLink";
 import { AuthLayout } from "../../../layout";
 
-const PartnerRegistration = () => {
+const ResellerRegistration = () => {
   const [errors] = useState([]);
   const [navSticked, setNavSticked] = useState(false);
-  // const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(false);
 
   const TestRef = useRef();
 
@@ -51,43 +51,21 @@ const PartnerRegistration = () => {
         <Form>
           <HeadText
             title="Get started with Sidebrief"
-            body="Create a partner  account to scale your business now"
+            body="Create a reseller  account to scale your business now"
             align="flex-start"
             marginT="8px"
           />
           <Body>
             <div>
-              <InputWithLabel
-                placeholder="First Name"
-                label="First name"
-                type="text"
-              />
-              <InputWithLabel
-                placeholder="Last Name"
-                label="Last name"
-                type="text"
-              />
-              <InputWithLabel
-                placeholder="Corporate Name"
-                label="Corporate name"
-                type="text"
-              />
+              <InputWithLabel label="First name" type="text" />
+              <InputWithLabel label="Last name" type="text" />
+              <InputWithLabel label="Corporate name" type="text" />
               <DropDownInput
                 label="Operational country"
                 OptionValues={countries}
               />
-              <InputWithLabel
-                placeholder="example@example.com"
-                label="Email"
-                type="email"
-                error={errors}
-              />
-              <InputWithLabel
-                placeholder="Min. of 8  characters"
-                label="Password"
-                type="password"
-                rightText
-              />
+              <InputWithLabel label="Email" type="email" error={errors} />
+              <InputWithLabel label="Password" type="password" />
             </div>
             <TextsWithLink
               text={[
@@ -116,7 +94,33 @@ const PartnerRegistration = () => {
   );
 };
 
-export default PartnerRegistration;
+// label,
+//     labelStyle,
+//     containerStyle,
+//     edit,
+//     error,
+//     errorMessage,
+//     OptionValues,
+//     onSelectedChange = () =>{},
+//     container,
+//     placeholder,
+//     secureTextEntry,
+//     type,
+
+// label,
+//     labelStyle,
+//     containerStyle,
+//     edit,
+//     error,
+//     errorMessage,
+//     rightText,
+//     leftIcon,
+//     container,
+//     placeholder,
+//     secureTextEntry,
+//     type,
+
+export default ResellerRegistration;
 
 const Registration = styled.div`
   display: flex;

@@ -1,23 +1,26 @@
-import React from 'react'
-import Navbar from '../../../../../components/navbar'
-import { SuccessWrapper, Image, ParagraphText, TextWrapper } from './styled'
-import success from '../../../../../asset/images/Success.png'
-import { PrimaryText } from '../../../../../components/text/text'
+import React from "react";
+import Navbar from "../../../../../components/navbar";
+import { SuccessWrapper, Image, ParagraphText, TextWrapper } from "./styled";
+import success from "../../../../../asset/images/Success.png";
+import { PrimaryText } from "../../../../../components/text/text";
 
 const Success = () => {
   return (
     <>
-        <Navbar />
+      <Navbar />
 
-        <SuccessWrapper>
-          <Image src ={success} alt="success" />
-           <TextWrapper>
-            <PrimaryText>Account Creation Success</PrimaryText>
-            <ParagraphText>Your Sidebrief account has been successfully created. We are redirecting you to your dashboard.</ParagraphText>
-           </TextWrapper>
-        </SuccessWrapper>
+      <SuccessWrapper>
+        <Image src={success} alt="success" />
+        <TextWrapper>
+          <PrimaryText>Account Creation Success</PrimaryText>
+          <ParagraphText>
+            Your Sidebrief account has been successfully created. We are
+            redirecting you to your dashboard.
+          </ParagraphText>
+        </TextWrapper>
+      </SuccessWrapper>
     </>
-  )
-}
+  );
+};
 
-export default Success
+export default Success;
