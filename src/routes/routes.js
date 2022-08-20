@@ -1,17 +1,17 @@
 import { lazy } from "react";
 
 const Home = lazy(() => import("../pages/Home"));
-const Success = lazy(() =>
-	import("../pages/Auth/Registration/verification/success/success")
+const EmailSuccess = lazy(() =>
+	import("pages/Auth/Registration/verification/EmailVerify/success")
 );
 const EmailVerify = lazy(() =>
-	import("../pages/Auth/Registration/verification/verify/verify")
+	import("pages/Auth/Registration/verification/EmailVerify/verify")
 );
 const AccountType = lazy(() =>
-	import("../pages/Auth/Registration/accountType/accountType")
+	import("pages/Auth/Registration/accountType/accountType")
 );
 const PartnerRegistration = lazy(() =>
-	import("../pages/Auth/Registration/partnerRegistration")
+	import("pages/Auth/Registration/partnerRegistration")
 );
 const ForgotPassword = lazy(() =>
 	import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
@@ -31,13 +31,13 @@ const routes = [
 		protected: false,
 	},
 	{
-		path: "/success",
+		path: "/emailsuccess",
 		exact: true,
-		component: Success,
+		component: EmailSuccess,
 		protected: false,
 	},
 	{
-		path: "/e-verify",
+		path: "/emailverify",
 		exact: true,
 		component: EmailVerify,
 		protected: false,
