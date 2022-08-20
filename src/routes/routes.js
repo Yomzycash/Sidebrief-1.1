@@ -1,22 +1,20 @@
 import { lazy } from "react";
 
 const Home = lazy(() => import("../pages/Home"));
-const Login = lazy(() => import("../pages/Auth/Login"));
 const Success = lazy(() =>
   import("../pages/Auth/Registration/verification/success/success")
 );
-const SignIn = lazy(() => import("../pages/Auth/SignIn/SignIn"));
-const ResellerRegistration = lazy(() =>
-  import("../pages/Auth/Registration/ResellerRegistration")
-);
-const PartnerRegistration = lazy(() =>
-  import("../pages/Auth/Registration/PartnerRegistration")
+const EmailVerify = lazy(() =>
+  import("../pages/Auth/Registration/verification/verify/verify")
 );
 const AccountType = lazy(() =>
-  import("../pages/Auth/Registration/AccountType")
+  import("../pages/Auth/Registration/accountType/accountType")
 );
-const UserRegistration = lazy(() =>
-  import("../pages/Auth/Registration/UserRegistration")
+const PartnerRegistration = lazy(() =>
+  import("../pages/Auth/Registration/partnerRegistration")
+);
+const ResellerRegistration = lazy(() =>
+  import("../pages/Auth/Registration/ResellerRegistration")
 );
 
 const routes = [
@@ -27,9 +25,9 @@ const routes = [
     protected: false,
   },
   {
-    path: "/login",
+    path: "/account-type",
     exact: true,
-    component: Login,
+    component: AccountType,
     protected: false,
   },
   {
@@ -39,15 +37,9 @@ const routes = [
     protected: false,
   },
   {
-    path: "/signin",
+    path: "/e-verify",
     exact: true,
-    component: SignIn,
-    protected: false,
-  },
-  {
-    path: "/register",
-    exact: true,
-    component: AccountType,
+    component: EmailVerify,
     protected: false,
   },
   {
@@ -60,12 +52,6 @@ const routes = [
     path: "/reseller",
     exact: true,
     component: ResellerRegistration,
-    protected: false,
-  },
-  {
-    path: "/user",
-    exact: true,
-    component: UserRegistration,
     protected: false,
   },
 ];

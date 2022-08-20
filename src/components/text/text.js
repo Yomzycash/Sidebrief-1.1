@@ -7,9 +7,17 @@ export const PrimaryText = styled.h3({
     marginTop: 24,
 });
 
-export const SecondaryText = styled.p({
-    color: '#4E5152',
-    fontSize: 20,
+export const SecondaryText = styled.p(({
+    color, 
+    marginTop, 
+    fontSize, 
+    marginRight,
+    cursor
+    }) =>({
+    color: color,
+    fontSize: fontSize,
     fontWeight: 400,
-    marginTop: 8,
-});
+    marginTop: marginTop,
+    marginRight: marginRight,
+    cursor: cursor,
+}));

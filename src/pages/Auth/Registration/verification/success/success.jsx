@@ -1,24 +1,23 @@
 import React from "react";
-import { SuccessWrapper, Image } from "./styled";
+import Navbar from "../../../../../components/navbar";
+import { SuccessWrapper, Image, ParagraphText, TextWrapper } from "./styled";
 import success from "../../../../../asset/images/Success.png";
-import {
-  PrimaryText,
-  SecondaryText,
-} from "../../../../../components/text/text";
-import NavBar from "../../../../../components/navbar";
+import { PrimaryText } from "../../../../../components/text/text";
 
 const Success = () => {
   return (
     <>
-      <NavBar />
+      <Navbar />
 
       <SuccessWrapper>
         <Image src={success} alt="success" />
-        <PrimaryText>Account Creation Success</PrimaryText>
-        <SecondaryText>
-          Your Sidebrief account has been successfully created. We are
-          redirecting you to your dashboard.
-        </SecondaryText>
+        <TextWrapper>
+          <PrimaryText>Account Creation Success</PrimaryText>
+          <ParagraphText>
+            Your Sidebrief account has been successfully created. We are
+            redirecting you to your dashboard.
+          </ParagraphText>
+        </TextWrapper>
       </SuccessWrapper>
     </>
   );

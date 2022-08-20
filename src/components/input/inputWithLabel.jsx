@@ -7,6 +7,7 @@ import {
   Iconwrapper,
   ErrMsg,
   Top,
+  Show,
 } from "./styled";
 
 const InputWithLabel = ({
@@ -46,7 +47,7 @@ const InputWithLabel = ({
 
         {rightText ? (
           <div onClick={() => setShow(!show)}>
-            <h1 className="show">{show ? "hide" : "show"}</h1>
+            <Show>{show ? "hide" : "show"}</Show>
           </div>
         ) : null}
       </InputWrapper>

@@ -1,10 +1,10 @@
 import React from "react";
-import { LogoNav } from "../components/navbar";
+import Loader from "../components/loader/loader";
 
 const Home = () => {
   return (
     <div className="home">
-      <LogoNav />
+      <Loader />
     </div>
   );
 };

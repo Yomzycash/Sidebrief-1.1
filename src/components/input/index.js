@@ -1,4 +1,4 @@
-import DropDownInput from "./dropDownInput";
 import InputWithLabel from "./inputWithLabel";
+import DropDownInput from "./dropDownInput";
 
-export { DropDownInput, InputWithLabel };
+export { InputWithLabel, DropDownInput };

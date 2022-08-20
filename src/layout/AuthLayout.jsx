@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Illustration from "./assets/Register_illustration.png";
+import Illustration from "../asset/images/Register_illustration.png";
 
 const AuthLayout = ({ children, hideLeftAt }) => {
   return (
@@ -42,7 +42,7 @@ const LayoutLeft = styled.div`
   background-color: var(--SecondaryBlue);
   width: 40%;
   height: 100vh;
-  @media screen and (max-width: ${(props) => "700px" || props.hideLeftAt}) {
+  @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
     display: none;
   }
 `;
@@ -62,6 +62,7 @@ const LayoutLeftContent = styled.div`
   }
   div {
     display: flex;
+    margin-top: 100px;
     flex-flow: column nowrap;
     gap: 2rem;
     p:nth-of-type(1) {

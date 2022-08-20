@@ -1,10 +1,11 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Loader from "../components/loader/loader";
 import routes from "./routes";
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<h1>still loading...</h1>}>
+    <Suspense fallback={<Loader />}>
       <Router>
         <Routes>
           {routes.map((item, index) => (
