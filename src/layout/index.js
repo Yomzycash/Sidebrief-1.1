@@ -1,4 +1,3 @@
-import SignInLayout from "./SignInLayout";
-import RegisterLayout from "./RegisterLayout";
+import AuthLayout from "./AuthLayout";
 
-export { SignInLayout, RegisterLayout };
+export { AuthLayout };

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Button = styled.button`
+const ButtonWrapper = styled.button`
 width: 100%;
 height: 59px;
 background-color: #00A2D4;
@@ -14,10 +14,10 @@ cursor: pointer;
 
 `
 
-const TestButton = ({title ="Test"}) => {
+const Button = ({title ="Test"}) => {
   return (
-   <Button>{title}</Button>
+   <ButtonWrapper>{title}</ButtonWrapper>
   )
 }
 
-export default TestButton
+export default Button

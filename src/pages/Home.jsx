@@ -1,11 +1,11 @@
 import React from "react";
-import Navbar from "../components/navbar";
+import Loader from "../components/loader/loader";
 
 
 const Home = () => {
   return (
     <div className="home">
-        <Navbar />
+        <Loader />
     </div>
   );
 };

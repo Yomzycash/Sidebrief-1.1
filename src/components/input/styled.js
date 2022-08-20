@@ -12,7 +12,7 @@ export const InputWrapper = styled.div((borderColor) => ({
 }))
 
 export const Wrapper = styled.div({
-    marginBottom: 20,
+    marginBottom: 24,
 });
     
 export const Input = styled.input({
@@ -32,21 +32,28 @@ export const Input = styled.input({
     background: 'none',
     outline: 'none',
     backgroundColor: 'none',
-    padding: '5px 24px',
+    padding: '5px  4px',
     width: '100%',
     cursor: 'inherit',
+    color: '#4E5152',
+  
 
   });
 
-  export const Option = styled.option({
+  export const SelectOption = styled.option(({color})=>({
+    fontSize: 20,
+    backgroundColor: 'blue',
+    color: color,
+    border: '2px solid red',
+  }));
+  export const Show = styled.p({
     fontSize: 15,
-
+    color: '#4E5152',
   });
-
   export const Label = styled.label({
     color: '#4E5152',
     fontWeight: 400,
-    fontSize: 14,
+    fontSize: 16,
   });
 
   export const Iconwrapper = styled.div({

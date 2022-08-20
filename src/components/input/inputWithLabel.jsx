@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { InputWrapper, Wrapper, Input, Label, Iconwrapper, ErrMsg, Top } from './styled';
+import { InputWrapper, Wrapper, Input, Label, Iconwrapper, ErrMsg, Top, Show } from './styled';
 
 const InputWithLabel = ({
     label,
@@ -45,8 +45,8 @@ const InputWithLabel = ({
 
             {rightText ? (
                 <div onClick={() => setShow(!show)}>
-                <h1 className="show">{show? 'hide':'show'}</h1>
-              </div>
+                    <Show>{show? 'hide':'show'}</Show>
+                </div>
             ): (null)}
         </InputWrapper>
 
