@@ -1,51 +1,85 @@
 import { lazy } from "react";
 
-
 const Home = lazy(() => import("../pages/Home"));
-const Success = lazy(() => import("../pages/Auth/Registration/verification/success/success"));
-const EmailVerify = lazy(() => import("../pages/Auth/Registration/verification/verify/verify"));
-const AccountType = lazy(() => import("../pages/Auth/Registration/accountType/accountType"));
-const PartnerRegistration = lazy(() => import("../pages/Auth/Registration/partnerRegistration"));
+const EmailSuccess = lazy(() =>
+	import("pages/Auth/Registration/verification/EmailVerify/success")
+);
+const EmailVerify = lazy(() =>
+	import("pages/Auth/Registration/verification/EmailVerify/verify")
+);
+const ResetSuccess = lazy(() =>
+	import("pages/Auth/Registration/verification/resetVerify/success")
+);
+const ResetVerify = lazy(() =>
+	import("pages/Auth/Registration/verification/resetVerify/verify")
+);
+const AccountType = lazy(() =>
+	import("pages/Auth/Registration/accountType/accountType")
+);
+const PartnerRegistration = lazy(() =>
+	import("pages/Auth/Registration/partnerRegistration")
+);
+const ForgotPassword = lazy(() =>
+	import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
+);
+
 const UserRegistration = lazy(() => import("../pages/Auth/Registration/userRegistration"));
 
-
 const routes = [
-    {
-        path: "/testing",
-        exact: true,
-        component: Home,
-        protected: false,
-    },
-    {
-        path: "/account-type",
-        exact: true,
-        component: AccountType,
-        protected: false,
-    },
-    {
-        path: "/success",
-        exact: true,
-        component: Success,
-        protected: false,
-    },
-    {
-        path: "/e-verify",
-        exact: true,
-        component: EmailVerify,
-        protected: false,
-    },
-    {
-        path: "/partner",
-        exact: true,
-        component: PartnerRegistration,
-        protected: false,
-    },
-    {
-        path: "/user",
-        exact: true,
-        component: UserRegistration,
-        protected: false,
-    }
-]
+	{
+		path: "/testing",
+		exact: true,
+		component: Home,
+		protected: false,
+	},
+	{
+		path: "/account-type",
+		exact: true,
+		component: AccountType,
+		protected: false,
+	},
+	{
+		path: "/emailsuccess",
+		exact: true,
+		component: EmailSuccess,
+		protected: false,
+	},
+	{
+		path: "/emailverify",
+		exact: true,
+		component: EmailVerify,
+		protected: false,
+	},
+	{
+		path: "/resetsuccess",
+		exact: true,
+		component: ResetSuccess,
+		protected: false,
+	},
+	{
+		path: "/resetverify",
+		exact: true,
+		component: ResetVerify,
+		protected: false,
+	},
+	{
+		path: "/partner",
+		exact: true,
+		component: PartnerRegistration,
+		protected: false,
+	},
+	{
+		path: "/user",
+		exact: true,
+		component: UserRegistration,
+		protected: false,
+	},
+	{
+		path: "/forgotpassword",
+		exact: true,
+		component: ForgotPassword,
+		protected: false,
+	},
+];
 
 export default routes;

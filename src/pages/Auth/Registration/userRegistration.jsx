@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "../../../components/button";
-import { DropDownInput, InputWithLabel } from "../../../components/input";
+import { DateInput, DropDownInput, InputWithLabel } from "../../../components/input";
 import LogoNav from "../../../components/navbar/LogoNav";
 import { HeadText } from "../../../components/texts";
 import TextsWithLink from "../../../components/texts/TextWithLinks";
@@ -76,8 +76,7 @@ const UserRegistration = () => {
                 label="Password" type="password" 
                 rightText
                 />
-                <InputWithLabel 
-                  label="Date of birth" placeholder="DD/MM/YY" type="text" />
+                 <DateInput label={"Date of birth"} />
               <DropDownInput
                 label="Gender"
                 OptionValues={gender}
