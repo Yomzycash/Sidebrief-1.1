@@ -6,113 +6,135 @@ import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  Password: yup.string().min(8).required(),
+  ConfirmPassword: yup
+    .string()
+    .oneOf([yup.ref("Password"), null], "Passwords must match"),
+});
 
 const ResetPassword = () => {
-	const [errors] = useState([]);
-	const [navSticked, setNavSticked] = useState(false);
-	const navigate = useNavigate();
-	// const [hide, setHide] = useState(false);
+  const [navSticked, setNavSticked] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-	const TestRef = useRef();
+  const navigate = useNavigate();
 
-	var observer = new IntersectionObserver((e) => {
-		if (e[0].intersectionRatio === 0) {
-			setNavSticked(true);
-		} else if (e[0].intersectionRatio === 1) {
-			setNavSticked(false);
-		}
-	});
+  const TestRef = useRef();
 
-	// if (TestRef.current !== undefined) {
-	setTimeout(() => {
-		observer.observe(TestRef.current);
-	}, 500);
-	// }
+  var observer = new IntersectionObserver((e) => {
+    if (e[0].intersectionRatio === 0) {
+      setNavSticked(true);
+    } else if (e[0].intersectionRatio === 1) {
+      setNavSticked(false);
+    }
+  });
 
-	const handleClick = () => {
-		navigate("/resetverify")
-	}
-	return (
-		<AuthLayout register={true}>
-			<Registration>
-				<TestBlock ref={TestRef} id="testdiv" />
-				<LogoNav stick={0} navSticked={navSticked} />
-				<Form>
-					<HeadText
-						title="Reset your password?"
-						body="Kindly enter the new password you would like to use to sign in to your account."
-						align="flex-start"
-						marginT="8px"
-					/>
-					<Body>
-						<div>
-							<InputWithLabel
-								placeholder="********"
-								label="Password"
-								type="password"
-								error={errors}
-							/>
-                            <InputWithLabel
-								placeholder="********"
-								label="confirm Password"
-								type="password"
-								error={errors}
-							/>
-						</div>
-						<TextsWithLink
-							text={[
-								{
-									text: "By creating an account , you agree to Sidebrief's",
-									link: { text: "Privacy Policy", to: "/" },
-								},
-								{
-									text: "&",
-									link: { text: "Terms of Use", to: "/" },
-								},
-							]}
-						/>
-						<TestButton title="Reset Password" onClick={handleClick} />
-					</Body>
-					<Bottom>
-						<TextsWithLink
-							text={[
-								{
-									text: "Already have an account? ",
-									link: { text: "Sign In", to: "/login" },
-								},
-							]}
-						/>
-					</Bottom>
-				</Form>
-			</Registration>
-		</AuthLayout>
-	);
+  setTimeout(() => {
+    observer.observe(TestRef.current);
+  }, 500);
+
+  const submitForm = (data) => {
+    console.log(data);
+    navigate("/resetverify");
+  };
+
+  return (
+    <AuthLayout register={true}>
+      <Registration>
+        <TestBlock ref={TestRef} id="testdiv" />
+        <LogoNav stick={0} navSticked={navSticked} />
+        <Form onSubmit={handleSubmit(submitForm)}>
+          <HeadText
+            title="Reset your password?"
+            body="Kindly enter the new password you would like to use to sign in to your account."
+            align="flex-start"
+            marginT="8px"
+          />
+          <Body>
+            <div>
+              <InputWithLabel
+                placeholder="Min. of 8  characters"
+                label="Password"
+                type="text"
+                rightText
+                name="Password"
+                register={register}
+                errorMessage={errors.Password?.message}
+              />
+              <InputWithLabel
+                label="Confirm Password"
+                placeholder="Min. of 8  characters"
+                type="password"
+                rightText
+                name="ConfirmPassword"
+                register={register}
+                errorMessage={errors.ConfirmPassword?.message}
+              />
+            </div>
+            <TextsWithLink
+              text={[
+                {
+                  text: "By creating an account , you agree to Sidebrief's",
+                  link: { text: "Privacy Policy", to: "/" },
+                },
+                {
+                  text: "&",
+                  link: { text: "Terms of Use", to: "/" },
+                },
+              ]}
+            />
+            <TestButton title="Reset Password" type="submit" />
+          </Body>
+          <Bottom>
+            <TextsWithLink
+              text={[
+                {
+                  text: "Already have an account? ",
+                  link: { text: "Sign In", to: "/login" },
+                },
+              ]}
+            />
+          </Bottom>
+        </Form>
+      </Registration>
+    </AuthLayout>
+  );
 };
 
 export default ResetPassword;
 
 const Registration = styled.div`
-	display: flex;
-	flex-flow: column;
-	height: max-content;
+  display: flex;
+  flex-flow: column;
+  height: max-content;
 `;
 const TestBlock = styled.div`
-	height: 1px;
-	width: 100%;
+  height: 1px;
+  width: 100%;
 `;
-const Form = styled.div`
-	display: flex;
-	flex-flow: column;
-	gap: 4rem;
-	height: max-content;
+const Form = styled.form`
+  display: flex;
+  flex-flow: column;
+  gap: 4rem;
+  height: max-content;
 `;
 const Body = styled.div`
-	display: flex;
-	flex-flow: column;
-	gap: 1rem;
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
 `;
 
 const Bottom = styled.div`
-	display: flex;
+  display: flex;
 `;

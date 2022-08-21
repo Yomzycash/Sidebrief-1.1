@@ -1,4 +1,3 @@
-
 import React from "react";
 import styled from "styled-components";
 import SidebriefLogo1 from "../../asset/images/SidebriefLogo.png";
@@ -42,8 +41,7 @@ const NavBarCont = styled.div`
     props.navSticked === true ? "0px 10px 15px -5px #9596971a" : ""};
   img {
     min-width: ${(props) => props.imgminWidth || "84px"};
-    width: ${(props) => props.imgwidth || "13%"};
+    width: ${(props) => props.imgwidth || "24%"};
     max-width: ${(props) => props.imgMaxwidth || "134px"};
   }
 `;
-
