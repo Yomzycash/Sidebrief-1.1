@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
-import { DropDownInput, InputWithLabel, DateInput } from "components/input";
+import { DropDownInput, InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
@@ -76,7 +76,6 @@ const PartnerRegistration = () => {
 								label="Operational country"
 								OptionValues={countries}
 							/>
-							{/* <DateInput label={"Date of birth"} /> */}
 							<InputWithLabel
 								placeholder="example@example.com"
 								label="Email"
@@ -109,7 +108,7 @@ const PartnerRegistration = () => {
 							text={[
 								{
 									text: "Already have an account? ",
-									link: { text: "Sign In", to: "/" },
+									link: { text: "Sign In", to: "/login" },
 								},
 							]}
 						/>

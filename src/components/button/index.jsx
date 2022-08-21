@@ -14,9 +14,9 @@ cursor: pointer;
 
 `
 
-const Button = ({title ="Test"}) => {
+const Button = ({title ="Test", onClick}) => {
   return (
-   <ButtonWrapper>{title}</ButtonWrapper>
+   <ButtonWrapper onClick={onClick}>{title}</ButtonWrapper>
   )
 }
 

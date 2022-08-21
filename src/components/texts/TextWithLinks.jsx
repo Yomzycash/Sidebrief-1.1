@@ -32,6 +32,7 @@ const TextContainer = styled.div`
   font-size: clamp(14px, 1vw, 18px);
   p {
     display: inline;
+    color: #4E5152;
   }
   span {
     color: var(--SecondaryBlue);

@@ -3,7 +3,6 @@ import Navbar from "components/navbar";
 import {
 	SuccessWrapper,
 	Image,
-	ParagraphText,
 	TextWrapper,
 	ResendTextWrapper,
 } from "./styled";
@@ -26,7 +25,7 @@ const Verify = ({ title, paragraph }) => {
 				<Image src={verify} alt="verify" />
 				<TextWrapper>
 					<PrimaryText>{title}</PrimaryText>
-					<ParagraphText>{paragraph}</ParagraphText>
+					<SecondaryText align="center">{paragraph}</SecondaryText>
 				</TextWrapper>
 
 				<OtpInput
@@ -45,18 +44,10 @@ const Verify = ({ title, paragraph }) => {
 				/>
 
 				<ResendTextWrapper>
-					<SecondaryText
-						color="#4e5152"
-						fontSize={16}
-						marginRight={5}
-					>
+					<SecondaryText>
 						Didn't get the code?{" "}
 					</SecondaryText>
-					<SecondaryText
-						color="#00a2d4"
-						fontSize={16}
-						cursor="pointer"
-					>
+					<SecondaryText clickColor left='10px'>
 						Resend verification
 					</SecondaryText>
 				</ResendTextWrapper>

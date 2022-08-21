@@ -22,8 +22,14 @@ const PartnerRegistration = lazy(() =>
 const ForgotPassword = lazy(() =>
 	import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
 );
-
+const ResetPassword = lazy(() =>
+	import("pages/Auth/SignIn/resetPassword/resetPassword.jsx")
+);
+const SignIn = lazy(() =>
+	import("pages/Auth/SignIn/SignIn")
+);
 const UserRegistration = lazy(() => import("../pages/Auth/Registration/userRegistration"));
+const ResellerRegistration = lazy(() => import("../pages/Auth/Registration/resellerRegistration"));
 
 const routes = [
 	{
@@ -75,9 +81,26 @@ const routes = [
 		protected: false,
 	},
 	{
+		path: "/reseller",
+		exact: true,
+		component: ResellerRegistration,
+		protected: false,
+	},
+	{
 		path: "/forgotpassword",
 		exact: true,
 		component: ForgotPassword,
+		protected: false,
+	},		{
+		path: "/login",
+		exact: true,
+		component: SignIn,
+		protected: false,
+	},	
+	{
+		path: "/resetpassword",
+		exact: true,
+		component: ResetPassword,
 		protected: false,
 	},
 ];
