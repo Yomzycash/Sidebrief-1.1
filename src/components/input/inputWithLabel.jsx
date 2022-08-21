@@ -51,6 +51,7 @@ const InputWithLabel = ({
 
         {rightText ? (
           <div onClick={() => setShow(!show)}>
+            {console.log(show)}
             <Show>{show ? "hide" : "show"}</Show>
           </div>
         ) : null}

@@ -7,63 +7,58 @@ import Navbar from "../../../../components/navbar";
 import { SecondaryText } from "components/text/text";
 import { useNavigate } from "react-router-dom";
 
-
-
 const AccountType = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/login')
-  }
+    navigate("/login");
+  };
   return (
     <>
-        <Navbar />
-    <AccountTypeCont>
-      <AccountTypeBody>
-        <Top>
-          <HeadText
-            title="Get started with Sidebrief"
-            body="How would you like to use your account"
-          />
-        </Top>
-        <Middle>
-          <div>
-            <AiOutlineInfoCircle />
-            <p>Learn what the Sidebrief account types mean</p>
-          </div>
-        </Middle>
-        <Bottom>
-          <AccountTypeCard
-            title="As an individual"
-            body="Register your business with ease  lorem ipsum dolor imit"
-            // to="/register/user"
-            to="/user"
-          />
-          <AccountTypeCard
-            title="As a Reseller"
-            body="Register your business with ease  lorem ipsum dolor imit"
-            // to="/register/reseller"
-            to="/reseller"
-          />
-          <AccountTypeCard
-            title="As a Partner"
-            body="Register your business with ease  lorem ipsum dolor imit"
-            // to="/register/partner"
-            to="/partner"
-          />
-        </Bottom>
-      </AccountTypeBody>
+      <Navbar />
+      <AccountTypeCont>
+        <AccountTypeBody>
+          <Top>
+            <HeadText
+              title="Get started with Sidebrief"
+              body="How would you like to use your account"
+            />
+          </Top>
+          <Middle>
+            <div>
+              <AiOutlineInfoCircle />
+              <p>Learn what the Sidebrief account types mean</p>
+            </div>
+          </Middle>
+          <Bottom>
+            <AccountTypeCard
+              title="As an individual"
+              body="Register your business with ease  lorem ipsum dolor imit"
+              // to="/register/user"
+              to="/user"
+            />
+            <AccountTypeCard
+              title="As a Reseller"
+              body="Register your business with ease  lorem ipsum dolor imit"
+              // to="/register/reseller"
+              to="/reseller"
+            />
+            <AccountTypeCard
+              title="As a Partner"
+              body="Register your business with ease  lorem ipsum dolor imit"
+              // to="/register/partner"
+              to="/partner"
+            />
+          </Bottom>
+        </AccountTypeBody>
 
-      <AccountFooter>
-          <SecondaryText>
-						Already have an account?{" "}
-					</SecondaryText>
-					<SecondaryText clickColor cursor left='10px' onClick={handleClick}>
-						Sign In
-					</SecondaryText>
-      </AccountFooter>
-
-    </AccountTypeCont>
+        <AccountFooter>
+          <SecondaryText>Already have an account? </SecondaryText>
+          <SecondaryText clickColor cursor left="10px" onClick={handleClick}>
+            Sign In
+          </SecondaryText>
+        </AccountFooter>
+      </AccountTypeCont>
     </>
   );
 };
@@ -91,11 +86,17 @@ const AccountTypeBody = styled.div`
   gap: 4rem;
   @media screen and (max-width: 550px) {
     align-items: flex-start;
-    margin: 0 auto;
+    /* margin: 0 auto; */
   }
 `;
 
-const Top = styled.div``;
+const Top = styled.div`
+  @media screen and (max-width: 550px) {
+    div {
+      align-items: flex-start;
+    }
+  }
+`;
 
 const Middle = styled.div`
   display: flex;
@@ -118,6 +119,7 @@ const Middle = styled.div`
   }
   @media screen and (max-width: 550px) {
     justify-content: flex-start;
+    max-width: 400px;
   }
 `;
 const Bottom = styled.div`
@@ -138,7 +140,7 @@ const AccountFooter = styled.div`
   align-items: center;
   padding: 0px auto;
   @media screen and (max-width: 550px) {
-  padding: 0px 0px;
-  justify-content: start;
+    padding: 0px 0px;
+    justify-content: start;
   }
 `;

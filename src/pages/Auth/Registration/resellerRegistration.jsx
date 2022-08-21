@@ -120,7 +120,7 @@ const ResellerRegistration = () => {
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
-                type="password"
+                type="text"
                 rightText
                 name="Password"
                 register={register}

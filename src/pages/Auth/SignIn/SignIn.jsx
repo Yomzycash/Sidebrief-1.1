@@ -72,7 +72,7 @@ const SignIn = () => {
               <InputWithLabel
                 placeholder="********"
                 label="Password"
-                type="password"
+                type="text"
                 rightText
                 name="Password"
                 register={register}
