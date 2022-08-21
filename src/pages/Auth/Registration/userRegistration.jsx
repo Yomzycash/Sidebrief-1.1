@@ -100,7 +100,7 @@ const UserRegistration = () => {
               text={[
                 {
                   text: "Already have an account? ",
-                  link: { text: "Sign In", to: "/" },
+                  link: { text: "Sign In", to: "/login" },
                 },
               ]}
             />

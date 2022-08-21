@@ -6,10 +6,12 @@ import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
+import { useNavigate } from "react-router-dom";
 
-const PartnerRegistration = () => {
+const ForgotPassword = () => {
 	const [errors] = useState([]);
 	const [navSticked, setNavSticked] = useState(false);
+	const navigate = useNavigate();
 	// const [hide, setHide] = useState(false);
 
 	const TestRef = useRef();
@@ -28,6 +30,9 @@ const PartnerRegistration = () => {
 	}, 500);
 	// }
 
+	const handleClick = () => {
+		navigate("/resetverify")
+	}
 	return (
 		<AuthLayout register={true}>
 			<Registration>
@@ -61,14 +66,14 @@ const PartnerRegistration = () => {
 								},
 							]}
 						/>
-						<TestButton title="Get started" to="/verify" />
+						<TestButton title="Reset Password" onClick={handleClick} />
 					</Body>
 					<Bottom>
 						<TextsWithLink
 							text={[
 								{
-									text: "Already have an account? ",
-									link: { text: "Sign In", to: "/" },
+									text: "Remember your password? ",
+									link: { text: "Sign In", to: "/login" },
 								},
 							]}
 						/>
@@ -79,7 +84,7 @@ const PartnerRegistration = () => {
 	);
 };
 
-export default PartnerRegistration;
+export default ForgotPassword;
 
 const Registration = styled.div`
 	display: flex;
