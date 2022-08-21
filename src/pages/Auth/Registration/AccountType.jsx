@@ -4,6 +4,7 @@ import { HeadText } from "../../../components/texts";
 import styled from "styled-components";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { LogoNav } from "../../../components/navbar";
+import TextsWithLink from "../../../components/texts/TextsWithLink";
 
 const AccountType = () => {
   return (
@@ -46,9 +47,14 @@ const AccountType = () => {
         </Bottom>
       </AccountTypeBody>
       <AccountFooter>
-        <p>
-          Already have an account? <span>Sign In</span>
-        </p>
+        <TextsWithLink
+          text={[
+            {
+              text: "Already have an account? ",
+              link: { text: "Sign Up", to: "/account-type" },
+            },
+          ]}
+        />
       </AccountFooter>
     </AccountTypeCont>
   );

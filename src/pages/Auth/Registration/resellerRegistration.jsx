@@ -20,7 +20,7 @@ const schema = yup.object().shape({
   CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
-const PartnerRegistration = () => {
+const ResellerRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
   const {
     handleSubmit,
@@ -72,7 +72,7 @@ const PartnerRegistration = () => {
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
-            body="Create a partner  account to scale your business now"
+            body="Create a reseller  account to scale your business now"
             align="flex-start"
             marginT="8px"
           />
@@ -116,7 +116,6 @@ const PartnerRegistration = () => {
                 name="Email"
                 register={register}
                 errorMessage={errors.Email?.message}
-                error={errors}
               />
               <InputWithLabel
                 placeholder="Min. of 8  characters"
@@ -158,18 +157,18 @@ const PartnerRegistration = () => {
   );
 };
 
-export default PartnerRegistration;
+export default ResellerRegistration;
 
 const Registration = styled.div`
   display: flex;
   flex-flow: column;
   height: max-content;
 `;
-const TestBlock = styled.form`
+const TestBlock = styled.div`
   height: 1px;
   width: 100%;
 `;
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-flow: column;
   gap: 4rem;

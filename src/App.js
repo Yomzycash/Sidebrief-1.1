@@ -8,12 +8,12 @@ body{
 `;
 
 function App() {
-  return (
-    <>
-      <GlobalStyle />
-      <AppRouter />
-    </>
-  );
+	return (
+		<>
+			<GlobalStyle />
+			<AppRouter />
+		</>
+	);
 }
 
 export default App;
