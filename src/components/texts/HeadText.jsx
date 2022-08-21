@@ -36,4 +36,5 @@ const Body = styled.div`
   font-size: clamp(14px, 1.5vw, 20px);
   color: var(--PrimaryBlack);
   font-weight: 400;
+  max-width: 550px;
 `;

@@ -1,15 +1,11 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import TestButton from "../../../components/button";
-import {
-  DateInput,
-  DropDownInput,
-  InputWithLabel,
-} from "../../../components/input";
-import LogoNav from "../../../components/navbar/LogoNav";
-import { HeadText } from "../../../components/texts";
-import TextsWithLink from "../../../components/texts/TextWithLinks";
-import { AuthLayout } from "../../../layout";
+import TestButton from "components/button";
+import { DropDownInput, InputWithLabel } from "components/input";
+import LogoNav from "components/navbar/LogoNav";
+import { HeadText } from "components/texts";
+import TextsWithLink from "components/texts/TextWithLinks";
+import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -20,10 +16,11 @@ const schema = yup.object().shape({
   Email: yup.string().email().required(),
   PhoneNumber: yup.string().required("Phone number is a required field"),
   Password: yup.string().min(8).max(15).required(),
-  Gender: yup.string().required(),
+  Countries: yup.string().required(),
+  CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
-const UserRegistration = () => {
+const ResellerRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
   const {
     handleSubmit,
@@ -32,28 +29,21 @@ const UserRegistration = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   const TestRef = useRef();
 
-  const gender = [
+  const countries = [
     {
       id: 1,
-      value: "Male",
+      value: "Nigeria",
     },
     {
       id: 2,
-      value: "Female",
+      value: "Nigeria",
     },
     {
       id: 3,
-      value: "Transgender",
-    },
-    {
-      id: 4,
-      value: "Non-binary",
-    },
-    {
-      id: 5,
-      value: "Other, please specify",
+      value: "Nigeria",
     },
   ];
 
@@ -82,7 +72,7 @@ const UserRegistration = () => {
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
-            body="Create an account to scale your business now"
+            body="Create a reseller  account to scale your business now"
             align="flex-start"
             marginT="8px"
           />
@@ -105,6 +95,21 @@ const UserRegistration = () => {
                 errorMessage={errors.Lastname?.message}
               />
               <InputWithLabel
+                placeholder="Corporate Name"
+                label="Corporate name"
+                type="text"
+                name="CorporateName"
+                register={register}
+                errorMessage={errors.CorporateName?.message}
+              />
+              <DropDownInput
+                label="Operational country"
+                OptionValues={countries}
+                name="Countries"
+                register={register}
+                errorMessage={errors.Countries?.message}
+              />
+              <InputWithLabel
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
@@ -121,27 +126,6 @@ const UserRegistration = () => {
                 register={register}
                 errorMessage={errors.Password?.message}
               />
-              <DateInput
-                label={"Date of birth"}
-                name="date"
-                register={register}
-                errorMessage={errors.date?.message}
-              />
-              <DropDownInput
-                label="Gender"
-                OptionValues={gender}
-                name="Gender"
-                register={register}
-                errorMessage={errors.Gender?.message}
-              />
-              <InputWithLabel
-                placeholder="Phone number"
-                label="Phone Number"
-                name="PhoneNumber"
-                type="number"
-                register={register}
-                errorMessage={errors.PhoneNumber?.message}
-              />
             </div>
             <TextsWithLink
               text={[
@@ -149,10 +133,13 @@ const UserRegistration = () => {
                   text: "By creating an account , you agree to Sidebrief's",
                   link: { text: "Privacy Policy", to: "/" },
                 },
-                { text: "&", link: { text: "Terms of Use", to: "/" } },
+                {
+                  text: "&",
+                  link: { text: "Terms of Use", to: "/" },
+                },
               ]}
             />
-            <TestButton title="Get started" type="submit" />
+            <TestButton title="Get started" to="/" type="submit" />
           </Body>
           <Bottom>
             <TextsWithLink
@@ -170,7 +157,7 @@ const UserRegistration = () => {
   );
 };
 
-export default UserRegistration;
+export default ResellerRegistration;
 
 const Registration = styled.div`
   display: flex;

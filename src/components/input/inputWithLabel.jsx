@@ -23,6 +23,8 @@ const InputWithLabel = ({
   placeholder,
   secureTextEntry,
   type,
+  name,
+  register,
   ...rest
 }) => {
   const [show, setShow] = useState(true);
@@ -41,7 +43,9 @@ const InputWithLabel = ({
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}
           edit={edit}
-          type={show ? "text" : "password"}
+          type={show ? type || "text" : "password"}
+          name={name}
+          {...register(name)}
           {...rest}
         />
 

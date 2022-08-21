@@ -4,10 +4,17 @@ import { HeadText } from "../../../../components/texts";
 import styled from "styled-components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import Navbar from "../../../../components/navbar";
+import { SecondaryText } from "components/text/text";
+import { useNavigate } from "react-router-dom";
 
 
 
 const AccountType = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/login')
+  }
   return (
     <>
         <Navbar />
@@ -46,11 +53,16 @@ const AccountType = () => {
           />
         </Bottom>
       </AccountTypeBody>
+
       <AccountFooter>
-        <p>
-          Already have an account? <span>Sign In</span>
-        </p>
+          <SecondaryText>
+						Already have an account?{" "}
+					</SecondaryText>
+					<SecondaryText clickColor cursor left='10px' onClick={handleClick}>
+						Sign In
+					</SecondaryText>
       </AccountFooter>
+
     </AccountTypeCont>
     </>
   );
@@ -120,23 +132,13 @@ const Bottom = styled.div`
   }
 `;
 const AccountFooter = styled.div`
-  width: 380px;
-  @media screen and (max-width: 550px) {
-    margin: 0 auto;
-  }
-  display: none;
-  flex-flow: row wrap;
-  justify-content: flex-start;
+  display: flex;
+  margin-top: 70px;
+  justify-content: center;
   align-items: center;
-  font-size: var(--SFontsize) - 4px;
-  span {
-    color: var(--SecondaryBlue);
-  }
+  padding: 0px auto;
   @media screen and (max-width: 550px) {
-    display: flex;
-    width: 380px;
-    @media screen and (max-width: 550px) {
-      margin: 0 auto;
-    }
+  padding: 0px 0px;
+  justify-content: start;
   }
 `;

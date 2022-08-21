@@ -14,6 +14,8 @@ const DropDownInput = ({
   placeholder,
   secureTextEntry,
   type,
+  name,
+  register,
   ...rest
 }) => {
   const handleChange = (e) => {
@@ -34,9 +36,15 @@ const DropDownInput = ({
       </Top>
 
       <InputWrapper>
+        <Select onChange={handleChange} {...register(name)}>
+          <option>Select</option>
+          {options}
+        </Select>
+      </InputWrapper>
+
+      <InputWrapper>
         <Select onChange={handleChange}>
           <option>Select</option>
-          <option>Bolu</option>
           {options}
         </Select>
       </InputWrapper>
