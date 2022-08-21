@@ -23,6 +23,8 @@ const ForgotPassword = lazy(() =>
 	import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
 );
 
+const UserRegistration = lazy(() => import("../pages/Auth/Registration/userRegistration"));
+
 const routes = [
 	{
 		path: "/testing",
@@ -64,6 +66,12 @@ const routes = [
 		path: "/partner",
 		exact: true,
 		component: PartnerRegistration,
+		protected: false,
+	},
+	{
+		path: "/user",
+		exact: true,
+		component: UserRegistration,
 		protected: false,
 	},
 	{
