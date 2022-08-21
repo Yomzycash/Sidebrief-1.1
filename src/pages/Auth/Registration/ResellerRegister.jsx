@@ -11,58 +11,59 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  Firstname: yup.string().required("First name is a required field"),
-  Lastname: yup.string().required("Last name is a required field"),
-  Email: yup.string().email().required(),
-  PhoneNumber: yup.string().required("Phone number is a required field"),
-  Password: yup.string().min(8).max(15).required(),
-  Countries: yup.string().required(),
-  CorporateName: yup.string().required("Corporate name is a required field"),
+Firstname: yup.string().required("First name is a required field"),
+Lastname: yup.string().required("Last name is a required field"),
+Email: yup.string().email().required(),
+PhoneNumber: yup.string().required("Phone number is a required field"),
+Password: yup.string().min(8).max(15).required(),
+Countries: yup.string().required(),
+CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
-const ResellerRegistration = () => {
-  const [navSticked, setNavSticked] = useState(false);
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const TestRef = useRef();
-
-  const countries = [
-    {
-      id: 1,
-      value: "Nigeria",
-    },
-    {
-      id: 2,
-      value: "Nigeria",
-    },
-    {
-      id: 3,
-      value: "Nigeria",
-    },
-  ];
-
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
-    }
-  });
-
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
-
-  const submitForm = (data) => {
-    console.log(data);
-    console.log("You clicked submit button");
-  };
+const ResellerRegister = () => {
+    const [navSticked, setNavSticked] = useState(false);
+    const {
+      handleSubmit,
+      register,
+      formState: { errors },
+    } = useForm({
+      resolver: yupResolver(schema),
+    });
+  
+    const TestRef = useRef();
+  
+    const countries = [
+      {
+        id: 1,
+        value: "Nigeria",
+      },
+      {
+        id: 2,
+        value: "Nigeria",
+      },
+      {
+        id: 3,
+        value: "Nigeria",
+      },
+    ];
+  
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked(true);
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked(false);
+      }
+    });
+  
+    setTimeout(() => {
+      observer.observe(TestRef.current);
+    }, 500);
+  
+    const submitForm = (data) => {
+      console.log(data);
+      console.log("You clicked submit button");
+    };
+  
 
   return (
     <AuthLayout register={true}>
@@ -157,7 +158,7 @@ const ResellerRegistration = () => {
   );
 };
 
-export default ResellerRegistration;
+export default ResellerRegister;
 
 const Registration = styled.div`
   display: flex;
