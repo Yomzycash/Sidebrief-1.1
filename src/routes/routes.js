@@ -6,6 +6,7 @@ const Success = lazy(() => import("../pages/Auth/Registration/verification/succe
 const EmailVerify = lazy(() => import("../pages/Auth/Registration/verification/verify/verify"));
 const AccountType = lazy(() => import("../pages/Auth/Registration/accountType/accountType"));
 const PartnerRegistration = lazy(() => import("../pages/Auth/Registration/partnerRegistration"));
+const UserRegistration = lazy(() => import("../pages/Auth/Registration/userRegistration"));
 
 
 const routes = [
@@ -37,6 +38,12 @@ const routes = [
         path: "/partner",
         exact: true,
         component: PartnerRegistration,
+        protected: false,
+    },
+    {
+        path: "/user",
+        exact: true,
+        component: UserRegistration,
         protected: false,
     }
 ]

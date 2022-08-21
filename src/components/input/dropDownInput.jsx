@@ -45,7 +45,6 @@ const DropDownInput = ({
 
             <Select onChange={handleChange} >
                <option>Select</option>
-               <option>Bolu</option>
                {options}
             </Select>
         </InputWrapper>

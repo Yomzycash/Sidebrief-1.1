@@ -1,5 +1,5 @@
 import "./App.css";
-import AppRouter from "./routes/AppRouter";
+import AppRouter from "./routes/appRouter";
 import {createGlobalStyle} from 'styled-components';
 const GlobalStyle = createGlobalStyle`
 body{
