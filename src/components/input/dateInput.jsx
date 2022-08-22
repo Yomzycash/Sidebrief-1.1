@@ -63,7 +63,6 @@ export const DateInput = ({
 			{showCalendar ? (
 				<>
 					<CalendarWrapper>
-						{/* TODO: hide when out of focus */}
 						<Calendar onClickDay={pickDay} />
 					</CalendarWrapper>
 					<TransparentBackdrop onClick={hideCalendar} />
