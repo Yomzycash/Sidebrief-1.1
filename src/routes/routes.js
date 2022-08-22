@@ -30,7 +30,7 @@ const UserRegistration = lazy(() =>
   import("../pages/Auth/Registration/userRegistration")
 );
 const ResellerRegistration = lazy(() =>
-  import("../pages/Auth/Registration/resellerRegistration")
+  import("../pages/Auth/Registration/ResellerRegister")
 );
 
 const routes = [
