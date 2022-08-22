@@ -6,13 +6,9 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import Navbar from "../../../../components/navbar";
 import { SecondaryText } from "components/text/text";
 import { useNavigate } from "react-router-dom";
+import TextsWithLink from "components/texts/TextWithLinks";
 
 const AccountType = () => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/login");
-  };
   return (
     <>
       <Navbar />
@@ -53,10 +49,18 @@ const AccountType = () => {
         </AccountTypeBody>
 
         <AccountFooter>
-          <SecondaryText>Already have an account? </SecondaryText>
+          {/* <SecondaryText>Already have an account? </SecondaryText>
           <SecondaryText clickColor cursor left="10px" onClick={handleClick}>
             Sign In
-          </SecondaryText>
+          </SecondaryText> */}
+          <TextsWithLink
+            text={[
+              {
+                text: "Already have an account? ",
+                link: { text: "Sign In", to: "/login" },
+              },
+            ]}
+          />
         </AccountFooter>
       </AccountTypeCont>
     </>
@@ -69,15 +73,9 @@ const AccountTypeCont = styled.div`
   display: flex;
   flex-flow: column nowrap;
   gap: 3rem;
-  padding: 3rem 5% 4rem;
+  /* padding: 2rem 5%; */
+  padding: clamp(16px, 5%, 58px);
 `;
-
-// const AccountTypeHead = styled.div`
-//   width: 380px;
-//   @media screen and (max-width: 550px) {
-//     margin: 0 auto;
-//   }
-// `;
 
 const AccountTypeBody = styled.div`
   display: flex;
@@ -86,7 +84,6 @@ const AccountTypeBody = styled.div`
   gap: 4rem;
   @media screen and (max-width: 550px) {
     align-items: flex-start;
-    /* margin: 0 auto; */
   }
 `;
 
@@ -119,7 +116,7 @@ const Middle = styled.div`
   }
   @media screen and (max-width: 550px) {
     justify-content: flex-start;
-    max-width: 400px;
+    max-width: 381px;
   }
 `;
 const Bottom = styled.div`
@@ -135,7 +132,7 @@ const Bottom = styled.div`
 `;
 const AccountFooter = styled.div`
   display: flex;
-  margin-top: 70px;
+  margin: 30px 0 20px;
   justify-content: center;
   align-items: center;
   padding: 0px auto;

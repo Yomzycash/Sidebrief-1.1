@@ -16,7 +16,7 @@ const schema = yup.object().shape({
   Email: yup.string().email().required(),
   PhoneNumber: yup.string().required("Phone number is a required field"),
   Password: yup.string().min(8).max(15).required(),
-  Countries: yup.string().required(),
+  Country: yup.string().required(),
   CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
@@ -25,6 +25,7 @@ const PartnerRegistration = () => {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -62,6 +63,10 @@ const PartnerRegistration = () => {
   const submitForm = (data) => {
     console.log(data);
     console.log("You clicked submit button");
+  };
+
+  const handleCountryChange = (value) => {
+    setValue("Gender", value, { shouldValidate: true });
   };
 
   return (
@@ -105,9 +110,10 @@ const PartnerRegistration = () => {
               <DropDownInput
                 label="Operational country"
                 OptionValues={countries}
-                name="Countries"
+                name="Country"
                 register={register}
-                errorMessage={errors.Countries?.message}
+                onSelectedChange={handleCountryChange}
+                errorMessage={errors.Country?.message}
               />
               <InputWithLabel
                 placeholder="example@example.com"
@@ -165,11 +171,11 @@ const Registration = styled.div`
   flex-flow: column;
   height: max-content;
 `;
-const TestBlock = styled.form`
+const TestBlock = styled.div`
   height: 1px;
   width: 100%;
 `;
-const Form = styled.div`
+const Form = styled.form`
   display: flex;
   flex-flow: column;
   gap: 4rem;

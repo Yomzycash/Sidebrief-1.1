@@ -16,7 +16,7 @@ const schema = yup.object().shape({
   Email: yup.string().email().required(),
   PhoneNumber: yup.string().required("Phone number is a required field"),
   Password: yup.string().min(8).max(15).required(),
-  Countries: yup.string().required(),
+  Country: yup.string().required(),
   CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
@@ -25,6 +25,7 @@ const ResellerRegistration = () => {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -62,6 +63,10 @@ const ResellerRegistration = () => {
   const submitForm = (data) => {
     console.log(data);
     console.log("You clicked submit button");
+  };
+
+  const handleCountryChange = (value) => {
+    setValue("Gender", value, { shouldValidate: true });
   };
 
   return (
@@ -105,9 +110,9 @@ const ResellerRegistration = () => {
               <DropDownInput
                 label="Operational country"
                 OptionValues={countries}
-                name="Countries"
+                name="Country"
                 register={register}
-                errorMessage={errors.Countries?.message}
+                errorMessage={errors.Country?.message}
               />
               <InputWithLabel
                 placeholder="example@example.com"
@@ -115,6 +120,7 @@ const ResellerRegistration = () => {
                 type="email"
                 name="Email"
                 register={register}
+                onSelectedChange={handleCountryChange}
                 errorMessage={errors.Email?.message}
               />
               <InputWithLabel
