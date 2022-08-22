@@ -37,14 +37,7 @@ const DropDownInput = ({
 
       <InputWrapper>
         <Select onChange={handleChange} {...register(name)}>
-          <option>Select</option>
-          {options}
-        </Select>
-      </InputWrapper>
-
-      <InputWrapper>
-        <Select onChange={handleChange}>
-          <option>Select</option>
+          <option value="">Select</option>
           {options}
         </Select>
       </InputWrapper>
