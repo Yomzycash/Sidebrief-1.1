@@ -27,7 +27,7 @@ const ResetPassword = lazy(() =>
 );
 const SignIn = lazy(() => import("pages/Auth/SignIn/SignIn"));
 const UserRegistration = lazy(() =>
-	import("../pages/Auth/Registration/registerRegistration")
+	import("../pages/Auth/Registration/userRegistration")
 );
 const ResellerRegistration = lazy(() =>
 	import("../pages/Auth/Registration/ResellerRegister")
