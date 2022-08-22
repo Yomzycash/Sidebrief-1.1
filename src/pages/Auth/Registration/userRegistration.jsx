@@ -28,6 +28,7 @@ const UserRegistration = () => {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -72,6 +73,10 @@ const UserRegistration = () => {
   const submitForm = (data) => {
     console.log(data);
     console.log("You clicked submit button");
+  };
+
+  const handleGenderChange = (value) => {
+    setValue("Gender", value, { shouldValidate: true });
   };
 
   return (
@@ -132,6 +137,7 @@ const UserRegistration = () => {
                 OptionValues={gender}
                 name="Gender"
                 register={register}
+                onSelectedChange={handleGenderChange}
                 errorMessage={errors.Gender?.message}
               />
               <InputWithLabel

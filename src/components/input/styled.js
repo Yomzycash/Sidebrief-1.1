@@ -59,6 +59,7 @@ export const Select = styled.select`
 `;
 
 export const Show = styled.p`
+  cursor: pointer;
   color: #4e5152;
   font-size: 16px;
 

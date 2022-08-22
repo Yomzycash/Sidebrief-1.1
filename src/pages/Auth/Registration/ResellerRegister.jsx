@@ -12,58 +12,62 @@ import * as yup from "yup";
 
 const schema = yup.object().shape({
 Firstname: yup.string().required("First name is a required field"),
-Lastname: yup.string().required("Last name is a required field"),
-Email: yup.string().email().required(),
-PhoneNumber: yup.string().required("Phone number is a required field"),
-Password: yup.string().min(8).max(15).required(),
-Countries: yup.string().required(),
-CorporateName: yup.string().required("Corporate name is a required field"),
+  Lastname: yup.string().required("Last name is a required field"),
+  Email: yup.string().email().required(),
+  PhoneNumber: yup.string().required("Phone number is a required field"),
+  Password: yup.string().min(8).max(15).required(),
+  Country: yup.string().required(),
+  CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
-const ResellerRegister = () => {
-    const [navSticked, setNavSticked] = useState(false);
-    const {
-      handleSubmit,
-      register,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(schema),
-    });
-  
-    const TestRef = useRef();
-  
-    const countries = [
-      {
-        id: 1,
-        value: "Nigeria",
-      },
-      {
-        id: 2,
-        value: "Nigeria",
-      },
-      {
-        id: 3,
-        value: "Nigeria",
-      },
-    ];
-  
-    var observer = new IntersectionObserver((e) => {
-      if (e[0].intersectionRatio === 0) {
-        setNavSticked(true);
-      } else if (e[0].intersectionRatio === 1) {
-        setNavSticked(false);
-      }
-    });
-  
-    setTimeout(() => {
-      observer.observe(TestRef.current);
-    }, 500);
-  
-    const submitForm = (data) => {
-      console.log(data);
-      console.log("You clicked submit button");
-    };
-  
+const ResellerRegistration = () => {
+  const [navSticked, setNavSticked] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const TestRef = useRef();
+
+  const countries = [
+    {
+      id: 1,
+      value: "Nigeria",
+    },
+    {
+      id: 2,
+      value: "Nigeria",
+    },
+    {
+      id: 3,
+      value: "Nigeria",
+    },
+  ];
+
+  var observer = new IntersectionObserver((e) => {
+    if (e[0].intersectionRatio === 0) {
+      setNavSticked(true);
+    } else if (e[0].intersectionRatio === 1) {
+      setNavSticked(false);
+    }
+  });
+
+  setTimeout(() => {
+    observer.observe(TestRef.current);
+  }, 500);
+
+  const submitForm = (data) => {
+    console.log(data);
+    console.log("You clicked submit button");
+  };
+
+  const handleCountryChange = (value) => {
+    setValue("Gender", value, { shouldValidate: true });
+  };
 
   return (
     <AuthLayout register={true}>
@@ -106,9 +110,9 @@ const ResellerRegister = () => {
               <DropDownInput
                 label="Operational country"
                 OptionValues={countries}
-                name="Countries"
+                name="Country"
                 register={register}
-                errorMessage={errors.Countries?.message}
+                errorMessage={errors.Country?.message}
               />
               <InputWithLabel
                 placeholder="example@example.com"
@@ -116,6 +120,7 @@ const ResellerRegister = () => {
                 type="email"
                 name="Email"
                 register={register}
+                onSelectedChange={handleCountryChange}
                 errorMessage={errors.Email?.message}
               />
               <InputWithLabel
