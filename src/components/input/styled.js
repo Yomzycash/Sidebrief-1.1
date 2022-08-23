@@ -60,8 +60,9 @@ export const Select = styled.select`
 `;
 
 export const Show = styled.p`
-	color: #4e5152;
-	font-size: 16px;
+  cursor: pointer;
+  color: #4e5152;
+  font-size: 16px;
 
 	@media screen and (max-width: 600px) {
 		font-size: 14px;
