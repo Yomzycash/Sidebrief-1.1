@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TextsWithLink = (props) => {
-  const handleClick = (e, funct) => {
-    funct(e);
-  };
+  // const handleClick = (e, funct) => {
+  //   funct(e);
+  // };
 
   return (
     <TextContainer>
