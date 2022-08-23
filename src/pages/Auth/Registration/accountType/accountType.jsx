@@ -4,8 +4,6 @@ import { HeadText } from "../../../../components/texts";
 import styled from "styled-components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import Navbar from "../../../../components/navbar";
-import { SecondaryText } from "components/text/text";
-import { useNavigate } from "react-router-dom";
 import TextsWithLink from "components/texts/TextWithLinks";
 
 const AccountType = () => {
@@ -49,10 +47,6 @@ const AccountType = () => {
         </AccountTypeBody>
 
         <AccountFooter>
-          {/* <SecondaryText>Already have an account? </SecondaryText>
-          <SecondaryText clickColor cursor left="10px" onClick={handleClick}>
-            Sign In
-          </SecondaryText> */}
           <TextsWithLink
             text={[
               {

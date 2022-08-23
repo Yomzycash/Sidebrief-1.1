@@ -20,7 +20,7 @@ Firstname: yup.string().required("First name is a required field"),
   CorporateName: yup.string().required("Corporate name is a required field"),
 });
 
-const ResellerRegistration = () => {
+const ResellerRegister = () => {
   const [navSticked, setNavSticked] = useState(false);
   const {
     handleSubmit,
