@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
-import { DropDownInput, InputWithLabel } from "components/input";
+import { DropDown, InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
@@ -13,7 +13,7 @@ import * as yup from "yup";
 const schema = yup.object().shape({
 Firstname: yup.string().required("First name is a required field"),
   Lastname: yup.string().required("Last name is a required field"),
-  Email: yup.string().email().required(),
+  Email: yup.string().email("Enter a valid email address").required(),
   PhoneNumber: yup.string().required("Phone number is a required field"),
   Password: yup.string().min(8).max(15).required(),
   Country: yup.string().required(),
@@ -32,21 +32,12 @@ const ResellerRegister = () => {
   });
 
   const TestRef = useRef();
-
-  const countries = [
-    {
-      id: 1,
-      value: "Nigeria",
-    },
-    {
-      id: 2,
-      value: "Nigeria",
-    },
-    {
-      id: 3,
-      value: "Nigeria",
-    },
-  ];
+  const options = [
+    { value: 'Nigeria', label: 'Nigeria' },
+    { value: 'Ghana', label: 'Ghana' },
+    { value: 'Cameroon', label: 'Cameroon' },
+    { value: 'Kenya', label: 'Kenya' },
+  ]
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -66,7 +57,7 @@ const ResellerRegister = () => {
   };
 
   const handleCountryChange = (value) => {
-    setValue("Gender", value, { shouldValidate: true });
+    setValue("Country", value, { shouldValidate: true });
   };
 
   return (
@@ -107,11 +98,12 @@ const ResellerRegister = () => {
                 register={register}
                 errorMessage={errors.CorporateName?.message}
               />
-              <DropDownInput
+              <DropDown
                 label="Operational country"
-                OptionValues={countries}
+                options={options}
                 name="Country"
                 register={register}
+                onSelectedChange={handleCountryChange}
                 errorMessage={errors.Country?.message}
               />
               <InputWithLabel

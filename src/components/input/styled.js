@@ -15,6 +15,23 @@ export const InputWrapper = styled.div`
 	}
 `;
 
+export const DropWrapper = styled.div`
+	border: 1px solid #ececec;
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	border-radius: 10px;
+	border: solid red;
+	padding: 0px 20px;
+	margin-top: 20px;
+	height: 56px;
+
+	@media screen and (max-width: 600px) {
+		height: 48px;
+	}
+`;
+
+
 export const Wrapper = styled.div`
 	margin-bottom: 24px;
 	position: relative;

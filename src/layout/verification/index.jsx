@@ -32,14 +32,19 @@ const Verify = ({ title, paragraph }) => {
 					value={otpcode}
 					onChange={handleChange}
 					numInputs={6}
-					inputStyle={{
-						width: "92px",
-						height: "92px",
+					inputStyle={{ 
+						maxWidth: "92px",
+						maxHeight: "92px",
+						width: "100%",
+						height: "10vw",
 						margin: "64px 16px",
 						fontSize: "18px",
 						borderRadius: 8,
 						border: "1px solid #ECECEC",
 						backgroundColor: "#f1f1f1",
+						outlineColor: '#00A2D4',
+						minWidth: '30px',
+						minHeight: '30px',
 					}}
 				/>
 
@@ -57,3 +62,5 @@ const Verify = ({ title, paragraph }) => {
 };
 
 export default Verify;
+
+

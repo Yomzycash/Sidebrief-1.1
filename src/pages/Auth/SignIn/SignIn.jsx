@@ -12,7 +12,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
-  Email: yup.string().required("Email is a required field"),
+  Email: yup.string().email("Enter a valid email address").required("Email is a required field"),
   Password: yup.string().required("Password is a required field"),
 });
 
