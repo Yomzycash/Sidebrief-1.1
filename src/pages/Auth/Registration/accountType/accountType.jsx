@@ -29,7 +29,7 @@ const AccountType = () => {
               title="As an individual"
               body="Register your business with ease  lorem ipsum dolor imit"
               // to="/register/user"
-              to="/user"
+              to="/register"
             />
             <AccountTypeCard
               title="As a Reseller"
