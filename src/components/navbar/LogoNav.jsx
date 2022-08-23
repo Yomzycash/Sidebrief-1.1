@@ -37,6 +37,7 @@ const NavBarCont = styled.div`
   width: ${(props) => props.contwidth || "100%"};
   background-color: white;
   padding: 1rem 0;
+  z-index: 2;
   box-shadow: ${(props) =>
     props.navSticked === true ? "0px 10px 15px -5px #9596971a" : ""};
   img {
