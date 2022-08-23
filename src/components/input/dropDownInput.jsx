@@ -23,7 +23,7 @@ const DropDownInput = ({
     onSelectedChange(selectedValue);
   };
   let options = OptionValues.map((data) => (
-    <option key={data.id} value={data.value}>
+    <option key={data.id} value={data.value} style={{ color: 'red'}}>
       {data.value}
     </option>
   ));
@@ -37,7 +37,7 @@ const DropDownInput = ({
 
       <InputWrapper>
         <Select onChange={handleChange} {...register(name)}>
-          <option value="">Select</option>
+          <option style={{ backgroundColor: 'red'}} value="">Select</option>
           {options}
         </Select>
       </InputWrapper>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TestButton from "../../../components/button";
 import {
   DateInput,
-  DropDownInput,
+  DropDown,
   InputWithLabel,
 } from "../../../components/input";
 import LogoNav from "../../../components/navbar/LogoNav";
@@ -17,10 +17,11 @@ import * as yup from "yup";
 const schema = yup.object().shape({
   Firstname: yup.string().required("First name is a required field"),
   Lastname: yup.string().required("Last name is a required field"),
-  Email: yup.string().email().required(),
+  Email: yup.string().email("Enter a valid email address").required(),
   PhoneNumber: yup.string().required("Phone number is a required field"),
   Password: yup.string().min(8).max(15).required(),
   Gender: yup.string().required(),
+  Date: yup.string().required(),
 });
 
 const UserRegistration = () => {
@@ -35,28 +36,14 @@ const UserRegistration = () => {
   });
   const TestRef = useRef();
 
-  const gender = [
-    {
-      id: 1,
-      value: "Male",
-    },
-    {
-      id: 2,
-      value: "Female",
-    },
-    {
-      id: 3,
-      value: "Transgender",
-    },
-    {
-      id: 4,
-      value: "Non-binary",
-    },
-    {
-      id: 5,
-      value: "Other, please specify",
-    },
-  ];
+  const options = [
+    { value: 'Male', label: 'Male' },
+    { value: 'Female', label: 'Female' },
+    { value: 'Transgender', label: 'Transgender' },
+    { value: 'Non-binary', label: 'Non-binary' },
+    { value: 'Other', label: 'Other' }
+  ]
+
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -77,6 +64,9 @@ const UserRegistration = () => {
 
   const handleGenderChange = (value) => {
     setValue("Gender", value, { shouldValidate: true });
+  };
+  const handleDateChange = (value) => {
+    setValue("Date", value, { shouldValidate: true });
   };
 
   return (
@@ -128,13 +118,14 @@ const UserRegistration = () => {
               />
               <DateInput
                 label={"Date of birth"}
-                name="date"
+                name="Date"
                 register={register}
-                errorMessage={errors.date?.message}
+                onChange={handleDateChange}
+                errorMessage={errors.Date?.message}
               />
-              <DropDownInput
+              <DropDown
                 label="Gender"
-                OptionValues={gender}
+                options={options}
                 name="Gender"
                 register={register}
                 onSelectedChange={handleGenderChange}

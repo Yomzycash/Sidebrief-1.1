@@ -17,8 +17,8 @@ export const TextWrapper = styled.div`
     justify-content: center;
     display: flex;  
     flex-direction: column;
-    width: 600px;
-
+    max-width: 590px;
+    min-width: 300px;
 `;
 
 export const ParagraphText = styled.p`
