@@ -71,7 +71,7 @@ const DropDown = ({
 
     
         <Select 
-          onChange={handleChange} 
+          // onChange={handleChange} 
           options={options} 
           styles={selectStyle}/>
       

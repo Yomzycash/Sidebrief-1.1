@@ -41,7 +41,7 @@ const routes = [
 		protected: false,
 	},
 	{
-		path: "/account-type",
+		path: "/",
 		exact: true,
 		component: AccountType,
 		protected: false,
