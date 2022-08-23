@@ -82,11 +82,11 @@ const AccountTypeBody = styled.div`
 `;
 
 const Top = styled.div`
-  @media screen and (max-width: 550px) {
-    div {
-      align-items: flex-start;
-    }
-  }
+	@media screen and (max-width: 550px) {
+		div {
+			align-items: flex-start;
+		}
+	}
 `;
 
 const Middle = styled.div`
@@ -114,15 +114,15 @@ const Middle = styled.div`
   }
 `;
 const Bottom = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  gap: 5%;
-  @media screen and (max-width: 550px) {
-    flex-flow: column;
-    gap: 1rem;
-    justify-content: flex-start;
-  }
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	gap: 5%;
+	@media screen and (max-width: 550px) {
+		flex-flow: column;
+		gap: 1rem;
+		justify-content: flex-start;
+	}
 `;
 const AccountFooter = styled.div`
   display: flex;
