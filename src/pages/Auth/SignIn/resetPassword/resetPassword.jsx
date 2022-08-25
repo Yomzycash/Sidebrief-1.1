@@ -47,7 +47,7 @@ const ResetPassword = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate(`${location.pathname}/verifyotp`);
+    navigate(`${location.pathname}/success`);
   };
 
   return (

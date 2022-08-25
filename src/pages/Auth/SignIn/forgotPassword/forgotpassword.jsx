@@ -47,7 +47,7 @@ const ForgotPassword = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate(`${location.pathname}/resetpassword`);
+    navigate(`${location.pathname}/verifyotp`);
   };
   return (
     <AuthLayout register={true}>

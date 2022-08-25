@@ -19,7 +19,7 @@ const Verify = ({ title, paragraph }) => {
 
   useEffect(() => {
     if (otpcode.length === 6) {
-      navigate(`${location.pathname}/success`);
+      navigate(`${location.pathname}/resetpassword`);
     }
   }, [otpcode, navigate]);
 
