@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { DropDown, InputWithLabel } from "components/input";
@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
+import CountryInput from "components/input/countryInput";
 
 const schema = yup.object().shape({
   Firstname: yup.string().required("First name is a required field"),
@@ -31,6 +32,20 @@ const PartnerRegistration = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  useEffect(() => {
+    fetch(
+      "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setCountries(data.countries);
+        setSelectedCountry(data.userSelectValue);
+      });
+  }, []);
 
   const TestRef = useRef();
 
@@ -62,6 +77,8 @@ const PartnerRegistration = () => {
   };
 
   const handleCountryChange = (value) => {
+    setSelectedCountry(value)
+    console.log(value);
     setValue("Country", value, { shouldValidate: true });
   };
 
@@ -105,10 +122,11 @@ const PartnerRegistration = () => {
               />
               <DropDown
                 label="Operational country"
-                options={options}
                 name="Country"
                 register={register}
-                onSelectedChange={handleCountryChange}
+                value={selectedCountry}
+                onChange={handleCountryChange}
+                options={countries}
                 errorMessage={errors.Country?.message}
               />
               <InputWithLabel
@@ -123,7 +141,6 @@ const PartnerRegistration = () => {
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
-                type="text"
                 rightText
                 name="Password"
                 register={register}
