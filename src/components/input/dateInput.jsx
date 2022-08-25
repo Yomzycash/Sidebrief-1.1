@@ -4,15 +4,11 @@ import {
 	Top,
 	Label,
 	ErrMsg,
-	Input,
 	Iconwrapper,
 	InputWrapper,
 	DateWrapper,
-	TransparentBackdrop,
 } from "./styled";
 import { ReactComponent as CalendarIcon } from "asset/auth/Calendar.svg";
-// import Calendar from "react-calendar";
-// import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import format from "date-fns/format";
