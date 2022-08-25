@@ -46,8 +46,9 @@ const UserRegistration = () => {
   };
 
   const handleGenderChange = (value) => {
-    console.log(value);
-    setValue("Gender", value, { shouldValidate: true });
+    var string = Object.values(value)[0];
+    setValue("Gender", string, { shouldValidate: true });
+    console.log(string);
   };
   const handleDateChange = (value) => {
     setValue("Date", value, { shouldValidate: true });

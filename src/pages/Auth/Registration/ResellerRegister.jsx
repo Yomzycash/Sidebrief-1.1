@@ -52,12 +52,6 @@ const ResellerRegister = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const options = [
-    { value: "Nigeria", label: "Nigeria" },
-    { value: "Ghana", label: "Ghana" },
-    { value: "Cameroon", label: "Cameroon" },
-    { value: "Kenya", label: "Kenya" },
-  ];
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -77,7 +71,10 @@ const ResellerRegister = () => {
   };
 
   const handleCountryChange = (value) => {
-    setValue("Country", value, { shouldValidate: true });
+    setSelectedCountry(value);
+    var string = Object.values(selectedCountry)[0];
+    setValue("Country", string, { shouldValidate: true });
+    console.log(string);
   };
 
   return (
@@ -133,8 +130,8 @@ const ResellerRegister = () => {
                 type="email"
                 name="Email"
                 register={register}
-                onSelectedChange={handleCountryChange}
                 errorMessage={errors.Email?.message}
+                error={errors}
               />
               <InputWithLabel
                 placeholder="Min. of 8  characters"
