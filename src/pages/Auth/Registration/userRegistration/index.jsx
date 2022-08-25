@@ -1,25 +1,14 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
-import TestButton from "../../../components/button";
-import { DateInput, DropDown, InputWithLabel } from "../../../components/input";
-import LogoNav from "../../../components/navbar/LogoNav";
-import { HeadText } from "../../../components/texts";
-import TextsWithLink from "../../../components/texts/TextWithLinks";
-import { AuthLayout } from "../../../layout";
+import { Body, Bottom, Form, Registration, TestBlock } from "./styles";
+import TestButton from "components/button";
+import { DateInput, DropDown, InputWithLabel } from "components/input";
+import LogoNav from "components/navbar/LogoNav";
+import { HeadText, TextsWithLink } from "components/texts";
+import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { userRegistrationSchema, genderOptions } from "./constants";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const schema = yup.object().shape({
-  Firstname: yup.string().required("First name is a required field"),
-  Lastname: yup.string().required("Last name is a required field"),
-  Email: yup.string().email("Enter a valid email address").required(),
-  PhoneNumber: yup.string().required("Phone number is a required field"),
-  Password: yup.string().min(8).max(15).required(),
-  Gender: yup.string().required(),
-  Date: yup.string().required(),
-});
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -29,20 +18,12 @@ const UserRegistration = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(userRegistrationSchema),
   });
   const TestRef = useRef();
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const options = [
-    { value: "Male", label: "Male" },
-    { value: "Female", label: "Female" },
-    { value: "Transgender", label: "Transgender" },
-    { value: "Non-binary", label: "Non-binary" },
-    { value: "Other", label: "Other" },
-  ];
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -119,12 +100,12 @@ const UserRegistration = () => {
                 label={"Date of birth"}
                 name="Date"
                 register={register}
-                onChange={handleDateChange}
+                selectDate={handleDateChange}
                 errorMessage={errors.Date?.message}
               />
               <DropDown
                 label="Gender"
-                options={options}
+                options={genderOptions}
                 name="Gender"
                 register={register}
                 onSelectedChange={handleGenderChange}
@@ -145,7 +126,10 @@ const UserRegistration = () => {
                   text: "By creating an account , you agree to Sidebrief's",
                   link: { text: "Privacy Policy", to: "/" },
                 },
-                { text: "&", link: { text: "Terms of Use", to: "/" } },
+                {
+                  text: "&",
+                  link: { text: "Terms of Use", to: "/" },
+                },
               ]}
             />
             <TestButton title="Get started" type="submit" />
@@ -167,28 +151,3 @@ const UserRegistration = () => {
 };
 
 export default UserRegistration;
-
-const Registration = styled.div`
-  display: flex;
-  flex-flow: column;
-  height: max-content;
-`;
-const TestBlock = styled.div`
-  height: 1px;
-  width: 100%;
-`;
-const Form = styled.form`
-  display: flex;
-  flex-flow: column;
-  gap: 4rem;
-  height: max-content;
-`;
-const Body = styled.div`
-  display: flex;
-  flex-flow: column;
-  gap: 1rem;
-`;
-
-const Bottom = styled.div`
-  display: flex;
-`;

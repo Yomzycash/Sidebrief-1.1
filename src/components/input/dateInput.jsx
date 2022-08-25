@@ -23,6 +23,7 @@ export const DateInput = ({
 	leftIcon,
 	name,
 	register,
+	selectDate,
 	...rest
 }) => {
 	const [showCalendar, setShowCalendar] = useState(false);
@@ -33,7 +34,9 @@ export const DateInput = ({
 	};
 
 	const pickDay = (day) => {
-		setDate(format(day, "dd/MM/yyyy"));
+		const selectedDate = format(day, "dd/MM/yyyy");
+		setDate(selectedDate);
+		selectDate(selectedDate);
 		hideCalendar();
 	};
 
