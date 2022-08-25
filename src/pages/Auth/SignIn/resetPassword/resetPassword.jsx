@@ -7,7 +7,7 @@ import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -28,6 +28,7 @@ const ResetPassword = () => {
     resolver: yupResolver(schema),
   });
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const TestRef = useRef();
@@ -46,7 +47,7 @@ const ResetPassword = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate("/resetverify");
+    navigate(`${location.pathname}/verifyotp`);
   };
 
   return (
@@ -82,18 +83,6 @@ const ResetPassword = () => {
                 errorMessage={errors.ConfirmPassword?.message}
               />
             </div>
-            <TextsWithLink
-              text={[
-                {
-                  text: "By creating an account , you agree to Sidebrief's",
-                  link: { text: "Privacy Policy", to: "/" },
-                },
-                {
-                  text: "&",
-                  link: { text: "Terms of Use", to: "/" },
-                },
-              ]}
-            />
             <TestButton title="Reset Password" type="submit" />
           </Body>
           <Bottom>

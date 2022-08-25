@@ -9,6 +9,7 @@ import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   Firstname: yup.string().required("First name is a required field"),
@@ -33,13 +34,15 @@ const PartnerRegistration = () => {
 
   const TestRef = useRef();
 
-  const options = [
-    { value: 'Nigeria', label: 'Nigeria' },
-    { value: 'Ghana', label: 'Ghana' },
-    { value: 'Cameroon', label: 'Cameroon' },
-    { value: 'Kenya', label: 'Kenya' },
-  ]
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const options = [
+    { value: "Nigeria", label: "Nigeria" },
+    { value: "Ghana", label: "Ghana" },
+    { value: "Cameroon", label: "Cameroon" },
+    { value: "Kenya", label: "Kenya" },
+  ];
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -55,7 +58,7 @@ const PartnerRegistration = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    console.log("You clicked submit button");
+    navigate(`${location.pathname}/verifyotp`);
   };
 
   const handleCountryChange = (value) => {
@@ -139,7 +142,7 @@ const PartnerRegistration = () => {
                 },
               ]}
             />
-            <TestButton title="Get started" to="/" type="submit" />
+            <TestButton title="Get started" type="submit" />
           </Body>
           <Bottom>
             <TextsWithLink

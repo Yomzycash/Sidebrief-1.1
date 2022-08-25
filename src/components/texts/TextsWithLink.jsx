@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TextsWithLink = (props) => {
+  const handleClick = (e, funct) => {
+    funct(e);
+  };
+
   return (
     <TextContainer>
       {props.text.map((element) => {
@@ -25,10 +29,9 @@ export default TextsWithLink;
 const TextContainer = styled.div`
   display: inline;
   flex-flow: row wrap;
-  font-size: clamp(14px, 1.8vw, 18px);
+  font-size: clamp(14px, 1vw, 18px);
   p {
     display: inline;
-    color: #4e5152;
   }
   span {
     color: var(--SecondaryBlue);

@@ -1,11 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "../../../components/button";
-import {
-  DateInput,
-  DropDown,
-  InputWithLabel,
-} from "../../../components/input";
+import { DateInput, DropDown, InputWithLabel } from "../../../components/input";
 import LogoNav from "../../../components/navbar/LogoNav";
 import { HeadText } from "../../../components/texts";
 import TextsWithLink from "../../../components/texts/TextWithLinks";
@@ -13,6 +9,7 @@ import { AuthLayout } from "../../../layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   Firstname: yup.string().required("First name is a required field"),
@@ -36,14 +33,16 @@ const UserRegistration = () => {
   });
   const TestRef = useRef();
 
-  const options = [
-    { value: 'Male', label: 'Male' },
-    { value: 'Female', label: 'Female' },
-    { value: 'Transgender', label: 'Transgender' },
-    { value: 'Non-binary', label: 'Non-binary' },
-    { value: 'Other', label: 'Other' }
-  ]
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  const options = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+    { value: "Transgender", label: "Transgender" },
+    { value: "Non-binary", label: "Non-binary" },
+    { value: "Other", label: "Other" },
+  ];
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -59,7 +58,7 @@ const UserRegistration = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    console.log("You clicked submit button");
+    navigate(`${location.pathname}/verifyotp`);
   };
 
   const handleGenderChange = (value) => {

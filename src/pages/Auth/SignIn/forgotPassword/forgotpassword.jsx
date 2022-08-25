@@ -6,13 +6,16 @@ import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  Email: yup.string().email("Enter a valid email address").required("Email is a required field"),
+  Email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Email is a required field"),
 });
 
 const ForgotPassword = () => {
@@ -25,6 +28,7 @@ const ForgotPassword = () => {
     resolver: yupResolver(schema),
   });
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const TestRef = useRef();
@@ -43,8 +47,7 @@ const ForgotPassword = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate("/resetverify");
-    console.log("You clicked submit button");
+    navigate(`${location.pathname}/resetpassword`);
   };
   return (
     <AuthLayout register={true}>
