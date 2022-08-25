@@ -4,15 +4,13 @@ import {
 	Top,
 	Label,
 	ErrMsg,
-	Input,
 	Iconwrapper,
 	InputWrapper,
-	CalendarWrapper,
-	TransparentBackdrop,
+	DateWrapper,
 } from "./styled";
 import { ReactComponent as CalendarIcon } from "asset/auth/Calendar.svg";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import format from "date-fns/format";
 
 export const DateInput = ({
@@ -24,20 +22,16 @@ export const DateInput = ({
 	name,
 	register,
 	selectDate,
-	...rest
+	...rest // rest can REST, I guess
 }) => {
-	const [showCalendar, setShowCalendar] = useState(false);
-	const [date, setDate] = useState("DD/MM/YY");
-
-	const hideCalendar = () => {
-		setShowCalendar(false);
-	};
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [dateIsTouched, setDateIsTouched] = useState(false);
 
 	const pickDay = (day) => {
+		setSelectedDate(day);
+		setDateIsTouched(true);
 		const selectedDate = format(day, "dd/MM/yyyy");
-		setDate(selectedDate);
 		selectDate(selectedDate);
-		hideCalendar();
 	};
 
 	return (
@@ -47,30 +41,22 @@ export const DateInput = ({
 
 				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
 			</Top>
-
-			<InputWrapper onClick={() => setShowCalendar((prev) => !prev)}>
+			<InputWrapper>
 				<Iconwrapper>
 					<CalendarIcon />
 				</Iconwrapper>
 
-				<Input
-					type="text"
-					placeholder="DD/MM/YY"
-					uppercase
-					readonly
-					value={date}
-					{...register(name)}
-					{...rest}
-				/>
+				<DateWrapper>
+					<DatePicker
+						selected={dateIsTouched ? selectedDate : ""}
+						onChange={pickDay}
+						placeholderText={"DD/MM/YY"}
+						dateFormat={"dd/MM/yyyy"}
+						closeOnScroll={true}
+						className="date"
+					/>
+				</DateWrapper>
 			</InputWrapper>
-			{showCalendar ? (
-				<>
-					<CalendarWrapper>
-						<Calendar onClickDay={pickDay} />
-					</CalendarWrapper>
-					<TransparentBackdrop onClick={hideCalendar} />
-				</>
-			) : null}
 		</Wrapper>
 	);
 };

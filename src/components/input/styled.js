@@ -121,13 +121,18 @@ export const Top = styled.div`
 	justify-content: space-between;
 `;
 
-export const CalendarWrapper = styled.div`
-	position: absolute;
-	z-index: 3;
-	top: 90%;
-	left: 30px;
-	@media screen and (max-width: 600px) {
-		left: 0px;
+export const DateWrapper = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+
+	.date {
+		border: 0;
+		width: 100%;
+		height: 100%;
+		outline: none;
+		font-size: 16px;
 	}
 `;
 
