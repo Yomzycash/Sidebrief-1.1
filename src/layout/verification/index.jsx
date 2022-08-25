@@ -1,66 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "components/navbar";
-import {
-	SuccessWrapper,
-	Image,
-	TextWrapper,
-	ResendTextWrapper,
-} from "./styled";
+import { SuccessWrapper, Image } from "./styled";
 import verify from "asset/images/verify.png";
-import { PrimaryText, SecondaryText } from "components/text/text";
 import OtpInput from "react-otp-input";
+import { HeadText } from "components/texts";
+import TextsWithLink from "components/texts/TextWithLinks";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Verify = ({ title, paragraph }) => {
-	const [otpcode, setOtpCode] = useState("");
+  const [otpcode, setOtpCode] = useState("");
 
-	const handleChange = (otp) => {
-		setOtpCode(otp);
-	};
+  const handleChange = (otp) => {
+    setOtpCode(otp);
+  };
 
-	return (
-		<>
-			<Navbar />
+  const location = useLocation();
+  const navigate = useNavigate();
 
-			<SuccessWrapper>
-				<Image src={verify} alt="verify" />
-				<TextWrapper>
-					<PrimaryText>{title}</PrimaryText>
-					<SecondaryText align="center">{paragraph}</SecondaryText>
-				</TextWrapper>
+  useEffect(() => {
+    if (otpcode.length === 6) {
+      navigate(`${location.pathname}/success`);
+    }
+  }, [otpcode, navigate]);
 
-				<OtpInput
-					value={otpcode}
-					onChange={handleChange}
-					numInputs={6}
-					inputStyle={{ 
-						maxWidth: "92px",
-						maxHeight: "92px",
-						width: "100%",
-						height: "10vw",
-						margin: "64px 16px",
-						fontSize: "18px",
-						borderRadius: 8,
-						border: "1px solid #ECECEC",
-						backgroundColor: "#f1f1f1",
-						outlineColor: '#00A2D4',
-						minWidth: '30px',
-						minHeight: '30px',
-					}}
-				/>
-
-				<ResendTextWrapper>
-					<SecondaryText>
-						Didn't get the code?{" "}
-					</SecondaryText>
-					<SecondaryText clickColor left='10px'>
-						Resend verification
-					</SecondaryText>
-				</ResendTextWrapper>
-			</SuccessWrapper>
-		</>
-	);
+  return (
+    <>
+      <Navbar />
+      <SuccessWrapper>
+        <Image src={verify} alt="verify" />
+        <HeadText
+          title={title}
+          body={paragraph}
+          titleAlign="center"
+          bodyAlign="center"
+          gap="clamp(8px, 1.5vw, 16px)"
+        />
+        <OtpInput
+          value={otpcode}
+          onChange={handleChange}
+          numInputs={6}
+          inputStyle={{
+            maxWidth: "92px",
+            maxHeight: "72px",
+            width: "100%",
+            height: "8vw",
+            margin: "30px clamp(5px, 12%, 16px)",
+            fontSize: "18px",
+            borderRadius: 8,
+            border: "1px solid #ECECEC",
+            backgroundColor: "#f1f1f1",
+            outlineColor: "#00A2D4",
+            minWidth: "30px",
+            minHeight: "30px",
+          }}
+        />
+        <TextsWithLink
+          text={[
+            {
+              text: "Didn't get the code? ",
+              link: { text: "Resend verification", to: location.pathname },
+            },
+          ]}
+        />
+      </SuccessWrapper>
+    </>
+  );
 };
 
 export default Verify;
-
-

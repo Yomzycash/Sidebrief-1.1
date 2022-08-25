@@ -5,10 +5,13 @@ import styled from "styled-components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import Navbar from "../../../../components/navbar";
 import TextsWithLink from "components/texts/TextWithLinks";
+import { useLocation } from "react-router-dom";
 
 const AccountType = () => {
+  const location = useLocation();
+
   return (
-    <>
+    <AccountTypeMain>
       <Navbar />
       <AccountTypeCont>
         <AccountTypeBody>
@@ -28,20 +31,17 @@ const AccountType = () => {
             <AccountTypeCard
               title="As an individual"
               body="Register your business with ease  lorem ipsum dolor imit"
-              // to="/register/user"
-              to="/register"
+              to={`${location.pathname}/user`}
             />
             <AccountTypeCard
               title="As a Reseller"
               body="Register your business with ease  lorem ipsum dolor imit"
-              // to="/register/reseller"
-              to="/reseller"
+              to={`${location.pathname}/reseller`}
             />
             <AccountTypeCard
               title="As a Partner"
               body="Register your business with ease  lorem ipsum dolor imit"
-              // to="/register/partner"
-              to="/partner"
+              to={`${location.pathname}/partner`}
             />
           </Bottom>
         </AccountTypeBody>
@@ -57,17 +57,24 @@ const AccountType = () => {
           />
         </AccountFooter>
       </AccountTypeCont>
-    </>
+    </AccountTypeMain>
   );
 };
 
 export default AccountType;
 
+const AccountTypeMain = styled.div`
+  @media screen and (max-width: 550px) {
+    max-width: 90%;
+    margin: auto;
+  }
+`;
+
 const AccountTypeCont = styled.div`
   display: flex;
   flex-flow: column nowrap;
   gap: 3rem;
-  /* padding: 2rem 5%; */
+  align-self: "center";
   padding: clamp(16px, 5%, 58px);
 `;
 
@@ -82,11 +89,11 @@ const AccountTypeBody = styled.div`
 `;
 
 const Top = styled.div`
-	@media screen and (max-width: 550px) {
-		div {
-			align-items: flex-start;
-		}
-	}
+  @media screen and (max-width: 550px) {
+    div {
+      align-items: flex-start;
+    }
+  }
 `;
 
 const Middle = styled.div`
@@ -114,22 +121,24 @@ const Middle = styled.div`
   }
 `;
 const Bottom = styled.div`
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-around;
-	gap: 5%;
-	@media screen and (max-width: 550px) {
-		flex-flow: column;
-		gap: 1rem;
-		justify-content: flex-start;
-	}
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  gap: 5%;
+  @media screen and (max-width: 550px) {
+    flex-flow: column;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
 `;
 const AccountFooter = styled.div`
   display: flex;
   margin: 30px 0 20px;
-  justify-content: center;
+  align-self: center;
+  justify-self: center;
   align-items: center;
   padding: 0px auto;
+  max-width: 381px;
   @media screen and (max-width: 550px) {
     padding: 0px 0px;
     justify-content: start;

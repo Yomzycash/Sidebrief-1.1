@@ -9,10 +9,13 @@ import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
-  Email: yup.string().email("Enter a valid email address").required("Email is a required field"),
+  Email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Email is a required field"),
   Password: yup.string().required("Password is a required field"),
 });
 
@@ -44,7 +47,7 @@ const SignIn = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate("/resetverify");
+    navigate("/");
   };
 
   return (
@@ -78,26 +81,16 @@ const SignIn = () => {
                 register={register}
                 errorMessage={errors.Password?.message}
               />
-              <TextsWithLink
-                text={[
-                  {
-                    link: { text: "Forgot password?", to: "/forgotpassword" },
-                  },
-                ]}
-              />
+              <NavLink
+                to="/login/forgotpassword"
+                style={{
+                  textDecoration: "none",
+                  color: "var(--SecondaryBlue)",
+                }}
+              >
+                Forgot password?
+              </NavLink>
             </div>
-            <TextsWithLink
-              text={[
-                {
-                  text: "By creating an account , you agree to Sidebrief's",
-                  link: { text: "Privacy Policy", to: "/" },
-                },
-                {
-                  text: "&",
-                  link: { text: "Terms of Use", to: "/" },
-                },
-              ]}
-            />
             <TestButton title="Sign In" type="submit" />
           </Body>
           <Bottom>
@@ -105,7 +98,7 @@ const SignIn = () => {
               text={[
                 {
                   text: "Already have an account? ",
-                  link: { text: "Sign Up", to: "/account-type" },
+                  link: { text: "Sign Up", to: "/register" },
                 },
               ]}
             />
@@ -138,7 +131,6 @@ const Body = styled.div`
   flex-flow: column;
   gap: 1rem;
 `;
-
 const Bottom = styled.div`
   display: flex;
 `;

@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "components/navbar";
-import { SuccessWrapper, Image, TextWrapper } from "./styled";
+import { SuccessWrapper, Image } from "./styled";
 import success from "asset/images/Success.png";
-import { PrimaryText, SecondaryText} from "components/text/text";
+import { HeadText } from "components/texts";
+import { useNavigate } from "react-router-dom";
 
 const Success = ({ title, paragraph }) => {
-	return (
-		<>
-			<Navbar />
+  const navigate = useNavigate();
 
-			<SuccessWrapper>
-				<Image src={success} alt="success" />
-				<TextWrapper>
-					<PrimaryText>{title}</PrimaryText>
-					<SecondaryText align='center'>{paragraph}</SecondaryText>
-				</TextWrapper>
-			</SuccessWrapper>
-		</>
-	);
+  useEffect(() => {
+    const redirectTine = setTimeout(() => {
+      navigate("/");
+    }, 2000);
+
+    return () => {
+      clearTimeout(redirectTine);
+    };
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+      <SuccessWrapper>
+        <Image src={success} alt="success" />
+        <HeadText
+          title={title}
+          body={paragraph}
+          titleAlign="center"
+          bodyAlign="center"
+          gap="clamp(8px, 1.5vw, 16px)"
+        />
+      </SuccessWrapper>
+    </>
+  );
 };
 
 export default Success;
