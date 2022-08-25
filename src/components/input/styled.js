@@ -31,7 +31,6 @@ export const DropWrapper = styled.div`
 	}
 `;
 
-
 export const Wrapper = styled.div`
 	margin-bottom: 24px;
 	position: relative;
@@ -77,9 +76,9 @@ export const Select = styled.select`
 `;
 
 export const Show = styled.p`
-  cursor: pointer;
-  color: #4e5152;
-  font-size: 16px;
+	cursor: pointer;
+	color: #4e5152;
+	font-size: 16px;
 
 	@media screen and (max-width: 600px) {
 		font-size: 14px;
