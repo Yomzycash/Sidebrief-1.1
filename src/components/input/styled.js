@@ -122,14 +122,12 @@ export const DateWrapper = styled.div`
 	display: flex;
 	align-items: center;
 
-	.react-datepicker__input-container {
-		input {
-			border: 0;
-			width: 100%;
-			height: 100%;
-			outline: none;
-			font-size: 16px;
-		}
+	.date {
+		border: 0;
+		width: 100%;
+		height: 100%;
+		outline: none;
+		font-size: 16px;
 	}
 `;
 

@@ -56,6 +56,8 @@ export const DateInput = ({
 						onChange={pickDay}
 						placeholderText={"DD/MM/YY"}
 						dateFormat={"dd/MM/yyyy"}
+						closeOnScroll={true}
+						className="date"
 					/>
 				</DateWrapper>
 			</InputWrapper>
