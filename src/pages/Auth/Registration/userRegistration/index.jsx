@@ -9,9 +9,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { userRegistrationSchema, genderOptions } from "./constants";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRegisterNewUserMutation } from "services/authService";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
+  const [registerNewUser] = useRegisterNewUserMutation();
   const {
     handleSubmit,
     register,
@@ -39,10 +41,12 @@ const UserRegistration = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate(`${location.pathname}/verifyotp`);
+    // registerNewUser(data);
+    // navigate(`${location.pathname}/verifyotp`);
   };
 
   const handleGenderChange = (value) => {
+    console.log(value);
     setValue("Gender", value, { shouldValidate: true });
   };
   const handleDateChange = (value) => {
@@ -108,7 +112,7 @@ const UserRegistration = () => {
                 options={genderOptions}
                 name="Gender"
                 register={register}
-                onSelectedChange={handleGenderChange}
+                onChange={handleGenderChange}
                 errorMessage={errors.Gender?.message}
               />
               <InputWithLabel

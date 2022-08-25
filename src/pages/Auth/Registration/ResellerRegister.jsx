@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { DropDown, InputWithLabel } from "components/input";
@@ -31,6 +31,21 @@ const ResellerRegister = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState({});
+
+  useEffect(() => {
+    fetch(
+      "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setCountries(data.countries);
+        setSelectedCountry(data.userSelectValue);
+      });
+  }, []);
+
 
   const TestRef = useRef();
 
@@ -105,10 +120,11 @@ const ResellerRegister = () => {
               />
               <DropDown
                 label="Operational country"
-                options={options}
                 name="Country"
                 register={register}
-                onSelectedChange={handleCountryChange}
+                value={selectedCountry}
+                onChange={handleCountryChange}
+                options={countries}
                 errorMessage={errors.Country?.message}
               />
               <InputWithLabel
