@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
 	InputWrapper,
 	Wrapper,
@@ -16,18 +16,31 @@ const InputWithLabel = ({
 	containerStyle,
 	edit,
 	error,
-	errorMessage,
+	errorMessage=false,
 	rightText,
 	leftIcon,
 	container,
 	placeholder,
 	secureTextEntry,
 	type,
+	text,
 	name,
+	password,
 	register,
 	...rest
 }) => {
-	const [show, setShow] = useState(true);
+	const [show, setShow] = useState(false);
+	const [active, setActive] = useState(false);
+	const inputRef = useRef(null);
+
+	useEffect(() => {
+		if (active) {
+			inputRef.current.focus();
+		}
+	}, [active])
+	const handleBorder =() => {
+		setActive(!active);
+	};
 	return (
 		<Wrapper className={containerStyle}>
 			<Top>
@@ -36,14 +49,18 @@ const InputWithLabel = ({
 				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
 			</Top>
 
-			<InputWrapper>
+			<InputWrapper border={
+				errorMessage ? 
+				'1px solid red' : active ? '1px solid #00A2D4' : '1px solid #ececec'
+				}
+				ref={inputRef} onFocus={handleBorder} >
 				{leftIcon && <Iconwrapper>{leftIcon}</Iconwrapper>}
 
 				<Input
 					placeholder={placeholder}
 					secureTextEntry={secureTextEntry}
 					edit={edit}
-					type={show ? type || "text" : "password"}
+					type={!show ? type || "password" : "text"}
 					name={name}
 					{...register(name)}
 					{...rest}
@@ -51,7 +68,7 @@ const InputWithLabel = ({
 
 				{rightText ? (
 					<div onClick={() => setShow(!show)}>
-						<Show>{show ? "hide" : "show"}</Show>
+						<Show>{!show ? "show" : "hide"}</Show>
 					</div>
 				) : null}
 			</InputWrapper>

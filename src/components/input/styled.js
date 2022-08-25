@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const InputWrapper = styled.div`
-	border: 1px solid #ececec;
+	border: ${props => props.border};
 	align-items: center;
 	display: flex;
 	flex-direction: row;
@@ -9,6 +9,11 @@ export const InputWrapper = styled.div`
 	padding: 8px 24px;
 	margin-top: 20px;
 	height: 56px;
+
+	&:focus {
+    outline: none;
+    border-color: yellow;
+  }
 
 	@media screen and (max-width: 600px) {
 		height: 48px;
@@ -120,7 +125,10 @@ export const CalendarWrapper = styled.div`
 	position: absolute;
 	z-index: 3;
 	top: 90%;
-	left: 60px;
+	left: 30px;
+	@media screen and (max-width: 600px) {
+		left: 0px;
+	}
 `;
 
 export const TransparentBackdrop = styled.div`
