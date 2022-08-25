@@ -6,9 +6,7 @@ export const userRegistrationSchema = yup.object().shape({
 	Email: yup.string().email("Enter a valid email address").required(),
 	PhoneNumber: yup.string().required("Phone number is a required field"),
 	Password: yup.string().min(8).max(15).required(),
-    Gender: yup.object().shape({
-      value: yup.string().required()
-    }),
+    Gender: yup.string().required(),
 	Date: yup
 		.string()
 		.matches(

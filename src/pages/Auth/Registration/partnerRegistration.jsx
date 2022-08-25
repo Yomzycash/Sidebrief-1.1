@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
-import CountryInput from "components/input/countryInput";
 
 const schema = yup.object().shape({
   Firstname: yup.string().required("First name is a required field"),
@@ -52,12 +51,6 @@ const PartnerRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const options = [
-    { value: "Nigeria", label: "Nigeria" },
-    { value: "Ghana", label: "Ghana" },
-    { value: "Cameroon", label: "Cameroon" },
-    { value: "Kenya", label: "Kenya" },
-  ];
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -77,9 +70,10 @@ const PartnerRegistration = () => {
   };
 
   const handleCountryChange = (value) => {
-    setSelectedCountry(value)
-    console.log(value);
-    setValue("Country", value, { shouldValidate: true });
+    setSelectedCountry(value);
+    var string = Object.values(selectedCountry)[0];
+    setValue("Country", string, { shouldValidate: true });
+    console.log(string);
   };
 
   return (
