@@ -6,20 +6,19 @@ import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { NavLink, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   Email: yup
     .string()
     .email("Enter a valid email address")
     .required("Email is a required field"),
-  Password: yup.string().required("Password is a required field"),
 });
 
-const SignIn = () => {
+const ForgotPassword = () => {
   const [navSticked, setNavSticked] = useState(false);
   const {
     handleSubmit,
@@ -29,6 +28,7 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const TestRef = useRef();
@@ -47,9 +47,8 @@ const SignIn = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate("/");
+    navigate(`${location.pathname}/verifyotp`);
   };
-
   return (
     <AuthLayout register={true}>
       <Registration>
@@ -57,14 +56,15 @@ const SignIn = () => {
         <LogoNav stick={0} navSticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
-            title="Welcome Back"
-            body="Sign in to your account"
+            title="Forgot your password?"
+            body="Kindly enter the email address linked to your account, and a verfication link would be sent to you."
             align="flex-start"
             marginT="8px"
           />
           <Body>
             <div>
               <InputWithLabel
+                error={errors}
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
@@ -72,33 +72,27 @@ const SignIn = () => {
                 register={register}
                 errorMessage={errors.Email?.message}
               />
-              <InputWithLabel
-                placeholder="********"
-                label="Password"
-                type="text"
-                rightText
-                name="Password"
-                register={register}
-                errorMessage={errors.Password?.message}
-              />
-              <NavLink
-                to="/login/forgotpassword"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--SecondaryBlue)",
-                }}
-              >
-                Forgot password?
-              </NavLink>
             </div>
-            <TestButton title="Sign In" type="submit" />
+            <TextsWithLink
+              text={[
+                {
+                  text: "By creating an account , you agree to Sidebrief's",
+                  link: { text: "Privacy Policy", to: "/" },
+                },
+                {
+                  text: "&",
+                  link: { text: "Terms of Use", to: "/" },
+                },
+              ]}
+            />
+            <TestButton title="Reset Password" type="submit" />
           </Body>
           <Bottom>
             <TextsWithLink
               text={[
                 {
-                  text: "Already have an account? ",
-                  link: { text: "Sign Up", to: "/register" },
+                  text: "Remember your password? ",
+                  link: { text: "Sign In", to: "/login" },
                 },
               ]}
             />
@@ -109,7 +103,7 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ForgotPassword;
 
 const Registration = styled.div`
   display: flex;
@@ -131,6 +125,7 @@ const Body = styled.div`
   flex-flow: column;
   gap: 1rem;
 `;
+
 const Bottom = styled.div`
   display: flex;
 `;

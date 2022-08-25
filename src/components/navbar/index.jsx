@@ -1,13 +1,26 @@
-import React from 'react'
-import { Image, NavWrapper } from './styled'
-import logo from '../../asset/images/SidebriefLogo.png'
+import React, { useEffect, useState } from "react";
+import { Image, NavWrapper } from "./styled";
+import LogoNav from "./LogoNav";
+
+import logo from "../../asset/images/SidebriefLogo.png";
 
 const Navbar = () => {
-  return (
-    <NavWrapper>
-        <Image src={logo} alt="logo" />
-    </NavWrapper>
-  )
-}
+  const [boxShadow, setBoxShadow] = useState(false);
 
-export default Navbar
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setBoxShadow(window.pageYOffset > 0 ? true : false);
+    });
+  }, []);
+
+  return (
+    <>
+      <NavWrapper boxShadow={boxShadow}>
+        <Image src={logo} alt="logo" />
+      </NavWrapper>
+    </>
+  );
+};
+
+export default Navbar;
+export { LogoNav };

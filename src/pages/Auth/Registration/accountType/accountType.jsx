@@ -4,73 +4,79 @@ import { HeadText } from "../../../../components/texts";
 import styled from "styled-components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import Navbar from "../../../../components/navbar";
-
-
+import TextsWithLink from "components/texts/TextWithLinks";
+import { useLocation } from "react-router-dom";
 
 const AccountType = () => {
+  const location = useLocation();
+
   return (
-    <>
-        <Navbar />
-    <AccountTypeCont>
-      <AccountTypeBody>
-        <Top>
-          <HeadText
-            title="Get started with Sidebrief"
-            body="How would you like to use your account"
+    <AccountTypeMain>
+      <Navbar />
+      <AccountTypeCont>
+        <AccountTypeBody>
+          <Top>
+            <HeadText
+              title="Get started with Sidebrief"
+              body="How would you like to use your account"
+            />
+          </Top>
+          <Middle>
+            <div>
+              <AiOutlineInfoCircle />
+              <p>Learn what the Sidebrief account types mean</p>
+            </div>
+          </Middle>
+          <Bottom>
+            <AccountTypeCard
+              title="As an individual"
+              body="Register your business with ease  lorem ipsum dolor imit"
+              to={`${location.pathname}/user`}
+            />
+            <AccountTypeCard
+              title="As a Reseller"
+              body="Register your business with ease  lorem ipsum dolor imit"
+              to={`${location.pathname}/reseller`}
+            />
+            <AccountTypeCard
+              title="As a Partner"
+              body="Register your business with ease  lorem ipsum dolor imit"
+              to={`${location.pathname}/partner`}
+            />
+          </Bottom>
+        </AccountTypeBody>
+
+        <AccountFooter>
+          <TextsWithLink
+            text={[
+              {
+                text: "Already have an account? ",
+                link: { text: "Sign In", to: "/login" },
+              },
+            ]}
           />
-        </Top>
-        <Middle>
-          <div>
-            <AiOutlineInfoCircle />
-            <p>Learn what the Sidebrief account types mean</p>
-          </div>
-        </Middle>
-        <Bottom>
-          <AccountTypeCard
-            title="As an individual"
-            body="Register your business with ease  lorem ipsum dolor imit"
-            // to="/register/user"
-            to="/user"
-          />
-          <AccountTypeCard
-            title="As a Reseller"
-            body="Register your business with ease  lorem ipsum dolor imit"
-            // to="/register/reseller"
-            to="/reseller"
-          />
-          <AccountTypeCard
-            title="As a Partner"
-            body="Register your business with ease  lorem ipsum dolor imit"
-            // to="/register/partner"
-            to="/partner"
-          />
-        </Bottom>
-      </AccountTypeBody>
-      <AccountFooter>
-        <p>
-          Already have an account? <span>Sign In</span>
-        </p>
-      </AccountFooter>
-    </AccountTypeCont>
-    </>
+        </AccountFooter>
+      </AccountTypeCont>
+    </AccountTypeMain>
   );
 };
 
 export default AccountType;
 
+const AccountTypeMain = styled.div`
+  @media screen and (max-width: 550px) {
+    max-width: 90%;
+    margin: auto;
+  }
+`;
+
 const AccountTypeCont = styled.div`
   display: flex;
   flex-flow: column nowrap;
   gap: 3rem;
-  padding: 3rem 5% 4rem;
+  align-self: "center";
+  padding: clamp(16px, 5%, 58px);
 `;
-
-// const AccountTypeHead = styled.div`
-//   width: 380px;
-//   @media screen and (max-width: 550px) {
-//     margin: 0 auto;
-//   }
-// `;
 
 const AccountTypeBody = styled.div`
   display: flex;
@@ -79,11 +85,16 @@ const AccountTypeBody = styled.div`
   gap: 4rem;
   @media screen and (max-width: 550px) {
     align-items: flex-start;
-    margin: 0 auto;
   }
 `;
 
-const Top = styled.div``;
+const Top = styled.div`
+  @media screen and (max-width: 550px) {
+    div {
+      align-items: flex-start;
+    }
+  }
+`;
 
 const Middle = styled.div`
   display: flex;
@@ -106,6 +117,7 @@ const Middle = styled.div`
   }
   @media screen and (max-width: 550px) {
     justify-content: flex-start;
+    max-width: 381px;
   }
 `;
 const Bottom = styled.div`
@@ -120,23 +132,15 @@ const Bottom = styled.div`
   }
 `;
 const AccountFooter = styled.div`
-  width: 380px;
-  @media screen and (max-width: 550px) {
-    margin: 0 auto;
-  }
-  display: none;
-  flex-flow: row wrap;
-  justify-content: flex-start;
+  display: flex;
+  margin: 30px 0 20px;
+  align-self: center;
+  justify-self: center;
   align-items: center;
-  font-size: var(--SFontsize) - 4px;
-  span {
-    color: var(--SecondaryBlue);
-  }
+  padding: 0px auto;
+  max-width: 381px;
   @media screen and (max-width: 550px) {
-    display: flex;
-    width: 380px;
-    @media screen and (max-width: 550px) {
-      margin: 0 auto;
-    }
+    padding: 0px 0px;
+    justify-content: start;
   }
 `;

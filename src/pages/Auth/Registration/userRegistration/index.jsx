@@ -1,27 +1,16 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import { Body, Bottom, Form, Registration, TestBlock } from "./styles";
 import TestButton from "components/button";
-import { DropDown, InputWithLabel } from "components/input";
+import { DateInput, DropDown, InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
-import { HeadText } from "components/texts";
-import TextsWithLink from "components/texts/TextWithLinks";
+import { HeadText, TextsWithLink } from "components/texts";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { userRegistrationSchema, genderOptions } from "./constants";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const schema = yup.object().shape({
-  Firstname: yup.string().required("First name is a required field"),
-  Lastname: yup.string().required("Last name is a required field"),
-  Email: yup.string().email("Enter a valid email address").required(),
-  PhoneNumber: yup.string().required("Phone number is a required field"),
-  Password: yup.string().min(8).max(15).required(),
-  Country: yup.string().required(),
-  CorporateName: yup.string().required("Corporate name is a required field"),
-});
-
-const PartnerRegistration = () => {
+const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
   const {
     handleSubmit,
@@ -29,20 +18,12 @@ const PartnerRegistration = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(userRegistrationSchema),
   });
-
   const TestRef = useRef();
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const options = [
-    { value: "Nigeria", label: "Nigeria" },
-    { value: "Ghana", label: "Ghana" },
-    { value: "Cameroon", label: "Cameroon" },
-    { value: "Kenya", label: "Kenya" },
-  ];
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -61,8 +42,11 @@ const PartnerRegistration = () => {
     navigate(`${location.pathname}/verifyotp`);
   };
 
-  const handleCountryChange = (value) => {
-    setValue("Country", value, { shouldValidate: true });
+  const handleGenderChange = (value) => {
+    setValue("Gender", value, { shouldValidate: true });
+  };
+  const handleDateChange = (value) => {
+    setValue("Date", value, { shouldValidate: true });
   };
 
   return (
@@ -73,7 +57,7 @@ const PartnerRegistration = () => {
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
-            body="Create a partner  account to scale your business now"
+            body="Create an account to scale your business now"
             align="flex-start"
             marginT="8px"
           />
@@ -96,29 +80,12 @@ const PartnerRegistration = () => {
                 errorMessage={errors.Lastname?.message}
               />
               <InputWithLabel
-                placeholder="Corporate Name"
-                label="Corporate name"
-                type="text"
-                name="CorporateName"
-                register={register}
-                errorMessage={errors.CorporateName?.message}
-              />
-              <DropDown
-                label="Operational country"
-                options={options}
-                name="Country"
-                register={register}
-                onSelectedChange={handleCountryChange}
-                errorMessage={errors.Country?.message}
-              />
-              <InputWithLabel
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
                 name="Email"
                 register={register}
                 errorMessage={errors.Email?.message}
-                error={errors}
               />
               <InputWithLabel
                 placeholder="Min. of 8  characters"
@@ -128,6 +95,29 @@ const PartnerRegistration = () => {
                 name="Password"
                 register={register}
                 errorMessage={errors.Password?.message}
+              />
+              <DateInput
+                label={"Date of birth"}
+                name="Date"
+                register={register}
+                selectDate={handleDateChange}
+                errorMessage={errors.Date?.message}
+              />
+              <DropDown
+                label="Gender"
+                options={genderOptions}
+                name="Gender"
+                register={register}
+                onSelectedChange={handleGenderChange}
+                errorMessage={errors.Gender?.message}
+              />
+              <InputWithLabel
+                placeholder="Phone number"
+                label="Phone Number"
+                name="PhoneNumber"
+                type="number"
+                register={register}
+                errorMessage={errors.PhoneNumber?.message}
               />
             </div>
             <TextsWithLink
@@ -160,29 +150,4 @@ const PartnerRegistration = () => {
   );
 };
 
-export default PartnerRegistration;
-
-const Registration = styled.div`
-  display: flex;
-  flex-flow: column;
-  height: max-content;
-`;
-const TestBlock = styled.div`
-  height: 1px;
-  width: 100%;
-`;
-const Form = styled.form`
-  display: flex;
-  flex-flow: column;
-  gap: 4rem;
-  height: max-content;
-`;
-const Body = styled.div`
-  display: flex;
-  flex-flow: column;
-  gap: 1rem;
-`;
-
-const Bottom = styled.div`
-  display: flex;
-`;
+export default UserRegistration;

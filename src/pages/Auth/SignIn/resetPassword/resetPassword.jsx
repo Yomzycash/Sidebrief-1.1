@@ -7,19 +7,18 @@ import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { NavLink, useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
-  Email: yup
+  Password: yup.string().min(8).required(),
+  ConfirmPassword: yup
     .string()
-    .email("Enter a valid email address")
-    .required("Email is a required field"),
-  Password: yup.string().required("Password is a required field"),
+    .oneOf([yup.ref("Password"), null], "Passwords must match"),
 });
 
-const SignIn = () => {
+const ResetPassword = () => {
   const [navSticked, setNavSticked] = useState(false);
   const {
     handleSubmit,
@@ -29,6 +28,7 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const TestRef = useRef();
@@ -47,7 +47,7 @@ const SignIn = () => {
 
   const submitForm = (data) => {
     console.log(data);
-    navigate("/");
+    navigate(`${location.pathname}/success`);
   };
 
   return (
@@ -57,23 +57,15 @@ const SignIn = () => {
         <LogoNav stick={0} navSticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
-            title="Welcome Back"
-            body="Sign in to your account"
+            title="Reset your password?"
+            body="Kindly enter the new password you would like to use to sign in to your account."
             align="flex-start"
             marginT="8px"
           />
           <Body>
             <div>
               <InputWithLabel
-                placeholder="example@example.com"
-                label="Email"
-                type="email"
-                name="Email"
-                register={register}
-                errorMessage={errors.Email?.message}
-              />
-              <InputWithLabel
-                placeholder="********"
+                placeholder="Min. of 8  characters"
                 label="Password"
                 type="text"
                 rightText
@@ -81,24 +73,24 @@ const SignIn = () => {
                 register={register}
                 errorMessage={errors.Password?.message}
               />
-              <NavLink
-                to="/login/forgotpassword"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--SecondaryBlue)",
-                }}
-              >
-                Forgot password?
-              </NavLink>
+              <InputWithLabel
+                label="Confirm Password"
+                placeholder="Min. of 8  characters"
+                type="password"
+                rightText
+                name="ConfirmPassword"
+                register={register}
+                errorMessage={errors.ConfirmPassword?.message}
+              />
             </div>
-            <TestButton title="Sign In" type="submit" />
+            <TestButton title="Reset Password" type="submit" />
           </Body>
           <Bottom>
             <TextsWithLink
               text={[
                 {
                   text: "Already have an account? ",
-                  link: { text: "Sign Up", to: "/register" },
+                  link: { text: "Sign In", to: "/login" },
                 },
               ]}
             />
@@ -109,7 +101,7 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ResetPassword;
 
 const Registration = styled.div`
   display: flex;
@@ -131,6 +123,7 @@ const Body = styled.div`
   flex-flow: column;
   gap: 1rem;
 `;
+
 const Bottom = styled.div`
   display: flex;
 `;

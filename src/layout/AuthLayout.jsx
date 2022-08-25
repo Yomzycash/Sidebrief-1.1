@@ -85,6 +85,7 @@ const LayoutRight = styled.div`
   width: 60%;
   margin: 0 1.3rem;
   > div {
+    width: 80%;
     margin: 2rem auto;
   }
 `;
