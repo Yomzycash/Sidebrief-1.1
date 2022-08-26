@@ -33,45 +33,6 @@ export const DateInput = ({
     const selectedDate = format(day, "dd/MM/yyyy");
     selectDate(selectedDate);
   };
-<<<<<<< HEAD
-
-  const [active, setActive] = useState(false);
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (active) {
-      inputRef.current.focus();
-    }
-  }, [active]);
-  const handleBorder = () => {
-    setActive(!active);
-  };
-
-  return (
-    <Wrapper className={containerStyle}>
-      <Top>
-        <Label className={labelStyle}>{label ? label : "Date"}</Label>
-
-        {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
-      </Top>
-      <InputWrapper
-        border={
-          errorMessage
-            ? "1px solid red"
-            : active
-            ? "1px solid #00A2D4"
-            : "1px solid #ececec"
-        }
-        ref={inputRef}
-        onFocus={handleBorder}
-      >
-        <Iconwrapper>
-          <label htmlFor="date">
-            <CalendarIcon />
-          </label>
-        </Iconwrapper>
-
-=======
   const [active, setActive] = useState(false);
   const inputRef = useRef(null);
 
@@ -114,7 +75,6 @@ export const DateInput = ({
           </label>
         </Iconwrapper>
 
->>>>>>> f281ac5d9164d812dfa4a9be43ae41c09b8a9a68
         <DateWrapper>
           <DatePicker
             selected={dateIsTouched ? selectedDate : ""}
