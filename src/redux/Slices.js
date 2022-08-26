@@ -21,4 +21,5 @@ const UserData = createSlice({
 });
 export const UserDataReducer = UserData.reducer;
 
-export const { saveUserInfo, savePartnerInfo, saveResellerInfo} = UserData.actions;
+export const { saveUserInfo, savePartnerInfo, saveResellerInfo } =
+  UserData.actions;

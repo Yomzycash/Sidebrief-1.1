@@ -1,20 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
-import { DropDown, InputWithLabel } from "components/input";
+import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewResellerMutation } from "services/authService";
 import toast from "react-hot-toast";
 import CountryInput from "components/input/countryInput";
 import { resellerRegistrationSchema } from "utils/config";
-import { savePartnerInfo, saveResellerInfo } from "redux/Slices";
+import { saveResellerInfo } from "redux/Slices";
 import { store } from "redux/Store";
 
 

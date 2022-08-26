@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const HeadText = ({
   title,
@@ -19,6 +20,10 @@ const HeadText = ({
       marginT={marginT}
       marginB={marginB}
       gap={gap}
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 10, opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Title titleAlign={titleAlign}> {title}</Title>
       <Body bodyAlign={bodyAlign}>{body}</Body>
@@ -28,7 +33,7 @@ const HeadText = ({
 
 export default HeadText;
 
-const HeadTextCont = styled.div`
+const HeadTextCont = styled(motion.div)`
   display: flex;
   flex-flow: column wrap;
   align-items: ${(props) => props.align || "center"};
