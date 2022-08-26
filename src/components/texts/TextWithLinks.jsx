@@ -1,17 +1,25 @@
+import { motion } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const TextsWithLink = (props) => {
   return (
-    <TextContainer>
+    <TextContainer
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 10, opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       {props.text.map((element) => {
         return (
           <p key={element.text}>
             {" "}
             {element.text}{" "}
             <Link to={element.link.to} style={{ textDecoration: "none" }}>
-              <span>{element.link.text}</span>
+              <motion.span whileHover={{ color: "#03769a" }}>
+                {element.link.text}
+              </motion.span>
             </Link>
           </p>
         );
@@ -22,7 +30,7 @@ const TextsWithLink = (props) => {
 
 export default TextsWithLink;
 
-const TextContainer = styled.div`
+const TextContainer = styled(motion.div)`
   display: inline;
   flex-flow: row wrap;
   font-size: clamp(14px, 1.8vw, 18px);

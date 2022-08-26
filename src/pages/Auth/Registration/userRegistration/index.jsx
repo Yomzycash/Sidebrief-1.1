@@ -12,6 +12,8 @@ import { useRegisterNewUserMutation } from "services/authService";
 import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { genderOptions, userRegistrationSchema } from "utils/config";
+import toast from "react-hot-toast";
+import motion from "framer-motion";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -50,9 +52,11 @@ const UserRegistration = () => {
     if (data) {
       store.dispatch(saveUserInfo(data));
       console.log(data.message);
+      toast.success(data.message);
       navigate(`${location.pathname}/verifyotp`);
     } else if (error) {
       console.log(error.data.message);
+      toast.error(error.data.message);
     }
   };
 
@@ -87,6 +91,8 @@ const UserRegistration = () => {
             body="Create an account to scale your business now"
             align="flex-start"
             marginT="8px"
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           />
           <Body>
             <div>
@@ -117,7 +123,7 @@ const UserRegistration = () => {
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
                 name="password"
                 register={register}

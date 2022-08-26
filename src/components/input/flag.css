@@ -1,0 +1,86 @@
+.country-select {
+    width: 100%;
+    height: 56px !important;
+    border-radius: 10px;
+    height: 100%;
+}
+.country-select input{
+    width: 85%;
+    margin-left: 20px !important;
+    height: 54px !important;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.flag-dropdown{
+}
+
+.selected-flag{
+    width: 60px !important;
+    padding-left: 20px !important;
+
+}
+.country-list{
+
+}
+.country{
+    height: 50px;
+    border-bottom: 1px solid #ececec;
+    align-items: center;
+    justify-content: center;
+    padding-top: 15px !important;
+}
+.flag{
+    margin-left: 20px;
+    margin-right: 10px !important;
+}
+.country .country-name{
+    margin-top: 20px !important;
+}
+
+.active{
+    border: 1px solid #00A2D4;
+    height: 56px;
+    border-radius: 10px;
+    margin-top: 20px;
+    
+}
+.nonActive{
+    border: 1px solid #ececec;
+    height: 56px;
+    border-radius: 10px;
+    margin-top: 20px;
+    
+}
+.error{
+    border: 1px solid red;
+    height: 56px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .active{
+        height: 48px;
+        
+    }
+    .nonActive{
+        height: 48px;
+        
+    }
+    .error{
+        height: 48px;
+    }
+
+    .country-select input{
+        width: 85%;
+        height: 45px !important;
+    }
+    .country .country-name{
+        margin-top: 15px !important;
+    }
+    .flag{
+        margin-top: 20px !important;
+    }
+}
