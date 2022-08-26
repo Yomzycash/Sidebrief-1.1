@@ -6,6 +6,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import Navbar from "../../../../components/navbar";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const AccountType = () => {
   const location = useLocation();
@@ -21,7 +22,12 @@ const AccountType = () => {
               body="How would you like to use your account"
             />
           </Top>
-          <Middle>
+          <Middle
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 10, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <div>
               <AiOutlineInfoCircle />
               <p>Learn what the Sidebrief account types mean</p>
@@ -96,7 +102,7 @@ const Top = styled.div`
   }
 `;
 
-const Middle = styled.div`
+const Middle = styled(motion.div)`
   display: flex;
   justify-content: center;
   width: 100%;

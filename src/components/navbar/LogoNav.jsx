@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
@@ -21,6 +22,10 @@ const LogoNav = ({
       imgMaxwidth={imgMaxwidth}
       stick={stick}
       navSticked={navSticked}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <NavLink to="/">
         <img src={SidebriefLogo1} alt="Sidebrief logo" />
@@ -31,7 +36,7 @@ const LogoNav = ({
 
 export default LogoNav;
 
-const NavBarCont = styled.div`
+const NavBarCont = styled(motion.div)`
   position: sticky;
   top: ${(props) => props.stick};
   display: flex;
