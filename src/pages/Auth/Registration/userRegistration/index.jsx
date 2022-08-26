@@ -95,7 +95,7 @@ const UserRegistration = () => {
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
                 name="Password"
                 register={register}

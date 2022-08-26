@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const authApi = createApi({
     reducerPath: 'authsApi', // a unique key that defines where the redux store will store the cache.
     baseQuery: fetchBaseQuery({ // the base query used by each endpoint to request data.
-        baseUrl: 'api.sidebrief.com/',
+        baseUrl: 'https://api.sidebrief.com/',
     }),
     tagTypes: ['User'],
     endpoints: (builder) => ({// actions we want to perform.

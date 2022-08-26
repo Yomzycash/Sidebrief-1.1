@@ -1,0 +1,41 @@
+.country-select {
+    width: 100%;
+    margin-top: 20px;
+    border: 1px solid #ececec;
+    height: 56px !important;
+    border-radius: 10px;
+}
+.country-select input{
+    width: 85%;
+    margin-left: 20px !important;
+    height: 54px !important;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.flag-dropdown{
+}
+
+.selected-flag{
+    width: 60px !important;
+    padding-left: 20px !important;
+
+}
+.country-list{
+
+}
+.country{
+    height: 50px;
+    border-bottom: 1px solid #ececec;
+    align-items: center;
+    justify-content: center;
+    padding-top: 15px !important;
+}
+.flag{
+    margin-left: 20px;
+    margin-right: 10px !important;
+}
+.country .country-name{
+    margin-top: 20px !important;
+}

@@ -10,19 +10,23 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRegisterNewResellerMutation } from "services/authService";
+import toast from "react-hot-toast";
+import CountryInput from "components/input/countryInput";
 
 const schema = yup.object().shape({
-  Firstname: yup.string().required("First name is a required field"),
-  Lastname: yup.string().required("Last name is a required field"),
-  Email: yup.string().email("Enter a valid email address").required(),
-  PhoneNumber: yup.string().required("Phone number is a required field"),
-  Password: yup.string().min(8).max(15).required(),
-  Country: yup.string().required(),
-  CorporateName: yup.string().required("Corporate name is a required field"),
+  first_name: yup.string().required("First name is a required field"),
+  last_name: yup.string().required("Last name is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  phone: yup.string().required("Phone number is a required field"),
+  password: yup.string().min(8).max(15).required(),
+  operational_country: yup.string().required(),
+  corporate_name: yup.string().required("Corporate name is a required field"),
 });
 
 const ResellerRegister = () => {
   const [navSticked, setNavSticked] = useState(false);
+  const [registerNewReseller] = useRegisterNewResellerMutation();
   const {
     handleSubmit,
     register,
@@ -31,20 +35,6 @@ const ResellerRegister = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState({});
-
-  useEffect(() => {
-    fetch(
-      "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setCountries(data.countries);
-        setSelectedCountry(data.userSelectValue);
-      });
-  }, []);
 
 
   const TestRef = useRef();
@@ -65,16 +55,26 @@ const ResellerRegister = () => {
     observer.observe(TestRef.current);
   }, 500);
 
-  const submitForm = (data) => {
-    console.log(data);
-    navigate(`${location.pathname}/verifyotp`);
+  const submitForm = async (data, e) => {
+    e.preventDefault();
+    let values = JSON.stringify(data);
+   await registerNewReseller(values)
+   .then((response) => {
+    console.log(response)
+    toast.success(response?.data.message);
+    })
+   .then((error) => {
+    console.log(error) 
+    toast.error(error.error.data.message);
+  })
+  console.log(values)
+
+    // navigate(`${location.pathname}/verifyotp`);
   };
 
-  const handleCountryChange = (value) => {
-    setSelectedCountry(value);
-    var string = Object.values(selectedCountry)[0];
-    setValue("Country", string, { shouldValidate: true });
-    console.log(string);
+  const handleCountryChange = (e) => {
+    let value = e.target.value;
+    setValue("operational_country", value, { shouldValidate: true });
   };
 
   return (
@@ -95,52 +95,58 @@ const ResellerRegister = () => {
                 placeholder="First Name"
                 label="First name"
                 type="text"
-                name="Firstname"
+                name="first_name"
                 register={register}
-                errorMessage={errors.Firstname?.message}
+                errorMessage={errors.first_name?.message}
               />
               <InputWithLabel
                 placeholder="Last Name"
                 label="Last name"
                 type="text"
-                name="Lastname"
+                name="last_name"
                 register={register}
-                errorMessage={errors.Lastname?.message}
+                errorMessage={errors.last_name?.message}
               />
               <InputWithLabel
                 placeholder="Corporate Name"
                 label="Corporate name"
                 type="text"
-                name="CorporateName"
+                name="corporate_name"
                 register={register}
-                errorMessage={errors.CorporateName?.message}
+                errorMessage={errors.corporate_name?.message}
               />
-              <DropDown
+              <CountryInput
                 label="Operational country"
-                name="Country"
+                name="operational_country"
                 register={register}
-                value={selectedCountry}
                 onChange={handleCountryChange}
-                options={countries}
-                errorMessage={errors.Country?.message}
+                errorMessage={errors.operational_country?.message}
               />
               <InputWithLabel
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
-                name="Email"
+                name="email"
                 register={register}
-                errorMessage={errors.Email?.message}
+                errorMessage={errors.email?.message}
                 error={errors}
               />
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
-                name="Password"
+                name="password"
                 register={register}
-                errorMessage={errors.Password?.message}
+                errorMessage={errors.password?.message}
+              />
+              <InputWithLabel
+                placeholder="Phone number"
+                label="Phone Number"
+                name="phone"
+                type="number"
+                register={register}
+                errorMessage={errors.phone?.message}
               />
             </div>
             <TextsWithLink

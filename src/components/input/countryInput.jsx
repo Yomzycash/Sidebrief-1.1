@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Wrapper, Label, ErrMsg, Top } from "./styled";
-import Select from 'react-select'
+import CountryDropdown from 'country-dropdown-with-flags-for-react';
+import './flag.css'
 
 const CountryInput = ({
   label,
@@ -20,20 +21,16 @@ const CountryInput = ({
   ...rest
 }) => {
 
-    const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState({});
-  
-    useEffect(() => {
-      fetch(
-        "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setCountries(data.countries);
-          setSelectedCountry(data.userSelectValue);
-        });
-    }, []);
-
+  // const handleChange = (e) => {
+  //   let selectedValue = e.target.value;
+  //   onSelectedChange(selectedValue);
+  //   console.log(selectedValue);
+  // };
+  // let options = OptionValues.map((data) => (
+  //   <option key={data.id} value={data.value}>
+  //     {data.value}
+  //   </option>
+  // ));
   const selectStyle = {
     background: 'red',
     container: (base, state) => ({
@@ -73,15 +70,7 @@ const CountryInput = ({
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
-
-    
-    <Select
-      options={countries}
-      styles={selectStyle}
-      value={selectedCountry}
-      onChange={(selectedOption) => setSelectedCountry(selectedOption)}
-    />
-      
+      <CountryDropdown preferredCountries={['ng', 'gh']}  value="" handleChange={onChange}></CountryDropdown>
     </Wrapper>
   );
 };
