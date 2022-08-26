@@ -42,9 +42,11 @@ const DropDown = ({
       ...base,
       boxShadow: 'none',
       borderRadius: 10,
-      height: 56,
+      height: 55,
       paddingLeft: 20,
-      border: '1px solid #ececec',
+      border: `1px solid ${
+        state.isFocused ? "#00A2D4" : errorMessage ? "red" : "#ECECEC"
+      }`,
       outlineColor: '#00A2D4',
     }),
     placeholder: (base, state) => ({

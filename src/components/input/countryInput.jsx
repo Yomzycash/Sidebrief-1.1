@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Wrapper, Label, ErrMsg, Top } from "./styled";
-import Select from 'react-select'
+import CountryDropdown from 'country-dropdown-with-flags-for-react';
+import './flag.css'
 
 const CountryInput = ({
   label,
@@ -19,53 +20,17 @@ const CountryInput = ({
   register,
   ...rest
 }) => {
+	const [active, setActive] = useState(false);
+	const inputRef = useRef(null);
 
-    const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState({});
-  
-    useEffect(() => {
-      fetch(
-        "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setCountries(data.countries);
-          setSelectedCountry(data.userSelectValue);
-        });
-    }, []);
-
-  const selectStyle = {
-    background: 'red',
-    container: (base, state) => ({
-      ...base,
-      width: '100%', 
-      marginTop: 20,
-
-    }),
-    control: (base, state) => ({
-      ...base,
-      boxShadow: 'none',
-      borderRadius: 10,
-      height: 56,
-      paddingLeft: 20,
-      border: '1px solid #ececec',
-      outlineColor: '#00A2D4',
-    }),
-    placeholder: (base, state) => ({
-      ...base,
-    }),
-    input: (provided, state) => ({
-      ...provided,
-      height: 46,
-      borderRadius: 15,
-      marginLeft: 20,
-      outlineColor: '#00A2D4',
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      padding: 20,
-    }),
-  }
+	useEffect(() => {
+		if (active) {
+			inputRef.current.focus();
+		}
+	}, [active])
+	const handleBorder =() => {
+		setActive(!active);
+	};
   return (
     <Wrapper className={containerStyle}>
       <Top>
@@ -73,15 +38,14 @@ const CountryInput = ({
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
-
-    
-    <Select
-      options={countries}
-      styles={selectStyle}
-      value={selectedCountry}
-      onChange={(selectedOption) => setSelectedCountry(selectedOption)}
-    />
-      
+      <div className={
+				errorMessage ? 
+				'error' : active ? 'active' : 'nonActive'
+				}
+				ref={inputRef} onFocus={handleBorder} >
+      <CountryDropdown preferredCountries={['ng', 'gh']}  value="" handleChange={onChange}></CountryDropdown>
+        
+      </div>
     </Wrapper>
   );
 };

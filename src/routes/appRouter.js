@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from "react";
+import { Toaster } from "react-hot-toast";
 import {
   BrowserRouter as Router,
   Routes,
@@ -83,6 +84,41 @@ const AppRouter = () => {
             </Route>
           </Route>
         </Routes>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            className: '',
+            style: {
+              margin: '30px',
+              minWidth: '370px',
+              maxHeight: '40px',
+              display: 'inline-flex',
+              fontSize: '18px',
+              zIndex: 999999,
+            },
+            duration: 4000,
+            error: {
+              style: {
+                background: '#F55A5A',
+                color: 'white',
+              },
+              iconTheme: {
+                primary: 'white',
+                secondary: '#F55A5A',              
+              },
+            },
+            success: {
+              style: {
+                background: 'green',
+                color: 'white',
+              },
+              iconTheme: {
+                primary: 'white',
+                secondary: 'green',
+              }
+            }
+          }}
+        />
       </Router>
     </Suspense>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
 	Wrapper,
 	Top,
@@ -34,6 +34,19 @@ export const DateInput = ({
 		selectDate(selectedDate);
 	};
 
+	const [show, setShow] = useState(false);
+	const [active, setActive] = useState(false);
+	const inputRef = useRef(null);
+
+	useEffect(() => {
+		if (active) {
+			inputRef.current.focus();
+		}
+	}, [active])
+	const handleBorder =() => {
+		setActive(!active);
+	};
+
 	return (
 		<Wrapper className={containerStyle}>
 			<Top>
@@ -41,9 +54,15 @@ export const DateInput = ({
 
 				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
 			</Top>
-			<InputWrapper>
+			<InputWrapper border={
+				errorMessage ? 
+				'1px solid red' : active ? '1px solid #00A2D4' : '1px solid #ececec'
+				}
+				ref={inputRef} onFocus={handleBorder}>
 				<Iconwrapper>
+				<label htmlFor="date">
 					<CalendarIcon />
+				</label>
 				</Iconwrapper>
 
 				<DateWrapper>
@@ -54,6 +73,7 @@ export const DateInput = ({
 						dateFormat={"dd/MM/yyyy"}
 						closeOnScroll={true}
 						className="date"
+						id="date"
 					/>
 				</DateWrapper>
 			</InputWrapper>

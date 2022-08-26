@@ -12,6 +12,7 @@ import { useRegisterNewUserMutation } from "services/authService";
 import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { genderOptions, userRegistrationSchema } from "utils/config";
+import toast from "react-hot-toast";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -50,9 +51,11 @@ const UserRegistration = () => {
     if (data) {
       store.dispatch(saveUserInfo(data));
       console.log(data.message);
+      toast.success(data.message);
       navigate(`${location.pathname}/verifyotp`);
     } else if (error) {
       console.log(error.data.message);
+      toast.error(error.data.message);
     }
   };
 
@@ -117,7 +120,7 @@ const UserRegistration = () => {
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
                 name="password"
                 register={register}
