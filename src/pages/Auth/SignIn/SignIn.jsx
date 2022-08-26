@@ -8,16 +8,9 @@ import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
-
-const schema = yup.object().shape({
-  Email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Email is a required field"),
-  Password: yup.string().required("Password is a required field"),
-});
+import { useLoginNewUserMutation } from "services/authService";
+import { loginSchema } from "utils/config";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -26,8 +19,9 @@ const SignIn = () => {
     register,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(loginSchema),
   });
+  const [loginNewUser] = useLoginNewUserMutation();
 
   const navigate = useNavigate();
 
@@ -45,9 +39,16 @@ const SignIn = () => {
     observer.observe(TestRef.current);
   }, 500);
 
-  const submitForm = (data) => {
-    console.log(data);
-    navigate("/");
+  const submitForm = async (formData) => {
+    let response = await loginNewUser(formData);
+    let data = response?.json();
+    let error = response?.error();
+    if (response) {
+      console.log(data);
+      navigate("/");
+    } else if (error) {
+      console.log(error.data.message);
+    }
   };
 
   return (
@@ -68,7 +69,7 @@ const SignIn = () => {
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
-                name="Email"
+                name="email"
                 register={register}
                 errorMessage={errors.Email?.message}
               />
@@ -77,7 +78,7 @@ const SignIn = () => {
                 label="Password"
                 type="text"
                 rightText
-                name="Password"
+                name="password"
                 register={register}
                 errorMessage={errors.Password?.message}
               />
