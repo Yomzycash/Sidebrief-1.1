@@ -7,7 +7,7 @@ const UserData = createSlice({
   },
   reducers: {
     saveUserInfo: (state, action) => {
-      state.UserData = action.payload;
+      state.userInfo = action.payload;
     },
   },
 });
