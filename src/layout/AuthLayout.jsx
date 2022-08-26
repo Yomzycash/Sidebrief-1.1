@@ -56,7 +56,7 @@ const LayoutLeftContent = styled.div`
   height: 90%;
   padding-bottom: 4rem;
   img {
-    max-width: 70%;
+    max-width: 80%;
     margin: 0 8%;
     max-height: 284px;
   }
