@@ -33,8 +33,6 @@ export const DateInput = ({
 		const selectedDate = format(day, "dd/MM/yyyy");
 		selectDate(selectedDate);
 	};
-
-	const [show, setShow] = useState(false);
 	const [active, setActive] = useState(false);
 	const inputRef = useRef(null);
 
