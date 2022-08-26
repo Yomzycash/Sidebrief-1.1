@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Wrapper, Label, ErrMsg, Top } from "./styled";
 import CountryDropdown from 'country-dropdown-with-flags-for-react';
 import './flag.css'
@@ -20,49 +20,17 @@ const CountryInput = ({
   register,
   ...rest
 }) => {
+	const [active, setActive] = useState(false);
+	const inputRef = useRef(null);
 
-  // const handleChange = (e) => {
-  //   let selectedValue = e.target.value;
-  //   onSelectedChange(selectedValue);
-  //   console.log(selectedValue);
-  // };
-  // let options = OptionValues.map((data) => (
-  //   <option key={data.id} value={data.value}>
-  //     {data.value}
-  //   </option>
-  // ));
-  const selectStyle = {
-    background: 'red',
-    container: (base, state) => ({
-      ...base,
-      width: '100%', 
-      marginTop: 20,
-
-    }),
-    control: (base, state) => ({
-      ...base,
-      boxShadow: 'none',
-      borderRadius: 10,
-      height: 56,
-      paddingLeft: 20,
-      border: '1px solid #ececec',
-      outlineColor: '#00A2D4',
-    }),
-    placeholder: (base, state) => ({
-      ...base,
-    }),
-    input: (provided, state) => ({
-      ...provided,
-      height: 46,
-      borderRadius: 15,
-      marginLeft: 20,
-      outlineColor: '#00A2D4',
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      padding: 20,
-    }),
-  }
+	useEffect(() => {
+		if (active) {
+			inputRef.current.focus();
+		}
+	}, [active])
+	const handleBorder =() => {
+		setActive(!active);
+	};
   return (
     <Wrapper className={containerStyle}>
       <Top>
@@ -70,7 +38,14 @@ const CountryInput = ({
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
+      <div className={
+				errorMessage ? 
+				'error' : active ? 'active' : 'nonActive'
+				}
+				ref={inputRef} onFocus={handleBorder} >
       <CountryDropdown preferredCountries={['ng', 'gh']}  value="" handleChange={onChange}></CountryDropdown>
+        
+      </div>
     </Wrapper>
   );
 };

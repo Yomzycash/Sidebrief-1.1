@@ -60,7 +60,9 @@ export const DateInput = ({
 				}
 				ref={inputRef} onFocus={handleBorder}>
 				<Iconwrapper>
+				<label htmlFor="date">
 					<CalendarIcon />
+				</label>
 				</Iconwrapper>
 
 				<DateWrapper>
@@ -71,6 +73,7 @@ export const DateInput = ({
 						dateFormat={"dd/MM/yyyy"}
 						closeOnScroll={true}
 						className="date"
+						id="date"
 					/>
 				</DateWrapper>
 			</InputWrapper>

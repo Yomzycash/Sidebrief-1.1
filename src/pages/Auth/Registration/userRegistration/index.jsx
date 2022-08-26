@@ -7,9 +7,12 @@ import { HeadText, TextsWithLink } from "components/texts";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { userRegistrationSchema, genderOptions } from "./constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewUserMutation } from "services/authService";
+import { store } from "redux/Store";
+import { saveUserInfo } from "redux/Slices";
+import { genderOptions, userRegistrationSchema } from "utils/config";
+import toast from "react-hot-toast";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -39,19 +42,41 @@ const UserRegistration = () => {
     observer.observe(TestRef.current);
   }, 500);
 
-  const submitForm = (data) => {
-    console.log(data);
-    // registerNewUser(data);
-    // navigate(`${location.pathname}/verifyotp`);
+  const submitForm = async (formData) => {
+    let correctedData = correctFormDate(formData);
+    let response = await registerNewUser(JSON.stringify(correctedData));
+    console.log(response);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      store.dispatch(saveUserInfo(data));
+      console.log(data.message);
+      toast.success(data.message);
+      navigate(`${location.pathname}/verifyotp`);
+    } else if (error) {
+      console.log(error.data.message);
+      toast.error(error.data.message);
+    }
+  };
+
+  const correctFormDate = (formData) => {
+    let data = formData;
+    let dateArray = [...data.date];
+    let bDay = dateArray[0].toString() + dateArray[1].toString();
+    let bMonth = dateArray[3].toString() + dateArray[4].toString();
+    let bYear = dateArray[6].toString() + dateArray[9].toString();
+    let newData = { ...data, bDay, bMonth, bYear };
+    delete newData["date"];
+    return newData;
   };
 
   const handleGenderChange = (value) => {
     var string = Object.values(value)[0];
-    setValue("Gender", string, { shouldValidate: true });
+    setValue("gender", string, { shouldValidate: true });
     console.log(string);
   };
   const handleDateChange = (value) => {
-    setValue("Date", value, { shouldValidate: true });
+    setValue("date", value, { shouldValidate: true });
   };
 
   return (
@@ -72,57 +97,57 @@ const UserRegistration = () => {
                 placeholder="First Name"
                 label="First name"
                 type="text"
-                name="Firstname"
+                name="first_name"
                 register={register}
-                errorMessage={errors.Firstname?.message}
+                errorMessage={errors.first_name?.message}
               />
               <InputWithLabel
                 placeholder="Last Name"
                 label="Last name"
                 type="text"
-                name="Lastname"
+                name="last_name"
                 register={register}
-                errorMessage={errors.Lastname?.message}
+                errorMessage={errors.last_name?.message}
               />
               <InputWithLabel
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
-                name="Email"
+                name="email"
                 register={register}
-                errorMessage={errors.Email?.message}
+                errorMessage={errors.email?.message}
               />
               <InputWithLabel
                 placeholder="Min. of 8  characters"
                 label="Password"
                 type="password"
                 rightText
-                name="Password"
+                name="password"
                 register={register}
-                errorMessage={errors.Password?.message}
+                errorMessage={errors.password?.message}
               />
               <DateInput
                 label={"Date of birth"}
-                name="Date"
+                name="date"
                 register={register}
                 selectDate={handleDateChange}
-                errorMessage={errors.Date?.message}
+                errorMessage={errors.date?.message}
               />
               <DropDown
                 label="Gender"
                 options={genderOptions}
-                name="Gender"
+                name="gender"
                 register={register}
                 onChange={handleGenderChange}
-                errorMessage={errors.Gender?.message}
+                errorMessage={errors.gender?.message}
               />
               <InputWithLabel
                 placeholder="Phone number"
                 label="Phone Number"
-                name="PhoneNumber"
+                name="phone"
                 type="number"
                 register={register}
-                errorMessage={errors.PhoneNumber?.message}
+                errorMessage={errors.phone?.message}
               />
             </div>
             <TextsWithLink

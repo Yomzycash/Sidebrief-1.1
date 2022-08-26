@@ -13,16 +13,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewResellerMutation } from "services/authService";
 import toast from "react-hot-toast";
 import CountryInput from "components/input/countryInput";
+import { resellerRegistrationSchema } from "utils/config";
+import { savePartnerInfo, saveResellerInfo } from "redux/Slices";
+import { store } from "redux/Store";
 
-const schema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
-  password: yup.string().min(8).max(15).required(),
-  operational_country: yup.string().required(),
-  corporate_name: yup.string().required("Corporate name is a required field"),
-});
 
 const ResellerRegister = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -33,7 +27,7 @@ const ResellerRegister = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(resellerRegistrationSchema),
   });
 
 
@@ -55,21 +49,20 @@ const ResellerRegister = () => {
     observer.observe(TestRef.current);
   }, 500);
 
-  const submitForm = async (data, e) => {
-    e.preventDefault();
-    let values = JSON.stringify(data);
-   await registerNewReseller(values)
-   .then((response) => {
-    console.log(response)
-    toast.success(response?.data.message);
-    })
-   .then((error) => {
-    console.log(error) 
-    toast.error(error.error.data.message);
-  })
-  console.log(values)
-
-    // navigate(`${location.pathname}/verifyotp`);
+  const submitForm = async (formData) => {
+   let response = await registerNewReseller(JSON.stringify(formData));
+   console.log(response)
+   let data = response?.data;
+   let error = response?.error;
+   if (data) {
+    store.dispatch(saveResellerInfo(data));
+    console.log(data.message);
+    toast.success(data.message)
+    navigate(`${location.pathname}/verifyotp`);
+   } else if (error) {
+    console.log(error.data.message);
+    toast.error(error.data.message)
+   }
   };
 
   const handleCountryChange = (e) => {

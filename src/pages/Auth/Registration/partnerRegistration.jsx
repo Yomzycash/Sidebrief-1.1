@@ -8,21 +8,15 @@ import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewPartnerMutation } from "services/authService";
 import toast from "react-hot-toast";
 import CountryInput from "components/input/countryInput";
+import { partnerRegistrationSchema } from "utils/config";
+import { savePartnerInfo } from "redux/Slices";
+import { store } from "redux/Store";
 
-const schema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
-  password: yup.string().min(8).max(15).required(),
-  operational_country: yup.string().required(),
-  corporate_name: yup.string().required("Corporate name is a required field"),
-});
+
 
 const PartnerRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -33,7 +27,7 @@ const PartnerRegistration = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(partnerRegistrationSchema),
   });
 
   const TestRef = useRef();
@@ -54,22 +48,21 @@ const PartnerRegistration = () => {
     observer.observe(TestRef.current);
   }, 500);
 
-  const submitForm = async (data, e) => {
-    e.preventDefault();
-    let values = JSON.stringify(data);
-   await registerNewPartner(values)
-   .then((response) => {
+  const submitForm = async (formData) => {
+    let response = await registerNewPartner(JSON.stringify(formData));
     console.log(response)
-    toast.success(response?.data.message);
-    })
-   .then((error) => {
-    console.log(error) 
-    toast.error(error.error.data.message);
-  })
-  console.log(values)
-
-    // navigate(`${location.pathname}/verifyotp`);
-  };
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+     store.dispatch(savePartnerInfo(data));
+     console.log(data.message);
+      toast.success(data.message)
+     navigate(`${location.pathname}/verifyotp`);
+    } else if (error) {
+     console.log(error.data.message);
+     toast.error(error.data.message)
+    }
+   };
 
   const handleCountryChange = (e) => {
     let value = e.target.value;
