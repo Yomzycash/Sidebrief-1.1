@@ -1,6 +1,7 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-export const NavWrapper = styled.div`
+export const NavWrapper = styled(motion.div)`
   position: sticky;
   top: 0;
   align-items: center;

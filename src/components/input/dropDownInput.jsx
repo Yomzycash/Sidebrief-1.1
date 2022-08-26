@@ -23,12 +23,18 @@ const DropDownInput = ({
     onSelectedChange(selectedValue);
   };
   let options = OptionValues.map((data) => (
-    <option key={data.id} value={data.value} style={{ color: 'red'}}>
+    <option key={data.id} value={data.value} style={{ color: "red" }}>
       {data.value}
     </option>
   ));
   return (
-    <Wrapper className={containerStyle}>
+    <Wrapper
+      className={containerStyle}
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 10, opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Top>
         {label && <Label className={labelStyle}>{label}</Label>}
 
@@ -37,7 +43,9 @@ const DropDownInput = ({
 
       <InputWrapper>
         <Select onChange={handleChange} {...register(name)}>
-          <option style={{ backgroundColor: 'red'}} value="">Select</option>
+          <option style={{ backgroundColor: "red" }} value="">
+            Select
+          </option>
           {options}
         </Select>
       </InputWrapper>

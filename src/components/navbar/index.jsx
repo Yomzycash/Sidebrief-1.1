@@ -15,7 +15,13 @@ const Navbar = () => {
 
   return (
     <>
-      <NavWrapper boxShadow={boxShadow}>
+      <NavWrapper
+        boxShadow={boxShadow}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <Image src={logo} alt="logo" />
       </NavWrapper>
     </>
