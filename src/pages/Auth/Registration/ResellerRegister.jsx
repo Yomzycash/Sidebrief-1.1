@@ -1,22 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
-import { DropDown, InputWithLabel } from "components/input";
+import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewResellerMutation } from "services/authService";
 import toast from "react-hot-toast";
 import CountryInput from "components/input/countryInput";
 import { resellerRegistrationSchema } from "utils/config";
-import { savePartnerInfo, saveResellerInfo } from "redux/Slices";
+import { saveResellerInfo } from "redux/Slices";
 import { store } from "redux/Store";
-
 
 const ResellerRegister = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -30,12 +28,10 @@ const ResellerRegister = () => {
     resolver: yupResolver(resellerRegistrationSchema),
   });
 
-
   const TestRef = useRef();
 
   const location = useLocation();
   const navigate = useNavigate();
-
 
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
@@ -50,19 +46,19 @@ const ResellerRegister = () => {
   }, 500);
 
   const submitForm = async (formData) => {
-   let response = await registerNewReseller(JSON.stringify(formData));
-   console.log(response)
-   let data = response?.data;
-   let error = response?.error;
-   if (data) {
-    store.dispatch(saveResellerInfo(data));
-    console.log(data.message);
-    toast.success(data.message)
-    navigate(`${location.pathname}/verifyotp`);
-   } else if (error) {
-    console.log(error.data.message);
-    toast.error(error.data.message)
-   }
+    let response = await registerNewReseller(JSON.stringify(formData));
+    console.log(response);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      store.dispatch(saveResellerInfo(data));
+      console.log(data.message);
+      toast.success(data.message);
+      navigate(`${location.pathname}/verifyotp`);
+    } else if (error) {
+      console.log(error.data.message);
+      toast.error(error.data.message);
+    }
   };
 
   const handleCountryChange = (e) => {

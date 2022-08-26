@@ -13,7 +13,6 @@ import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { genderOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
-import motion from "framer-motion";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);

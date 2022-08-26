@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
-import { DropDown, InputWithLabel } from "components/input";
+import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
@@ -15,8 +15,6 @@ import CountryInput from "components/input/countryInput";
 import { partnerRegistrationSchema } from "utils/config";
 import { savePartnerInfo } from "redux/Slices";
 import { store } from "redux/Store";
-
-
 
 const PartnerRegistration = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -35,7 +33,6 @@ const PartnerRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-
   var observer = new IntersectionObserver((e) => {
     if (e[0].intersectionRatio === 0) {
       setNavSticked(true);
@@ -50,19 +47,19 @@ const PartnerRegistration = () => {
 
   const submitForm = async (formData) => {
     let response = await registerNewPartner(JSON.stringify(formData));
-    console.log(response)
+    console.log(response);
     let data = response?.data;
     let error = response?.error;
     if (data) {
-     store.dispatch(savePartnerInfo(data));
-     console.log(data.message);
-      toast.success(data.message)
-     navigate(`${location.pathname}/verifyotp`);
+      store.dispatch(savePartnerInfo(data));
+      console.log(data.message);
+      toast.success(data.message);
+      navigate(`${location.pathname}/verifyotp`);
     } else if (error) {
-     console.log(error.data.message);
-     toast.error(error.data.message)
+      console.log(error.data.message);
+      toast.error(error.data.message);
     }
-   };
+  };
 
   const handleCountryChange = (e) => {
     let value = e.target.value;
@@ -82,7 +79,7 @@ const PartnerRegistration = () => {
             marginT="8px"
           />
           <Body>
-          <div>
+            <div>
               <InputWithLabel
                 placeholder="First Name"
                 label="First name"
