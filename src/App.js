@@ -5,12 +5,6 @@ import { AnimatePresence } from "framer-motion";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
-*, *:before, *:after {
-	margin: 0;
-	padding: 0;
-	box-sizing: borderbox;
-}
-
 body{
   font-family: 'BR Firma', sans-serif;
 }

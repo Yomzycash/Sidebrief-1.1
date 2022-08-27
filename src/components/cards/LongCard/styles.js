@@ -63,18 +63,6 @@ export const LongButton = styled.button`
 	position: relative;
 	overflow: hidden;
 
-	${({ notReady }) =>
-		notReady &&
-		`&::after {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-		background: rgba(255, 255, 255, 0.6);
-	}`}
-
 	p {
 		font-family: "BR Firma";
 		font-weight: 500;
@@ -83,4 +71,18 @@ export const LongButton = styled.button`
 		letter-spacing: -0.5px;
 		color: #ffffff;
 	}
+
+	${({ notReady }) =>
+		notReady &&
+		`
+        background: rgba(0, 162, 212, 0.72);
+        p {
+            color: rgba(255, 255, 255, 0.64);
+        }
+        svg {
+            path {
+                fill:  rgba(255, 255, 255, 0.64);
+            }
+        }
+    `}
 `;
