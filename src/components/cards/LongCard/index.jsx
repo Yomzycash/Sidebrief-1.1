@@ -12,7 +12,12 @@ import {
 import { ReactComponent as Case } from "asset/svg/briefCase.svg";
 import { ReactComponent as ArrowWhiteRight } from "asset/svg/arrow-white-right.svg";
 
-export const LongCard = ({ title, body, notReady }) => {
+export const LongCard = ({
+	title,
+	body,
+	notReady, // used to determine if button should be disabled or not
+	action, // function for action that should be performed on button click
+}) => {
 	return (
 		<Container>
 			<FirstPart>
@@ -25,7 +30,11 @@ export const LongCard = ({ title, body, notReady }) => {
 				</MiddlePart>
 			</FirstPart>
 			<ButtonWrapper>
-				<LongButton notReady={notReady}>
+				<LongButton
+					notReady={notReady}
+					onClick={action}
+					disabled={notReady}
+				>
 					<p>{!notReady ? "Get Started" : "Coming soon"}</p>
 					<ArrowWhiteRight />
 				</LongButton>

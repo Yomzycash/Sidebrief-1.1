@@ -11,11 +11,13 @@ const TestingPage = () => {
 				body={
 					"Start your business registration process with no paperwork."
 				}
+				action={() => console.log("Launch")}
 			/>
 			<LongCard
 				title={"Shelf"}
 				body={"Get pre-registered company in local markets."}
 				notReady
+				action={() => console.log("Shelf")}
 			/>
 		</Container>
 	);

@@ -62,6 +62,7 @@ export const LongButton = styled.button`
 	gap: 8px;
 	position: relative;
 	overflow: hidden;
+	cursor: pointer;
 
 	p {
 		font-family: "BR Firma";
@@ -75,6 +76,7 @@ export const LongButton = styled.button`
 	${({ notReady }) =>
 		notReady &&
 		`
+        cursor: not-allowed;
         background: rgba(0, 162, 212, 0.72);
         p {
             color: rgba(255, 255, 255, 0.64);
