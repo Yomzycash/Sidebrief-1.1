@@ -56,22 +56,8 @@ export const LongButton = styled.button`
 	background: #00a2d4;
 	border-radius: 8px;
 	border: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	position: relative;
 	overflow: hidden;
 	cursor: pointer;
-
-	p {
-		font-family: "BR Firma";
-		font-weight: 500;
-		font-size: 14px;
-		line-height: 21px;
-		letter-spacing: -0.5px;
-		color: #ffffff;
-	}
 
 	${({ notReady }) =>
 		notReady &&

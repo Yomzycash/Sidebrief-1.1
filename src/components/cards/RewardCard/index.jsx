@@ -12,6 +12,7 @@ import {
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as CornerPetalDeep } from "asset/svg/cornerPetalDeep.svg";
 import { ReactComponent as ArrowBlueRight } from "asset/svg/arrow-blue-right.svg";
+import { TextWithArrow } from "components/texts";
 
 export const RewardCard = ({ image, imageAlt, title, body, action, isBig }) => {
 	return (
@@ -29,8 +30,7 @@ export const RewardCard = ({ image, imageAlt, title, body, action, isBig }) => {
 				</TextContainer>
 			</Frame>
 			<StartButton onClick={action}>
-				<p>Get started</p>
-				<ArrowBlueRight />
+				<TextWithArrow blue>Get started</TextWithArrow>
 			</StartButton>
 		</Container>
 	);
