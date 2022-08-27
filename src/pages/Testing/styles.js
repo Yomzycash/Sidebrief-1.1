@@ -7,3 +7,8 @@ export const Container = styled.div`
 	gap: 3rem;
 	padding-block: 2rem;
 `;
+
+export const Horizontal = styled.div`
+	display: flex;
+	gap: 1.5rem;
+`;
