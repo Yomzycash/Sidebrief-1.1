@@ -51,8 +51,8 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const LongButton = styled.button`
-	width: 155px;
 	height: 36px;
+	padding-inline: 24px;
 	background: #00a2d4;
 	border-radius: 8px;
 	border: none;

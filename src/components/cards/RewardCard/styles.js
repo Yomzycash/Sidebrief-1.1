@@ -24,11 +24,11 @@ export const Container = styled.div`
 `;
 
 export const StartButton = styled.button`
-	width: 155px;
 	height: 36px;
 	border-radius: 8px;
 	border: none;
 	background: transparent;
+	padding-inline: 24px;
 `;
 
 export const Corner = styled.div`

@@ -1,7 +1,9 @@
 import React from "react";
 import { Container, Horizontal } from "./styles";
 import { LongCard, RewardCard } from "components/cards";
+import { Rewards } from "containers";
 import Lendha from "asset/images/lendhaLogo.png";
+import { rewards } from "./constants";
 
 const TestingPage = () => {
 	return (
@@ -40,6 +42,7 @@ const TestingPage = () => {
 					action={() => console.log("Lendha africa")}
 				/>
 			</Horizontal>
+			<Rewards rewards={rewards} />
 		</Container>
 	);
 };
