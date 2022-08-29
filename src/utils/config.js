@@ -104,3 +104,41 @@ export const sidebarLink = [
     path: "",
   },
 ];
+
+
+
+   
+
+export const NavbarLink = [
+  {
+    id: 1,
+    title: 'Business Registration',
+    path: "",
+  },
+  {
+    id: 2,
+    title: 'Business Compliance',
+    path: "",
+  },
+  {
+    id: 3,
+    title:'Automate Taxes' ,
+    path: "",
+  },
+  {
+    id: 4,
+    title: 'Hiring and payroll',
+    path: "",
+  },
+  {
+    id: 5,
+    title: 'Intellectual Assets',
+    path: "",
+  }
+  
+];
+
+
+
+
+
