@@ -7,6 +7,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Loader from "../components/loader/loader";
+
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -37,6 +38,7 @@ const UserRegistration = lazy(() =>
 const ResellerRegistration = lazy(() =>
   import("../pages/Auth/Registration/ResellerRegister")
 );
+const UserDashboard = lazy(() => import("pages/Dashboard/User"));
 
 const AppRouter = () => {
   return (
@@ -82,41 +84,47 @@ const AppRouter = () => {
                 </Route>
               </Route>
             </Route>
+            <Route path="dashboard" element={<Outlet />}>
+              <Route index element={<UserDashboard />} />
+              {/* <Route path="partner" element={<PartnerDashboard />} />
+              <Route path="partner" element={<StaffDashboard />} />
+              <Route path="partner" element={<DeveloperDashboard />} /> */}
+            </Route>
           </Route>
         </Routes>
         <Toaster
           position="top-center"
           toastOptions={{
-            className: '',
+            className: "",
             style: {
-              margin: '30px',
-              minWidth: '370px',
-              maxHeight: '40px',
-              display: 'inline-flex',
-              fontSize: '18px',
+              margin: "30px",
+              minWidth: "370px",
+              maxHeight: "40px",
+              display: "inline-flex",
+              fontSize: "18px",
               zIndex: 999999,
             },
             duration: 4000,
             error: {
               style: {
-                background: '#F55A5A',
-                color: 'white',
+                background: "#F55A5A",
+                color: "white",
               },
               iconTheme: {
-                primary: 'white',
-                secondary: '#F55A5A',              
+                primary: "white",
+                secondary: "#F55A5A",
               },
             },
             success: {
               style: {
-                background: 'green',
-                color: 'white',
+                background: "green",
+                color: "white",
               },
               iconTheme: {
-                primary: 'white',
-                secondary: 'green',
-              }
-            }
+                primary: "white",
+                secondary: "green",
+              },
+            },
           }}
         />
       </Router>

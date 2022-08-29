@@ -6,6 +6,9 @@ const UserData = createSlice({
     userInfo: {},
     PartnerInfo: {},
     ResellerInfo: {},
+    userLoginInfo: {},
+    partnerLoginInfo: {},
+    resellerLoginInfo: {},
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -17,9 +20,24 @@ const UserData = createSlice({
     saveResellerInfo: (state, action) => {
       state.ResellerInfo = action.payload;
     },
+    saveUserLoginInfo: (state, action) => {
+      state.loginIfo = action.payload;
+    },
+    savePartnerLoginInfo: (state, action) => {
+      state.loginIfo = action.payload;
+    },
+    saveResellerLoginInfo: (state, action) => {
+      state.loginIfo = action.payload;
+    },
   },
 });
 export const UserDataReducer = UserData.reducer;
 
-export const { saveUserInfo, savePartnerInfo, saveResellerInfo } =
-  UserData.actions;
+export const {
+  saveUserInfo,
+  savePartnerInfo,
+  saveResellerInfo,
+  saveUserLoginInfo,
+  savePartnerLoginInfo,
+  saveResellerLoginInfo,
+} = UserData.actions;

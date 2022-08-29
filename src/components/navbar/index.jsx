@@ -5,18 +5,18 @@ import LogoNav from "./LogoNav";
 import logo from "../../asset/images/SidebriefLogo.png";
 
 const Navbar = () => {
-  const [boxShadow, setBoxShadow] = useState(false);
+  const [boxshadow, setBoxShadow] = useState("false");
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      setBoxShadow(window.pageYOffset > 0 ? true : false);
+      setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
     });
   }, []);
 
   return (
     <>
       <NavWrapper
-        boxShadow={boxShadow}
+        boxshadow={boxshadow}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

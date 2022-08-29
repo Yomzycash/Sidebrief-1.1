@@ -8,20 +8,20 @@ const LogoNav = ({
   justify,
   contwidth,
   imgwidth,
-  imgminWidth,
-  imgMaxwidth,
+  img_minwidth,
+  img_maxwidth,
   stick,
-  navSticked,
+  nav_sticked,
 }) => {
   return (
     <NavBarCont
       justify={justify}
       contwidth={contwidth}
       width={imgwidth}
-      imgminWidth={imgminWidth}
-      imgMaxwidth={imgMaxwidth}
+      img_minwidth={img_minwidth}
+      img_maxwidth={img_maxwidth}
       stick={stick}
-      navSticked={navSticked}
+      nav_sticked={nav_sticked}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -47,10 +47,10 @@ const NavBarCont = styled(motion.div)`
   padding: 1rem 0;
   z-index: 2;
   box-shadow: ${(props) =>
-    props.navSticked === true ? "0px 10px 15px -5px #9596971a" : ""};
+    props.nav_sticked === "true" ? "0px 10px 15px -5px #9596971a" : ""};
   img {
-    min-width: ${(props) => props.imgminWidth || "94px"};
+    min-width: ${(props) => props.img_minwidth || "94px"};
     width: ${(props) => props.imgwidth || "16vw"};
-    max-width: ${(props) => props.imgMaxwidth || "134px"};
+    max-width: ${(props) => props.img_maxwidth || "134px"};
   }
 `;

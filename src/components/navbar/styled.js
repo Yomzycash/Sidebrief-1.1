@@ -10,7 +10,7 @@ export const NavWrapper = styled(motion.div)`
   padding: 30px clamp(16px, 5%, 58px);
   background-color: white;
   box-shadow: ${(props) =>
-    props.boxShadow === true ? "0px 10px 15px -5px #9596971a" : ""};
+    props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 `;
 
 export const Image = styled.img`
