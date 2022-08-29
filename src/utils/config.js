@@ -1,4 +1,12 @@
 import * as yup from "yup";
+import {
+  HiHome,
+  HiOutlineSparkles,
+  HiOutlineLibrary,
+  HiDocumentText,
+  HiCog,
+  HiBriefcase,
+} from "react-icons/hi";
 
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
@@ -32,7 +40,6 @@ export const genderOptions = [
   { value: "Other", label: "Other" },
 ];
 
-
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -52,3 +59,48 @@ export const resellerRegistrationSchema = yup.object().shape({
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
+
+export const sidebarLink = [
+  {
+    id: 1,
+    title: "Home",
+    icon: HiHome,
+    path: "",
+  },
+  {
+    id: 2,
+    title: "Application",
+    icon: HiDocumentText,
+    path: "",
+  },
+  {
+    id: 3,
+    title: "Business",
+    icon: HiBriefcase,
+    path: "",
+  },
+  {
+    id: 4,
+    title: "Bank Accounts",
+    icon: HiOutlineLibrary,
+    path: "",
+  },
+  {
+    id: 5,
+    title: "Rewards",
+    icon: HiOutlineSparkles,
+    path: "",
+  },
+  {
+    id: 6,
+    title: "Resources",
+    icon: HiDocumentText,
+    path: "",
+  },
+  {
+    id: 7,
+    title: "Settings",
+    icon: HiCog,
+    path: "",
+  },
+];

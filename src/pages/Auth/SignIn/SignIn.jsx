@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
 import { loginSchema } from "utils/config";
+import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
@@ -62,7 +63,10 @@ const SignIn = () => {
     if (response) {
       store.dispatch(saveUserLoginInfo);
       console.log(data);
+      toast.success(data.message);
+      navigate("/");
     } else if (error) {
+      toast.error(error.data.message);
       console.log(error.data.message);
     }
   };
@@ -98,7 +102,7 @@ const SignIn = () => {
               <InputWithLabel
                 placeholder="********"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
                 name="password"
                 register={register}
