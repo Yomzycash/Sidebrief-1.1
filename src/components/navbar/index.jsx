@@ -22,18 +22,25 @@ import down from "../../asset/images/down.png";
 import search from "../../asset/images/search.png";
 
 const Navbar = ({ dashboard }) => {
-  const [boxShadow, setBoxShadow] = useState(false);
+  const [boxshadow, setBoxShadow] = useState("false");
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      setBoxShadow(window.pageYOffset > 0 ? true : false);
+      setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
     });
   }, []);
 
   return (
     <>
       {dashboard ? (
-        <NavWrapper boxShadow={boxShadow} border="1px solid #EDF1F7">
+        <NavWrapper
+          boxshadow={boxshadow}
+          border="1px solid #EDF1F7"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <Image src={logo} alt="logo" />
           <SearchBarWrapper>
             <SearchIconWrapper>
@@ -53,7 +60,7 @@ const Navbar = ({ dashboard }) => {
           </RightIcons>
         </NavWrapper>
       ) : (
-        <NavWrapper boxShadow={boxShadow}>
+        <NavWrapper boxshadow={boxshadow}>
           <Image src={logo} alt="logo" />
         </NavWrapper>
       )}

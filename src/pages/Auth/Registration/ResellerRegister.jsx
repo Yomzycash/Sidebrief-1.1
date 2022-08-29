@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -15,11 +15,12 @@ import CountryInput from "components/input/countryInput";
 import { resellerRegistrationSchema } from "utils/config";
 import { saveResellerInfo } from "redux/Slices";
 import { store } from "redux/Store";
-
+import { ThreeDots } from "react-loading-icons";
 
 const ResellerRegister = () => {
-  const [navSticked, setNavSticked] = useState(false);
-  const [registerNewReseller] = useRegisterNewResellerMutation();
+  const [navSticked, setNavSticked] = useState("");
+  const [registerNewReseller, { isLoading, isSuccess }] =
+    useRegisterNewResellerMutation();
   const {
     handleSubmit,
     register,
@@ -29,40 +30,56 @@ const ResellerRegister = () => {
     resolver: yupResolver(resellerRegistrationSchema),
   });
 
-
   const TestRef = useRef();
 
   const location = useLocation();
   const navigate = useNavigate();
 
-
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, { subtree: true, childList: true });
+      });
     }
-  });
-
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const submitForm = async (formData) => {
-   let response = await registerNewReseller(JSON.stringify(formData));
-   console.log(response)
-   let data = response?.data;
-   let error = response?.error;
-   if (data) {
-    store.dispatch(saveResellerInfo(data));
-    console.log(data.message);
-    toast.success(data.message)
-    navigate(`${location.pathname}/verifyotp`);
-   } else if (error) {
-    console.log(error.data.message);
-    toast.error(error.data.message)
-   }
+    let response = await registerNewReseller(JSON.stringify(formData));
+    console.log(response);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      store.dispatch(saveResellerInfo(data));
+      console.log(data.message);
+      toast.success(data.message);
+      navigate(`${location.pathname}/verifyotp`);
+    } else if (error) {
+      console.log(error.data.message);
+      toast.error(error.data.message);
+    }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
 
   const handleCountryChange = (e) => {
     let value = e.target.value;
@@ -73,13 +90,13 @@ const ResellerRegister = () => {
     <AuthLayout register={true}>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} navSticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
             body="Create a reseller  account to scale your business now"
             align="flex-start"
-            marginT="8px"
+            margintop="8px"
           />
           <Body>
             <div>
@@ -153,7 +170,17 @@ const ResellerRegister = () => {
                 },
               ]}
             />
-            <TestButton title="Get started" type="submit" />
+            <TestButton
+              title={
+                isLoading === true ? (
+                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
+                ) : (
+                  "Sign In"
+                )
+              }
+              type="submit"
+              disabled={isLoading ? true : false}
+            />
           </Body>
           <Bottom>
             <TextsWithLink

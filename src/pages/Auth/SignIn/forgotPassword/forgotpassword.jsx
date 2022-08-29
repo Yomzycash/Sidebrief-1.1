@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 });
 
 const ForgotPassword = () => {
-  const [navSticked, setNavSticked] = useState(false);
+  const [navSticked, setNavSticked] = useState("");
   const {
     handleSubmit,
     register,
@@ -33,17 +33,29 @@ const ForgotPassword = () => {
 
   const TestRef = useRef();
 
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, { subtree: true, childList: true });
+      });
     }
-  });
-
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const submitForm = (data) => {
     console.log(data);
@@ -53,13 +65,13 @@ const ForgotPassword = () => {
     <AuthLayout register={true}>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} navSticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Forgot your password?"
             body="Kindly enter the email address linked to your account, and a verfication link would be sent to you."
             align="flex-start"
-            marginT="8px"
+            margintop="8px"
           />
           <Body>
             <div>

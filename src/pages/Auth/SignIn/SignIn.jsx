@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -13,9 +13,12 @@ import { useLoginNewUserMutation } from "services/authService";
 import { loginSchema } from "utils/config";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { ThreeDots } from "react-loading-icons";
+import { store } from "redux/Store";
+import { saveUserLoginInfo } from "redux/Slices";
 
 const SignIn = () => {
-  const [navSticked, setNavSticked] = useState(false);
+  const [navSticked, setNavSticked] = useState("");
   const {
     handleSubmit,
     register,
@@ -23,29 +26,42 @@ const SignIn = () => {
   } = useForm({
     resolver: yupResolver(loginSchema),
   });
-  const [loginNewUser] = useLoginNewUserMutation();
+  const [loginNewUser, { isLoading, isSuccess }] = useLoginNewUserMutation();
 
   const navigate = useNavigate();
 
   const TestRef = useRef();
 
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, { subtree: true, childList: true });
+      });
     }
-  });
-
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const submitForm = async (formData) => {
-    let response = await loginNewUser(formData);
+    let response = await loginNewUser(JSON.stringify(formData));
     let data = response?.data;
     let error = response?.error;
     if (response) {
+      store.dispatch(saveUserLoginInfo);
       console.log(data);
       toast.success(data.message);
       navigate("/");
@@ -55,17 +71,23 @@ const SignIn = () => {
     }
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
+
   return (
     <AuthLayout register={true}>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} navSticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Welcome Back"
             body="Sign in to your account"
             align="flex-start"
-            marginT="8px"
+            margintop="8px"
           />
           <Body>
             <div>
@@ -103,7 +125,17 @@ const SignIn = () => {
                 </NavLink>
               </motion.div>
             </div>
-            <TestButton title="Sign In" type="submit" />
+            <TestButton
+              title={
+                isLoading === true ? (
+                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
+                ) : (
+                  "Sign In"
+                )
+              }
+              type="submit"
+              disabled={isLoading ? true : false}
+            />
           </Body>
           <Bottom>
             <TextsWithLink

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Body, Bottom, Form, Registration, TestBlock } from "./styles";
 import TestButton from "components/button";
 import { DateInput, DropDown, InputWithLabel } from "components/input";
@@ -13,11 +13,12 @@ import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { genderOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
-import motion from "framer-motion";
+import { ThreeDots } from "react-loading-icons";
 
 const UserRegistration = () => {
-  const [navSticked, setNavSticked] = useState(false);
-  const [registerNewUser] = useRegisterNewUserMutation();
+  const [navSticked, setNavSticked] = useState("");
+  const [registerNewUser, { isLoading, isSuccess }] =
+    useRegisterNewUserMutation();
   const {
     handleSubmit,
     register,
@@ -31,22 +32,33 @@ const UserRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, { subtree: true, childList: true });
+      });
     }
-  });
-
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const submitForm = async (formData) => {
     let correctedData = correctFormDate(formData);
     let response = await registerNewUser(JSON.stringify(correctedData));
-    console.log(response);
     let data = response?.data;
     let error = response?.error;
     if (data) {
@@ -59,6 +71,11 @@ const UserRegistration = () => {
       toast.error(error.data.message);
     }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
 
   const correctFormDate = (formData) => {
     let data = formData;
@@ -84,13 +101,13 @@ const UserRegistration = () => {
     <AuthLayout register={true}>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} navSticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
             body="Create an account to scale your business now"
             align="flex-start"
-            marginT="8px"
+            margintop="8px"
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
@@ -165,7 +182,17 @@ const UserRegistration = () => {
                 },
               ]}
             />
-            <TestButton title="Get started" type="submit" />
+            <TestButton
+              title={
+                isLoading === true ? (
+                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
+                ) : (
+                  "Sign In"
+                )
+              }
+              type="submit"
+              disabled={isLoading ? true : false}
+            />
           </Body>
           <Bottom>
             <TextsWithLink

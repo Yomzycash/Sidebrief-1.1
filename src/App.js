@@ -11,14 +11,14 @@ body{
 `;
 
 function App() {
-	return (
-		<>
-			<AnimatePresence exitBeforeEnter>
-				<GlobalStyle />
-				<AppRouter />
-			</AnimatePresence>
-		</>
-	);
+  return (
+    <>
+      <AnimatePresence exitBeforeEnter>
+        <GlobalStyle />
+        <AppRouter />
+      </AnimatePresence>
+    </>
+  );
 }
 
 export default App;

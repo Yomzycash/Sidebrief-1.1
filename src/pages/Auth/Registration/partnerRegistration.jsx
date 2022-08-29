@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -15,12 +15,12 @@ import CountryInput from "components/input/countryInput";
 import { partnerRegistrationSchema } from "utils/config";
 import { savePartnerInfo } from "redux/Slices";
 import { store } from "redux/Store";
-
-
+import { ThreeDots } from "react-loading-icons";
 
 const PartnerRegistration = () => {
-  const [navSticked, setNavSticked] = useState(false);
-  const [registerNewPartner] = useRegisterNewPartnerMutation();
+  const [navSticked, setNavSticked] = useState("");
+  const [registerNewPartner, { isLoading, isSuccess }] =
+    useRegisterNewPartnerMutation();
   const {
     handleSubmit,
     register,
@@ -35,34 +35,50 @@ const PartnerRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, { subtree: true, childList: true });
+      });
     }
-  });
-
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const submitForm = async (formData) => {
     let response = await registerNewPartner(JSON.stringify(formData));
-    console.log(response)
     let data = response?.data;
     let error = response?.error;
     if (data) {
-     store.dispatch(savePartnerInfo(data));
-     console.log(data.message);
-      toast.success(data.message)
-     navigate(`${location.pathname}/verifyotp`);
+      store.dispatch(savePartnerInfo(data));
+      console.log(data.message);
+      toast.success(data.message);
+      navigate(`${location.pathname}/verifyotp`);
     } else if (error) {
-     console.log(error.data.message);
-     toast.error(error.data.message)
+      console.log(error.data.message);
+      toast.error(error.data.message);
     }
-   };
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
 
   const handleCountryChange = (e) => {
     let value = e.target.value;
@@ -73,16 +89,16 @@ const PartnerRegistration = () => {
     <AuthLayout register={true}>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} navSticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
             body="Create a partner  account to scale your business now"
             align="flex-start"
-            marginT="8px"
+            margintop="8px"
           />
           <Body>
-          <div>
+            <div>
               <InputWithLabel
                 placeholder="First Name"
                 label="First name"
@@ -153,7 +169,17 @@ const PartnerRegistration = () => {
                 },
               ]}
             />
-            <TestButton title="Get started" type="submit" />
+            <TestButton
+              title={
+                isLoading === true ? (
+                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
+                ) : (
+                  "Sign In"
+                )
+              }
+              type="submit"
+              disabled={isLoading ? true : false}
+            />
           </Body>
           <Bottom>
             <TextsWithLink
