@@ -32,6 +32,7 @@ export const StatusCard = ({
 				<Status status={status}>{getStatus(status)}</Status>
 			</TextContainer>
 			<ThreeDotContainer>
+				{/* Doesn't exactly have a function yet */}
 				<ThreeDot />
 			</ThreeDotContainer>
 		</Container>
