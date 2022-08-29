@@ -12,6 +12,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
 import { loginSchema } from "utils/config";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -85,15 +86,22 @@ const SignIn = () => {
                 register={register}
                 errorMessage={errors.Password?.message}
               />
-              <NavLink
-                to="/login/forgotpassword"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--SecondaryBlue)",
-                }}
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 10, opacity: 0 }}
+                transition={{ duration: 0.5 }}
               >
-                Forgot password?
-              </NavLink>
+                <NavLink
+                  to="/login/forgotpassword"
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--SecondaryBlue)",
+                  }}
+                >
+                  Forgot password?
+                </NavLink>
+              </motion.div>
             </div>
             <TestButton title="Sign In" type="submit" />
           </Body>
