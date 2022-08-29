@@ -1,4 +1,6 @@
 import Button from "components/button";
+import Navbar from "components/navbar";
+import Sidebar from "components/sidebar";
 import { HeadText } from "components/texts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,18 +13,26 @@ const Home = () => {
   };
 
   return (
-    <Homepage>
-      <HeadText
-        title="Sidebrief Homepage"
-        body="Hey! Welcome to home page. Here, you get to see basic information about
+    <>
+      <Navbar dashboard />
+      <div style={{ display: "flex" }}>
+        <Sidebar />
+        <div style={{ flex: 4 }}></div>
+      </div>
+
+      {/* <Homepage>
+        <HeadText
+          title="Sidebrief Homepage"
+          body="Hey! Welcome to home page. Here, you get to see basic information about
       sidebrief."
-        align="flex-start"
-      />
-      <Register>
-        <Button title="Register" onClick={() => handleClick("register")} />
-        <Button title="Login" onClick={() => handleClick("login")} />
-      </Register>
-    </Homepage>
+          align="flex-start"
+        />
+        <Register>
+          <Button title="Register" onClick={() => handleClick("register")} />
+          <Button title="Login" onClick={() => handleClick("login")} />
+        </Register>
+      </Homepage> */}
+    </>
   );
 };
 

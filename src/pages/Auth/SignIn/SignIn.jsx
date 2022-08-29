@@ -11,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
 import { loginSchema } from "utils/config";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState(false);
@@ -41,12 +42,14 @@ const SignIn = () => {
 
   const submitForm = async (formData) => {
     let response = await loginNewUser(formData);
-    let data = response?.json();
-    let error = response?.error();
+    let data = response?.data;
+    let error = response?.error;
     if (response) {
       console.log(data);
+      toast.success(data.message);
       navigate("/");
     } else if (error) {
+      toast.error(error.data.message);
       console.log(error.data.message);
     }
   };
@@ -76,7 +79,7 @@ const SignIn = () => {
               <InputWithLabel
                 placeholder="********"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
                 name="password"
                 register={register}
