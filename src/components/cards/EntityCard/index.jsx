@@ -10,7 +10,7 @@ import {
 	Subtitles,
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
-import { ReactComponent as CornerPetalDeep } from "asset/svg/cornerPetalDeep.svg";
+// import { ReactComponent as CornerPetalDeep } from "asset/svg/cornerPetalDeep.svg";
 import { TextWithArrow } from "components/texts";
 
 export const EntityCard = ({ action, entityInfo }) => {

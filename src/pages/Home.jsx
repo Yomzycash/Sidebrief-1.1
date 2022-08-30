@@ -27,21 +27,7 @@ const Home = () => {
 						style={{
 							padding: "2rem",
 						}}
-					>
-						<EntityCard
-							entityInfo={{
-								"Entity Name": "Limited Liability Company",
-								"Entity shortname": "LLC",
-								"Entity Type": "Private Company",
-								"Entity Fee": "#15000",
-								"Entity Description": "Local Shareholders only",
-								"Entity TimeLine": "30 days",
-								"Entity Requirements": "Standard",
-								"Entity Shares": "10000 Shares",
-							}}
-							action={() => console.log("I am an Entity")}
-						/>
-					</div>
+					></div>
 				</div>
 			</div>
 

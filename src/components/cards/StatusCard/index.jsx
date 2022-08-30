@@ -7,29 +7,17 @@ import {
 	Status,
 } from "./styles";
 import { ReactComponent as ThreeDot } from "asset/svg/threeDot.svg";
+import { StatusIndicator } from "components/Indicators";
 
 export const StatusCard = ({
 	name, // string
-	status, // "completed" | "awaiting" | "progress"
+	status, // "completed" | "awaiting" | "progress" | "declined"
 }) => {
-	const getStatus = (status) => {
-		switch (status) {
-			case "completed":
-				return "Completed";
-			case "awaiting":
-				return "Awaiting Approval";
-			case "progress":
-				return "In Progress";
-			default:
-				return "";
-		}
-	};
-
 	return (
 		<Container>
 			<TextContainer>
 				<Name>{name}</Name>
-				<Status status={status}>{getStatus(status)}</Status>
+				<StatusIndicator status={status} />
 			</TextContainer>
 			<ThreeDotContainer>
 				{/* Doesn't exactly have a function yet */}
