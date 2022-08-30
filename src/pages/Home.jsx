@@ -1,6 +1,7 @@
 import Button from "components/button";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
+import TabNavBar from "components/TabNavBar/TabNavBar";
 import { HeadText } from "components/texts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +16,19 @@ const Home = () => {
   return (
     <>
       <Navbar dashboard />
+      
+      
       <div style={{ display: "flex" }}>
         <Sidebar />
-        <div style={{ flex: 4 }}></div>
+        
+        
+
+        
+        <div style={{ flex: 4 }}>
+      <TabNavBar/>
+    
+          
+        </div>
       </div>
 
       {/* <Homepage>
