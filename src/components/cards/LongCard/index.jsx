@@ -11,6 +11,7 @@ import {
 } from "./styles";
 import { ReactComponent as Case } from "asset/svg/briefCase.svg";
 import { ReactComponent as ArrowWhiteRight } from "asset/svg/arrow-white-right.svg";
+import { TextWithArrow } from "components/texts";
 
 export const LongCard = ({
 	title,
@@ -35,8 +36,11 @@ export const LongCard = ({
 					onClick={action}
 					disabled={notReady}
 				>
-					<p>{!notReady ? "Get Started" : "Coming soon"}</p>
-					<ArrowWhiteRight />
+					{/* <p>{!notReady ? "Get Started" : "Coming soon"}</p>
+					<ArrowWhiteRight /> */}
+					<TextWithArrow>
+						{!notReady ? "Get Started" : "Coming soon"}
+					</TextWithArrow>
 				</LongButton>
 			</ButtonWrapper>
 		</Container>
