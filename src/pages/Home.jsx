@@ -8,6 +8,7 @@ import { HeadText } from "components/texts";
 import { ApplicationTable } from "components/Tables";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { MockData } from "components/Tables/ApplicationTable/constants";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -46,6 +47,7 @@ const Home = () => {
 							action={() => console.log("I am an Entity")}
 						/> */}
 						<ApplicationTable
+							data={MockData}
 							onClickViewAll={() => {
 								console.log("You want to view?");
 								console.log("No view for you");

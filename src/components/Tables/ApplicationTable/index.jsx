@@ -18,10 +18,10 @@ import {
 } from "@tanstack/react-table";
 import { columns, MockData } from "./constants";
 
-export const ApplicationTable = ({ onClickViewAll }) => {
+export const ApplicationTable = ({ onClickViewAll, data }) => {
 	const table = useReactTable({
 		columns,
-		data: MockData,
+		data,
 		getCoreRowModel: getCoreRowModel(),
 	});
 
