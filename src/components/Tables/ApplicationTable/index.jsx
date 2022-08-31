@@ -7,6 +7,8 @@ import {
 	Table,
 	Head,
 	HeadData,
+	Row,
+	RowData,
 } from "./styles";
 import { TextWithArrow } from "components/texts";
 import {
@@ -49,17 +51,17 @@ export const ApplicationTable = ({ onClickViewAll }) => {
 					))}
 				</Head>
 				<tbody>
-					{table.getRowModel().rows.map((row) => (
-						<tr key={row.id}>
+					{table.getRowModel().rows.map((row, index) => (
+						<Row key={row.id}>
 							{row.getVisibleCells().map((cell) => (
-								<td key={cell.id}>
+								<RowData key={cell.id}>
 									{flexRender(
 										cell.column.columnDef.cell,
 										cell.getContext()
 									)}
-								</td>
+								</RowData>
 							))}
-						</tr>
+						</Row>
 					))}
 				</tbody>
 			</Table>
