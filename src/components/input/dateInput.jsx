@@ -6,11 +6,13 @@ import {
 	ErrMsg,
 	Iconwrapper,
 	InputWrapper,
-	DateWrapper,
+	CalendarWrapper,
+	Input,
+	TransparentBackdrop,
 } from "./styled";
 import { ReactComponent as CalendarIcon } from "asset/auth/Calendar.svg";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import format from "date-fns/format";
 
 export const DateInput = ({
@@ -22,19 +24,25 @@ export const DateInput = ({
 	name,
 	register,
 	selectDate,
-	...rest // rest can REST, I guess
+	...rest
 }) => {
-	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [date, setDate] = useState("");
 	const [dateIsTouched, setDateIsTouched] = useState(false);
-
-	const pickDay = (day) => {
-		setSelectedDate(day);
-		setDateIsTouched(true);
-		const selectedDate = format(day, "dd/MM/yyyy");
-		selectDate(selectedDate);
-	};
+	const [showCalendar, setShowCalendar] = useState(false);
 	const [active, setActive] = useState(false);
 	const inputRef = useRef(null);
+
+	const hideCalendar = () => {
+		setShowCalendar(false);
+	};
+
+	const pickDay = (day) => {
+		setDateIsTouched(true);
+		const selectedDate = format(day, "dd/MM/yyyy");
+		setDate(selectedDate);
+		selectDate(selectedDate);
+		hideCalendar();
+	};
 
 	useEffect(() => {
 		if (active) {
@@ -68,6 +76,7 @@ export const DateInput = ({
 				}
 				ref={inputRef}
 				onFocus={handleBorder}
+				onClick={() => setShowCalendar((prev) => !prev)}
 			>
 				<Iconwrapper>
 					<label htmlFor="date">
@@ -75,17 +84,24 @@ export const DateInput = ({
 					</label>
 				</Iconwrapper>
 
-				<DateWrapper>
-					<DatePicker
-						selected={dateIsTouched ? selectedDate : ""}
-						onChange={pickDay}
-						placeholderText={"DD/MM/YY"}
-						dateFormat={"dd/MM/yyyy"}
-						className="date"
-						id="date"
-					/>
-				</DateWrapper>
+				<Input
+					type="text"
+					placeholder="DD/MM/YY"
+					uppercase
+					readOnly
+					value={date}
+					{...register(name)}
+					{...rest}
+				/>
 			</InputWrapper>
+			{showCalendar ? (
+				<>
+					<CalendarWrapper>
+						<Calendar onClickDay={pickDay} />
+					</CalendarWrapper>
+					<TransparentBackdrop onClick={hideCalendar} />
+				</>
+			) : null}
 		</Wrapper>
 	);
 };

@@ -32,32 +32,7 @@ const Home = () => {
 							flexDirection: "column",
 							gap: "1rem",
 						}}
-					>
-						<Horizontal>
-							<LongCard title={"Launch"} />
-							<LongCard title={"Shell"} notReady />
-						</Horizontal>
-						{/* <EntityCard
-							entityInfo={{
-								"Entity Name": "Limited Liability Company",
-								"Entity shortname": "LLC",
-								"Entity Type": "Private Company",
-								"Entity Fee": "#15000",
-								"Entity Description": "Local Shareholders only",
-								"Entity TimeLine": "30 days",
-								"Entity Requirements": "Standard",
-								"Entity Shares": "10000 Shares",
-							}}
-							action={() => console.log("I am an Entity")}
-						/> */}
-						{/* <ApplicationTable
-							data={MockData}
-							onClickViewAll={() => {
-								console.log("You want to view?");
-								console.log("No view for you");
-							}}
-						/> */}
-					</div>
+					></div>
 				</div>
 			</div>
 
