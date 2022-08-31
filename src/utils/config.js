@@ -104,3 +104,48 @@ export const sidebarLink = [
     path: "",
   },
 ];
+
+export const analyticsData = [
+  {
+    name: "Tues.",
+    uv: 2,
+    pv: 2400,
+    amt: 1,
+  },
+  {
+    name: "Wed.",
+    uv: 3,
+    pv: 1398,
+    amt: 2,
+  },
+  {
+    name: "Thur.",
+    uv: 2,
+    pv: 9800,
+    amt: 3,
+  },
+  {
+    name: "Fri.",
+    uv: 4,
+    pv: 3908,
+    amt: 5,
+  },
+  {
+    name: "Sat.",
+    uv: 3,
+    pv: 4800,
+    amt: 4,
+  },
+  {
+    name: "Sun.",
+    uv: 4,
+    pv: 3800,
+    amt: 5,
+  },
+  {
+    name: "Mon.",
+    uv: 5,
+    pv: 4300,
+    amt: 7,
+  },
+];
