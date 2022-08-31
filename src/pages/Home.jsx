@@ -3,12 +3,12 @@ import Button from "components/button";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
-import { EntityCard } from "components/cards";
-import { HeadText } from "components/texts";
-import { ApplicationTable } from "components/Tables";
+import { EntityCard, LongCard } from "components/cards";
+// import { HeadText } from "components/texts";
+// import { ApplicationTable } from "components/Tables";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { MockData } from "components/Tables/ApplicationTable/constants";
+// import { MockData } from "components/Tables/ApplicationTable/constants";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -33,6 +33,10 @@ const Home = () => {
 							gap: "1rem",
 						}}
 					>
+						<Horizontal>
+							<LongCard title={"Launch"} />
+							<LongCard title={"Shell"} notReady />
+						</Horizontal>
 						{/* <EntityCard
 							entityInfo={{
 								"Entity Name": "Limited Liability Company",
@@ -46,13 +50,13 @@ const Home = () => {
 							}}
 							action={() => console.log("I am an Entity")}
 						/> */}
-						<ApplicationTable
+						{/* <ApplicationTable
 							data={MockData}
 							onClickViewAll={() => {
 								console.log("You want to view?");
 								console.log("No view for you");
 							}}
-						/>
+						/> */}
 					</div>
 				</div>
 			</div>
@@ -87,4 +91,10 @@ const Register = styled.div`
 	flex-flow: row wrap;
 	gap: 1rem;
 	max-width: 400px;
+`;
+
+const Horizontal = styled.div`
+	display: flex;
+	gap: 1.5rem;
+	width: 100%;
 `;
