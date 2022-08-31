@@ -187,7 +187,7 @@ const UserRegistration = () => {
                 isLoading === true ? (
                   <ThreeDots stroke="#98ff98" fill="white" width={60} />
                 ) : (
-                  "Sign In"
+                  "Sign Up"
                 )
               }
               type="submit"

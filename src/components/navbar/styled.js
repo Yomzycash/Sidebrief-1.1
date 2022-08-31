@@ -8,7 +8,7 @@ export const NavWrapper = styled(motion.div)`
   justify-content: space-between;
   display: flex;
   flex-direction: row;
-  padding: 30px clamp(16px, 5%, 58px);
+  padding: 15px clamp(16px, 5%, 58px);
   border-bottom: ${(prop) => prop.border};
   background-color: white;
   box-shadow: ${(props) =>
