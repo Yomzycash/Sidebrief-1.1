@@ -19,8 +19,10 @@ export const TextContainer = styled.div`
 	flex: 1;
 `;
 
-export const ThreeDotContainer = styled.div`
+export const ThreeDotContainer = styled.button`
 	border-radius: 2px;
+	background: transparent;
+	border: none;
 `;
 
 export const Name = styled.h4`
