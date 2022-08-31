@@ -16,7 +16,7 @@ import {
 	flexRender,
 	getCoreRowModel,
 } from "@tanstack/react-table";
-import { columns, MockData } from "./constants";
+import { columns } from "./constants";
 
 export const ApplicationTable = ({ onClickViewAll, data }) => {
 	const table = useReactTable({

@@ -33,6 +33,8 @@ export const ThreeDotContainer = styled.button`
 	border-radius: 2px;
 	background: transparent;
 	border: none;
+	width: 24px;
+	height: 24px;
 `;
 
 export const Table = styled.table`
@@ -73,6 +75,7 @@ export const Row = styled.tr`
 
 	& > :last-child {
 		padding-right: 24px;
+		width: 48px;
 	}
 `;
 
