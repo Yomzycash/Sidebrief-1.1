@@ -1,4 +1,6 @@
 import Button from "components/button";
+import TagInput from "components/input/TagInput";
+import StatusCard from "components/cards/StatusCard/StatusCard";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
@@ -6,6 +8,7 @@ import { HeadText } from "components/texts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import  CheckBox  from "components/input/Checkbox";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,6 +29,11 @@ const Home = () => {
         
         <div style={{ flex: 4 }}>
       <TabNavBar/>
+      <TagInput/>
+      <StatusCard
+      border= {'16px 0 0 16px'}/>
+
+      <CheckBox/>
     
           
         </div>

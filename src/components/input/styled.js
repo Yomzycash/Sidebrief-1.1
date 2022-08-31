@@ -152,3 +152,92 @@ export const TransparentBackdrop = styled.div`
 // font-size: 14px;
 //   }
 // `;
+
+
+// Taginput styles
+export const AllWrapper = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+justify-content: center;
+column-gap: 8px;
+
+
+`
+export const TagWrapper = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 20px;
+margin-bottom: 8px;
+
+
+
+`
+export const TagInputWrapper = styled.div`
+width: 100%;
+height:40px;
+disply:flex;
+align-items: center;
+
+
+
+`
+export const TagItem = styled.div`
+
+display: inline-flex;
+flex-direction: row;
+padding :2px 8px;
+background-color: #CCF3FF;
+border-radius: 4px;
+opacity: 0.8;
+justify-content: space-between; 
+align-items: center;
+gap: 0.5em;
+border: 1px solid black;
+
+
+`
+
+export const TagText = styled.span`
+font-family: 'BR Firma';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 21px;
+`
+export const Tagclose = styled.span`
+height: 21px;
+width: 21px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+margin-left: 3px;
+background-color:
+color: #fff;
+font-size: 14px;
+cursor: pointer;
+
+`
+export const TagInputField  = styled.input`
+flex-grow: 1;
+
+width : inherit; 
+height : inherit;
+outline : none ;
+
+border: 1px solid #00C3FF;
+padding : 10px;
+border-radius: 8px;
+
+`
+export const TagLabel= styled.label`
+font-family: 'BR Firma';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 21px;
+color: #4E5152;
+
+`
+
