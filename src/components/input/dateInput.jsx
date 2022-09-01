@@ -97,7 +97,7 @@ export const DateInput = ({
 			{showCalendar ? (
 				<>
 					<CalendarWrapper>
-						<Calendar onClickDay={pickDay} />
+						<Calendar onClickDay={pickDay} className={"calendar"} />
 					</CalendarWrapper>
 					<TransparentBackdrop onClick={hideCalendar} />
 				</>

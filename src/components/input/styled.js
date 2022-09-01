@@ -39,6 +39,7 @@ export const DropWrapper = styled.div`
 
 export const Wrapper = styled(motion.div)`
 	margin-bottom: 24px;
+	width: 100%;
 	position: relative;
 
 	@media screen and (max-width: 600px) {
@@ -150,7 +151,20 @@ export const CalendarWrapper = styled.div`
 	position: absolute;
 	z-index: 3;
 	top: 90%;
-	left: 60px;
+	left: 30px;
+	width: 100%;
+
+	@media screen and (max-width: 500px) {
+		left: 0;
+		top: 110%;
+	}
+
+	.calendar {
+		@media screen and (max-width: 500px) {
+			font-size: 12px;
+			max-width: 100%;
+		}
+	}
 `;
 
 // width: ${props => props.width };
