@@ -187,7 +187,7 @@ const ResellerRegister = () => {
               text={[
                 {
                   text: "Already have an account? ",
-                  link: { text: "Sign In", to: "/login" },
+                  link: { text: "Sign Up", to: "/login" },
                 },
               ]}
             />

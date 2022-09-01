@@ -1,19 +1,44 @@
 import React from "react";
 import BusinessesChartCard from "components/cards/businessesChart";
 import styled from "styled-components";
+import Navbar from "components/navbar";
+import Sidebar from "../../../components/sidebar";
+import TabNavBar from "components/TabNavBar/TabNavBar";
+import { LongCard } from "components/cards";
+import DashboardSection from "layout/DashboardSection";
 
 const UserDashboard = () => {
   return (
     <Dashboard>
-      <Header>User Dashboard Header</Header>
+      <Navbar dashboard />
       <Body>
-        <BodyLeft>User Dashboard Left</BodyLeft>
+        <BodyLeft>
+          <Sidebar />
+        </BodyLeft>
         <BodyRight>
-          <RightTop>User Dashboard Right Top</RightTop>
-          <RightBody>User Dashboard Right Body</RightBody>
+          <RightTop>
+            <TabNavBar />
+          </RightTop>
+          <RightBody>
+            <Title>
+              <p>Welcome back, Ayomide</p>
+            </Title>
+            <Main>
+              <DashboardSection>
+                <LongCard
+                  title="Launch"
+                  body="Start your business registration process with no paperwork"
+                />
+                <LongCard
+                  title="Shelf"
+                  body="Get pre-registered company in local markets"
+                />
+              </DashboardSection>
+            </Main>
+          </RightBody>
+          <BusinessesChartCard completed={5} pending={3} awaiting={1} />
         </BodyRight>
       </Body>
-      <BusinessesChartCard completed={5} pending={3} awaiting={1} />
     </Dashboard>
   );
 };
@@ -24,10 +49,7 @@ const Dashboard = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
-`;
-const Header = styled.div`
-  display: flex;
-  width: 100%;
+  flex: 1;
 `;
 const Body = styled.div`
   display: flex;
@@ -36,4 +58,6 @@ const Body = styled.div`
 const BodyLeft = styled.div``;
 const BodyRight = styled.div``;
 const RightTop = styled.div``;
+const Title = styled.div``;
 const RightBody = styled.div``;
+const Main = styled.div``;
