@@ -81,3 +81,29 @@ export const Right = styled.div`
     font-size: clamp(10px, 1.5vw, 12px);
   }
 `;
+
+export const ChartContainer = styled.div`
+  background: #ffffff;
+  border: 1px solid #edf1f7;
+  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 750px;
+`;
+
+export const TopContent = styled.div`
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+  margin-bottom: 22px;
+
+  h3 {
+    font-size: 16px;
+    color: #151717;
+  }
+
+  select {
+    font-size: 12px;
+    color: #4e5152;
+  }
+`;

@@ -1,86 +1,152 @@
 .country-select {
-    width: 100%;
-    height: 56px !important;
-    border-radius: 10px;
-    height: 100%;
+  width: 100%;
+  height: 56px !important;
+  border-radius: 10px;
+  height: 100%;
 }
-.country-select input{
-    width: 85%;
-    margin-left: 20px !important;
-    height: 54px !important;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-}
-
-.flag-dropdown{
+.country-select input {
+  width: 85%;
+  margin-left: 20px !important;
+  height: 54px !important;
+  border-radius: 10px;
+  border: none;
+  outline: none;
 }
 
-.selected-flag{
-    width: 60px !important;
-    padding-left: 20px !important;
-
-}
-.country-list{
-
-}
-.country{
-    height: 50px;
-    border-bottom: 1px solid #ececec;
-    align-items: center;
-    justify-content: center;
-    padding-top: 15px !important;
-}
-.flag{
-    margin-left: 20px;
-    margin-right: 10px !important;
-}
-.country .country-name{
-    margin-top: 20px !important;
+.flag-dropdown {
 }
 
-.active{
-    border: 1px solid #00A2D4;
-    height: 56px;
-    border-radius: 10px;
-    margin-top: 20px;
-    
+.selected-flag {
+  width: 60px !important;
+  padding-left: 20px !important;
 }
-.nonActive{
-    border: 1px solid #ececec;
-    height: 56px;
-    border-radius: 10px;
-    margin-top: 20px;
-    
+.country-list {
 }
-.error{
-    border: 1px solid red;
-    height: 56px;
-    border-radius: 10px;
-    margin-top: 20px;
+.country {
+  height: 50px;
+  border-bottom: 1px solid #ececec;
+  align-items: center;
+  justify-content: center;
+  padding-top: 15px !important;
+}
+.flag {
+  margin-left: 20px;
+  margin-right: 10px !important;
+}
+.country .country-name {
+  margin-top: 20px !important;
 }
 
+.active {
+  border: 1px solid #00a2d4;
+  height: 56px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+.nonActive {
+  border: 1px solid #ececec;
+  height: 56px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+.error {
+  border: 1px solid red;
+  height: 56px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.react-tel-input {
+  border: none;
+  outline: none;
+}
+.react-tel-input .form-control {
+  border: none !important;
+  outline: none;
+  border-radius: 8px !important;
+}
+.react-tel-input .flag-dropdown {
+  border: none !important;
+  outline: none;
+  width: 65px;
+  min-width: 55px;
+  background-color: transparent !important;
+}
+.react-tel-input .flag-dropdown .selected-flag .flag {
+  margin-left: 0px;
+}
+.react-tel-input .flag-dropdown .selected-flag .flag .arrow {
+  margin-left: 5px;
+}
+
+.css-7m87n9-control {
+  border: none !important;
+  margin-left: -10px;
+  margin-top: 7px !important;
+  height: 10px !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.css-1cc9hvy-control {
+  margin-left: -10px;
+}
+.css-1cc9hvy-control:hover {
+  border-color: none !important;
+  border: none !important;
+  outline: none !important;
+}
+.css-1okebmr-indicatorSeparator {
+  display: none !important;
+}
+.css-tlfecz-indicatorContainer {
+  padding: 0px !important;
+}
+.css-319lph-ValueContainer {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+.css-qc6sy-singleValue {
+  margin-right: -5px !important;
+}
+.css-q43gm5-Input {
+  display: none !important;
+}
+.css-1hb7zxy-IndicatorsContainer {
+  border: none !important;
+}
 @media screen and (max-width: 600px) {
-    .active{
-        height: 48px;
-        
-    }
-    .nonActive{
-        height: 48px;
-        
-    }
-    .error{
-        height: 48px;
-    }
+  .active {
+    height: 48px;
+  }
+  .nonActive {
+    height: 48px;
+  }
+  .error {
+    height: 48px;
+  }
 
-    .country-select input{
-        width: 85%;
-        height: 45px !important;
-    }
-    .country .country-name{
-        margin-top: 15px !important;
-    }
-    .flag{
-        margin-top: 20px !important;
-    }
+  .country-select input {
+    width: 85%;
+    height: 45px !important;
+  }
+  .country .country-name {
+    margin-top: 15px !important;
+  }
+  .flag {
+    margin-top: 20px !important;
+  }
+
+  .react-tel-input .flag-dropdown {
+    outline: none;
+    background-color: transparent !important;
+  }
+  .react-tel-input .flag-dropdown .selected-flag .flag {
+    margin-top: -5px !important;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0px;
+  }
+  .react-tel-input .flag-dropdown .selected-flag .flag .arrow {
+    margin-left: 5px;
+  }
 }

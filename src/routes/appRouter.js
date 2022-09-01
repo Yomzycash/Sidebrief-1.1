@@ -93,13 +93,13 @@ const AppRouter = () => {
           </Route>
         </Routes>
         <Toaster
-          position="top-center"
+          position="top-right"
           toastOptions={{
             className: "",
             style: {
               margin: "30px",
               minWidth: "370px",
-              maxHeight: "40px",
+              padding: "10px",
               display: "inline-flex",
               fontSize: "18px",
               zIndex: 999999,
@@ -107,12 +107,12 @@ const AppRouter = () => {
             duration: 4000,
             error: {
               style: {
-                background: "#F55A5A",
+                background: "red",
                 color: "white",
               },
               iconTheme: {
                 primary: "white",
-                secondary: "#F55A5A",
+                secondary: "red",
               },
             },
             success: {

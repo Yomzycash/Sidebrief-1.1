@@ -24,26 +24,11 @@ export const Container = styled.div`
 `;
 
 export const StartButton = styled.button`
-	width: 155px;
 	height: 36px;
 	border-radius: 8px;
 	border: none;
 	background: transparent;
-	display: flex;
-	gap: 12px;
-	align-items: center;
-	justify-content: center;
-
-	p {
-		text-transform: capitalize;
-		font-family: "BR Firma";
-		font-style: normal;
-		font-weight: 500;
-		font-size: 14px;
-		line-height: 21px;
-		letter-spacing: -0.5px;
-		color: #00a2d4;
-	}
+	padding-inline: 24px;
 `;
 
 export const Corner = styled.div`
