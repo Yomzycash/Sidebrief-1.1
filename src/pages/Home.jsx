@@ -1,5 +1,7 @@
 import React from "react";
 import Button from "components/button";
+import TagInput from "components/input/TagInput";
+import StatusCard from "components/cards/StatusCard/StatusCard";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
@@ -8,6 +10,7 @@ import { EntityCard, LongCard } from "components/cards";
 // import { ApplicationTable } from "components/Tables";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+// import  CheckBox  from "mui/icons-material";
 // import { MockData } from "components/Tables/ApplicationTable/constants";
 
 const Home = () => {
@@ -20,6 +23,19 @@ const Home = () => {
 		<>
 			<Navbar dashboard />
 
+        
+        <div style={{ flex: 4 }}>
+      <TabNavBar/>
+      <space><TagInput/>
+      </space>
+
+      <StatusCard/>
+
+      {/* <CheckBox/> */}
+    
+          
+        </div>
+      </div>
 			<div style={{ display: "flex" }}>
 				<Sidebar />
 				<div style={{ flex: 4 }}>
@@ -35,6 +51,7 @@ const Home = () => {
 					></div>
 				</div>
 			</div>
+
 
 			{/* <Homepage>
         <HeadText
@@ -73,3 +90,6 @@ const Horizontal = styled.div`
 	gap: 1.5rem;
 	width: 100%;
 `;
+const space = styled.div`
+margin-bottom: 3rem;
+`
