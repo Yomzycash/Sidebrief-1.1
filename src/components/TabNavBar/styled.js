@@ -54,7 +54,8 @@ cursor: pointer;
 line-height: 21px;
 color: #242627;
 :hover{
-color:#00A2D4;}
+color:#00A2D4;
+}
 
 `
 
