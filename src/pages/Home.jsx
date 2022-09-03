@@ -5,13 +5,17 @@ import StatusCard from "components/cards/StatusCard/StatusCard";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
-import { EntityCard, LongCard } from "components/cards";
+import {
+	EntityCard,
+	LongCard,
+	LongCardWrapper,
+	EntityWrapper,
+} from "components/cards";
 // import { HeadText } from "components/texts";
 // import { ApplicationTable } from "components/Tables";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-// import  CheckBox  from "mui/icons-material";
-// import { MockData } from "components/Tables/ApplicationTable/constants";
+import { entities } from "data/entityType";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -48,7 +52,38 @@ const Home = () => {
 							flexDirection: "column",
 							gap: "1rem",
 						}}
-					></div>
+					>
+						{/* <LongCardWrapper>
+							<LongCard
+								title={"Launch"}
+								body={
+									"Start your business registration process with no paperwork."
+								}
+							/>
+							<LongCard
+								title={"Shelf"}
+								body={
+									"Get pre-registered company in local markets."
+								}
+								notReady
+							/>
+						</LongCardWrapper> */}
+						<EntityWrapper>
+							{entities.map((entity) => (
+								<EntityCard
+									key={entity.id}
+									name={entity.name}
+									price={entity.price}
+									shortname={entity.shortname}
+									company={entity.company}
+									timeline={entity.timeline}
+									shareholder={entity.shareholder}
+									shares={entity.shares}
+									type={entity.type}
+								/>
+							))}
+						</EntityWrapper>
+					</div>
 				</div>
 			</div>
 

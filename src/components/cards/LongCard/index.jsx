@@ -36,8 +36,6 @@ export const LongCard = ({
 					onClick={action}
 					disabled={notReady}
 				>
-					{/* <p>{!notReady ? "Get Started" : "Coming soon"}</p>
-					<ArrowWhiteRight /> */}
 					<TextWithArrow>
 						{!notReady ? "Get Started" : "Coming soon"}
 					</TextWithArrow>
@@ -46,3 +44,5 @@ export const LongCard = ({
 		</Container>
 	);
 };
+
+export { Wrapper as LongCardWrapper } from "./wrapper";
