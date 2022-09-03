@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-	width: 450px;
-	height: 352px;
+	width: 413px;
+	height: 340px;
 	background: #ffffff;
 	border: 1px solid #edf1f7;
 	box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
@@ -12,7 +12,8 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	z-index: 0;
+	z-index: -1;
+	overflow: hidden;
 `;
 
 export const StartButton = styled.button`
@@ -25,8 +26,15 @@ export const StartButton = styled.button`
 
 export const Corner = styled.div`
 	position: absolute;
-	top: 0;
+	bottom: 0;
 	right: 0;
+	transform: rotateX(180deg);
+
+	svg {
+		ellipse {
+			fill: rgba(204, 243, 255, 0.48);
+		}
+	}
 `;
 
 export const Description = styled.div`

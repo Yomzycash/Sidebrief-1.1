@@ -3,10 +3,16 @@ import Button from "components/button";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
-import { EntityCard, LongCard, LongCardWrapper } from "components/cards";
+import {
+	EntityCard,
+	LongCard,
+	LongCardWrapper,
+	EntityWrapper,
+} from "components/cards";
 // import { HeadText } from "components/texts";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { entities } from "data/entityType";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -31,7 +37,7 @@ const Home = () => {
 							gap: "1rem",
 						}}
 					>
-						<LongCardWrapper>
+						{/* <LongCardWrapper>
 							<LongCard
 								title={"Launch"}
 								body={
@@ -45,7 +51,22 @@ const Home = () => {
 								}
 								notReady
 							/>
-						</LongCardWrapper>
+						</LongCardWrapper> */}
+						<EntityWrapper>
+							{entities.map((entity) => (
+								<EntityCard
+									key={entity.id}
+									name={entity.name}
+									price={entity.price}
+									shortname={entity.shortname}
+									company={entity.company}
+									timeline={entity.timeline}
+									shareholder={entity.shareholder}
+									shares={entity.shares}
+									type={entity.type}
+								/>
+							))}
+						</EntityWrapper>
 					</div>
 				</div>
 			</div>
