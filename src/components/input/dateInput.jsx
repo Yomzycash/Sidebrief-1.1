@@ -1,92 +1,107 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Wrapper,
-  Top,
-  Label,
-  ErrMsg,
-  Iconwrapper,
-  InputWrapper,
-  DateWrapper,
+	Wrapper,
+	Top,
+	Label,
+	ErrMsg,
+	Iconwrapper,
+	InputWrapper,
+	CalendarWrapper,
+	Input,
+	TransparentBackdrop,
 } from "./styled";
 import { ReactComponent as CalendarIcon } from "asset/auth/Calendar.svg";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import format from "date-fns/format";
 
 export const DateInput = ({
-  containerStyle,
-  label,
-  labelStyle,
-  errorMessage,
-  leftIcon,
-  name,
-  register,
-  selectDate,
-  ...rest // rest can REST, I guess
+	containerStyle,
+	label,
+	labelStyle,
+	errorMessage,
+	leftIcon,
+	name,
+	register,
+	selectDate,
+	...rest
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [dateIsTouched, setDateIsTouched] = useState(false);
+	const [date, setDate] = useState("");
+	const [dateIsTouched, setDateIsTouched] = useState(false);
+	const [showCalendar, setShowCalendar] = useState(false);
+	const [active, setActive] = useState(false);
+	const inputRef = useRef(null);
 
-  const pickDay = (day) => {
-    setSelectedDate(day);
-    setDateIsTouched(true);
-    const selectedDate = format(day, "dd/MM/yyyy");
-    selectDate(selectedDate);
-  };
-  const [active, setActive] = useState(false);
-  const inputRef = useRef(null);
+	const hideCalendar = () => {
+		setShowCalendar(false);
+	};
 
-  useEffect(() => {
-    if (active) {
-      inputRef.current.focus();
-    }
-  }, [active]);
-  const handleBorder = () => {
-    setActive(!active);
-  };
+	const pickDay = (day) => {
+		setDateIsTouched(true);
+		const selectedDate = format(day, "dd/MM/yyyy");
+		setDate(selectedDate);
+		selectDate(selectedDate);
+		hideCalendar();
+	};
 
-  return (
-    <Wrapper
-      className={containerStyle}
-      initial={{ y: 10, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 10, opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Top>
-        <Label className={labelStyle}>{label ? label : "Date"}</Label>
+	useEffect(() => {
+		if (active) {
+			inputRef.current.focus();
+		}
+	}, [active]);
+	const handleBorder = () => {
+		setActive(!active);
+	};
 
-        {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
-      </Top>
-      <InputWrapper
-        border={
-          errorMessage
-            ? "1px solid red"
-            : active
-            ? "1px solid #00A2D4"
-            : "1px solid #ececec"
-        }
-        ref={inputRef}
-        onFocus={handleBorder}
-      >
-        <Iconwrapper>
-          <label htmlFor="date">
-            <CalendarIcon />
-          </label>
-        </Iconwrapper>
+	return (
+		<Wrapper
+			className={containerStyle}
+			initial={{ y: 10, opacity: 0 }}
+			animate={{ y: 0, opacity: 1 }}
+			exit={{ y: 10, opacity: 0 }}
+			transition={{ duration: 0.5 }}
+		>
+			<Top>
+				<Label className={labelStyle}>{label ? label : "Date"}</Label>
 
-        <DateWrapper>
-          <DatePicker
-            selected={dateIsTouched ? selectedDate : ""}
-            onChange={pickDay}
-            placeholderText={"DD/MM/YY"}
-            dateFormat={"dd/MM/yyyy"}
-            closeOnScroll={true}
-            className="date"
-            id="date"
-          />
-        </DateWrapper>
-      </InputWrapper>
-    </Wrapper>
-  );
+				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
+			</Top>
+			<InputWrapper
+				border={
+					errorMessage
+						? "1px solid red"
+						: active
+						? "1px solid #00A2D4"
+						: "1px solid #ececec"
+				}
+				ref={inputRef}
+				onFocus={handleBorder}
+				onClick={() => setShowCalendar((prev) => !prev)}
+			>
+				<Iconwrapper>
+					<label htmlFor="date">
+						<CalendarIcon />
+					</label>
+				</Iconwrapper>
+
+				<Input
+					type="text"
+					placeholder="DD/MM/YY"
+					uppercase
+					readOnly
+					value={date}
+					{...register(name)}
+					{...rest}
+				/>
+			</InputWrapper>
+			{showCalendar ? (
+				<>
+					<CalendarWrapper>
+						<Calendar onClickDay={pickDay} className={"calendar"} />
+					</CalendarWrapper>
+					<TransparentBackdrop onClick={hideCalendar} />
+				</>
+			) : null}
+		</Wrapper>
+	);
 };
