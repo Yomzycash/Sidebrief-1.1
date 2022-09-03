@@ -188,13 +188,13 @@ export const TagItem = styled.div`
 display: inline-flex;
 flex-direction: row;
 padding :2px 8px;
-background-color: #CCF3FF;
+background: #0082AA;
 border-radius: 4px;
 opacity: 0.8;
 justify-content: space-between; 
 align-items: center;
 gap: 0.5em;
-border: 1px solid black;
+color: #FAFAFA;
 
 
 `
@@ -213,7 +213,6 @@ display: inline-flex;
 align-items: center;
 justify-content: center;
 margin-left: 3px;
-background-color:
 color: #fff;
 font-size: 14px;
 cursor: pointer;

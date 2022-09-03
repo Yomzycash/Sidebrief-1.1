@@ -8,7 +8,7 @@ import { HeadText } from "components/texts";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import  CheckBox  from "components/input/Checkbox";
+// import  CheckBox  from "mui/icons-material";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,11 +29,12 @@ const Home = () => {
         
         <div style={{ flex: 4 }}>
       <TabNavBar/>
-      <TagInput/>
-      <StatusCard
-      border= {'16px 0 0 16px'}/>
+      <space><TagInput/>
+      </space>
 
-      <CheckBox/>
+      <StatusCard/>
+
+      {/* <CheckBox/> */}
     
           
         </div>
@@ -70,3 +71,6 @@ const Register = styled.div`
   gap: 1rem;
   max-width: 400px;
 `;
+const space = styled.div`
+margin-bottom: 3rem;
+`
