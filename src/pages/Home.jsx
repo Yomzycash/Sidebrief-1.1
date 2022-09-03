@@ -3,12 +3,10 @@ import Button from "components/button";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
-import { EntityCard, LongCard } from "components/cards";
+import { EntityCard, LongCard, LongCardWrapper } from "components/cards";
 // import { HeadText } from "components/texts";
-// import { ApplicationTable } from "components/Tables";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-// import { MockData } from "components/Tables/ApplicationTable/constants";
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -32,7 +30,23 @@ const Home = () => {
 							flexDirection: "column",
 							gap: "1rem",
 						}}
-					></div>
+					>
+						<LongCardWrapper>
+							<LongCard
+								title={"Launch"}
+								body={
+									"Start your business registration process with no paperwork."
+								}
+							/>
+							<LongCard
+								title={"Shelf"}
+								body={
+									"Get pre-registered company in local markets."
+								}
+								notReady
+							/>
+						</LongCardWrapper>
+					</div>
 				</div>
 			</div>
 
