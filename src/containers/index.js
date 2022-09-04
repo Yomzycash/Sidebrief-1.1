@@ -1,2 +1,2 @@
 export { Rewards } from "./Rewards";
-export { CheckoutController } from "./CheckoutController";
+export { CheckoutController } from "./Checkout";

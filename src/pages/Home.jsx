@@ -9,6 +9,7 @@ import {
 	MalawiFlag,
 	ZimbabweFlag,
 } from "./Dashboard/assets";
+import { CheckoutController } from "containers";
 
 const Home = () => {
 	const List = [
@@ -57,6 +58,12 @@ const Home = () => {
 			<FileUpload
 				TopText="Government issued ID"
 				BottomText="You can either upload a Driver's, National ID Card, Voters Card or International Passport "
+			/>
+			<CheckoutController
+				backAction={() => console.log("Back button")}
+				backText={"Previous"}
+				forwardAction={() => console.log("Forward button")}
+				forwardText={"Proceed"}
 			/>
 		</div>
 	);
