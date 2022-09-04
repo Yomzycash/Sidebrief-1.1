@@ -11,20 +11,19 @@ import {
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as CornerPetalDeep } from "asset/svg/cornerPetalDeep.svg";
-import { ReactComponent as ArrowBlueRight } from "asset/svg/arrow-blue-right.svg";
 import { TextWithArrow } from "components/texts";
 
-export const RewardCard = ({ image, imageAlt, title, body, action, isBig }) => {
+export const RewardCard = ({ image, imageAlt, title, body, action }) => {
 	return (
-		<Container isBig={isBig}>
-			<Corner>{isBig ? <CornerPetalDeep /> : <CornerPetal />}</Corner>
+		<Container>
+			<Corner>
+				<CornerPetal />
+			</Corner>
 			<Frame>
-				{!isBig ? (
-					<ImageHolder>
-						<img src={image} alt={imageAlt} />
-					</ImageHolder>
-				) : null}
-				<TextContainer isBig={isBig}>
+				<ImageHolder>
+					<img src={image} alt={imageAlt} />
+				</ImageHolder>
+				<TextContainer>
 					<Title>{title}</Title>
 					<Body>{body}</Body>
 				</TextContainer>

@@ -5,11 +5,13 @@ import StatusCard from "components/cards/StatusCard/StatusCard";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
+import Lendha from "asset/images/lendhaLogo.png";
 import {
 	EntityCard,
 	LongCard,
 	LongCardWrapper,
 	EntityWrapper,
+	RewardCard,
 } from "components/cards";
 // import { HeadText } from "components/texts";
 // import { ApplicationTable } from "components/Tables";
@@ -48,7 +50,7 @@ const Home = () => {
 							gap: "1rem",
 						}}
 					>
-						<LongCardWrapper>
+						{/* <LongCardWrapper>
 							<LongCard
 								title={"Launch"}
 								body={
@@ -82,7 +84,15 @@ const Home = () => {
 									}
 								/>
 							))}
-						</EntityWrapper>
+						</EntityWrapper> */}
+						<RewardCard
+							image={Lendha}
+							imageAlt={"Lendha"}
+							title={"Lendha Africa"}
+							body={
+								"Get credit to register your business & pay later."
+							}
+						/>
 					</div>
 				</div>
 			</div>

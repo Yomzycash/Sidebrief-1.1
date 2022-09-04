@@ -12,15 +12,6 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-
-	${({ isBig }) =>
-		isBig
-			? `
-                width: 359px;
-                height: 238px;
-                background: #DCF7FF;
-            `
-			: null}
 `;
 
 export const StartButton = styled.button`
@@ -61,8 +52,6 @@ export const TextContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-
-	${({ isBig }) => isBig && `margin-top: 56px;`}
 `;
 
 export const Title = styled.h4`
