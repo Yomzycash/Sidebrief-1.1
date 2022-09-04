@@ -150,40 +150,30 @@ export const analyticsData = [
   },
 ];
 
-
-
-   
-
 export const NavbarLink = [
   {
     id: 1,
-    title: 'Business Registration',
+    title: "Business Registration",
     path: "",
   },
   {
     id: 2,
-    title: 'Business Compliance',
+    title: "Business Compliance",
     path: "",
   },
   {
     id: 3,
-    title:'Automate Taxes' ,
+    title: "Automate Taxes",
     path: "",
   },
   {
     id: 4,
-    title: 'Hiring and payroll',
+    title: "Hiring and payroll",
     path: "",
   },
   {
     id: 5,
-    title: 'Intellectual Assets',
+    title: "Intellectual Assets",
     path: "",
-  }
-  
+  },
 ];
-
-
-
-
-
