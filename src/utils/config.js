@@ -177,3 +177,40 @@ export const NavbarLink = [
     path: "",
   },
 ];
+
+export const CardContainer = [
+  {
+    id: 1,
+    title: " Total Applications",
+    number: "12",
+    description: "20% this month",
+  },
+
+  {
+    id: 2,
+    title: " Completed",
+    number: "12",
+    description: "20% this month",
+  },
+
+  {
+    id: 3,
+    title: " In Progress",
+    number: "12",
+    description: "20% this month",
+  },
+
+  {
+    id: 4,
+    title: " Awaiting Approval",
+    number: "12",
+    description: "20% this month",
+  },
+
+  {
+    id: 5,
+    title: " Declined",
+    number: "12",
+    description: "20% this month",
+  },
+];

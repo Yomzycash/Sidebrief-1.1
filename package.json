@@ -17,6 +17,7 @@
     "date-fns": "^2.29.2",
     "framer-motion": "^7.2.1",
     "react": "^18.2.0",
+    "react-calendar": "^3.7.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-donut-component": "^2.2.6",

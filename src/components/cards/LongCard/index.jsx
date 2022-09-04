@@ -46,3 +46,5 @@ export const LongCard = ({
     </Container>
   );
 };
+
+export { Wrapper as LongCardWrapper } from "./wrapper";
