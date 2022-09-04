@@ -8,9 +8,11 @@ export const NavWrapper = styled(motion.div)`
   justify-content: space-between;
   display: flex;
   flex-direction: row;
+  gap: 20px;
   padding: 15px clamp(16px, 5%, 58px);
   border-bottom: ${(prop) => prop.border};
   background-color: white;
+  z-index: 4;
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 `;

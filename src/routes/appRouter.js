@@ -38,7 +38,10 @@ const UserRegistration = lazy(() =>
 const ResellerRegistration = lazy(() =>
   import("../pages/Auth/Registration/ResellerRegister")
 );
-const UserDashboard = lazy(() => import("pages/Dashboard/User"));
+const UserDashboard = lazy(() => import("pages/Dashboard/User/Home"));
+const BusinessRegistration = lazy(() =>
+  import("pages/Dashboard/User/Home/BusinessRegistration")
+);
 
 const AppRouter = () => {
   return (
@@ -84,8 +87,13 @@ const AppRouter = () => {
                 </Route>
               </Route>
             </Route>
-            <Route path="dashboard" element={<Outlet />}>
-              <Route index element={<UserDashboard />} />
+            <Route path="dashboard" element={<UserDashboard />}>
+              <Route index element={<BusinessRegistration />} />
+              <Route
+                path="business-registration"
+                element={<BusinessRegistration />}
+              />
+
               {/* <Route path="partner" element={<PartnerDashboard />} />
               <Route path="partner" element={<StaffDashboard />} />
               <Route path="partner" element={<DeveloperDashboard />} /> */}

@@ -25,9 +25,11 @@ const Navbar = ({ dashboard }) => {
   const [boxshadow, setBoxShadow] = useState("false");
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-    });
+    if (!dashboard) {
+      window.addEventListener("scroll", () => {
+        setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
+      });
+    }
   }, []);
 
   return (

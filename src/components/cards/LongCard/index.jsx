@@ -1,22 +1,22 @@
 import React from "react";
 import {
-	Container,
-	IconWrapper,
-	MiddlePart,
-	ButtonWrapper,
-	LongButton,
-	FirstPart,
-	Title,
-	Body,
+  Container,
+  IconWrapper,
+  MiddlePart,
+  ButtonWrapper,
+  LongButton,
+  FirstPart,
+  Title,
+  Body,
 } from "./styles";
 import { ReactComponent as Case } from "asset/svg/briefCase.svg";
 import { TextWithArrow } from "components/texts";
 
 export const LongCard = ({
-	title,
-	body,
-	notReady, // used to determine if button should be disabled or not
-	action, // function for action that should be performed on button click
+  title,
+  body,
+  notready, // used to determine if button should be disabled or not (value should be 'true' or 'false')
+  action, // function for action that should be performed on button click
 }) => {
 	const onClick = () => {
 		if (!notReady) {
