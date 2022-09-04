@@ -36,6 +36,7 @@ const LogoNav = ({
 
 export default LogoNav;
 
+// Styles
 const NavBarCont = styled(motion.div)`
   position: sticky;
   top: ${(props) => props.stick};

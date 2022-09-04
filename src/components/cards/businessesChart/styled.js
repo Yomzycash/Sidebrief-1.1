@@ -23,8 +23,8 @@ export const BusinessesChart = styled.div`
   flex-flow: column;
   justify-content: flex-start;
   align-items: center;
-  max-width: 454px;
-  width: 100%;
+  flex: 1;
+  min-width: 250px;
   min-height: 264px;
   border-radius: 16px;
   padding: 0 8px;
@@ -44,11 +44,6 @@ export const Bottom = styled.div`
   gap: 4px;
   width: 100%;
   margin: 0 0 14px;
-  @media screen and (max-width: 280px) {
-    flex-flow: column;
-    align-self: center;
-    width: max-content;
-  }
 `;
 
 // Status component's styles
