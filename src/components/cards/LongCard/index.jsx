@@ -10,7 +10,6 @@ import {
 	Body,
 } from "./styles";
 import { ReactComponent as Case } from "asset/svg/briefCase.svg";
-import { ReactComponent as ArrowWhiteRight } from "asset/svg/arrow-white-right.svg";
 import { TextWithArrow } from "components/texts";
 
 export const LongCard = ({
@@ -19,21 +18,27 @@ export const LongCard = ({
 	notReady, // used to determine if button should be disabled or not
 	action, // function for action that should be performed on button click
 }) => {
+	const onClick = () => {
+		if (!notReady) {
+			action();
+		}
+	};
+
 	return (
-		<Container>
+		<Container onClick={onClick} isReady={!notReady}>
 			<FirstPart>
 				<IconWrapper>
 					<Case />
 				</IconWrapper>
 				<MiddlePart>
 					<Title>{title}</Title>
-					<Body>{body}</Body>
+					<Body notReady={notReady}>{body}</Body>
 				</MiddlePart>
 			</FirstPart>
 			<ButtonWrapper>
 				<LongButton
 					notReady={notReady}
-					onClick={action}
+					onClick={onClick}
 					disabled={notReady}
 				>
 					<TextWithArrow>

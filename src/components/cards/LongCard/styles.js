@@ -11,6 +11,17 @@ export const Container = styled.div`
 	padding: 24px;
 	display: flex;
 	gap: 20px;
+	transition: all 0.2s;
+
+	${({ isReady }) =>
+		isReady &&
+		`
+		&:hover {
+			border: 1px solid #00c3ff;
+			box-shadow: 0px 20px 25px -5px rgba(149, 150, 151, 0.1);
+			transform: translateY(-2px);
+		}
+    `}
 `;
 
 export const FirstPart = styled.div`
@@ -19,7 +30,13 @@ export const FirstPart = styled.div`
 	width: 100%;
 `;
 
-export const IconWrapper = styled.div``;
+export const IconWrapper = styled.div`
+	svg {
+		path {
+			fill: #00a2d4;
+		}
+	}
+`;
 
 export const MiddlePart = styled.div`
 	display: flex;
@@ -43,7 +60,13 @@ export const Body = styled.p`
 	font-size: 14px;
 	line-height: 21px;
 	letter-spacing: -0.01em;
-	color: #727474;
+	color: #4e5152;
+
+	${({ notReady }) =>
+		notReady &&
+		`
+		color: #727474;
+    `}
 `;
 
 export const ButtonWrapper = styled.div`
@@ -59,6 +82,10 @@ export const LongButton = styled.button`
 	border: none;
 	overflow: hidden;
 	cursor: pointer;
+
+	${Container}:hover & {
+		background: #0082aa;
+	}
 
 	${({ notReady }) =>
 		notReady &&

@@ -48,12 +48,13 @@ const Home = () => {
 							gap: "1rem",
 						}}
 					>
-						{/* <LongCardWrapper>
+						<LongCardWrapper>
 							<LongCard
 								title={"Launch"}
 								body={
 									"Start your business registration process with no paperwork."
 								}
+								action={() => console.log("test 1")}
 							/>
 							<LongCard
 								title={"Shelf"}
@@ -61,8 +62,9 @@ const Home = () => {
 									"Get pre-registered company in local markets."
 								}
 								notReady
+								action={() => console.log("test 2")}
 							/>
-						</LongCardWrapper> */}
+						</LongCardWrapper>
 						<EntityWrapper>
 							{entities.map((entity) => (
 								<EntityCard
