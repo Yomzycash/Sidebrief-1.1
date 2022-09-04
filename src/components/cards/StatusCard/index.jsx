@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Container,
 	TextContainer,
 	ThreeDotContainer,
 	Name,
-	Status,
+	Top,
+	Description,
 } from "./styles";
 import { ReactComponent as ThreeDot } from "asset/svg/threeDot.svg";
 import { StatusIndicator } from "components/Indicators";
@@ -12,17 +13,27 @@ import { StatusIndicator } from "components/Indicators";
 export const StatusCard = ({
 	name, // string
 	status, // "completed" | "awaiting" | "progress" | "declined"
+	shortDescription,
 }) => {
+	const [hover, setHover] = useState(false);
+
 	return (
-		<Container>
+		<Container
+			onMouseEnter={() => setHover(true)}
+			onMouseLeave={() => setHover(false)}
+			hover={hover}
+		>
 			<TextContainer>
-				<Name>{name}</Name>
-				<StatusIndicator status={status} />
+				<Top>
+					<Name>{name}</Name>
+					<StatusIndicator status={status} />
+				</Top>
+				<ThreeDotContainer>
+					{/* Doesn't exactly have a function yet */}
+					<ThreeDot />
+				</ThreeDotContainer>
 			</TextContainer>
-			<ThreeDotContainer>
-				{/* Doesn't exactly have a function yet */}
-				<ThreeDot />
-			</ThreeDotContainer>
+			<Description hover={hover}>{shortDescription}</Description>
 		</Container>
 	);
 };

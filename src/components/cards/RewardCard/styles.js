@@ -12,15 +12,14 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	transition: all 0.2s;
 
-	${({ isBig }) =>
-		isBig
-			? `
-                width: 359px;
-                height: 238px;
-                background: #DCF7FF;
-            `
-			: null}
+	${({ hover }) =>
+		hover &&
+		`
+			background: #00a2d4;
+			box-shadow: 0px 20px 25px -5px rgba(149, 150, 151, 0.1);
+		`};
 `;
 
 export const StartButton = styled.button`
@@ -35,6 +34,23 @@ export const Corner = styled.div`
 	position: absolute;
 	top: 0;
 	right: 0;
+
+	svg {
+		ellipse {
+			fill: rgba(204, 243, 255, 0.48);
+			fill-opacity: 1;
+		}
+	}
+
+	${({ hover }) =>
+		hover &&
+		`
+		svg {
+			ellipse {
+				fill: rgba(255, 255, 255, 0.64);
+			}
+		}
+		`};
 `;
 
 export const Frame = styled.div`
@@ -61,8 +77,6 @@ export const TextContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-
-	${({ isBig }) => isBig && `margin-top: 56px;`}
 `;
 
 export const Title = styled.h4`
@@ -72,6 +86,12 @@ export const Title = styled.h4`
 	line-height: 24px;
 	letter-spacing: 0.02em;
 	color: #151717;
+
+	${({ hover }) =>
+		hover &&
+		`
+			color: #ffffff;
+		`};
 `;
 
 export const Body = styled.p`
@@ -80,4 +100,10 @@ export const Body = styled.p`
 	font-size: 14px;
 	line-height: 21px;
 	color: #727474;
+
+	${({ hover }) =>
+		hover &&
+		`
+			color: #f1f1f1;
+		`};
 `;

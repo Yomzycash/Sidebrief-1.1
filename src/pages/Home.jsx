@@ -1,8 +1,6 @@
 import FileUpload from "components/FileUpload";
 import { ProgressBar } from "components/Indicators";
 import React from "react";
-import DropdownList from "react-widgets/DropdownList";
-import "react-widgets/styles.css";
 import {
   NigeriaFlag,
   KenyaFlag,
