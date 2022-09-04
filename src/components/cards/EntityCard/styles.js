@@ -7,21 +7,22 @@ export const Container = styled.div`
 	border: 1px solid #edf1f7;
 	box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
 	border-radius: 16px;
-	padding-block: 24px;
+
+	padding: 48px 24px 16px 24px;
+
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	z-index: -1;
-	overflow: hidden;
-`;
 
-export const StartButton = styled.button`
-	height: 36px;
-	border-radius: 8px;
-	border: none;
-	background: transparent;
-	padding-inline: 24px;
+	z-index: 0;
+	overflow: hidden;
+
+	transition: all 0.2s;
+
+	&:hover {
+		background: #00a2d4;
+	}
 `;
 
 export const Corner = styled.div`
@@ -35,31 +36,89 @@ export const Corner = styled.div`
 			fill: rgba(204, 243, 255, 0.48);
 		}
 	}
+
+	${Container}:hover & {
+		svg {
+			ellipse {
+				fill: rgba(255, 255, 255, 0.64);
+			}
+		}
+	}
 `;
 
-export const Description = styled.div`
-	padding-inline: 24px;
+export const Top = styled.div`
 	display: flex;
-	gap: 8px;
+	justify-content: space-between;
 `;
 
-export const Titles = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
+export const Title = styled.h4`
+	font-family: "BR Firma";
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 24px;
+	color: #242627;
+
+	${Container}:hover & {
+		color: #ffffff;
+	}
 `;
 
-export const Title = styled.p`
-	padding: 2px 6px;
+export const TimeLine = styled.p`
 	font-family: "BR Firma";
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 21px;
-	color: #727474;
-	background: #fff;
+	color: #4e5152;
+
+	${Container}:hover & {
+		color: #ffffff;
+	}
 `;
 
-export const Subtitles = styled(Titles)``;
+export const Mid = styled.div``;
 
-export const Subtitle = styled(Title)``;
+export const Bottom = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+`;
+
+export const Price = styled.p`
+	font-family: "BR Firma";
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 36px;
+	color: #00a2d4;
+
+	${Container}:hover & {
+		color: #ffffff;
+	}
+`;
+
+export const Bullet = styled.div`
+	display: flex;
+	gap: 16px;
+	align-items: center;
+
+	${Container}:hover & {
+		svg {
+			path {
+				fill: #ffffff;
+			}
+		}
+	}
+`;
+
+export const Content = styled.p`
+	text-transform: capitalize;
+	font-family: "BR Firma";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 21px;
+	color: #4e5152;
+
+	${Container}:hover & {
+		color: #ffffff;
+	}
+`;

@@ -2,15 +2,18 @@ import React from "react";
 import {
 	Container,
 	Corner,
-	StartButton,
-	Description,
+	Top,
 	Title,
-	Titles,
-	Subtitle,
-	Subtitles,
+	TimeLine,
+	Bottom,
+	Mid,
+	Price,
+	Bullet,
+	Content,
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
-import { TextWithArrow } from "components/texts";
+import { ReactComponent as Mark } from "asset/svg/mark.svg";
+import numeral from "numeral";
 
 export const EntityCard = ({
 	action,
@@ -28,6 +31,31 @@ export const EntityCard = ({
 			<Corner>
 				<CornerPetal />
 			</Corner>
+			<Top>
+				<Title>
+					{name} - {shortname}
+				</Title>
+				<TimeLine>
+					{timeline.from} - {timeline.to} Days
+				</TimeLine>
+			</Top>
+			<Mid>
+				<Price>N{numeral(price).format("0,0")}</Price>
+			</Mid>
+			<Bottom>
+				<Bullet>
+					<Mark /> <Content>{company}</Content>
+				</Bullet>
+				<Bullet>
+					<Mark /> <Content>{shareholder}</Content>
+				</Bullet>
+				<Bullet>
+					<Mark /> <Content>{shares} shares</Content>
+				</Bullet>
+				<Bullet>
+					<Mark /> <Content>{type}</Content>
+				</Bullet>
+			</Bottom>
 		</Container>
 	);
 };

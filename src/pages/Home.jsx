@@ -26,20 +26,15 @@ const Home = () => {
 	return (
 		<>
 			<Navbar dashboard />
+			<div style={{ flex: 4 }}>
+				{/* <TabNavBar />
+				<space>
+					<TagInput />
+				</space>
+				<StatusCard /> */}
+				{/* <CheckBox/> */}
+			</div>
 
-        
-        <div style={{ flex: 4 }}>
-      <TabNavBar/>
-      <space><TagInput/>
-      </space>
-
-      <StatusCard/>
-
-      {/* <CheckBox/> */}
-    
-          
-        </div>
-      </div>
 			<div style={{ display: "flex" }}>
 				<Sidebar />
 				<div style={{ flex: 4 }}>
@@ -80,13 +75,15 @@ const Home = () => {
 									shareholder={entity.shareholder}
 									shares={entity.shares}
 									type={entity.type}
+									action={() =>
+										console.log("this is an entity")
+									}
 								/>
 							))}
 						</EntityWrapper>
 					</div>
 				</div>
 			</div>
-
 
 			{/* <Homepage>
         <HeadText
@@ -126,5 +123,5 @@ const Horizontal = styled.div`
 	width: 100%;
 `;
 const space = styled.div`
-margin-bottom: 3rem;
-`
+	margin-bottom: 3rem;
+`;
