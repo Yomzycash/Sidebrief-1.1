@@ -5,7 +5,8 @@ export const CheckoutSection = ({ title, subtitle, children }) => {
 	return (
 		<Container>
 			<Heading>
-				{title}: <span>{subtitle}</span>
+				{title}
+				{subtitle ? ":" : null} <span>{subtitle}</span>
 			</Heading>
 			<ContentWrapper>{children}</ContentWrapper>
 		</Container>
