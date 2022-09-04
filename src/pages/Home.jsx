@@ -10,6 +10,7 @@ import {
 	MalawiFlag,
 	ZimbabweFlag,
 } from "./Dashboard/assets";
+import { CheckoutController, CheckoutSection } from "containers";
 
 const Home = () => {
 	const List = [
@@ -60,7 +61,24 @@ const Home = () => {
 				BottomText="You can either upload a Driver's, National ID Card, Voters Card or International Passport "
 			/>
 
+			<CheckoutSection
+				title={"Mandatory Information"}
+				subtitle={
+					"Please provide Sidebrief with the following information or use side brief’s contact"
+				}
+			>
+				Dummy Text
+			</CheckoutSection>
+			<CheckoutController
+				backAction={() => console.log("Back button")}
+				backText={"Previous"}
+				forwardAction={() => console.log("Forward button")}
+				forwardText={"Proceed"}
+			/>
+
+
 			<HeaderCheckout/>
+
 		</div>
 	);
 };
