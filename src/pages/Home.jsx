@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "components/button";
 import TagInput from "components/input/TagInput";
-import StatusCard from "components/cards/StatusCard/StatusCard";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import TabNavBar from "components/TabNavBar/TabNavBar";
@@ -12,6 +11,7 @@ import {
 	LongCardWrapper,
 	EntityWrapper,
 	RewardCard,
+	StatusCard,
 } from "components/cards";
 // import { HeadText } from "components/texts";
 // import { ApplicationTable } from "components/Tables";
@@ -85,12 +85,19 @@ const Home = () => {
 								/>
 							))}
 						</EntityWrapper> */}
-						<RewardCard
+						{/* <RewardCard
 							image={Lendha}
 							imageAlt={"Lendha"}
 							title={"Lendha Africa"}
 							body={
 								"Get credit to register your business & pay later."
+							}
+						/> */}
+						<StatusCard
+							name={"Sayochukwu Enterprise"}
+							status={"awaiting"}
+							shortDescription={
+								"Cupcake ipsum dolor sit amet soufflé pudding cheesecake. Pie soufflé pie donut biscuit topping. Sugar plum croissant biscuit."
 							}
 						/>
 					</div>
