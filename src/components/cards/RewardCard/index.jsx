@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Container,
 	StartButton,
@@ -14,9 +14,15 @@ import { ReactComponent as CornerPetalDeep } from "asset/svg/cornerPetalDeep.svg
 import { TextWithArrow } from "components/texts";
 
 export const RewardCard = ({ image, imageAlt, title, body, action }) => {
+	const [hover, setHover] = useState(false);
+
 	return (
-		<Container>
-			<Corner>
+		<Container
+			onMouseEnter={() => setHover(true)}
+			onMouseLeave={() => setHover(false)}
+			hover={hover}
+		>
+			<Corner hover={hover}>
 				<CornerPetal />
 			</Corner>
 			<Frame>
@@ -24,12 +30,12 @@ export const RewardCard = ({ image, imageAlt, title, body, action }) => {
 					<img src={image} alt={imageAlt} />
 				</ImageHolder>
 				<TextContainer>
-					<Title>{title}</Title>
-					<Body>{body}</Body>
+					<Title hover={hover}>{title}</Title>
+					<Body hover={hover}>{body}</Body>
 				</TextContainer>
 			</Frame>
 			<StartButton onClick={action}>
-				<TextWithArrow blue>Get started</TextWithArrow>
+				<TextWithArrow blue={!hover}>Get started</TextWithArrow>
 			</StartButton>
 		</Container>
 	);
