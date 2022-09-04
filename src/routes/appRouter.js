@@ -42,6 +42,7 @@ const UserDashboard = lazy(() => import("pages/Dashboard/User/Home"));
 const BusinessRegistration = lazy(() =>
   import("pages/Dashboard/User/Home/BusinessRegistration")
 );
+const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 
 const AppRouter = () => {
   return (
@@ -89,10 +90,11 @@ const AppRouter = () => {
             </Route>
             <Route path="dashboard" element={<UserDashboard />}>
               <Route index element={<BusinessRegistration />} />
-              <Route
+              {/* <Route
                 path="business-registration"
                 element={<BusinessRegistration />}
-              />
+              /> */}
+              <Route path="staff" element={<StaffDashboard />} />
 
               {/* <Route path="partner" element={<PartnerDashboard />} />
               <Route path="partner" element={<StaffDashboard />} />

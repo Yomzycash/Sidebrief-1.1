@@ -83,7 +83,14 @@ export const ChartContainer = styled.div`
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
   padding: 24px;
-  max-width: 750px;
+
+  width: 65%;
+  height: 280px;
+  min-height: 271px;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 export const TopContent = styled.div`
