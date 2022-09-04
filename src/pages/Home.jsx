@@ -2,6 +2,7 @@ import React from "react";
 import FileUpload from "components/FileUpload";
 import { ProgressBar } from "components/Indicators";
 import DropdownList from "react-widgets/DropdownList";
+import HeaderCheckout from "components/Header/HeaderCheckout";
 import {
 	NigeriaFlag,
 	KenyaFlag,
@@ -58,6 +59,8 @@ const Home = () => {
 				TopText="Government issued ID"
 				BottomText="You can either upload a Driver's, National ID Card, Voters Card or International Passport "
 			/>
+
+			<HeaderCheckout/>
 		</div>
 	);
 };
