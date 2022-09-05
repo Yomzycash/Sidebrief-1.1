@@ -12,6 +12,7 @@ import { IoArrowForward } from "react-icons/io5";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useNavigate } from "react-router-dom";
 
 const BusinessRegistration = (props) => {
   // const responsive = {
@@ -34,9 +35,15 @@ const BusinessRegistration = (props) => {
   //   },
   // };
 
+  const navigate = useNavigate();
+
+  const handleLaunch = () => {
+    navigate("/");
+  };
+
   return (
     <Registration>
-      {/* <TabNavBar /> */}
+      <TabNavBar />
       <Body>
         <Main>
           <DashboardSection
@@ -47,6 +54,7 @@ const BusinessRegistration = (props) => {
             <LongCard
               title="Launch"
               body="Start your business registration process with no paperwork"
+              action={handleLaunch}
             />
             <LongCard
               title="Shelf"

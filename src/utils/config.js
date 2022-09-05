@@ -214,3 +214,11 @@ export const CardContainer = [
     description: "20% this month",
   },
 ];
+
+export const NavMore = [
+  { id: 1, path: "", title: "Compliance" },
+  { id: 2, path: "", title: "Registration" },
+  { id: 3, path: "", title: "Taxes" },
+  { id: 4, path: "", title: "Hiring" },
+  { id: 5, path: "", title: "Payroll" },
+];

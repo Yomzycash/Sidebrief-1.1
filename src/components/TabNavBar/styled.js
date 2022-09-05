@@ -20,7 +20,7 @@ export const ContentWrapper = styled.div`
   justify-content: center;
   padding: 4px 12px;
   gap: 18px;
-  margin: 7px clamp(15px, 5vw, 28px);
+  padding: 7px clamp(15px, 5vw, 28px);
   max-width: 820px;
 `;
 export const NavLinkWrapper = styled(Link)`
@@ -43,6 +43,9 @@ export const NavLinkWrapper = styled(Link)`
 `;
 
 export const LinkContent = styled.p`
+  position: relative;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   text-align: center;
   font-style: normal;

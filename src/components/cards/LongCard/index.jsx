@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Container,
   IconWrapper,
@@ -19,8 +19,30 @@ export const LongCard = ({
   notready, // used to determine if button should be disabled or not (value should be 'true' or 'false')
   action, // function for action that should be performed on button click
 }) => {
+  const [buttonDisplayValue, setButtonDisplayValue] = useState("");
+
+  const buttonRef = useRef();
+  useEffect(() => {
+    getDisplay();
+  }, []);
+
+  const getDisplay = () => {
+    const buttonDisplay = window.getComputedStyle(
+      buttonRef.current,
+      null
+    ).display;
+    if (buttonDisplay !== buttonDisplayValue) {
+      setButtonDisplayValue(buttonDisplay);
+    }
+  };
+
   return (
-    <Container notready={notready}>
+    <Container
+      notready={notready}
+      onClick={() =>
+        notready !== "true" && buttonDisplayValue === "none" ? action() : ""
+      }
+    >
       <FirstPart>
         <IconWrapper notready={notready}>
           <Case fill={`${notready === "true" ? "#ED4E3A" : "#00a2d4"}`} />
@@ -32,7 +54,7 @@ export const LongCard = ({
           <Body>{body}</Body>
         </MiddlePart>
       </FirstPart>
-      <ButtonWrapper>
+      <ButtonWrapper ref={buttonRef}>
         <LongButton
           notready={notready}
           onClick={action}
