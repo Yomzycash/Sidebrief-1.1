@@ -43,6 +43,9 @@ export const NavLinkWrapper = styled(Link)`
 `;
 
 export const LinkContent = styled.p`
+  position: relative;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   text-align: center;
   font-style: normal;

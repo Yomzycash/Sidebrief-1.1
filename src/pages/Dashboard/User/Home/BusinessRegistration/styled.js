@@ -13,7 +13,7 @@ export const Body = styled.div`
 export const Main = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 30px;
+  gap: 20px;
 `;
 export const Recently = styled.div`
   display: flex;

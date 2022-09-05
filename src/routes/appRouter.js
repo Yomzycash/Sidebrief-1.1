@@ -1,3 +1,5 @@
+import BusinessInfo from "pages/Launch/BusinessInfo";
+import EntitySelect from "pages/Launch/EntitySelect";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
 import {
@@ -99,6 +101,11 @@ const AppRouter = () => {
               {/* <Route path="partner" element={<PartnerDashboard />} />
               <Route path="partner" element={<StaffDashboard />} />
               <Route path="partner" element={<DeveloperDashboard />} /> */}
+            </Route>
+            <Route path="checkout" element={<Outlet />}>
+              <Route index element={<BusinessInfo />} />
+              <Route path="business-info" element={<BusinessInfo />} />
+              <Route path="entity" element={<EntitySelect />} />
             </Route>
           </Route>
         </Routes>
