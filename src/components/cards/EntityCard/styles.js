@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  max-width: 450px;
+  max-width: 550px;
   min-width: 350px;
   height: 340px;
   background: #ffffff;
@@ -36,6 +36,7 @@ export const Corner = styled.div`
   svg {
     ellipse {
       fill: rgba(204, 243, 255, 0.48);
+      fill-opacity: 1;
     }
   }
 
