@@ -6,6 +6,7 @@ export const ProgressContainer = styled.div`
   flex-flow: row nowrap;
   align-items: flex-start;
   justify-content: space-between;
+  flex: 1;
   max-width: 355px;
   height: 45px;
   background-color: #ffffff;

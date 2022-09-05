@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Navbar from "components/navbar";
 import Sidebar from "../../../../components/sidebar";
 import { Outlet } from "react-router-dom";
+import TabNavBar from "components/TabNavBar/TabNavBar";
 
 const UserDashboard = () => {
   return (

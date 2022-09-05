@@ -12,10 +12,36 @@ export const Container = styled.div`
 `;
 
 export const TextContainer = styled.div`
+	width: 100%;
+`;
+
+export const Top = styled.div`
   display: flex;
   align-items: center;
   gap: clamp(11px, 2vw, 24px);
   flex: 1;
+`;
+
+export const Description = styled.p`
+	max-width: 575px;
+	padding-top: 8px;
+	height: 0;
+
+	font-family: "BR Firma";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 21px;
+	letter-spacing: -0.01em;
+	color: #4e5152;
+	overflow: hidden;
+
+	transition: all 0.2s;
+
+	${({ hover }) =>
+		hover &&
+		`
+		height: fit-content;
+	`}
 `;
 
 export const ThreeDotContainer = styled.button`

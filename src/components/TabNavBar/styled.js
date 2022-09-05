@@ -20,7 +20,7 @@ export const ContentWrapper = styled.div`
   justify-content: center;
   padding: 4px 12px;
   gap: 18px;
-  padding: 7px clamp(15px, 5vw, 28px);
+  margin: 7px clamp(15px, 5vw, 28px);
   max-width: 820px;
 `;
 export const NavLinkWrapper = styled(Link)`

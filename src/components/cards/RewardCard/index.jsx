@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Container,
 	StartButton,
@@ -11,26 +11,31 @@ import {
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as CornerPetalDeep } from "asset/svg/cornerPetalDeep.svg";
-import { ReactComponent as ArrowBlueRight } from "asset/svg/arrow-blue-right.svg";
 import { TextWithArrow } from "components/texts";
 
-export const RewardCard = ({ image, imageAlt, title, body, action, isBig }) => {
+export const RewardCard = ({ image, imageAlt, title, body, action }) => {
+	const [hover, setHover] = useState(false);
+
 	return (
-		<Container isBig={isBig}>
-			<Corner>{isBig ? <CornerPetalDeep /> : <CornerPetal />}</Corner>
+		<Container
+			onMouseEnter={() => setHover(true)}
+			onMouseLeave={() => setHover(false)}
+			hover={hover}
+		>
+			<Corner hover={hover}>
+				<CornerPetal />
+			</Corner>
 			<Frame>
-				{!isBig ? (
-					<ImageHolder>
-						<img src={image} alt={imageAlt} />
-					</ImageHolder>
-				) : null}
-				<TextContainer isBig={isBig}>
-					<Title>{title}</Title>
-					<Body>{body}</Body>
+				<ImageHolder>
+					<img src={image} alt={imageAlt} />
+				</ImageHolder>
+				<TextContainer>
+					<Title hover={hover}>{title}</Title>
+					<Body hover={hover}>{body}</Body>
 				</TextContainer>
 			</Frame>
 			<StartButton onClick={action}>
-				<TextWithArrow blue>Get started</TextWithArrow>
+				<TextWithArrow blue={!hover}>Get started</TextWithArrow>
 			</StartButton>
 		</Container>
 	);

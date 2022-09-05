@@ -1,3 +1,5 @@
+import BusinessInfo from "pages/Launch/BusinessInfo";
+import EntitySelect from "pages/Launch/EntitySelect";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
 import {
@@ -42,6 +44,7 @@ const UserDashboard = lazy(() => import("pages/Dashboard/User/Home"));
 const BusinessRegistration = lazy(() =>
   import("pages/Dashboard/User/Home/BusinessRegistration")
 );
+const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 
 const AppRouter = () => {
   return (
@@ -89,14 +92,20 @@ const AppRouter = () => {
             </Route>
             <Route path="dashboard" element={<UserDashboard />}>
               <Route index element={<BusinessRegistration />} />
-              <Route
+              {/* <Route
                 path="business-registration"
                 element={<BusinessRegistration />}
-              />
+              /> */}
+              <Route path="staff" element={<StaffDashboard />} />
 
               {/* <Route path="partner" element={<PartnerDashboard />} />
               <Route path="partner" element={<StaffDashboard />} />
               <Route path="partner" element={<DeveloperDashboard />} /> */}
+            </Route>
+            <Route path="checkout" element={<Outlet />}>
+              <Route index element={<BusinessInfo />} />
+              <Route path="business-info" element={<BusinessInfo />} />
+              <Route path="entity" element={<EntitySelect />} />
             </Route>
           </Route>
         </Routes>
