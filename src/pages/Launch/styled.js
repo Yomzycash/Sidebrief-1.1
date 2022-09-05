@@ -26,6 +26,7 @@ export const Bottom = styled.div`
 export const EntityCardsWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
   width: 100%;
   gap: 24px;
 `;
