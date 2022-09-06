@@ -41,3 +41,19 @@ export const {
   savePartnerLoginInfo,
   saveResellerLoginInfo,
 } = UserData.actions;
+
+// This slice will hold all glabally needed layout information
+const LayoutInfo = createSlice({
+  name: "layout",
+  initialState: {
+    sidebarWidth: "",
+  },
+  reducers: {
+    setSidebarWidth: (state, action) => {
+      state.sidebarWidth = action.payload;
+    },
+  },
+});
+
+export const LayoutInfoReducer = LayoutInfo.reducer;
+export const { setSidebarWidth } = LayoutInfo.actions;

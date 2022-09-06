@@ -19,6 +19,6 @@ export const Recently = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  flex: 1;
+  flex: 2;
   gap: 16px;
 `;

@@ -153,22 +153,22 @@ export const analyticsData = [
 export const NavbarLink = [
   {
     id: 1,
-    title: "Business Registration",
+    title: "Registration",
     path: "",
   },
   {
     id: 2,
-    title: "Business Compliance",
+    title: "Compliance",
     path: "",
   },
   {
     id: 3,
-    title: "Automate Taxes",
+    title: "Taxes",
     path: "",
   },
   {
     id: 4,
-    title: "Hiring and payroll",
+    title: "Hiring & payroll",
     path: "",
   },
   {

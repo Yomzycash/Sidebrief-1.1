@@ -3,9 +3,13 @@ import styled from "styled-components";
 import Navbar from "components/navbar";
 import Sidebar from "../../../../components/sidebar";
 import { Outlet } from "react-router-dom";
-import TabNavBar from "components/TabNavBar/TabNavBar";
+import { useSelector } from "react-redux";
 
 const UserDashboard = () => {
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
+  console.log(sidebarWidth);
+
   return (
     <Dashboard>
       <Navbar dashboard />
@@ -13,7 +17,7 @@ const UserDashboard = () => {
         <BodyLeft>
           <Sidebar />
         </BodyLeft>
-        <BodyRight>
+        <BodyRight SidebarWidth={sidebarWidth}>
           <Outlet />
         </BodyRight>
       </Body>
@@ -36,5 +40,9 @@ const Body = styled.div`
 const BodyLeft = styled.div``;
 const BodyRight = styled.div`
   display: flex;
-  width: 100%;
+  flex-flow: column;
+  width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
+  @media screen and (max-width: 1050px) {
+    width: 100%;
+  }
 `;

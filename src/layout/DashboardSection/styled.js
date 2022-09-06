@@ -9,6 +9,8 @@ export const Section = styled.div`
   gap: 32px;
   margin: 38px clamp(20px, 5vw, 40px);
   margin-right: ${(props) => props.MarginRight};
+  cursor: ${({ carousel }) => (carousel ? "grab" : "")};
+  user-select: ${({ carousel }) => (carousel ? "none" : "")};
 `;
 export const Header = styled.div`
   display: flex;
@@ -61,13 +63,19 @@ export const HeaderBody = styled.div`
 `;
 export const Body = styled.div`
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: ${({ carousel }) => (carousel ? "column" : "row")} nowrap;
   gap: 24px;
   width: 100%;
   max-width: 100vw;
+
+  li {
+    max-width: ${({ carousel }) => (carousel ? "max-content" : "")};
+  }
+  ul {
+    gap: ${({ carousel }) => (carousel ? "20px" : "")};
+  }
+
   @media screen and (max-width: 700px) {
     flex-flow: ${(props) => (props.nowrap ? "row" : "column")};
-
-    /* flex-flow: column; */
   }
 `;

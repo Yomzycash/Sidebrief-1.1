@@ -16,11 +16,11 @@ const TabNavBar = ({ icon }) => {
   const [navMore, setNavMore] = useState(NavMore);
   const [pop, setPop] = useState(0);
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", () => {
-  //     setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-  //   });
-  // }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
+    });
+  }, []);
   // useEffect(() => {
   //   window.addEventListener("resize", () => {
   //     if (window.innerWidth <= 920 && pop === 0) {

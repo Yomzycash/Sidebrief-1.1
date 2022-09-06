@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { sidebarLink } from "utils/config";
 import {
   ListWrapper,
@@ -11,6 +11,8 @@ import {
 } from "./styled";
 import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
+import { store } from "redux/Store";
+import { setSidebarWidth } from "redux/Slices";
 
 const Sidebar = () => {
   const [active, setActive] = useState(0);
@@ -24,6 +26,12 @@ const Sidebar = () => {
       width: "0px",
     },
   };
+
+  useEffect(() => {
+    store.dispatch(
+      setSidebarWidth(expanded ? sidebarVariants.true.width : "100px")
+    );
+  }, [expanded]);
 
   return (
     <SidebarWrapper

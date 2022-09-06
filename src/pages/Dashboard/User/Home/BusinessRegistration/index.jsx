@@ -15,25 +15,24 @@ import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 
 const BusinessRegistration = (props) => {
-  // const responsive = {
-  //   superLargeDesktop: {
-  //     // the naming can be any, depends on you.
-  //     breakpoint: { max: 4000, min: 3000 },
-  //     items: 5,
-  //   },
-  //   desktop: {
-  //     breakpoint: { max: 3000, min: 1024 },
-  //     items: 3,
-  //   },
-  //   tablet: {
-  //     breakpoint: { max: 1024, min: 464 },
-  //     items: 2,
-  //   },
-  //   mobile: {
-  //     breakpoint: { max: 464, min: 0 },
-  //     items: 1,
-  //   },
-  // };
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1400 },
+      items: 4,
+    },
+    tablet: {
+      breakpoint: { max: 1400, min: 600 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 600, min: 0 },
+      items: 1,
+    },
+  };
 
   const navigate = useNavigate();
 
@@ -76,46 +75,35 @@ const BusinessRegistration = (props) => {
               <StatusCard
                 name="Ayomide Construction and Husband's - LLC"
                 status="completed"
+                ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
               />
               <StatusCard
                 name="Ayomide Construction and Husband's - LLC"
                 status="awaiting"
+                ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
               />
               <StatusCard
                 name="Ayomide Construction and Husband's - LLC"
                 status="progress"
+                ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
               />
             </Recently>
           </DashboardSection>
-          {/* <DashboardSection
+          <DashboardSection
             title="Rewards"
             body="Accept offers and rewards when you register your business with Sidebrief"
+            carousel
             link={{
               text: "View all",
               to: "/dashboard",
               icon: <IoArrowForward />,
             }}
-          > */}
-          {/* <Carousel
+          >
+            <Carousel
+              responsive={responsive}
               swipeable={true}
               draggable={true}
-              showDots={true}
-              responsive={responsive}
-              ssr={true} // means to render carousel on server-side.
-              infinite={true}
-              autoPlay={true}
-              autoPlaySpeed={1000}
               keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              containerClass="carousel-container"
-              removeArrowOnDeviceType={["tablet", "mobile"]}
-              deviceType={props.deviceType}
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-              maxWidth="200px"
-              style={{ maxWidth: "300px" }}
-              // {...sliderParams}
             >
               <RewardCard
                 image={lendhaLogo}
@@ -138,8 +126,7 @@ const BusinessRegistration = (props) => {
                 body="Get credit to register your business & pay later."
               />
             </Carousel>
-            ; */}
-          {/* </DashboardSection> */}
+          </DashboardSection>
         </Main>
       </Body>
     </Registration>
@@ -147,3 +134,23 @@ const BusinessRegistration = (props) => {
 };
 
 export default BusinessRegistration;
+
+// swipeable={true}
+// draggable={true}
+// showDots={true}
+// responsive={responsive}
+// ssr={true} // means to render carousel on server-side.
+// infinite={true}
+// autoPlay={true}
+// autoPlaySpeed={1000}
+// keyBoardControl={true}
+// customTransition="all .5"
+// transitionDuration={500}
+// containerClass="carousel-container"
+// removeArrowOnDeviceType={["tablet", "mobile"]}
+// deviceType={props.deviceType}
+// dotListClass="custom-dot-list-style"
+// itemClass="carousel-item-padding-40-px"
+// maxWidth="200px"
+// style={{ maxWidth: "300px" }}
+// {...sliderParams}
