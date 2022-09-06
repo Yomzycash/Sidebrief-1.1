@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
 import { DropDownWithSearch, InputWithLabel } from "components/input";
-import { Page, Inputs } from "./styles";
+import { Page, Inputs } from "../styled";
 import { Country, State, City } from "country-state-city";
 
 const BusinessAddress = () => {

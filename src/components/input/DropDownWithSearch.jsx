@@ -3,6 +3,7 @@ import styled from "styled-components";
 import DropdownList from "react-widgets/DropdownList";
 import "react-widgets/styles.css";
 import { DropdownArrow } from "asset/svg";
+import { BottomText } from "./styled";
 
 const DropDownWithSearch = ({
 	name, // name, neccessary for React-hook-form
@@ -11,6 +12,11 @@ const DropDownWithSearch = ({
 	renderer, // renderer is a React Component that describes how the item should be rendered
 	selectAction,
 	filterBy,
+	bottomText,
+	allowCreate,
+	onCreate, // only used when object creation is allowed
+	value, // only used when object creation is allowed
+	setValue, // only used when object creation is allowed
 }) => {
 	return (
 		<Container>
@@ -29,7 +35,12 @@ const DropDownWithSearch = ({
 				renderValue={renderer}
 				renderListItem={renderer}
 				onSelect={selectAction}
+				allowCreate={allowCreate}
+				onCreate={allowCreate ? onCreate : null}
+				value={allowCreate ? value : null}
+				onChange={allowCreate ? setValue : null}
 			/>
+			{bottomText ? <BottomText>{bottomText}</BottomText> : null}
 		</Container>
 	);
 };
