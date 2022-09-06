@@ -45,8 +45,8 @@ const BusinessRegistration = lazy(() =>
 	import("pages/Dashboard/User/Home/BusinessRegistration")
 );
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
-
 const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
+const OtherInfo = lazy(() => import("pages/Launch/OtherInfo"));
 
 const AppRouter = () => {
 	return (
@@ -139,6 +139,7 @@ const AppRouter = () => {
 								path="address"
 								element={<BusinessAddress />}
 							/>
+							<Route path="otherinfo" element={<OtherInfo />} />
 						</Route>
 					</Route>
 				</Routes>
