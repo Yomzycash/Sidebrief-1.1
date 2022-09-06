@@ -35,6 +35,7 @@ const Text = styled.p`
 	line-height: 21px;
 	color: #4e5152;
 `;
+
 const Span = styled.span`
 	color: #0082aa;
 `;
