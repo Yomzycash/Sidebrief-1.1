@@ -55,6 +55,7 @@ const Container = styled.div`
 	.input {
 		height: 48px;
 		padding-inline: 12px;
+		border-radius: 8px;
 	}
 `;
 
@@ -64,8 +65,11 @@ const Top = styled.div`
 	width: 100%;
 `;
 
-const Title = styled.div`
+const Title = styled.span`
 	font-size: clamp(13px, 1.5vw, 14px);
 	font-weight: 500;
 	color: #4e5152;
+	font-family: "BR Firma";
+	font-weight: 500;
+	line-height: 21px;
 `;

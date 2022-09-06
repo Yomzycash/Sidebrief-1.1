@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
-import { DropDownWithSearch } from "components/input";
-import { Page, InputWrapper } from "./styles";
+import { DropDownWithSearch, InputWithLabel } from "components/input";
+import { Page, Inputs } from "./styles";
 import { Country, State, City } from "country-state-city";
 
 const BusinessAddress = () => {
@@ -31,7 +31,7 @@ const BusinessAddress = () => {
 					title={"Business Address"}
 					subtitle={"Please provide the address for this business"}
 				>
-					<InputWrapper>
+					<Inputs>
 						<DropDownWithSearch
 							name={"country"}
 							title={"Country"}
@@ -56,7 +56,38 @@ const BusinessAddress = () => {
 							selectAction={selectState}
 							filterBy={"name"}
 						/>
-					</InputWrapper>
+						<InputWithLabel
+							containerStyle={"checkoutInput"}
+							labelStyle={"checkoutInputLabel"}
+							placeholder="--"
+							label="Number and street"
+							type="text"
+							name="street"
+							register={() => {}}
+							// errorMessage={errors.Email?.message}
+						/>
+						<InputWithLabel
+							containerStyle={"checkoutInput"}
+							labelStyle={"checkoutInputLabel"}
+							placeholder="--"
+							label="Zip Code"
+							type="text"
+							name="zipCode"
+							register={() => {}}
+							// errorMessage={errors.Email?.message}
+						/>
+						<InputWithLabel
+							containerStyle={"checkoutInput"}
+							labelStyle={"checkoutInputLabel"}
+							placeholder="example@example.com"
+							label="Email Address"
+							bottomText="Please provide sidebrief with a functional Email to help us contact you fast"
+							type="email"
+							name="email"
+							register={() => {}}
+							// errorMessage={errors.Email?.message}
+						/>
+					</Inputs>
 				</CheckoutSection>
 				<CheckoutController
 					backText={"Previous"}
