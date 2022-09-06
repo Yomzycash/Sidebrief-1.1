@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { Page, Inputs } from "../styled";
+import { InputFrame, InputContainer, Gap } from "./styles";
 import { CheckoutController, CheckoutSection } from "containers";
 import { DropDownWithSearch } from "components/input";
 
@@ -62,38 +63,70 @@ const OtherInfo = () => {
 						"Please provide Sidebrief with the following information or use sidebrief's contact"
 					}
 				>
+					<InputContainer>
+						<InputFrame>
+							<DropDownWithSearch
+								name={"numOfShareholders"}
+								title={"Shareholder’s Information"}
+								list={expectedNumOfShareHolders}
+								renderer={({ item }) => item}
+								selectAction={selectNumofShareholders}
+								bottomText={
+									"Please provide sidebrief with the number of shareholders available in your company"
+								}
+								allowCreate={true}
+								onCreate={(number) =>
+									handleCreate(number, "shareholder")
+								}
+								value={numOfShareHolders}
+								setValue={(value) =>
+									setNumofShareHolders(value)
+								}
+							/>
+						</InputFrame>
+						<InputFrame>
+							<DropDownWithSearch
+								name={"numOfDirectors"}
+								title={"Director’s Information"}
+								list={expectedNumOfDirectors}
+								renderer={({ item }) => item}
+								selectAction={selectNumofDirectors}
+								bottomText={
+									"Please provide sidebrief with the number of directors available in your company" // shareholders?
+								}
+								allowCreate={true}
+								onCreate={(number) =>
+									handleCreate(number, "director")
+								}
+								value={numOfDirectors}
+								setValue={(value) => setNumOfDirectors(value)}
+							/>
+						</InputFrame>
+					</InputContainer>
+				</CheckoutSection>
+				<Gap height={40} />
+				<CheckoutSection
+					title={"Optional Information"}
+					subtitle={
+						"Please provide Sidebrief with the following information or use sidebrief's contact"
+					}
+				>
 					<Inputs>
 						<DropDownWithSearch
-							name={"numOfShareholders"}
-							title={"Shareholder’s Information"}
-							list={expectedNumOfShareHolders}
+							name={"numOfBeneficiary"}
+							title={"Beneficiary’s Information"}
+							list={expectedNumOfBeneficiary}
 							renderer={({ item }) => item}
-							selectAction={selectNumofShareholders}
+							selectAction={selectNumofBeneficiary}
 							bottomText={
 								"Please provide sidebrief with the number of shareholders available in your company"
 							}
 							allowCreate={true}
 							onCreate={(number) =>
-								handleCreate(number, "shareholder")
+								handleCreate(number, "beneficiary")
 							}
-							value={numOfShareHolders}
-							setValue={(value) => setNumofShareHolders(value)}
-						/>
-						<DropDownWithSearch
-							name={"numOfDirectors"}
-							title={"Director’s Information"}
-							list={expectedNumOfDirectors}
-							renderer={({ item }) => item}
-							selectAction={selectNumofDirectors}
-							bottomText={
-								"Please provide sidebrief with the number of directors available in your company" // shareholders?
-							}
-							allowCreate={true}
-							onCreate={(number) =>
-								handleCreate(number, "director")
-							}
-							value={numOfDirectors}
-							setValue={(value) => setNumOfDirectors(value)}
+							value={numOfBeneficiary}
+							setValue={(value) => setNumOfBeneficiary(value)}
 						/>
 					</Inputs>
 				</CheckoutSection>
