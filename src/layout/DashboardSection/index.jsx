@@ -9,9 +9,11 @@ const DashboardSection = ({
   BigTitle,
   link,
   nowrap,
+  column,
+  carousel,
 }) => {
   return (
-    <Section MarginRight={MarginRight}>
+    <Section MarginRight={MarginRight} carousel={carousel}>
       <Header>
         <HeaderTop BigTitle={BigTitle}>
           <p>{title}</p>
@@ -26,7 +28,9 @@ const DashboardSection = ({
           <p>{body}</p>
         </HeaderBody>
       </Header>
-      <Body nowrap={nowrap}>{children}</Body>
+      <Body nowrap={nowrap} carousel={carousel}>
+        {children}
+      </Body>
     </Section>
   );
 };

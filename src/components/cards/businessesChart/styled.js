@@ -24,7 +24,7 @@ export const BusinessesChart = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex: 1;
-  min-width: 250px;
+  min-width: clamp(300px, 25vw, 700px);
   min-height: 264px;
   border-radius: 16px;
   padding: 0 8px;

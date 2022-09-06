@@ -17,15 +17,15 @@ export const ContentWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 4px 12px;
   gap: 18px;
-  margin: 7px clamp(15px, 5vw, 28px);
+  margin: 7px clamp(8px, 5vw, 28px);
+
   max-width: 820px;
 `;
-export const NavLinkWrapper = styled(Link)`
+export const NavLinkWrapper = styled(NavLink)`
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: center;
   text-decoration: none;

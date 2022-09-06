@@ -9,7 +9,7 @@ export const NavWrapper = styled(motion.div)`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  padding: 15px clamp(16px, 5%, 58px);
+  padding: 15px clamp(20px, 5vw, 40px);
   border-bottom: ${(prop) => prop.border};
   background-color: white;
   z-index: 4;

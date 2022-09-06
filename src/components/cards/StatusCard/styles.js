@@ -1,18 +1,23 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 74px;
+  min-height: 74px;
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-  padding-inline: 24px;
+  padding: 10px 24px;
   display: flex;
+  flex-flow: column;
   align-items: center;
+  justify-content: center;
+  transition: 0.3s all ease;
 `;
 
 export const TextContainer = styled.div`
-	width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
 `;
 
 export const Top = styled.div`
@@ -23,24 +28,28 @@ export const Top = styled.div`
 `;
 
 export const Description = styled.p`
-	max-width: 575px;
-	padding-top: 8px;
-	height: 0;
+  max-width: 575px;
+  padding-top: 8px;
+  /* height: 0; */
+  min-height: 0;
+  max-height: 0;
 
-	font-family: "BR Firma";
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 21px;
-	letter-spacing: -0.01em;
-	color: #4e5152;
-	overflow: hidden;
+  font-family: "BR Firma";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: -0.01em;
+  color: #4e5152;
+  overflow: hidden;
 
-	transition: all 0.2s;
+  transition: 0.5s all ease;
 
-	${({ hover }) =>
-		hover &&
-		`
+  ${({ hover }) =>
+    hover &&
+    `
 		height: fit-content;
+    min-height: 40px;
+  max-height: 100px;
 	`}
 `;
 

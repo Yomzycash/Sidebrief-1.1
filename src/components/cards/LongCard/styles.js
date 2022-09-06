@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
-  cursor: ${({ notready }) => (notready ? "" : "pointer")};
+  cursor: ${({ notready }) => (notready ? "not-allowed" : "")};
   width: 100%;
   max-width: 550px;
   min-height: 124px;
@@ -17,6 +17,7 @@ export const Container = styled.div`
   opacity: ${({ notready }) => (notready ? "0.6" : "")};
   @media screen and (max-width: 1140px) {
     &:hover {
+      cursor: ${({ notready }) => (notready ? "" : "pointer")};
       background-color: ${({ notready }) => (notready ? "" : "#00a2d4 ")};
       h4,
       p {
@@ -105,7 +106,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const LongButton = styled.button`
-  cursor: ${({ notready }) => (notready ? "" : "pointer")};
+  cursor: ${({ notready }) => (notready ? "not-allowed" : "pointer")};
   text-decoration: none;
   padding: 6px 20px;
   background: #00a2d4;
