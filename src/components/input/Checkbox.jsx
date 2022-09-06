@@ -1,24 +1,30 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const Checkbox = () => {
+const Checkbox = ({
+  text1 ='Click here to use ',
+  styledSpan ='Sidebrief',
+  text2 ='shareholders until you sustain your own',
+  styledSpan2}
+) => {
   
   return (
     <Wrapper>
        <CheckboxInput
        type ='checkbox'/> 
-    <Text>Click here to use <Span>Sidebrief's</Span> shareholders until you sustain your own.</Text>
+    <Text>{text1}<Span>{styledSpan}</Span> {text2} <Span>{styledSpan2}</Span> .</Text>
 
     </Wrapper>
   )
 }
 
-export default Checkbox
+export default Checkbox;
 
 const Wrapper = styled.div`
 display: inline-flex;
 align-items: center;
 gap: 16px;
+width: 100%;
 
 
 `
@@ -36,7 +42,6 @@ font-weight: 400;
 font-size: 14px;
 line-height: 21px;
 color: #4E5152;
-
 
 `
 const Span = styled.span`

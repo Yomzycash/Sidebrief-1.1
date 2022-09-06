@@ -8,11 +8,15 @@ import {
   TagText,
   Tagclose,
   TagInputField,
+  BottomText
 } from "./styled.js";
 
-import styled from "styled-components";
 
-const TagInput = ({ label = "Business Name" }) => {
+
+const TagInput = ({ 
+  label = "Business Name",
+  bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences"
+ }) => {
   const [tags, setTags] = useState([]);
 
   function handlekeydown(e) {
@@ -47,6 +51,8 @@ const TagInput = ({ label = "Business Name" }) => {
             onKeyDown={handlekeydown}
           />
         </TagInputWrapper>
+        <BottomText>{bottomText}</BottomText>
+
       </AllWrapper>
     </>
   );
