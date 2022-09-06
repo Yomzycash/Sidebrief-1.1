@@ -3,7 +3,7 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 import { Page, Inputs } from "../styled";
 import { InputFrame, InputContainer, Gap } from "./styles";
 import { CheckoutController, CheckoutSection } from "containers";
-import { DropDownWithSearch } from "components/input";
+import { DropDownWithSearch, Checkbox } from "components/input";
 
 const OtherInfo = () => {
 	const [expectedNumOfShareHolders, setExpectedNumOfShareHolders] = useState([
@@ -83,6 +83,8 @@ const OtherInfo = () => {
 									setNumofShareHolders(value)
 								}
 							/>
+							{/* TODO: checkbox needs some work */}
+							{/* <Checkbox name={"sideBriefShareholder"} /> */}
 						</InputFrame>
 						<InputFrame>
 							<DropDownWithSearch
@@ -119,7 +121,7 @@ const OtherInfo = () => {
 							renderer={({ item }) => item}
 							selectAction={selectNumofBeneficiary}
 							bottomText={
-								"Please provide sidebrief with the number of shareholders available in your company"
+								"Please provide sidebrief with the number of beneficiaries available in your company"
 							}
 							allowCreate={true}
 							onCreate={(number) =>

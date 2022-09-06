@@ -12,6 +12,10 @@ export const InputFrame = styled.div`
 	/* width: 50%; */
 	min-width: 350px;
 	justify-content: space-between;
+
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 `;
 
 export const Gap = styled.div`
