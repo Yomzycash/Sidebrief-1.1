@@ -3,8 +3,15 @@ import { CheckoutController, CheckoutSection } from "containers";
 import { Body, Bottom, Container, Header, EntityCardsWrapper } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
+import { useNavigate } from "react-router-dom";
 
 const EntitySelect = () => {
+  const navigate = useNavigate();
+
+  const handleNext = () => {
+    navigate("/checkout/address");
+  };
+
   return (
     <Container>
       <Header>
@@ -76,7 +83,7 @@ const EntitySelect = () => {
         <CheckoutController
           backAction={() => console.log("Back button")}
           backText={"Previous"}
-          forwardAction={() => console.log("Forward button")}
+          forwardAction={handleNext}
           forwardText={"Proceed"}
         />
       </Bottom>

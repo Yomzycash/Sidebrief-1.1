@@ -6,7 +6,7 @@ import { CheckoutController, CheckoutSection } from "containers";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { RewardCard } from "components/cards";
-import CheckoutShareholder from "../containers/CheckoutShareholder/CheckoutShareholder.jsx";
+import { CheckoutFormInfo } from "../containers/Checkout/InfoSection/index.jsx";
 import Checkbox from "components/input/Checkbox.jsx";
 
 const Home = () => {
@@ -32,12 +32,9 @@ const Home = () => {
   return (
     <div style={{ maxWidth: "70%", margin: "auto" }}>
       <p>Welcome to sidebrief</p>
-    <div>
-  <CheckoutShareholder/> 
-
-
-
-    </div>
+      <div>
+        <CheckoutFormInfo />
+      </div>
       <div>
         <ProgressBar progress={70} />
       </div>
@@ -61,7 +58,7 @@ const Home = () => {
         forwardText={"Proceed"}
       />
 
-	  {/* <CheckoutShareholder/> */}
+      {/* <CheckoutShareholder/> */}
     </div>
   );
 };

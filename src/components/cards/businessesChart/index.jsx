@@ -18,8 +18,8 @@ const BusinessesChartCard = ({ completed, pending, awaiting }) => {
         />
       </Indicator>
       <Bottom>
-        <Status number={completed} text="Completed" color="#55D7FF" />
-        <Status number={pending} text="Pending" color="#00A2D4" />
+        <Status number={completed} text="Completed" color="#00A2D4" />
+        <Status number={pending} text="Pending" color="#55D7FF" />
         <Status number={awaiting} text="Awaiting Approval" color="#CCF3FF" />
       </Bottom>
     </BusinessesChart>

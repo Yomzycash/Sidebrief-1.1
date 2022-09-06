@@ -25,11 +25,15 @@ const BusinessRegistration = (props) => {
       items: 4,
     },
     tablet: {
-      breakpoint: { max: 1400, min: 600 },
-      items: 2,
+      breakpoint: { max: 1400, min: 900 },
+      items: 3,
     },
     mobile: {
-      breakpoint: { max: 600, min: 0 },
+      breakpoint: { max: 900, min: 400 },
+      items: 2,
+    },
+    mbile: {
+      breakpoint: { max: 400, min: 0 },
       items: 1,
     },
   };
@@ -37,7 +41,7 @@ const BusinessRegistration = (props) => {
   const navigate = useNavigate();
 
   const handleLaunch = () => {
-    navigate("/");
+    navigate("/checkout");
   };
 
   return (
