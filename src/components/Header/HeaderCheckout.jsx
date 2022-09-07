@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProgressBar } from "components/Indicators";
 import { FiArrowLeft } from "react-icons/fi";
+import { useSelector } from "react-redux";
 const HeaderCheckout = () => {
+  const LayoutInfo = useSelector((store) => store.LayoutInfo);
+  const { checkoutProgress } = LayoutInfo;
+
   const [headerShadow, setHeaderShadow] = useState(false);
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -17,7 +21,7 @@ const HeaderCheckout = () => {
       </BackContainer>
 
       <ProgressWrapper>
-        <ProgressBar progress={70} />
+        <ProgressBar progress={checkoutProgress} />
       </ProgressWrapper>
     </Wrapper>
   );

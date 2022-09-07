@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// This slice will hold user needed information
 const UserData = createSlice({
   name: "User data",
   initialState: {
@@ -42,18 +43,60 @@ export const {
   saveResellerLoginInfo,
 } = UserData.actions;
 
-// This slice will hold all glabally needed layout information
+// This slice will hold all glabally needed layout and similar information
 const LayoutInfo = createSlice({
   name: "layout",
   initialState: {
     sidebarWidth: "",
+    checkoutProgress: 0,
   },
   reducers: {
     setSidebarWidth: (state, action) => {
       state.sidebarWidth = action.payload;
     },
+    setCheckoutProgress: (state, action) => {
+      const { total, current } = action.payload;
+      let progress = (current / total) * 100;
+      state.checkoutProgress = progress;
+    },
   },
 });
 
 export const LayoutInfoReducer = LayoutInfo.reducer;
-export const { setSidebarWidth } = LayoutInfo.actions;
+export const { setSidebarWidth, setCheckoutProgress } = LayoutInfo.actions;
+
+// This slice will hold all registered businesses and current registration information
+const RegisteredBusinessesInfo = createSlice({
+  name: "registered businesses",
+  initialState: {
+    currentBusiness: {
+      shareHolders: "",
+      directors: "",
+      beneficiaries: "",
+    },
+  },
+  reducers: {
+    setBusinessFormInfo: (state, action) => {
+      const { name, number } = action.payload;
+      switch (name) {
+        case "shareholders":
+          state.currentBusiness.shareHolders = number;
+          break;
+
+        case "directors":
+          state.currentBusiness.directors = number;
+          break;
+
+        case "beneficiaries":
+          state.currentBusiness.beneficiaries = number;
+          break;
+
+        default:
+          break;
+      }
+    },
+  },
+});
+
+export const RegisteredBusinessesReducers = RegisteredBusinessesInfo.reducer;
+export const { setBusinessFormInfo } = RegisteredBusinessesInfo.actions;

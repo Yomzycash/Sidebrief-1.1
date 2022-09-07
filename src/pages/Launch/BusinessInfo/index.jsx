@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
@@ -19,6 +19,8 @@ import {
   CountryItem,
 } from "../styled";
 import { useNavigate } from "react-router-dom";
+import { store } from "redux/Store";
+import { setCheckoutProgress } from "redux/Slices";
 
 const BusinessInfo = () => {
   // This object is only here temporarily. It will be moved to utils later
@@ -56,11 +58,17 @@ const BusinessInfo = () => {
     { id: 7, text: "Musical Industry" },
     { id: 8, text: "Technicial" },
   ];
+  const [country, setCountry] = useState("");
+  const [objectives, setObjectives] = useState("");
 
   const navigate = useNavigate();
 
   const handleNext = () => {
     navigate("/checkout/entity");
+    store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
+  };
+  const handlePrev = () => {
+    navigate(-1);
   };
 
   return (
@@ -86,6 +94,9 @@ const BusinessInfo = () => {
               console.log("Hello");
               console.log(data);
             }}
+            value={country}
+            allowCreate={true}
+            setValue={(value) => setCountry(value)}
           />
           <DropDownWithSearch
             name="objective"
@@ -96,15 +107,19 @@ const BusinessInfo = () => {
               console.log("Hello");
               console.log(data);
             }}
+            value={objectives}
+            setValue={(value) => setObjectives(value)}
+            allowCreate={true}
           />
         </InputsWrapper>
       </Body>
       <Bottom>
         <CheckoutController
-          backAction={() => console.log("Back button")}
-          backText={"Previous"}
           forwardAction={handleNext}
-          forwardText={"Proceed"}
+          backAction={handlePrev}
+          backText={"Previous"}
+          forwardText={"Next"}
+          hidePrev
         />
       </Bottom>
     </Container>

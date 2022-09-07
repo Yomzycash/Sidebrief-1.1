@@ -1,6 +1,3 @@
-import BusinessInfo from "pages/Launch/BusinessInfo";
-import EntitySelect from "pages/Launch/EntitySelect";
-import ReviewInformation from "pages/Launch/Review";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
 import {
@@ -48,6 +45,12 @@ const BusinessRegistration = lazy(() =>
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
 const BusinessForm = lazy(() => import("pages/Launch/BusinessForm"));
+const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
+const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
+const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
+const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
+const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
+const ReviewInformation = lazy(() => import("pages/Launch/Review"));
 
 const AppRouter = () => {
   return (
@@ -111,6 +114,12 @@ const AppRouter = () => {
               <Route path="entity" element={<EntitySelect />} />
               <Route path="address" element={<BusinessAddress />} />
               <Route path="form-info" element={<BusinessForm />} />
+              <Route path="shareholders-info" element={<ShareHoldersInfo />} />
+              <Route path="directors-info" element={<DirectorsInfo />} />
+              <Route
+                path="beneficiaries-info"
+                element={<BeneficiariesInfo />}
+              />
               <Route path="review" element={<ReviewInformation />} />
             </Route>
           </Route>

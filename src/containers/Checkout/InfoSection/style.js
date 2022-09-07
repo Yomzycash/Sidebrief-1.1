@@ -32,6 +32,8 @@ export const NumberPage = styled.h4`
   font-size: 14px;
   line-height: 21px;
   letter-spacing: -0.5px;
+  display: flex;
+  gap: 4px;
 `;
 export const DetailedSection = styled.div`
   display: flex;
@@ -39,4 +41,6 @@ export const DetailedSection = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
+  checkbox {
+  }
 `;
