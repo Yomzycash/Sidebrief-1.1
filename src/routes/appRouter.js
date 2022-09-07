@@ -1,5 +1,6 @@
 import BusinessInfo from "pages/Launch/BusinessInfo";
 import EntitySelect from "pages/Launch/EntitySelect";
+import ReviewInformation from "pages/Launch/Review";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
 import {
@@ -110,6 +111,7 @@ const AppRouter = () => {
               <Route path="entity" element={<EntitySelect />} />
               <Route path="address" element={<BusinessAddress />} />
               <Route path="form-info" element={<BusinessForm />} />
+              <Route path="review" element={<ReviewInformation />} />
             </Route>
           </Route>
         </Routes>
