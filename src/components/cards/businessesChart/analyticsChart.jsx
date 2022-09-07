@@ -32,6 +32,11 @@ const AnalyticsChart = () => {
       ...provided,
       padding: 5,
     }),
+    input: (styles) => ({
+      ...styles,
+      // border: "solid red",
+      // width: 50,
+    }),
   };
 
   const options = [
