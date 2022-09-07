@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ProgressBar } from "components/Indicators";
 import { FiArrowLeft } from "react-icons/fi";
@@ -7,8 +7,14 @@ const HeaderCheckout = () => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
   const { checkoutProgress } = LayoutInfo;
 
+  const [headerShadow, setHeaderShadow] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setHeaderShadow(window.pageXOffset > 0 ? true : false);
+    });
+  }, []);
   return (
-    <Wrapper>
+    <Wrapper headerShadow={headerShadow}>
       <BackContainer>
         <FiArrowLeft color="#151717" size={24} />
         <Text> Back to home</Text>
@@ -31,7 +37,12 @@ const Wrapper = styled.div`
   align-items: center;
   height: clamp(90px, 15vw, 164px);
   gap: 40px;
+  position: sticky;
+  z-index: 4;
+  top: 0;
   padding-inline: 8%;
+  box-shadow: ${(props) =>
+    props.headerShadow === true ? "0px 10px 15px -5px #9596971a" : null};
 `;
 
 const BackContainer = styled.div`

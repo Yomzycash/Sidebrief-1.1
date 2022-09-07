@@ -50,6 +50,7 @@ const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
 const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
 const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
 const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
+const ReviewInformation = lazy(() => import("pages/Launch/Review"));
 
 const AppRouter = () => {
   return (
@@ -119,6 +120,7 @@ const AppRouter = () => {
                 path="beneficiaries-info"
                 element={<BeneficiariesInfo />}
               />
+              <Route path="review" element={<ReviewInformation />} />
             </Route>
           </Route>
         </Routes>

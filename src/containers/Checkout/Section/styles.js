@@ -26,3 +26,11 @@ export const ContentWrapper = styled.div`
   flex-flow: row wrap;
   width: 100%;
 `;
+export const SectionContainer = styled.p`
+  display: flex;
+  justify-content: space-between;
+  p {
+    font-size: 18px;
+    font-weight: 500px;
+  }
+`;
