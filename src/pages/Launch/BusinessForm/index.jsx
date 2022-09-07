@@ -9,57 +9,56 @@ import { setBusinessFormInfo, setCheckoutProgress } from "redux/Slices";
 import { useNavigate } from "react-router-dom";
 
 const BusinessForm = () => {
-  const [expectedNumOfShareHolders, setExpectedNumOfShareHolders] = useState([
-    1, 2, 3, 4, 5,
-  ]);
-  const [numOfShareHolders, setNumofShareHolders] = useState();
-  const [expectedNumOfDirectors, setExpectedNumOfDirectors] = useState([
-    1, 2, 3, 4, 5,
-  ]);
-  const [numOfDirectors, setNumOfDirectors] = useState();
-  const [expectedNumOfBeneficiary, setExpectedNumOfBeneficiary] = useState([
-    1, 2, 3, 4, 5,
-  ]);
-  const [numOfBeneficiary, setNumOfBeneficiary] = useState();
+	const [expectedNumOfShareHolders, setExpectedNumOfShareHolders] = useState([
+		1, 2, 3, 4, 5,
+	]);
+	const [numOfShareHolders, setNumofShareHolders] = useState();
+	const [expectedNumOfDirectors, setExpectedNumOfDirectors] = useState([
+		1, 2, 3, 4, 5,
+	]);
+	const [numOfDirectors, setNumOfDirectors] = useState();
+	const [expectedNumOfBeneficiary, setExpectedNumOfBeneficiary] = useState([
+		1, 2, 3, 4, 5,
+	]);
+	const [numOfBeneficiary, setNumOfBeneficiary] = useState();
 
   const selectNumofShareholders = (data) => {
     setNumofShareHolders(data);
     store.dispatch(setBusinessFormInfo({ name: "shareholders", number: data }));
-  };
 
   const selectNumofDirectors = (data) => {
     setNumOfDirectors(data);
     store.dispatch(setBusinessFormInfo({ name: "directors", number: data }));
-  };
 
   const selectNumofBeneficiary = (data) => {
     setNumOfBeneficiary(data);
     store.dispatch(
       setBusinessFormInfo({ name: "beneficiaries", number: data })
     );
-  };
 
-  function handleCreate(number, where) {
-    switch (where) {
-      case "shareholder":
-        setNumofShareHolders(number);
-        setExpectedNumOfShareHolders((prev) => [...prev, number]);
-        break;
+	function handleCreate(number, where) {
+		if (isNaN(number)) {
+			return;
+		}
 
-      case "director":
-        setNumOfDirectors(number);
-        setExpectedNumOfDirectors((prev) => [...prev, number]);
-        break;
+		switch (where) {
+			case "shareholder":
+				setNumofShareHolders(number);
+				setExpectedNumOfShareHolders((prev) => [...prev, number]);
+				break;
+			case "director":
+				setNumOfDirectors(number);
+				setExpectedNumOfDirectors((prev) => [...prev, number]);
+				break;
+			case "beneficiary":
+				setNumOfBeneficiary(number);
+				setExpectedNumOfBeneficiary((prev) => [...prev, number]);
+				break;
+			default:
+				break;
+		}
+	}
 
-      case "beneficiary":
-        setNumOfBeneficiary(number);
-        setExpectedNumOfBeneficiary((prev) => [...prev, number]);
-        break;
-
-      default:
-        break;
-    }
-  }
 
   const navigate = useNavigate();
 
