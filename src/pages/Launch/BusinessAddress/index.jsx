@@ -5,6 +5,8 @@ import { DropDownWithSearch, InputWithLabel } from "components/input";
 import { Page, Inputs } from "../styled";
 import { Country, State, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
+import { store } from "redux/Store";
+import { setCheckoutProgress } from "redux/Slices";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState({ isoCode: "Nothing" });
@@ -25,8 +27,15 @@ const BusinessAddress = () => {
   const cities = City.getCitiesOfState(country.isoCode, state.isoCode);
 
   const navigate = useNavigate();
+
   const handleNext = () => {
     navigate("/checkout/form-info");
+    store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
+  };
+
+  const handlePrev = () => {
+    navigate(-1);
+    store.dispatch(setCheckoutProgress({ total: 10, current: 2 })); // total- total pages and current - current page
   };
 
   return (
@@ -99,6 +108,7 @@ const BusinessAddress = () => {
           backText={"Previous"}
           forwardText={"Get started"}
           forwardAction={handleNext}
+          backAction={handlePrev}
         />
       </Page>
     </>
