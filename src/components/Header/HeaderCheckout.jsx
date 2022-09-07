@@ -2,7 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { ProgressBar } from "components/Indicators";
 import { FiArrowLeft } from "react-icons/fi";
+import { useSelector } from "react-redux";
 const HeaderCheckout = () => {
+  const LayoutInfo = useSelector((store) => store.LayoutInfo);
+  const { checkoutProgress } = LayoutInfo;
+
   return (
     <Wrapper>
       <BackContainer>
@@ -11,7 +15,7 @@ const HeaderCheckout = () => {
       </BackContainer>
 
       <ProgressWrapper>
-        <ProgressBar progress={70} />
+        <ProgressBar progress={checkoutProgress} />
       </ProgressWrapper>
     </Wrapper>
   );

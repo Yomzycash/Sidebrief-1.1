@@ -13,13 +13,16 @@ import {
 
 export const CheckoutFormInfo = ({
   title = "Shareholder’s Information",
-  page = "1",
+  number = 1,
+  numbers = 1,
 }) => {
   return (
     <Wrapper>
       <TitleWrapper>
         <Title>{title}:</Title>
-        <NumberPage>{page} of 4</NumberPage>
+        <NumberPage>
+          {number} <span>of</span> {numbers}
+        </NumberPage>
       </TitleWrapper>
 
       <ContentWrapper>
@@ -41,13 +44,13 @@ export const CheckoutFormInfo = ({
         </DetailedSection>
         <DetailedSection>
           <DropDown
-            containerStyle={"DetailedSection"}
+            containerStyle={{ margin: 0 }}
             labelStyle={"Label"}
             label="Share Percentage"
           />
 
           <DropDown
-            containerStyle={"DetailedSection"}
+            containerStyle={{ margin: 0 }}
             labelStyle={"Label"}
             label="Share Type"
           />
