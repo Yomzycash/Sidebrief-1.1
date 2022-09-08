@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Checkbox = () => {
+const Checkbox = (
+  {text1="Click here to use ",
+  styledSpan="Sidebrief",
+  text2,
+  styledSpan2}
+) => {
   const [check, setCheck] = useState(false);
 
   const handleCheck = () => {
@@ -11,10 +16,9 @@ const Checkbox = () => {
   return (
     <Wrapper>
       <CheckboxInput type="checkbox" checked={check} onChange={handleCheck} />
-      <Text onClick={handleCheck}>
-        Click here to use <Span>Sidebrief's</Span> shareholders until you
-        sustain your own.
-      </Text>
+      <Text onClick={handleCheck}>{text1}
+        <Span>{styledSpan}</Span> {text2}
+        <Span>{styledSpan2}</Span>  . </Text>
     </Wrapper>
   );
 };
