@@ -23,23 +23,6 @@ export const userRegistrationSchema = yup.object().shape({
     )
     .required(),
 });
-
-export const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Email is a required field"),
-  password: yup.string().required("Password is a required field"),
-});
-
-export const genderOptions = [
-  { value: "Male", label: "Male" },
-  { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" },
-  { value: "Non-binary", label: "Non-binary" },
-  { value: "Other", label: "Other" },
-];
-
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -59,6 +42,22 @@ export const resellerRegistrationSchema = yup.object().shape({
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
+
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Email is a required field"),
+  password: yup.string().required("Password is a required field"),
+});
+
+export const genderOptions = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+  { value: "Transgender", label: "Transgender" },
+  { value: "Non-binary", label: "Non-binary" },
+  { value: "Other", label: "Other" },
+];
 
 export const sidebarLink = [
   {

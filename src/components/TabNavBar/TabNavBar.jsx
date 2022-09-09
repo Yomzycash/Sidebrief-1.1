@@ -12,35 +12,12 @@ import { IoChevronDown } from "react-icons/io5";
 
 const TabNavBar = ({ icon }) => {
   const [boxshadow, setBoxShadow] = useState("false");
-  const [navList, setNavList] = useState(NavbarLink);
-  const [navMore, setNavMore] = useState(NavMore);
-  const [pop, setPop] = useState(0);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
       setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
     });
   }, []);
-  // useEffect(() => {
-  //   window.addEventListener("resize", () => {
-  //     if (window.innerWidth <= 920 && pop === 0) {
-  //       setPop(pop + 1);
-  //     } else if (window.innerWidth > 920) {
-  //       setPop(0);
-  //     }
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   for (let i = 1; i <= pop; i++) {
-  //     const newPopped = navList.pop();
-  //     setNavMore([...navMore, newPopped]);
-  //     const filteredNav = navList.filter((list, index) => {
-  //       return index !== navList.length - 1;
-  //     });
-  //     setNavList(filteredNav);
-  //   }
-  // }, [pop]);
 
   return (
     <NavWrapper boxshadow={boxshadow}>
