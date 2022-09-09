@@ -8,21 +8,36 @@ import React from "react";
 import { StaffContainer, StatusCardContainer } from "./styled";
 
 const StaffDashboard = (props) => {
-	return (
-		<StaffContainer>
-			<h3>Welcome back, Bamidele</h3>
-			<StatusCardContainer>
-				<StatusCard />
-			</StatusCardContainer>
-			<DashboardSection>
-				<BusinessesChartCard completed={5} pending={3} awaiting={1} />
-				<AnalyticsChart />
-			</DashboardSection>
-			<DashboardSection>
-				<ApplicationTable data={MockData} />
-			</DashboardSection>
-		</StaffContainer>
-	);
+  const analytics = {
+    title: "User Analytics",
+    options: ["All time", 1, 2, 3, 4, 5, 6, 7],
+    status1: {
+      text: "Total Users",
+      total: 825,
+      color: "#55D7FF",
+    },
+    status2: {
+      text: "Registrations",
+      total: 450,
+      color: " #fff",
+    },
+  };
+
+  return (
+    <StaffContainer>
+      <h3>Welcome back, Bamidele</h3>
+      <StatusCardContainer>
+        <StatusCard />
+      </StatusCardContainer>
+      <DashboardSection>
+        <BusinessesChartCard analytics={analytics} staff />
+        <AnalyticsChart />
+      </DashboardSection>
+      <DashboardSection>
+        <ApplicationTable data={MockData} />
+      </DashboardSection>
+    </StaffContainer>
+  );
 };
 
 export default StaffDashboard;

@@ -21,17 +21,51 @@ export const Label = styled.div`
 export const BusinessesChart = styled.div`
   display: flex;
   flex-flow: column;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
   flex: 1;
   min-width: clamp(350px, 25vw, 700px);
   min-height: 264px;
   border-radius: 16px;
-  padding: 0 8px;
+  padding: 24px;
   background-color: white;
   border: 1px solid #edf1f6;
   box-shadow: 0 10px 10px -5px rgba(149, 150, 151, 0.08);
+  background-color: ${({ staff }) => (staff ? "#00A2D4" : "")};
 `;
+
+export const Title = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: ${({ staff }) => (staff ? "white" : "#626262")};
+
+  font-size: clamp(20px, 1.5vw, 24px);
+  font-weight: 600;
+
+  select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    color: ${({ staff }) => (staff ? "white" : "#626262")};
+    background-color: #ffffff34;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+  }
+
+  option {
+    display: flex;
+    justify-content: center;
+    color: #151717;
+    background-color: #ffffff34;
+  }
+`;
+
 export const Indicator = styled.div`
   display: flex;
   justify-content: center;
@@ -43,7 +77,6 @@ export const Bottom = styled.div`
   align-items: flex-start;
   gap: 4px;
   width: 100%;
-  margin: 0 0 14px;
 `;
 
 // Status component's styles
@@ -59,7 +92,7 @@ export const Left = styled.div`
     margin-top: 3px;
     width: 12px;
     height: 12px;
-    background-color: ${(props) => props.color || "#00a2d4"};
+    background-color: ${(props) => (props.color ? props.color : "#00a2d4")};
     border-radius: 50%;
   }
 `;
@@ -70,10 +103,13 @@ export const Right = styled.div`
     color: #151717;
     font-size: clamp(14px, 2vw, 18px);
     font-weight: 700;
+    color: white;
+    color: ${({ staff }) => (staff ? "white" : "#151717")};
   }
   > div {
     color: #727474;
     font-size: clamp(10px, 1.5vw, 12px);
+    color: ${({ staff }) => (staff ? "white" : "#727474")};
   }
 `;
 

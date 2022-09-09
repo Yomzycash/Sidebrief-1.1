@@ -4,7 +4,6 @@ import styled from "styled-components";
 export const Container = styled.div`
   cursor: ${({ notready }) => (notready ? "not-allowed" : "")};
   width: 100%;
-  max-width: 550px;
   min-height: 124px;
   background: #ffffff;
   border: 1px solid #edf1f7;

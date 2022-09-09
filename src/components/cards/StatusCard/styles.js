@@ -28,12 +28,11 @@ export const Top = styled.div`
 `;
 
 export const Description = styled.p`
-  max-width: 575px;
   padding-top: 8px;
-  /* height: 0; */
   min-height: 0;
   max-height: 0;
 
+  display: flex;
   font-family: "BR Firma";
   font-weight: 400;
   font-size: 14px;
