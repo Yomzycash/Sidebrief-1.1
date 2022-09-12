@@ -5,9 +5,11 @@ export const defaultLocation = {
 	isoCode: "--",
 };
 
-export const schema = yup.object().shape({
-	Email: yup
-		.string()
-		.email("Enter a valid email address")
-		.required("Email is a required field"),
+export const addressSchema = yup.object().shape({
+	country: yup.string().required(),
+	state: yup.string().required(),
+	city: yup.string().required(),
+	street: yup.string().required(),
+	zipcode: yup.string().required(),
+	email: yup.string().email().required(),
 });

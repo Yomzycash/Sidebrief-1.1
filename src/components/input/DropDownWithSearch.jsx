@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DropdownList from "react-widgets/DropdownList";
 import "react-widgets/styles.css";
 import { DropdownArrow } from "asset/svg";
-import { BottomText } from "./styled";
+import { BottomText, ErrMsg } from "./styled";
 
 const DropDownWithSearch = ({
 	name, // name, neccessary for React-hook-form
@@ -17,11 +17,13 @@ const DropDownWithSearch = ({
 	onCreate, // only used when object creation is allowed
 	value, // only used when object creation is allowed
 	setValue, // only used when object creation is allowed
+	errorMessage,
 }) => {
 	return (
 		<Container>
 			<Top>
 				<Title>{title}</Title>
+				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
 			</Top>
 			<DropdownList
 				style={{ color: "#00A2D4" }}
@@ -74,6 +76,8 @@ const Top = styled.div`
 	display: flex;
 	flex-flow: row wrap;
 	width: 100%;
+	align-items: center;
+	justify-content: space-between;
 `;
 
 const Title = styled.span`
