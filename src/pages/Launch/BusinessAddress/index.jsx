@@ -16,8 +16,6 @@ const BusinessAddress = () => {
 	const [state, setState] = useState(defaultLocation);
 	const [city, setCity] = useState(defaultLocation);
 
-	const formRef = useRef();
-
 	const {
 		register,
 		handleSubmit,
@@ -50,8 +48,6 @@ const BusinessAddress = () => {
 		console.log(data);
 	};
 
-	console.log(formRef);
-
 	const countries = Country.getAllCountries();
 	const states = State.getStatesOfCountry(country.isoCode);
 	const cities = City.getCitiesOfState(country.isoCode, state.isoCode);
@@ -78,7 +74,7 @@ const BusinessAddress = () => {
 					title={"Business Address"}
 					subtitle={"Please provide the address for this business"}
 				>
-					<Inputs ref={formRef} onSubmit={handleSubmit(SubmitForm)}>
+					<Inputs onSubmit={handleSubmit(SubmitForm)}>
 						<DropDownWithSearch
 							name={"country"}
 							title={"Country"}
