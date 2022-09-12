@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
 import { DropDownWithSearch, InputWithLabel } from "components/input";
@@ -7,27 +7,50 @@ import { Country, State, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
-import { defaultLocation } from "../constants";
+import { defaultLocation, addressSchema } from "../constants";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const BusinessAddress = () => {
 	const [country, setCountry] = useState(defaultLocation);
 	const [state, setState] = useState(defaultLocation);
 	const [city, setCity] = useState(defaultLocation);
 
+	const formRef = useRef();
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		setValue,
+		reset,
+	} = useForm({
+		resolver: yupResolver(addressSchema),
+	});
+
 	const selectCountry = (data) => {
 		setCountry(data);
+		setValue("country", data.name, { shouldValidate: true });
 		setState(defaultLocation);
 		setCity(defaultLocation);
 	};
 
 	const selectState = (data) => {
 		setState(data);
+		setValue("state", data.name, { shouldValidate: true });
 		setCity(defaultLocation);
 	};
 
 	const selectCity = (data) => {
 		setCity(data);
+		setValue("city", data.name, { shouldValidate: true });
 	};
+
+	const SubmitForm = (data) => {
+		console.log(data);
+	};
+
+	console.log(formRef);
 
 	const countries = Country.getAllCountries();
 	const states = State.getStatesOfCountry(country.isoCode);
@@ -36,6 +59,8 @@ const BusinessAddress = () => {
 	const navigate = useNavigate();
 
 	const handleNext = () => {
+		// submit form before navigating
+
 		navigate("/checkout/form-info");
 		store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
 	};
@@ -53,7 +78,7 @@ const BusinessAddress = () => {
 					title={"Business Address"}
 					subtitle={"Please provide the address for this business"}
 				>
-					<Inputs>
+					<Inputs ref={formRef} onSubmit={handleSubmit(SubmitForm)}>
 						<DropDownWithSearch
 							name={"country"}
 							title={"Country"}
@@ -62,6 +87,7 @@ const BusinessAddress = () => {
 							selectAction={selectCountry}
 							filterBy={"name"}
 							value={country}
+							errorMessage={errors.country?.message}
 						/>
 						<DropDownWithSearch
 							name={"state"}
@@ -71,6 +97,7 @@ const BusinessAddress = () => {
 							selectAction={selectState}
 							filterBy={"name"}
 							value={state}
+							errorMessage={errors.state?.message}
 						/>
 						<DropDownWithSearch
 							name={"city"}
@@ -80,6 +107,7 @@ const BusinessAddress = () => {
 							selectAction={selectCity}
 							filterBy={"name"}
 							value={city}
+							errorMessage={errors.city?.message}
 						/>
 						<InputWithLabel
 							containerStyle={"checkoutInput"}
@@ -88,8 +116,8 @@ const BusinessAddress = () => {
 							label="Number and street"
 							type="text"
 							name="street"
-							register={() => {}}
-							// errorMessage={errors.Email?.message}
+							register={register}
+							errorMessage={errors.street?.message}
 						/>
 						<InputWithLabel
 							containerStyle={"checkoutInput"}
@@ -97,9 +125,9 @@ const BusinessAddress = () => {
 							placeholder="--"
 							label="Zip Code"
 							type="text"
-							name="zipCode"
-							register={() => {}}
-							// errorMessage={errors.Email?.message}
+							name="zipcode"
+							register={register}
+							errorMessage={errors.zipcode?.message}
 						/>
 						<InputWithLabel
 							containerStyle={"checkoutInput"}
@@ -109,9 +137,10 @@ const BusinessAddress = () => {
 							bottomText="Please provide sidebrief with a functional Email to help us contact you fast"
 							type="email"
 							name="email"
-							register={() => {}}
-							// errorMessage={errors.Email?.message}
+							register={register}
+							errorMessage={errors.email?.message}
 						/>
+						{/* <button type={"submit"}>Submit</button> */}
 					</Inputs>
 				</CheckoutSection>
 				<CheckoutController
