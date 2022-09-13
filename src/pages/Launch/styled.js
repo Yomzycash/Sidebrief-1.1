@@ -44,7 +44,7 @@ export const Page = styled.div`
 	padding-inline: 8%;
 `;
 
-export const Inputs = styled.form`
+export const Inputs = styled.div`
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(2, minmax(350px, 1fr));

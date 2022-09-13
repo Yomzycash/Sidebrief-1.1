@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
 import { DropDownWithSearch, InputWithLabel } from "components/input";
@@ -44,8 +44,13 @@ const BusinessAddress = () => {
 		setValue("city", data.name, { shouldValidate: true });
 	};
 
-	const SubmitForm = (data) => {
+	const SubmitForm = async (data) => {
 		console.log(data);
+		// changed function to async
+		// api calls can be done here
+
+		// redirect to the next page
+		handleNext();
 	};
 
 	const countries = Country.getAllCountries();
@@ -55,8 +60,6 @@ const BusinessAddress = () => {
 	const navigate = useNavigate();
 
 	const handleNext = () => {
-		// submit form before navigating
-
 		navigate("/checkout/form-info");
 		store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
 	};
@@ -69,83 +72,93 @@ const BusinessAddress = () => {
 	return (
 		<>
 			<HeaderCheckout />
-			<Page>
-				<CheckoutSection
-					title={"Business Address"}
-					subtitle={"Please provide the address for this business"}
-				>
-					<Inputs onSubmit={handleSubmit(SubmitForm)}>
-						<DropDownWithSearch
-							name={"country"}
-							title={"Country"}
-							list={countries}
-							renderer={({ item }) => <span>{item.name}</span>}
-							selectAction={selectCountry}
-							filterBy={"name"}
-							value={country}
-							errorMessage={errors.country?.message}
-						/>
-						<DropDownWithSearch
-							name={"state"}
-							title={"State"}
-							list={states}
-							renderer={({ item }) => <span>{item.name}</span>}
-							selectAction={selectState}
-							filterBy={"name"}
-							value={state}
-							errorMessage={errors.state?.message}
-						/>
-						<DropDownWithSearch
-							name={"city"}
-							title={"City"}
-							list={cities}
-							renderer={({ item }) => <span>{item.name}</span>}
-							selectAction={selectCity}
-							filterBy={"name"}
-							value={city}
-							errorMessage={errors.city?.message}
-						/>
-						<InputWithLabel
-							containerStyle={"checkoutInput"}
-							labelStyle={"checkoutInputLabel"}
-							placeholder="--"
-							label="Number and street"
-							type="text"
-							name="street"
-							register={register}
-							errorMessage={errors.street?.message}
-						/>
-						<InputWithLabel
-							containerStyle={"checkoutInput"}
-							labelStyle={"checkoutInputLabel"}
-							placeholder="--"
-							label="Zip Code"
-							type="text"
-							name="zipcode"
-							register={register}
-							errorMessage={errors.zipcode?.message}
-						/>
-						<InputWithLabel
-							containerStyle={"checkoutInput"}
-							labelStyle={"checkoutInputLabel"}
-							placeholder="example@example.com"
-							label="Email Address"
-							bottomText="Please provide sidebrief with a functional Email to help us contact you fast"
-							type="email"
-							name="email"
-							register={register}
-							errorMessage={errors.email?.message}
-						/>
-						{/* <button type={"submit"}>Submit</button> */}
-					</Inputs>
-				</CheckoutSection>
-				<CheckoutController
-					backText={"Previous"}
-					forwardText={"Get started"}
-					forwardAction={handleNext}
-					backAction={handlePrev}
-				/>
-			</Page>
+			<form onSubmit={handleSubmit(SubmitForm)}>
+				<Page>
+					<CheckoutSection
+						title={"Business Address"}
+						subtitle={
+							"Please provide the address for this business"
+						}
+					>
+						<Inputs>
+							<DropDownWithSearch
+								name={"country"}
+								title={"Country"}
+								list={countries}
+								renderer={({ item }) => (
+									<span>{item.name}</span>
+								)}
+								selectAction={selectCountry}
+								filterBy={"name"}
+								value={country}
+								errorMessage={errors.country?.message}
+							/>
+							<DropDownWithSearch
+								name={"state"}
+								title={"State"}
+								list={states}
+								renderer={({ item }) => (
+									<span>{item.name}</span>
+								)}
+								selectAction={selectState}
+								filterBy={"name"}
+								value={state}
+								errorMessage={errors.state?.message}
+							/>
+							<DropDownWithSearch
+								name={"city"}
+								title={"City"}
+								list={cities}
+								renderer={({ item }) => (
+									<span>{item.name}</span>
+								)}
+								selectAction={selectCity}
+								filterBy={"name"}
+								value={city}
+								errorMessage={errors.city?.message}
+							/>
+							<InputWithLabel
+								containerStyle={"checkoutInput"}
+								labelStyle={"checkoutInputLabel"}
+								placeholder="--"
+								label="Number and street"
+								type="text"
+								name="street"
+								register={register}
+								errorMessage={errors.street?.message}
+							/>
+							<InputWithLabel
+								containerStyle={"checkoutInput"}
+								labelStyle={"checkoutInputLabel"}
+								placeholder="--"
+								label="Zip Code"
+								type="text"
+								name="zipcode"
+								register={register}
+								errorMessage={errors.zipcode?.message}
+							/>
+							<InputWithLabel
+								containerStyle={"checkoutInput"}
+								labelStyle={"checkoutInputLabel"}
+								placeholder="example@example.com"
+								label="Email Address"
+								bottomText="Please provide sidebrief with a functional Email to help us contact you fast"
+								type="email"
+								name="email"
+								register={register}
+								errorMessage={errors.email?.message}
+							/>
+						</Inputs>
+					</CheckoutSection>
+					<CheckoutController
+						backText={"Previous"}
+						forwardText={"Next"}
+						forwardAction={handleNext}
+						backAction={handlePrev}
+						forwardSubmit={true}
+					/>
+				</Page>
+			</form>
 		</>
 	);
 };
