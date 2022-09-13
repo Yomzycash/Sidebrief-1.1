@@ -100,3 +100,19 @@ const RegisteredBusinessesInfo = createSlice({
 
 export const RegisteredBusinessesReducers = RegisteredBusinessesInfo.reducer;
 export const { setBusinessFormInfo } = RegisteredBusinessesInfo.actions;
+
+// This slice will hold all launch application information
+const launchApplicationInfo = createSlice({
+  name: "launchApplication",
+  initialState: {
+    launchCode: "",
+  },
+  reducers: {
+    launchCode: (state, action) => {
+      state.launchCode = action.payload;
+    },
+  },
+});
+
+export const LaunchReducer = launchApplicationInfo.reducers;
+export const { launchCode } = launchApplicationInfo.actions;
