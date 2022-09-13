@@ -6,6 +6,7 @@ import {
   Area,
   XAxis,
   YAxis,
+  Label,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
@@ -13,59 +14,40 @@ import { analyticsData } from "utils/config";
 import { ChartContainer, TopContent } from "./styled";
 
 const AnalyticsChart = () => {
-  const selectStyle = {
-    control: (provided) => ({
-      ...provided,
-      height: 7,
-      width: 150,
-      padding: 5,
-      margin: 0,
-      marginLeft: 0,
-      border: "0px solid black",
-      fontSize: 13,
-      backgroundColor: "white",
-      outline: "none",
-      boxShadow: "none",
-    }),
-
-    option: (provided, state) => ({
-      ...provided,
-      padding: 5,
-    }),
-    input: (styles) => ({
-      ...styles,
-      // border: "solid red",
-      // width: 50,
-    }),
-  };
-
   const options = [
-    { value: "Last Week", label: "Last Week" },
-    { value: "Last Day", label: "Last Day" },
-    { value: "Last Hour", label: "Last Hour" },
-    { value: "Last Minutes", label: "Last Minutes" },
+    "Last Week",
+    "Last Day",
+    "Last Hour",
+    "Last Minute",
+    "Last Second",
   ];
 
   return (
     <ChartContainer>
       <TopContent>
         <h3>Payment Analytics</h3>
-        <Select options={options} styles={selectStyle} />
+        <select name="time">
+          {options.map((option, index) => (
+            <option value={option} key={index}>
+              {option}
+            </option>
+          ))}
+        </select>
       </TopContent>
       <ResponsiveContainer width="100%" height="75%">
         <AreaChart
           data={analyticsData}
           margin={{
             top: 10,
-            right: 30,
+            right: 0,
             left: 0,
             bottom: 0,
           }}
         >
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#00a2d4" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#00a2d4" stopOpacity={0} />
+              <stop offset="0%" stopColor="#00a2d4" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="#00a2d4" stopOpacity={0.1} />
             </linearGradient>
           </defs>
 
@@ -73,12 +55,17 @@ const AnalyticsChart = () => {
             dataKey="name"
             tickLine={{ stroke: "white" }}
             axisLine={{ stroke: "white" }}
+            dy={10}
+            dx={15}
           />
           <YAxis
             domain={[0, 8]}
-            tickLine={{ stroke: "white" }}
-            axisLine={{ stroke: "white" }}
-          />
+            tickLine={{ stroke: "white", top: "40px" }}
+            axisLine={{ stroke: "white", top: "40px" }}
+            dx={-8}
+          >
+            <Label position="left" />
+          </YAxis>
           <Tooltip />
           <Area
             type="monotone"
