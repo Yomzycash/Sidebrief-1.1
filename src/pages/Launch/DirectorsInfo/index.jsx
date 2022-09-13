@@ -39,6 +39,7 @@ const DirectorsInfo = () => {
             title="Directors's Information"
             number={index + 1}
             numbers={directors ? directors : index + 1}
+            info= "Directors"
           />
         ))}
       </Body>

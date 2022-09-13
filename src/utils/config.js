@@ -23,6 +23,30 @@ export const userRegistrationSchema = yup.object().shape({
     )
     .required(),
 });
+
+
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Email is a required field"),
+  password: yup.string().required("Password is a required field"),
+});
+
+export const genderOptions = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+  { value: "Transgender", label: "Transgender" },
+  { value: "Non-binary", label: "Non-binary" },
+  { value: "Other", label: "Other" },
+];
+
+export const shareTypeOptions = [
+  { value: "Preference Shares" , label: "Preference Shares" },
+  { value: "Common Shares", label: "Common Shares" }
+  ];
+
+
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -41,6 +65,14 @@ export const resellerRegistrationSchema = yup.object().shape({
   password: yup.string().min(8).max(15).required(),
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
+});
+export const checkInfoSchema = yup.object().shape({
+  full_name: yup.string().required("Full name is a required field"),
+  phone: yup.string().required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  share_percentage: yup.string().required("Share percentage is from 1% to 100%"),
+  share_type: yup.string().required("Share type is a required field")
+
 });
 
 export const loginSchema = yup.object().shape({
