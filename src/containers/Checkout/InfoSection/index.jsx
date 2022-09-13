@@ -11,7 +11,7 @@ import {ContentWrapper,DetailedSection,ButtonLink,Title,TitleWrapper,CheckWrappe
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { checkInfoSchema } from "utils/config";
+import { shareTypeOptions,checkInfoSchema } from "utils/config";
 
 export const CheckoutFormInfo = ({
   title = "Shareholder’s Information",
@@ -19,6 +19,8 @@ export const CheckoutFormInfo = ({
   }) => {
     const [containerList, setContainerList]= useState([{container: ""}]);
     const [read, setRead] = useState(true);
+
+  
     
 
     const handleAddContainer=() => {
@@ -44,11 +46,7 @@ export const CheckoutFormInfo = ({
       console.log(string);
     };
 
-    const handleSharePercentageChange = (value) => {
-      var string = Object.values(value)[0];
-      setValue("share_percentage", string, { shouldValidate: true });
-     
-    };
+   
     const submitForm =  (formData) => {
       console.log(formData);
     };
@@ -118,11 +116,13 @@ export const CheckoutFormInfo = ({
           />
         </DetailedSection>
         <DetailedSection>
-          <DropDown
+          <InputWithLabel
             containerStyle={{ margin: 0 }}
             labelStyle={"Label"}
+            type="text"
             label="Share Percentage"
-            onChange={handleSharePercentageChange}
+            
+           
             // register={register}
             errorMessage={errors.share_percentage?.message}
           />
@@ -131,7 +131,8 @@ export const CheckoutFormInfo = ({
             containerStyle={{ margin: 0 }}
             labelStyle={"Label"}
             label="Share Type"
-            // register={register}
+            options= {shareTypeOptions}
+            register={register}
             onChange={handleShareTypeChange}
             errorMessage={errors.share_type?.message}
           />

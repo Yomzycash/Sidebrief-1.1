@@ -40,6 +40,12 @@ export const genderOptions = [
   { value: "Other", label: "Other" },
 ];
 
+export const shareTypeOptions = [
+  { value: "Preference Shares" , label: "Preference Shares" },
+  { value: "Common Shares", label: "Common Shares" }
+  ];
+
+
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -63,7 +69,7 @@ export const checkInfoSchema = yup.object().shape({
   full_name: yup.string().required("Full name is a required field"),
   phone: yup.string().required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
-  share_percentage: yup.string().required("Share percentage is a required field"),
+  share_percentage: yup.string().required("Share percentage is from 1% to 100%"),
   share_type: yup.string().required("Share type is a required field")
 
 });
