@@ -67,7 +67,7 @@ const SignIn = () => {
 			store.dispatch(saveUserLoginInfo);
 			console.log(data);
 			toast.success(data.message);
-			navigate("/");
+			navigate("/dashboard");
 		} else if (error) {
 			toast.error(error.data.message);
 			console.log(error.data.message);

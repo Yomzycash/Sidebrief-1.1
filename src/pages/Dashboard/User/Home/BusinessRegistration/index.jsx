@@ -1,5 +1,5 @@
 import React from "react";
-import { Registration, Top, Body, Main, Recently } from "./styled";
+import { Registration, Body, Main, Recently } from "./styled";
 import TabNavBar from "components/TabNavBar/TabNavBar";
 import {
   BusinessesChartCard,
@@ -38,6 +38,25 @@ const BusinessRegistration = (props) => {
     },
   };
 
+  const analytics = {
+    label: "Registrations",
+    status1: {
+      text: "Completed",
+      total: 5,
+      color: "#00A2D4",
+    },
+    status2: {
+      text: "Pending",
+      total: 1,
+      color: " #55D7FF",
+    },
+    status3: {
+      text: "Approval",
+      total: 1,
+      color: " #CCF3FF",
+    },
+  };
+
   const navigate = useNavigate();
 
   const handleLaunch = () => {
@@ -50,7 +69,7 @@ const BusinessRegistration = (props) => {
       <Body>
         <Main>
           <DashboardSection
-            title="Welcome To SideBrief, Ayomide"
+            title="Welcome back, Ayomide"
             BigTitle="true"
             nowrap
           >
@@ -74,7 +93,7 @@ const BusinessRegistration = (props) => {
               icon: <IoArrowForward />,
             }}
           >
-            <BusinessesChartCard completed={5} pending={3} awaiting={1} />
+            <BusinessesChartCard analytics={analytics} user />
             <Recently>
               <StatusCard
                 name="Ayomide Construction and Husband's - LLC"
@@ -138,23 +157,3 @@ const BusinessRegistration = (props) => {
 };
 
 export default BusinessRegistration;
-
-// swipeable={true}
-// draggable={true}
-// showDots={true}
-// responsive={responsive}
-// ssr={true} // means to render carousel on server-side.
-// infinite={true}
-// autoPlay={true}
-// autoPlaySpeed={1000}
-// keyBoardControl={true}
-// customTransition="all .5"
-// transitionDuration={500}
-// containerClass="carousel-container"
-// removeArrowOnDeviceType={["tablet", "mobile"]}
-// deviceType={props.deviceType}
-// dotListClass="custom-dot-list-style"
-// itemClass="carousel-item-padding-40-px"
-// maxWidth="200px"
-// style={{ maxWidth: "300px" }}
-// {...sliderParams}

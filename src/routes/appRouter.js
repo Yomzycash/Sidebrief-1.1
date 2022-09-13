@@ -1,3 +1,4 @@
+import ShareHolderKYC from "pages/Launch/ShareHolderKYC";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
 import {
@@ -51,6 +52,7 @@ const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
 const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
 const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
 const ReviewInformation = lazy(() => import("pages/Launch/Review"));
+const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
 
 const AppRouter = () => {
   return (
@@ -121,6 +123,8 @@ const AppRouter = () => {
                 element={<BeneficiariesInfo />}
               />
               <Route path="review" element={<ReviewInformation />} />
+              <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
+              <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
             </Route>
           </Route>
         </Routes>

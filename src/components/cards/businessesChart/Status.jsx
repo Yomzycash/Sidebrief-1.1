@@ -1,13 +1,13 @@
 import React from "react";
 import { Container, Left, Right } from "./styled";
 
-const Status = ({ color, number, text }) => {
+const Status = ({ color, number, text, staff }) => {
   return (
     <Container>
-      <Left color={color}>
+      <Left color={color} text={text} staff={staff}>
         <div />
       </Left>
-      <Right>
+      <Right staff={staff}>
         <p>{number}</p>
         <div>{text}</div>
       </Right>

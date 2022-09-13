@@ -24,6 +24,7 @@ export const userRegistrationSchema = yup.object().shape({
     .required(),
 });
 
+
 export const loginSchema = yup.object().shape({
   email: yup
     .string()
@@ -73,6 +74,22 @@ export const checkInfoSchema = yup.object().shape({
   share_type: yup.string().required("Share type is a required field")
 
 });
+
+export const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Email is a required field"),
+  password: yup.string().required("Password is a required field"),
+});
+
+export const genderOptions = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+  { value: "Transgender", label: "Transgender" },
+  { value: "Non-binary", label: "Non-binary" },
+  { value: "Other", label: "Other" },
+];
 
 export const sidebarLink = [
   {
@@ -292,5 +309,28 @@ export const Entities = [
     shareholder: "Private Shareholders Only",
     shares: 10000,
     type: "Standard",
+  },
+];
+
+export const Messages = [
+  {
+    id: 1,
+    message:
+      "Your business, Ayomide Construction & Sons has been registered successfully.",
+    time: "2hrs ago",
+  },
+
+  {
+    id: 2,
+    message:
+      "Your application for  Ayomide Construction & Sons has been approved and is receiving attention.",
+    time: "2hrs ago",
+  },
+
+  {
+    id: 3,
+    message:
+      "Hi there! You have an incomplete business registration. Continue now.",
+    time: "2hrs ago",
   },
 ];
