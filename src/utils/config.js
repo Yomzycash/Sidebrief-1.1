@@ -279,3 +279,26 @@ export const Entities = [
     type: "Standard",
   },
 ];
+
+export const Messages = [
+  {
+    id: 1,
+    message:
+      "Your business, Ayomide Construction & Sons has been registered successfully.",
+    time: "2hrs ago",
+  },
+
+  {
+    id: 2,
+    message:
+      "Your application for  Ayomide Construction & Sons has been approved and is receiving attention.",
+    time: "2hrs ago",
+  },
+
+  {
+    id: 3,
+    message:
+      "Hi there! You have an incomplete business registration. Continue now.",
+    time: "2hrs ago",
+  },
+];
