@@ -86,3 +86,72 @@ export const UserContainer = styled.div`
   cursor: pointer;
   margin-left: 24px;
 `;
+export const NotificationWrapper = styled.div`
+  width: 32%;
+  position: absolute;
+  right: 24px;
+  z-index: 10;
+  box-shadow: -4px 10px 10px 5px rgba(149, 150, 151, 0.08);
+  border-radius: 10px;
+  top: 72px;
+  background-color: white;
+`;
+
+export const NotificationHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px 16px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #151717;
+  }
+
+  p {
+    color: #4e5152;
+    font-size: 12px;
+  }
+`;
+
+export const NotificationMessages = styled.div``;
+
+export const Message = styled.div`
+  padding: 16px;
+  border-top: solid 1px #edf1f6;
+
+  :hover {
+    background-color: rgba(0, 162, 212, 0.1);
+    cursor: pointer;
+  }
+
+  h6 {
+    color: #151717;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+  span {
+    color: #00a2d4;
+    font-size: 14px;
+  }
+
+  p {
+    color: #959697;
+    font-size: 12px;
+  }
+`;
+
+export const NoMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 24px;
+  p {
+    font-size: 16px;
+    line-height: 24px;
+    color: #151717;
+    text-align: center;
+  }
+`;

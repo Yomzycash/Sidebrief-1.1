@@ -121,7 +121,7 @@ export const ChartContainer = styled.div`
   padding: 24px;
 
   width: 65%;
-  height: 280px;
+  height: 320px;
   min-height: 271px;
 
   @media screen and (max-width: 600px) {
