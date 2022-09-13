@@ -59,6 +59,14 @@ export const resellerRegistrationSchema = yup.object().shape({
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
+export const checkInfoSchema = yup.object().shape({
+  full_name: yup.string().required("Full name is a required field"),
+  phone: yup.string().required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  share_percentage: yup.string().required("Share percentage is a required field"),
+  share_type: yup.string().required("Share type is a required field")
+
+});
 
 export const sidebarLink = [
   {

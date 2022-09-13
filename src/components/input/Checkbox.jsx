@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Checkbox = (
   {text1="Click here to use ",
   styledSpan="Sidebrief",
-  text2,
+  text2="shareholders until you sustain your own",
   styledSpan2}
 ) => {
   const [check, setCheck] = useState(false);
@@ -30,6 +30,7 @@ const Wrapper = styled.div`
   align-items: center;
   flex: 1;
   gap: 16px;
+  width: 100%;
 `;
 const CheckboxInput = styled.input`
   height: 20px;
@@ -50,4 +51,5 @@ const Text = styled.label`
 
 const Span = styled.span`
   color: #0082aa;
+  // cursor: pointer;
 `;
