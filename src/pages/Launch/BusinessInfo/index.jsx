@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
@@ -50,14 +50,22 @@ const BusinessInfo = () => {
     { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
   ];
 
-  const [country, setCountry] = useState("");
   const [objectives, setObjectives] = useState("");
   const [businessNames, setBusinessNames] = useState([]);
 
-  // const { data = [], error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const [country, setCountry] = useState();
 
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   getCountries();
+  // }, []);
+
+  // const getCountries = async () => {
+  //   let countries = await Promise.resolve(data);
+  //   console.log(countries);
+  // };
   // Navigation handlers
   const handleNext = () => {
     navigate("/checkout/entity");
@@ -82,8 +90,8 @@ const BusinessInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting");
-    // let countries = await data;
-    // console.log(countries);
+    let countries = await data;
+    console.log(countries);
   };
 
   return (
@@ -97,7 +105,7 @@ const BusinessInfo = () => {
         <InputsWrapper>
           <TagInputWithSearch
             label="Operational Country"
-            list={BusinessObjectives}
+            list={country}
             getValue={handleCountry}
           />
           <TagInputWithSearch
