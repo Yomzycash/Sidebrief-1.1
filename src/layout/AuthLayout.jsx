@@ -17,7 +17,7 @@ const AuthLayout = ({ children, hideLeftAt }) => {
           </div>
         </LayoutLeftContent>
       </LayoutLeft>
-      <LayoutRight>
+      <LayoutRight hideLeftAt={hideLeftAt}>
         <div>{children}</div>
       </LayoutRight>
     </Layout>
@@ -56,7 +56,7 @@ const LayoutLeftContent = styled.div`
   height: 90%;
   padding-bottom: 4rem;
   img {
-    max-width: 70%;
+    max-width: 80%;
     margin: 0 8%;
     max-height: 284px;
   }
@@ -87,5 +87,8 @@ const LayoutRight = styled.div`
   > div {
     width: 80%;
     margin: 2rem auto;
+    @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
+      width: 90%;
+    }
   }
 `;

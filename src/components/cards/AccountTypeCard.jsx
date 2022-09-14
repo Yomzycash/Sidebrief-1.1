@@ -1,11 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const AccountTypeCard = ({ title, body, to }) => {
   return (
     <NavLink to={to} style={{ textDecoration: "none" }}>
-      <AccountType to={to}>
+      <AccountType
+        to={to}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        transition={{ duration: 0.5 }}
+        whileHover={{
+          scale: 1.07,
+          transition: { duration: 0.2 },
+        }}
+      >
         <Title>{title}</Title>
         <Body> {body}</Body>
       </AccountType>
@@ -15,7 +26,7 @@ const AccountTypeCard = ({ title, body, to }) => {
 
 export default AccountTypeCard;
 
-const AccountType = styled.div`
+const AccountType = styled(motion.div)`
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-around;
@@ -26,6 +37,10 @@ const AccountType = styled.div`
   max-width: 25rem;
   padding: 2rem 1rem;
   gap: 0.5rem;
+  height: 144px;
+  @media screen and (max-width: 630px) {
+    max-width: 100%;
+  }
 `;
 const Title = styled.p`
   font-size: clamp(18px, 2vw, 20px);
@@ -36,4 +51,5 @@ const Body = styled.p`
   font-size: clamp(14px, 2vw, 16px);
   font-weight: 400;
   color: var(--PrimaryBlack);
+  transition: 0.3s all ease;
 `;

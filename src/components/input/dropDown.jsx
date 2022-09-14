@@ -1,6 +1,6 @@
 import React from "react";
 import { Wrapper, Label, ErrMsg, Top } from "./styled";
-import Select from 'react-select'
+import Select from "react-select";
 
 const DropDown = ({
   label,
@@ -12,39 +12,40 @@ const DropDown = ({
   container,
   onSelectedChange = () => {},
   placeholder,
+  onChange,
   type,
   options,
   name,
   register,
   ...rest
 }) => {
-
-  const handleChange = (e) => {
-    let selectedValue = e.target.value;
-    onSelectedChange(selectedValue);
-    console.log(selectedValue);
-  };
+  // const handleChange = (e) => {
+  //   let selectedValue = e.target.value;
+  //   onSelectedChange(selectedValue);
+  //   console.log(selectedValue);
+  // };
   // let options = OptionValues.map((data) => (
   //   <option key={data.id} value={data.value}>
   //     {data.value}
   //   </option>
   // ));
   const selectStyle = {
-    background: 'red',
+    background: "red",
     container: (base, state) => ({
       ...base,
-      width: '100%', 
+      width: "100%",
       marginTop: 20,
-
     }),
     control: (base, state) => ({
       ...base,
-      boxShadow: 'none',
+      boxShadow: "none",
       borderRadius: 10,
-      height: 56,
+      height: 55,
       paddingLeft: 20,
-      border: '1px solid #ececec',
-      outlineColor: '#00A2D4',
+      border: `1px solid ${
+        state.isFocused ? "#00A2D4" : errorMessage ? "red" : "#ECECEC"
+      }`,
+      outlineColor: "#00A2D4",
     }),
     placeholder: (base, state) => ({
       ...base,
@@ -54,27 +55,29 @@ const DropDown = ({
       height: 46,
       borderRadius: 15,
       marginLeft: 20,
-      outlineColor: '#00A2D4',
+      outlineColor: "#00A2D4",
     }),
     option: (provided, state) => ({
       ...provided,
       padding: 20,
     }),
-  }
+  };
   return (
-    <Wrapper className={containerStyle}>
+    <Wrapper
+      // className={containerStyle}
+      style={containerStyle && containerStyle}
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 10, opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Top>
         {label && <Label className={labelStyle}>{label}</Label>}
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
 
-    
-        <Select 
-          // onChange={handleChange} 
-          options={options} 
-          styles={selectStyle}/>
-      
+      <Select onChange={onChange} options={options} styles={selectStyle} />
     </Wrapper>
   );
 };

@@ -1,4 +1,6 @@
+import { motion } from "framer-motion";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import SidebriefLogo1 from "../../asset/images/SidebriefLogo.png";
 
@@ -6,29 +8,36 @@ const LogoNav = ({
   justify,
   contwidth,
   imgwidth,
-  imgminWidth,
-  imgMaxwidth,
+  img_minwidth,
+  img_maxwidth,
   stick,
-  navSticked,
+  nav_sticked,
 }) => {
   return (
     <NavBarCont
       justify={justify}
       contwidth={contwidth}
       width={imgwidth}
-      imgminWidth={imgminWidth}
-      imgMaxwidth={imgMaxwidth}
+      img_minwidth={img_minwidth}
+      img_maxwidth={img_maxwidth}
       stick={stick}
-      navSticked={navSticked}
+      nav_sticked={nav_sticked}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
     >
-      <img src={SidebriefLogo1} alt="Sidebrief logo" />
+      <NavLink to="/">
+        <img src={SidebriefLogo1} alt="Sidebrief logo" />
+      </NavLink>
     </NavBarCont>
   );
 };
 
 export default LogoNav;
 
-const NavBarCont = styled.div`
+// Styles
+const NavBarCont = styled(motion.div)`
   position: sticky;
   top: ${(props) => props.stick};
   display: flex;
@@ -39,10 +48,10 @@ const NavBarCont = styled.div`
   padding: 1rem 0;
   z-index: 2;
   box-shadow: ${(props) =>
-    props.navSticked === true ? "0px 10px 15px -5px #9596971a" : ""};
+    props.nav_sticked === "true" ? "0px 10px 15px -5px #9596971a" : ""};
   img {
-    min-width: ${(props) => props.imgminWidth || "84px"};
-    width: ${(props) => props.imgwidth || "24%"};
-    max-width: ${(props) => props.imgMaxwidth || "134px"};
+    min-width: ${(props) => props.img_minwidth || "94px"};
+    width: ${(props) => props.imgwidth || "16vw"};
+    max-width: ${(props) => props.img_maxwidth || "134px"};
   }
 `;

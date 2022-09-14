@@ -16,7 +16,7 @@ const Success = ({ title, paragraph }) => {
     return () => {
       clearTimeout(redirectTine);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <>

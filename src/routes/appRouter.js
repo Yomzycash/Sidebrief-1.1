@@ -1,4 +1,6 @@
+import ShareHolderKYC from "pages/Launch/ShareHolderKYC";
 import React, { Suspense, lazy } from "react";
+import { Toaster } from "react-hot-toast";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,6 +8,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import Loader from "../components/loader/loader";
+
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -36,6 +39,20 @@ const UserRegistration = lazy(() =>
 const ResellerRegistration = lazy(() =>
   import("../pages/Auth/Registration/ResellerRegister")
 );
+const UserDashboard = lazy(() => import("pages/Dashboard/User/Home"));
+const BusinessRegistration = lazy(() =>
+  import("pages/Dashboard/User/Home/BusinessRegistration")
+);
+const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
+const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
+const BusinessForm = lazy(() => import("pages/Launch/BusinessForm"));
+const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
+const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
+const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
+const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
+const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
+const ReviewInformation = lazy(() => import("pages/Launch/Review"));
+const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
 
 const AppRouter = () => {
   return (
@@ -81,8 +98,71 @@ const AppRouter = () => {
                 </Route>
               </Route>
             </Route>
+            <Route path="dashboard" element={<UserDashboard />}>
+              <Route index element={<BusinessRegistration />} />
+              {/* <Route
+                path="business-registration"
+                element={<BusinessRegistration />}
+              /> */}
+              <Route path="staff" element={<StaffDashboard />} />
+
+              {/* <Route path="partner" element={<PartnerDashboard />} />
+              <Route path="partner" element={<StaffDashboard />} />
+              <Route path="partner" element={<DeveloperDashboard />} /> */}
+            </Route>
+            <Route path="checkout" element={<Outlet />}>
+              <Route index element={<BusinessInfo />} />
+              <Route path="business-info" element={<BusinessInfo />} />
+              <Route path="entity" element={<EntitySelect />} />
+              <Route path="address" element={<BusinessAddress />} />
+              <Route path="form-info" element={<BusinessForm />} />
+              <Route path="shareholders-info" element={<ShareHoldersInfo />} />
+              <Route path="directors-info" element={<DirectorsInfo />} />
+              <Route
+                path="beneficiaries-info"
+                element={<BeneficiariesInfo />}
+              />
+              <Route path="review" element={<ReviewInformation />} />
+              <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
+              <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
+            </Route>
           </Route>
         </Routes>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            className: "",
+            style: {
+              margin: "30px",
+              minWidth: "370px",
+              padding: "10px",
+              display: "inline-flex",
+              fontSize: "18px",
+              zIndex: 999999,
+            },
+            duration: 4000,
+            error: {
+              style: {
+                background: "red",
+                color: "white",
+              },
+              iconTheme: {
+                primary: "white",
+                secondary: "red",
+              },
+            },
+            success: {
+              style: {
+                background: "green",
+                color: "white",
+              },
+              iconTheme: {
+                primary: "white",
+                secondary: "green",
+              },
+            },
+          }}
+        />
       </Router>
     </Suspense>
   );

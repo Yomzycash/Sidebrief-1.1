@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
 	Wrapper,
 	Top,
 	Label,
 	ErrMsg,
-	Input,
 	Iconwrapper,
 	InputWrapper,
 	CalendarWrapper,
+	Input,
 	TransparentBackdrop,
 } from "./styled";
 import { ReactComponent as CalendarIcon } from "asset/auth/Calendar.svg";
@@ -26,38 +26,69 @@ export const DateInput = ({
 	selectDate,
 	...rest
 }) => {
+	const [date, setDate] = useState("");
+	const [dateIsTouched, setDateIsTouched] = useState(false);
 	const [showCalendar, setShowCalendar] = useState(false);
-	const [date, setDate] = useState("DD/MM/YY");
+	const [active, setActive] = useState(false);
+	const inputRef = useRef(null);
 
 	const hideCalendar = () => {
 		setShowCalendar(false);
 	};
 
 	const pickDay = (day) => {
+		setDateIsTouched(true);
 		const selectedDate = format(day, "dd/MM/yyyy");
 		setDate(selectedDate);
 		selectDate(selectedDate);
 		hideCalendar();
 	};
 
+	useEffect(() => {
+		if (active) {
+			inputRef.current.focus();
+		}
+	}, [active]);
+	const handleBorder = () => {
+		setActive(!active);
+	};
+
 	return (
-		<Wrapper className={containerStyle}>
+		<Wrapper
+			className={containerStyle}
+			initial={{ y: 10, opacity: 0 }}
+			animate={{ y: 0, opacity: 1 }}
+			exit={{ y: 10, opacity: 0 }}
+			transition={{ duration: 0.5 }}
+		>
 			<Top>
 				<Label className={labelStyle}>{label ? label : "Date"}</Label>
 
 				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
 			</Top>
-
-			<InputWrapper onClick={() => setShowCalendar((prev) => !prev)}>
+			<InputWrapper
+				border={
+					errorMessage
+						? "1px solid red"
+						: active
+						? "1px solid #00A2D4"
+						: "1px solid #ececec"
+				}
+				ref={inputRef}
+				onFocus={handleBorder}
+				onClick={() => setShowCalendar((prev) => !prev)}
+			>
 				<Iconwrapper>
-					<CalendarIcon />
+					<label htmlFor="date">
+						<CalendarIcon />
+					</label>
 				</Iconwrapper>
 
 				<Input
 					type="text"
 					placeholder="DD/MM/YY"
 					uppercase
-					readonly
+					readOnly
 					value={date}
 					{...register(name)}
 					{...rest}
@@ -66,7 +97,7 @@ export const DateInput = ({
 			{showCalendar ? (
 				<>
 					<CalendarWrapper>
-						<Calendar onClickDay={pickDay} />
+						<Calendar onClickDay={pickDay} className={"calendar"} />
 					</CalendarWrapper>
 					<TransparentBackdrop onClick={hideCalendar} />
 				</>

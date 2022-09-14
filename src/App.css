@@ -1,21 +1,23 @@
 :root {
-  /* Colors variable */
-  --PrimaryBlue: #ccf3ff;
-  --SecondaryBlue: #00a2d4;
-  --PrimaryBlack: #4e5152;
-  --SecondaryBlack: #151717;
-  --BorderGrey: #ececec;
-  --ShadowGrey: #959697;
-  --TextGrey: #fafafa;
+	/* Colors variable */
+	--PrimaryBlue: #ccf3ff;
+	--SecondaryBlue: #00a2d4;
+	--PrimaryBlack: #4e5152;
+	--SecondaryBlack: #151717;
+	--BorderGrey: #ececec;
+	--ShadowGrey: #959697;
+	--TextGrey: #fafafa;
 }
 html {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
 }
 p {
-  margin: 0;
+	margin: 0;
 }

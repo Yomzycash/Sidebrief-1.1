@@ -1,43 +1,42 @@
-import Button from "components/button";
-import { HeadText } from "components/texts";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import TagInputWithSearch from "components/input/TagInputWithSearch.jsx";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const handleClick = (link) => {
-    navigate(`/${link}`);
+  const label = "Business Objectives";
+
+  const list = [
+    "Marketing",
+    "Art and Designs",
+    "Construction",
+    "Information and Technology",
+    "Marketing",
+    "Art and Designs",
+    "Construction",
+    "Information and Technology",
+    "Marketing",
+    "Art and Designs",
+    "Construction",
+    "Information and Technology",
+  ];
+
+  const getValue = (value) => {
+    console.log(value);
   };
 
   return (
-    <Homepage>
-      <HeadText
-        title="Sidebrief Homepage"
-        body="Hey! Welcome to home page. Here, you get to see basic information about
-      sidebrief."
-        align="flex-start"
+    <div style={{ maxWidth: "70%", margin: "auto" }}>
+      <p>Welcome to sidebrief</p>
+      <TagInputWithSearch
+        label={label}
+        list={list}
+        MultiSelect
+        ExistsError="Tag has already been selected"
+        MatchError="Please select objectives from the list"
+        EmptyError="Please select at least one objective"
+        getValue={getValue}
       />
-      <Register>
-        <Button title="Register" onClick={() => handleClick("register")} />
-        <Button title="Login" onClick={() => handleClick("login")} />
-      </Register>
-    </Homepage>
+    </div>
   );
 };
 
 export default Home;
-
-const Homepage = styled.div`
-  display: flex;
-  flex-flow: column;
-  gap: 3rem;
-  padding: 2rem clamp(1rem, 5%, 3rem);
-`;
-
-const Register = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: 1rem;
-  max-width: 400px;
-`;

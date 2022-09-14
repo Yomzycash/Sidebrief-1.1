@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import TestButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -8,59 +8,89 @@ import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
-
-const schema = yup.object().shape({
-  Email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Email is a required field"),
-  Password: yup.string().required("Password is a required field"),
-});
+import { useLoginNewUserMutation } from "services/authService";
+import { loginSchema } from "utils/config";
+import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import { ThreeDots } from "react-loading-icons";
+import { store } from "redux/Store";
+import { saveUserLoginInfo } from "redux/Slices";
 
 const SignIn = () => {
-  const [navSticked, setNavSticked] = useState(false);
+  const [navSticked, setNavSticked] = useState("");
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(loginSchema),
   });
+  const [loginNewUser, { isLoading, isSuccess }] = useLoginNewUserMutation();
 
   const navigate = useNavigate();
 
   const TestRef = useRef();
 
-  var observer = new IntersectionObserver((e) => {
-    if (e[0].intersectionRatio === 0) {
-      setNavSticked(true);
-    } else if (e[0].intersectionRatio === 1) {
-      setNavSticked(false);
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, {
+          subtree: true,
+          childList: true,
+        });
+      });
     }
-  });
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
-  setTimeout(() => {
-    observer.observe(TestRef.current);
-  }, 500);
-
-  const submitForm = (data) => {
-    console.log(data);
-    navigate("/");
+  const submitForm = async (formData) => {
+    let response = await loginNewUser(JSON.stringify(formData));
+    let data = response?.data;
+    let error = response?.error;
+    if (response) {
+      store.dispatch(saveUserLoginInfo);
+      console.log(data);
+      toast.success(data.message);
+      navigate("/dashboard");
+    } else if (error) {
+      toast.error(error.data.message);
+      console.log(error.data.message);
+    }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
 
   return (
     <AuthLayout register={true}>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} navSticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Welcome Back"
             body="Sign in to your account"
             align="flex-start"
-            marginT="8px"
+            margintop="8px"
           />
           <Body>
             <div>
@@ -68,30 +98,47 @@ const SignIn = () => {
                 placeholder="example@example.com"
                 label="Email"
                 type="email"
-                name="Email"
+                name="email"
                 register={register}
                 errorMessage={errors.Email?.message}
               />
               <InputWithLabel
                 placeholder="********"
                 label="Password"
-                type="text"
+                type="password"
                 rightText
-                name="Password"
+                name="password"
                 register={register}
                 errorMessage={errors.Password?.message}
               />
-              <NavLink
-                to="/login/forgotpassword"
-                style={{
-                  textDecoration: "none",
-                  color: "var(--SecondaryBlue)",
-                }}
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 10, opacity: 0 }}
+                transition={{ duration: 0.5 }}
               >
-                Forgot password?
-              </NavLink>
+                <NavLink
+                  to="/login/forgotpassword"
+                  style={{
+                    textDecoration: "none",
+                    color: "var(--SecondaryBlue)",
+                  }}
+                >
+                  Forgot password?
+                </NavLink>
+              </motion.div>
             </div>
-            <TestButton title="Sign In" type="submit" />
+            <TestButton
+              title={
+                isLoading === true ? (
+                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
+                ) : (
+                  "Sign In"
+                )
+              }
+              type="submit"
+              disabled={isLoading ? true : false}
+            />
           </Body>
           <Bottom>
             <TextsWithLink
