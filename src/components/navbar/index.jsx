@@ -12,6 +12,11 @@ import {
   UserContainer,
   SearchBarWrapper,
   SearchIconWrapper,
+  NotificationWrapper,
+  NotificationHeader,
+  NotificationMessages,
+  Message,
+  NoMessage,
 } from "./styled";
 import LogoNav from "./LogoNav";
 
@@ -20,9 +25,12 @@ import bell from "../../asset/images/bell.png";
 import user from "../../asset/images/user.png";
 import down from "../../asset/images/down.png";
 import search from "../../asset/images/search.png";
+import { Messages } from "utils/config";
 
 const Navbar = ({ dashboard }) => {
   const [boxshadow, setBoxShadow] = useState("false");
+  const [showNotification, setShowNotification] = useState(false);
+  const [message, setMessage] = useState(true);
 
   useEffect(() => {
     if (!dashboard) {
@@ -51,7 +59,9 @@ const Navbar = ({ dashboard }) => {
             <SearchBar placeholder="Search something..." />
           </SearchBarWrapper>
           <RightIcons>
-            <BellContainer>
+            <BellContainer
+              onClick={() => setShowNotification(!showNotification)}
+            >
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
             <UserContainer>
@@ -65,6 +75,36 @@ const Navbar = ({ dashboard }) => {
         <NavWrapper boxshadow={boxshadow}>
           <Image src={logo} alt="logo" />
         </NavWrapper>
+      )}
+
+      {showNotification && (
+        <NotificationWrapper>
+          <NotificationHeader>
+            <h3>Notifications</h3>
+            <p>Mark all as read</p>
+          </NotificationHeader>
+
+          {message ? (
+            <NotificationMessages>
+              {Messages.map((item, index) => (
+                <Message>
+                  <h6>
+                    {item.message}
+                    <span>{item.span}</span>
+                  </h6>
+                  <p>{item.time}</p>
+                </Message>
+              ))}
+            </NotificationMessages>
+          ) : (
+            <NoMessage>
+              <p>
+                You do not have any notifications at the moment. Kindly check
+                back later
+              </p>
+            </NoMessage>
+          )}
+        </NotificationWrapper>
       )}
     </>
   );

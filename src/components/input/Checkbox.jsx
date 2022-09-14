@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Checkbox = () => {
+const Checkbox = (
+  {text1="Click here to use ",
+  styledSpan="Sidebrief",
+  text2="shareholders until you sustain your own",
+  styledSpan2}
+) => {
   const [check, setCheck] = useState(false);
 
   const handleCheck = () => {
@@ -11,10 +16,9 @@ const Checkbox = () => {
   return (
     <Wrapper>
       <CheckboxInput type="checkbox" checked={check} onChange={handleCheck} />
-      <Text onClick={handleCheck}>
-        Click here to use <Span>Sidebrief's</Span> shareholders until you
-        sustain your own.
-      </Text>
+      <Text onClick={handleCheck}>{text1}
+        <Span>{styledSpan}</Span> {text2}
+        <Span>{styledSpan2}</Span>  . </Text>
     </Wrapper>
   );
 };
@@ -26,6 +30,7 @@ const Wrapper = styled.div`
   align-items: center;
   flex: 1;
   gap: 16px;
+  width: 100%;
 `;
 const CheckboxInput = styled.input`
   height: 20px;
@@ -46,4 +51,5 @@ const Text = styled.label`
 
 const Span = styled.span`
   color: #0082aa;
+  // cursor: pointer;
 `;

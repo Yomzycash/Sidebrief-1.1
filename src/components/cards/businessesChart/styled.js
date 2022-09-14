@@ -118,10 +118,12 @@ export const ChartContainer = styled.div`
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-  padding: 24px;
+  padding-top: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
 
   width: 65%;
-  height: 280px;
+  height: 320px;
   min-height: 271px;
 
   @media screen and (max-width: 600px) {
@@ -136,12 +138,16 @@ export const TopContent = styled.div`
   margin-bottom: 22px;
 
   h3 {
-    font-size: 16px;
+    font-size: 20px;
+    margin-left: 35px;
     color: #151717;
   }
 
   select {
     font-size: 12px;
     color: #4e5152;
+    background-color: none;
+    border: none;
+    outline: none;
   }
 `;

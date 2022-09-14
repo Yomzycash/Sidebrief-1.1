@@ -7,6 +7,7 @@ const TagInputWithSearch = ({
   label, // The input label
   list, // The list of options
   MultiSelect, //
+  MaxError,
   ExistsError, // The error displayed when typed value does not match the available options
   MatchError, // The error to display when reselecting an already selected value
   EmptyError, // () The error to display when no value is selected
@@ -46,6 +47,22 @@ const TagInputWithSearch = ({
     setFilteredList(match);
   };
 
+  // This fires off when a value is selected
+  const setSelected = (value) => {
+    if (tags.length > 3) {
+      setError(MaxError);
+      return "error";
+    }
+    let tagAlreadyExists = tags.filter(
+      (element) => element.toLowerCase() === value.toLowerCase()
+    );
+    if (tagAlreadyExists.length > 0) {
+      setError(ExistsError);
+      return "error";
+    }
+    return "noError";
+  };
+
   // This function handles the input tag keydown event
   const handleKeyDown = (e) => {
     let key = e.key;
@@ -73,13 +90,8 @@ const TagInputWithSearch = ({
     // This runs if an Enter key is pressed
     const handleEnter = () => {
       if (MultiSelect) {
-        let tagAlreadyExists = tags.filter(
-          (element) => element.toLowerCase() === value.toLowerCase()
-        );
-        if (tagAlreadyExists.length > 0) {
-          setError(ExistsError);
-          return;
-        }
+        let res = setSelected(value);
+        if (res === "error") return;
         let valueCheck = list.filter(
           (element) => element.toLowerCase() === value.toLowerCase()
         );
@@ -110,13 +122,8 @@ const TagInputWithSearch = ({
   // This function is fired when a drop down suggestion is clicked
   const handleSuggestionClick = (value) => {
     if (MultiSelect) {
-      let tagAlreadyExists = tags.filter(
-        (element) => element.toLowerCase() === value.toLowerCase()
-      );
-      if (tagAlreadyExists.length > 0) {
-        setError("Tag has already been selected");
-        return;
-      }
+      let res = setSelected(value);
+      if (res === "error") return;
       setError("");
       setTags([...tags, value]);
       return;
@@ -258,10 +265,13 @@ const Suggestions = styled.div`
   width: 100%;
   max-height: 296px;
   overflow-y: scroll;
+  background-color: white;
   border: 1px solid #edf1f7;
   border-radius: 8px;
 
   > li {
+    display: flex;
+    align-items: center;
     min-height: 56px;
     padding: 24px;
     list-style-type: none;

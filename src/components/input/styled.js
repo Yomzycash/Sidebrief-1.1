@@ -38,7 +38,7 @@ export const DropWrapper = styled.div`
 `;
 
 export const Wrapper = styled(motion.div)`
-	margin-bottom: 24px;
+	/margin-bottom: 24px;
 	width: 100%;
 	position: relative;
 
