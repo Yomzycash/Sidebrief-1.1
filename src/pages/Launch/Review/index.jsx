@@ -31,7 +31,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Business Information:"
           linkTitle="Edit"
-          to="/"
+          to="/checkout"
         >
           <InputContainer>
             <InputFrame>
@@ -83,7 +83,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Business Information:"
           linkTitle="Edit"
-          to="/"
+          to="/checkout"
         >
           <InputContainer>
             <InputFrame>
@@ -136,7 +136,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Business Address:"
           linkTitle="Edit"
-          to="/"
+          to="/checkout"
         >
           <InputContainer>
             <InputFrame>
@@ -179,7 +179,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Shareholders Information:"
           linkTitle="Edit"
-          to="/"
+          to="/checkout"
         >
           <InputContainer>
             <InputFrame>
@@ -212,7 +212,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Beneficiary Information:"
           linkTitle="Edit"
-          to="/"
+          to="/checkout"
         >
           <InputContainer>
             <InputFrame>

@@ -9,7 +9,7 @@ export const Section = styled.div`
   gap: 32px;
   margin: 38px clamp(20px, 5vw, 40px);
   margin-right: ${(props) => props.MarginRight};
-  cursor: ${({ carousel }) => (carousel ? "grab" : "")};
+  /* cursor: ${({ carousel }) => (carousel ? "grab" : "")}; */
   user-select: ${({ carousel }) => (carousel ? "none" : "")};
 `;
 export const Header = styled.div`

@@ -10,34 +10,11 @@ import {
 import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
+import { ScrollBox } from "containers";
 
 const BusinessRegistration = (props) => {
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1400 },
-      items: 4,
-    },
-    tablet: {
-      breakpoint: { max: 1400, min: 900 },
-      items: 3,
-    },
-    mobile: {
-      breakpoint: { max: 900, min: 400 },
-      items: 2,
-    },
-    mbile: {
-      breakpoint: { max: 400, min: 0 },
-      items: 1,
-    },
-  };
-
   const analytics = {
     label: "Registrations",
     status1: {
@@ -122,12 +99,7 @@ const BusinessRegistration = (props) => {
               icon: <IoArrowForward />,
             }}
           >
-            <Carousel
-              responsive={responsive}
-              swipeable={true}
-              draggable={true}
-              keyBoardControl={true}
-            >
+            <ScrollBox>
               <RewardCard
                 image={lendhaLogo}
                 title="Lendha Africa"
@@ -148,7 +120,22 @@ const BusinessRegistration = (props) => {
                 title="Okra"
                 body="Get credit to register your business & pay later."
               />
-            </Carousel>
+              <RewardCard
+                image={SterlingLogo}
+                title="Sterling Bank PLC"
+                body="Get credit to register your business & pay later."
+              />
+              <RewardCard
+                image={GladeLogo}
+                title="Glade"
+                body="Get credit to register your business & pay later."
+              />
+              <RewardCard
+                image={OkraLogo}
+                title="Okra"
+                body="Get credit to register your business & pay later."
+              />
+            </ScrollBox>
           </DashboardSection>
         </Main>
       </Body>

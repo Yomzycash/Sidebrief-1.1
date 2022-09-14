@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TagLabel,
   AllWrapper,
@@ -8,15 +8,14 @@ import {
   TagText,
   Tagclose,
   TagInputField,
-  BottomText
+  BottomText,
 } from "./styled.js";
 
-
-
-const TagInput = ({ 
+const TagInput = ({
   label = "Business Name",
-  bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences"
- }) => {
+  bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences",
+  getSelectedValues,
+}) => {
   const [tags, setTags] = useState([]);
 
   function handlekeydown(e) {
@@ -29,6 +28,11 @@ const TagInput = ({
   function removeTags(index) {
     setTags(tags.filter((el, i) => i !== index));
   }
+
+  // Return the tags array
+  useEffect(() => {
+    if (getSelectedValues) getSelectedValues(tags);
+  }, [tags]);
 
   return (
     <>
@@ -52,7 +56,6 @@ const TagInput = ({
           />
         </TagInputWrapper>
         <BottomText>{bottomText}</BottomText>
-
       </AllWrapper>
     </>
   );

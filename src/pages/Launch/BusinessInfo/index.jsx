@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
-import DropDownWithSearch from "components/input/DropDownWithSearch";
+// import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
 import { CheckoutController, CheckoutSection } from "containers";
 import {
@@ -21,6 +21,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import TagInputWithSearch from "components/input/TagInputWithSearch";
+import { BusinessObjectives } from "utils/config";
+import { useGetAllCountriesQuery } from "services/launchService";
 
 const BusinessInfo = () => {
   // This object is only here temporarily. It will be moved to utils later
@@ -47,22 +50,15 @@ const BusinessInfo = () => {
     { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
   ];
 
-  // This object is only here temporarily. It will be moved to utils later
-  const Objectives = [
-    { id: 1, text: "Marketing" },
-    { id: 2, text: "Art and Designs" },
-    { id: 3, text: "Construction" },
-    { id: 4, text: "Information and Technology" },
-    { id: 5, text: "Science and Technology" },
-    { id: 6, text: "Art and Design" },
-    { id: 7, text: "Musical Industry" },
-    { id: 8, text: "Technicial" },
-  ];
   const [country, setCountry] = useState("");
   const [objectives, setObjectives] = useState("");
+  const [businessNames, setBusinessNames] = useState([]);
+
+  // const { data = [], error, isLoading, isSuccess } = useGetAllCountriesQuery();
 
   const navigate = useNavigate();
 
+  // Navigation handlers
   const handleNext = () => {
     navigate("/checkout/entity");
     store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
@@ -71,16 +67,50 @@ const BusinessInfo = () => {
     navigate(-1);
   };
 
+  const handleBusinessNames = (valuesSelected) => {
+    setBusinessNames(valuesSelected);
+  };
+
+  const handleCountry = (valueSelected) => {
+    setCountry(valueSelected);
+  };
+
+  const handleObjectives = (valuesSelected) => {
+    setObjectives(valuesSelected);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Submitting");
+    // let countries = await data;
+    // console.log(countries);
+  };
+
   return (
-    <Container>
+    <Container onSubmit={handleSubmit}>
       <Header>
         <HeaderCheckout />
       </Header>
       <Body>
         <CheckoutSection title="Let's sail you through, take this swift walk with us." />
-        <TagInput />
+        <TagInput getSelectedValues={handleBusinessNames} />
         <InputsWrapper>
-          <DropDownWithSearch
+          <TagInputWithSearch
+            label="Operational Country"
+            list={BusinessObjectives}
+            getValue={handleCountry}
+          />
+          <TagInputWithSearch
+            label="Business Objectives"
+            list={BusinessObjectives}
+            getValue={handleObjectives}
+            MultiSelect
+            ExistsError="Tag has already been selected"
+            MatchError="Please select objectives from the list"
+            EmptyError="Please select at least one objective"
+            MaxError="You cannot select more than 4"
+          />
+          {/* <DropDownWithSearch
             name="country"
             title="Operational Country"
             list={Countries}
@@ -110,7 +140,7 @@ const BusinessInfo = () => {
             value={objectives}
             setValue={(value) => setObjectives(value)}
             allowCreate={true}
-          />
+          /> */}
         </InputsWrapper>
       </Body>
       <Bottom>
