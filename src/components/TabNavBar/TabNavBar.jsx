@@ -3,7 +3,6 @@ import {
   NavWrapper,
   NavLinkWrapper,
   ContentWrapper,
-  wrapperLink,
   LinkContent,
 } from "./styled.js";
 import { NavbarLink, NavMore } from "utils/config";

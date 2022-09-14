@@ -24,7 +24,7 @@ export const ContentWrapper = styled.div`
 
   max-width: 820px;
 `;
-export const NavLinkWrapper = styled(NavLink)`
+export const NavLinkWrapper = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;

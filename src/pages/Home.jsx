@@ -1,64 +1,40 @@
 import React from "react";
-import FileUpload from "components/FileUpload";
-import { ProgressBar } from "components/Indicators";
-import HeaderCheckout from "components/Header/HeaderCheckout";
-import { CheckoutController, CheckoutSection } from "containers";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import { RewardCard } from "components/cards";
-import { CheckoutFormInfo } from "../containers/Checkout/InfoSection/index.jsx";
-import Checkbox from "components/input/Checkbox.jsx";
+import TagInputWithSearch from "components/input/TagInputWithSearch.jsx";
 
 const Home = () => {
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
+  const label = "Business Objectives";
+
+  const list = [
+    "Marketing",
+    "Art and Designs",
+    "Construction",
+    "Information and Technology",
+    "Marketing",
+    "Art and Designs",
+    "Construction",
+    "Information and Technology",
+    "Marketing",
+    "Art and Designs",
+    "Construction",
+    "Information and Technology",
+  ];
+
+  const getValue = (value) => {
+    console.log(value);
   };
+
   return (
     <div style={{ maxWidth: "70%", margin: "auto" }}>
       <p>Welcome to sidebrief</p>
-      <div>
-        <CheckoutFormInfo />
-      </div>
-      <div>
-        <ProgressBar progress={70} />
-      </div>
-      <FileUpload
-        TopText="Government issued ID"
-        BottomText="You can either upload a Driver's, National ID Card, Voters Card or International Passport "
+      <TagInputWithSearch
+        label={label}
+        list={list}
+        MultiSelect
+        ExistsError="Tag has already been selected"
+        MatchError="Please select objectives from the list"
+        EmptyError="Please select at least one objective"
+        getValue={getValue}
       />
-
-      <CheckoutSection
-        title={"Mandatory Information"}
-        subtitle={
-          "Please provide Sidebrief with the following information or use side brief’s contact"
-        }
-      >
-        Dummy Text
-      </CheckoutSection>
-      <CheckoutController
-        backAction={() => console.log("Back button")}
-        backText={"Previous"}
-        forwardAction={() => console.log("Forward button")}
-        forwardText={"Proceed"}
-      />
-
-      {/* <CheckoutShareholder/> */}
     </div>
   );
 };
