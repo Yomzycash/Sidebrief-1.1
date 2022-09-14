@@ -23,6 +23,11 @@ const TagInputWithSearch = ({
 
   const suggestionContainer = useRef();
 
+  // Update list when it chages
+  useEffect(() => {
+    setFilteredList(list);
+  }, list);
+
   useEffect(() => {
     if (keyPressed === "ArrowDown") {
       if (selectedIndex > 4) {
@@ -169,7 +174,10 @@ const TagInputWithSearch = ({
             onKeyDown={handleKeyDown}
           />
           <div>
-            <IoIosArrowDown size={16} />
+            <IoIosArrowDown
+              size={16}
+              style={{ backgroundColor: "white", padding: "" }}
+            />
           </div>
         </Input>
         {showSuggestions && (

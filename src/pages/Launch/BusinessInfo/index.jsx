@@ -54,7 +54,8 @@ const BusinessInfo = () => {
   const [businessNames, setBusinessNames] = useState([]);
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
-  const [country, setCountry] = useState();
+  const [countries, setCountries] = useState([]);
+  const [countriesIso, setCountriesIso] = useState([]);
 
   const navigate = useNavigate();
 
@@ -79,13 +80,27 @@ const BusinessInfo = () => {
     setBusinessNames(valuesSelected);
   };
 
-  const handleCountry = (valueSelected) => {
-    setCountry(valueSelected);
+  const handleCountry = async () => {
+    let responseData = await data;
+    let countries = [];
+    let countriesIso = [];
+    responseData?.forEach((data) => {
+      countries = [...countries, data?.countryName];
+      countriesIso = [...countriesIso, data?.countryCode];
+    });
+    setCountries([...countries]);
+    setCountriesIso([...countriesIso]);
+    // console.log(countries, countriesIso);
   };
 
   const handleObjectives = (valuesSelected) => {
     setObjectives(valuesSelected);
   };
+
+  useEffect(() => {
+    handleCountry();
+    console.log(countries);
+  }, [data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,7 +120,7 @@ const BusinessInfo = () => {
         <InputsWrapper>
           <TagInputWithSearch
             label="Operational Country"
-            list={country}
+            list={countries}
             getValue={handleCountry}
           />
           <TagInputWithSearch

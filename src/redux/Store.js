@@ -12,6 +12,7 @@ import {
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
+    [launchApi.reducerPath]: launchApi.reducer,
     UserDataReducer: UserDataReducer,
     LayoutInfo: LayoutInfoReducer,
     RegisteredBusinessesInfo: RegisteredBusinessesReducers,
