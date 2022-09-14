@@ -23,6 +23,11 @@ const TagInputWithSearch = ({
 
   const suggestionContainer = useRef();
 
+  // Update list when it chages
+  useEffect(() => {
+    setFilteredList(list);
+  }, list);
+
   useEffect(() => {
     if (keyPressed === "ArrowDown") {
       if (selectedIndex > 4) {

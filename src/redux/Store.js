@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { authApi } from "services/authService";
 import { launchApi } from "services/launchService";
 import {
+  LaunchReducer,
   LayoutInfoReducer,
   RegisteredBusinessesReducers,
   UserDataReducer,
@@ -15,10 +16,11 @@ export const store = configureStore({
     UserDataReducer: UserDataReducer,
     LayoutInfo: LayoutInfoReducer,
     RegisteredBusinessesInfo: RegisteredBusinessesReducers,
+    [launchApi.reducerPath]: launchApi.reducer,
+    LaunchReducer: LaunchReducer,
   },
   // middleware: (getDefaultMiddleware) => {
   //   getDefaultMiddleware().concat(authApi.middleware);
   // }
 });
-
 setupListeners(store.dispatch);

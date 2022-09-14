@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
@@ -50,14 +50,23 @@ const BusinessInfo = () => {
     { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
   ];
 
-  const [country, setCountry] = useState("");
   const [objectives, setObjectives] = useState("");
   const [businessNames, setBusinessNames] = useState([]);
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const [countries, setCountries] = useState([]);
+  const [countriesIso, setCountriesIso] = useState([]);
 
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   getCountries();
+  // }, []);
+
+  // const getCountries = async () => {
+  //   let countries = await Promise.resolve(data);
+  //   console.log(countries);
+  // };
   // Navigation handlers
   const handleNext = () => {
     navigate("/checkout/entity");
@@ -71,13 +80,27 @@ const BusinessInfo = () => {
     setBusinessNames(valuesSelected);
   };
 
-  const handleCountry = (valueSelected) => {
-    setCountry(valueSelected);
+  const handleCountry = async () => {
+    let responseData = await data;
+    let countries = [];
+    let countriesIso = [];
+    responseData?.forEach((data) => {
+      countries = [...countries, data?.countryName];
+      countriesIso = [...countriesIso, data?.countryCode];
+    });
+    setCountries([...countries]);
+    setCountriesIso([...countriesIso]);
+    // console.log(countries, countriesIso);
   };
 
   const handleObjectives = (valuesSelected) => {
     setObjectives(valuesSelected);
   };
+
+  useEffect(() => {
+    handleCountry();
+    console.log(countries);
+  }, [data]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,7 +120,7 @@ const BusinessInfo = () => {
         <InputsWrapper>
           <TagInputWithSearch
             label="Operational Country"
-            list={BusinessObjectives}
+            list={countries}
             getValue={handleCountry}
           />
           <TagInputWithSearch

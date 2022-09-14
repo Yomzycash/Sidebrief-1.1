@@ -114,5 +114,5 @@ const launchApplicationInfo = createSlice({
   },
 });
 
-export const LaunchReducer = launchApplicationInfo.reducers;
+export const LaunchReducer = launchApplicationInfo.reducer;
 export const { launchCode } = launchApplicationInfo.actions;
