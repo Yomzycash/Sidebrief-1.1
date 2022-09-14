@@ -169,7 +169,10 @@ const TagInputWithSearch = ({
             onKeyDown={handleKeyDown}
           />
           <div>
-            <IoIosArrowDown size={16} />
+            <IoIosArrowDown
+              size={16}
+              style={{ backgroundColor: "white", padding: "" }}
+            />
           </div>
         </Input>
         {showSuggestions && (

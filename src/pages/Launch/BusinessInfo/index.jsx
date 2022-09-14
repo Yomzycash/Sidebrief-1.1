@@ -54,7 +54,7 @@ const BusinessInfo = () => {
   const [objectives, setObjectives] = useState("");
   const [businessNames, setBusinessNames] = useState([]);
 
-  // const { data = [], error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
 
   const navigate = useNavigate();
 
@@ -82,8 +82,8 @@ const BusinessInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting");
-    // let countries = await data;
-    // console.log(countries);
+    let countries = await data;
+    console.log(countries);
   };
 
   return (
