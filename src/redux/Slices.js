@@ -105,14 +105,20 @@ export const { setBusinessFormInfo } = RegisteredBusinessesInfo.actions;
 const launchApplicationInfo = createSlice({
   name: "launchApplication",
   initialState: {
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
     launchCode: "",
+    countryISO: "",
   },
   reducers: {
     launchCode: (state, action) => {
       state.launchCode = action.payload;
     },
+    setCountryISO: (state, action) => {
+      state.countryISO = action.payload;
+    },
   },
 });
 
 export const LaunchReducer = launchApplicationInfo.reducer;
-export const { launchCode } = launchApplicationInfo.actions;
+export const { launchCode, setCountryISO } = launchApplicationInfo.actions;

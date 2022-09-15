@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CheckoutController, CheckoutSection } from "containers";
 import { Body, Bottom, Container, Header, EntityCardsWrapper } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useRoutes } from "react-router-dom";
 import { Entities } from "utils/config";
 import { setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
+import { useSelector } from "react-redux";
+import { useGetAllEntitiesQuery } from "services/launchService";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
+  const [entities, setEntities] = useState([]);
+
+  const countryISO = useSelector((store) => store.LaunchReducer.countryISO);
+
+  const { data, error, isLoading, isSuccess } =
+    useGetAllEntitiesQuery(countryISO);
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   const handleNext = () => {
     navigate("/checkout/address");
