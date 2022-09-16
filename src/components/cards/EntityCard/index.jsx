@@ -22,9 +22,10 @@ export const EntityCard = ({
   shortname,
   company,
   timeline,
-  shareholder,
+  requirement,
   shares,
   type,
+  currency,
 }) => {
   return (
     <Container onClick={action}>
@@ -32,28 +33,27 @@ export const EntityCard = ({
         <CornerPetal />
       </Corner>
       <Top>
-        <Title>
-          {name} {shortname && " - " + shortname}
-        </Title>
-        <TimeLine>
-          {timeline.from} - {timeline.to} Days
-        </TimeLine>
+        <Title>{name}</Title>
+        <TimeLine>{timeline}</TimeLine>
       </Top>
       <Mid>
-        <Price>N{numeral(price).format("0,0")}</Price>
+        <Price>
+          {price} {currency}
+        </Price>
       </Mid>
+
       <Bottom>
-        <Bullet>
+        {/* <Bullet>
           <Mark /> <Content>{company}</Content>
-        </Bullet>
+        </Bullet> */}
         <Bullet>
-          <Mark /> <Content>{shareholder}</Content>
+          <Mark /> <Content>{type} Company</Content>
         </Bullet>
         <Bullet>
           <Mark /> <Content>{shares} shares</Content>
         </Bullet>
         <Bullet>
-          <Mark /> <Content>{type}</Content>
+          <Mark /> <Content>{requirement}</Content>
         </Bullet>
       </Bottom>
     </Container>

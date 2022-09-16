@@ -4,14 +4,10 @@ import {
   BellIcon,
   UserIcon,
   DownIcon,
-  SearchIcon,
   NavWrapper,
-  SearchBar,
   RightIcons,
   BellContainer,
   UserContainer,
-  SearchBarWrapper,
-  SearchIconWrapper,
   NotificationWrapper,
   NotificationHeader,
   NotificationMessages,
@@ -24,16 +20,16 @@ import logo from "../../asset/images/SidebriefLogo.png";
 import bell from "../../asset/images/bell.png";
 import user from "../../asset/images/user.png";
 import down from "../../asset/images/down.png";
-import search from "../../asset/images/search.png";
 import { Messages } from "utils/config";
+import Search from "./Search";
 
-const Navbar = ({ dashboard }) => {
+const Navbar = ({ dashboard, rewards }) => {
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [message, setMessage] = useState(true);
 
   useEffect(() => {
-    if (!dashboard) {
+    if (!dashboard && !rewards) {
       window.addEventListener("scroll", () => {
         setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
       });
@@ -42,7 +38,7 @@ const Navbar = ({ dashboard }) => {
 
   return (
     <>
-      {dashboard ? (
+      {dashboard || rewards ? (
         <NavWrapper
           boxshadow={boxshadow}
           border="1px solid #EDF1F7"
@@ -52,12 +48,7 @@ const Navbar = ({ dashboard }) => {
           transition={{ duration: 0.5 }}
         >
           <Image src={logo} alt="logo" />
-          <SearchBarWrapper>
-            <SearchIconWrapper>
-              <SearchIcon src={search} alt="logo" />
-            </SearchIconWrapper>
-            <SearchBar placeholder="Search something..." />
-          </SearchBarWrapper>
+          {dashboard && <Search />}
           <RightIcons>
             <BellContainer
               onClick={() => setShowNotification(!showNotification)}

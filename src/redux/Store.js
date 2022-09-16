@@ -1,7 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { authApi } from "services/authService";
+import { launchApi } from "services/launchService";
 import {
+  LaunchReducer,
   LayoutInfoReducer,
   RegisteredBusinessesReducers,
   UserDataReducer,
@@ -10,13 +12,14 @@ import {
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
+    [launchApi.reducerPath]: launchApi.reducer,
     UserDataReducer: UserDataReducer,
     LayoutInfo: LayoutInfoReducer,
     RegisteredBusinessesInfo: RegisteredBusinessesReducers,
+    [launchApi.reducerPath]: launchApi.reducer,
+    LaunchReducer: LaunchReducer,
   },
-  // middleware: (getDefaultMiddleware) => {
-  //   getDefaultMiddleware().concat(authApi.middleware);
-  // }
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(authApi.middleware),
 });
-
 setupListeners(store.dispatch);

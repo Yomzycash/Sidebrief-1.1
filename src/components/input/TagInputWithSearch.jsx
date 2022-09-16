@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdClear } from "react-icons/md";
+import { ThreeDots } from "react-loading-icons";
 
 const TagInputWithSearch = ({
   label, // The input label
@@ -22,6 +23,11 @@ const TagInputWithSearch = ({
   const [keyPressed, setKeyPressed] = useState("");
 
   const suggestionContainer = useRef();
+
+  // Update list when it chages
+  useEffect(() => {
+    setFilteredList(list);
+  }, [list.length]);
 
   useEffect(() => {
     if (keyPressed === "ArrowDown") {
@@ -169,11 +175,21 @@ const TagInputWithSearch = ({
             onKeyDown={handleKeyDown}
           />
           <div>
-            <IoIosArrowDown size={16} />
+            <IoIosArrowDown
+              size={16}
+              style={{ backgroundColor: "white", padding: "" }}
+            />
           </div>
         </Input>
         {showSuggestions && (
           <Suggestions ref={suggestionContainer}>
+            {filteredList.length === 0 ? (
+              <div style={{ displa: "flex", justifyContent: "center" }}>
+                <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} />
+              </div>
+            ) : (
+              ""
+            )}
             {filteredList.map((element, index) => (
               <li
                 key={index}

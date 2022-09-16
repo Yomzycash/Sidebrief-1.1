@@ -44,7 +44,7 @@ export const SearchBar = styled.input`
   outline: none;
   width: 90%;
   border: none;
-  margin-left: 5px;
+  margin-left: 15px;
 `;
 export const SearchIconWrapper = styled.div`
   width: 5%;
@@ -55,7 +55,8 @@ export const SearchIconWrapper = styled.div`
 `;
 
 export const SearchBarWrapper = styled.div`
-  width: 563px;
+  max-width: 563px;
+  width: 100%;
   border: 1px solid #edf1f7;
   border-radius: 20px;
   background: #fafafa;

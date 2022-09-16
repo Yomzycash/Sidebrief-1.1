@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
@@ -20,46 +20,28 @@ import {
 } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setCheckoutProgress } from "redux/Slices";
+import { setCheckoutProgress, setCountryISO, setCountry } from "redux/Slices";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { BusinessObjectives } from "utils/config";
 import { useGetAllCountriesQuery } from "services/launchService";
 
 const BusinessInfo = () => {
-  // This object is only here temporarily. It will be moved to utils later
-  const Countries = [
-    { id: 1, text: "Nigeria", img: NigeriaFlag },
-    { id: 2, text: "Kenya", img: KenyaFlag },
-    { id: 3, text: "South Africa", img: SouthAfricaFlag },
-    { id: 4, text: "Malawi", img: MalawiFlag },
-    { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
-    { id: 1, text: "Nigeria", img: NigeriaFlag },
-    { id: 2, text: "Kenya", img: KenyaFlag },
-    { id: 3, text: "South Africa", img: SouthAfricaFlag },
-    { id: 4, text: "Malawi", img: MalawiFlag },
-    { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
-    { id: 1, text: "Nigeria", img: NigeriaFlag },
-    { id: 2, text: "Kenya", img: KenyaFlag },
-    { id: 3, text: "South Africa", img: SouthAfricaFlag },
-    { id: 4, text: "Malawi", img: MalawiFlag },
-    { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
-    { id: 1, text: "Nigeria", img: NigeriaFlag },
-    { id: 2, text: "Kenya", img: KenyaFlag },
-    { id: 3, text: "South Africa", img: SouthAfricaFlag },
-    { id: 4, text: "Malawi", img: MalawiFlag },
-    { id: 5, text: "Zimbabwe", img: ZimbabweFlag },
-  ];
-
-  const [country, setCountry] = useState("");
-  const [objectives, setObjectives] = useState("");
   const [businessNames, setBusinessNames] = useState([]);
+  const [selectedCountry, setselectedCountry] = useState();
+  const [selectedObjectives, setselectedObjectives] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [countriesData, setCountriesData] = useState([]);
+  const [selectedCountryISO, setselectedCountryISO] = useState();
 
-  // const { data = [], error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  // const { data, error, isLoading, isSuccess } =
+  //   useGetAllEntitiesQuery(selectedCountryISO);
 
   const navigate = useNavigate();
 
-  // Navigation handlers
-  const handleNext = () => {
+  const handleNext = async () => {
+    store.dispatch(setCountryISO(selectedCountryISO));
+    store.dispatch(setCountry(selectedCountry));
     navigate("/checkout/entity");
     store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
   };
@@ -71,23 +53,40 @@ const BusinessInfo = () => {
     setBusinessNames(valuesSelected);
   };
 
-  const handleCountry = (valueSelected) => {
-    setCountry(valueSelected);
+  const handleCountry = async (value) => {
+    let responseData = await data;
+    let countries = [];
+    responseData?.forEach((data) => {
+      countries = [...countries, data?.countryName];
+    });
+    setCountriesData([...responseData]);
+    setCountries([...countries]);
+    setselectedCountry(value);
   };
 
   const handleObjectives = (valuesSelected) => {
-    setObjectives(valuesSelected);
+    setselectedObjectives(valuesSelected);
   };
+
+  useEffect(() => {
+    handleCountry();
+  }, [data]);
+
+  // Set the selected country's ISO
+  useEffect(() => {
+    const countryData = countriesData.filter(
+      (data) => data.countryName === selectedCountry
+    );
+    let selectedCountryObj = { ...countryData[0] };
+    setselectedCountryISO(selectedCountryObj.countryISO);
+  }, [selectedCountry]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting");
-    // let countries = await data;
-    // console.log(countries);
   };
 
   return (
-    <Container onSubmit={handleSubmit}>
+    <Container onClick={handleSubmit}>
       <Header>
         <HeaderCheckout />
       </Header>
@@ -97,7 +96,7 @@ const BusinessInfo = () => {
         <InputsWrapper>
           <TagInputWithSearch
             label="Operational Country"
-            list={BusinessObjectives}
+            list={countries}
             getValue={handleCountry}
           />
           <TagInputWithSearch
@@ -110,37 +109,6 @@ const BusinessInfo = () => {
             EmptyError="Please select at least one objective"
             MaxError="You cannot select more than 4"
           />
-          {/* <DropDownWithSearch
-            name="country"
-            title="Operational Country"
-            list={Countries}
-            renderer={({ item }) => (
-              <CountryItem>
-                <img src={item.img} alt="" style={{ width: "20px" }} />
-                {item.text}
-              </CountryItem>
-            )}
-            selectAction={(data) => {
-              console.log("Hello");
-              console.log(data);
-            }}
-            value={country}
-            allowCreate={true}
-            setValue={(value) => setCountry(value)}
-          />
-          <DropDownWithSearch
-            name="objective"
-            title="Business Objectives"
-            list={Objectives}
-            renderer={({ item }) => <span>{item.text}</span>}
-            selectAction={(data) => {
-              console.log("Hello");
-              console.log(data);
-            }}
-            value={objectives}
-            setValue={(value) => setObjectives(value)}
-            allowCreate={true}
-          /> */}
         </InputsWrapper>
       </Body>
       <Bottom>

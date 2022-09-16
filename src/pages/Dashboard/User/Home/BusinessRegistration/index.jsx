@@ -37,7 +37,7 @@ const BusinessRegistration = (props) => {
   const navigate = useNavigate();
 
   const handleLaunch = () => {
-    navigate("/checkout");
+    navigate("/launch");
   };
 
   return (
@@ -95,7 +95,7 @@ const BusinessRegistration = (props) => {
             carousel
             link={{
               text: "View all",
-              to: "/dashboard",
+              to: "/rewards",
               icon: <IoArrowForward />,
             }}
           >
