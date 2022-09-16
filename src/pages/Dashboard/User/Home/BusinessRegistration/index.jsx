@@ -37,7 +37,7 @@ const BusinessRegistration = (props) => {
   const navigate = useNavigate();
 
   const handleLaunch = () => {
-    navigate("/checkout");
+    navigate("/launch");
   };
 
   return (
