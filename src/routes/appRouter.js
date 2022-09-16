@@ -1,3 +1,4 @@
+import RewardDetails from "pages/Dashboard/RewardDetails";
 import ShareHolderKYC from "pages/Launch/ShareHolderKYC";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
@@ -105,6 +106,7 @@ const AppRouter = () => {
                 element={<BusinessRegistration />}
               /> */}
               <Route path="staff" element={<StaffDashboard />} />
+              <Route path="reward-details" element={<RewardDetails />} />
 
               {/* <Route path="partner" element={<PartnerDashboard />} />
               <Route path="partner" element={<StaffDashboard />} />

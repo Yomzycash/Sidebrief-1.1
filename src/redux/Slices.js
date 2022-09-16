@@ -109,6 +109,8 @@ const launchApplicationInfo = createSlice({
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
     launchCode: "",
     countryISO: "",
+    selectedCountry: "",
+    selectedEntity: {},
   },
   reducers: {
     launchCode: (state, action) => {
@@ -117,8 +119,15 @@ const launchApplicationInfo = createSlice({
     setCountryISO: (state, action) => {
       state.countryISO = action.payload;
     },
+    setCountry: (state, action) => {
+      state.selectedCountry = action.payload;
+    },
+    selectedEntity: (state, action) => {
+      state.selectedEntity = action.payload;
+    },
   },
 });
 
 export const LaunchReducer = launchApplicationInfo.reducer;
-export const { launchCode, setCountryISO } = launchApplicationInfo.actions;
+export const { launchCode, setCountryISO, setCountry, selectedEntity } =
+  launchApplicationInfo.actions;
