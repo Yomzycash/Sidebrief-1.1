@@ -191,7 +191,7 @@ export const TagWrapper = styled.div`
 `;
 export const TagInputWrapper = styled.div`
 	width: 100%;
-	height: 40px;
+	height: 56px;
 	disply: flex;
 	align-items: center;
 `;
