@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 const UserDashboard = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
-  console.log(sidebarWidth);
 
   return (
     <Dashboard>

@@ -79,7 +79,7 @@ export const sidebarLink = [
     id: 1,
     title: "Home",
     icon: HiHome,
-    path: "",
+    path: "/dashboard",
   },
   {
     id: 2,
@@ -103,7 +103,7 @@ export const sidebarLink = [
     id: 5,
     title: "Rewards",
     icon: HiOutlineSparkles,
-    path: "",
+    path: "/rewards/all-rewards",
   },
   {
     id: 6,
