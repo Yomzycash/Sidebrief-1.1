@@ -85,19 +85,19 @@ export const sidebarLink = [
     id: 2,
     title: "Application",
     icon: HiDocumentText,
-    path: "",
+    path: "/dashboard",
   },
   {
     id: 3,
     title: "Business",
     icon: HiBriefcase,
-    path: "",
+    path: "/dashboard",
   },
   {
     id: 4,
     title: "Bank Accounts",
     icon: HiOutlineLibrary,
-    path: "",
+    path: "/dashboard",
   },
   {
     id: 5,
@@ -115,7 +115,7 @@ export const sidebarLink = [
     id: 7,
     title: "Settings",
     icon: HiCog,
-    path: "",
+    path: "/dashboard",
   },
 ];
 

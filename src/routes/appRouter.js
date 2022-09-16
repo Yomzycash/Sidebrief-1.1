@@ -1,6 +1,7 @@
 import RewardsPage from "pages/Dashboard/User/Rewards";
 import AllRewards from "pages/Dashboard/User/Rewards/AllRewards";
 import MyRewards from "pages/Dashboard/User/Rewards/MyRewards";
+import RewardDetails from "pages/Dashboard/RewardDetails";
 import ShareHolderKYC from "pages/Launch/ShareHolderKYC";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
@@ -108,6 +109,7 @@ const AppRouter = () => {
                 element={<BusinessRegistration />}
               /> */}
               <Route path="staff" element={<StaffDashboard />} />
+              <Route path="reward-details" element={<RewardDetails />} />
 
               {/* <Route path="partner" element={<PartnerDashboard />} />
               <Route path="partner" element={<StaffDashboard />} />
@@ -133,6 +135,7 @@ const AppRouter = () => {
               <Route index element={<AllRewards />} />
               <Route path="all-rewards" element={<AllRewards />} />
               <Route path="my-rewards" element={<MyRewards />} />
+              <Route path="details" element={<RewardDetails />} />
             </Route>
           </Route>
         </Routes>

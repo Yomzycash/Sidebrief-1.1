@@ -13,6 +13,7 @@ import {
   MainHeader,
   SubHeader,
 } from "./styled";
+import { useNavigate } from "react-router-dom";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -110,6 +111,8 @@ const allRewards = [
 const MyRewards = () => {
   const [boxshadow, setBoxShadow] = useState("false");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
@@ -153,6 +156,7 @@ const MyRewards = () => {
               body={reward.body}
               image={reward.image}
               imageAlt={reward.alt}
+              action={() => navigate("/rewards/details")}
             />
           ))}
         </BodyRight>
