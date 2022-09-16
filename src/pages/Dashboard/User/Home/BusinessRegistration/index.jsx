@@ -95,7 +95,7 @@ const BusinessRegistration = (props) => {
             carousel
             link={{
               text: "View all",
-              to: "/dashboard",
+              to: "/rewards",
               icon: <IoArrowForward />,
             }}
           >
