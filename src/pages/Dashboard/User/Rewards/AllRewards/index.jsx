@@ -197,6 +197,7 @@ const AllRewards = () => {
               image={reward.image}
               imageAlt={reward.alt}
               action={() => navigate("/rewards/details")}
+              rewardspage
             />
           ))}
         </BodyRight>

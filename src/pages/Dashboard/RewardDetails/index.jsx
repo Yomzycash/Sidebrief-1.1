@@ -25,10 +25,14 @@ import Button from "components/button";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import { ScrollBox } from "containers";
 import { IoArrowForward } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 const RewardDetails = (props) => {
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
+
   return (
-    <StaffContainer>
+    <StaffContainer sidebarWidth={sidebarWidth}>
       <NavigationWrapper>
         <HiArrowNarrowLeft />
         <p>Back to Rewards</p>
@@ -53,14 +57,19 @@ const RewardDetails = (props) => {
       <RewardDescription>
         <TextDes>
           {" "}
-          Glade is a financial technology company that powers bordeless
-          financial services for businesses across Africa to perform
-          cross-border transactions, move and manage money globally, while
-          having access to other tools they need to have a global reach. Their
-          services are centered around providing financial services for SME’s,
-          freelancers and startups, bridging the gap to make financial services
-          a lot easier and more accessible with domestic and international
-          accounts, cross-border payments, capital and API infrastructure.
+          <div>
+            Glade is a financial technology company that powers bordeless
+            financial services for businesses across Africa to perform
+            cross-border transactions, move and manage money globally, while
+            having access to other tools they need to have a global reach.
+          </div>
+          <div>
+            Their services are centered around providing financial services for
+            SME’s, freelancers and startups, bridging the gap to make financial
+            services a lot easier and more accessible with domestic and
+            international accounts, cross-border payments, capital and API
+            infrastructure.
+          </div>
         </TextDes>
         <VisitLink to="/">
           <TextLink>Visit Guide's website</TextLink>

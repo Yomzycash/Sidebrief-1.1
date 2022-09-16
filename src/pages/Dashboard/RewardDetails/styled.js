@@ -5,7 +5,7 @@ export const StaffContainer = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-
+  max-width: calc(99vw - ${({ sidebarWidth }) => sidebarWidth});
   h3 {
     font-size: 24px;
     margin-left: 40px;
@@ -70,10 +70,13 @@ export const RewardShortText = styled.p`
 
 export const RewardDescription = styled.div`
   margin-top: 40px;
-  padding-left: 40px;
+  padding-inline: 40px;
 `;
 
 export const TextDes = styled.p`
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
   font-size: 18px;
   color: #4e5152;
   font-size: 16px;
