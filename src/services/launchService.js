@@ -41,6 +41,7 @@ export const launchApi = createApi({
         body: values,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg`,
         },
       }),
       invalidatesTags: ["Application"],

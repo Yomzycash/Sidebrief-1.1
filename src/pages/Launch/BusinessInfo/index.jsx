@@ -20,13 +20,10 @@ import {
 } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setCheckoutProgress, setCountryISO } from "redux/Slices";
+import { setCheckoutProgress, setCountryISO, setCountry } from "redux/Slices";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { BusinessObjectives } from "utils/config";
-import {
-  useGetAllCountriesQuery,
-  useGetAllEntitiesQuery,
-} from "services/launchService";
+import { useGetAllCountriesQuery } from "services/launchService";
 
 const BusinessInfo = () => {
   const [businessNames, setBusinessNames] = useState([]);
@@ -44,6 +41,7 @@ const BusinessInfo = () => {
 
   const handleNext = async () => {
     store.dispatch(setCountryISO(selectedCountryISO));
+    store.dispatch(setCountry(selectedCountry));
     navigate("/checkout/entity");
     store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
   };
