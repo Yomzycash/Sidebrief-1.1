@@ -18,7 +18,7 @@ const BeneficiariesInfo = () => {
   const { beneficiaries } = currentBusiness;
 
   const handleNext = () => {
-    navigate("/checkout/review");
+    navigate("/launch/review");
     store.dispatch(setCheckoutProgress({ total: 10, current: 7 })); // total- total pages and current - current page
   };
 
@@ -39,7 +39,7 @@ const BeneficiariesInfo = () => {
             title="Beneficiary's Information"
             number={index + 1}
             numbers={beneficiaries ? beneficiaries : index + 1}
-            info= "Beneficiary"
+            info="Beneficiary"
           />
         ))}
       </Body>

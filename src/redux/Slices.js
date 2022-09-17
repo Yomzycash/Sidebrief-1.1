@@ -107,27 +107,41 @@ const launchApplicationInfo = createSlice({
   initialState: {
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
-    launchCode: "",
-    countryISO: "",
+    businessNames: [],
     selectedCountry: "",
-    selectedEntity: {},
+    countryISO: "",
+    selectedObjectives: [],
+    setSelectedEntity: {},
+    launchResponse: {},
   },
   reducers: {
-    launchCode: (state, action) => {
-      state.launchCode = action.payload;
-    },
-    setCountryISO: (state, action) => {
-      state.countryISO = action.payload;
+    setSelectedBusinessNames: (state, action) => {
+      state.businessNames = action.payload;
     },
     setCountry: (state, action) => {
       state.selectedCountry = action.payload;
     },
-    selectedEntity: (state, action) => {
+    setCountryISO: (state, action) => {
+      state.countryISO = action.payload;
+    },
+    setBusinessObjectives: (state, action) => {
+      state.selectedObjectives = action.payload;
+    },
+    setSelectedEntity: (state, action) => {
       state.selectedEntity = action.payload;
+    },
+    setLaunchResponse: (state, action) => {
+      state.launchResponse = action.payload;
     },
   },
 });
 
 export const LaunchReducer = launchApplicationInfo.reducer;
-export const { launchCode, setCountryISO, setCountry, selectedEntity } =
-  launchApplicationInfo.actions;
+export const {
+  setSelectedBusinessNames,
+  setCountry,
+  setCountryISO,
+  setBusinessObjectives,
+  setSelectedEntity,
+  setLaunchResponse,
+} = launchApplicationInfo.actions;

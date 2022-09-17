@@ -28,6 +28,7 @@ export const MainHeader = styled.div`
   padding-inline: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
+  transition: 0.2s all ease;
 
   > p {
     display: flex;
@@ -44,12 +45,14 @@ export const MainHeader = styled.div`
     justify-content: space-between;
   }
 `;
+
 export const SubHeader = styled.div`
   display: flex;
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
 `;
+
 export const Body = styled.div`
   display: flex;
   gap: 42px;
@@ -57,9 +60,10 @@ export const Body = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
 `;
+
 export const BodyLeft = styled.div`
   position: sticky;
-  top: 250px;
+  top: 220px;
   height: max-content;
   display: flex;
   flex-flow: column;

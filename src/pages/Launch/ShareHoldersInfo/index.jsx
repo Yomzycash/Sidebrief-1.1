@@ -18,7 +18,7 @@ const ShareHoldersInfo = () => {
   const { shareHolders } = currentBusiness;
 
   const handleNext = () => {
-    navigate("/checkout/directors-info");
+    navigate("/launch/directors-info");
     store.dispatch(setCheckoutProgress({ total: 10, current: 5 })); // total- total pages and current - current page
   };
 

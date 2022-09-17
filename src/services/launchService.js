@@ -24,25 +24,36 @@ export const launchApi = createApi({
     }),
 
     //get all entities
-
     getAllEntities: builder.query({
       query: (ISO) => `/entities/country/${ISO}`,
-      headers: {
-        Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg`,
-      },
     }),
 
     //create launch with registration country and registration type
-
     getStarted: builder.mutation({
       query: (values) => ({
-        url: "/launch/start",
+        url: "/v1/launch/start",
         method: "POST",
         body: values,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg`,
-        },
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add business names
+    addBusinessNames: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/names/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add business objectives
+    addBusinessObjectives: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/objects/add",
+        method: "POST",
+        body: values,
       }),
       invalidatesTags: ["Application"],
     }),
@@ -53,4 +64,6 @@ export const {
   useGetAllCountriesQuery,
   useGetAllEntitiesQuery,
   useGetStartedMutation,
+  useAddBusinessNamesMutation,
+  useAddBusinessObjectivesMutation,
 } = launchApi;

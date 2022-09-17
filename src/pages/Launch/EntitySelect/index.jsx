@@ -4,54 +4,88 @@ import { Body, Bottom, Container, Header, EntityCardsWrapper } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
-import { Entities } from "utils/config";
-import { setCheckoutProgress, selectedEntity } from "redux/Slices";
+import { setCheckoutProgress, setSelectedEntity } from "redux/Slices";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
 import {
+  useAddBusinessNamesMutation,
   useGetAllEntitiesQuery,
   useGetStartedMutation,
 } from "services/launchService";
+import ResetPassword from "pages/Auth/SignIn/resetPassword/resetPassword";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
   const [entities, setEntities] = useState([]);
+  const [launchCode, setLaunchCode] = useState();
 
+  // Get necessary information from store
   const countryISO = useSelector((store) => store.LaunchReducer.countryISO);
   const selectCountry = useSelector(
     (store) => store.LaunchReducer.selectedCountry
+  );
+  const businessNames = useSelector(
+    (store) => store.LaunchReducer.businessNames
+  );
+  const selectedObjectives = useSelector(
+    (store) => store.LaunchReducer.selectedObjectives
   );
 
   const { data, error, isLoading, isSuccess } =
     useGetAllEntitiesQuery(countryISO);
 
   const [getStarted] = useGetStartedMutation();
+  const [addBusinessNames] = useAddBusinessNamesMutation();
+  const [addBusinessObjectives] = useAddBusinessNamesMutation();
 
+  // Set to state all entities of the specified country
   useEffect(() => {
     setEntities(data);
   }, [data]);
 
   const handleNext = async (selectedItem) => {
-    navigate("/checkout/address");
     store.dispatch(setCheckoutProgress({ total: 10, current: 2 })); // total- total pages and current - current page
-    store.dispatch(selectedEntity(selectedItem));
+    store.dispatch(setSelectedEntity(selectedItem));
 
-    const data = {
-      registrationcountry: countryISO,
+    // To be sent to the backend
+    const requiredLaunchData = {
+      registrationCountry: countryISO,
       registrationType: selectedItem.entityCode,
     };
+    let launchResponse = await getStarted(requiredLaunchData);
+    if (launchResponse.data) {
+      const launchCode = await launchResponse.data.launchCode;
 
-    const response = await getStarted(JSON.stringify(data));
-    let error = response?.error;
+      const requiredBusinessNamesData = {
+        launchCode: launchCode,
+        businessNames: {
+          businessName1: businessNames[0],
+          businessName2: businessNames[1],
+          businessName3: businessNames[2],
+          businessName4: businessNames[3],
+        },
+      };
 
-    // if (response) {
-    //   store.dispatch;
-    // }
-  };
+      const requiredBusinessObjectives = {
+        launchCode: launchCode,
+        businessObjects: {
+          businessObject1: selectedObjectives[0],
+          businessObject2: selectedObjectives[1],
+          businessObject3: selectedObjectives[2],
+          businessObject4: selectedObjectives[3],
+        },
+      };
 
-  const handlePrev = () => {
-    navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
+      const businessNamesResponse = await addBusinessNames(
+        requiredBusinessNamesData
+      );
+      const businessObjectivesResponse = await addBusinessObjectives(
+        requiredBusinessObjectives
+      );
+      console.log(businessNamesResponse);
+      console.log(businessObjectivesResponse);
+      // navigate("/launch/address");
+    }
   };
 
   return (
@@ -63,7 +97,7 @@ const EntitySelect = () => {
         <CheckoutSection title={"Operational Country: " + selectCountry}>
           <EntityCardsWrapper>
             {entities?.map((item, index) => (
-              <div>
+              <div key={index}>
                 <EntityCard
                   key={index}
                   name={item?.entityName}

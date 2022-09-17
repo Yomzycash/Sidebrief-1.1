@@ -1,7 +1,7 @@
 import { RewardCard, RewardSummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { lendhaLogo } from "asset/images";
 import {
   Body,
@@ -147,13 +147,24 @@ const allRewards = [
 const AllRewards = () => {
   const [boxshadow, setBoxShadow] = useState("false");
 
+  const navigate = useNavigate();
+
+  const mainHeaderRef = useRef();
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
     });
   }, []);
 
-  const navigate = useNavigate();
+  // This reduces the header's height when scrolled
+  useEffect(() => {
+    if (boxshadow === "true") {
+      mainHeaderRef.current.style.height = "80px";
+    } else {
+      mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
+    }
+  }, [boxshadow]);
 
   useEffect(() => {
     navigate("/rewards/all-rewards");
@@ -162,7 +173,7 @@ const AllRewards = () => {
   return (
     <Container>
       <Header boxshadow={boxshadow}>
-        <MainHeader>
+        <MainHeader ref={mainHeaderRef}>
           <p>Rewards</p>
           <div>
             <RewardSummaryCard shown={9} total={323} />

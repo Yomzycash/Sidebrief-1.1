@@ -20,31 +20,38 @@ import {
 } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setCheckoutProgress, setCountryISO, setCountry } from "redux/Slices";
+import {
+  setCheckoutProgress,
+  setCountryISO,
+  setCountry,
+  setSelectedBusinessNames,
+  setBusinessObjectives,
+} from "redux/Slices";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { BusinessObjectives } from "utils/config";
 import { useGetAllCountriesQuery } from "services/launchService";
 
 const BusinessInfo = () => {
   const [businessNames, setBusinessNames] = useState([]);
-  const [selectedCountry, setselectedCountry] = useState();
+  const [selectedCountry, setselectedCountry] = useState("");
   const [selectedObjectives, setselectedObjectives] = useState([]);
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
-  const [selectedCountryISO, setselectedCountryISO] = useState();
+  const [selectedCountryISO, setselectedCountryISO] = useState("");
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
-  // const { data, error, isLoading, isSuccess } =
-  //   useGetAllEntitiesQuery(selectedCountryISO);
 
   const navigate = useNavigate();
 
-  const handleNext = async () => {
+  const handleNext = () => {
     store.dispatch(setCountryISO(selectedCountryISO));
     store.dispatch(setCountry(selectedCountry));
-    navigate("/checkout/entity");
+    store.dispatch(setSelectedBusinessNames(businessNames));
+    store.dispatch(setBusinessObjectives(selectedObjectives));
     store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
+    navigate("/launch/entity");
   };
+
   const handlePrev = () => {
     navigate(-1);
   };
@@ -53,6 +60,12 @@ const BusinessInfo = () => {
     setBusinessNames(valuesSelected);
   };
 
+  // This fires off whenever next button is clicked
+  // useEffect(() => {
+  //
+  // }, [nextClicked]);
+
+  // Handle supported countries fetch
   const handleCountry = async (value) => {
     let responseData = await data;
     let countries = [];
@@ -68,6 +81,7 @@ const BusinessInfo = () => {
     setselectedObjectives(valuesSelected);
   };
 
+  // Update the supported countries when data changes
   useEffect(() => {
     handleCountry();
   }, [data]);

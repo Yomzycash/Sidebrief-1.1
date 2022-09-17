@@ -18,7 +18,7 @@ const DirectorsInfo = () => {
   const { directors } = currentBusiness;
 
   const handleNext = () => {
-    navigate("/checkout/beneficiaries-info");
+    navigate("/launch/beneficiaries-info");
     store.dispatch(setCheckoutProgress({ total: 10, current: 6 })); // total- total pages and current - current page
   };
 
@@ -39,7 +39,7 @@ const DirectorsInfo = () => {
             title="Directors's Information"
             number={index + 1}
             numbers={directors ? directors : index + 1}
-            info= "Directors"
+            info="Directors"
           />
         ))}
       </Body>
