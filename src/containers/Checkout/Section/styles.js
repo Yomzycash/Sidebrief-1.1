@@ -8,6 +8,8 @@ export const Container = styled.div`
 `;
 
 export const Heading = styled.h3`
+  display: flex;
+  justify-content: space-between;
   font-family: BR Firma;
   font-size: 24px;
   font-weight: 600;
@@ -16,8 +18,9 @@ export const Heading = styled.h3`
   /* letter-spacing: 0px; */
 
   span {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 400;
+    color: red;
   }
 `;
 

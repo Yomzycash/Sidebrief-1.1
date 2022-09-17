@@ -4,7 +4,6 @@ import { Container, Heading, ContentWrapper, SectionContainer } from "./styles";
 
 export const CheckoutSection = ({
   title,
-  subtitle,
   children,
   review,
   sectionTitle,
@@ -13,10 +12,7 @@ export const CheckoutSection = ({
 }) => {
   return (
     <Container>
-      <Heading>
-        {title}
-        {subtitle ? ":" : null} <span>{subtitle}</span>
-      </Heading>
+      <Heading>{title}</Heading>
       {review && (
         <SectionContainer>
           <p>{sectionTitle}</p>
