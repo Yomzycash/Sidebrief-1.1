@@ -52,7 +52,7 @@ const NumberInput = ({
       >
         <PhoneInput
           country={"ng"}
-          value={value}
+          value=""
           onChange={onChange}
           containerStyle={{
             height: "100%",

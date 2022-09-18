@@ -4,7 +4,11 @@ import { Body, Bottom, Container, Header, EntityCardsWrapper } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useLocation, useNavigate, useRoutes } from "react-router-dom";
-import { setCheckoutProgress, setSelectedEntity } from "redux/Slices";
+import {
+  setCheckoutProgress,
+  setGeneratedLaunchCode,
+  setSelectedEntity,
+} from "redux/Slices";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
 import {
@@ -12,7 +16,8 @@ import {
   useGetAllEntitiesQuery,
   useGetStartedMutation,
 } from "services/launchService";
-import ResetPassword from "pages/Auth/SignIn/resetPassword/resetPassword";
+
+import toast from "react-hot-toast";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
@@ -55,6 +60,8 @@ const EntitySelect = () => {
     let launchResponse = await getStarted(requiredLaunchData);
     if (launchResponse.data) {
       const launchCode = await launchResponse.data.launchCode;
+      store.dispatch(setGeneratedLaunchCode(launchCode));
+      console.log(launchCode);
 
       const requiredBusinessNamesData = {
         launchCode: launchCode,
@@ -79,12 +86,23 @@ const EntitySelect = () => {
       const businessNamesResponse = await addBusinessNames(
         requiredBusinessNamesData
       );
+
       const businessObjectivesResponse = await addBusinessObjectives(
         requiredBusinessObjectives
       );
+
       console.log(businessNamesResponse);
+
+      // let data = businessNamesResponse?.data;
+
+      let error = businessNamesResponse?.error;
+      if (error) {
+        toast.error(error.data.message);
+      }
+
       console.log(businessObjectivesResponse);
-      // navigate("/launch/address");
+
+      navigate("/launch/address");
     }
   };
 

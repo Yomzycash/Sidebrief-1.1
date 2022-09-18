@@ -57,6 +57,56 @@ export const launchApi = createApi({
       }),
       invalidatesTags: ["Application"],
     }),
+
+    // Add business address
+    addBusinessAddress: builder.mutation({
+      query: (values) => ({
+        url: "v1/launch/address/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Members
+    addMembers: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Shareholders
+    addShareHolder: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/shareholders/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Directors
+    addDirector: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/directors/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Beneficiaries
+    addBeneficiary: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/beneficialowners/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
   }),
 });
 
@@ -66,4 +116,9 @@ export const {
   useGetStartedMutation,
   useAddBusinessNamesMutation,
   useAddBusinessObjectivesMutation,
+  useAddBusinessAddressMutation,
+  useAddMembersMutation,
+  useAddShareHolderMutation,
+  useAddDirectorMutation,
+  useAddBeneficiaryMutation,
 } = launchApi;
