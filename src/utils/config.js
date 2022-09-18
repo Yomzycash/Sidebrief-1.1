@@ -69,7 +69,9 @@ export const checkInfoSchema = yup.object().shape({
   phone: yup.string().required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
   share_percentage: yup
-    .string()
+    .number()
+    .min(0.00001)
+    .max(100)
     .required("Share percentage is from 1% to 100%"),
   share_type: yup.string().required("Share type is a required field"),
 });

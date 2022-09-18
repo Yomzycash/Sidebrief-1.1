@@ -10,11 +10,19 @@ import { setCheckoutProgress } from "redux/Slices";
 import { defaultLocation, addressSchema } from "../constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAddBusinessAddressMutation } from "services/launchService";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState(defaultLocation);
   const [state, setState] = useState(defaultLocation);
   const [city, setCity] = useState(defaultLocation);
+  const [addressNo, setAddressNo] = useState("200");
+  const [addBusinessAddress] = useAddBusinessAddressMutation();
+  const generatedLaunchCode = useSelector(
+    (store) => store.LaunchReducer.generatedLaunchCode
+  );
 
   const {
     register,
@@ -50,6 +58,31 @@ const BusinessAddress = () => {
     // api calls can be done here
 
     // redirect to the next page
+
+    const requiredAddressData = {
+      launchCode: generatedLaunchCode,
+
+      businessAddress: {
+        addressCountry: data.country,
+        addressState: data.state,
+        addressCity: data.city,
+        addressStreet: data.street,
+        addressZipCode: data.zipcode,
+        addressNumber: addressNo,
+        addressEmail: data.email,
+      },
+    };
+
+    console.log(requiredAddressData);
+    const response = await addBusinessAddress(requiredAddressData);
+
+    // const result = response.data;
+    const error = response.error;
+
+    if (error) {
+      console.log(error?.data.message);
+      toast.error(error?.data.message);
+    }
     handleNext();
   };
 
@@ -60,7 +93,7 @@ const BusinessAddress = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate("/launch/form-info");
+    navigate("/launch/shareholders-info");
     store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
   };
 
