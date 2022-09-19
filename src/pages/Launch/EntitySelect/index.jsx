@@ -3,7 +3,7 @@ import { CheckoutController, CheckoutSection } from "containers";
 import { Body, Bottom, Container, Header, EntityCardsWrapper } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
-import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   setCheckoutProgress,
   setGeneratedLaunchCode,
@@ -13,6 +13,7 @@ import { store } from "redux/Store";
 import { useSelector } from "react-redux";
 import {
   useAddBusinessNamesMutation,
+  useAddBusinessObjectivesMutation,
   useGetAllEntitiesQuery,
   useGetStartedMutation,
 } from "services/launchService";
@@ -41,13 +42,14 @@ const EntitySelect = () => {
 
   const [getStarted] = useGetStartedMutation();
   const [addBusinessNames] = useAddBusinessNamesMutation();
-  const [addBusinessObjectives] = useAddBusinessNamesMutation();
+  const [addBusinessObjectives] = useAddBusinessObjectivesMutation();
 
   // Set to state all entities of the specified country
   useEffect(() => {
     setEntities(data);
   }, [data]);
 
+  // This fires off when the next button is clicked
   const handleNext = async (selectedItem) => {
     store.dispatch(setCheckoutProgress({ total: 10, current: 2 })); // total- total pages and current - current page
     store.dispatch(setSelectedEntity(selectedItem));
@@ -137,3 +139,7 @@ const EntitySelect = () => {
 };
 
 export default EntitySelect;
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+//   .eyJpZCI6IjYzMjM5MjlhNDdkZjU3MjdlNWQzZTg4ZSIsImlhdCI6MTY2MzI3NTY3NCwiZXhwIjoyNTI3Mjc1Njc0fQ
+//   .Ny2kvYtiUImSx6jmVHIhYp3MWWhlB9h2KrcZ1Sj10JI;
