@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Navbar from "components/navbar";
-import Sidebar from "../../../../components/sidebar";
+import Sidebar from "../../../components/sidebar";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
