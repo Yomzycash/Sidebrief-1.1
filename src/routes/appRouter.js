@@ -120,7 +120,7 @@ const AppRouter = () => {
               <Route path="business-info" element={<BusinessInfo />} />
               <Route path="entity" element={<EntitySelect />} />
               <Route path="address" element={<BusinessAddress />} />
-              <Route path="form-info" element={<BusinessForm />} />
+              {/* <Route path="form-info" element={<BusinessForm />} /> */}
               <Route path="shareholders-info" element={<ShareHoldersInfo />} />
               <Route path="directors-info" element={<DirectorsInfo />} />
               <Route
