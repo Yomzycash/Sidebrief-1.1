@@ -27,6 +27,7 @@ export const BusinessTable = ({ data }) => {
 
 	return (
 		<Container>
+			{/* The Header is here */}
 			<Table>
 				<Head>
 					{table.getHeaderGroups().map((headerGroup) => (
@@ -59,6 +60,7 @@ export const BusinessTable = ({ data }) => {
 					))}
 				</tbody>
 			</Table>
+			{/* The pagination controller */}
 		</Container>
 	);
 };

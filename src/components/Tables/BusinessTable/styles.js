@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-export const Container = styled.div``;
+export const Container = styled.div`
+	border: 1px solid #edf1f7;
+	border-radius: 0px 0px 16px 16px;
+`;
 
 export const Table = styled.table`
 	width: 100%;
