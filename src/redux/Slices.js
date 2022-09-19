@@ -49,6 +49,7 @@ const LayoutInfo = createSlice({
   initialState: {
     sidebarWidth: "",
     checkoutProgress: 0,
+    rewardsPageHeader: true,
   },
   reducers: {
     setSidebarWidth: (state, action) => {
@@ -59,11 +60,15 @@ const LayoutInfo = createSlice({
       let progress = (current / total) * 100;
       state.checkoutProgress = progress;
     },
+    setRewardsPageHeader: (state, action) => {
+      state.rewardsPageHeader = action.payload;
+    },
   },
 });
 
 export const LayoutInfoReducer = LayoutInfo.reducer;
-export const { setSidebarWidth, setCheckoutProgress } = LayoutInfo.actions;
+export const { setSidebarWidth, setCheckoutProgress, setRewardsPageHeader } =
+  LayoutInfo.actions;
 
 // This slice will hold all registered businesses and current registration information
 const RegisteredBusinessesInfo = createSlice({

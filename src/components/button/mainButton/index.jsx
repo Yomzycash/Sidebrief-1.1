@@ -3,8 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-
-
 const Button = ({ title = "Test", onClick, type, disabled, outline,bg_color, color,hover_bg_color,hv_color}) => {
   return (
     <ButtonWrapper 

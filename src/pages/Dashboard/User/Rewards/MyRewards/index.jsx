@@ -2,7 +2,7 @@ import { RewardCard, RewardSummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
-import { lendhaLogo } from "asset/images";
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import {
   Body,
   BodyLeft,
@@ -14,12 +14,9 @@ import {
   SubHeader,
 } from "./styled";
 import { useNavigate } from "react-router-dom";
-
-const searchStyle = {
-  borderRadius: "12px",
-  backgroundColor: "white",
-  maxWidth: "384px",
-};
+import { store } from "redux/Store";
+import { setRewardsPageHeader } from "redux/Slices";
+import { myRewards } from "utils/config";
 
 const rewardsCategories = [
   "Insurance",
@@ -27,128 +24,20 @@ const rewardsCategories = [
   "Employee Management",
 ];
 
-const allRewards = [
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-];
-
 const MyRewards = () => {
-  const [boxshadow, setBoxShadow] = useState("false");
-
   const navigate = useNavigate();
 
-  const mainHeaderRef = useRef();
-
+  // This displays rewards header for this page
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-    });
+    store.dispatch(setRewardsPageHeader(true));
   }, []);
 
-  // This reduces the header's height when scrolled
-  useEffect(() => {
-    if (boxshadow === "true") {
-      mainHeaderRef.current.style.height = "80px";
-    } else {
-      mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
-    }
-  }, [boxshadow]);
+  const handleRewardClick = (title) => {
+    navigate(`/dashboard/rewards/${title}`);
+  };
 
   return (
     <Container>
-      <Header boxshadow={boxshadow}>
-        <MainHeader ref={mainHeaderRef}>
-          <p>Rewards</p>
-          <div>
-            <RewardSummaryCard shown={9} total={323} />
-            <Search style={searchStyle} />
-          </div>
-        </MainHeader>
-        <SubHeader>
-          <ActiveNav
-            text="All Rewards"
-            total={64}
-            path={"/rewards/all-rewards"}
-          />
-          <ActiveNav text="My Rewards" total={8} path="/rewards/my-rewards" />
-        </SubHeader>
-      </Header>
       <Body>
         <BodyLeft>
           <h3>Categories</h3>
@@ -160,14 +49,14 @@ const MyRewards = () => {
           </ul>
         </BodyLeft>
         <BodyRight>
-          {allRewards.map((reward, index) => (
+          {myRewards.map((reward, index) => (
             <RewardCard
               key={index}
               title={reward.title}
               body={reward.body}
               image={reward.image}
               imageAlt={reward.alt}
-              action={() => navigate("/rewards/details")}
+              action={() => handleRewardClick(reward.title)}
               rewardspage
             />
           ))}

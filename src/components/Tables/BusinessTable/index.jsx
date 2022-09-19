@@ -1,16 +1,5 @@
-import React from "react";
-import {
-	Container,
-	Heading,
-	Title,
-	ViewAllButton,
-	Table,
-	Head,
-	HeadData,
-	Row,
-	RowData,
-} from "./styles";
-import { TextWithArrow } from "components/texts";
+import React, { useState } from "react";
+import { Container, Table, Head, HeadData, Row, RowData } from "./styles";
 import {
 	useReactTable,
 	flexRender,
@@ -18,21 +7,27 @@ import {
 } from "@tanstack/react-table";
 import { columns } from "./constants";
 
-export const ApplicationTable = ({ onClickViewAll, data }) => {
+export const BusinessTable = ({ data }) => {
+	const [rowSelection, setRowSelection] = useState({});
+
 	const table = useReactTable({
 		columns,
 		data,
 		getCoreRowModel: getCoreRowModel(),
+		state: {
+			rowSelection,
+		},
+		onRowSelectionChange: setRowSelection,
 	});
+
+	// returns SelectedRows
+	const getSelectedRows = () => {
+		return table.getSelectedRowModel().flatRows;
+	};
 
 	return (
 		<Container>
-			<Heading>
-				<Title>Applications</Title>
-				<ViewAllButton onClick={onClickViewAll}>
-					<TextWithArrow blue>View All</TextWithArrow>
-				</ViewAllButton>
-			</Heading>
+			{/* The Header is here */}
 			<Table>
 				<Head>
 					{table.getHeaderGroups().map((headerGroup) => (
@@ -65,6 +60,7 @@ export const ApplicationTable = ({ onClickViewAll, data }) => {
 					))}
 				</tbody>
 			</Table>
+			{/* The pagination controller */}
 		</Container>
 	);
 };

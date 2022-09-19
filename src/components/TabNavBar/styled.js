@@ -24,35 +24,27 @@ export const ContentWrapper = styled.div`
 
   max-width: 820px;
 `;
-export const NavLinkWrapper = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  padding: 7px 10px;
-  transition: 0.3s all ease;
-  :hover {
-    cursor: pointer;
-    background: rgba(0, 162, 212, 0.1);
+export const NavLinkWrapper = styled.div`
+  > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 7px 10px;
+    transition: 0.3s all ease;
     border-radius: 20px;
-    color: #00a2d4;
-    > p {
+    border: none;
+    height: max-content;
+    margin: 0;
+    font-weight: 500;
+    font-size: 12px;
+    color: #242627;
+    white-space: nowrap;
+  }
+  :hover {
+    > a {
+      background: rgba(0, 162, 212, 0.1);
       color: #00a2d4;
     }
   }
-`;
-
-export const LinkContent = styled.p`
-  position: relative;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  text-align: center;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  color: #242627;
-  white-space: nowrap;
-  max-width: max-content;
-  transition: 0.3s all ease;
 `;
