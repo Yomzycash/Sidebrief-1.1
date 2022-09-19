@@ -1,5 +1,5 @@
 import React from "react";
-import { Registration, Body, Main, Recently } from "./styled";
+import { Container, Body, Main, Recently } from "./styled";
 import TabNavBar from "components/TabNavBar/TabNavBar";
 import {
   BusinessesChartCard,
@@ -41,7 +41,7 @@ const BusinessRegistration = (props) => {
   };
 
   return (
-    <Registration>
+    <Container>
       <TabNavBar />
       <Body>
         <Main>
@@ -139,7 +139,7 @@ const BusinessRegistration = (props) => {
           </DashboardSection>
         </Main>
       </Body>
-    </Registration>
+    </Container>
   );
 };
 

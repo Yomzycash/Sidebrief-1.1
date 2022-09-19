@@ -7,6 +7,7 @@ import {
   HiCog,
   HiBriefcase,
 } from "react-icons/hi";
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
@@ -81,7 +82,7 @@ export const sidebarLink = [
     id: 1,
     title: "Home",
     icon: HiHome,
-    path: "/dashboard",
+    path: "/dashboard/business-registration",
   },
   {
     id: 2,
@@ -105,7 +106,7 @@ export const sidebarLink = [
     id: 5,
     title: "Rewards",
     icon: HiOutlineSparkles,
-    path: "/rewards/all-rewards",
+    path: "/dashboard/rewards/all-rewards",
   },
   {
     id: 6,
@@ -170,27 +171,27 @@ export const NavbarLink = [
   {
     id: 1,
     title: "Registration",
-    path: "",
+    path: "/dashboard/business-registration",
   },
   {
     id: 2,
     title: "Compliance",
-    path: "",
+    path: "/dashboard/compliance",
   },
   {
     id: 3,
     title: "Taxes",
-    path: "",
+    path: "/dashboard/taxes",
   },
   {
     id: 4,
     title: "Hiring & payroll",
-    path: "",
+    path: "/dashboard/hiring-and-payroll",
   },
   {
     id: 5,
     title: "Intellectual Assets",
-    path: "",
+    path: "/dashboard/intellectualAssets",
   },
 ];
 
@@ -232,11 +233,10 @@ export const CardContainer = [
 ];
 
 export const NavMore = [
-  { id: 1, path: "", title: "Compliance" },
-  { id: 2, path: "", title: "Registration" },
-  { id: 3, path: "", title: "Taxes" },
-  { id: 4, path: "", title: "Hiring" },
-  { id: 5, path: "", title: "Payroll" },
+  { id: 1, path: "/dashboard/compliance", title: "Compliance" },
+  { id: 2, path: "/dashboard/business-registration", title: "Registration" },
+  { id: 3, path: "/dashboard/taxes", title: "Taxes" },
+  { id: 4, path: "/dashboard/hiring-and-payroll", title: "Hiring" },
 ];
 
 export const Entities = [
@@ -409,4 +409,250 @@ export const BusinessObjectives = [
   "Activities of households as employers of domestic personnel",
   "Undifferentiated goods- and services-producing activities of private households for own use",
   "Activities of extraterritorial organizations and bodies",
+];
+
+export const myRewards = [
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+];
+
+export const allRewards = [
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
+  {
+    title: "Lendha Africa",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: lendhaLogo,
+  },
+  {
+    title: "Glade",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: GladeLogo,
+  },
+  {
+    title: "Okra",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: OkraLogo,
+  },
+  {
+    title: "Sterling",
+    body: "Get 25% off you first year of using Landha Africa",
+    alt: "Lendha",
+    image: SterlingLogo,
+  },
 ];

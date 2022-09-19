@@ -12,6 +12,7 @@ const ButtonWrapper = styled(motion.button)`
   text-align: center;
   font-size: 18px;
   border: none;
+  outline: none;
   cursor: pointer;
 
   @media screen and (max-width: 600px) {
@@ -19,7 +20,7 @@ const ButtonWrapper = styled(motion.button)`
   }
 `;
 
-const Button = ({ title = "Test", onClick, type, disabled }) => {
+const Button = ({ title = "Test", onClick, type, disabled, style }) => {
   return (
     <ButtonWrapper
       initial={{ y: 10, opacity: 0 }}
@@ -35,6 +36,7 @@ const Button = ({ title = "Test", onClick, type, disabled }) => {
       onClick={onClick}
       type={type}
       disabled={disabled}
+      style={style}
     >
       {title}
     </ButtonWrapper>

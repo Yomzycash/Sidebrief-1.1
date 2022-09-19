@@ -17,10 +17,11 @@ export const NavigationWrapper = styled.div`
   border-bottom: 1px solid #edf1f6;
   display: flex;
   align-items: center;
+  width: max-content;
+  cursor: pointer;
 
   p {
     margin-left: 8px;
-    cursor: pointer;
   }
 `;
 
@@ -61,6 +62,10 @@ export const BadgeText = styled.p`
 `;
 export const ButtonWrapper = styled.div`
   width: 200px;
+
+  .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+    background-color: none;
+  }
 `;
 export const RewardShortText = styled.p`
   font-size: 16px;
@@ -73,7 +78,7 @@ export const RewardDescription = styled.div`
   padding-inline: 40px;
 `;
 
-export const TextDes = styled.p`
+export const TextDes = styled.div`
   display: flex;
   flex-flow: column;
   gap: 16px;

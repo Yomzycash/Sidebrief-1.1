@@ -1,25 +1,11 @@
-import { RewardCard, RewardSummaryCard } from "components/cards";
-import ActiveNav from "components/navbar/ActiveNav";
-import Search from "components/navbar/Search";
+import { RewardCard } from "components/cards";
 import React, { useEffect, useRef, useState } from "react";
-import { lendhaLogo } from "asset/images";
-import {
-  Body,
-  BodyLeft,
-  BodyRight,
-  Container,
-  Footer,
-  Header,
-  MainHeader,
-  SubHeader,
-} from "./styled";
-import { useNavigate } from "react-router-dom";
-
-const searchStyle = {
-  borderRadius: "12px",
-  backgroundColor: "white",
-  maxWidth: "384px",
-};
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
+import { Body, BodyLeft, BodyRight, Container, Footer } from "./styled";
+import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
+import { store } from "redux/Store";
+import { setRewardsPageHeader } from "redux/Slices";
+import { allRewards } from "utils/config";
 
 const rewardsCategories = [
   "Insurance",
@@ -33,162 +19,27 @@ const rewardsCategories = [
   "KYC Verification",
 ];
 
-const allRewards = [
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-];
+// Temporary rewards - to be used pending the time we'll start pulling the actual ones from the backend
 
 const AllRewards = () => {
-  const [boxshadow, setBoxShadow] = useState("false");
+  // const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
-  const mainHeaderRef = useRef();
+  const handleRewardClick = (title) => {
+    // const params = { reward };
+    // setSearchParams(params);
+    // console.log(searchParams);
+    navigate(`/dashboard/rewards/${title}`);
+  };
 
+  // This displays rewards header for this page
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-    });
-  }, []);
-
-  // This reduces the header's height when scrolled
-  useEffect(() => {
-    if (boxshadow === "true") {
-      mainHeaderRef.current.style.height = "80px";
-    } else {
-      mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
-    }
-  }, [boxshadow]);
-
-  useEffect(() => {
-    navigate("/rewards/all-rewards");
+    store.dispatch(setRewardsPageHeader(true));
   }, []);
 
   return (
     <Container>
-      <Header boxshadow={boxshadow}>
-        <MainHeader ref={mainHeaderRef}>
-          <p>Rewards</p>
-          <div>
-            <RewardSummaryCard shown={9} total={323} />
-            <Search style={searchStyle} />
-          </div>
-        </MainHeader>
-        <SubHeader>
-          <ActiveNav
-            text="All Rewards"
-            total={64}
-            path={"/rewards/all-rewards"}
-          />
-          <ActiveNav text="My Rewards" total={8} path="/rewards/my-rewards" />
-        </SubHeader>
-      </Header>
       <Body>
         <BodyLeft>
           <h3>Categories</h3>
@@ -207,13 +58,14 @@ const AllRewards = () => {
               body={reward.body}
               image={reward.image}
               imageAlt={reward.alt}
-              action={() => navigate("/rewards/details")}
+              action={() => handleRewardClick(reward.title)}
               rewardspage
             />
           ))}
         </BodyRight>
       </Body>
       <Footer></Footer>
+      <Outlet />
     </Container>
   );
 };

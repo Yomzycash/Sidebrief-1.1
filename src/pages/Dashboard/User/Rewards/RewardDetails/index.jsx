@@ -2,7 +2,7 @@ import { RewardCard } from "components/cards";
 
 import DashboardSection from "layout/DashboardSection";
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StaffContainer,
   NavigationWrapper,
@@ -20,45 +20,75 @@ import {
   TextWrapper,
 } from "./styled";
 
-import rewardImage from "../../../asset/images/re.png";
 import Button from "components/button";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import { ScrollBox } from "containers";
 import { IoArrowForward } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setRewardsPageHeader } from "redux/Slices";
+import { useNavigate, useParams } from "react-router-dom";
+import { allRewards } from "utils/config";
+import Dialog from "@mui/material/Dialog";
+import RewardModal from "components/modal/RewardModal";
 
 const RewardDetails = (props) => {
+  const [open, setOpen] = useState(false);
+
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    store.dispatch(setRewardsPageHeader(false));
+  }, []);
+
+  const { reward } = useParams();
+
+  const rewardDetails = allRewards.find((element) => element.title === reward);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <StaffContainer sidebarWidth={sidebarWidth}>
-      <NavigationWrapper>
+      <NavigationWrapper
+        onClick={() => navigate("/dashboard/rewards/all-rewards")}
+      >
         <HiArrowNarrowLeft />
         <p>Back to Rewards</p>
       </NavigationWrapper>
       <RewardShortDetails>
         <ImageWrapper>
-          <Image src={rewardImage} alt="" />
+          <Image src={rewardDetails.image} alt="" />
           <TextWrapper>
             <Badge>
               <BadgeText> Expense Management</BadgeText>
             </Badge>
-            <h4>Lendha Africa</h4>
+            <h4>{reward}</h4>
             <RewardShortText>
               $200 off 1st-month subscription for payroll compliance
             </RewardShortText>
           </TextWrapper>
         </ImageWrapper>
         <ButtonWrapper>
-          <Button title="Claim Reward" />
+          <Button title="Claim Reward" onClick={handleClickOpen} />
+          <Dialog onClose={handleClose} open={open}>
+            <RewardModal handleClose={handleClose} />
+          </Dialog>
         </ButtonWrapper>
       </RewardShortDetails>
       <RewardDescription>
         <TextDes>
           {" "}
           <div>
-            Glade is a financial technology company that powers bordeless
+            {reward} is a financial technology company that powers bordeless
             financial services for businesses across Africa to perform
             cross-border transactions, move and manage money globally, while
             having access to other tools they need to have a global reach.
@@ -71,7 +101,7 @@ const RewardDetails = (props) => {
             infrastructure.
           </div>
         </TextDes>
-        <VisitLink to="/">
+        <VisitLink to="">
           <TextLink>Visit Guide's website</TextLink>
           <HiArrowNarrowRight />
         </VisitLink>
