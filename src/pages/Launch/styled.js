@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { InputWrapper, Input } from "components/input/styled";
 
-export const Container = styled.form`
+export const Container = styled.div`
   display: flex;
   flex-flow: column;
   gap: 24px;

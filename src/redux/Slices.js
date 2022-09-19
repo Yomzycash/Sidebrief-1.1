@@ -113,6 +113,8 @@ const launchApplicationInfo = createSlice({
     selectedObjectives: [],
     setSelectedEntity: {},
     launchResponse: {},
+    generatedLaunchCode: "",
+    generatedMemberCode: "",
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -133,6 +135,13 @@ const launchApplicationInfo = createSlice({
     setLaunchResponse: (state, action) => {
       state.launchResponse = action.payload;
     },
+    setGeneratedLaunchCode: (state, action) => {
+      state.generatedLaunchCode = action.payload;
+    },
+
+    setGeneratedMemberCode: (state, action) => {
+      state.generatedMemberCode = action.payload;
+    },
   },
 });
 
@@ -144,4 +153,6 @@ export const {
   setBusinessObjectives,
   setSelectedEntity,
   setLaunchResponse,
+  setGeneratedLaunchCode,
+  setGeneratedMemberCode,
 } = launchApplicationInfo.actions;
