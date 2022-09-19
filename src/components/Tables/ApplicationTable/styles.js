@@ -48,7 +48,7 @@ export const Head = styled.thead`
 	height: 56px;
 
 	tr {
-		background: #fcfcfc;
+		background: #fafafa;
 	}
 `;
 

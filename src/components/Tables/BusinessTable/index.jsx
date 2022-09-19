@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Table, Head, HeadData, Row, RowData } from "./styles";
 import {
 	useReactTable,
@@ -8,11 +8,22 @@ import {
 import { columns } from "./constants";
 
 export const BusinessTable = ({ data }) => {
+	const [rowSelection, setRowSelection] = useState({});
+
 	const table = useReactTable({
 		columns,
 		data,
 		getCoreRowModel: getCoreRowModel(),
+		state: {
+			rowSelection,
+		},
+		onRowSelectionChange: setRowSelection,
 	});
+
+	// returns SelectedRows
+	const getSelectedRows = () => {
+		return table.getSelectedRowModel().flatRows;
+	};
 
 	return (
 		<Container>

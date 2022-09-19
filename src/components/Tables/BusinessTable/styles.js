@@ -11,7 +11,7 @@ export const Head = styled.thead`
 	height: 56px;
 
 	tr {
-		background: #fcfcfc;
+		background: #fafafa;
 	}
 `;
 
@@ -40,11 +40,12 @@ export const Row = styled.tr`
 
 	& > :first-child {
 		padding-left: 24px;
+		width: 48px;
 	}
 
 	& > :last-child {
-		padding-right: 24px;
-		width: 48px;
+		padding-right: 50px;
+		width: 50px;
 	}
 `;
 
@@ -72,4 +73,11 @@ export const BodyText = styled.p`
 	letter-spacing: 0.02em;
 
 	color: #151717;
+`;
+
+export const Checkbox = styled.input`
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	margin-right: 30px;
 `;

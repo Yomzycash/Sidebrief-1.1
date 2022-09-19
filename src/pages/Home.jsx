@@ -13,6 +13,13 @@ const Home = () => {
 					country: "Nigeria",
 					date: "28/07/2022",
 				},
+				{
+					name: "Quick chef",
+					type: "LLC",
+					objective: "construction",
+					country: "Rwanda",
+					date: "28/07/2022",
+				},
 			]}
 		/>
 	);
