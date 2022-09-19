@@ -92,10 +92,11 @@ export const RowData = styled.td`
 export const HeadText = styled.h5`
 	font-family: "BR Firma";
 	font-weight: 500;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 21px;
 	letter-spacing: 0.02em;
-	color: #727474;
+
+	color: #151717;
 `;
 
 export const BodyText = styled.p`
