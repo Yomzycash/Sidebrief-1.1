@@ -1,10 +1,17 @@
 import React from "react";
 import RewardModal from "components/modal/RewardModal";
+import StaffModalCards from 'components/modal/StaffModalCards';
+import PdfCards from 'components/cards/PdfCard/PdfCards';
 import { BusinessTable } from "components/Tables";
-
+import { CheckoutFormInfo } from "containers";
 const Home = () => {
-	return (
-		<BusinessTable
+  return (
+<>    <RewardModal/>
+    <StaffModalCards/> 
+    <PdfCards/>
+    <CheckoutFormInfo title="Shareholder's Information" />
+    
+    <BusinessTable
 			data={[
 				{
 					name: "Sidebrief Africa",
@@ -22,7 +29,9 @@ const Home = () => {
 				},
 			]}
 		/>
-	);
-};
 
+    </>
+
+  )
+};
 export default Home;
