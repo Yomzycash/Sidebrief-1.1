@@ -3,6 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
+
+
 const Button = ({ title = "Test", onClick, type, disabled, outline,bg_color, color,hover_bg_color,hv_color}) => {
   return (
     <ButtonWrapper 
@@ -46,11 +48,7 @@ const ButtonWrapper = styled(motion.button)`
   :hover {
     background-color:${(props) => (props.hover_bg_color ? props.hover_bg_color: "")};
     color: ${(props) => (props.hv_color ? props.hv_color: "")};
-
-
   }
-
-
 
   @media screen and (max-width: 600px) {
     height: 48px;

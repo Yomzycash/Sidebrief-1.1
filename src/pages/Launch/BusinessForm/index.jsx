@@ -46,6 +46,7 @@ const BusinessForm = () => {
 
     switch (where) {
       case "shareholder":
+        
         setNumofShareHolders(number);
         setExpectedNumOfShareHolders((prev) => [...prev, number]);
         break;

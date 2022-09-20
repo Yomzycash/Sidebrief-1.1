@@ -6,7 +6,7 @@ import { Page, Inputs } from "../styled";
 import { Country, State, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setCheckoutProgress } from "redux/Slices";
+import { setBusinessAddress, setCheckoutProgress } from "redux/Slices";
 import { defaultLocation, addressSchema } from "../constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,7 +21,8 @@ const BusinessAddress = () => {
   const [addressNo, setAddressNo] = useState("200");
   const [addBusinessAddress] = useAddBusinessAddressMutation();
   const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode
+(store) => store.LaunchReducer.generatedLaunchCode
+
   );
 
   const {
@@ -53,7 +54,7 @@ const BusinessAddress = () => {
   };
 
   const SubmitForm = async (data) => {
-    console.log(data);
+    // console.log(data);
     // changed function to async
     // api calls can be done here
 
@@ -73,15 +74,19 @@ const BusinessAddress = () => {
       },
     };
 
-    console.log(requiredAddressData);
     const response = await addBusinessAddress(requiredAddressData);
+    console.log(response);
 
-    // const result = response.data;
-    const error = response.error;
+    
+   
 
-    if (error) {
-      console.log(error?.data.message);
-      toast.error(error?.data.message);
+    if(response.data){
+      store.dispatch(setBusinessAddress(requiredAddressData));
+    }
+
+    else if (response.error) {
+      console.log(response.error?.data.message);
+      toast.error(response.error?.data.message);
     }
     handleNext();
   };
@@ -95,6 +100,7 @@ const BusinessAddress = () => {
   const handleNext = () => {
     navigate("/launch/shareholders-info");
     store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
+
   };
 
   const handlePrev = () => {

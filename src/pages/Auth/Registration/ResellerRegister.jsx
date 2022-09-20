@@ -71,7 +71,7 @@ const ResellerRegister = () => {
 			store.dispatch(saveResellerInfo(data));
 			console.log(data.message);
 			toast.success(data.message);
-			navigate(`${location.pathname}/verifyotp`);
+			navigate(`${location.pathnamgite}/verifyotp`);
 		} else if (error) {
 			console.log(error.data.message);
 			toast.error(error.data.message);
