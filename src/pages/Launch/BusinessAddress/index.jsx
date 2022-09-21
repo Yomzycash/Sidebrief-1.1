@@ -21,7 +21,7 @@ const BusinessAddress = () => {
   const [addressNo, setAddressNo] = useState("200");
   const [addBusinessAddress] = useAddBusinessAddressMutation();
   const generatedLaunchCode = useSelector(
-(store) => store.LaunchReducer.generatedLaunchCode
+    (store) => store.LaunchReducer.generatedLaunchCode
 
   );
 
@@ -82,13 +82,12 @@ const BusinessAddress = () => {
 
     if(response.data){
       store.dispatch(setBusinessAddress(requiredAddressData));
+      handleNext();
     }
-
     else if (response.error) {
       console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
-    handleNext();
   };
 
   const countries = Country.getAllCountries();

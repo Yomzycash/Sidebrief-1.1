@@ -79,8 +79,8 @@ export const CheckoutFormInfo = ({
 (<AllInputContainer key={index}>
   <Form onSubmit={handleSubmit(submitForm)}>
 <CheckInputWrapper > 
-
-        
+{containerList.length > 1 &&  containerList.length-1===index &&
+        (  
         <ImgWrapper>
           <EditWrapper onClick={handleContainerEdit}>
             <EditIcon />
@@ -88,7 +88,7 @@ export const CheckoutFormInfo = ({
           <DeleteWrapper onClick={() => handleContainerRemove(index)}>
             <DeleteIcon />
           </DeleteWrapper> 
-       </ImgWrapper>  
+       </ImgWrapper>  )}
        <ContentWrapper>
         <InputWithLabel
           label="Full Name"

@@ -155,6 +155,9 @@ const launchApplicationInfo = createSlice({
   },
 });
 
+
+
+
 export const LaunchReducer = launchApplicationInfo.reducer;
 export const {
   setSelectedBusinessNames,
@@ -167,3 +170,18 @@ export const {
   setGeneratedMemberCode,
   setBusinessAddress,
 } = launchApplicationInfo.actions;
+
+const RewardInfo = createSlice({  //creating reward slice (object) then export reducers of the slice 
+  name: 'Reward',
+  initialState: {
+    token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMjI5NTZhODlmMGFkOTRiNjEwMmJlNCIsImlhdCI6MTY2MzIxMDg1OCwiZXhwIjoyNTI3MjEwODU4fQ.DWx81pLGpaVYdC_fD_vfr8spAScz3mP-GsXldfEGMoA",
+    
+
+  },
+  reducers:{
+
+  },
+
+});
+
+export const RewardReducer=RewardInfo.reducer
