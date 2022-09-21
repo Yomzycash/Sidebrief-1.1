@@ -1,8 +1,8 @@
-import { RewardCard } from "components/cards";
+import { RewardCard } from 'components/cards'
 
-import DashboardSection from "layout/DashboardSection";
-import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
-import React, { useEffect, useState } from "react";
+import DashboardSection from 'layout/DashboardSection'
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi'
+import React, { useEffect, useState } from 'react'
 import {
   StaffContainer,
   NavigationWrapper,
@@ -18,60 +18,74 @@ import {
   TextDes,
   TextLink,
   TextWrapper,
-} from "./styled";
+} from './styled'
 
-import Button from "components/button";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
-import { ScrollBox } from "containers";
-import { IoArrowForward } from "react-icons/io5";
-import { useSelector } from "react-redux";
-import { store } from "redux/Store";
-import { setRewardsPageHeader } from "redux/Slices";
-import { useNavigate, useParams } from "react-router-dom";
-import { allRewards } from "utils/config";
-import Dialog from "@mui/material/Dialog";
-import RewardModal from "components/modal/RewardModal";
+import Button from 'components/button'
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from 'asset/images'
+import { ScrollBox } from 'containers'
+import { IoArrowForward } from 'react-icons/io5'
+import { useSelector } from 'react-redux'
+import { store } from 'redux/Store'
+import { setRewardsPageHeader } from 'redux/Slices'
+import { useNavigate, useParams } from 'react-router-dom'
+import { allRewards } from 'utils/config'
+import Dialog from '@mui/material/Dialog'
+import RewardModal from 'components/modal/RewardModal'
+import { useGetUserRewardQuery } from 'services/RewardService'
 
 const RewardDetails = (props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [selectedReward, setSelectedReward] = useState({})
 
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
+  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery()
 
-  const navigate = useNavigate();
+  const layoutInfo = useSelector((store) => store.LayoutInfo)
+  const { sidebarWidth } = layoutInfo
+
+  const navigate = useNavigate()
 
   useEffect(() => {
-    store.dispatch(setRewardsPageHeader(false));
-  }, []);
+    store.dispatch(setRewardsPageHeader(false))
+  }, [])
 
-  const { reward } = useParams();
+  const { rewardID } = useParams()
 
-  const rewardDetails = allRewards.find((element) => element.title === reward);
+  useEffect(() => {
+    const responseData = data === undefined ? [] : [...data]
+
+    const rewardDetails = responseData.find(
+      (reward) => reward.rewardID === rewardID,
+    )
+    setSelectedReward(rewardDetails)
+    console.log(rewardDetails)
+
+    console.log(rewardID)
+  }, [data])
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <StaffContainer sidebarWidth={sidebarWidth}>
       <NavigationWrapper
-        onClick={() => navigate("/dashboard/rewards/all-rewards")}
+        onClick={() => navigate('/dashboard/rewards/all-rewards')}
       >
         <HiArrowNarrowLeft />
         <p>Back to Rewards</p>
       </NavigationWrapper>
       <RewardShortDetails>
         <ImageWrapper>
-          <Image src={rewardDetails.image} alt="" />
+          <Image src={selectedReward?.rewardImage} alt="" />
           <TextWrapper>
             <Badge>
               <BadgeText> Expense Management</BadgeText>
             </Badge>
-            <h4>{reward}</h4>
+            <h4>{selectedReward?.rewardName}</h4>
             <RewardShortText>
               $200 off 1st-month subscription for payroll compliance
             </RewardShortText>
@@ -86,12 +100,12 @@ const RewardDetails = (props) => {
       </RewardShortDetails>
       <RewardDescription>
         <TextDes>
-          {" "}
+          {' '}
           <div>
-            {reward} is a financial technology company that powers bordeless
-            financial services for businesses across Africa to perform
-            cross-border transactions, move and manage money globally, while
-            having access to other tools they need to have a global reach.
+            is a financial technology company that powers bordeless financial
+            services for businesses across Africa to perform cross-border
+            transactions, move and manage money globally, while having access to
+            other tools they need to have a global reach.
           </div>
           <div>
             Their services are centered around providing financial services for
@@ -111,8 +125,8 @@ const RewardDetails = (props) => {
         body="Accept offers and rewards when you register your business with Sidebrief"
         carousel
         link={{
-          text: "View all",
-          to: "/dashboard",
+          text: 'View all',
+          to: '/dashboard',
           icon: <IoArrowForward />,
         }}
       >
@@ -155,7 +169,7 @@ const RewardDetails = (props) => {
         </ScrollBox>
       </DashboardSection>
     </StaffContainer>
-  );
-};
+  )
+}
 
-export default RewardDetails;
+export default RewardDetails
