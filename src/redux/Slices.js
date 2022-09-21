@@ -116,10 +116,11 @@ const launchApplicationInfo = createSlice({
     selectedCountry: "",
     countryISO: "",
     selectedObjectives: [],
-    setSelectedEntity: {},
+    selectedEntity: {},
     launchResponse: {},
     generatedLaunchCode: "",
     generatedMemberCode: "",
+    businessAddress: {},
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -147,6 +148,9 @@ const launchApplicationInfo = createSlice({
     setGeneratedMemberCode: (state, action) => {
       state.generatedMemberCode = action.payload;
     },
+    setBusinessAddress: (state, action) => {
+      state.businessAddress = action.payload;
+    },
   },
 });
 
@@ -160,4 +164,28 @@ export const {
   setLaunchResponse,
   setGeneratedLaunchCode,
   setGeneratedMemberCode,
+  setBusinessAddress,
 } = launchApplicationInfo.actions;
+
+const RewardInfo = createSlice({
+  //creating reward slice (object) then export reducers of the slice
+  name: "Reward",
+  initialState: {
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMjI5NTZhODlmMGFkOTRiNjEwMmJlNCIsImlhdCI6MTY2MzIxMDg1OCwiZXhwIjoyNTI3MjEwODU4fQ.DWx81pLGpaVYdC_fD_vfr8spAScz3mP-GsXldfEGMoA",
+    allRewards: [],
+    myRewards: [],
+  },
+  reducers: {
+    setAllAvailableRewards: (state, action) => {
+      state.allRewards = action.payload;
+    },
+    setMyClaimedRewards: (state, action) => {
+      state.myRewards = action.payload;
+    },
+  },
+});
+
+export const RewardReducer = RewardInfo.reducer;
+export const { setAllAvailableRewards, setMyClaimedRewards } =
+  RewardInfo.actions;

@@ -1,42 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-	width: 100%;
-	background: #ffffff;
 	border: 1px solid #edf1f7;
-	box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
-	border-radius: 16px;
-`;
-
-export const Heading = styled.div`
-	display: flex;
-	justify-content: space-between;
-	padding-inline: 24px;
-	padding-block: 30px 18px;
-`;
-
-export const Title = styled.h3`
-	font-family: "BR Firma";
-	font-weight: 600;
-	font-size: 20px;
-	line-height: 24px;
-	letter-spacing: -0.02em;
-	color: #151717;
-	margin-left: 0;
-`;
-
-export const ViewAllButton = styled.button`
-	background: transparent;
-	border: none;
-	cursor: pointer;
-`;
-
-export const ThreeDotContainer = styled.button`
-	border-radius: 2px;
-	background: transparent;
-	border: none;
-	width: 24px;
-	height: 24px;
+	border-radius: 0px 0px 16px 16px;
 `;
 
 export const Table = styled.table`
@@ -77,11 +43,12 @@ export const Row = styled.tr`
 
 	& > :first-child {
 		padding-left: 24px;
+		width: 48px;
 	}
 
 	& > :last-child {
-		padding-right: 24px;
-		width: 48px;
+		padding-right: 50px;
+		width: 50px;
 	}
 `;
 
@@ -91,9 +58,10 @@ export const RowData = styled.td`
 
 export const HeadText = styled.h5`
 	font-family: "BR Firma";
+	font-style: normal;
 	font-weight: 500;
 	font-size: 16px;
-	line-height: 21px;
+	line-height: 131%;
 	letter-spacing: 0.02em;
 
 	color: #151717;
@@ -101,9 +69,18 @@ export const HeadText = styled.h5`
 
 export const BodyText = styled.p`
 	font-family: "BR Firma";
+	font-style: normal;
 	font-weight: 400;
-	font-size: 14px;
-	line-height: 21px;
+	font-size: 16px;
+	line-height: 131%;
 	letter-spacing: 0.02em;
+
 	color: #151717;
+`;
+
+export const Checkbox = styled.input`
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	margin-right: 30px;
 `;

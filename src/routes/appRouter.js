@@ -1,67 +1,65 @@
-import RewardsPage from "pages/Dashboard/User/Rewards";
-import AllRewards from "pages/Dashboard/User/Rewards/AllRewards";
-import MyRewards from "pages/Dashboard/User/Rewards/MyRewards";
-import RewardDetails from "pages/Dashboard/User/Rewards/RewardDetails";
-import ShareHolderKYC from "pages/Launch/ShareHolderKYC";
-import React, { Suspense, lazy } from "react";
-import { Toaster } from "react-hot-toast";
+import RewardsPage from 'pages/Dashboard/User/Rewards'
+import AllRewards from 'pages/Dashboard/User/Rewards/AllRewards'
+import MyRewards from 'pages/Dashboard/User/Rewards/MyRewards'
+import RewardDetails from 'pages/Dashboard/User/Rewards/RewardDetails'
+import ShareHolderKYC from 'pages/Launch/ShareHolderKYC'
+import React, { Suspense, lazy } from 'react'
+import { Toaster } from 'react-hot-toast'
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
-} from "react-router-dom";
-import Loader from "../components/loader/loader";
-import Compliance from "pages/Dashboard/User/Home/Compliance";
-import HiringAndPayroll from "pages/Dashboard/User/Home/HiringAndPayroll";
-import InetellectualAssets from "pages/Dashboard/User/Home/IntellectualAssets";
-import Taxes from "pages/Dashboard/User/Home/Taxes";
-import Rewards from "pages/Dashboard/User/Rewards";
+} from 'react-router-dom'
+import Loader from '../components/loader/loader'
+import Compliance from 'pages/Dashboard/User/Home/Compliance'
+import HiringAndPayroll from 'pages/Dashboard/User/Home/HiringAndPayroll'
+import InetellectualAssets from 'pages/Dashboard/User/Home/IntellectualAssets'
+import Taxes from 'pages/Dashboard/User/Home/Taxes'
+import Rewards from 'pages/Dashboard/User/Rewards'
 
-const Home = lazy(() => import("../pages/Home"));
+const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
-  import("pages/Auth/Registration/EmailVerify/success")
-);
+  import('pages/Auth/Registration/EmailVerify/success'),
+)
 const EmailVerify = lazy(() =>
-  import("pages/Auth/Registration/EmailVerify/verify")
-);
-const ResetSuccess = lazy(() =>
-  import("pages/Auth/SignIn/resetVerify/success")
-);
-const ResetVerify = lazy(() => import("pages/Auth/SignIn/resetVerify/verify"));
+  import('pages/Auth/Registration/EmailVerify/verify'),
+)
+const ResetSuccess = lazy(() => import('pages/Auth/SignIn/resetVerify/success'))
+const ResetVerify = lazy(() => import('pages/Auth/SignIn/resetVerify/verify'))
 const AccountType = lazy(() =>
-  import("pages/Auth/Registration/accountType/accountType")
-);
+  import('pages/Auth/Registration/accountType/accountType'),
+)
 const PartnerRegistration = lazy(() =>
-  import("pages/Auth/Registration/partnerRegistration")
-);
+  import('pages/Auth/Registration/partnerRegistration'),
+)
 const ForgotPassword = lazy(() =>
-  import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
-);
+  import('pages/Auth/SignIn/forgotPassword/forgotpassword.jsx'),
+)
 const ResetPassword = lazy(() =>
-  import("pages/Auth/SignIn/resetPassword/resetPassword.jsx")
-);
-const SignIn = lazy(() => import("pages/Auth/SignIn/SignIn"));
+  import('pages/Auth/SignIn/resetPassword/resetPassword.jsx'),
+)
+const SignIn = lazy(() => import('pages/Auth/SignIn/SignIn'))
 const UserRegistration = lazy(() =>
-  import("../pages/Auth/Registration/userRegistration")
-);
+  import('../pages/Auth/Registration/userRegistration'),
+)
 const ResellerRegistration = lazy(() =>
-  import("../pages/Auth/Registration/ResellerRegister")
-);
-const UserDashboard = lazy(() => import("pages/Dashboard/User"));
+  import('../pages/Auth/Registration/ResellerRegister'),
+)
+const UserDashboard = lazy(() => import('pages/Dashboard/User'))
 const BusinessRegistration = lazy(() =>
-  import("pages/Dashboard/User/Home/BusinessRegistration")
-);
-const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
-const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
-const BusinessForm = lazy(() => import("pages/Launch/BusinessForm"));
-const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
-const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
-const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
-const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
-const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
-const ReviewInformation = lazy(() => import("pages/Launch/Review"));
-const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
+  import('pages/Dashboard/User/Home/BusinessRegistration'),
+)
+const StaffDashboard = lazy(() => import('pages/Dashboard/staffDashboard'))
+const BusinessAddress = lazy(() => import('pages/Launch/BusinessAddress'))
+const BusinessForm = lazy(() => import('pages/Launch/BusinessForm'))
+const BusinessInfo = lazy(() => import('pages/Launch/BusinessInfo'))
+const EntitySelect = lazy(() => import('pages/Launch/EntitySelect'))
+const ShareHoldersInfo = lazy(() => import('pages/Launch/ShareHoldersInfo'))
+const DirectorsInfo = lazy(() => import('pages/Launch/DirectorsInfo'))
+const BeneficiariesInfo = lazy(() => import('pages/Launch/BeneficiariesInfo'))
+const ReviewInformation = lazy(() => import('pages/Launch/Review'))
+const BeneficiariesKYC = lazy(() => import('pages/Launch/BeneficiariesKYC'))
 
 const AppRouter = () => {
   return (
@@ -127,7 +125,7 @@ const AppRouter = () => {
                 <Route index element={<AllRewards />} />
                 <Route path="all-rewards" element={<AllRewards />}></Route>
                 <Route path="my-rewards" element={<MyRewards />}></Route>
-                <Route path=":reward" element={<RewardDetails />} />
+                <Route path=":rewardID" element={<RewardDetails />} />
               </Route>
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>
@@ -153,44 +151,44 @@ const AppRouter = () => {
         <Toaster
           position="top-right"
           toastOptions={{
-            className: "",
+            className: '',
             style: {
-              margin: "30px",
-              minWidth: "370px",
-              padding: "10px",
-              display: "inline-flex",
-              fontSize: "18px",
+              margin: '30px',
+              minWidth: '370px',
+              padding: '10px',
+              display: 'inline-flex',
+              fontSize: '18px',
               zIndex: 999999,
             },
             duration: 4000,
             error: {
               style: {
-                background: "red",
-                color: "white",
+                background: 'red',
+                color: 'white',
               },
               iconTheme: {
-                primary: "white",
-                secondary: "red",
+                primary: 'white',
+                secondary: 'red',
               },
             },
             success: {
               style: {
-                background: "green",
-                color: "white",
+                background: 'green',
+                color: 'white',
               },
               iconTheme: {
-                primary: "white",
-                secondary: "green",
+                primary: 'white',
+                secondary: 'green',
               },
             },
           }}
         />
       </Router>
     </Suspense>
-  );
-};
+  )
+}
 
-export default AppRouter;
+export default AppRouter
 
 // import RewardsPage from "pages/Dashboard/User/Rewards";
 // import AllRewards from "pages/Dashboard/User/Rewards/AllRewards";

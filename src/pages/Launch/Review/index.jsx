@@ -1,26 +1,12 @@
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { setCheckoutProgress } from "redux/Slices";
-import { store } from "redux/Store";
+import { NavLink } from "react-router-dom";
 import { InputContainer, InputFrame } from "../BusinessForm/styles";
 import { Page } from "../styled";
 import { Data, DataTitle, SectionTitle } from "./styled";
 
 const ReviewInformation = () => {
-  const navigate = useNavigate();
-
-  const handleNext = () => {
-    navigate("/dashboard");
-    store.dispatch(setCheckoutProgress({ total: 10, current: 7 })); // total- total pages and current - current page
-  };
-
-  const handlePrev = () => {
-    navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 10, current: 7 })); // total- total pages and current - current page
-  };
-
   return (
     <>
       <HeaderCheckout />
@@ -31,7 +17,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Business Information:"
           linkTitle="Edit"
-          to="/checkout"
+          to="/"
         >
           <InputContainer>
             <InputFrame>
@@ -83,7 +69,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Business Information:"
           linkTitle="Edit"
-          to="/checkout"
+          to="/"
         >
           <InputContainer>
             <InputFrame>
@@ -136,7 +122,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Business Address:"
           linkTitle="Edit"
-          to="/checkout"
+          to="/"
         >
           <InputContainer>
             <InputFrame>
@@ -179,7 +165,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Shareholders Information:"
           linkTitle="Edit"
-          to="/checkout"
+          to="/"
         >
           <InputContainer>
             <InputFrame>
@@ -212,7 +198,7 @@ const ReviewInformation = () => {
           review
           sectionTitle="Beneficiary Information:"
           linkTitle="Edit"
-          to="/checkout"
+          to="/"
         >
           <InputContainer>
             <InputFrame>
@@ -240,12 +226,7 @@ const ReviewInformation = () => {
             </InputFrame>
           </InputContainer>
         </CheckoutSection>
-        <CheckoutController
-          backText={"Previous"}
-          forwardText={"continue"}
-          forwardAction={handleNext}
-          backAction={handlePrev}
-        />
+        <CheckoutController backText={"Previous"} forwardText={"continue"} />
       </Page>
     </>
   );
