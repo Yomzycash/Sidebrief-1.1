@@ -5,6 +5,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container, Header, MainHeader, SubHeader } from "./styled";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import {
+  useGetAllRewardsQuery,
+  useGetUserRewardQuery,
+} from "services/RewardService";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -14,9 +18,12 @@ const searchStyle = {
 
 const Rewards = () => {
   const [boxshadow, setBoxShadow] = useState("false");
+  const allRewardsResponse = useGetAllRewardsQuery();
+  const myRewardsResponse = useGetUserRewardQuery();
 
   const mainHeaderRef = useRef();
 
+  // rewardsPageHeader controls whether or not to display the header
   const rewardsPageHeader = useSelector(
     (store) => store.LayoutInfo.rewardsPageHeader
   );
@@ -51,12 +58,12 @@ const Rewards = () => {
           <SubHeader>
             <ActiveNav
               text="All Rewards"
-              total={64}
+              total={allRewardsResponse.data?.length}
               path={"/dashboard/rewards/all-rewards"}
             />
             <ActiveNav
               text="My Rewards"
-              total={8}
+              total={myRewardsResponse.data?.length}
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>

@@ -1,8 +1,8 @@
-import { RewardCard, RewardSummaryCard } from 'components/cards'
-import ActiveNav from 'components/navbar/ActiveNav'
-import Search from 'components/navbar/Search'
-import React, { useEffect, useRef, useState } from 'react'
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from 'asset/images'
+import { RewardCard, RewardSummaryCard } from "components/cards";
+import ActiveNav from "components/navbar/ActiveNav";
+import Search from "components/navbar/Search";
+import React, { useEffect, useRef, useState } from "react";
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import {
   Body,
   BodyLeft,
@@ -12,77 +12,76 @@ import {
   Header,
   MainHeader,
   SubHeader,
-} from './styled'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { store } from 'redux/Store'
-import { setRewardsPageHeader } from 'redux/Slices'
-import { myRewards } from 'utils/config'
-import { useGetUserRewardQuery } from 'services/RewardService'
+} from "./styled";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { store } from "redux/Store";
+import { setMyClaimedRewards, setRewardsPageHeader } from "redux/Slices";
+import { useGetUserRewardQuery } from "services/RewardService";
 
-const rewardsCategories = ['All', 'Human Resources', 'Productivity']
+const rewardsCategories = ["All", "Human Resources", "Productivity"];
 
 const MyRewards = () => {
-  const navigate = useNavigate()
+  const [myRewards, setMyRewards] = useState([]);
+  const [filteredReward, setFilteredReward] = useState([]);
+
+  const [category, setCategory] = useSearchParams();
+
+  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
+
+  const navigate = useNavigate();
 
   // This displays rewards header for this page
   useEffect(() => {
-    store.dispatch(setRewardsPageHeader(true))
-  }, [])
+    store.dispatch(setRewardsPageHeader(true));
+  }, []);
 
-  const handleRewardClick = (title) => {
-    navigate(`/dashboard/rewards/${title}`)
-  }
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery()
-  const [myRewards, setMyRewards] = useState([])
-  // const [selectedCategory, setSelectedCategory] = useState("All")
-  const [category, setCategory] = useSearchParams()
-  const [filteredReward, setFilteredReward] = useState([])
+  const handleRewardClick = (rewardID) => {
+    navigate(`/dashboard/rewards/${rewardID}`);
+  };
 
   const handleCategory = (category) => {
-    setCategory({ category }) // converting category to object and category is the key
-  }
-  const toPromise = (data) => {
-    return new Promise((resolve, reject) => resolve(data))
-  }
-  const handleSelectedCategory = async () => {}
+    setCategory({ category }); // converting category to object and category is the key
+  };
 
   useEffect(() => {
-    console.log(data)
-    setMyRewards(data)
-  }, [data])
+    setMyRewards(data);
+    store.dispatch(setMyClaimedRewards(data));
+  }, [data]);
 
+  let selectedCategory = category.get("category");
+
+  // handles the rewards by category
   useEffect(() => {
-    let selectedCategory = category.get('category')
-    if (selectedCategory === 'Productivity') {
+    if (selectedCategory === "Productivity") {
       let filtered = myRewards?.filter(
-        (reward) => reward.rewardCategory === 'Productivity',
-      )
-      console.log(myRewards)
-      setFilteredReward(filtered)
-      console.log(filteredReward)
-    } else if (selectedCategory === 'Human Resources') {
+        (reward) => reward.rewardCategory === "Productivity"
+      );
+      setFilteredReward(filtered);
+    } else if (selectedCategory === "Human Resources") {
       let filtered = myRewards?.filter(
-        (reward) => reward?.rewardCategory === 'Human Resources',
-      )
-      setFilteredReward(filtered)
-      //console.log(filtered)
+        (reward) => reward?.rewardCategory === "Human Resources"
+      );
+      setFilteredReward(filtered);
     } else {
-      setFilteredReward(myRewards)
+      setFilteredReward(myRewards);
     }
-
-    // console.log(category.get('category'))
-  }, [category, myRewards])
+  }, [category, myRewards]);
 
   return (
     <Container>
       <Body>
         <BodyLeft>
           <h3>Categories</h3>
-          {/* <h4>Al</h4> */}
           <ul>
-            {rewardsCategories?.map((category, index) => (
-              <li key={index} onClick={() => handleCategory(category)}>
-                {category}
+            {rewardsCategories?.map((cat, index) => (
+              <li
+                key={index}
+                onClick={() => handleCategory(cat)}
+                style={{
+                  color: cat === category.get("category") ? "#00A2D4" : "",
+                }}
+              >
+                {cat}
               </li>
             ))}
           </ul>
@@ -94,8 +93,7 @@ const MyRewards = () => {
               title={reward?.rewardName}
               body={reward?.rewardDescription}
               image={reward?.rewardImage}
-              // imageAlt={reward.alt}
-              // action={() => handleRewardClick(reward.title)}
+              action={() => handleRewardClick(reward.rewardID)}
               rewardspage
             />
           ))}
@@ -103,7 +101,7 @@ const MyRewards = () => {
       </Body>
       <Footer></Footer>
     </Container>
-  )
-}
+  );
+};
 
-export default MyRewards
+export default MyRewards;

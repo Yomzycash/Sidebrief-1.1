@@ -81,6 +81,9 @@ export const BodyLeft = styled.div`
     color: #4e5152;
     font-weight: 500;
     list-style-type: none;
+    > li {
+      cursor: pointer;
+    }
   }
 `;
 export const BodyRight = styled.div`
