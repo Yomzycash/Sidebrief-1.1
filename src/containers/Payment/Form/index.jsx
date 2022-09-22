@@ -43,6 +43,7 @@ export const PaymentForm = ({ amount, currency, USDprice }) => {
 		// api calls can be made here
 		// depending on api, you might want to trim the card number first
 		// change data to fit api, thanks
+		// price and currency can also be gotten from above
 	};
 
 	return (
