@@ -12,11 +12,12 @@ export const Header = styled.div``;
 export const Body = styled.div`
   display: flex;
   flex-flow: column;
-  border: solid red;
   height: 100%;
-  margin: 0px 200px;
+  margin: auto;
+  width: 100%;
+  max-width: 962px;
   background-color: white;
-  border: solid #edf1f6;
+  border: 1px solid #edf1f6;
   border-top: none;
   flex: 1;
   padding-bottom: 100px;
@@ -31,7 +32,7 @@ export const Bottom = styled.div`
 export const EntityCardsWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: stretch;
   width: 100%;
   gap: 24px;
 `;
