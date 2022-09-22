@@ -4,26 +4,28 @@ import { InputWrapper, Input } from "components/input/styled";
 export const Container = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 24px;
-  margin-bottom: 100px;
+  background-color: #fcfcfc;
+  flex: 1;
+  min-height: 100vh;
 `;
 export const Header = styled.div``;
 export const Body = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 52px;
-  padding-inline: 8%;
+  border: solid red;
+  height: 100%;
+  margin: 0px 200px;
+  background-color: white;
+  border: solid #edf1f6;
+  border-top: none;
+  flex: 1;
+  border-top: none;
 `;
 
-export const InputsWrapper = styled.div`
-  display: flex;
-  flex-flow: row;
-  gap: 20px;
-`;
 export const Bottom = styled.div`
   display: flex;
   width: 100%;
-  padding-inline: 8%;
+  padding: 40px;
 `;
 export const EntityCardsWrapper = styled.div`
   display: flex;
