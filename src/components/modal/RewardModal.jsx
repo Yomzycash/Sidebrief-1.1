@@ -9,16 +9,18 @@ import { allRewards } from "utils/config";
 const RewardModal = ({ handleClose }) => {
   const [successful, setSuccessful] = useState(false);
 
-  const { reward } = useParams();
+  const { rewardID } = useParams();
 
-  const rewardDetails = allRewards.find((element) => element.title === reward);
+  const rewardDetails = allRewards.find(
+    (element) => element.title === rewardID
+  );
 
   return (
     <Wrapper>
       <LogoCancelWrapper>
         <LogoWrapper>
-          <img src={rewardDetails.image} alt="" />
-          <LogoName>{reward}</LogoName>
+          {/* <img src={rewardDetails.image} alt="" /> */}
+          <LogoName>{rewardID}</LogoName>
         </LogoWrapper>
         <Close onClick={handleClose} style={{ cursor: "pointer" }} />
       </LogoCancelWrapper>
