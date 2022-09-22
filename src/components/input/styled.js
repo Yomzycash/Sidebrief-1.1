@@ -38,7 +38,7 @@ export const DropWrapper = styled.div`
 `;
 
 export const Wrapper = styled(motion.div)`
-	/margin-bottom: 24px;
+	margin-bottom: 24px;
 	width: 100%;
 	position: relative;
 
@@ -192,7 +192,7 @@ export const TagWrapper = styled.div`
 export const TagInputWrapper = styled.div`
 	width: 100%;
 	height: 56px;
-	disply: flex;
+	display: flex;
 	align-items: center;
 `;
 export const TagItem = styled.div`
