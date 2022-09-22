@@ -8,14 +8,17 @@ export const CheckoutSection = ({
   review,
   sectionTitle,
   linkTitle,
+  HeaderParagraph,
   to,
 }) => {
   return (
     <Container>
       <Heading>{title}</Heading>
+      <p>{HeaderParagraph}</p>
       {review && (
         <SectionContainer>
           <p>{sectionTitle}</p>
+
           <Link
             to={to}
             style={{

@@ -1,8 +1,8 @@
-import { RewardCard } from 'components/cards'
+import { RewardCard } from "components/cards";
 
-import DashboardSection from 'layout/DashboardSection'
-import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi'
-import React, { useEffect, useState } from 'react'
+import DashboardSection from "layout/DashboardSection";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
+import React, { useEffect, useState } from "react";
 import {
   StaffContainer,
   NavigationWrapper,
@@ -18,62 +18,62 @@ import {
   TextDes,
   TextLink,
   TextWrapper,
-} from './styled'
+} from "./styled";
 
-import Button from 'components/button'
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from 'asset/images'
-import { ScrollBox } from 'containers'
-import { IoArrowForward } from 'react-icons/io5'
-import { useSelector } from 'react-redux'
-import { store } from 'redux/Store'
-import { setRewardsPageHeader } from 'redux/Slices'
-import { useNavigate, useParams } from 'react-router-dom'
-import { allRewards } from 'utils/config'
-import Dialog from '@mui/material/Dialog'
-import RewardModal from 'components/modal/RewardModal'
-import { useGetUserRewardQuery } from 'services/RewardService'
+import Button from "components/button";
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
+import { ScrollBox } from "containers";
+import { IoArrowForward } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setRewardsPageHeader } from "redux/Slices";
+import { useNavigate, useParams } from "react-router-dom";
+import { allRewards } from "utils/config";
+import Dialog from "@mui/material/Dialog";
+import RewardModal from "components/modal/RewardModal";
+import { useGetUserRewardQuery } from "services/RewardService";
 
 const RewardDetails = (props) => {
-  const [open, setOpen] = useState(false)
-  const [selectedReward, setSelectedReward] = useState({})
+  const [open, setOpen] = useState(false);
+  const [selectedReward, setSelectedReward] = useState({});
 
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery()
+  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
 
-  const layoutInfo = useSelector((store) => store.LayoutInfo)
-  const { sidebarWidth } = layoutInfo
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
 
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    store.dispatch(setRewardsPageHeader(false))
-  }, [])
-
-  const { rewardID } = useParams()
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const responseData = data === undefined ? [] : [...data]
+    store.dispatch(setRewardsPageHeader(false));
+  }, []);
+
+  const { rewardID } = useParams();
+
+  useEffect(() => {
+    const responseData = data === undefined ? [] : [...data];
 
     const rewardDetails = responseData.find(
-      (reward) => reward.rewardID === rewardID,
-    )
-    setSelectedReward(rewardDetails)
-    console.log(rewardDetails)
+      (reward) => reward.rewardID === rewardID
+    );
+    setSelectedReward(rewardDetails);
+    console.log(rewardDetails);
 
-    console.log(rewardID)
-  }, [data])
+    console.log(rewardID);
+  }, [data]);
 
   const handleClickOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <StaffContainer sidebarWidth={sidebarWidth}>
       <NavigationWrapper
-        onClick={() => navigate('/dashboard/rewards/all-rewards')}
+        onClick={() => navigate("/dashboard/rewards/all-rewards")}
       >
         <HiArrowNarrowLeft />
         <p>Back to Rewards</p>
@@ -83,12 +83,10 @@ const RewardDetails = (props) => {
           <Image src={selectedReward?.rewardImage} alt="" />
           <TextWrapper>
             <Badge>
-              <BadgeText> Expense Management</BadgeText>
+              <BadgeText>{selectedReward?.rewardCategory}</BadgeText>
             </Badge>
-            <h4>{selectedReward?.rewardName}</h4>
-            <RewardShortText>
-              $200 off 1st-month subscription for payroll compliance
-            </RewardShortText>
+            <h4>{selectedReward?.rewardPartner}</h4>
+            <RewardShortText>{selectedReward?.rewardName}</RewardShortText>
           </TextWrapper>
         </ImageWrapper>
         <ButtonWrapper>
@@ -100,20 +98,8 @@ const RewardDetails = (props) => {
       </RewardShortDetails>
       <RewardDescription>
         <TextDes>
-          {' '}
-          <div>
-            is a financial technology company that powers bordeless financial
-            services for businesses across Africa to perform cross-border
-            transactions, move and manage money globally, while having access to
-            other tools they need to have a global reach.
-          </div>
-          <div>
-            Their services are centered around providing financial services for
-            SME’s, freelancers and startups, bridging the gap to make financial
-            services a lot easier and more accessible with domestic and
-            international accounts, cross-border payments, capital and API
-            infrastructure.
-          </div>
+          {" "}
+          <div>{selectedReward?.rewardDescription}</div>
         </TextDes>
         <VisitLink to="">
           <TextLink>Visit Guide's website</TextLink>
@@ -125,8 +111,8 @@ const RewardDetails = (props) => {
         body="Accept offers and rewards when you register your business with Sidebrief"
         carousel
         link={{
-          text: 'View all',
-          to: '/dashboard',
+          text: "View all",
+          to: "/dashboard",
           icon: <IoArrowForward />,
         }}
       >
@@ -169,7 +155,7 @@ const RewardDetails = (props) => {
         </ScrollBox>
       </DashboardSection>
     </StaffContainer>
-  )
-}
+  );
+};
 
-export default RewardDetails
+export default RewardDetails;

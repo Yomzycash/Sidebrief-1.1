@@ -4,7 +4,12 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  padding: 40px 40px 20px 40px;
+  p {
+    font-size: 14px;
+    color: #151717;
+    margin-top: 40px;
+  }
 `;
 
 export const Heading = styled.h3`
@@ -14,7 +19,7 @@ export const Heading = styled.h3`
   font-size: 24px;
   font-weight: 600;
   line-height: 21px;
-  color: #00a2d4;
+  color: #151717;
   /* letter-spacing: 0px; */
 
   span {
@@ -33,7 +38,7 @@ export const SectionContainer = styled.p`
   display: flex;
   justify-content: space-between;
   p {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 500px;
   }
 `;
