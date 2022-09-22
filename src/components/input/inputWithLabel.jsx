@@ -17,7 +17,7 @@ const InputWithLabel = ({
 	containerStyle,
 	edit,
 	error,
-	errorMessage = false,
+	errorMessage,
 	rightText,
 	leftIcon,
 	container,
