@@ -93,8 +93,8 @@ const AllRewards = () => {
           {filteredReward?.map((reward, index) => (
             <RewardCard
               key={index}
-              title={reward?.rewardName}
-              body={reward?.rewardDescription}
+              title={reward?.rewardPartner}
+              body={reward?.rewardName}
               image={reward?.rewardImage}
               action={() => handleRewardClick(reward.rewardID)}
               rewardspage

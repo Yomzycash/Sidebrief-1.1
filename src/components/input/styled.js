@@ -191,17 +191,16 @@ export const TagWrapper = styled.div`
 `;
 export const TagInputWrapper = styled.div`
   width: 100%;
-  height: 56px;
-  disply: flex;
+  height: 48px;
+  display: flex;
   align-items: center;
 `;
 export const TagItem = styled.div`
   display: inline-flex;
   flex-direction: row;
-  padding: 2px 8px;
+  padding: 11px 8px;
   background: #0082aa;
-  border-radius: 4px;
-  opacity: 0.8;
+  border-radius: 8px;
   justify-content: space-between;
   align-items: center;
   gap: 0.5em;
@@ -223,7 +222,7 @@ export const Tagclose = styled.span`
   justify-content: center;
   margin-left: 3px;
   color: #fff;
-  font-size: 14px;
+  font-size: 30px;
   cursor: pointer;
 `;
 export const TagInputField = styled.input`

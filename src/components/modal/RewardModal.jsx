@@ -19,8 +19,8 @@ const RewardModal = ({ handleClose }) => {
     <Wrapper>
       <LogoCancelWrapper>
         <LogoWrapper>
-          <img src={rewardDetails.image} alt="" />
-          <LogoName>{}</LogoName>
+          {/* <img src={rewardDetails.image} alt="" /> */}
+          <LogoName>{rewardID}</LogoName>
         </LogoWrapper>
         <Close onClick={handleClose} style={{ cursor: "pointer" }} />
       </LogoCancelWrapper>
