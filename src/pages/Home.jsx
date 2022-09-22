@@ -3,7 +3,12 @@ import RewardModal from "components/modal/RewardModal";
 import StaffModalCards from "components/modal/StaffModalCards";
 import PdfCards from "components/cards/PdfCard/PdfCards";
 import { BusinessTable } from "components/Tables";
-import { CheckoutFormInfo, PaymentForm, PaymentHeader } from "containers";
+import {
+	CheckoutFormInfo,
+	PaymentForm,
+	PaymentHeader,
+	PaymentSelector,
+} from "containers";
 
 const Home = () => {
 	return (
@@ -31,6 +36,7 @@ const Home = () => {
 				]}
 			/> */}
 			<PaymentHeader />
+			<PaymentSelector />
 			<PaymentForm amount={22000} currency={"NGN"} USDprice={50.45} />
 		</>
 	);
