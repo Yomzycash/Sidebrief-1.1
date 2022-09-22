@@ -19,6 +19,7 @@ export const Body = styled.div`
   border: solid #edf1f6;
   border-top: none;
   flex: 1;
+  padding-bottom: 100px;
   border-top: none;
 `;
 

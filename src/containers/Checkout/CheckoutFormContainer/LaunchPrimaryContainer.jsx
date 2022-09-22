@@ -8,7 +8,6 @@ const LaunchPrimaryContainer = ({ children }) => {
         justifyContent: "space-between",
         flexFlow: "column",
         flex: 1,
-        paddingBottom: "100px",
       }}
     >
       {children}
