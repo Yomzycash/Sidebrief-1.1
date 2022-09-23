@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   max-width: 550px;
+  width: 100;
   min-width: 350px;
   height: 340px;
   background: #ffffff;
@@ -73,6 +74,7 @@ export const TimeLine = styled.p`
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
+  margin: 0;
 
   ${Container}:hover & {
     color: #ffffff;

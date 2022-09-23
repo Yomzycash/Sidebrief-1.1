@@ -285,6 +285,7 @@ const Suggestions = styled.div`
   background-color: white;
   border: 1px solid #edf1f7;
   border-radius: 8px;
+  z-index: 1;
 
   > li {
     display: flex;

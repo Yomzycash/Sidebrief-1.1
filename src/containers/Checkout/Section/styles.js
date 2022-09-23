@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 40px 40px 20px 40px;
-  p {
+  > p {
     font-size: 14px;
     color: #151717;
     margin-top: 40px;
@@ -26,6 +26,25 @@ export const Heading = styled.h3`
     font-size: 14px;
     font-weight: 400;
     color: red;
+  }
+`;
+
+export const CheckBox = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  color: #151717;
+  font-size: 14px;
+
+  input {
+    width: 20px;
+    accent-color: #00a2d4;
+    color: yellow;
+    border-radius: 4px;
+  }
+
+  span {
+    color: #0082aa;
   }
 `;
 

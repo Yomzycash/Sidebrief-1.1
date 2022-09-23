@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
 import { DropDownWithSearch, InputWithLabel } from "components/input";
-import { Page, Inputs } from "../styled";
+import { Page, Inputs, Bottom, Body, Container } from "../styled";
 import { Country, State, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
@@ -13,6 +13,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAddBusinessAddressMutation } from "services/launchService";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
+import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState(defaultLocation);
@@ -22,7 +24,6 @@ const BusinessAddress = () => {
   const [addBusinessAddress] = useAddBusinessAddressMutation();
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
-
   );
 
   const {
@@ -54,11 +55,7 @@ const BusinessAddress = () => {
   };
 
   const SubmitForm = async (data) => {
-    // console.log(data);
-    // changed function to async
-    // api calls can be done here
-
-    // redirect to the next page
+    console.log(data);
 
     const requiredAddressData = {
       launchCode: generatedLaunchCode,
@@ -77,14 +74,10 @@ const BusinessAddress = () => {
     const response = await addBusinessAddress(requiredAddressData);
     console.log(response);
 
-    
-   
-
-    if(response.data){
+    if (response.data) {
       store.dispatch(setBusinessAddress(requiredAddressData));
       handleNext();
-    }
-    else if (response.error) {
+    } else if (response.error) {
       console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
@@ -99,7 +92,6 @@ const BusinessAddress = () => {
   const handleNext = () => {
     navigate("/launch/shareholders-info");
     store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
-
   };
 
   const handlePrev = () => {
@@ -108,14 +100,15 @@ const BusinessAddress = () => {
   };
 
   return (
-    <>
+    <Container>
       <HeaderCheckout />
-      <form onSubmit={handleSubmit(SubmitForm)}>
-        <Page>
-          <CheckoutSection
-            title={"Business Address"}
-            subtitle={"Please provide the address for this business"}
-          >
+      <Body onSubmit={handleSubmit(SubmitForm)}>
+        <CheckoutSection
+          title={"Business Address"}
+          subtitle={"Please provide the address for this business"}
+        />
+        <LaunchPrimaryContainer>
+          <LaunchFormContainer>
             <Inputs>
               <DropDownWithSearch
                 name={"country"}
@@ -151,11 +144,21 @@ const BusinessAddress = () => {
                 containerStyle={"checkoutInput"}
                 labelStyle={"checkoutInputLabel"}
                 placeholder="--"
-                label="Number and street"
+                label="Street"
                 type="text"
                 name="street"
                 register={register}
                 errorMessage={errors.street?.message}
+              />
+              <InputWithLabel
+                containerStyle={"checkoutInput"}
+                labelStyle={"checkoutInputLabel"}
+                placeholder="--"
+                label="House Number"
+                type="number"
+                name="number"
+                register={register}
+                errorMessage={errors.number?.message}
               />
               <InputWithLabel
                 containerStyle={"checkoutInput"}
@@ -179,17 +182,19 @@ const BusinessAddress = () => {
                 errorMessage={errors.email?.message}
               />
             </Inputs>
-          </CheckoutSection>
-          <CheckoutController
-            backText={"Previous"}
-            forwardText={"Next"}
-            forwardAction={handleNext}
-            backAction={handlePrev}
-            forwardSubmit={true}
-          />
-        </Page>
-      </form>
-    </>
+          </LaunchFormContainer>
+          <Bottom>
+            <CheckoutController
+              backText={"Previous"}
+              forwardText={"Next"}
+              forwardAction={handleNext}
+              backAction={handlePrev}
+              forwardSubmit={true}
+            />
+          </Bottom>
+        </LaunchPrimaryContainer>
+      </Body>
+    </Container>
   );
 };
 
