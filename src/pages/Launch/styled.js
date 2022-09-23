@@ -9,7 +9,7 @@ export const Container = styled.div`
   min-height: 100vh;
 `;
 export const Header = styled.div``;
-export const Body = styled.div`
+export const Body = styled.form`
   display: flex;
   flex-flow: column;
   height: 100%;
@@ -22,6 +22,15 @@ export const Body = styled.div`
   flex: 1;
   padding-bottom: 100px;
   border-top: none;
+`;
+
+export const AddMore = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 17px;
+  font-size: clamp(16px, 1.5vw, 18px);
+  color: #00a2d4;
 `;
 
 export const Bottom = styled.div`

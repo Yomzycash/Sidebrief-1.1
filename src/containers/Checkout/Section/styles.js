@@ -29,6 +29,25 @@ export const Heading = styled.h3`
   }
 `;
 
+export const CheckBox = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  color: #151717;
+  font-size: 14px;
+
+  input {
+    width: 20px;
+    accent-color: #00a2d4;
+    color: yellow;
+    border-radius: 4px;
+  }
+
+  span {
+    color: #0082aa;
+  }
+`;
+
 export const ContentWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;

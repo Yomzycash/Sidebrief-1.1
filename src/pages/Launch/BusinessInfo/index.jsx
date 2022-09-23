@@ -103,9 +103,7 @@ const BusinessInfo = () => {
 
   return (
     <Container onClick={handleSubmit}>
-      <Header>
-        <HeaderCheckout />
-      </Header>
+      <HeaderCheckout />
 
       <Body>
         <CheckoutSection
@@ -134,7 +132,7 @@ const BusinessInfo = () => {
               />
             </div>
           </LaunchFormContainer>
-          <Bottom top={100}>
+          <Bottom>
             <CheckoutController
               forwardAction={handleNext}
               backAction={handlePrev}
