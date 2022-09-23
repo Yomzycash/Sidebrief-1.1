@@ -104,7 +104,7 @@ const EntitySelect = () => {
 
       console.log(businessObjectivesResponse);
 
-      navigate("/launch/address");
+      navigate("/launch/payment");
     }
   };
 
@@ -113,23 +113,21 @@ const EntitySelect = () => {
       <Header>
         <HeaderCheckout />
       </Header>
-      <Body>
+      <Body style={{ maxWidth: "100%" }}>
         <CheckoutSection title={"Operational Country: " + selectCountry}>
           <EntityCardsWrapper>
             {entities?.map((item, index) => (
-              <div key={index}>
-                <EntityCard
-                  key={index}
-                  name={item?.entityName}
-                  shares={item?.entityShares}
-                  type={item?.entityType}
-                  timeline={item?.entityTimeline}
-                  requirement={item?.entityRequirements}
-                  price={item?.entityFee}
-                  currency={item?.entityCurrency}
-                  action={() => handleNext(item)}
-                />
-              </div>
+              <EntityCard
+                key={index}
+                name={item?.entityName}
+                shares={item?.entityShares}
+                type={item?.entityType}
+                timeline={item?.entityTimeline}
+                requirement={item?.entityRequirements}
+                price={item?.entityFee}
+                currency={item?.entityCurrency}
+                action={() => handleNext(item)}
+              />
             ))}
           </EntityCardsWrapper>
         </CheckoutSection>

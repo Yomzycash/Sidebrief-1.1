@@ -74,7 +74,7 @@ const PaymentPage = () => {
             paddingTop: "40px",
           }}
         >
-          <PaymentForm />
+          <PaymentForm currency="NGN" amount={22000} USDprice={845} />
         </div>
       </Body>
     </Container>

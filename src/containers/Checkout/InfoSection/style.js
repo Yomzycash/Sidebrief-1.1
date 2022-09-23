@@ -6,28 +6,30 @@ export const Wrapper = styled.div`
   justify-content: center;
   gap: 32px;
 `;
-export const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  justify-content: center;
-`;
 export const TitleWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #00a2d4;
 `;
-export const Title = styled.h3`
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 21px;
+
+export const Form = styled.form`
+  padding: 0 40px;
+  width: 100%;
+  max-width: 962px;
 `;
-export const Form = styled.form``;
+
+export const Title = styled.h3`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 400;
+  color: #151717;
+  padding: 40px 0;
+`;
 export const ButtonLink = styled.h4`
-  font-family: "BR Firma";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -39,7 +41,7 @@ export const ButtonLink = styled.h4`
 `;
 export const DetailedSection = styled.div`
   display: flex;
-  flex-direction: flex;
+  flex-direction: row;
   align-items: center;
   gap: 20px;
   width: 100%;
@@ -55,7 +57,8 @@ export const CheckWrapper = styled.div`
 export const CheckInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 32px;
+  /* margin-bottom: 32px; */
+  padding: 40px 0;
 `;
 export const ImgWrapper = styled.div`
   display: flex;
@@ -72,10 +75,6 @@ export const AddMoreWrapper = styled.button`
   background: transparent;
   outline: none;
   gap: 16px;
-`;
-export const AllInputContainer = styled.div``;
-export const AddWrapper = styled.div`
-  cursor: pointer;
 `;
 
 export const EditWrapper = styled.div`
@@ -97,5 +96,31 @@ export const SaveBtn = styled.button`
   :hover {
     background-color: #00a2d4;
     color: #ffffff;
+  }
+`;
+export const ButtonWrapper = styled.div``;
+export const CheckboxWrapper = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+  font-size: clamp(13px, 1.5vw, 14px);
+  color: #4e5152;
+  font-weight: 400;
+
+  input {
+    width: 20px;
+  }
+
+  span {
+    color: #00a2d4;
+  }
+
+  > div {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 16px;
+    width: calc(50% - 10px);
   }
 `;
