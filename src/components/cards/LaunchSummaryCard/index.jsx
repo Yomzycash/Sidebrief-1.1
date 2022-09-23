@@ -2,8 +2,9 @@ import React from "react";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
 import { Container, IconWrapper, SharesWrapper, Top } from "./styled";
-import { deleteLaunchShareHolder } from "redux/Slices";
+import { updateLaunchShareHolder } from "redux/Slices";
 import { store } from "redux/Store";
+import { useSelector } from "react-redux";
 
 const LaunchSummaryCard = ({
   number,
@@ -12,11 +13,8 @@ const LaunchSummaryCard = ({
   sharesPercentage,
   email,
   phone,
+  deleteAction,
 }) => {
-  const handleDelete = () => {
-    store.dispatch(deleteLaunchShareHolder(email));
-  };
-
   return (
     <Container>
       <Top>
@@ -25,7 +23,7 @@ const LaunchSummaryCard = ({
           <div>{`${shares} - ${sharesPercentage}`}</div>
           <IconWrapper>
             <EditIcon />
-            <DeleteIcon onClick={handleDelete} />
+            <DeleteIcon onClick={deleteAction} />
           </IconWrapper>
         </SharesWrapper>
       </Top>

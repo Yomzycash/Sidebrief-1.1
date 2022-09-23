@@ -28,6 +28,8 @@ import { shareTypeOptions, checkInfoSchema } from "utils/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import {
+  useAddBeneficiaryMutation,
+  useAddDirectorMutation,
   useAddMembersMutation,
   useAddShareHolderMutation,
 } from "services/launchService";
@@ -42,7 +44,13 @@ import {
 } from "redux/Slices";
 import { store } from "redux/Store";
 
-export const CheckoutFormInfo = ({ title, handleClose }) => {
+export const CheckoutFormInfo = ({
+  title,
+  handleClose,
+  shareholder,
+  director,
+  beneficiary,
+}) => {
   const [read, setRead] = useState(true);
 
   const {
@@ -63,9 +71,14 @@ export const CheckoutFormInfo = ({ title, handleClose }) => {
 
   const [addMembers] = useAddMembersMutation();
   const [addShareHolder] = useAddShareHolderMutation();
+  const [addDirector] = useAddDirectorMutation();
+  const [addbeneficiary] = useAddBeneficiaryMutation();
 
   const submitForm = async (formData) => {
+    // console.log(formData);
     store.dispatch(setShareHoldersLaunchInfo(formData));
+
+    handleClose();
     store.dispatch(setDirectorsLaunchInfo(formData));
     store.dispatch(setBeneficiariesLaunchInfo(formData));
     console.log(formData);
@@ -80,13 +93,51 @@ export const CheckoutFormInfo = ({ title, handleClose }) => {
     };
 
     let addMemberResponse = await addMembers(requiredMemberData);
+    if (addMemberResponse.data) {
+      // console.log(addMemberResponse);
+      const allMembers = Object.entries(addMemberResponse.data.businessMembers);
+      const generatedMemberCode =
+        allMembers[allMembers.length - 1][1].memberCode;
+      console.log(generatedMemberCode);
 
-    // const requiredShareholderData = {
-    //   launchCode: generatedLaunchCode,
-    //   memberCode: generatedMemberCode,
-    //   shareholderOwnershipPercentage: formData.share_percentage,
-    //   shareholderOwnershipType: formData.share_type,
-    // };
+      if (shareholder) {
+        const requiredShareholderData = {
+          launchCode: generatedLaunchCode,
+          memberCode: generatedMemberCode,
+          shareholderOwnershipPercentage: formData.share_percentage,
+          shareholderOwnershipType: formData.share_type,
+        };
+
+        let addShareHolderResponse = await addShareHolder(
+          requiredShareholderData
+        );
+        console.log(addShareHolderResponse);
+      }
+      if (director) {
+        const requiredDirectorData = {
+          launchCode: generatedLaunchCode,
+          memberCode: generatedMemberCode,
+          directorRole: "",
+        };
+
+        let addDirectorResponse = await addDirector(requiredDirectorData);
+        console.log(addDirectorResponse);
+      }
+      if (beneficiary) {
+        const requiredBeneficiaryData = {
+          beneficialOwnerName: "Morire Sotunde",
+          beneficialOwnerEmail: "yusuf@sidebrief.com",
+          beneficialOwnerPhone: "07066539444",
+          beneficialOwnerOccupation: "Lawyer",
+          beneficialOwnershipStake: "10%",
+        };
+
+        let addBeneficiaryResponse = await addbeneficiary(
+          requiredBeneficiaryData
+        );
+        console.log(addBeneficiaryResponse);
+      }
+    }
 
     // let error = response?.error;
     // let result = response?.data;
@@ -195,8 +246,8 @@ export const CheckoutFormInfo = ({ title, handleClose }) => {
       </CheckInputWrapper>
       <CheckoutController
         backAction={handleClose}
+        forwardAction={() => {}}
         backText={"Cancel"}
-        forwardAction={handleClose}
         forwardText={"Save"}
         containerStyle={buttonContainerStyles}
         backBottonStyle={buttonStyles}
