@@ -35,7 +35,11 @@ import NumberInput from "components/input/phoneNumberInput";
 import Button, { CheckoutButton } from "components/button";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
-import { setShareHoldersLaunchInfo } from "redux/Slices";
+import {
+  setBeneficiariesLaunchInfo,
+  setDirectorsLaunchInfo,
+  setShareHoldersLaunchInfo,
+} from "redux/Slices";
 import { store } from "redux/Store";
 
 export const CheckoutFormInfo = ({ title, handleClose }) => {
@@ -62,6 +66,8 @@ export const CheckoutFormInfo = ({ title, handleClose }) => {
 
   const submitForm = async (formData) => {
     store.dispatch(setShareHoldersLaunchInfo(formData));
+    store.dispatch(setDirectorsLaunchInfo(formData));
+    store.dispatch(setBeneficiariesLaunchInfo(formData));
     console.log(formData);
 
     const requiredMemberData = {

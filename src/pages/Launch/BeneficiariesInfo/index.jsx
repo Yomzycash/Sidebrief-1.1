@@ -53,7 +53,7 @@ const BeneficiariesInfo = () => {
       <Body>
         <CheckoutSection
           title={"Beneficiary's Information (Optional)"}
-          checkbox="Shareholders"
+          checkbox="Beneficiaries"
           checkBoxAction={handleCheckbox}
         />
         <LaunchPrimaryContainer>
