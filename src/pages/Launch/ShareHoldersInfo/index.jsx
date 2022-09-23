@@ -6,7 +6,7 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCheckoutProgress } from "redux/Slices";
+import { setCheckoutProgress, updateLaunchShareHolder } from "redux/Slices";
 import { store } from "redux/Store";
 import { AddMore, Body, Bottom, Container, Header } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
@@ -22,7 +22,6 @@ const ShareHoldersInfo = () => {
   );
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { shareHoldersLaunchInfo } = LaunchApplicationInfo;
-  console.log(shareHoldersLaunchInfo);
 
   const { shareHolders } = currentBusiness;
 
@@ -47,6 +46,12 @@ const ShareHoldersInfo = () => {
     setOpenModal(false);
   };
 
+  const handleDelete = (index) => {
+    const shareHoldersInfo = [...shareHoldersLaunchInfo];
+    shareHoldersInfo.splice(index, 1);
+    store.dispatch(updateLaunchShareHolder(shareHoldersInfo));
+  };
+
   return (
     <Container>
       <HeaderCheckout />
@@ -67,6 +72,7 @@ const ShareHoldersInfo = () => {
                 email={shareholder.email}
                 phone={shareholder.phone}
                 sharesPercentage={shareholder.share_percentage}
+                deleteAction={() => handleDelete(index)}
               />
             ))}
             <AddMore onClick={handleModalOpen}>
@@ -77,6 +83,7 @@ const ShareHoldersInfo = () => {
               <CheckoutFormInfo
                 title="Shareholder"
                 handleClose={handleModalClose}
+                shareholder
               />
             </Dialog>
           </LaunchFormContainer>

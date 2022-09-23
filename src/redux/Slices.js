@@ -163,13 +163,8 @@ const launchApplicationInfo = createSlice({
     setBeneficiariesLaunchInfo: (state, action) => {
       state.beneficiariesLaunchInfo.push(action.payload);
     },
-    deleteLaunchShareHolder: (state, action) => {
-      const email = action.payload.email;
-      const filteredShareHolders = state.shareHoldersLaunchInfo.filter(
-        (shareholder) => shareholder.email !== email
-      );
-      console.log(filteredShareHolders);
-      state.shareHoldersLaunchInfo = filteredShareHolders;
+    updateLaunchShareHolder: (state, action) => {
+      state.shareHoldersLaunchInfo = action.payload;
     },
   },
 });
@@ -188,7 +183,7 @@ export const {
   setShareHoldersLaunchInfo,
   setDirectorsLaunchInfo,
   setBeneficiariesLaunchInfo,
-  deleteLaunchShareHolder,
+  updateLaunchShareHolder,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({
