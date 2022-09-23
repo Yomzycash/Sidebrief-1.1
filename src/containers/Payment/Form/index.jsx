@@ -18,9 +18,11 @@ import { cardInfoSchema } from "./constants";
 
 import { InputWithLabel } from "components/input";
 import { useActions } from "./actions";
+import { useNavigate } from "react-router-dom";
 
 export const PaymentForm = ({ amount, currency, USDprice }) => {
   const [isUSD, setIsUSD] = useState(false);
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -40,6 +42,7 @@ export const PaymentForm = ({ amount, currency, USDprice }) => {
 
   const completePayment = (data) => {
     console.log(data);
+    navigate("/launch/address");
     // api calls can be made here
     // depending on api, you might want to trim the card number first
     // change data to fit api, thanks
