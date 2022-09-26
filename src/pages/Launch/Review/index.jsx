@@ -1,235 +1,141 @@
-import HeaderCheckout from "components/Header/HeaderCheckout";
-import { CheckoutController, CheckoutSection } from "containers";
-import React from "react";
-import { NavLink } from "react-router-dom";
-import { InputContainer, InputFrame } from "../BusinessForm/styles";
-import { Page } from "../styled";
-import { Data, DataTitle, SectionTitle } from "./styled";
+import HeaderCheckout from 'components/Header/HeaderCheckout'
+import ActiveNav from 'components/navbar/ActiveNav'
+import { CheckoutController, CheckoutSection } from 'containers'
+import { SubHeader } from 'pages/Dashboard/User/Rewards/styled'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { Container, Header } from './styled'
+import styled from 'styled-components'
+import { ReviewTab } from 'utils/config'
+import PdfCards from 'components/cards/PdfCard/PdfCards'
+import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
 
 const ReviewInformation = () => {
+  const ActiveStyles = {
+    color: '#151717',
+    borderBottom: '4px solid #00A2D4',
+    borderRadius: 0,
+  }
+
   return (
     <>
-      <HeaderCheckout />
-      <Page>
-        <CheckoutSection
-          title="Review Information"
-          subtitle="Please ensure all information provided for this business are correct"
-          review
-          sectionTitle="Business Information:"
-          linkTitle="Edit"
-          to="/"
-        >
-          <InputContainer>
-            <InputFrame>
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Nigeria</p>
-              </Data>
-
-              <DataTitle>Business Name 1</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Business Name 3</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-              <DataTitle>Entity Name</DataTitle>
-              <Data>
-                <p>Limited Liability company</p>
-              </Data>
-            </InputFrame>
-
-            <InputFrame>
-              <DataTitle>Business Objectives</DataTitle>
-              <Data>
-                <p>Information and Technology</p>
-              </Data>
-
-              <DataTitle>Business Name 2</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Business Name 4</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-
-              <DataTitle>Entry Description</DataTitle>
-              <Data>
-                <p>Local Sharholders only</p>
-              </Data>
-            </InputFrame>
-          </InputContainer>
-        </CheckoutSection>
-
-        <CheckoutSection
-          review
-          sectionTitle="Business Information:"
-          linkTitle="Edit"
-          to="/"
-        >
-          <InputContainer>
-            <InputFrame>
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Nigeria</p>
-              </Data>
-
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Limited Liability company</p>
-              </Data>
-            </InputFrame>
-
-            <InputFrame>
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Nigeria</p>
-              </Data>
-
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-
-              <DataTitle>Operational Country</DataTitle>
-              <Data>
-                <p>Limited Liability company</p>
-              </Data>
-            </InputFrame>
-          </InputContainer>
-        </CheckoutSection>
-
-        <CheckoutSection
-          review
-          sectionTitle="Business Address:"
-          linkTitle="Edit"
-          to="/"
-        >
-          <InputContainer>
-            <InputFrame>
-              <DataTitle>Country</DataTitle>
-              <Data>
-                <p>Nigeria</p>
-              </Data>
-
-              <DataTitle>City</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Zip Code</DataTitle>
-              <Data>
-                <p>3401</p>
-              </Data>
-            </InputFrame>
-
-            <InputFrame>
-              <DataTitle>State</DataTitle>
-              <Data>
-                <p>Information and Technology</p>
-              </Data>
-
-              <DataTitle>Number and Street</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Email Address</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-            </InputFrame>
-          </InputContainer>
-        </CheckoutSection>
-
-        <CheckoutSection
-          review
-          sectionTitle="Shareholders Information:"
-          linkTitle="Edit"
-          to="/"
-        >
-          <InputContainer>
-            <InputFrame>
-              <DataTitle>Shareholder 1</DataTitle>
-              <Data>
-                <p>Nigeria</p>
-              </Data>
-
-              <DataTitle>Shareholder 3</DataTitle>
-              <Data>
-                <p>Limited Liability company</p>
-              </Data>
-            </InputFrame>
-
-            <InputFrame>
-              <DataTitle>Shareholder 2</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Shareholder 4</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-            </InputFrame>
-          </InputContainer>
-        </CheckoutSection>
-
-        <CheckoutSection
-          review
-          sectionTitle="Beneficiary Information:"
-          linkTitle="Edit"
-          to="/"
-        >
-          <InputContainer>
-            <InputFrame>
-              <DataTitle>Beneficiary 1</DataTitle>
-              <Data>
-                <p>Nigeria</p>
-              </Data>
-
-              <DataTitle>Beneficiary 3</DataTitle>
-              <Data>
-                <p>Limited Liability company</p>
-              </Data>
-            </InputFrame>
-
-            <InputFrame>
-              <DataTitle>Beneficiary 2</DataTitle>
-              <Data>
-                <p>Aim Designs</p>
-              </Data>
-
-              <DataTitle>Beneficiary 4</DataTitle>
-              <Data>
-                <p>Grace</p>
-              </Data>
-            </InputFrame>
-          </InputContainer>
-        </CheckoutSection>
-        <CheckoutController backText={"Previous"} forwardText={"continue"} />
-      </Page>
+      <Container>
+        <HeaderCheckout />
+        <Body>
+          <CheckoutSection
+            title={'Review Information'}
+            HeaderParagraph="Please ensure all information provided for this business are correct"
+          />
+          <Nav>
+            {ReviewTab.map((item, index) => (
+              <ReviweTabWrapper to={item.path} key={index}>
+                <NavLink
+                  to={item.path}
+                  style={({ isActive }) => (isActive ? ActiveStyles : {})}
+                >
+                  {item.title}
+                </NavLink>
+              </ReviweTabWrapper>
+            ))}
+          </Nav>
+          <CardWrapper>
+            <LaunchSummaryCard
+              number="1"
+              name="Opeyemi Falana"
+              shares="Common Shares "
+              sharesPercentage="3%"
+              email="opeyemiexample@email.com"
+              phone="+2348123456789"
+              littleCard
+            />
+            <LaunchSummaryCard
+              number="2"
+              name="Opeyemi Falana"
+              shares="Common Shares "
+              sharesPercentage="3%"
+              email="opeyemiexample@email.com"
+              phone="+2348123456789"
+              littleCard
+            />
+            <LaunchSummaryCard
+              number="3"
+              name="Opeyemi Falana"
+              shares="Common Shares "
+              sharesPercentage="3%"
+              email="opeyemiexample@email.com"
+              phone="+2348123456789"
+              littleCard
+            />
+          </CardWrapper>
+          <ButtonWrapper>
+            <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
+          </ButtonWrapper>
+        </Body>
+      </Container>
     </>
-  );
-};
+  )
+}
 
-export default ReviewInformation;
+export default ReviewInformation
+
+const Nav = styled.nav`
+  background: #ffffff;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #edf1f7;
+  padding: 20px 40px 0px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+`
+const ReviweTabWrapper = styled.div`
+  display: flex;
+  flex: 1;
+
+  > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 7px 10px;
+    transition: 0.3s all ease;
+    padding-bottom: 20px;
+
+    border: none;
+
+    margin: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #959697;
+    white-space: nowrap;
+  }
+`
+const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+  gap: 40px;
+`
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 40px;
+`
+const Body = styled.form`
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  margin: auto;
+  width: 100%;
+  max-width: 962px;
+  background-color: white;
+  border: 1px solid #edf1f6;
+  border-top: none;
+  flex: 1;
+  padding-bottom: 50px;
+  border-top: none;
+`

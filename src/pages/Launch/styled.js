@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { InputWrapper, Input } from "components/input/styled";
+import styled from 'styled-components'
+import { InputWrapper, Input } from 'components/input/styled'
 
 export const Container = styled.div`
   display: flex;
@@ -7,8 +7,8 @@ export const Container = styled.div`
   background-color: #fcfcfc;
   flex: 1;
   min-height: 100vh;
-`;
-export const Header = styled.div``;
+`
+export const Header = styled.div``
 export const Body = styled.form`
   display: flex;
   flex-flow: column;
@@ -22,7 +22,7 @@ export const Body = styled.form`
   flex: 1;
   padding-bottom: 100px;
   border-top: none;
-`;
+`
 
 export const AddMore = styled.div`
   display: flex;
@@ -32,31 +32,32 @@ export const AddMore = styled.div`
   cursor: pointer;
   font-size: clamp(16px, 1.5vw, 18px);
   color: #00a2d4;
-`;
+`
 
 export const Bottom = styled.div`
   display: flex;
   width: 100%;
   padding: 40px;
-`;
+`
 export const EntityCardsWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: stretch;
   width: 100%;
   gap: 24px;
-`;
+  margin-top: 36px;
+`
 
 export const CountryItem = styled.span`
   display: flex;
   gap: 16px;
   align-items: center;
-`;
+`
 
 export const Page = styled.div`
   padding-block: 32px;
   padding-inline: 8%;
-`;
+`
 
 export const Inputs = styled.div`
   width: 100%;
@@ -86,10 +87,10 @@ export const Inputs = styled.div`
   }
 
   .checkoutInputLabel {
-    font-family: "BR Firma";
+    font-family: 'BR Firma';
     font-weight: 500;
     font-size: clamp(13px, 1.5vw, 14px);
     line-height: 21px;
     color: #4e5152;
   }
-`;
+`

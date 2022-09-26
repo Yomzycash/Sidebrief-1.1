@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   Container,
   RadioButtons,
@@ -10,19 +10,19 @@ import {
   RadioLabel,
   FormContainer,
   PaymentButton,
-} from "./styles";
-import numeral from "numeral";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { cardInfoSchema } from "./constants";
+} from './styles'
+import numeral from 'numeral'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { cardInfoSchema } from './constants'
 
-import { InputWithLabel } from "components/input";
-import { useActions } from "./actions";
-import { useNavigate } from "react-router-dom";
+import { InputWithLabel } from 'components/input'
+import { useActions } from './actions'
+import { useNavigate } from 'react-router-dom'
 
 export const PaymentForm = ({ amount, currency, USDprice }) => {
-  const [isUSD, setIsUSD] = useState(false);
-  const navigate = useNavigate();
+  const [isUSD, setIsUSD] = useState(false)
+  const navigate = useNavigate()
 
   const {
     handleSubmit,
@@ -31,23 +31,23 @@ export const PaymentForm = ({ amount, currency, USDprice }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(cardInfoSchema),
-  });
+  })
 
   const { symbol, onSelectCurrencyType, formatInput } = useActions({
     isUSD,
     setIsUSD,
     currency,
     setValue,
-  });
+  })
 
   const completePayment = (data) => {
-    console.log(data);
-    navigate("/launch/address");
+    console.log(data)
+    navigate('/launch/address')
     // api calls can be made here
     // depending on api, you might want to trim the card number first
     // change data to fit api, thanks
     // price and currency can also be gotten from above
-  };
+  }
 
   return (
     <Container>
@@ -64,7 +64,7 @@ export const PaymentForm = ({ amount, currency, USDprice }) => {
         </Radio>
         <Radio>
           <RadioInput
-            id={"USD"}
+            id={'USD'}
             type="radio"
             value="USD"
             name="currency"
@@ -76,49 +76,51 @@ export const PaymentForm = ({ amount, currency, USDprice }) => {
       <TextContainer>
         <Price>
           {symbol}
-          {numeral(isUSD ? USDprice : amount).format("0,0.00")}
+          {numeral(isUSD ? USDprice : amount).format('0,0.00')}
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
       <FormContainer onSubmit={handleSubmit(completePayment)}>
         <InputWithLabel
-          label={"Card Number"}
-          placeholder={"--"}
-          name={"cardNumber"}
-          labelStyle={"payment--label"}
-          type={"text"}
+          label={'Card Number'}
+          placeholder={'--'}
+          name={'cardNumber'}
+          labelStyle={'payment--label'}
+          type={'text'}
           register={register}
           onChange={(event) => {
-            formatInput(event.target.value, "cardNumber");
+            formatInput(event.target.value, 'cardNumber')
           }}
-          errorMessage={errors["cardNumber"]?.message}
+          errorMessage={errors['cardNumber']?.message}
         />
         <InputWithLabel
-          label={"EXP. DATE"}
-          placeholder={"--"}
-          labelStyle={"payment--label"}
-          name={"expDate"}
-          type={"text"}
+          label={'EXP. DATE'}
+          placeholder={'--'}
+          labelStyle={'payment--label'}
+          name={'expDate'}
+          type={'text'}
           register={register}
           onChange={(event) => {
-            formatInput(event.target.value, "expDate");
+            formatInput(event.target.value, 'expDate')
           }}
-          errorMessage={errors["expDate"]?.message}
+          errorMessage={errors['expDate']?.message}
         />
         <InputWithLabel
-          label={"CVV"}
-          placeholder={"--"}
-          name={"cvv"}
-          labelStyle={"payment--label"}
-          type={"text"}
+          label={'CVV'}
+          placeholder={'--'}
+          name={'cvv'}
+          labelStyle={'payment--label'}
+          type={'text'}
           register={register}
           onChange={(event) => {
-            formatInput(event.target.value, "cvv");
+            formatInput(event.target.value, 'cvv')
           }}
-          errorMessage={errors["cvv"]?.message}
+          errorMessage={errors['cvv']?.message}
         />
-        <PaymentButton>Pay In {isUSD ? "USD" : currency}</PaymentButton>
+        <PaymentButton type="submit">
+          Pay In {isUSD ? 'USD' : currency}
+        </PaymentButton>
       </FormContainer>
     </Container>
-  );
-};
+  )
+}
