@@ -124,6 +124,7 @@ const launchApplicationInfo = createSlice({
     shareHoldersLaunchInfo: [],
     directorsLaunchInfo: [],
     beneficiariesLaunchInfo: [],
+    editShareholderInfo: [],
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -155,7 +156,11 @@ const launchApplicationInfo = createSlice({
       state.businessAddress = action.payload;
     },
     setShareHoldersLaunchInfo: (state, action) => {
-      state.shareHoldersLaunchInfo.push(action.payload);
+      if (action.payload.type) {
+        state.shareHoldersLaunchInfo.push(action.payload.info);
+      } else {
+        state.shareHoldersLaunchInfo = action.payload.info;
+      }
     },
     setDirectorsLaunchInfo: (state, action) => {
       state.directorsLaunchInfo.push(action.payload);
@@ -165,6 +170,15 @@ const launchApplicationInfo = createSlice({
     },
     updateLaunchShareHolder: (state, action) => {
       state.shareHoldersLaunchInfo = action.payload;
+    },
+    updateLaunchDirectors: (state, action) => {
+      state.directorsLaunchInfo = action.payload;
+    },
+    updateLaunchBeneficiaries: (state, action) => {
+      state.beneficiariesLaunchInfo = action.payload;
+    },
+    setEditShareholderInfo: (state, action) => {
+      state.editShareholderInfo = action.payload;
     },
   },
 });
@@ -184,6 +198,9 @@ export const {
   setDirectorsLaunchInfo,
   setBeneficiariesLaunchInfo,
   updateLaunchShareHolder,
+  updateLaunchDirectors,
+  updateLaunchBeneficiaries,
+  setEditShareholderInfo,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({

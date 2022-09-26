@@ -55,8 +55,6 @@ const BusinessAddress = () => {
   };
 
   const SubmitForm = async (data) => {
-    console.log(data);
-
     const requiredAddressData = {
       launchCode: generatedLaunchCode,
 

@@ -13,6 +13,7 @@ const LaunchSummaryCard = ({
   sharesPercentage,
   email,
   phone,
+  editAction,
   deleteAction,
 }) => {
   return (
@@ -22,7 +23,7 @@ const LaunchSummaryCard = ({
         <SharesWrapper shares={shares}>
           <div>{`${shares} - ${sharesPercentage}`}</div>
           <IconWrapper>
-            <EditIcon />
+            <EditIcon onClick={editAction} />
             <DeleteIcon onClick={deleteAction} />
           </IconWrapper>
         </SharesWrapper>

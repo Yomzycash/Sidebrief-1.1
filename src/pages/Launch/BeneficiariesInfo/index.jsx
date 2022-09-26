@@ -6,7 +6,11 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCheckoutProgress } from "redux/Slices";
+import {
+  setBeneficiariesLaunchInfo,
+  setCheckoutProgress,
+  updateLaunchBeneficiaries,
+} from "redux/Slices";
 import { store } from "redux/Store";
 import { AddMore, Body, Bottom, Container, Header } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
@@ -17,14 +21,9 @@ const BeneficiariesInfo = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
 
-  const currentBusiness = useSelector(
-    (store) => store.RegisteredBusinessesInfo.currentBusiness
-  );
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
   console.log(beneficiariesLaunchInfo);
-
-  const { shareHolders } = currentBusiness;
 
   const handleNext = () => {
     navigate("/launch/sharehholders-kyc");
@@ -47,6 +46,16 @@ const BeneficiariesInfo = () => {
     setOpenModal(false);
   };
 
+  const handleBeneficiaryInfo = (formData) => {
+    store.dispatch(setBeneficiariesLaunchInfo(formData));
+  };
+
+  const handleDelete = (index) => {
+    const beneficiariesInfo = [...beneficiariesLaunchInfo];
+    beneficiariesInfo.splice(index, 1);
+    store.dispatch(updateLaunchBeneficiaries(beneficiariesInfo));
+  };
+
   return (
     <Container>
       <HeaderCheckout />
@@ -67,6 +76,7 @@ const BeneficiariesInfo = () => {
                 email={beneficiary.email}
                 phone={beneficiary.phone}
                 sharesPercentage={beneficiary.share_percentage}
+                deleteAction={() => handleDelete(index)}
               />
             ))}
             <AddMore onClick={handleModalOpen}>
@@ -77,6 +87,7 @@ const BeneficiariesInfo = () => {
               <CheckoutFormInfo
                 title="Beneficiary"
                 handleClose={handleModalClose}
+                saveToStore={handleBeneficiaryInfo}
               />
             </Dialog>
           </LaunchFormContainer>

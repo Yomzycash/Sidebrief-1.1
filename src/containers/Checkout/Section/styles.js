@@ -38,7 +38,6 @@ export const CheckBox = styled.div`
 
   input {
     width: 20px;
-    accent-color: #00a2d4;
     color: yellow;
     border-radius: 4px;
   }

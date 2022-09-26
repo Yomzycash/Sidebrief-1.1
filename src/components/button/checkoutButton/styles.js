@@ -27,4 +27,8 @@ export const Container = styled.button`
   }
 
   visibility: ${({ hide }) => (hide ? "hidden" : "")};
+
+  &:disabled {
+    background-color: #9b9b9b;
+  }
 `;

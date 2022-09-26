@@ -13,6 +13,8 @@ export const CheckoutController = ({
   backBottonStyle,
   forwardButtonStyle,
   backwardSubmit,
+  forwardDisable,
+  backDisable,
 }) => {
   return (
     <Container style={containerStyle}>
@@ -23,6 +25,7 @@ export const CheckoutController = ({
         hide={hidePrev}
         type={backwardSubmit || "button"}
         style={backBottonStyle}
+        disable={backDisable}
       />
       <CheckoutButton
         action={() => {
@@ -31,6 +34,7 @@ export const CheckoutController = ({
         text={forwardText}
         type={forwardSubmit ? "submit" : "button"}
         style={forwardButtonStyle}
+        disable={forwardDisable}
       />
     </Container>
   );

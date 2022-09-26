@@ -6,7 +6,11 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCheckoutProgress } from "redux/Slices";
+import {
+  setCheckoutProgress,
+  setDirectorsLaunchInfo,
+  updateLaunchDirectors,
+} from "redux/Slices";
 import { store } from "redux/Store";
 import { AddMore, Body, Bottom, Container, Header } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
@@ -17,14 +21,9 @@ const DirectorsInfo = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
 
-  const currentBusiness = useSelector(
-    (store) => store.RegisteredBusinessesInfo.currentBusiness
-  );
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { directorsLaunchInfo } = LaunchApplicationInfo;
   console.log(directorsLaunchInfo);
-
-  const { shareHolders } = currentBusiness;
 
   const handleNext = () => {
     navigate("/launch/beneficiaries-info");
@@ -47,6 +46,16 @@ const DirectorsInfo = () => {
     setOpenModal(false);
   };
 
+  const handleDelete = (index) => {
+    const directorsInfo = [...directorsLaunchInfo];
+    directorsInfo.splice(index, 1);
+    store.dispatch(updateLaunchDirectors(directorsInfo));
+  };
+
+  const handleDirectorInfo = (formData) => {
+    store.dispatch(setDirectorsLaunchInfo(formData));
+  };
+
   return (
     <Container>
       <HeaderCheckout />
@@ -67,6 +76,7 @@ const DirectorsInfo = () => {
                 email={director.email}
                 phone={director.phone}
                 sharesPercentage={director.share_percentage}
+                deleteAction={() => handleDelete(index)}
               />
             ))}
             <AddMore onClick={handleModalOpen}>
@@ -77,6 +87,7 @@ const DirectorsInfo = () => {
               <CheckoutFormInfo
                 title="Director"
                 handleClose={handleModalClose}
+                saveToStore={handleDirectorInfo}
               />
             </Dialog>
           </LaunchFormContainer>

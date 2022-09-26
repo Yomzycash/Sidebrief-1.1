@@ -29,6 +29,7 @@ export const AddMore = styled.div`
   flex-flow: row nowrap;
   align-items: center;
   gap: 17px;
+  width: max-content;
   cursor: pointer;
   font-size: clamp(16px, 1.5vw, 18px);
   color: #00a2d4;
