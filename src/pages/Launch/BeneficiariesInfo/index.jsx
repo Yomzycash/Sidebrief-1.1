@@ -45,7 +45,8 @@ const DirectorsInfo = () => {
 
   // This gets the beneficiary information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
+  const { beneficiariesLaunchInfo, generatedLaunchCode } =
+    LaunchApplicationInfo;
 
   const handleNext = () => {
     navigate("/launch/shareholders-kyc");
@@ -79,7 +80,7 @@ const DirectorsInfo = () => {
   const handleDelete = async (beneficiary) => {
     setSelectedToDelete(beneficiary);
     const requiredDeleteData = {
-      launchCode: beneficiary.launchCode,
+      launchCode: generatedLaunchCode,
       beneficialOwnerCode: beneficiary.beneficialOwnerCode,
     };
     let deleteResponse = await deleteBeneficiary(requiredDeleteData);
@@ -139,9 +140,13 @@ const DirectorsInfo = () => {
   };
 
   // This updates the beneficiary's information
-  const handleBeneficiaryUpdate = async (formData, selectedBeneficiary) => {
+  const handleBeneficiaryUpdate = async (
+    formData,
+    launchCode,
+    selectedBeneficiary
+  ) => {
     const requiredBeneficiaryUpdateData = {
-      launchCode: selectedBeneficiary.launchCode,
+      launchCode: launchCode,
       beneficialOwnerCode: selectedBeneficiary.beneficialOwnerCode,
       beneficialOwner: {
         beneficialOwnerName: formData.full_name,
@@ -198,8 +203,8 @@ const DirectorsInfo = () => {
                 editAction={() => handleEdit(beneficiary)}
                 deleteAction={() => handleDelete(beneficiary)}
                 isLoading={
-                  selectedToDelete?.directorCode ===
-                    beneficiary?.directorCode && deleteState?.isLoading
+                  selectedToDelete?.beneficialOwnerCode ===
+                    beneficiary?.beneficialOwnerCode && deleteState?.isLoading
                     ? true
                     : false
                 }

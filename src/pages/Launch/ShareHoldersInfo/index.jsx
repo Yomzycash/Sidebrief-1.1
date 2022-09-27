@@ -302,6 +302,7 @@ const ShareHoldersInfo = () => {
                   dirAddState.isLoading
                 }
                 selectedToEdit={selectedToEdit}
+                directorsInfo={directorsLaunchInfo}
               />
             </Dialog>
           </LaunchFormContainer>

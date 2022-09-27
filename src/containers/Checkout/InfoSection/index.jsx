@@ -43,8 +43,10 @@ export const CheckoutFormInfo = ({
   handleUpdate,
   addIsLoading,
   selectedToEdit,
+  directorsInfo,
 }) => {
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
+  // const [isDirector, setIsDirector] = useState(selectedToEdit.isDirector);
 
   const {
     handleSubmit,
@@ -69,27 +71,22 @@ export const CheckoutFormInfo = ({
 
   // Endpoints hooks from launch slice
   const [addMembers, { isLoading, isSuccess }] = useAddMembersMutation();
-  const [addDirector] = useAddDirectorMutation();
-  const [addbeneficiary] = useAddBeneficiaryMutation();
-
-  // Checkbox refs
-  const checkboxRef1 = useRef(null);
-  const checkboxRef2 = useRef(null);
 
   // Hide director's field on mount
-  useEffect(() => {
-    if (isDirector) {
-      setIsDirector(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isDirector) {
+  //     setIsDirector(false);
+  //   }
+  // }, []);
 
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
+    console.log(formData);
     if (beneficiary) {
       if (cardAction === "add") {
         handleAdd(formData, generatedLaunchCode);
       } else if (cardAction === "edit") {
-        handleUpdate(formData, selectedToEdit);
+        handleUpdate(formData, generatedLaunchCode, selectedToEdit);
       }
       return;
     }
@@ -119,6 +116,7 @@ export const CheckoutFormInfo = ({
         }
       }
     } else if (cardAction === "edit") {
+      setIsDirector(formData?.isDirector);
       handleUpdate(formData, selectedToEdit);
     }
   };
@@ -137,6 +135,15 @@ export const CheckoutFormInfo = ({
       handleShareTypeChange({
         share_type: selectedToEdit?.shareholderOwnershipType,
       });
+      if (directorsInfo) {
+        let directorInfo = directorsInfo.filter(
+          (director) => director.memberCode === selectedToEdit.memberCode
+        );
+        if (directorInfo.length > 0) {
+          setValue("director_role", directorInfo[0].directorRole);
+          setIsDirector(true);
+        }
+      }
       if (beneficiary) {
         setValue("full_name", selectedToEdit?.beneficialOwnerName);
         setValue("email", selectedToEdit?.beneficialOwnerEmail);
@@ -283,8 +290,7 @@ export const CheckoutFormInfo = ({
                 type="checkbox"
                 id="member-type1"
                 name="isCompany"
-                ref={checkboxRef1}
-                // regiser={register}
+                {...register("isCompany")}
               />
               <label htmlFor="member-type1">
                 Click here if {title} is a <span>Company</span>
@@ -295,12 +301,12 @@ export const CheckoutFormInfo = ({
                 type="checkbox"
                 id="member-type2"
                 name="isDirector"
-                ref={checkboxRef2}
-                // regiser={register}
+                checked={isDirector}
+                {...register("isDirector")}
               />
               <label
                 htmlFor="member-type2"
-                onClick={() => setIsDirector(!checkboxRef2.current.checked)}
+                onClick={() => setIsDirector(!isDirector)}
               >
                 Click here if {title} is a <span>Director</span>
               </label>
