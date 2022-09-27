@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  NavWrapper,
-  NavLinkWrapper,
-  ContentWrapper,
-  LinkContent,
-} from "./styled.js";
+import { NavWrapper, NavLinkWrapper, ContentWrapper } from "./styled.js";
 import { NavbarLink, NavMore } from "utils/config";
 import styled from "styled-components";
 import { IoChevronDown } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
 
 const TabNavBar = ({ icon }) => {
   const [boxshadow, setBoxShadow] = useState("false");
@@ -18,23 +14,36 @@ const TabNavBar = ({ icon }) => {
     });
   }, []);
 
+  const ActiveStyle = {
+    backgroundColor: "#00a2d419",
+    color: "#00a2d4",
+  };
+
   return (
     <NavWrapper boxshadow={boxshadow}>
       <ContentWrapper>
         {NavbarLink.map((item, index) => (
           <NavLinkWrapper to={item.path} key={index}>
-            <LinkContent>{item.title}</LinkContent>
+            <NavLink
+              to={item.path}
+              style={({ isActive }) => (isActive ? ActiveStyle : {})}
+            >
+              {item.title}
+            </NavLink>
           </NavLinkWrapper>
         ))}
         <More>
-          <LinkContent>
-            More
-            <IoChevronDown size={15} />
-          </LinkContent>
+          More
+          <IoChevronDown size={15} />
           <MoreContent>
             {NavMore.map((item, index) => (
               <NavLinkWrapper to={item.path} key={index}>
-                <LinkContent>{item.title}</LinkContent>
+                <NavLink
+                  to={item.path}
+                  style={({ isActive }) => (isActive ? ActiveStyle : {})}
+                >
+                  {item.title}
+                </NavLink>
               </NavLinkWrapper>
             ))}
           </MoreContent>
@@ -45,30 +54,12 @@ const TabNavBar = ({ icon }) => {
 };
 
 export default TabNavBar;
-const TextWrapper = styled.div`
-  padding: 0px 8px;
-  :hover {
-    cursor: pointer;
-    background: rgba(0, 162, 212, 0.1);
-    border-radius: 20px;
-    color: #00a2d4;
-  }
-`;
-
-const IconTextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 const More = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  font-weight: 500;
+  font-size: 12px;
   &:hover {
     > div {
       display: flex;

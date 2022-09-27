@@ -20,31 +20,40 @@ import {
 } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setCheckoutProgress, setCountryISO, setCountry } from "redux/Slices";
+import {
+  setCheckoutProgress,
+  setCountryISO,
+  setCountry,
+  setSelectedBusinessNames,
+  setBusinessObjectives,
+} from "redux/Slices";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { BusinessObjectives } from "utils/config";
 import { useGetAllCountriesQuery } from "services/launchService";
+import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
+import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 
 const BusinessInfo = () => {
   const [businessNames, setBusinessNames] = useState([]);
-  const [selectedCountry, setselectedCountry] = useState();
+  const [selectedCountry, setselectedCountry] = useState("");
   const [selectedObjectives, setselectedObjectives] = useState([]);
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
-  const [selectedCountryISO, setselectedCountryISO] = useState();
+  const [selectedCountryISO, setselectedCountryISO] = useState("");
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
-  // const { data, error, isLoading, isSuccess } =
-  //   useGetAllEntitiesQuery(selectedCountryISO);
 
   const navigate = useNavigate();
 
-  const handleNext = async () => {
+  const handleNext = () => {
     store.dispatch(setCountryISO(selectedCountryISO));
     store.dispatch(setCountry(selectedCountry));
-    navigate("/checkout/entity");
+    store.dispatch(setSelectedBusinessNames(businessNames));
+    store.dispatch(setBusinessObjectives(selectedObjectives));
     store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
+    navigate("/launch/entity");
   };
+
   const handlePrev = () => {
     navigate(-1);
   };
@@ -53,21 +62,30 @@ const BusinessInfo = () => {
     setBusinessNames(valuesSelected);
   };
 
+  // This fires off whenever next button is clicked
+  // useEffect(() => {
+  //
+  // }, [nextClicked]);
+
+  // Handle supported countries fetch
   const handleCountry = async (value) => {
     let responseData = await data;
     let countries = [];
     responseData?.forEach((data) => {
       countries = [...countries, data?.countryName];
     });
-    setCountriesData([...responseData]);
-    setCountries([...countries]);
-    setselectedCountry(value);
+    if (responseData) {
+      setCountriesData([...responseData]);
+      setCountries([...countries]);
+      setselectedCountry(value);
+    }
   };
 
   const handleObjectives = (valuesSelected) => {
     setselectedObjectives(valuesSelected);
   };
 
+  // Update the supported countries when data changes
   useEffect(() => {
     handleCountry();
   }, [data]);
@@ -85,41 +103,52 @@ const BusinessInfo = () => {
     e.preventDefault();
   };
 
+  useEffect(() => {
+    console.log(navigator.onLine);
+  }, [navigator.onLine]);
+
   return (
     <Container onClick={handleSubmit}>
-      <Header>
-        <HeaderCheckout />
-      </Header>
+      <HeaderCheckout />
+
       <Body>
-        <CheckoutSection title="Let's sail you through, take this swift walk with us." />
-        <TagInput getSelectedValues={handleBusinessNames} />
-        <InputsWrapper>
-          <TagInputWithSearch
-            label="Operational Country"
-            list={countries}
-            getValue={handleCountry}
-          />
-          <TagInputWithSearch
-            label="Business Objectives"
-            list={BusinessObjectives}
-            getValue={handleObjectives}
-            MultiSelect
-            ExistsError="Tag has already been selected"
-            MatchError="Please select objectives from the list"
-            EmptyError="Please select at least one objective"
-            MaxError="You cannot select more than 4"
-          />
-        </InputsWrapper>
-      </Body>
-      <Bottom>
-        <CheckoutController
-          forwardAction={handleNext}
-          backAction={handlePrev}
-          backText={"Previous"}
-          forwardText={"Next"}
-          hidePrev
+        <CheckoutSection
+          title="Business Information"
+          HeaderParagraph="Let's sail you through, take this swift walk with us."
         />
-      </Bottom>
+        <LaunchPrimaryContainer>
+          <LaunchFormContainer>
+            <TagInput getSelectedValues={handleBusinessNames} />
+
+            <TagInputWithSearch
+              label="Business Objectives"
+              list={BusinessObjectives}
+              getValue={handleObjectives}
+              MultiSelect
+              ExistsError="Tag has already been selected"
+              MatchError="Please select objectives from the list"
+              EmptyError="Please select at least one objective"
+              MaxError="You cannot select more than 4"
+            />
+            <div style={{ maxWidth: "430px" }}>
+              <TagInputWithSearch
+                label="Operational Country"
+                list={countries}
+                getValue={handleCountry}
+              />
+            </div>
+          </LaunchFormContainer>
+          <Bottom>
+            <CheckoutController
+              forwardAction={handleNext}
+              backAction={handlePrev}
+              backText={"Previous"}
+              forwardText={"Next"}
+              hidePrev
+            />
+          </Bottom>
+        </LaunchPrimaryContainer>
+      </Body>
     </Container>
   );
 };

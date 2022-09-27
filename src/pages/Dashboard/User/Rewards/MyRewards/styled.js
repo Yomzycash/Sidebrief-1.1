@@ -4,10 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-  margin: 0 40px;
-  @media screen and (max-width: 1050px) {
-    margin: 0;
-  }
 `;
 export const Header = styled.div`
   position: sticky;
@@ -28,6 +24,7 @@ export const MainHeader = styled.div`
   padding-inline: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
+  transition: 0.2s all ease;
 
   > p {
     display: flex;
@@ -59,7 +56,7 @@ export const Body = styled.div`
 `;
 export const BodyLeft = styled.div`
   position: sticky;
-  top: 250px;
+  top: 220px;
   height: max-content;
   display: flex;
   flex-flow: column;
@@ -84,6 +81,9 @@ export const BodyLeft = styled.div`
     color: #4e5152;
     font-weight: 500;
     list-style-type: none;
+    > li {
+      cursor: pointer;
+    }
   }
 `;
 export const BodyRight = styled.div`

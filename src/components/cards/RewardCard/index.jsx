@@ -29,6 +29,7 @@ export const RewardCard = ({
       onMouseLeave={() => setHover(false)}
       hover={hover}
       onClick={rewardspage && action}
+      rewardspage={rewardspage}
     >
       <Corner hover={hover}>
         <CornerPetal />

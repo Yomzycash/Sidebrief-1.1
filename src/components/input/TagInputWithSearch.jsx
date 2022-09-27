@@ -159,7 +159,8 @@ const TagInputWithSearch = ({
       <Tags>
         {tags.map((tag, index) => (
           <Tag key={index}>
-            <span>{tag}</span> <MdClear onClick={() => handleTagDelete(tag)} />
+            <span>{tag}</span>{" "}
+            <MdClear size={20} onClick={() => handleTagDelete(tag)} />
           </Tag>
         ))}
       </Tags>
@@ -236,12 +237,12 @@ const Tags = styled.div`
 const Tag = styled.p`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.5em;
   font-size: clamp(12px, 1.5vw, 14px);
   color: white;
   background-color: #0082aa;
-  border-radius: 4px;
-  padding: 5px 8px 5px 10px;
+  border-radius: 8px;
+  padding: 11.5px 8px;
 `;
 const InputWrapper = styled.div`
   position: relative;
@@ -284,6 +285,7 @@ const Suggestions = styled.div`
   background-color: white;
   border: 1px solid #edf1f7;
   border-radius: 8px;
+  z-index: 1;
 
   > li {
     display: flex;

@@ -1,185 +1,336 @@
-import React from "react";
-import { InputWithLabel, DropDown } from "components/input";
-import Checkbox from "components/input/Checkbox";
-import NumberInput from "components/input/phoneNumberInput";
-import { ReactComponent as EditIcon }from "asset/Launch/Edit.svg";
-import { ReactComponent as DeleteIcon }from "asset/Launch/Delete.svg";
-import { ReactComponent as AddIcon} from "asset/Launch/Add.svg";
-import styled from "styled-components";
-import {ContentWrapper,DetailedSection,ButtonLink,Title,TitleWrapper,CheckWrapper,Form,
-  AllInputContainer,Wrapper,CheckInputWrapper,ImgWrapper,AddMoreWrapper,AddWrapper,EditWrapper,DeleteWrapper} from "./style";
-import { useState } from "react";
+import { Checkbox, DropDown, InputWithLabel } from "components/input";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  DetailedSection,
+  Title,
+  Form,
+  CheckInputWrapper,
+  CheckboxWrapper,
+} from "./style";
+import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
+import { ReactComponent as DeleteIcon } from "asset/Launch/Delete.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { shareTypeOptions,checkInfoSchema } from "utils/config";
+// import { shareTypeOptions, checkInfoSchema } from "utils/config";
+import { shareTypeOptions } from "utils/config";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import {
+  useAddBeneficiaryMutation,
+  useAddDirectorMutation,
+  useAddMembersMutation,
+  useAddShareHolderMutation,
+} from "services/launchService";
+import NumberInput from "components/input/phoneNumberInput";
+import Button, { CheckoutButton } from "components/button";
+import { CheckoutController } from "..";
+import { ReactComponent as CloseIcon } from "asset/images/close.svg";
+import { store } from "redux/Store";
+import { setShareHoldersLaunchInfo } from "redux/Slices";
+import { ThreeDots } from "react-loading-icons";
 
 export const CheckoutFormInfo = ({
-  title = "Shareholder’s Information",
-  info ='Shareholder'
-  }) => {
-    const [containerList, setContainerList]= useState([{container: ""}]);
-    const [read, setRead] = useState(true);
+  title,
+  handleClose,
+  shareholder,
+  director,
+  beneficiary,
+  cardAction,
+  checkInfoSchema,
+  isDirector,
+  setIsDirector,
+  handleAdd,
+  handleUpdate,
+  addIsLoading,
+  selectedToEdit,
+  directorsInfo,
+}) => {
+  const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
+  // const [isDirector, setIsDirector] = useState(selectedToEdit.isDirector);
 
-  
-    
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(checkInfoSchema),
+  });
 
-    const handleAddContainer=() => {
-      setContainerList([...containerList, {container: ""}]);
+  const launchInfoFromStore = useSelector((store) => store.LaunchReducer);
+  const { generatedLaunchCode } = launchInfoFromStore;
 
+  //  This populates the phone number when edit is clicked
+  const [defaultPhone] = useState(
+    cardAction === "edit"
+      ? beneficiary
+        ? selectedToEdit.beneficialOwnerPhone
+        : selectedToEdit.memberPhone
+      : ""
+  );
+
+  // Endpoints hooks from launch slice
+  const [addMembers, { isLoading, isSuccess }] = useAddMembersMutation();
+
+  // Hide director's field on mount
+  // useEffect(() => {
+  //   if (isDirector) {
+  //     setIsDirector(false);
+  //   }
+  // }, []);
+
+  // This submits the form data to both backend and store
+  const submitForm = async (formData) => {
+    console.log(formData);
+    if (beneficiary) {
+      if (cardAction === "add") {
+        handleAdd(formData, generatedLaunchCode);
+      } else if (cardAction === "edit") {
+        handleUpdate(formData, generatedLaunchCode, selectedToEdit);
+      }
+      return;
     }
+    if (cardAction === "add") {
+      const requiredMemberData = {
+        launchCode: generatedLaunchCode,
+        businessMember: {
+          memberName: formData.full_name,
+          memberEmail: formData.email,
+          memberPhone: formData.phone,
+        },
+      };
 
-    const handleContainerRemove=(index) => {
-        const List =[...containerList];
-        List.splice(index, 1);
-        setContainerList(List);
+      let addMemberResponse = await addMembers(requiredMemberData);
 
+      if (addMemberResponse.data) {
+        // Get the information of all added members
+        const allMembers = Object.entries(
+          addMemberResponse.data.businessMembers
+        );
+        // Get the information of the just added member
+        const memberInfo = allMembers[allMembers.length - 1][1];
+        handleAdd(formData, generatedLaunchCode, memberInfo);
+      } else {
+        if (addMemberResponse.error.status === "FETCH_ERROR") {
+          toast.error("Please check your internet connection");
+        }
+      }
+    } else if (cardAction === "edit") {
+      setIsDirector(formData?.isDirector);
+      handleUpdate(formData, selectedToEdit);
     }
+  };
 
-    const handleContainerEdit=() => {
-      setRead(!read);
-
+  // This populates the input fields value when edit botton is clicked
+  useEffect(() => {
+    if (cardAction === "edit") {
+      setValue("full_name", selectedToEdit?.memberName);
+      setValue("email", selectedToEdit?.memberEmail);
+      setValue(
+        "share_percentage",
+        selectedToEdit?.shareholderOwnershipPercentage
+      );
+      setValue("director_role", selectedToEdit?.director_role);
+      handleNumberChange(selectedToEdit?.memberPhone);
+      handleShareTypeChange({
+        share_type: selectedToEdit?.shareholderOwnershipType,
+      });
+      if (directorsInfo) {
+        let directorInfo = directorsInfo.filter(
+          (director) => director.memberCode === selectedToEdit.memberCode
+        );
+        if (directorInfo.length > 0) {
+          setValue("director_role", directorInfo[0].directorRole);
+          setIsDirector(true);
+        }
+      }
+      if (beneficiary) {
+        setValue("full_name", selectedToEdit?.beneficialOwnerName);
+        setValue("email", selectedToEdit?.beneficialOwnerEmail);
+        setValue("occupation", selectedToEdit?.beneficialOwnerOccupation);
+        setValue("stake", selectedToEdit?.beneficialOwnershipStake);
+        handleNumberChange(selectedToEdit?.beneficialOwnerPhone);
+      }
     }
+  }, []);
 
-    const handleShareTypeChange = (value) => {
-      var string = Object.values(value)[0];
-      setValue("share_type", string, { shouldValidate: true });
-      console.log(string);
-    };
+  // This sets the share type value - attached to the onChange event
+  const handleShareTypeChange = (value) => {
+    var string = Object.values(value)[0];
+    setValue("share_type", string, { shouldValidate: true });
+  };
 
-   
-    const submitForm =  (formData) => {
-      console.log(formData);
-    };
+  // This sets the phone number value - attached to the onChange event
+  const handleNumberChange = (value) => {
+    setValue("phone", value, { shouldValidate: true });
+  };
 
-    const {
-      handleSubmit,
-      register,
-      setValue,
-      formState: { errors },
-    } = useForm({
-      resolver: yupResolver(checkInfoSchema),
-    });
-
-    // const handleContainerChange = (e, index) => {
-    //   const { name, value } = e.target;
-    //   const list = [...serviceList];
-    //   list[index][name] = value;
-    //   setList(list);
-    // };
+  const buttonStyles = {
+    maxWidth: "197px",
+    width: "25%",
+    height: "59px",
+    padding: "0",
+    minWidth: "100px",
+  };
+  const buttonContainerStyles = {
+    justifyContent: "flex-end",
+    gap: "24px",
+    margin: "clamp(20px, 5%, 30px) 0 clamp(20px, 5%, 40px) 0",
+  };
 
   return (
-    <Wrapper>
-      <TitleWrapper>
-        <Title>{title}:</Title>
-        </TitleWrapper>
-
-         
-      <Checkbox />
-{containerList.map((singleContainer, index)=>
-(<AllInputContainer key={index}>
-  <Form onSubmit={handleSubmit(submitForm)}>
-<CheckInputWrapper >   
-        <ImgWrapper>
-          <EditWrapper onClick={handleContainerEdit}>
-            <EditIcon />
-          </EditWrapper>
-          <DeleteWrapper onClick={() => handleContainerRemove(index)}>
-            <DeleteIcon />
-          </DeleteWrapper> 
-       </ImgWrapper>  
-       <ContentWrapper>
+    <Form onSubmit={handleSubmit(submitForm)}>
+      <Title>
+        <p>Add a {title}</p>
+        <CloseIcon onClick={handleClose} />
+      </Title>
+      <CheckInputWrapper>
         <InputWithLabel
-          label="Full Name"
+          label="Full Name (or Company Name, if Company) "
+          labelStyle="input-label"
           bottomText="Please start with the first name then the middle name (if available) and finally the last name"
           type="text"
           name="full_name"
-          readonly={read}
+          inputClass="input-class"
           register={register}
           errorMessage={errors.full_name?.message}
         />
 
         <DetailedSection>
-          <NumberInput 
-          label="Phone number" 
-          name="phone"
-          errorMessage={errors.phone?.message}
-          register={register}
-
-            />
+          <NumberInput
+            label="Phone number"
+            labelStyle="input-label"
+            name="phone"
+            value={defaultPhone}
+            type="number"
+            phoneInputStyles={{
+              height: "48px",
+              marginTop: "8px",
+              fontSize: "14px",
+            }}
+            errorMessage={errors.phone?.message}
+            register={register}
+            onChange={handleNumberChange}
+          />
 
           <InputWithLabel
             label="Email Address"
+            labelStyle="input-label"
             type="email"
             name="email"
+            inputClass="input-class"
             register={register}
             errorMessage={errors.email?.message}
           />
         </DetailedSection>
-        <DetailedSection>
-          <InputWithLabel
-            containerStyle={{ margin: 0 }}
-            labelStyle={"Label"}
-            type="text"
-            label="Share Percentage"
-            
-           
-            // register={register}
-            errorMessage={errors.share_percentage?.message}
-          />
-
-          <DropDown
-            containerStyle={{ margin: 0 }}
-            labelStyle={"Label"}
-            label="Share Type"
-            options= {shareTypeOptions}
-            register={register}
-            onChange={handleShareTypeChange}
-            errorMessage={errors.share_type?.message}
-          />
-        </DetailedSection>
-      </ContentWrapper>
-      <CheckWrapper>
-
-      <DetailedSection>
-
-        
-      <Checkbox
-          text1="Click here if "
-          styledSpan1="shareholder "
-          text2="is also a "
-          styledSpan2="company"
-        />
-
-      <Checkbox
-          text1="Click here if "
-          styledSpan1="shareholder "
-          text2="is also a "
-          styledSpan2="Director "
-        />
-         </DetailedSection>
-        
-         <button type="submit">save</button>
-        </CheckWrapper>
-        
-        </CheckInputWrapper>
-        
-
-    {containerList.length-1===index &&
-        (<AddMoreWrapper onClick={handleAddContainer}>
-          <AddWrapper>
-          <AddIcon/>
-          </AddWrapper> 
-        <ButtonLink>
-        Add More<p> {info}</p> 
-        </ButtonLink> 
-        </AddMoreWrapper>)}
-        </Form>
-        </AllInputContainer>
-        ))}
-
-        
-     
-    </Wrapper>
+        {shareholder && (
+          <DetailedSection>
+            <InputWithLabel
+              name="share_percentage"
+              label="Share Percentage"
+              labelStyle="input-label"
+              type="number"
+              inputClass="input-class"
+              register={register}
+              errorMessage={errors.share_percentage?.message}
+            />
+            <DropDown
+              containerStyle={{ margin: 0, marginBottom: "24px" }}
+              label="Share Type"
+              labelStyle="input-label"
+              options={shareTypeOptions}
+              register={register}
+              onChange={handleShareTypeChange}
+              errorMessage={errors.share_type?.message}
+              cardAction={cardAction}
+              defaultValue={selectedToEdit?.shareholderOwnershipType}
+              launch
+            />
+          </DetailedSection>
+        )}
+        {director && (
+          <DetailedSection>
+            <InputWithLabel
+              name="director_role"
+              label="Director's Role"
+              labelStyle="input-label"
+              type="text"
+              inputClass="input-class"
+              register={register}
+              errorMessage={errors.director_role?.message}
+            />
+          </DetailedSection>
+        )}
+        {beneficiary && (
+          <DetailedSection>
+            <InputWithLabel
+              name="stake"
+              label="Stake Percentage"
+              labelStyle="input-label"
+              type="number"
+              inputClass="input-class"
+              register={register}
+              errorMessage={errors.stake?.message}
+            />
+            <InputWithLabel
+              name="occupation"
+              label="Occupation"
+              labelStyle="input-label"
+              type="text"
+              inputClass="input-class"
+              register={register}
+              errorMessage={errors.occupation?.message}
+            />
+          </DetailedSection>
+        )}
+        {shareholder && (
+          <CheckboxWrapper>
+            <div>
+              <input
+                type="checkbox"
+                id="member-type1"
+                name="isCompany"
+                {...register("isCompany")}
+              />
+              <label htmlFor="member-type1">
+                Click here if {title} is a <span>Company</span>
+              </label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="member-type2"
+                name="isDirector"
+                checked={isDirector}
+                {...register("isDirector")}
+              />
+              <label
+                htmlFor="member-type2"
+                onClick={() => setIsDirector(!isDirector)}
+              >
+                Click here if {title} is a <span>Director</span>
+              </label>
+            </div>
+          </CheckboxWrapper>
+        )}
+      </CheckInputWrapper>
+      <CheckoutController
+        backAction={handleClose}
+        forwardAction={() => {}}
+        backText={"Cancel"}
+        containerStyle={buttonContainerStyles}
+        backBottonStyle={buttonStyles}
+        forwardButtonStyle={buttonStyles}
+        forwardSubmit
+        forwardText={
+          addIsLoading || isLoading || isSuccess ? (
+            <ThreeDots stroke="#98ff98" fill="white" width={50} />
+          ) : (
+            buttonText
+          )
+        }
+        forwardDisable={addIsLoading || isLoading || isSuccess}
+      />
+    </Form>
   );
 };
-

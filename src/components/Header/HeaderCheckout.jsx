@@ -17,7 +17,7 @@ const HeaderCheckout = () => {
     <Wrapper headerShadow={headerShadow}>
       <BackContainer>
         <FiArrowLeft color="#151717" size={24} />
-        <Text> Back to home</Text>
+        <Text>Save & Exit</Text>
       </BackContainer>
 
       <ProgressWrapper>
@@ -36,7 +36,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: clamp(90px, 15vw, 164px);
-  gap: 40px;
+  gap: 12%;
   position: sticky;
   z-index: 4;
   top: 0;

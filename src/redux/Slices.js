@@ -49,6 +49,7 @@ const LayoutInfo = createSlice({
   initialState: {
     sidebarWidth: "",
     checkoutProgress: 0,
+    rewardsPageHeader: true,
   },
   reducers: {
     setSidebarWidth: (state, action) => {
@@ -59,11 +60,15 @@ const LayoutInfo = createSlice({
       let progress = (current / total) * 100;
       state.checkoutProgress = progress;
     },
+    setRewardsPageHeader: (state, action) => {
+      state.rewardsPageHeader = action.payload;
+    },
   },
 });
 
 export const LayoutInfoReducer = LayoutInfo.reducer;
-export const { setSidebarWidth, setCheckoutProgress } = LayoutInfo.actions;
+export const { setSidebarWidth, setCheckoutProgress, setRewardsPageHeader } =
+  LayoutInfo.actions;
 
 // This slice will hold all registered businesses and current registration information
 const RegisteredBusinessesInfo = createSlice({
@@ -107,27 +112,108 @@ const launchApplicationInfo = createSlice({
   initialState: {
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
-    launchCode: "",
-    countryISO: "",
+    businessNames: [],
     selectedCountry: "",
+    countryISO: "",
+    selectedObjectives: [],
     selectedEntity: {},
+    launchResponse: {},
+    generatedLaunchCode: "",
+    generatedMemberCode: "",
+    businessAddress: {},
+    shareHoldersLaunchInfo: [],
+    directorsLaunchInfo: [],
+    beneficiariesLaunchInfo: [],
+    editShareholderInfo: [],
   },
   reducers: {
-    launchCode: (state, action) => {
-      state.launchCode = action.payload;
-    },
-    setCountryISO: (state, action) => {
-      state.countryISO = action.payload;
+    setSelectedBusinessNames: (state, action) => {
+      state.businessNames = action.payload;
     },
     setCountry: (state, action) => {
       state.selectedCountry = action.payload;
     },
-    selectedEntity: (state, action) => {
+    setCountryISO: (state, action) => {
+      state.countryISO = action.payload;
+    },
+    setBusinessObjectives: (state, action) => {
+      state.selectedObjectives = action.payload;
+    },
+    setSelectedEntity: (state, action) => {
       state.selectedEntity = action.payload;
+    },
+    setLaunchResponse: (state, action) => {
+      state.launchResponse = action.payload;
+    },
+    setGeneratedLaunchCode: (state, action) => {
+      state.generatedLaunchCode = action.payload;
+    },
+
+    setGeneratedMemberCode: (state, action) => {
+      state.generatedMemberCode = action.payload;
+    },
+    setBusinessAddress: (state, action) => {
+      state.businessAddress = action.payload;
+    },
+    setShareHoldersLaunchInfo: (state, action) => {
+      if (action.payload.type === "add") {
+        state.shareHoldersLaunchInfo.push(action.payload.info);
+      } else {
+        state.shareHoldersLaunchInfo = action.payload.info;
+      }
+    },
+    setDirectorsLaunchInfo: (state, action) => {
+      if (action.payload.type === "add") {
+        state.directorsLaunchInfo.push(action.payload.info);
+      } else {
+        state.directorsLaunchInfo = action.payload.info;
+      }
+    },
+    setBeneficiariesLaunchInfo: (state, action) => {
+      if (action.payload.type === "add") {
+        state.beneficiariesLaunchInfo.push(action.payload.info);
+      } else {
+        state.beneficiariesLaunchInfo = action.payload.info;
+      }
     },
   },
 });
 
 export const LaunchReducer = launchApplicationInfo.reducer;
-export const { launchCode, setCountryISO, setCountry, selectedEntity } =
-  launchApplicationInfo.actions;
+export const {
+  setSelectedBusinessNames,
+  setCountry,
+  setCountryISO,
+  setBusinessObjectives,
+  setSelectedEntity,
+  setLaunchResponse,
+  setGeneratedLaunchCode,
+  setGeneratedMemberCode,
+  setBusinessAddress,
+  setShareHoldersLaunchInfo,
+  setDirectorsLaunchInfo,
+  setBeneficiariesLaunchInfo,
+} = launchApplicationInfo.actions;
+
+const RewardInfo = createSlice({
+  //creating reward slice (object) then export reducers of the slice
+  name: "Reward",
+  initialState: {
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMjI5NTZhODlmMGFkOTRiNjEwMmJlNCIsImlhdCI6MTY2MzIxMDg1OCwiZXhwIjoyNTI3MjEwODU4fQ.DWx81pLGpaVYdC_fD_vfr8spAScz3mP-GsXldfEGMoA",
+    allRewards: [],
+    myRewards: [],
+  },
+  reducers: {
+    setAllAvailableRewards: (state, action) => {
+      state.allRewards = action.payload;
+    },
+    setMyClaimedRewards: (state, action) => {
+      state.myRewards = action.payload;
+    },
+  },
+});
+
+export const RewardReducer = RewardInfo.reducer;
+export const { setAllAvailableRewards, setMyClaimedRewards } =
+  RewardInfo.actions;

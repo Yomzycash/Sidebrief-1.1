@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export const SidebarWrapper = styled(motion.div)`
@@ -21,11 +21,12 @@ export const ListWrapper = styled.div`
   z-index: 15;
 `;
 
-export const SidebarContentItem = styled(Link)`
+export const SidebarContentItem = styled(NavLink)`
   display: flex;
   padding: 12px 16px;
   margin-bottom: 16px;
   border-radius: 8px;
+  border: none;
   text-decoration: none;
   background: ${(props) => props.background};
   z-index: 15;

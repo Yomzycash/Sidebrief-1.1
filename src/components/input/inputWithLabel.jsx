@@ -17,7 +17,7 @@ const InputWithLabel = ({
   containerStyle,
   edit,
   error,
-  errorMessage = false,
+  errorMessage,
   rightText,
   leftIcon,
   container,
@@ -29,6 +29,8 @@ const InputWithLabel = ({
   password,
   register,
   bottomText,
+  topStyles,
+  inputClass,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -40,8 +42,8 @@ const InputWithLabel = ({
       inputRef.current.focus();
     }
   }, [active]);
-  const handleBorder = () => {
-    setActive(!active);
+  const handleBorder = (bool) => {
+    setActive(bool);
   };
   return (
     <Wrapper
@@ -65,8 +67,10 @@ const InputWithLabel = ({
             ? "1px solid #00A2D4"
             : "1px solid #ececec"
         }
+        className={inputClass}
         ref={inputRef}
-        onFocus={handleBorder}
+        onFocus={() => handleBorder(true)}
+        onBlur={() => handleBorder(false)}
       >
         {leftIcon && <Iconwrapper>{leftIcon}</Iconwrapper>}
         {register ? (

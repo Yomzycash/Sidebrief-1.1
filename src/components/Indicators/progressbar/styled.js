@@ -7,21 +7,20 @@ export const ProgressContainer = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   flex: 1;
-  max-width: 355px;
+  max-width: 737px;
   height: 45px;
   background-color: #ffffff;
 `;
 export const ProgressLine = styled.div`
   position: absolute;
   top: 11px;
-  left: 13%;
+  left: 7%;
   background-color: #d7d7d7;
   width: 100%;
-  max-width: 80%;
-  height: 1.5px;
+  max-width: 89%;
+  height: 2px;
   z-index: 10;
   @media screen and (max-width: 300px) {
-    left: 19%;
     max-width: 70%;
   }
 `;

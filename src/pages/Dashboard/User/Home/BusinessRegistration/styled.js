@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Registration = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;

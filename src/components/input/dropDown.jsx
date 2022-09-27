@@ -6,7 +6,6 @@ const DropDown = ({
   label,
   labelStyle,
   containerStyle,
-  edit,
   error,
   errorMessage,
   container,
@@ -16,7 +15,11 @@ const DropDown = ({
   type,
   options,
   name,
+  value,
+  cardAction,
+  defaultValue,
   register,
+  launch,
   ...rest
 }) => {
   // const handleChange = (e) => {
@@ -34,14 +37,15 @@ const DropDown = ({
     container: (base, state) => ({
       ...base,
       width: "100%",
-      marginTop: 20,
+      marginTop: launch ? 8 : 20,
     }),
     control: (base, state) => ({
       ...base,
       boxShadow: "none",
       borderRadius: 10,
-      height: 55,
-      paddingLeft: 20,
+      height: launch ? 48 : 55,
+      paddingInline: 20,
+      fontSize: launch && 14,
       border: `1px solid ${
         state.isFocused ? "#00A2D4" : errorMessage ? "red" : "#ECECEC"
       }`,
@@ -49,17 +53,20 @@ const DropDown = ({
     }),
     placeholder: (base, state) => ({
       ...base,
+      fontSize: launch && 14,
     }),
     input: (provided, state) => ({
       ...provided,
       height: 46,
       borderRadius: 15,
-      marginLeft: 20,
+      margin: 0,
+      padding: 0,
       outlineColor: "#00A2D4",
     }),
     option: (provided, state) => ({
       ...provided,
       padding: 20,
+      fontSize: launch && 14,
     }),
   };
   return (
@@ -77,7 +84,15 @@ const DropDown = ({
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
 
-      <Select onChange={onChange} options={options} styles={selectStyle} />
+      <Select
+        onChange={onChange}
+        options={options}
+        styles={selectStyle}
+        defaultValue={{
+          value: cardAction === "edit" && defaultValue && defaultValue,
+          label: cardAction === "edit" && defaultValue && defaultValue,
+        }}
+      />
     </Wrapper>
   );
 };

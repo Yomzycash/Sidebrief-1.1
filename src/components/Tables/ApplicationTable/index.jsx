@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
 	Container,
 	Heading,
@@ -28,7 +28,7 @@ export const ApplicationTable = ({ onClickViewAll, data }) => {
 	return (
 		<Container>
 			<Heading>
-				<Title>All Applications</Title>
+				<Title>Applications</Title>
 				<ViewAllButton onClick={onClickViewAll}>
 					<TextWithArrow blue>View All</TextWithArrow>
 				</ViewAllButton>
@@ -51,7 +51,7 @@ export const ApplicationTable = ({ onClickViewAll, data }) => {
 					))}
 				</Head>
 				<tbody>
-					{table.getRowModel().rows.map((row, index) => (
+					{table.getRowModel().rows.map((row) => (
 						<Row key={row.id}>
 							{row.getVisibleCells().map((cell) => (
 								<RowData key={cell.id}>

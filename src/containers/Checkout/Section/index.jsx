@@ -1,25 +1,51 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Heading, ContentWrapper, SectionContainer } from "./styles";
+import {
+  Container,
+  Heading,
+  ContentWrapper,
+  SectionContainer,
+  CheckBox,
+} from "./styles";
 
 export const CheckoutSection = ({
   title,
-  subtitle,
   children,
   review,
   sectionTitle,
   linkTitle,
+  HeaderParagraph,
+  checkbox,
+  checkBoxAction,
   to,
+  disableCheckbox,
 }) => {
+  const handleCheckbox = (e) => {
+    checkBoxAction(e.target.checked);
+  };
+
   return (
     <Container>
-      <Heading>
-        {title}
-        {subtitle ? ":" : null} <span>{subtitle}</span>
-      </Heading>
+      <Heading>{title}</Heading>
+      {HeaderParagraph && <p>{HeaderParagraph}</p>}
+      {checkbox && (
+        <CheckBox disabled={disableCheckbox}>
+          <input
+            type="checkbox"
+            id="checkbox"
+            onClick={handleCheckbox}
+            disabled={disableCheckbox}
+          />
+          <label htmlFor="checkbox">
+            Click here to use Sidebrief's <span>{checkbox}</span> until you
+            sustain your own
+          </label>
+        </CheckBox>
+      )}
       {review && (
         <SectionContainer>
           <p>{sectionTitle}</p>
+
           <Link
             to={to}
             style={{

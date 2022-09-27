@@ -24,25 +24,166 @@ export const launchApi = createApi({
     }),
 
     //get all entities
-
     getAllEntities: builder.query({
       query: (ISO) => `/entities/country/${ISO}`,
-      headers: {
-        Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg`,
-      },
     }),
 
     //create launch with registration country and registration type
-
     getStarted: builder.mutation({
       query: (values) => ({
-        url: "/launch/start",
+        url: "/v1/launch/start",
         method: "POST",
         body: values,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          Authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg`,
-        },
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add business names
+    addBusinessNames: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/names/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add business objectives
+    addBusinessObjectives: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/objects/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add business address
+    addBusinessAddress: builder.mutation({
+      query: (values) => ({
+        url: "v1/launch/address/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Members
+    addMembers: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Shareholders
+    addShareHolder: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/shareholders/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Directors
+    addDirector: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/directors/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add Business Beneficiaries
+    addBeneficiary: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/beneficialowners/add",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Delete business member
+    deleteMember: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Delete business shareholder
+    deleteShareholder: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/shareholders/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Delete business director
+    deleteDirector: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Delete a beneficiary
+    deleteBeneficiary: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/beneficialowners/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Update business member
+    updateMember: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/update",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Update business shareholder
+    updateShareholder: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/shareholders/update",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Update business director
+    updateDirector: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/directors/update",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Update beneficiary owner
+    updateBeneficiary: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/beneficialowners/update",
+        method: "POST",
+        body: values,
       }),
       invalidatesTags: ["Application"],
     }),
@@ -53,4 +194,19 @@ export const {
   useGetAllCountriesQuery,
   useGetAllEntitiesQuery,
   useGetStartedMutation,
+  useAddBusinessNamesMutation,
+  useAddBusinessObjectivesMutation,
+  useAddBusinessAddressMutation,
+  useAddMembersMutation,
+  useAddShareHolderMutation,
+  useAddDirectorMutation,
+  useAddBeneficiaryMutation,
+  useDeleteMemberMutation,
+  useDeleteShareholderMutation,
+  useDeleteDirectorMutation,
+  useDeleteBeneficiaryMutation,
+  useUpdateMemberMutation,
+  useUpdateShareholderMutation,
+  useUpdateDirectorMutation,
+  useUpdateBeneficiaryMutation,
 } = launchApi;
