@@ -19,6 +19,7 @@ const NumberInput = ({
   type,
   options,
   name,
+  phoneInputStyles,
   register,
   ...rest
 }) => {
@@ -49,19 +50,21 @@ const NumberInput = ({
         className={errorMessage ? "error" : active ? "active" : "nonActive"}
         ref={inputRef}
         onFocus={handleBorder}
+        style={phoneInputStyles}
       >
         <PhoneInput
           country={"ng"}
-          value=""
+          value={value}
           onChange={onChange}
           containerStyle={{
             height: "100%",
             borderRadius: "20px",
           }}
           inputStyle={{
-            paddingLeft: "80px",
+            paddingLeft: "65px",
             width: "100%",
             height: "95%",
+            fontSize: phoneInputStyles?.fontSize,
           }}
         />
       </div>

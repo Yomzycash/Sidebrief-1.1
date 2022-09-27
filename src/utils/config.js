@@ -65,16 +65,67 @@ export const resellerRegistrationSchema = yup.object().shape({
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
-export const checkInfoSchema = yup.object().shape({
+// export const checkInfoSchema = yup.object().shape({
+//   full_name: yup.string().required("Full name is a required field"),
+//   phone: yup.string().required("Phone number is a required field"),
+//   email: yup.string().email("Enter a valid email address").required(),
+//   share_percentage: yup
+//     .number("Must be a number")
+//     .min(0.00001)
+//     .max(100)
+//     .required("Share percentage is from 1% to 100%"),
+//   share_type: yup.string().required("Share type is a required field"),
+//   director_role: yup.string().required("Director's role is required"),
+//   stake: yup
+//     .number()
+//     .min(0.00001)
+//     .max(100)
+//     .required("Stake percentage is required"),
+//   occupation: yup.string().required("Occupation is required"),
+// });
+
+export const checkInfoShareholderSchema = yup.object().shape({
   full_name: yup.string().required("Full name is a required field"),
   phone: yup.string().required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
   share_percentage: yup
-    .number()
+    .number("Must be a number")
     .min(0.00001)
     .max(100)
     .required("Share percentage is from 1% to 100%"),
   share_type: yup.string().required("Share type is a required field"),
+});
+
+export const checkInfoShareDirSchema = yup.object().shape({
+  full_name: yup.string().required("Full name is a required field"),
+  phone: yup.string().required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  share_percentage: yup
+    .number("Must be a number")
+    .min(0.00001)
+    .max(100)
+    .required("Share percentage is from 1% to 100%"),
+  share_type: yup.string().required("Share type is a required field"),
+  director_role: yup.string().required("Director's role is required"),
+});
+
+export const checkInfoDirectorSchema = yup.object().shape({
+  full_name: yup.string().required("Full name is a required field"),
+  phone: yup.string().required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  director_role: yup.string().required("Director's role is required"),
+});
+
+export const checkInfoBeneficiarySchema = yup.object().shape({
+  full_name: yup.string().required("Full name is a required field"),
+  phone: yup.string().required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  stake: yup
+    .number()
+    .min(0.00001)
+    .max(100)
+    .required("Stake percentage is required"),
+  occupation: yup.string().required("Occupation is required"),
 });
 
 export const sidebarLink = [

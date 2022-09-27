@@ -74,9 +74,11 @@ const BusinessInfo = () => {
     responseData?.forEach((data) => {
       countries = [...countries, data?.countryName];
     });
-    setCountriesData([...responseData]);
-    setCountries([...countries]);
-    setselectedCountry(value);
+    if (responseData) {
+      setCountriesData([...responseData]);
+      setCountries([...countries]);
+      setselectedCountry(value);
+    }
   };
 
   const handleObjectives = (valuesSelected) => {
@@ -100,6 +102,10 @@ const BusinessInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    console.log(navigator.onLine);
+  }, [navigator.onLine]);
 
   return (
     <Container onClick={handleSubmit}>

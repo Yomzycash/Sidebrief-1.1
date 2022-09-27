@@ -18,6 +18,7 @@ export const CheckoutSection = ({
   checkbox,
   checkBoxAction,
   to,
+  disableCheckbox,
 }) => {
   const handleCheckbox = (e) => {
     checkBoxAction(e.target.checked);
@@ -28,8 +29,13 @@ export const CheckoutSection = ({
       <Heading>{title}</Heading>
       {HeaderParagraph && <p>{HeaderParagraph}</p>}
       {checkbox && (
-        <CheckBox>
-          <input type="checkbox" id="checkbox" onClick={handleCheckbox} />
+        <CheckBox disabled={disableCheckbox}>
+          <input
+            type="checkbox"
+            id="checkbox"
+            onClick={handleCheckbox}
+            disabled={disableCheckbox}
+          />
           <label htmlFor="checkbox">
             Click here to use Sidebrief's <span>{checkbox}</span> until you
             sustain your own

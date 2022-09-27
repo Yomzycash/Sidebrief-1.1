@@ -148,7 +148,7 @@ const AppRouter = () => {
               />
               <Route path="review" element={<ReviewInformation />} />
               <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
-              <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
+              <Route path="shareholders-kyc" element={<ShareHolderKYC />} />
             </Route>
           </Route>
         </Routes>
@@ -158,16 +158,15 @@ const AppRouter = () => {
             className: "",
             style: {
               margin: "30px",
-              minWidth: "370px",
               padding: "10px",
               display: "inline-flex",
-              fontSize: "18px",
+              fontSize: "14px",
               zIndex: 999999,
             },
             duration: 4000,
             error: {
               style: {
-                background: "red",
+                background: "#ff6363",
                 color: "white",
               },
               iconTheme: {
