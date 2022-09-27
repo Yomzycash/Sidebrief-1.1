@@ -1,23 +1,10 @@
 import { Checkbox, DropDown, InputWithLabel } from "components/input";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
-  ContentWrapper,
   DetailedSection,
-  ButtonLink,
   Title,
-  TitleWrapper,
-  CheckWrapper,
   Form,
-  SaveBtn,
-  AllInputContainer,
-  Wrapper,
   CheckInputWrapper,
-  ImgWrapper,
-  AddMoreWrapper,
-  AddWrapper,
-  EditWrapper,
-  DeleteWrapper,
-  ButtonWrapper,
   CheckboxWrapper,
 } from "./style";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
@@ -73,7 +60,11 @@ export const CheckoutFormInfo = ({
 
   //  This populates the phone number when edit is clicked
   const [defaultPhone] = useState(
-    cardAction === "edit" ? selectedToEdit.memberPhone : ""
+    cardAction === "edit"
+      ? beneficiary
+        ? selectedToEdit.beneficialOwnerPhone
+        : selectedToEdit.memberPhone
+      : ""
   );
 
   // Endpoints hooks from launch slice
@@ -81,8 +72,27 @@ export const CheckoutFormInfo = ({
   const [addDirector] = useAddDirectorMutation();
   const [addbeneficiary] = useAddBeneficiaryMutation();
 
+  // Checkbox refs
+  const checkboxRef1 = useRef(null);
+  const checkboxRef2 = useRef(null);
+
+  // Hide director's field on mount
+  useEffect(() => {
+    if (isDirector) {
+      setIsDirector(false);
+    }
+  }, []);
+
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
+    if (beneficiary) {
+      if (cardAction === "add") {
+        handleAdd(formData, generatedLaunchCode);
+      } else if (cardAction === "edit") {
+        handleUpdate(formData, selectedToEdit);
+      }
+      return;
+    }
     if (cardAction === "add") {
       const requiredMemberData = {
         launchCode: generatedLaunchCode,
@@ -100,37 +110,9 @@ export const CheckoutFormInfo = ({
         const allMembers = Object.entries(
           addMemberResponse.data.businessMembers
         );
-
         // Get the information of the just added member
         const memberInfo = allMembers[allMembers.length - 1][1];
-
         handleAdd(formData, generatedLaunchCode, memberInfo);
-        if (shareholder) {
-        }
-        if (director) {
-          const requiredDirectorData = {
-            launchCode: generatedLaunchCode,
-            memberCode: memberInfo.memberCode,
-            directorRole: "",
-          };
-
-          let addDirectorResponse = await addDirector(requiredDirectorData);
-          console.log(addDirectorResponse);
-        }
-        if (beneficiary) {
-          const requiredBeneficiaryData = {
-            beneficialOwnerName: "Morire Sotunde",
-            beneficialOwnerEmail: "yusuf@sidebrief.com",
-            beneficialOwnerPhone: "07066539444",
-            beneficialOwnerOccupation: "Lawyer",
-            beneficialOwnershipStake: "10%",
-          };
-
-          let addBeneficiaryResponse = await addbeneficiary(
-            requiredBeneficiaryData
-          );
-          console.log(addBeneficiaryResponse);
-        }
       } else {
         if (addMemberResponse.error.status === "FETCH_ERROR") {
           toast.error("Please check your internet connection");
@@ -155,6 +137,13 @@ export const CheckoutFormInfo = ({
       handleShareTypeChange({
         share_type: selectedToEdit?.shareholderOwnershipType,
       });
+      if (beneficiary) {
+        setValue("full_name", selectedToEdit?.beneficialOwnerName);
+        setValue("email", selectedToEdit?.beneficialOwnerEmail);
+        setValue("occupation", selectedToEdit?.beneficialOwnerOccupation);
+        setValue("stake", selectedToEdit?.beneficialOwnershipStake);
+        handleNumberChange(selectedToEdit?.beneficialOwnerPhone);
+      }
     }
   }, []);
 
@@ -252,20 +241,19 @@ export const CheckoutFormInfo = ({
             />
           </DetailedSection>
         )}
-        {director ||
-          (isDirector && (
-            <DetailedSection>
-              <InputWithLabel
-                name="director_role"
-                label="Director's Role"
-                labelStyle="input-label"
-                type="text"
-                inputClass="input-class"
-                register={register}
-                errorMessage={errors.director_role?.message}
-              />
-            </DetailedSection>
-          ))}
+        {director && (
+          <DetailedSection>
+            <InputWithLabel
+              name="director_role"
+              label="Director's Role"
+              labelStyle="input-label"
+              type="text"
+              inputClass="input-class"
+              register={register}
+              errorMessage={errors.director_role?.message}
+            />
+          </DetailedSection>
+        )}
         {beneficiary && (
           <DetailedSection>
             <InputWithLabel
@@ -288,33 +276,37 @@ export const CheckoutFormInfo = ({
             />
           </DetailedSection>
         )}
-        <CheckboxWrapper>
-          <div>
-            <input
-              type="checkbox"
-              id="member-type1"
-              name="isCompany"
-              // regiser={register}
-            />
-            <label htmlFor="member-type1">
-              Click here if {title} is a <span>Company</span>
-            </label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="member-type2"
-              name="isDirector"
-              // regiser={register}
-            />
-            <label
-              htmlFor="member-type2"
-              onClick={() => setIsDirector(!isDirector)}
-            >
-              Click here if {title} is a <span>Director</span>
-            </label>
-          </div>
-        </CheckboxWrapper>
+        {shareholder && (
+          <CheckboxWrapper>
+            <div>
+              <input
+                type="checkbox"
+                id="member-type1"
+                name="isCompany"
+                ref={checkboxRef1}
+                // regiser={register}
+              />
+              <label htmlFor="member-type1">
+                Click here if {title} is a <span>Company</span>
+              </label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="member-type2"
+                name="isDirector"
+                ref={checkboxRef2}
+                // regiser={register}
+              />
+              <label
+                htmlFor="member-type2"
+                onClick={() => setIsDirector(!checkboxRef2.current.checked)}
+              >
+                Click here if {title} is a <span>Director</span>
+              </label>
+            </div>
+          </CheckboxWrapper>
+        )}
       </CheckInputWrapper>
       <CheckoutController
         backAction={handleClose}

@@ -148,7 +148,7 @@ const AppRouter = () => {
               />
               <Route path="review" element={<ReviewInformation />} />
               <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
-              <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
+              <Route path="shareholders-kyc" element={<ShareHolderKYC />} />
             </Route>
           </Route>
         </Routes>

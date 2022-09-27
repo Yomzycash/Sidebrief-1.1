@@ -46,6 +46,7 @@ export const EntityCardsWrapper = styled.div`
   justify-content: stretch;
   width: 100%;
   gap: 24px;
+  margin-top: 24px;
 `;
 
 export const CountryItem = styled.span`

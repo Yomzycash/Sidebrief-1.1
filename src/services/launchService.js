@@ -121,7 +121,7 @@ export const launchApi = createApi({
     // Delete business shareholder
     deleteShareholder: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/removeshareholders",
+        url: "/v1/launch/shareholders/remove",
         method: "POST",
         body: values,
       }),
@@ -131,7 +131,7 @@ export const launchApi = createApi({
     // Delete business director
     deleteDirector: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/removedirectors",
+        url: "/v1/launch/members/remove",
         method: "POST",
         body: values,
       }),

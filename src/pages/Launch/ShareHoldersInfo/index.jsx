@@ -8,12 +8,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   setCheckoutProgress,
-  setEditShareholderInfo,
+  setDirectorsLaunchInfo,
   setShareHoldersLaunchInfo,
-  updateLaunchShareHolder,
 } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container, Header } from "../styled";
+import { AddMore, Body, Bottom, Container } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
@@ -22,7 +21,9 @@ import {
   checkInfoShareholderSchema,
 } from "utils/config";
 import {
+  useAddDirectorMutation,
   useAddShareHolderMutation,
+  useDeleteMemberMutation,
   useDeleteShareholderMutation,
   useUpdateMemberMutation,
   useUpdateShareholderMutation,
@@ -35,16 +36,21 @@ const ShareHoldersInfo = () => {
   const [cardAction, setCardAction] = useState();
   const [isDirector, setIsDirector] = useState(false);
   const [selectedToEdit, setSelectedToEdit] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState({});
+  const [useSidebriefShareholders, setUseSidebriefShareholders] =
+    useState(false);
 
   // Endpont hook for shareholder add
-  const [addShareHolder, { isLoading }] = useAddShareHolderMutation();
-  const [deleteShareholder] = useDeleteShareholderMutation();
-  const [updateShareholder] = useUpdateShareholderMutation();
-  const [updateMember] = useUpdateMemberMutation();
+  const [addShareHolder, addState] = useAddShareHolderMutation();
+  const [deleteShareholder, deleteState] = useDeleteShareholderMutation();
+  const [updateShareholder, updateState] = useUpdateShareholderMutation();
+  const [updateMember, memberUpdateState] = useUpdateMemberMutation();
+  const [deleteMember] = useDeleteMemberMutation();
+  const [addDirector, dirAddState] = useAddDirectorMutation();
 
   // This gets the shareholders information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { shareHoldersLaunchInfo } = LaunchApplicationInfo;
+  const { shareHoldersLaunchInfo, directorsLaunchInfo } = LaunchApplicationInfo;
 
   const handleNext = () => {
     navigate("/launch/directors-info");
@@ -57,7 +63,7 @@ const ShareHoldersInfo = () => {
   };
 
   const handleCheckbox = (checked) => {
-    console.log(checked);
+    setUseSidebriefShareholders(checked);
   };
 
   const handleAddMore = () => {
@@ -72,13 +78,11 @@ const ShareHoldersInfo = () => {
     setCardAction("edit");
     setOpenModal(true);
     setSelectedToEdit(shareholder);
-    // const clickedShareholder = shareHoldersLaunchInfo[index];
-    // store.dispatch(setEditShareholderInfo(clickedShareholder));
-    // console.log(clickedShareholder);
   };
 
   // This deletes a shareholder's informataion
   const handleDelete = async (shareholder) => {
+    setSelectedToDelete(shareholder);
     const requiredDeleteData = {
       launchCode: shareholder.launchCode,
       shareholdingCode: shareholder.shareholdingCode,
@@ -87,12 +91,64 @@ const ShareHoldersInfo = () => {
         shareholder.shareholderOwnershipPercentage,
       shareholderOwnershipType: shareholder.shareholderOwnershipType,
     };
+    // The delete response gotten from the backend
     let deleteResponse = await deleteShareholder(requiredDeleteData);
     console.log(deleteResponse);
+    // This fires off, if delete response is success
     if (deleteResponse.data) {
-      store.dispatch(setShareHoldersLaunchInfo(deleteResponse.data));
+      // This filters and set the filtered shareholders info to the store
+      let filteredShareholders = shareHoldersLaunchInfo.filter(
+        (shareholder) =>
+          shareholder.shareholdingCode !== requiredDeleteData.shareholdingCode
+      );
+      store.dispatch(setShareHoldersLaunchInfo({ info: filteredShareholders }));
+      // This checks if the deleted shareholder is a director
+      let memberCheck = directorsLaunchInfo.filter(
+        (director) => director?.memberCode === requiredDeleteData?.memberCode
+      );
+      // if memberCheck length is 0 (i.e the shareholder is not a director), member delete endpoint is called.
+      if (memberCheck.length === 0) {
+        let requiredMemberDeleteData = {
+          launchCode: shareholder.launchCode,
+          memberCode: shareholder.memberCode,
+        };
+        let memberDeleteResponse = await deleteMember(requiredMemberDeleteData);
+        console.log(memberDeleteResponse);
+      }
     } else {
-      toast.error(deleteResponse.error.status);
+      if (deleteResponse.error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(deleteResponse.error.data.message);
+      }
+    }
+  };
+
+  // This adds a new director
+  const handleDirectorAdd = async (formData, launchCode, memberInfo) => {
+    const requiredDirectorData = {
+      launchCode: launchCode,
+      memberCode: memberInfo.memberCode,
+      directorRole: formData.director_role,
+    };
+
+    let addDirectorResponse = await addDirector(requiredDirectorData);
+    if (addDirectorResponse.data) {
+      // Get the information of all added directors
+      const allDirectors = Object.entries(
+        addDirectorResponse.data.businessDirectors
+      );
+      // Get the information of the just added director
+      const directorInfo = allDirectors[allDirectors.length - 1][1];
+      // Merge the member information and the director information of the just added director
+      let directorAllInfo = { ...memberInfo, ...directorInfo };
+      // Set the combined information to store
+      store.dispatch(
+        setDirectorsLaunchInfo({ info: directorAllInfo, type: "add" })
+      );
+      setOpenModal(false);
+    } else {
+      toast.error(addDirectorResponse.error.data.message);
     }
   };
 
@@ -120,10 +176,14 @@ const ShareHoldersInfo = () => {
       store.dispatch(
         setShareHoldersLaunchInfo({ info: shareholderAllInfo, type: "add" })
       );
-      setOpenModal(false);
       console.log(addShareHolderResponse);
     } else {
-      console.log(addShareHolderResponse.error);
+      toast.error(addShareHolderResponse.error.data.message);
+    }
+    if (isDirector) {
+      handleDirectorAdd(formData, launchCode, memberInfo);
+    } else {
+      setOpenModal(false);
     }
   };
 
@@ -140,8 +200,7 @@ const ShareHoldersInfo = () => {
       launchCode: selectedShareholder.launchCode,
       memberCode: selectedShareholder.memberCode,
       businessMember: {
-        memberFirstName: formData.full_name.split(" ")[0],
-        memberSecondName: formData.full_name.split(" ")[1],
+        memberName: formData.full_name,
         memberEmail: formData.email,
         memberPhone: formData.phone,
       },
@@ -173,6 +232,12 @@ const ShareHoldersInfo = () => {
         setShareHoldersLaunchInfo({ info: shareholdersMembersMerged })
       );
       handleModalClose();
+    } else {
+      if (shareholdersUpdateResponse.error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(shareholdersUpdateResponse.error.data.message);
+      }
     }
   };
 
@@ -181,9 +246,10 @@ const ShareHoldersInfo = () => {
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={"Shareholder's Information"}
+          title={"Shareholders Information"}
           checkbox="Shareholders"
           checkBoxAction={handleCheckbox}
+          disableCheckbox={shareHoldersLaunchInfo?.length > 0 ? true : false}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
@@ -196,16 +262,23 @@ const ShareHoldersInfo = () => {
                 email={shareholder?.memberEmail}
                 phone={shareholder?.memberPhone}
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
-                shareholder={shareholder}
                 editAction={() => handleEdit(shareholder)}
                 deleteAction={() => handleDelete(shareholder)}
+                isLoading={
+                  selectedToDelete?.shareholdingCode ===
+                    shareholder?.shareholdingCode && deleteState?.isLoading
+                    ? true
+                    : false
+                }
               />
             ))}
-            <AddMore onClick={handleAddMore}>
-              <AddIcon />
-              <span>Add a Shareholder</span>
-            </AddMore>
-            <Dialog onClose={handleModalClose} open={openModal}>
+            {!useSidebriefShareholders && (
+              <AddMore onClick={handleAddMore}>
+                <AddIcon />
+                <span>Add a Shareholder</span>
+              </AddMore>
+            )}
+            <Dialog open={openModal}>
               <CheckoutFormInfo
                 title="Shareholder"
                 handleClose={handleModalClose}
@@ -221,7 +294,13 @@ const ShareHoldersInfo = () => {
                 setIsDirector={setIsDirector}
                 shareholder
                 director={isDirector ? true : false}
-                addIsLoading={isLoading}
+                addIsLoading={
+                  addState.isLoading ||
+                  deleteState.isLoading ||
+                  updateState.isLoading ||
+                  memberUpdateState.isLoading ||
+                  dirAddState.isLoading
+                }
                 selectedToEdit={selectedToEdit}
               />
             </Dialog>
@@ -235,14 +314,6 @@ const ShareHoldersInfo = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
-        {/* {Array.from(Array(shareHolders), (_, index) => (
-          <CheckoutFormInfo
-            key={index}
-            title="Shareholder's Information"
-            number={index + 1}
-            numbers={shareHolders ? shareHolders : index + 1}
-          />
-        ))} */}
       </Body>
     </Container>
   );

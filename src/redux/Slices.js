@@ -156,29 +156,25 @@ const launchApplicationInfo = createSlice({
       state.businessAddress = action.payload;
     },
     setShareHoldersLaunchInfo: (state, action) => {
-      if (action.payload.type) {
+      if (action.payload.type === "add") {
         state.shareHoldersLaunchInfo.push(action.payload.info);
       } else {
         state.shareHoldersLaunchInfo = action.payload.info;
       }
     },
     setDirectorsLaunchInfo: (state, action) => {
-      state.directorsLaunchInfo.push(action.payload);
+      if (action.payload.type === "add") {
+        state.directorsLaunchInfo.push(action.payload.info);
+      } else {
+        state.directorsLaunchInfo = action.payload.info;
+      }
     },
     setBeneficiariesLaunchInfo: (state, action) => {
-      state.beneficiariesLaunchInfo.push(action.payload);
-    },
-    updateLaunchShareHolder: (state, action) => {
-      state.shareHoldersLaunchInfo = action.payload;
-    },
-    updateLaunchDirectors: (state, action) => {
-      state.directorsLaunchInfo = action.payload;
-    },
-    updateLaunchBeneficiaries: (state, action) => {
-      state.beneficiariesLaunchInfo = action.payload;
-    },
-    setEditShareholderInfo: (state, action) => {
-      state.editShareholderInfo = action.payload;
+      if (action.payload.type === "add") {
+        state.beneficiariesLaunchInfo.push(action.payload.info);
+      } else {
+        state.beneficiariesLaunchInfo = action.payload.info;
+      }
     },
   },
 });
@@ -197,10 +193,6 @@ export const {
   setShareHoldersLaunchInfo,
   setDirectorsLaunchInfo,
   setBeneficiariesLaunchInfo,
-  updateLaunchShareHolder,
-  updateLaunchDirectors,
-  updateLaunchBeneficiaries,
-  setEditShareholderInfo,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({
