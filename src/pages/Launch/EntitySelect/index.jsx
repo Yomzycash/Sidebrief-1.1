@@ -51,7 +51,7 @@ const EntitySelect = () => {
 
   // This fires off when the next button is clicked
   const handleNext = async (selectedItem) => {
-    store.dispatch(setCheckoutProgress({ total: 10, current: 2 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
     store.dispatch(setSelectedEntity(selectedItem));
 
     // To be sent to the backend

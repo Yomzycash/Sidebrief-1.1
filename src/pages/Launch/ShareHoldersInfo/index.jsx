@@ -27,12 +27,12 @@ const ShareHoldersInfo = () => {
 
   const handleNext = () => {
     navigate("/launch/directors-info");
-    store.dispatch(setCheckoutProgress({ total: 10, current: 5 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 6 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 10, current: 4 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 5 })); // total- total pages and current - current page
   };
 
   const handleCheckbox = (checked) => {

@@ -50,7 +50,7 @@ const BusinessInfo = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setSelectedBusinessNames(businessNames));
     store.dispatch(setBusinessObjectives(selectedObjectives));
-    store.dispatch(setCheckoutProgress({ total: 10, current: 1 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
     navigate("/launch/entity");
   };
 

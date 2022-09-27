@@ -15,6 +15,7 @@ import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 const Home = () => {
   return (
     <>
+      <PdfCards />
       {/* <RewardModal />
 			<StaffModalCards />
 			<PdfCards />

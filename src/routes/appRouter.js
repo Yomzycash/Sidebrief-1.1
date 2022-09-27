@@ -18,6 +18,7 @@ import InetellectualAssets from "pages/Dashboard/User/Home/IntellectualAssets";
 import Taxes from "pages/Dashboard/User/Home/Taxes";
 import Rewards from "pages/Dashboard/User/Rewards";
 import PaymentPage from "pages/Launch/PaymentPage";
+import DirectorKYC from "pages/Launch/DirectorsKYC";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -97,6 +98,7 @@ const AppRouter = () => {
             </Route>
             <Route path="login" element={<Outlet />}>
               <Route index element={<SignIn />} />
+              <Route path="verifyaccount" element={<EmailVerify />} />
               <Route path="forgotpassword" element={<Outlet />}>
                 <Route index element={<ForgotPassword />} />
                 <Route path="verifyotp" element={<Outlet />}>
@@ -149,6 +151,7 @@ const AppRouter = () => {
               <Route path="review" element={<ReviewInformation />} />
               <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
               <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
+              <Route path="directors-kyc" element={<DirectorKYC />} />
             </Route>
           </Route>
         </Routes>

@@ -107,6 +107,24 @@ export const launchApi = createApi({
       }),
       invalidatesTags: ["Application"],
     }),
+
+    addMemberKYC: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/addkyc",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    addBeneficialKYC: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/beneficialowners/addkyc",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
   }),
 });
 
@@ -121,4 +139,6 @@ export const {
   useAddShareHolderMutation,
   useAddDirectorMutation,
   useAddBeneficiaryMutation,
+  useAddMemberKYCMutation,
+  useAddBeneficialKYCMutation,
 } = launchApi;

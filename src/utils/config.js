@@ -7,6 +7,12 @@ import {
   HiCog,
   HiBriefcase,
 } from "react-icons/hi";
+
+import pdf from "../asset/images/pdf.png";
+import png from "../asset/images/png.png";
+import jpg from "../asset/images/jpg.png";
+import doc from "../asset/images/doc.png";
+
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 
 export const userRegistrationSchema = yup.object().shape({
@@ -77,6 +83,44 @@ export const checkInfoSchema = yup.object().shape({
   share_type: yup.string().required("Share type is a required field"),
 });
 
+export const fileFormSchema = yup.object().shape({
+  gii: yup
+    .mixed()
+    .test("file", "You need to provide a file", (file) => {
+      if (file.length > 0) {
+        return true;
+      }
+      return false;
+    })
+    .test("file", "The file is too large", (file) => {
+      return file && file.size <= 2000000;
+    }),
+
+  proof: yup
+    .mixed()
+    .test("file", "You need to provide a file", (file) => {
+      if (file.length > 0) {
+        return true;
+      }
+      return false;
+    })
+    .test("file", "The file is too large", (file) => {
+      return file && file.size <= 2000000;
+    }),
+
+  passport: yup
+    .mixed()
+    .test("file", "You need to provide a file", (file) => {
+      if (file.length > 0) {
+        return true;
+      }
+      return false;
+    })
+    .test("file", "The file is too large", (file) => {
+      return file && file.size <= 2000000;
+    }),
+});
+
 export const sidebarLink = [
   {
     id: 1,
@@ -88,19 +132,19 @@ export const sidebarLink = [
     id: 2,
     title: "Application",
     icon: HiDocumentText,
-    path: "/dashboard",
+    path: "/",
   },
   {
     id: 3,
     title: "Business",
     icon: HiBriefcase,
-    path: "/dashboard",
+    path: "/",
   },
   {
     id: 4,
     title: "Bank Accounts",
     icon: HiOutlineLibrary,
-    path: "/dashboard",
+    path: "/dashboard/rewards/my-rewards",
   },
   {
     id: 5,
@@ -112,13 +156,13 @@ export const sidebarLink = [
     id: 6,
     title: "Resources",
     icon: HiDocumentText,
-    path: "",
+    path: "/",
   },
   {
     id: 7,
     title: "Settings",
     icon: HiCog,
-    path: "/dashboard",
+    path: "/",
   },
 ];
 
@@ -654,5 +698,32 @@ export const allRewards = [
     body: "Get 25% off you first year of using Landha Africa",
     alt: "Lendha",
     image: SterlingLogo,
+  },
+];
+
+export const imageTypeImage = [
+  {
+    id: "1",
+    name: "pdf",
+    type: "application/pdf",
+    image: pdf,
+  },
+  {
+    id: "2",
+    name: "doc",
+    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    image: doc,
+  },
+  {
+    id: "3",
+    name: "png",
+    type: "image/png",
+    image: png,
+  },
+  {
+    id: "4",
+    name: "jpeg",
+    type: "image/jpeg",
+    image: jpg,
   },
 ];

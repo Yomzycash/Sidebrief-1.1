@@ -10,20 +10,17 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import {
-  useAddBeneficialKYCMutation,
-  useAddMemberKYCMutation,
-} from "services/launchService";
+import toast from "react-hot-toast";
+import { useAddMemberKYCMutation } from "services/launchService";
 import { useSelector } from "react-redux";
-import { addressSchema } from "../constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { fileFormSchema } from "utils/config";
 import { ContentWrapper, FileContainer, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 
-const BeneficiariesKYC = () => {
+const DirectorKYC = () => {
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
   const [fileUploadedLink, setFileUploadedLink] = useState("");
@@ -39,54 +36,40 @@ const BeneficiariesKYC = () => {
     setValue,
     reset,
   } = useForm({
-    resolver: yupResolver(addressSchema),
+    resolver: yupResolver(fileFormSchema),
   });
 
   const [addMemberKYC] = useAddMemberKYCMutation();
-
-  const [addBeneficialKYC] = useAddBeneficialKYCMutation();
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
   const generatedMemberCode = useSelector(
     (store) => store.LaunchReducer.generatedMemberCode
   );
-
-  const generatedbeneficialOwnerCode = useSelector(
-    (store) => store.LaunchReducer.generatedBeneficialOwnerCode
-  );
   const handleNext = () => {
-    navigate("/launch/review");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
+    navigate("/launch/beneficiaries-kyc");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
   };
 
   const SubmitForm = async (data) => {
     console.log(data);
 
-    const requiredMemberKYCData = {
+    const requiredAddMemberData = {
       launchCode: generatedLaunchCode,
       memberCode: generatedMemberCode,
+
       memberKYC: {
         documentType: data.country,
         documentLink: data.state,
       },
     };
 
-    const requiredBeneficialOwnerKYCData = {
-      launchCode: generatedLaunchCode,
-      beneficialOwnerCode: generatedbeneficialOwnerCode,
-      beneficialOwnerKYC: {
-        documentType: data.country,
-        documentLink: data.state,
-      },
-    };
-
-    const response = await addMemberKYC(requiredMemberKYCData);
+    const response = await addMemberKYC(requiredAddMemberData);
     console.log(response);
 
     if (response.data) {
@@ -95,11 +78,6 @@ const BeneficiariesKYC = () => {
       console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
-
-    const beneficialResult = await addBeneficialKYC(
-      requiredBeneficialOwnerKYCData
-    );
-    console.log(beneficialResult);
   };
 
   const getBase64 = (file) => {
@@ -141,7 +119,7 @@ const BeneficiariesKYC = () => {
       <HeaderCheckout />
       <Body onSubmit={handleSubmit(SubmitForm)}>
         <CheckoutSection
-          title={"Benefia KYC Documentation:"}
+          title={"Director KYC Documentation:"}
           HeaderParagraph={
             "Please attach the necessary documents for all shareholders"
           }
@@ -207,4 +185,4 @@ const BeneficiariesKYC = () => {
   );
 };
 
-export default BeneficiariesKYC;
+export default DirectorKYC;

@@ -91,12 +91,12 @@ const BusinessAddress = () => {
 
   const handleNext = () => {
     navigate("/launch/shareholders-info");
-    store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 5 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 10, current: 2 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 4 })); // total- total pages and current - current page
   };
 
   return (

@@ -10,6 +10,7 @@ const UserData = createSlice({
     userLoginInfo: {},
     partnerLoginInfo: {},
     resellerLoginInfo: {},
+    loginToken: "",
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -30,6 +31,9 @@ const UserData = createSlice({
     saveResellerLoginInfo: (state, action) => {
       state.loginIfo = action.payload;
     },
+    saveUserToken: (state, action) => {
+      state.loginToken = action.payload;
+    },
   },
 });
 export const UserDataReducer = UserData.reducer;
@@ -41,6 +45,7 @@ export const {
   saveUserLoginInfo,
   savePartnerLoginInfo,
   saveResellerLoginInfo,
+  saveUserToken,
 } = UserData.actions;
 
 // This slice will hold all glabally needed layout and similar information
@@ -124,6 +129,7 @@ const launchApplicationInfo = createSlice({
     shareHoldersLaunchInfo: [],
     directorsLaunchInfo: [],
     beneficiariesLaunchInfo: [],
+    generatedBeneficialOwnerCode: "",
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -166,6 +172,9 @@ const launchApplicationInfo = createSlice({
     updateLaunchShareHolder: (state, action) => {
       state.shareHoldersLaunchInfo = action.payload;
     },
+    setGeneratedBeneficialOwnerCode: (state, action) => {
+      state.generatedBeneficialOwnerCode = action.payload;
+    },
   },
 });
 
@@ -184,6 +193,7 @@ export const {
   setDirectorsLaunchInfo,
   setBeneficiariesLaunchInfo,
   updateLaunchShareHolder,
+  setGeneratedBeneficialOwnerCode,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({

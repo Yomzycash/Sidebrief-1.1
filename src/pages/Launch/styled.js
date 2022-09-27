@@ -54,8 +54,7 @@ export const CountryItem = styled.span`
 `;
 
 export const Page = styled.div`
-  padding-block: 32px;
-  padding-inline: 8%;
+  margin-bottom: 40px;
 `;
 
 export const Inputs = styled.div`
