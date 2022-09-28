@@ -23,6 +23,8 @@ export const Container = styled.div`
 
   transition: all 0.2s;
 
+  cursor: pointer;
+
   &:hover {
     background: #00a2d4;
   }

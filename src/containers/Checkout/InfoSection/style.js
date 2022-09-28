@@ -15,8 +15,20 @@ export const TitleWrapper = styled.div`
 
 export const Form = styled.form`
   padding: 0 40px;
+  /* padding-inline: clamp(15px, 4vw, 40px); */
   width: 100%;
   max-width: 962px;
+
+  .input-label {
+    font-size: 14px;
+  }
+  .input-class {
+    height: 48px;
+    margin-top: 8px;
+    input {
+      font-size: 14px;
+    }
+  }
 `;
 
 export const Title = styled.h3`
@@ -27,7 +39,10 @@ export const Title = styled.h3`
   font-size: clamp(15px, 1.5vw, 18px);
   font-weight: 400;
   color: #151717;
-  padding: 40px 0;
+  /* padding: 40px; */
+  padding: clamp(20px, 5%, 40px) 40px;
+  margin: 0 -40px;
+  border-bottom: 1px solid #edf1f7;
 `;
 export const ButtonLink = styled.h4`
   font-style: normal;
@@ -45,7 +60,10 @@ export const DetailedSection = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
-  checkbox {
+
+  @media screen and (max-width: 600px) {
+    flex-flow: column;
+    gap: 0;
   }
 `;
 export const CheckWrapper = styled.div`
@@ -58,7 +76,8 @@ export const CheckInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   /* margin-bottom: 32px; */
-  padding: 40px 0;
+  /* padding: 40px 0; */
+  padding: clamp(20px, 5%, 40px) 0;
 `;
 export const ImgWrapper = styled.div`
   display: flex;
@@ -103,6 +122,7 @@ export const CheckboxWrapper = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   gap: 20px;
   font-size: clamp(13px, 1.5vw, 14px);

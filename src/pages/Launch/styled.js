@@ -29,6 +29,7 @@ export const AddMore = styled.div`
   flex-flow: row nowrap;
   align-items: center;
   gap: 17px;
+  width: max-content;
   cursor: pointer;
   font-size: clamp(16px, 1.5vw, 18px);
   color: #00a2d4;
@@ -45,8 +46,8 @@ export const EntityCardsWrapper = styled.div`
   justify-content: stretch;
   width: 100%;
   gap: 24px;
-  margin-top: 36px;
-`
+  margin-top: 24px;
+`;
 
 export const CountryItem = styled.span`
   display: flex;

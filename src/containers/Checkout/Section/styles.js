@@ -35,10 +35,10 @@ export const CheckBox = styled.div`
   margin-top: 40px;
   color: #151717;
   font-size: 14px;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
   input {
     width: 20px;
-    accent-color: #00a2d4;
     color: yellow;
     border-radius: 4px;
   }
