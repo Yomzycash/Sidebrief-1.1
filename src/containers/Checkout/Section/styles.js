@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   width: 100%;
@@ -10,7 +10,7 @@ export const Container = styled.div`
     color: #151717;
     margin-top: 40px;
   }
-`;
+`
 
 export const Heading = styled.h3`
   display: flex;
@@ -27,7 +27,7 @@ export const Heading = styled.h3`
     font-weight: 400;
     color: red;
   }
-`;
+`
 
 export const CheckBox = styled.div`
   display: flex;
@@ -46,13 +46,13 @@ export const CheckBox = styled.div`
   span {
     color: #0082aa;
   }
-`;
+`
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   width: 100%;
-`;
+`
 export const SectionContainer = styled.p`
   display: flex;
   justify-content: space-between;
@@ -60,4 +60,4 @@ export const SectionContainer = styled.p`
     font-size: 14px;
     font-weight: 500px;
   }
-`;
+`
