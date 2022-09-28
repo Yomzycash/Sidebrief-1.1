@@ -1,15 +1,22 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
+export const Container = styled.div`
+  display: flex;
+  flex-flow: column;
+  background-color: #fcfcfc;
+  flex: 1;
+  min-height: 100vh;
+`
 export const SectionTitle = styled.p`
   font-size: 18px;
   font-weight: 500px;
-`;
+`
 
 export const DataTitle = styled.p`
   font-size: 14px;
   color: #d5d5d5;
   margin: 0px;
-`;
+`
 
 export const Data = styled.div`
   background-color: #edf1f6;
@@ -22,4 +29,4 @@ export const Data = styled.div`
     font-size: 14px;
     color: #242627;
   }
-`;
+`
