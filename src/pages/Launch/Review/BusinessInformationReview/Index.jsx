@@ -1,19 +1,13 @@
-
-import HeaderCheckout from 'components/Header/HeaderCheckout'
 import { CheckoutController, CheckoutSection } from 'containers'
-import { SubHeader } from 'pages/Dashboard/User/Rewards/styled'
 import React from 'react'
-
 import { NavLink, Outlet } from 'react-router-dom'
 import { Container } from '../styled'
-import { Container, Header } from './styled'
 import styled from 'styled-components'
 import { ReviewTab } from 'utils/config'
 import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
+import HeaderCheckout from 'components/Header/HeaderCheckout'
 
-
-
-const ReviewInformation = () => {
+const BusinessInformationReview = () => {
   const ActiveStyles = {
     color: '#151717',
     borderBottom: '4px solid #00A2D4',
@@ -42,12 +36,11 @@ const ReviewInformation = () => {
             ))}
           </Nav>
           <CardWrapper>
-
-            <LaunchSummaryCard
+            {/* <LaunchSummaryCard
               number="1"
               name="Opeyemi Falana"
               shares="Common Shares "
-              sharesPercentage="3%"
+              sharesPercentage="3"
               email="opeyemiexample@email.com"
               phone="+2348123456789"
               littleCard
@@ -69,8 +62,9 @@ const ReviewInformation = () => {
               email="opeyemiexample@email.com"
               phone="+2348123456789"
               littleCard
-            />
+            /> */}
 
+            <Outlet />
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
@@ -81,7 +75,7 @@ const ReviewInformation = () => {
   )
 }
 
-export default ReviewInformation
+export default BusinessInformationReview
 
 const Nav = styled.nav`
   background: #ffffff;

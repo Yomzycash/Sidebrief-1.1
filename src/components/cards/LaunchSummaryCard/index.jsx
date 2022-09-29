@@ -1,8 +1,8 @@
-import React from "react";
-import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
-import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
-import { Container, IconWrapper, SharesWrapper, Top } from "./styled";
-import { SpinningCircles } from "react-loading-icons";
+import React from 'react'
+import { ReactComponent as DeleteIcon } from 'asset/svg/delete.svg'
+import { ReactComponent as EditIcon } from 'asset/svg/Edit.svg'
+import { Container, IconWrapper, SharesWrapper, Top } from './styled'
+import { SpinningCircles } from 'react-loading-icons'
 
 const LaunchSummaryCard = ({
   number,
@@ -17,6 +17,7 @@ const LaunchSummaryCard = ({
   stake,
   occupation,
   isLoading,
+  icon,
 }) => {
   return (
     <Container>
@@ -26,25 +27,27 @@ const LaunchSummaryCard = ({
           {shares && <div>{`${shares} - ${sharesPercentage}%`}</div>}
           {director_role && <div>{`Role - ${director_role}`}</div>}
           {stake && <div>{`Occupation: ${occupation} - Stake: ${stake}%`}</div>}
-          <IconWrapper>
-            <EditIcon onClick={editAction} />
-            {isLoading ? (
-              <SpinningCircles
-                stroke="#00A2D4"
-                fill="#00A2D4"
-                width={25}
-                height={25}
-              />
-            ) : (
-              <DeleteIcon onClick={deleteAction} />
-            )}
-          </IconWrapper>
+          {!icon && (
+            <IconWrapper>
+              <EditIcon onClick={editAction} />
+              {isLoading ? (
+                <SpinningCircles
+                  stroke="#00A2D4"
+                  fill="#00A2D4"
+                  width={25}
+                  height={25}
+                />
+              ) : (
+                <DeleteIcon onClick={deleteAction} />
+              )}
+            </IconWrapper>
+          )}
         </SharesWrapper>
       </Top>
       <div>{email}</div>
       <div>{phone}</div>
     </Container>
-  );
-};
+  )
+}
 
-export default LaunchSummaryCard;
+export default LaunchSummaryCard

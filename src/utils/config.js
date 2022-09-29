@@ -689,3 +689,25 @@ export const allRewards = [
     image: SterlingLogo,
   },
 ];
+export const ReviewTab = [
+  {
+    id: 1,
+    title: "Business Information",
+    path: "/launch/review",
+  },
+  {
+    id: 2,
+    title: "Shareholder Information",
+    path: "/launch/review-shareholder",
+  },
+  {
+    id: 3,
+    title: "Director Information",
+    path: "/launch/review-director",
+  },
+  {
+    id: 4,
+    title: "Beneficiary Information",
+    path: "/launch/review-beneficiary",
+  },
+];

@@ -1,24 +1,20 @@
-
-import HeaderCheckout from 'components/Header/HeaderCheckout'
 import { CheckoutController, CheckoutSection } from 'containers'
-import { SubHeader } from 'pages/Dashboard/User/Rewards/styled'
 import React from 'react'
-
 import { NavLink, Outlet } from 'react-router-dom'
 import { Container } from '../styled'
-import { Container, Header } from './styled'
 import styled from 'styled-components'
 import { ReviewTab } from 'utils/config'
 import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
+import HeaderCheckout from 'components/Header/HeaderCheckout'
+import { useSelector } from 'react-redux'
 
-
-
-const ReviewInformation = () => {
+const BeneficiaryReview = () => {
   const ActiveStyles = {
     color: '#151717',
     borderBottom: '4px solid #00A2D4',
     borderRadius: 0,
   }
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
 
   return (
     <>
@@ -42,35 +38,20 @@ const ReviewInformation = () => {
             ))}
           </Nav>
           <CardWrapper>
-
-            <LaunchSummaryCard
-              number="1"
-              name="Opeyemi Falana"
-              shares="Common Shares "
-              sharesPercentage="3%"
-              email="opeyemiexample@email.com"
-              phone="+2348123456789"
-              littleCard
-            />
-            <LaunchSummaryCard
-              number="2"
-              name="Opeyemi Falana"
-              shares="Common Shares "
-              sharesPercentage="3%"
-              email="opeyemiexample@email.com"
-              phone="+2348123456789"
-              littleCard
-            />
-            <LaunchSummaryCard
-              number="3"
-              name="Opeyemi Falana"
-              shares="Common Shares "
-              sharesPercentage="3%"
-              email="opeyemiexample@email.com"
-              phone="+2348123456789"
-              littleCard
-            />
-
+            {LaunchApplicationInfo.beneficiariesLaunchInfo.map(
+              (beneficiary, index) => (
+                <LaunchSummaryCard
+                  key={index}
+                  number={index + 1}
+                  name={beneficiary?.beneficialOwnerName}
+                  email={beneficiary?.beneficialOwnerEmail}
+                  phone={beneficiary?.beneficialOwnerPhone}
+                  occupation={beneficiary.beneficialOwnerOccupation}
+                  stake={beneficiary.beneficialOwnershipStake}
+                  icon
+                />
+              ),
+            )}
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
@@ -81,7 +62,7 @@ const ReviewInformation = () => {
   )
 }
 
-export default ReviewInformation
+export default BeneficiaryReview
 
 const Nav = styled.nav`
   background: #ffffff;

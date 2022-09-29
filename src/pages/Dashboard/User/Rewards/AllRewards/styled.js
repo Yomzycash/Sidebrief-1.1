@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-`;
+`
 export const Header = styled.div`
   position: sticky;
   top: 65px;
@@ -13,8 +13,8 @@ export const Header = styled.div`
   background-color: white;
   z-index: 2;
   box-shadow: ${(props) =>
-    props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
-`;
+    props.boxshadow === 'true' ? '0px 10px 15px -5px #9596971a' : ''};
+`
 export const MainHeader = styled.div`
   display: flex;
   align-items: center;
@@ -40,14 +40,14 @@ export const MainHeader = styled.div`
     flex: 1;
     justify-content: space-between;
   }
-`;
+`
 
 export const SubHeader = styled.div`
   display: flex;
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
-`;
+`
 
 export const Body = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ export const Body = styled.div`
   padding: 40px 24px 24px;
   border: 1px solid #edf1f7;
   border-top: none;
-`;
+`
 
 export const BodyLeft = styled.div`
   position: sticky;
@@ -88,10 +88,10 @@ export const BodyLeft = styled.div`
       cursor: pointer;
     }
   }
-`;
+`
 export const BodyRight = styled.div`
   display: flex;
   flex-flow: row wrap;
   gap: 24px;
-`;
-export const Footer = styled.div``;
+`
+export const Footer = styled.div``
