@@ -8,15 +8,13 @@ import { setCheckoutProgress, setShareholderDocs } from "redux/Slices";
 import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import { useAddMemberKYCMutation } from "services/launchService";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { ContentWrapper, FileContainer, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 import { convertToLink } from "utils/convertToUrl";
 
 const ShareHolderKYC = () => {
-	const dispatch = useDispatch();
-
 	//geting the information from the store
 	const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
 	const { shareHoldersLaunchInfo } = LaunchApplicationInfo;
