@@ -1,6 +1,6 @@
 import { CheckoutController, CheckoutSection } from 'containers'
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Container } from '../styled'
 import styled from 'styled-components'
 import { ReviewTab } from 'utils/config'
@@ -15,6 +15,13 @@ const DirectorReview = () => {
     borderRadius: 0,
   }
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
+  const navigate = useNavigate()
+  const handleNext = () => {
+    navigate('/launch/review-beneficiary')
+  }
+  const handlePrev = () => {
+    navigate(-1)
+  }
   return (
     <>
       <Container>
@@ -52,7 +59,12 @@ const DirectorReview = () => {
             )}
           </CardWrapper>
           <ButtonWrapper>
-            <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
+            <CheckoutController
+              backText={'Previous'}
+              forwardText={'Proceed'}
+              forwardAction={handleNext}
+              backAction={handlePrev}
+            />
           </ButtonWrapper>
         </Body>
       </Container>

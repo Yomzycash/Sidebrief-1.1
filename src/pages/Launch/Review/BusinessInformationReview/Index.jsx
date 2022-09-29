@@ -1,6 +1,6 @@
 import { CheckoutController, CheckoutSection } from 'containers'
 import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { Container } from '../styled'
 import styled from 'styled-components'
 import { ReviewTab } from 'utils/config'
@@ -12,6 +12,13 @@ const BusinessInformationReview = () => {
     color: '#151717',
     borderBottom: '4px solid #00A2D4',
     borderRadius: 0,
+  }
+  const navigate = useNavigate()
+  const handleNext = () => {
+    navigate('/launch/review-shareholder')
+  }
+  const handlePrev = () => {
+    navigate(-1)
   }
 
   return (
@@ -67,7 +74,12 @@ const BusinessInformationReview = () => {
             <Outlet />
           </CardWrapper>
           <ButtonWrapper>
-            <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
+            <CheckoutController
+              backText={'Previous'}
+              forwardText={'Proceed'}
+              forwardAction={handleNext}
+              backAction={handlePrev}
+            />
           </ButtonWrapper>
         </Body>
       </Container>

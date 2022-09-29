@@ -22,6 +22,8 @@ import BeneficiaryReview from 'pages/Launch/Review/BeneficiaryReview'
 import BusinessInformationReview from 'pages/Launch/Review/BusinessInformationReview/Index'
 import DirectorReview from 'pages/Launch/Review/DirectorReview/Index'
 import ShareholderReview from 'pages/Launch/Review/ShareholderReview/Index'
+import ApplicationSuccessPage from 'pages/Launch/ApplicationSuccessPage'
+import VerificationSuccess from 'pages/Auth/Registration/EmailVerify/VerificationSuccess'
 
 const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
@@ -63,7 +65,6 @@ const EntitySelect = lazy(() => import('pages/Launch/EntitySelect'))
 const ShareHoldersInfo = lazy(() => import('pages/Launch/ShareHoldersInfo'))
 const DirectorsInfo = lazy(() => import('pages/Launch/DirectorsInfo'))
 const BeneficiariesInfo = lazy(() => import('pages/Launch/BeneficiariesInfo'))
-const ReviewInformation = lazy(() => import('pages/Launch/Review'))
 const BeneficiariesKYC = lazy(() => import('pages/Launch/BeneficiariesKYC'))
 
 const AppRouter = () => {
@@ -77,6 +78,7 @@ const AppRouter = () => {
               <Route index element={<AccountType />} />
               <Route path="user" element={<Outlet />}>
                 <Route index element={<UserRegistration />} />
+                <Route path="email-verify" element={<VerificationSuccess />} />
                 <Route path="verifyotp" element={<Outlet />}>
                   <Route index element={<EmailVerify />} />
                   <Route path="success" element={<EmailSuccess />} />
@@ -151,14 +153,24 @@ const AppRouter = () => {
               {/* review path */}
 
               <Route
-                path="review-beneficiary"
+                path="/launch/review-beneficiary"
                 element={<BeneficiaryReview />}
               />
-              <Route path="review" element={<BusinessInformationReview />} />
-              <Route path="review-director" element={<DirectorReview />} />
               <Route
-                path="review-shareholder"
+                path="/launch/review"
+                element={<BusinessInformationReview />}
+              />
+              <Route
+                path="/launch/review-director"
+                element={<DirectorReview />}
+              />
+              <Route
+                path="/launch/review-shareholder"
                 element={<ShareholderReview />}
+              />
+              <Route
+                path="/launch/review-success"
+                element={<ApplicationSuccessPage />}
               />
 
               <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
