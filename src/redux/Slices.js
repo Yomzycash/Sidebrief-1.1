@@ -186,7 +186,6 @@ const launchApplicationInfo = createSlice({
 			state.generatedBeneficialOwnerCode = action.payload;
 		},
 		setShareholderDocs: (state, action) => {
-			console.log("store");
 			state.shareholderDocs = action.payload;
 		},
 	},
