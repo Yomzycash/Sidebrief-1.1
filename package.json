@@ -37,6 +37,7 @@
 		"react-select": "^5.4.0",
 		"react-widgets": "^5.8.4",
 		"recharts": "^2.1.13",
+		"redux-persist": "^6.0.0",
 		"sass": "^1.54.4",
 		"styled-components": "^5.3.5",
 		"web-vitals": "^2.1.4",

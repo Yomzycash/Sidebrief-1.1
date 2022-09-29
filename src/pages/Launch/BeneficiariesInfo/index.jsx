@@ -184,7 +184,7 @@ const DirectorsInfo = () => {
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={"Beneficiaries Information"}
+          title={"Beneficiaries Information (Optional)"}
           checkbox="Beneficiaries"
           checkBoxAction={handleCheckbox}
           disableCheckbox={beneficiariesLaunchInfo.length > 0 ? true : false}
