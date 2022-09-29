@@ -17,32 +17,18 @@ import {
   useAddMemberKYCMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
-import { addressSchema } from "../constants";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { ContentWrapper, FileContainer, Name } from "./styles";
 import FileUpload from "components/FileUpload";
+import { convertToLink } from "utils/convertToUrl";
 
 const BeneficiariesKYC = () => {
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
-  const [fileUploadedLink, setFileUploadedLink] = useState("");
-  const [pdf, setPdf] = useState("");
-
-  const handleRemove = () => {
-    setFileName("");
-  };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset,
-  } = useForm({
-    resolver: yupResolver(addressSchema),
-  });
-
+  const [type, setType] = useState("");
+  const [size, setSize] = useState(0);
   const [addMemberKYC] = useAddMemberKYCMutation();
+  const [error, setError] = useState("");
+  const [uploadedFileDetails, setUploadedFileDetails] = useState("");
 
   const [addBeneficialKYC] = useAddBeneficialKYCMutation();
   const generatedLaunchCode = useSelector(
@@ -55,8 +41,25 @@ const BeneficiariesKYC = () => {
   const generatedbeneficialOwnerCode = useSelector(
     (store) => store.LaunchReducer.generatedBeneficialOwnerCode
   );
+
+  //geting the information from the store
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
+  console.log("bene", beneficiariesLaunchInfo[0].beneficialOwnerCode);
+  // let requiredOwnerCode = beneficiariesLaunchInfo[0].beneficialOwnerCode;
+  // console.log(requiredOwnerCode);
+
   const handleNext = () => {
-    navigate("/launch/review");
+    if (fileName === "") {
+      setError("Please upload a file");
+    } else if (size > 2000000) {
+      setError("File is too large");
+    } else if (type !== "application/pdf") {
+      setError("Only PDFs, JPEGs and PNGs are supported");
+    } else {
+      navigate("/launch/review");
+    }
+
     store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
   };
 
@@ -65,44 +68,7 @@ const BeneficiariesKYC = () => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
   };
 
-  const SubmitForm = async (data) => {
-    console.log(data);
-
-    const requiredMemberKYCData = {
-      launchCode: generatedLaunchCode,
-      memberCode: generatedMemberCode,
-      memberKYC: {
-        documentType: data.country,
-        documentLink: data.state,
-      },
-    };
-
-    const requiredBeneficialOwnerKYCData = {
-      launchCode: generatedLaunchCode,
-      beneficialOwnerCode: generatedbeneficialOwnerCode,
-      beneficialOwnerKYC: {
-        documentType: data.country,
-        documentLink: data.state,
-      },
-    };
-
-    const response = await addMemberKYC(requiredMemberKYCData);
-    console.log(response);
-
-    if (response.data) {
-      handleNext();
-    } else if (response.error) {
-      console.log(response.error?.data.message);
-      toast.error(response.error?.data.message);
-    }
-
-    const beneficialResult = await addBeneficialKYC(
-      requiredBeneficialOwnerKYCData
-    );
-    console.log(beneficialResult);
-  };
-
-  const getBase64 = (file) => {
+  const convertImageToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       //Make new FileReader
       let fileReader = new FileReader();
@@ -120,78 +86,110 @@ const BeneficiariesKYC = () => {
   };
 
   const handleChange = async (e) => {
-    let filePath = [...e.target.value];
-    let valueIndex = e.target.value.lastIndexOf("\\");
-    let fileNameArray = filePath.slice(valueIndex + 1);
-    let fileName = fileNameArray.join("");
-    setFileName(fileName);
-    console.log(fileName);
-
     const uploadedFile = e.target.files[0];
-    console.log(uploadedFile.name);
-    const base64 = await getBase64(uploadedFile);
-    setPdf(uploadedFile.name);
-    setValue(uploadedFile.name);
-    console.log(base64);
-    setFileUploadedLink(base64);
+    setUploadedFileDetails(uploadedFile);
+    setFileName(uploadedFile.name);
+    setType(uploadedFile.type);
+    setSize(uploadedFile.size);
+    const res = await convertToLink(e.target.files[0]);
+    console.log(res);
+    console.log(res.url);
+
+    //   // const requiredAddMemberData = {
+    //   //   launchCode: generatedLaunchCode,
+    //   //   memberCode: requiredMemberCode,
+    //   //   memberKYC: {
+    //   //     documentType: documentType,
+    //   //     documentLink: fileUploadedLink,
+    //   //   },
+    //   // };
+
+    //   const requiredBeneficialOwnerKYCData = {
+    //     launchCode: generatedLaunchCode,
+    //     beneficialOwnerCode: requiredOwnerCode,
+    //     beneficialOwnerKYC: {
+    // documentType: uploadedFile.type,
+    // documentLink: res.url,
+    //     },
+    //   };
+
+    //   const beneficialResult = await addBeneficialKYC(
+    //     requiredBeneficialOwnerKYCData
+    //   );
+    //   console.log(beneficialResult);
+
+    //   console.log(requiredBeneficialOwnerKYCData);
+    //   // const response = await addMemberKYC(requiredAddMemberData);
+    //   // console.log(response);
+    //   // //   // if (response.data) {
+    //   // //   // } else
+
+    //   // if (response.error) {
+    //   //   console.log(response.error?.data.message);
+    //   //   toast.error(response.error?.data.message);
+    //   // }
+  };
+
+  const handleRemove = () => {
+    setFileName("");
+    setUploadedFileDetails({});
   };
 
   return (
     <Container>
       <HeaderCheckout />
-      <Body onSubmit={handleSubmit(SubmitForm)}>
+      <Body>
         <CheckoutSection
-          title={"Benefia KYC Documentation:"}
+          title={"Benefial KYC Documentation:"}
           HeaderParagraph={
-            "Please attach the necessary documents for all shareholders"
+            "Please attach the necessary documents for all beneficials"
           }
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            <FileContainer>
-              <Name>Mrs Grace Nwankwo</Name>
-              <ContentWrapper>
-                <FileUpload
-                  TopText={"Government Issued ID"}
-                  errorMsg={errors.gov?.message}
-                  name={"gov"}
-                  register={register}
-                  handleRemove={handleRemove}
-                  value={pdf}
-                  fileName={fileName}
-                  handleChange={handleChange}
-                  BottomText={
-                    "Driver’s Licence, National ID Card, Voters Card or International Passport"
-                  }
-                />
+            {beneficiariesLaunchInfo.map((beneficiary, index) => (
+              <FileContainer>
+                <Name>{beneficiary.beneficialOwnerName}</Name>
+                <ContentWrapper>
+                  <FileUpload
+                    TopText={"Government Issued ID"}
+                    name="file1"
+                    onChange={handleChange}
+                    fileName={fileName}
+                    type={type}
+                    handleRemove={handleRemove}
+                    errorMsg={error}
+                    BottomText={
+                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
+                    }
+                  />
 
-                <FileUpload
-                  TopText={"Proof of Home Address"}
-                  errorMsg={errors.bil?.message}
-                  name={"bil"}
-                  register={register}
-                  handleRemove={handleRemove}
-                  value={pdf}
-                  fileName={fileName}
-                  handleChange={handleChange}
-                  BottomText={
-                    "Utility Bill, Water Corporation Bill or a Rent Invoice"
-                  }
-                />
+                  <FileUpload
+                    TopText={"Proof of Home Address"}
+                    name="file2"
+                    onChange={handleChange}
+                    fileName={fileName}
+                    type={type}
+                    handleRemove={handleRemove}
+                    errorMsg={error}
+                    BottomText={
+                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
+                    }
+                  />
 
-                <FileUpload
-                  TopText={"Passport Photograph"}
-                  errorMsg={errors.file?.message}
-                  name={"file"}
-                  register={register}
-                  handleRemove={handleRemove}
-                  value={pdf}
-                  handleChange={handleChange}
-                  fileName={fileName}
-                  BottomText={"Kindly ensure image is not larger than 3MB"}
-                />
-              </ContentWrapper>
-            </FileContainer>
+                  <FileUpload
+                    TopText={"Passport Photograph"}
+                    name="file3"
+                    onChange={handleChange}
+                    fileName={fileName}
+                    type={type}
+                    handleRemove={handleRemove}
+                    errorMsg={error}
+                    BottomText={"Kindly ensure image is not larger than 3MB"}
+                  />
+                </ContentWrapper>
+              </FileContainer>
+            ))}
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController

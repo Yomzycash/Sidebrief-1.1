@@ -130,6 +130,8 @@ const launchApplicationInfo = createSlice({
     directorsLaunchInfo: [],
     beneficiariesLaunchInfo: [],
     generatedBeneficialOwnerCode: "",
+    editShareholderInfo: [],
+    uploadedDocs: [],
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -161,19 +163,32 @@ const launchApplicationInfo = createSlice({
       state.businessAddress = action.payload;
     },
     setShareHoldersLaunchInfo: (state, action) => {
-      state.shareHoldersLaunchInfo.push(action.payload);
+      if (action.payload.type === "add") {
+        state.shareHoldersLaunchInfo.push(action.payload.info);
+      } else {
+        state.shareHoldersLaunchInfo = action.payload.info;
+      }
     },
     setDirectorsLaunchInfo: (state, action) => {
-      state.directorsLaunchInfo.push(action.payload);
+      if (action.payload.type === "add") {
+        state.directorsLaunchInfo.push(action.payload.info);
+      } else {
+        state.directorsLaunchInfo = action.payload.info;
+      }
     },
     setBeneficiariesLaunchInfo: (state, action) => {
-      state.beneficiariesLaunchInfo.push(action.payload);
-    },
-    updateLaunchShareHolder: (state, action) => {
-      state.shareHoldersLaunchInfo = action.payload;
+      if (action.payload.type === "add") {
+        state.beneficiariesLaunchInfo.push(action.payload.info);
+      } else {
+        state.beneficiariesLaunchInfo = action.payload.info;
+      }
     },
     setGeneratedBeneficialOwnerCode: (state, action) => {
       state.generatedBeneficialOwnerCode = action.payload;
+    },
+
+    setUploadeddocs: (state, action) => {
+      state.uploadedDocs.push(action.payload.info);
     },
   },
 });
@@ -194,6 +209,7 @@ export const {
   setBeneficiariesLaunchInfo,
   updateLaunchShareHolder,
   setGeneratedBeneficialOwnerCode,
+  setUploadeddocs,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({

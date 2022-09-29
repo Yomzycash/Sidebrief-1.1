@@ -104,7 +104,7 @@ const EntitySelect = () => {
 
       console.log(businessObjectivesResponse);
 
-      navigate("/launch/payment");
+      navigate("/launch/address");
     }
   };
 
