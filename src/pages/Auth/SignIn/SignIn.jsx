@@ -8,14 +8,14 @@ import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
 import { loginSchema } from "utils/config";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
-import { saveUserLoginInfo } from "redux/Slices";
+import { saveUserLoginInfo, saveUserToken } from "redux/Slices";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -29,6 +29,7 @@ const SignIn = () => {
   const [loginNewUser, { isLoading, isSuccess }] = useLoginNewUserMutation();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const TestRef = useRef();
 
@@ -65,9 +66,15 @@ const SignIn = () => {
     let error = response?.error;
     if (response) {
       store.dispatch(saveUserLoginInfo);
+      store.dispatch(saveUserToken);
       console.log(data);
       toast.success(data.message);
-      navigate("/dashboard");
+      localStorage.setItem("user", JSON.stringify(data.token));
+      if (data.verified === false) {
+        navigate(`${location.pathname}/verifyaccount`);
+      } else {
+        navigate("/dashboard");
+      }
     } else if (error) {
       toast.error(error.data.message);
       console.log(error.data.message);

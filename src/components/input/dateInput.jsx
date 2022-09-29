@@ -77,6 +77,7 @@ export const DateInput = ({
         ref={inputRef}
         onFocus={handleBorder}
         onClick={() => setShowCalendar((prev) => !prev)}
+        onBlur={() => setActive(false)}
       >
         <Iconwrapper>
           <label htmlFor="date">

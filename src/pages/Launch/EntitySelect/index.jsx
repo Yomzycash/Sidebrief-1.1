@@ -1,70 +1,69 @@
-import React, { useEffect, useState } from 'react'
-import { CheckoutController, CheckoutSection } from 'containers'
-import { Body, Bottom, Container, Header, EntityCardsWrapper } from '../styled'
-import { EntityCard } from 'components/cards'
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { CheckoutController, CheckoutSection } from "containers";
+import { Body, Bottom, Container, Header, EntityCardsWrapper } from "../styled";
+import { EntityCard } from "components/cards";
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import { useNavigate } from "react-router-dom";
 import {
   setCheckoutProgress,
   setGeneratedLaunchCode,
   setSelectedEntity,
-} from 'redux/Slices'
-import { store } from 'redux/Store'
-import { useSelector } from 'react-redux'
+} from "redux/Slices";
+import { store } from "redux/Store";
+import { useSelector } from "react-redux";
 import {
   useAddBusinessNamesMutation,
   useAddBusinessObjectivesMutation,
   useGetAllEntitiesQuery,
   useGetStartedMutation,
-} from 'services/launchService'
+} from "services/launchService";
 
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 
 const EntitySelect = () => {
-  const navigate = useNavigate()
-  const [entities, setEntities] = useState([])
-  const [launchCode, setLaunchCode] = useState()
+  const navigate = useNavigate();
+  const [entities, setEntities] = useState([]);
+  const [launchCode, setLaunchCode] = useState();
 
   // Get necessary information from store
-  const countryISO = useSelector((store) => store.LaunchReducer.countryISO)
+  const countryISO = useSelector((store) => store.LaunchReducer.countryISO);
   const selectCountry = useSelector(
-    (store) => store.LaunchReducer.selectedCountry,
-  )
+    (store) => store.LaunchReducer.selectedCountry
+  );
   const businessNames = useSelector(
-    (store) => store.LaunchReducer.businessNames,
-  )
+    (store) => store.LaunchReducer.businessNames
+  );
   const selectedObjectives = useSelector(
-    (store) => store.LaunchReducer.selectedObjectives,
-  )
+    (store) => store.LaunchReducer.selectedObjectives
+  );
 
-  const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
-    countryISO,
-  )
+  const { data, error, isLoading, isSuccess } =
+    useGetAllEntitiesQuery(countryISO);
 
-  const [getStarted] = useGetStartedMutation()
-  const [addBusinessNames] = useAddBusinessNamesMutation()
-  const [addBusinessObjectives] = useAddBusinessObjectivesMutation()
+  const [getStarted] = useGetStartedMutation();
+  const [addBusinessNames] = useAddBusinessNamesMutation();
+  const [addBusinessObjectives] = useAddBusinessObjectivesMutation();
 
   // Set to state all entities of the specified country
   useEffect(() => {
-    setEntities(data)
-  }, [data])
+    setEntities(data);
+  }, [data]);
 
   // This fires off when the next button is clicked
   const handleNext = async (selectedItem) => {
-    store.dispatch(setCheckoutProgress({ total: 10, current: 2 })) // total- total pages and current - current page
-    store.dispatch(setSelectedEntity(selectedItem))
+    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
+    store.dispatch(setSelectedEntity(selectedItem));
 
     // To be sent to the backend
     const requiredLaunchData = {
       registrationCountry: countryISO,
       registrationType: selectedItem.entityCode,
-    }
-    let launchResponse = await getStarted(requiredLaunchData)
+    };
+    let launchResponse = await getStarted(requiredLaunchData);
     if (launchResponse.data) {
-      const launchCode = await launchResponse.data.launchCode
-      store.dispatch(setGeneratedLaunchCode(launchCode))
-      console.log(launchCode)
+      const launchCode = await launchResponse.data.launchCode;
+      store.dispatch(setGeneratedLaunchCode(launchCode));
+      console.log(launchCode);
 
       const requiredBusinessNamesData = {
         launchCode: launchCode,
@@ -74,7 +73,7 @@ const EntitySelect = () => {
           businessName3: businessNames[2],
           businessName4: businessNames[3],
         },
-      }
+      };
 
       const requiredBusinessObjectives = {
         launchCode: launchCode,
@@ -84,39 +83,38 @@ const EntitySelect = () => {
           businessObject3: selectedObjectives[2],
           businessObject4: selectedObjectives[3],
         },
-      }
+      };
 
       const businessNamesResponse = await addBusinessNames(
-        requiredBusinessNamesData,
-      )
+        requiredBusinessNamesData
+      );
 
       const businessObjectivesResponse = await addBusinessObjectives(
-        requiredBusinessObjectives,
-      )
+        requiredBusinessObjectives
+      );
 
-      console.log(businessNamesResponse)
+      console.log(businessNamesResponse);
 
       // let data = businessNamesResponse?.data;
 
-      let error = businessNamesResponse?.error
+      let error = businessNamesResponse?.error;
       if (error) {
-        toast.error(error.data.message)
+        toast.error(error.data.message);
       }
 
-      console.log(businessObjectivesResponse)
+      console.log(businessObjectivesResponse);
 
-     
       navigate("/launch/address");
     }
-  }
+  };
 
   return (
     <Container>
       <Header>
         <HeaderCheckout />
       </Header>
-      <Body style={{ maxWidth: '100%' }}>
-        <CheckoutSection title={'Operational Country: ' + selectCountry}>
+      <Body style={{ maxWidth: "100%" }}>
+        <CheckoutSection title={"Operational Country: " + selectCountry}>
           <EntityCardsWrapper>
             {entities?.map((item, index) => (
               <EntityCard
@@ -135,10 +133,10 @@ const EntitySelect = () => {
         </CheckoutSection>
       </Body>
     </Container>
-  )
-}
+  );
+};
 
-export default EntitySelect
+export default EntitySelect;
 
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 //   .eyJpZCI6IjYzMjM5MjlhNDdkZjU3MjdlNWQzZTg4ZSIsImlhdCI6MTY2MzI3NTY3NCwiZXhwIjoyNTI3Mjc1Njc0fQ

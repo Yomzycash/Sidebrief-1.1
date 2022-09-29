@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { Container, Bottom, Body } from "../styled";
 import { CheckoutController, CheckoutSection } from "containers";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { setCheckoutProgress, setShareholderDocs } from "redux/Slices";
+import { setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAddMemberKYCMutation } from "services/launchService";
 import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
 import { ContentWrapper, FileContainer, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 import { convertToLink } from "utils/convertToUrl";
 
-const ShareHolderKYC = () => {
-  //geting the information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { shareHoldersLaunchInfo } = LaunchApplicationInfo;
-  console.log(shareHoldersLaunchInfo[0].memberCode);
-  let requiredMemberCode = shareHoldersLaunchInfo[0].memberCode;
-  console.log(requiredMemberCode);
-
+const DirectorKYC = () => {
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
@@ -29,61 +22,39 @@ const ShareHolderKYC = () => {
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
-  const [documentContainer, setDocumentContainer] = useState(
-    shareHoldersLaunchInfo.map((shareholder) => {
-      return {
-        name: shareholder.memberName,
-        code: shareholder.shareholdingCode,
-        files: {
-          government: "",
-          proof: "",
-          passport: "",
-        },
-      };
-    })
-  );
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
 
+  //geting the information from the store
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  const { directorsLaunchInfo } = LaunchApplicationInfo;
+  console.log(directorsLaunchInfo[0].memberCode);
+  let requiredMemberCode = directorsLaunchInfo[0].memberCode;
+  console.log(requiredMemberCode);
+
+  const handleNext = () => {
+    navigate("/launch/beneficiaries-kyc");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
+  };
+
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 8 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
   };
 
   const isValidFileUploaded = (file) => {
-    const validExtensions = ["png", "jpeg", "jpg", "pdf"];
+    const validExtensions = ["jpeg", "jpg", "pdf"];
     const fileExtension = file.type.split("/")[1];
     return validExtensions.includes(fileExtension);
   };
 
-  const handleChange = async (e, shareholder) => {
-    console.log("value of the component is", e.target.name);
-
+  const handleChange = async (e) => {
     const uploadedFile = e.target.files[0];
     setUploadedFileDetails(uploadedFile);
     setFileName(uploadedFile.name);
     setType(uploadedFile.type);
     setSize(uploadedFile.size);
-
-    let f = e.target.name;
-    let value = e.target.value;
-
-    setDocumentContainer((prev) => {
-      const updatedState = [...prev];
-
-      const index = updatedState.findIndex((el) => el.code === shareholder);
-
-      updatedState[index] = {
-        ...updatedState[index],
-        files: {
-          ...updatedState[index].files,
-          [f]: value,
-        },
-      };
-
-      return updatedState;
-    });
 
     if (!isValidFileUploaded(uploadedFile)) {
       toast.error("Only PDFs and JPEGs are supported");
@@ -115,18 +86,6 @@ const ShareHolderKYC = () => {
     }
   };
 
-  console.log(documentContainer);
-  store.dispatch(setShareholderDocs(documentContainer));
-
-  const handleNext = () => {
-    if (!uploadedFileDetails) {
-      setError("File is required");
-    } else {
-      navigate("/launch/directors-kyc");
-      store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
-    }
-  };
-
   const handleRemove = () => {
     setFileName("");
     setUploadedFileDetails({});
@@ -137,21 +96,22 @@ const ShareHolderKYC = () => {
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={"Shareholder KYC Documentation:"}
+          title={"Director KYC Documentation:"}
           HeaderParagraph={
-            "Please attach the necessary documents for all shareholders"
+            "Please attach the necessary documents for all directors"
           }
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            {documentContainer.map((shareholder, index) => (
-              <FileContainer key={index}>
-                <Name>{shareholder.name}</Name>
-                <ContentWrapper key={index}>
+            {directorsLaunchInfo.map((director, index) => (
+              <FileContainer>
+                <Name>{director.memberName}</Name>
+                <ContentWrapper>
                   <FileUpload
                     TopText={"Government Issued ID"}
                     name="government"
-                    onChange={(e) => handleChange(e, shareholder.code)}
+                    onChange={handleChange}
+                    // fileName={fileName}
                     // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
@@ -163,7 +123,8 @@ const ShareHolderKYC = () => {
                   <FileUpload
                     TopText={"Proof of Home Address"}
                     name="proof"
-                    onChange={(e) => handleChange(e, shareholder.code)}
+                    onChange={handleChange}
+                    // fileName={fileName}
                     // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
@@ -175,7 +136,8 @@ const ShareHolderKYC = () => {
                   <FileUpload
                     TopText={"Passport Photograph"}
                     name="passport"
-                    onChange={(e) => handleChange(e, shareholder.code)}
+                    onChange={handleChange}
+                    // fileName={fileName}
                     // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
@@ -184,9 +146,6 @@ const ShareHolderKYC = () => {
                 </ContentWrapper>
               </FileContainer>
             ))}
-
-            {/* <button type="submit">test</button> */}
-            {/* <DragAndDrop /> */}
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
@@ -202,4 +161,4 @@ const ShareHolderKYC = () => {
   );
 };
 
-export default ShareHolderKYC;
+export default DirectorKYC;

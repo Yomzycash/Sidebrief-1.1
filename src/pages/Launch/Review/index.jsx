@@ -1,24 +1,20 @@
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import { CheckoutController, CheckoutSection } from "containers";
+import { SubHeader } from "pages/Dashboard/User/Rewards/styled";
+import React from "react";
 
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import { CheckoutController, CheckoutSection } from 'containers'
-import { SubHeader } from 'pages/Dashboard/User/Rewards/styled'
-import React from 'react'
-
-import { NavLink, Outlet } from 'react-router-dom'
-import { Container } from '../styled'
-import { Container, Header } from './styled'
-import styled from 'styled-components'
-import { ReviewTab } from 'utils/config'
-import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
-
-
+import { NavLink, Outlet } from "react-router-dom";
+import { Container, Header } from "./styled";
+import styled from "styled-components";
+import { ReviewTab } from "utils/config";
+import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 
 const ReviewInformation = () => {
   const ActiveStyles = {
-    color: '#151717',
-    borderBottom: '4px solid #00A2D4',
+    color: "#151717",
+    borderBottom: "4px solid #00A2D4",
     borderRadius: 0,
-  }
+  };
 
   return (
     <>
@@ -26,7 +22,7 @@ const ReviewInformation = () => {
         <HeaderCheckout />
         <Body>
           <CheckoutSection
-            title={'Review Information'}
+            title={"Review Information"}
             HeaderParagraph="Please ensure all information provided for this business are correct"
           />
           <Nav>
@@ -42,7 +38,6 @@ const ReviewInformation = () => {
             ))}
           </Nav>
           <CardWrapper>
-
             <LaunchSummaryCard
               number="1"
               name="Opeyemi Falana"
@@ -70,18 +65,17 @@ const ReviewInformation = () => {
               phone="+2348123456789"
               littleCard
             />
-
           </CardWrapper>
           <ButtonWrapper>
-            <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
+            <CheckoutController backText={"Previous"} forwardText={"Proceed"} />
           </ButtonWrapper>
         </Body>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default ReviewInformation
+export default ReviewInformation;
 
 const Nav = styled.nav`
   background: #ffffff;
@@ -93,7 +87,7 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
-`
+`;
 const ReviweTabWrapper = styled.div`
   display: flex;
   flex: 1;
@@ -117,19 +111,19 @@ const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
-`
+`;
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 40px;
   gap: 40px;
-`
+`;
 const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 40px;
-`
+`;
 const Body = styled.form`
   display: flex;
   flex-flow: column;
@@ -143,4 +137,4 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
-`
+`;

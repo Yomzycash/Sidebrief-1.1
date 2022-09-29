@@ -108,10 +108,29 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    // Add MemberKYC
+    addMemberKYC: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/members/addkyc",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // Delete business member
     deleteMember: builder.mutation({
       query: (values) => ({
         url: "/v1/launch/members/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+    // add beneficial
+    addBeneficialKYC: builder.mutation({
+      query: (values) => ({
+        url: "/v1/launch/beneficialowners/addkyc",
         method: "POST",
         body: values,
       }),
@@ -201,6 +220,8 @@ export const {
   useAddShareHolderMutation,
   useAddDirectorMutation,
   useAddBeneficiaryMutation,
+  useAddMemberKYCMutation,
+  useAddBeneficialKYCMutation,
   useDeleteMemberMutation,
   useDeleteShareholderMutation,
   useDeleteDirectorMutation,
