@@ -33,9 +33,9 @@ export const store = configureStore({
 			RewardApi.middleware,
 			save({
 				ignoreStates: [
-					"launchApi.middleware",
-					"authApi.middleware",
-					"RewardApi.middleware",
+					"launchApi.reducerPath",
+					"authApi.reducerPath",
+					"RewardApi.reducerPath",
 				],
 			}),
 		]),
