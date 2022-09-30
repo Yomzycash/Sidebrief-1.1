@@ -4,7 +4,7 @@ import { Container, Bottom, Body } from "../styled";
 import { CheckoutController, CheckoutSection } from "containers";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { setCheckoutProgress } from "redux/Slices";
+import { setCheckoutProgress, setDirectorDocs } from "redux/Slices";
 import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -15,6 +15,13 @@ import FileUpload from "components/FileUpload";
 import { convertToLink } from "utils/convertToUrl";
 
 const DirectorKYC = () => {
+  //geting the information from the store
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  const { directorsLaunchInfo } = LaunchApplicationInfo;
+  console.log(directorsLaunchInfo[0].memberCode);
+  let requiredMemberCode = directorsLaunchInfo[0].memberCode;
+  console.log(requiredMemberCode);
+
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
@@ -22,16 +29,24 @@ const DirectorKYC = () => {
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
+
+  const [documentContainer, setDocumentContainer] = useState(
+    directorsLaunchInfo.map((director) => {
+      return {
+        name: director.memberName,
+        code: director.directorCode,
+        files: {
+          government: "",
+          proof: "",
+          passport: "",
+        },
+      };
+    })
+  );
+
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
-
-  //geting the information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { directorsLaunchInfo } = LaunchApplicationInfo;
-  console.log(directorsLaunchInfo[0].memberCode);
-  let requiredMemberCode = directorsLaunchInfo[0].memberCode;
-  console.log(requiredMemberCode);
 
   const handleNext = () => {
     navigate("/launch/beneficiaries-kyc");
@@ -49,12 +64,33 @@ const DirectorKYC = () => {
     return validExtensions.includes(fileExtension);
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async (e, director) => {
+    console.log("value of the component is", e.target.name);
+
     const uploadedFile = e.target.files[0];
     setUploadedFileDetails(uploadedFile);
     setFileName(uploadedFile.name);
     setType(uploadedFile.type);
     setSize(uploadedFile.size);
+
+    let fName = e.target.name;
+    let value = e.target.value;
+
+    setDocumentContainer((prev) => {
+      const updatedState = [...prev];
+
+      const index = updatedState.findIndex((el) => el.code === director);
+
+      updatedState[index] = {
+        ...updatedState[index],
+        files: {
+          ...updatedState[index].files,
+          [fName]: value,
+        },
+      };
+
+      return updatedState;
+    });
 
     if (!isValidFileUploaded(uploadedFile)) {
       toast.error("Only PDFs and JPEGs are supported");
@@ -70,7 +106,7 @@ const DirectorKYC = () => {
         launchCode: generatedLaunchCode,
         memberCode: requiredMemberCode,
         memberKYC: {
-          documentType: uploadedFile.type,
+          documentType: fName,
           documentLink: res.url,
         },
       };
@@ -85,6 +121,9 @@ const DirectorKYC = () => {
       }
     }
   };
+
+  console.log(documentContainer);
+  store.dispatch(setDirectorDocs(documentContainer));
 
   const handleRemove = () => {
     setFileName("");
@@ -103,14 +142,14 @@ const DirectorKYC = () => {
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            {directorsLaunchInfo.map((director, index) => (
-              <FileContainer>
-                <Name>{director.memberName}</Name>
+            {documentContainer.map((director, index) => (
+              <FileContainer key={index}>
+                <Name>{director.name}</Name>
                 <ContentWrapper>
                   <FileUpload
                     TopText={"Government Issued ID"}
                     name="government"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, director.code)}
                     // fileName={fileName}
                     // type={type}
                     handleRemove={handleRemove}
@@ -123,7 +162,7 @@ const DirectorKYC = () => {
                   <FileUpload
                     TopText={"Proof of Home Address"}
                     name="proof"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, director.code)}
                     // fileName={fileName}
                     // type={type}
                     handleRemove={handleRemove}
@@ -136,7 +175,7 @@ const DirectorKYC = () => {
                   <FileUpload
                     TopText={"Passport Photograph"}
                     name="passport"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, director.code)}
                     // fileName={fileName}
                     // type={type}
                     handleRemove={handleRemove}

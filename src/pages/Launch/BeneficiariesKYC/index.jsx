@@ -8,7 +8,7 @@ import {
 } from "containers";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { setCheckoutProgress } from "redux/Slices";
+import { setBeneficiaryDocs, setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +22,13 @@ import FileUpload from "components/FileUpload";
 import { convertToLink } from "utils/convertToUrl";
 
 const BeneficiariesKYC = () => {
+  //geting the information from the store
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
+  console.log("bene", beneficiariesLaunchInfo[0].beneficialOwnerCode);
+  let requiredOwnerCode = beneficiariesLaunchInfo[0].beneficialOwnerCode;
+  console.log(requiredOwnerCode);
+
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
@@ -29,8 +36,22 @@ const BeneficiariesKYC = () => {
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
-
   const [addBeneficialKYC] = useAddBeneficialKYCMutation();
+
+  const [documentContainer, setDocumentContainer] = useState(
+    beneficiariesLaunchInfo.map((beneficiary) => {
+      return {
+        name: beneficiary.beneficialOwnerName,
+        code: beneficiary.beneficialOwnerCode,
+        files: {
+          government: "",
+          proof: "",
+          passport: "",
+        },
+      };
+    })
+  );
+
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
@@ -41,13 +62,6 @@ const BeneficiariesKYC = () => {
   const generatedbeneficialOwnerCode = useSelector(
     (store) => store.LaunchReducer.generatedBeneficialOwnerCode
   );
-
-  //geting the information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
-  console.log("bene", beneficiariesLaunchInfo[0].beneficialOwnerCode);
-  // let requiredOwnerCode = beneficiariesLaunchInfo[0].beneficialOwnerCode;
-  // console.log(requiredOwnerCode);
 
   const handleNext = () => {
     if (fileName === "") {
@@ -68,67 +82,73 @@ const BeneficiariesKYC = () => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
   };
 
-  const convertImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      //Make new FileReader
-      let fileReader = new FileReader();
-      // Convert the file to base64 text
-      fileReader.readAsDataURL(file);
-      // on reader load something
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      // if error occurs
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
+  const isValidFileUploaded = (file) => {
+    const validExtensions = ["jpeg", "jpg", "pdf"];
+    const fileExtension = file.type.split("/")[1];
+    return validExtensions.includes(fileExtension);
   };
 
-  const handleChange = async (e) => {
+  const handleChange = async (e, beneficiary) => {
+    console.log("value of the component is", e.target.name);
+
     const uploadedFile = e.target.files[0];
     setUploadedFileDetails(uploadedFile);
     setFileName(uploadedFile.name);
     setType(uploadedFile.type);
     setSize(uploadedFile.size);
-    const res = await convertToLink(e.target.files[0]);
-    console.log(res);
-    console.log(res.url);
 
-    //   // const requiredAddMemberData = {
-    //   //   launchCode: generatedLaunchCode,
-    //   //   memberCode: requiredMemberCode,
-    //   //   memberKYC: {
-    //   //     documentType: documentType,
-    //   //     documentLink: fileUploadedLink,
-    //   //   },
-    //   // };
+    let fName = e.target.name;
+    let value = e.target.value;
 
-    //   const requiredBeneficialOwnerKYCData = {
-    //     launchCode: generatedLaunchCode,
-    //     beneficialOwnerCode: requiredOwnerCode,
-    //     beneficialOwnerKYC: {
-    // documentType: uploadedFile.type,
-    // documentLink: res.url,
-    //     },
-    //   };
+    setDocumentContainer((prev) => {
+      const updatedState = [...prev];
 
-    //   const beneficialResult = await addBeneficialKYC(
-    //     requiredBeneficialOwnerKYCData
-    //   );
-    //   console.log(beneficialResult);
+      const index = updatedState.findIndex((el) => el.code === beneficiary);
 
-    //   console.log(requiredBeneficialOwnerKYCData);
-    //   // const response = await addMemberKYC(requiredAddMemberData);
-    //   // console.log(response);
-    //   // //   // if (response.data) {
-    //   // //   // } else
+      updatedState[index] = {
+        ...updatedState[index],
+        files: {
+          ...updatedState[index].files,
+          [fName]: value,
+        },
+      };
+      return updatedState;
+    });
 
-    //   // if (response.error) {
-    //   //   console.log(response.error?.data.message);
-    //   //   toast.error(response.error?.data.message);
-    //   // }
+    if (!isValidFileUploaded(uploadedFile)) {
+      toast.error("Only PDFs and JPEGs are supported");
+    } else if (size > 3000000) {
+      toast.error("File is too large");
+    } else {
+      toast.success("Valid Document");
+      const res = await convertToLink(e.target.files[0]);
+      console.log(res);
+      console.log(res.url);
+
+      const requiredBeneficialOwnerKYCData = {
+        launchCode: generatedLaunchCode,
+        beneficialOwnerCode: requiredOwnerCode,
+        beneficialOwnerKYC: {
+          documentType: fName,
+          documentLink: res.url,
+        },
+      };
+
+      const beneficialResult = await addBeneficialKYC(
+        requiredBeneficialOwnerKYCData
+      );
+      console.log(beneficialResult);
+      if (beneficialResult.data) {
+        toast.success("Document uploaded successfully");
+      } else if (beneficialResult.error) {
+        console.log(beneficialResult.error?.data.message);
+        toast.error(beneficialResult.error?.data.message);
+      }
+    }
   };
+
+  console.log(documentContainer);
+  store.dispatch(setBeneficiaryDocs(documentContainer));
 
   const handleRemove = () => {
     setFileName("");
@@ -148,13 +168,13 @@ const BeneficiariesKYC = () => {
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
             {beneficiariesLaunchInfo.map((beneficiary, index) => (
-              <FileContainer>
-                <Name>{beneficiary.beneficialOwnerName}</Name>
+              <FileContainer key={index}>
+                <Name>{beneficiary.name}</Name>
                 <ContentWrapper>
                   <FileUpload
                     TopText={"Government Issued ID"}
                     name="file1"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, beneficiary.code)}
                     fileName={fileName}
                     type={type}
                     handleRemove={handleRemove}
@@ -167,7 +187,7 @@ const BeneficiariesKYC = () => {
                   <FileUpload
                     TopText={"Proof of Home Address"}
                     name="file2"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, beneficiary.code)}
                     fileName={fileName}
                     type={type}
                     handleRemove={handleRemove}
@@ -180,7 +200,7 @@ const BeneficiariesKYC = () => {
                   <FileUpload
                     TopText={"Passport Photograph"}
                     name="file3"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e, beneficiary.code)}
                     fileName={fileName}
                     type={type}
                     handleRemove={handleRemove}
