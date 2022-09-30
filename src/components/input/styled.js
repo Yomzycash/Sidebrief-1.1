@@ -56,10 +56,12 @@ export const Input = styled.input`
   outline: none;
   font-weight: 400;
   font-size: 16px;
+
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
+
   @media screen and (max-width: 600px) {
     font-size: 14px;
   }

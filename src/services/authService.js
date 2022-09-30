@@ -61,6 +61,19 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['User'],
     }),
+
+    //activate user
+    activateUser: builder.mutation({
+      query: (values) => ({
+        url: "/activate",
+        method: "POST",
+        body: values,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 })
 
@@ -70,4 +83,5 @@ export const {
   useRegisterNewPartnerMutation,
   useRegisterNewResellerMutation,
   useLoginNewUserMutation,
-} = authApi
+  useActivateUserMutation,
+} = authApi;

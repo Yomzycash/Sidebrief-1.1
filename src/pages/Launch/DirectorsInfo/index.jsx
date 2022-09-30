@@ -42,14 +42,14 @@ const DirectorsInfo = () => {
   const { directorsLaunchInfo, shareholdersLaunchInfo } = LaunchApplicationInfo
 
   const handleNext = () => {
-    navigate('/launch/beneficiaries-info')
-    store.dispatch(setCheckoutProgress({ total: 10, current: 5 })) // total- total pages and current - current page
-  }
+    navigate("/launch/beneficiaries-info");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
+  };
 
   const handlePrev = () => {
-    navigate(-1)
-    store.dispatch(setCheckoutProgress({ total: 10, current: 4 })) // total- total pages and current - current page
-  }
+    navigate(-1);
+    store.dispatch(setCheckoutProgress({ total: 13, current: 6 })); // total- total pages and current - current page
+  };
 
   const handleCheckbox = (checked) => {
     setUseSidebriefDirectors(checked)

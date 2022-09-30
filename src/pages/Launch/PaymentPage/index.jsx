@@ -44,8 +44,9 @@ const PaymentPage = () => {
   const navigate = useNavigate()
 
   const handleNext = () => {
-    navigate('/launch/entity')
-  }
+    navigate("/launch/entity");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 3 })); // total- total pages and current - current page
+  };
 
   const handlePrev = () => {
     navigate(-1)

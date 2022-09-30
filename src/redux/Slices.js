@@ -10,6 +10,7 @@ const UserData = createSlice({
     userLoginInfo: {},
     partnerLoginInfo: {},
     resellerLoginInfo: {},
+    loginToken: '',
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -30,6 +31,9 @@ const UserData = createSlice({
     saveResellerLoginInfo: (state, action) => {
       state.loginIfo = action.payload
     },
+    saveUserToken: (state, action) => {
+      state.loginToken = action.payload
+    },
   },
 })
 export const UserDataReducer = UserData.reducer
@@ -41,6 +45,7 @@ export const {
   saveUserLoginInfo,
   savePartnerLoginInfo,
   saveResellerLoginInfo,
+  saveUserToken,
 } = UserData.actions
 
 // This slice will hold all glabally needed layout and similar information
@@ -123,11 +128,13 @@ const launchApplicationInfo = createSlice({
     launchResponse: {},
     generatedLaunchCode: '',
     generatedMemberCode: '',
-    businessAddress: [],
+    businessAddress: {},
     shareHoldersLaunchInfo: [],
     directorsLaunchInfo: [],
     beneficiariesLaunchInfo: [],
+    generatedBeneficialOwnerCode: '',
     editShareholderInfo: [],
+    shareholderDocs: [],
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -179,6 +186,12 @@ const launchApplicationInfo = createSlice({
         state.beneficiariesLaunchInfo = action.payload.info
       }
     },
+    setGeneratedBeneficialOwnerCode: (state, action) => {
+      state.generatedBeneficialOwnerCode = action.payload
+    },
+    setShareholderDocs: (state, action) => {
+      state.shareholderDocs = action.payload
+    },
   },
 })
 
@@ -196,6 +209,10 @@ export const {
   setShareHoldersLaunchInfo,
   setDirectorsLaunchInfo,
   setBeneficiariesLaunchInfo,
+  updateLaunchShareHolder,
+  setGeneratedBeneficialOwnerCode,
+  setUploadeddocs,
+  setShareholderDocs,
 } = launchApplicationInfo.actions
 
 const RewardInfo = createSlice({

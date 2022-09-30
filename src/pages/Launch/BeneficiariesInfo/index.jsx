@@ -49,13 +49,13 @@ const DirectorsInfo = () => {
   const { beneficiariesLaunchInfo, generatedLaunchCode } = LaunchApplicationInfo
 
   const handleNext = () => {
-    navigate('/launch/review')
-    store.dispatch(setCheckoutProgress({ total: 10, current: 5 })) // total- total pages and current - current page
+    navigate('/launch/sharehholders-kyc')
+    store.dispatch(setCheckoutProgress({ total: 13, current: 8 })) // total- total pages and current - current page
   }
 
   const handlePrev = () => {
     navigate(-1)
-    store.dispatch(setCheckoutProgress({ total: 10, current: 4 })) // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })) // total- total pages and current - current page
   }
 
   const handleCheckbox = (checked) => {
@@ -182,7 +182,7 @@ const DirectorsInfo = () => {
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={'Beneficiaries Information'}
+          title={'Beneficiaries Information (Optional)'}
           checkbox="Beneficiaries"
           checkBoxAction={handleCheckbox}
           disableCheckbox={beneficiariesLaunchInfo.length > 0 ? true : false}

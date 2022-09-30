@@ -66,6 +66,7 @@ const ShareHoldersInfo = lazy(() => import('pages/Launch/ShareHoldersInfo'))
 const DirectorsInfo = lazy(() => import('pages/Launch/DirectorsInfo'))
 const BeneficiariesInfo = lazy(() => import('pages/Launch/BeneficiariesInfo'))
 const BeneficiariesKYC = lazy(() => import('pages/Launch/BeneficiariesKYC'))
+const DirectorKYC = lazy(() => import('pages/Launch/DirectorsKYC'))
 
 const AppRouter = () => {
   return (
@@ -101,6 +102,7 @@ const AppRouter = () => {
             </Route>
             <Route path="login" element={<Outlet />}>
               <Route index element={<SignIn />} />
+              <Route path="verifyaccount" element={<EmailVerify />} />
               <Route path="forgotpassword" element={<Outlet />}>
                 <Route index element={<ForgotPassword />} />
                 <Route path="verifyotp" element={<Outlet />}>
@@ -174,7 +176,8 @@ const AppRouter = () => {
               />
 
               <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
-              <Route path="shareholders-kyc" element={<ShareHolderKYC />} />
+              <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
+              <Route path="directors-kyc" element={<DirectorKYC />} />
             </Route>
           </Route>
         </Routes>

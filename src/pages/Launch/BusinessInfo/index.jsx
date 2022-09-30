@@ -50,9 +50,8 @@ const BusinessInfo = () => {
     store.dispatch(setCountry(selectedCountry))
     store.dispatch(setSelectedBusinessNames(businessNames))
     store.dispatch(setBusinessObjectives(selectedObjectives))
-    store.dispatch(setCheckoutProgress({ total: 10, current: 1 })) // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })) // total- total pages and current - current page
     navigate('/launch/entity')
-    // navigate('/launch/review')
   }
 
   const handlePrev = () => {
@@ -104,9 +103,9 @@ const BusinessInfo = () => {
     e.preventDefault()
   }
 
-  useEffect(() => {
-    console.log(navigator.onLine)
-  }, [navigator.onLine])
+  // useEffect(() => {
+  //   console.log(navigator.onLine);
+  // }, [navigator.onLine]);
 
   return (
     <Container onClick={handleSubmit}>
