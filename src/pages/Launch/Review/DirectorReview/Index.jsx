@@ -7,6 +7,7 @@ import { ReviewTab } from 'utils/config'
 import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
 import HeaderCheckout from 'components/Header/HeaderCheckout'
 import { useSelector } from 'react-redux'
+import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
 
 const DirectorReview = () => {
   const ActiveStyles = {
@@ -22,6 +23,11 @@ const DirectorReview = () => {
   const handlePrev = () => {
     navigate(-1)
   }
+
+  const handleNavigate = () => {
+    navigate('/launch/director-info')
+  }
+
   return (
     <>
       <Container>
@@ -43,6 +49,13 @@ const DirectorReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
+          <ContentWrapper>
+            <EditWrapper onClick={handleNavigate}>
+              <EditIcon />
+              <EditText>Edit Director Information</EditText>
+            </EditWrapper>
+          </ContentWrapper>
+
           <CardWrapper>
             {LaunchApplicationInfo.directorsLaunchInfo.map(
               (director, index) => (
@@ -108,6 +121,24 @@ const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
+`
+const ContentWrapper = styled.div`
+  width: 100%;
+  padding: 40px;
+`
+const EditWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+`
+
+const EditText = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  color: #00a2d4;
 `
 const CardWrapper = styled.div`
   display: flex;

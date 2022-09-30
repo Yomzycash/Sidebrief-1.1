@@ -33,6 +33,7 @@ const EntitySelect = () => {
   const businessNames = useSelector(
     (store) => store.LaunchReducer.businessNames,
   )
+  console.log(businessNames)
   const selectedObjectives = useSelector(
     (store) => store.LaunchReducer.selectedObjectives,
   )
@@ -105,8 +106,7 @@ const EntitySelect = () => {
 
       console.log(businessObjectivesResponse)
 
-     
-      navigate("/launch/address");
+      navigate('/launch/address')
     }
   }
 

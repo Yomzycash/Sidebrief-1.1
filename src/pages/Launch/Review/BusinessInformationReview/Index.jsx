@@ -1,12 +1,13 @@
 import { CheckoutController, CheckoutSection } from 'containers'
 import React from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { Container } from '../styled'
 import styled from 'styled-components'
 import { ReviewTab } from 'utils/config'
-import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
 import HeaderCheckout from 'components/Header/HeaderCheckout'
-
+import BusinessInfoCard from 'components/cards/BusinessInfoCard/BusinessInfoCard'
+import BusinessAddressCard from 'components/cards/BusinessAddressCard/BusinessAddressCard'
+import { useSelector } from 'react-redux'
 const BusinessInformationReview = () => {
   const ActiveStyles = {
     color: '#151717',
@@ -20,6 +21,9 @@ const BusinessInformationReview = () => {
   const handlePrev = () => {
     navigate(-1)
   }
+
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
+  console.log(LaunchApplicationInfo.businessAddress)
 
   return (
     <>
@@ -43,35 +47,8 @@ const BusinessInformationReview = () => {
             ))}
           </Nav>
           <CardWrapper>
-            {/* <LaunchSummaryCard
-              number="1"
-              name="Opeyemi Falana"
-              shares="Common Shares "
-              sharesPercentage="3"
-              email="opeyemiexample@email.com"
-              phone="+2348123456789"
-              littleCard
-            />
-            <LaunchSummaryCard
-              number="2"
-              name="Opeyemi Falana"
-              shares="Common Shares "
-              sharesPercentage="3%"
-              email="opeyemiexample@email.com"
-              phone="+2348123456789"
-              littleCard
-            />
-            <LaunchSummaryCard
-              number="3"
-              name="Opeyemi Falana"
-              shares="Common Shares "
-              sharesPercentage="3%"
-              email="opeyemiexample@email.com"
-              phone="+2348123456789"
-              littleCard
-            /> */}
-
-            <Outlet />
+            <BusinessInfoCard />
+            <BusinessAddressCard />
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController

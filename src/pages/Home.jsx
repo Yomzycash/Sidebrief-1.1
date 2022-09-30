@@ -14,11 +14,13 @@ import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
 import SuccessPage from './Launch/PaymentSuccessPage/Index'
 import FailedPage from './Launch/FailedPage'
 import ApplicationSuccessPage from './Launch/ApplicationSuccessPage'
+import BusinessAddressCard from 'components/cards/BusinessAddressCard/BusinessAddressCard'
 
 const Home = () => {
   return (
     <>
-      <ApplicationSuccessPage />
+      {/* <ApplicationSuccessPage /> */}
+      <BusinessAddressCard />
       {/* <PaymentHeader />
 			<PaymentSelector />
 			<PaymentForm amount={22000} currency={"NGN"} USDprice={50.45} /> */}

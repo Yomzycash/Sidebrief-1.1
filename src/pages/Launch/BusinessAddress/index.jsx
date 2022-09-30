@@ -89,6 +89,7 @@ const BusinessAddress = () => {
 
   const handleNext = () => {
     navigate('/launch/shareholders-info')
+
     store.dispatch(setCheckoutProgress({ total: 10, current: 3 })) // total- total pages and current - current page
   }
 

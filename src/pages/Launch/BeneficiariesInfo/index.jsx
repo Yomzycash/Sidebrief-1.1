@@ -49,7 +49,7 @@ const DirectorsInfo = () => {
   const { beneficiariesLaunchInfo, generatedLaunchCode } = LaunchApplicationInfo
 
   const handleNext = () => {
-    navigate('/launch/review-shareholder')
+    navigate('/launch/review')
     store.dispatch(setCheckoutProgress({ total: 10, current: 5 })) // total- total pages and current - current page
   }
 

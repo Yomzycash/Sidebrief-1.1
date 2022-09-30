@@ -2,15 +2,21 @@ import React from 'react'
 import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const BusinessInfoCard = () => {
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
+  console.log(LaunchApplicationInfo)
+  let navigate = useNavigate()
+  const handleNavigate = () => {
+    navigate('/launch/address')
+  }
   return (
     <>
       <Wrapper>
         <TitleWrapper>
           <Title>Business Information</Title>
-          <EditWrapper>
+          <EditWrapper onClick={handleNavigate}>
             <EditIcon />
             <EditText>Edit</EditText>
           </EditWrapper>
@@ -18,13 +24,31 @@ const BusinessInfoCard = () => {
         <LowerContainer>
           <SubContainer>
             <Heading>Business Names in order of preference</Heading>
-            {LaunchApplicationInfo.businessNames.map((businessName, index) => (
-              <TagContainer>businessName?.</TagContainer>
-            ))}
+            <TagContainer>
+              {LaunchApplicationInfo.businessNames.map(
+                (businessName, index) => (
+                  <>
+                    <TagWrapper>
+                      <Tag key={index}> {businessName}</Tag>
+                    </TagWrapper>
+                  </>
+                ),
+              )}
+            </TagContainer>
           </SubContainer>
           <SubContainer>
             <Heading>Business Objectives</Heading>
-            {<TagContainer></TagContainer>}
+            <TagContainer>
+              {LaunchApplicationInfo.selectedObjectives.map(
+                (objective, index) => (
+                  <>
+                    <TagWrapper>
+                      <Tag key={index}> {objective}</Tag>
+                    </TagWrapper>
+                  </>
+                ),
+              )}
+            </TagContainer>
           </SubContainer>
         </LowerContainer>
       </Wrapper>
@@ -78,10 +102,12 @@ const LowerContainer = styled.div`
 `
 const SubContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-flow: column wrap;
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
+  column-gap: 4px;
+  width: 100%;
 `
 const Heading = styled.h3`
   font-weight: 400;
@@ -92,15 +118,23 @@ const Heading = styled.h3`
 const TagContainer = styled.div`
   display: flex;
   align-items: center;
-  row-gap: 16px;
-  column-gap: 4px;
+  flex-flow: row wrap;
+  row-gap: 4px;
+  column-gap: 16px;
+`
+const TagWrapper = styled.div`
+  display: inline-flex;
+  flex-direction: row;
+  padding: 11px 8px;
+  background: #0082aa;
+  border-radius: 8px;
+  justify-content: space-between;
+  align-items: center;
+  color: #fafafa;
 `
 
-const Tag = styled.div`
+const Tag = styled.span`
   font-weight: 400;
   font-size: 14px;
-  line-height: 21px;
-  display: flex;
-  align-items: flex-end;
   color: #fafafa;
 `
