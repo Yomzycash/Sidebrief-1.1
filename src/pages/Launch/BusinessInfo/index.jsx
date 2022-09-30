@@ -103,10 +103,6 @@ const BusinessInfo = () => {
     e.preventDefault();
   };
 
-  // useEffect(() => {
-  //   console.log(navigator.onLine);
-  // }, [navigator.onLine]);
-
   return (
     <Container onClick={handleSubmit}>
       <HeaderCheckout />
