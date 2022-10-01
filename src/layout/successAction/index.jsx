@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import Navbar from "components/navbar";
-import { SuccessWrapper, Image } from "./styled";
-import success from "asset/images/Success.png";
-import { HeadText } from "components/texts";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react'
+import Navbar from 'components/navbar'
+import { SuccessWrapper, Image } from './styled'
+import success from 'asset/svg/SuccessImage.svg'
+import { HeadText } from 'components/texts'
+import { useNavigate } from 'react-router-dom'
 
 const Success = ({ title, paragraph }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const redirectTine = setTimeout(() => {
-      navigate("/");
-    }, 2000);
+      navigate('/')
+    }, 2000)
 
     return () => {
-      clearTimeout(redirectTine);
-    };
-  }, [navigate]);
+      clearTimeout(redirectTine)
+    }
+  }, [navigate])
 
   return (
     <>
@@ -32,7 +32,7 @@ const Success = ({ title, paragraph }) => {
         />
       </SuccessWrapper>
     </>
-  );
-};
+  )
+}
 
-export default Success;
+export default Success
