@@ -43,6 +43,7 @@ const Sidebar = () => {
   return (
     <SidebarWrapper
       width="100px"
+      key="sidebar"
       variants={sidebarVariants}
       animate={expanded ? `${expanded}` : ""}
     >

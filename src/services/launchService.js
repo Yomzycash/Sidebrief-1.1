@@ -5,7 +5,7 @@ export const launchApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.sidebrief.com/",
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().LaunchReducer.token;
+      const token = getState().UserDataReducer.userInfo.token;
       // If we have a token set in state, let's assume that we should be passing it.
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
@@ -31,7 +31,7 @@ export const launchApi = createApi({
     //create launch with registration country and registration type
     getStarted: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/start",
+        url: "/launch/start",
         method: "POST",
         body: values,
       }),
@@ -41,7 +41,7 @@ export const launchApi = createApi({
     // Add business names
     addBusinessNames: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/names/add",
+        url: "/launch/names/add",
         method: "POST",
         body: values,
       }),
@@ -51,7 +51,7 @@ export const launchApi = createApi({
     // Add business objectives
     addBusinessObjectives: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/objects/add",
+        url: "/launch/objects/add",
         method: "POST",
         body: values,
       }),
@@ -61,7 +61,7 @@ export const launchApi = createApi({
     // Add business address
     addBusinessAddress: builder.mutation({
       query: (values) => ({
-        url: "v1/launch/address/add",
+        url: "/launch/address/add",
         method: "POST",
         body: values,
       }),
@@ -71,7 +71,7 @@ export const launchApi = createApi({
     // Add Business Members
     addMembers: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/add",
+        url: "/launch/members/add",
         method: "POST",
         body: values,
       }),
@@ -81,7 +81,7 @@ export const launchApi = createApi({
     // Add Business Shareholders
     addShareHolder: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/shareholders/add",
+        url: "/launch/shareholders/add",
         method: "POST",
         body: values,
       }),
@@ -91,7 +91,7 @@ export const launchApi = createApi({
     // Add Business Directors
     addDirector: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/directors/add",
+        url: "/launch/directors/add",
         method: "POST",
         body: values,
       }),
@@ -101,7 +101,7 @@ export const launchApi = createApi({
     // Add Business Beneficiaries
     addBeneficiary: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/beneficialowners/add",
+        url: "/launch/beneficialowners/add",
         method: "POST",
         body: values,
       }),
@@ -111,7 +111,7 @@ export const launchApi = createApi({
     // Add MemberKYC
     addMemberKYC: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/addkyc",
+        url: "/launch/members/addkyc",
         method: "POST",
         body: values,
       }),
@@ -121,7 +121,7 @@ export const launchApi = createApi({
     // Delete business member
     deleteMember: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/remove",
+        url: "/launch/members/remove",
         method: "POST",
         body: values,
       }),
@@ -130,7 +130,7 @@ export const launchApi = createApi({
     // add beneficial
     addBeneficialKYC: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/beneficialowners/addkyc",
+        url: "/launch/beneficialowners/addkyc",
         method: "POST",
         body: values,
       }),
@@ -140,7 +140,7 @@ export const launchApi = createApi({
     // Delete business shareholder
     deleteShareholder: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/shareholders/remove",
+        url: "/launch/shareholders/remove",
         method: "POST",
         body: values,
       }),
@@ -150,7 +150,7 @@ export const launchApi = createApi({
     // Delete business director
     deleteDirector: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/remove",
+        url: "/launch/members/remove",
         method: "POST",
         body: values,
       }),
@@ -160,7 +160,7 @@ export const launchApi = createApi({
     // Delete a beneficiary
     deleteBeneficiary: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/beneficialowners/remove",
+        url: "/launch/beneficialowners/remove",
         method: "POST",
         body: values,
       }),
@@ -170,7 +170,7 @@ export const launchApi = createApi({
     // Update business member
     updateMember: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/members/update",
+        url: "/launch/members/update",
         method: "POST",
         body: values,
       }),
@@ -180,7 +180,7 @@ export const launchApi = createApi({
     // Update business shareholder
     updateShareholder: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/shareholders/update",
+        url: "/launch/shareholders/update",
         method: "POST",
         body: values,
       }),
@@ -190,7 +190,7 @@ export const launchApi = createApi({
     // Update business director
     updateDirector: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/directors/update",
+        url: "/launch/directors/update",
         method: "POST",
         body: values,
       }),
@@ -200,7 +200,7 @@ export const launchApi = createApi({
     // Update beneficiary owner
     updateBeneficiary: builder.mutation({
       query: (values) => ({
-        url: "/v1/launch/beneficialowners/update",
+        url: "/launch/beneficialowners/update",
         method: "POST",
         body: values,
       }),

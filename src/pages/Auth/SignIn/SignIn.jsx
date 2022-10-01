@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
-import { saveUserLoginInfo, saveUserToken } from "redux/Slices";
+import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -64,28 +64,21 @@ const SignIn = () => {
     let response = await loginNewUser(JSON.stringify(formData));
     let data = response?.data;
     let error = response?.error;
-    if (response) {
-      store.dispatch(saveUserLoginInfo);
-      store.dispatch(saveUserToken);
+    if (data) {
+      store.dispatch(saveUserInfo(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(data);
       toast.success(data.message);
-      localStorage.setItem("user", JSON.stringify(data.token));
-      if (data.verified === false) {
-        navigate(`${location.pathname}/verifyaccount`);
-      } else {
-        navigate("/dashboard");
-      }
+      navigate("/dashboard");
     } else if (error) {
-      toast.error(error.data.message);
-      console.log(error.data.message);
+      if (error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(error.data?.message);
+      }
+      console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-    }
-  }, [isSuccess]);
 
   return (
     <AuthLayout register={true}>
@@ -119,6 +112,7 @@ const SignIn = () => {
                 errorMessage={errors.Password?.message}
               />
               <motion.div
+                key="SignInNavLink"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 10, opacity: 0 }}

@@ -13,8 +13,15 @@ import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
+import { useSelector } from "react-redux";
 
 const BusinessRegistration = (props) => {
+  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  let firstName_raw = userInfo?.first_name;
+  let firstName =
+    firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
+  let newUser = userInfo?.newUser;
+
   const analytics = {
     label: "Registrations",
     status1: {
@@ -46,7 +53,11 @@ const BusinessRegistration = (props) => {
       <Body>
         <Main>
           <DashboardSection
-            title="Welcome back, Ayomide"
+            title={
+              newUser
+                ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
+                : `Welcome back${firstName ? ", " + firstName : ""}`
+            }
             BigTitle="true"
             nowrap
           >

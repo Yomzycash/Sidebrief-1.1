@@ -3,6 +3,9 @@ import AppRouter from "./routes/appRouter";
 import { createGlobalStyle } from "styled-components";
 import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { saveUserInfo } from "redux/Slices";
+import { store } from "redux/Store";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
@@ -13,18 +16,16 @@ body{
 `;
 
 function App() {
-  const token = useSelector((store) => store.LaunchReducer.token);
+  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
 
-  window.onbeforeunload = () => {
-    // localStorage.setItem("token", token);
-    console.log("unmount");
-  };
+  let localUserInfo = localStorage.getItem("userInfo");
+  useEffect(() => {
+    if (localUserInfo) {
+      store.dispatch(saveUserInfo(JSON.parse(localUserInfo)));
+      console.log(JSON.parse(localUserInfo));
+    }
+  }, [localUserInfo]);
 
-  window.onload = () => {
-    // let localToken = localStorage.getItem("token");
-    // console.log(localToken);
-    console.log("Token Set");
-  };
   return (
     <>
       <AnimatePresence exitBeforeEnter>

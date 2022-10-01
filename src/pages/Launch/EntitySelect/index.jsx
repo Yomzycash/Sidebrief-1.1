@@ -60,6 +60,7 @@ const EntitySelect = () => {
       registrationType: selectedItem.entityCode,
     };
     let launchResponse = await getStarted(requiredLaunchData);
+    console.log(launchResponse);
     if (launchResponse.data) {
       const launchCode = await launchResponse.data.launchCode;
       store.dispatch(setGeneratedLaunchCode(launchCode));

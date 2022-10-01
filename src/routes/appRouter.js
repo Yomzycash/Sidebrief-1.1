@@ -1,8 +1,3 @@
-import RewardsPage from "pages/Dashboard/User/Rewards";
-import AllRewards from "pages/Dashboard/User/Rewards/AllRewards";
-import MyRewards from "pages/Dashboard/User/Rewards/MyRewards";
-import RewardDetails from "pages/Dashboard/User/Rewards/RewardDetails";
-import ShareHolderKYC from "pages/Launch/ShareHolderKYC";
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "react-hot-toast";
 import {
@@ -12,17 +7,8 @@ import {
   Outlet,
 } from "react-router-dom";
 import Loader from "../components/loader/loader";
-import Compliance from "pages/Dashboard/User/Home/Compliance";
-import HiringAndPayroll from "pages/Dashboard/User/Home/HiringAndPayroll";
-import InetellectualAssets from "pages/Dashboard/User/Home/IntellectualAssets";
-import Taxes from "pages/Dashboard/User/Home/Taxes";
-import Rewards from "pages/Dashboard/User/Rewards";
-import PaymentPage from "pages/Launch/PaymentPage";
-import BeneficiaryReview from "pages/Launch/Review/BeneficiaryReview";
-import BusinessInformationReview from "pages/Launch/Review/BusinessInformationReview/Index";
-import DirectorReview from "pages/Launch/Review/DirectorReview/Index";
-import ShareholderReview from "pages/Launch/Review/ShareholderReview/Index";
-import DirectorKYC from "pages/Launch/DirectorsKYC";
+import { useSelector } from "react-redux";
+import Protected from "./Protected";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -60,7 +46,9 @@ const BusinessRegistration = lazy(() =>
 );
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
-const BusinessForm = lazy(() => import("pages/Launch/BusinessForm"));
+const BusinessForm = lazy(() =>
+  import("pages/Dashboard/User/Rewards/RewardDetails")
+);
 const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
 const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
 const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
@@ -68,22 +56,62 @@ const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
 const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
 const ReviewInformation = lazy(() => import("pages/Launch/Review"));
 const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
+const AllRewards = lazy(() =>
+  import("pages/Dashboard/User/Rewards/AllRewards")
+);
+const MyRewards = lazy(() => import("pages/Dashboard/User/Rewards/MyRewards"));
+const RewardDetails = lazy(() =>
+  import("pages/Dashboard/User/Rewards/RewardDetails")
+);
+const ShareHolderKYC = lazy(() => import("pages/Launch/ShareHolderKYC"));
+const Compliance = lazy(() => import("pages/Dashboard/User/Home/Compliance"));
+const HiringAndPayroll = lazy(() =>
+  import("pages/Dashboard/User/Home/HiringAndPayroll")
+);
+const InetellectualAssets = lazy(() =>
+  import("pages/Dashboard/User/Home/IntellectualAssets")
+);
+const Taxes = lazy(() => import("pages/Dashboard/User/Home/Taxes"));
+const Rewards = lazy(() => import("pages/Dashboard/User/Rewards"));
+const PaymentPage = lazy(() => import("pages/Launch/PaymentPage"));
+const BeneficiaryReview = lazy(() =>
+  import("pages/Launch/Review/BeneficiaryReview")
+);
+const BusinessInformationReview = lazy(() =>
+  import("pages/Launch/Review/BusinessInformationReview/Index")
+);
+const DirectorReview = lazy(() =>
+  import("pages/Launch/Review/DirectorReview/Index")
+);
+const ShareholderReview = lazy(() =>
+  import("pages/Launch/Review/ShareholderReview/Index")
+);
+const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 
 const AppRouter = () => {
+  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  let token = userInfo?.token;
+  let user_token = userInfo?.user_token;
+  const isLoggedIn = token?.length > 0 || user_token?.length > 0;
+
   return (
     <Suspense fallback={<Loader />}>
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
-            <Route index element={<Home />} />
+            <Route
+              index
+              element={
+                <Protected isVerified={isLoggedIn}>
+                  <Home />
+                </Protected>
+              }
+            />
             <Route path="register" element={<Outlet />}>
               <Route index element={<AccountType />} />
               <Route path="user" element={<Outlet />}>
                 <Route index element={<UserRegistration />} />
-                <Route path="verifyotp" element={<Outlet />}>
-                  <Route index element={<EmailVerify />} />
-                  <Route path="success" element={<EmailSuccess />} />
-                </Route>
+                <Route path="success" element={<EmailSuccess />} />
               </Route>
               <Route path="reseller" element={<Outlet />}>
                 <Route index element={<ResellerRegistration />} />
@@ -114,7 +142,15 @@ const AppRouter = () => {
                 </Route>
               </Route>
             </Route>
-            <Route path="dashboard" element={<UserDashboard />}>
+            <Route
+              path="dashboard"
+              element={
+                <Protected isVerified={isLoggedIn}>
+                  {" "}
+                  <UserDashboard />
+                </Protected>
+              }
+            >
               <Route index element={<BusinessRegistration />} />
               <Route
                 path="business-registration"
@@ -139,7 +175,14 @@ const AppRouter = () => {
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>
             <Route path="dashboard-staff" element={<StaffDashboard />}></Route>
-            <Route path="launch" element={<Outlet />}>
+            <Route
+              path="launch"
+              element={
+                <Protected isVerified={isLoggedIn}>
+                  <Outlet />
+                </Protected>
+              }
+            >
               <Route index element={<BusinessInfo />} />
               <Route path="business-info" element={<BusinessInfo />} />
               <Route path="entity" element={<EntitySelect />} />

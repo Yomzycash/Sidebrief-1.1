@@ -6,6 +6,7 @@ import styled from "styled-components";
 const TextsWithLink = (props) => {
   return (
     <TextContainer
+      key="TextWithLink"
       initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 10, opacity: 0 }}
@@ -17,7 +18,10 @@ const TextsWithLink = (props) => {
             {" "}
             {element.text}{" "}
             <Link to={element.link.to} style={{ textDecoration: "none" }}>
-              <motion.span whileHover={{ color: "#03769a" }}>
+              <motion.span
+                key="TextWithLinkSpan"
+                whileHover={{ color: "#03769a" }}
+              >
                 {element.link.text}
               </motion.span>
             </Link>

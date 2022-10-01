@@ -39,37 +39,26 @@ import { save, load } from "redux-localstorage-simple";
 // setupListeners(store.dispatch);
 
 // export const persistor = persistStore(store);
-const rootReducer = combineReducers({
-  [authApi.reducerPath]: authApi.reducer,
-  [launchApi.reducerPath]: launchApi.reducer,
-  [RewardApi.reducerPath]: RewardApi.reducer,
-  UserDataReducer: UserDataReducer,
-  LayoutInfo: LayoutInfoReducer,
-  RegisteredBusinessesInfo: RegisteredBusinessesReducers,
-  LaunchReducer: LaunchReducer,
-  RewardReducer: RewardReducer,
-});
-
 // const createStoreWithMiddleWare = applyMiddleware(save())(configureStore);
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    [authApi.reducerPath]: authApi.reducer,
+    [launchApi.reducerPath]: launchApi.reducer,
+    [RewardApi.reducerPath]: RewardApi.reducer,
+    UserDataReducer: UserDataReducer,
+    LayoutInfo: LayoutInfoReducer,
+    RegisteredBusinessesInfo: RegisteredBusinessesReducers,
+    LaunchReducer: LaunchReducer,
+    RewardReducer: RewardReducer,
+  },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
       authApi.middleware,
       launchApi.middleware,
       RewardApi.middleware,
-      save({
-        ignoreStates: [
-          "launchApi.reducerPath",
-          "authApi.reducerPath",
-          "RewardApi.reducerPath",
-        ],
-      }),
     ]),
-  // preloadedState: load(),
 });
-// export const store = createStoreWithMiddleWare(rootReducer(), load());
 
 setupListeners(store.dispatch);

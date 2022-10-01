@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewUserMutation } from "services/authService";
 import { store } from "redux/Store";
-import { saveUserInfo } from "redux/Slices";
+import { saveUserInfo, saveUserToken } from "redux/Slices";
 import { genderOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
 import { ThreeDots } from "react-loading-icons";
@@ -66,21 +66,19 @@ const UserRegistration = () => {
     console.log(data);
     let error = response?.error;
     if (data) {
-      localStorage.setItem("token", data.token);
       store.dispatch(saveUserInfo(data));
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ ...data, newUser: true })
+      );
       console.log(data.message);
       toast.success(data.message);
-      navigate(`${location.pathname}/verifyotp`);
+      navigate("/dashboard");
     } else if (error) {
       console.log(error.data.message);
       toast.error(error.data.message);
     }
   };
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-    }
-  }, [isSuccess]);
 
   const correctFormDate = (formData) => {
     let data = formData;

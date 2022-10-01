@@ -15,6 +15,7 @@ const HeadText = ({
 }) => {
   return (
     <HeadTextCont
+      key="HeadText"
       align={align}
       justify={justify}
       margintop={margintop}

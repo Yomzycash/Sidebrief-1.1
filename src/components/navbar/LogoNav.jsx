@@ -22,6 +22,7 @@ const LogoNav = ({
       img_maxwidth={img_maxwidth}
       stick={stick}
       nav_sticked={nav_sticked}
+      key="LogoNav"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

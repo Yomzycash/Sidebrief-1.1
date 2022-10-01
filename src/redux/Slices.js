@@ -10,7 +10,6 @@ const UserData = createSlice({
     userLoginInfo: {},
     partnerLoginInfo: {},
     resellerLoginInfo: {},
-    loginToken: "",
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -31,9 +30,6 @@ const UserData = createSlice({
     saveResellerLoginInfo: (state, action) => {
       state.loginIfo = action.payload;
     },
-    saveUserToken: (state, action) => {
-      state.loginToken = action.payload;
-    },
   },
 });
 export const UserDataReducer = UserData.reducer;
@@ -45,7 +41,6 @@ export const {
   saveUserLoginInfo,
   savePartnerLoginInfo,
   saveResellerLoginInfo,
-  saveUserToken,
 } = UserData.actions;
 
 // This slice will hold all glabally needed layout and similar information
@@ -116,7 +111,6 @@ const launchApplicationInfo = createSlice({
   name: "launchApplication",
   initialState: {
     // token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
-    token: "dfsd",
     businessNames: [],
     selectedCountry: "",
     countryISO: "",
@@ -134,9 +128,6 @@ const launchApplicationInfo = createSlice({
     shareholderDocs: [],
   },
   reducers: {
-    setLaunchCode: (state, action) => {
-      state.token = action.payload;
-    },
     setSelectedBusinessNames: (state, action) => {
       state.businessNames = action.payload;
     },
@@ -197,7 +188,6 @@ const launchApplicationInfo = createSlice({
 
 export const LaunchReducer = launchApplicationInfo.reducer;
 export const {
-  setLaunchCode,
   setSelectedBusinessNames,
   setCountry,
   setCountryISO,
