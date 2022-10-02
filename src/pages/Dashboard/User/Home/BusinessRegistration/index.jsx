@@ -11,10 +11,13 @@ import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
 
 const BusinessRegistration = (props) => {
+  const { state } = useLocation();
+  const { firstName, lastName, image } = state;
+
   const analytics = {
     label: "Registrations",
     status1: {
@@ -46,7 +49,7 @@ const BusinessRegistration = (props) => {
       <Body>
         <Main>
           <DashboardSection
-            title="Welcome back, Ayomide"
+            title={`Welcome back, ${firstName} ${lastName}`}
             BigTitle="true"
             nowrap
           >

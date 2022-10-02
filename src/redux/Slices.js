@@ -116,7 +116,7 @@ const launchApplicationInfo = createSlice({
   name: "launchApplication",
   initialState: {
     token:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMzlhMGIxZTg4ZWRjZGZjNjcwMjVkYSIsImlhdCI6MTY2NDcyMTA3MywiZXhwIjoxNjY1OTMwNjczfQ.lYcS1Tzc0WkOJ-7NXFOIkrn9G12jrreS-3LlpGs5ICg",
     businessNames: [],
     selectedCountry: "",
     countryISO: "",

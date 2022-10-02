@@ -70,11 +70,17 @@ const SignIn = () => {
       console.log(data);
       toast.success(data.message);
       localStorage.setItem("user", JSON.stringify(data.token));
-      if (data.verified === false) {
-        navigate(`${location.pathname}/verifyaccount`);
-      } else {
-        navigate("/dashboard");
-      }
+      // if (data.verified === false) {
+      //   toast.success("Kindly verify your account");
+      // } else {
+      navigate("/dashboard", {
+        state: {
+          firstName: data.first_name,
+          lastName: data.last_name,
+          image: data.picture,
+        },
+      });
+      // }
     } else if (error) {
       toast.error(error.data.message);
       console.log(error.data.message);
