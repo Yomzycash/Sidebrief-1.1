@@ -5,9 +5,9 @@ export const launchApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.sidebrief.com/",
     prepareHeaders: (headers, { getState }) => {
-      // const token = getState().UserDataReducer.userInfo.token;
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMzlhMGIxZTg4ZWRjZGZjNjcwMjVkYSIsImlhdCI6MTY2NDcyMTA3MywiZXhwIjoxNjY1OTMwNjczfQ.lYcS1Tzc0WkOJ-7NXFOIkrn9G12jrreS-3LlpGs5ICg";
+      const token = getState().UserDataReducer.userInfo.token;
+      // const token =
+      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMzg2MTViNDkyNzJlYjA2NjNjNWI5YiIsImlhdCI6MTY2NDczOTc2MiwiZXhwIjoxNjY1OTQ5MzYyfQ.Ap5TmC_WE-IjoX2pPJqYtaHcLmrfwBb3LlXSziJ7z5k";
       // If we have a token set in state, let's assume that we should be passing it.
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
@@ -233,3 +233,7 @@ export const {
   useUpdateDirectorMutation,
   useUpdateBeneficiaryMutation,
 } = launchApi;
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+//   .eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ
+//   .O0AiYvD_MybRDhYmis03OdDOnvexu4fI9 - hv8HlwETg
