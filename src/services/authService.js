@@ -74,6 +74,58 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+
+    //Reset Password
+    sendResetPasswordCode: builder.mutation({
+      query: (values) => ({
+        url: "/sendresetpasswordcode",
+        method: "POST",
+        body: values,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    //Validate Code
+    validateResetCode: builder.mutation({
+      query: (values) => ({
+        url: "/validateresetcode",
+        method: "POST",
+        body: values,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    //Change Password
+    changePassword: builder.mutation({
+      query: (values) => ({
+        url: "/changepassword",
+        method: "POST",
+        body: values,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    //Resend Verification Email
+    sendVerification: builder.mutation({
+      query: (values) => ({
+        url: "/sendverification",
+        method: "POST",
+        body: values,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -84,4 +136,8 @@ export const {
   useRegisterNewResellerMutation,
   useLoginNewUserMutation,
   useActivateUserMutation,
+  useSendResetPasswordCodeMutation,
+  useValidateResetCodeMutation,
+  useChangePasswordMutation,
+  useSendVerificationMutation,
 } = authApi;

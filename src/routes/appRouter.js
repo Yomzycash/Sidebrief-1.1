@@ -9,6 +9,7 @@ import {
 import Loader from "../components/loader/loader";
 import { useSelector } from "react-redux";
 import Protected from "./Protected";
+import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -46,9 +47,7 @@ const BusinessRegistration = lazy(() =>
 );
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
-const BusinessForm = lazy(() =>
-  import("pages/Dashboard/User/Rewards/RewardDetails")
-);
+const BusinessForm = lazy(() => import("pages/Launch/BusinessForm"));
 const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
 const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
 const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
@@ -137,10 +136,16 @@ const AppRouter = () => {
               }
             >
               <Route index element={<BusinessRegistration />} />
+
               <Route
                 path="business-registration"
                 element={<BusinessRegistration />}
               />
+              {/* <Route path="application" element={<Application />}></Route>
+              <Route path="bank-account" element={<BankAccount />}></Route>
+              <Route path="settings" element={<Settings />}></Route>
+              <Route path="resources" element={<Resources />}></Route>
+              <Route path="business" element={<Business />}></Route> */}
               <Route path="compliance" element={<Compliance />}></Route>
               <Route
                 path="hiring-and-payroll"
@@ -183,14 +188,24 @@ const AppRouter = () => {
               {/* review path */}
 
               <Route
-                path="review-beneficiary"
+                path="/launch/review-beneficiary"
                 element={<BeneficiaryReview />}
               />
-              <Route path="review" element={<BusinessInformationReview />} />
-              <Route path="review-director" element={<DirectorReview />} />
               <Route
-                path="review-shareholder"
+                path="/launch/review"
+                element={<BusinessInformationReview />}
+              />
+              <Route
+                path="/launch/review-director"
+                element={<DirectorReview />}
+              />
+              <Route
+                path="/launch/review-shareholder"
                 element={<ShareholderReview />}
+              />
+              <Route
+                path="/launch/review-success"
+                element={<ApplicationSuccessPage />}
               />
 
               <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />

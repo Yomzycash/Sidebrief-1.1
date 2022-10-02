@@ -29,6 +29,7 @@ const ShareHolderKYC = () => {
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
+
   const [documentContainer, setDocumentContainer] = useState(
     shareHoldersLaunchInfo.map((shareholder) => {
       return {
@@ -42,6 +43,7 @@ const ShareHolderKYC = () => {
       };
     })
   );
+
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
@@ -66,7 +68,7 @@ const ShareHolderKYC = () => {
     setType(uploadedFile.type);
     setSize(uploadedFile.size);
 
-    let f = e.target.name;
+    let fName = e.target.name;
     let value = e.target.value;
 
     setDocumentContainer((prev) => {
@@ -78,7 +80,7 @@ const ShareHolderKYC = () => {
         ...updatedState[index],
         files: {
           ...updatedState[index].files,
-          [f]: value,
+          [fName]: value,
         },
       };
 
@@ -99,7 +101,7 @@ const ShareHolderKYC = () => {
         launchCode: generatedLaunchCode,
         memberCode: requiredMemberCode,
         memberKYC: {
-          documentType: uploadedFile.type,
+          documentType: fName,
           documentLink: res.url,
         },
       };

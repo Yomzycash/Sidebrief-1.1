@@ -16,16 +16,11 @@ import { AddMore, Body, Bottom, Container } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
-import {
-  checkInfoBeneficiarySchema,
-  checkInfoDirectorSchema,
-} from "utils/config";
+import { checkInfoBeneficiarySchema } from "utils/config";
 import {
   useAddBeneficiaryMutation,
   useDeleteBeneficiaryMutation,
-  useDeleteMemberMutation,
   useUpdateBeneficiaryMutation,
-  useUpdateMemberMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
 

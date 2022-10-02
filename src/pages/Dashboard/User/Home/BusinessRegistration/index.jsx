@@ -11,7 +11,7 @@ import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery } from "services/RewardService";

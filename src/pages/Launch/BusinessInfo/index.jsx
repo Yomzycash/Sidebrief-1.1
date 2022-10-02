@@ -105,7 +105,7 @@ const BusinessInfo = () => {
 
   return (
     <Container onClick={handleSubmit}>
-      <HeaderCheckout />
+      <HeaderCheckout getStarted />
 
       <Body>
         <CheckoutSection

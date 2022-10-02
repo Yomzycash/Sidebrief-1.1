@@ -46,8 +46,6 @@ const EntitySelect = () => {
 
   // Set to state all entities of the specified country
   useEffect(() => {
-    console.log(error);
-    console.log(data);
     setEntities(data);
   }, [data]);
 
@@ -62,7 +60,6 @@ const EntitySelect = () => {
       registrationType: selectedItem.entityCode,
     };
     let launchResponse = await getStarted(requiredLaunchData);
-    console.log(launchResponse);
     if (launchResponse.data) {
       const launchCode = await launchResponse.data.launchCode;
       store.dispatch(setGeneratedLaunchCode(launchCode));
@@ -111,6 +108,11 @@ const EntitySelect = () => {
     }
   };
 
+  const handlePrev = () => {
+    navigate(-1);
+    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
+  };
+
   return (
     <Container>
       <Header>
@@ -134,6 +136,15 @@ const EntitySelect = () => {
             ))}
           </EntityCardsWrapper>
         </CheckoutSection>
+
+        <Bottom>
+          <CheckoutController
+            backText={"Previous"}
+            backAction={handlePrev}
+            forwardSubmit={true}
+            entity
+          />
+        </Bottom>
       </Body>
     </Container>
   );

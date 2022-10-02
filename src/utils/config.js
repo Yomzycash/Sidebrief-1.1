@@ -7,13 +7,12 @@ import {
   HiCog,
   HiBriefcase,
 } from "react-icons/hi";
+import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 
 import pdf from "../asset/images/pdf.png";
 import png from "../asset/images/png.png";
 import jpg from "../asset/images/jpg.png";
 import doc from "../asset/images/doc.png";
-
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
@@ -164,19 +163,19 @@ export const sidebarLink = [
     id: 2,
     title: "Application",
     icon: HiDocumentText,
-    path: "/",
+    path: "/dashboard/application",
   },
   {
     id: 3,
     title: "Business",
     icon: HiBriefcase,
-    path: "/",
+    path: "/dashboard/business",
   },
   {
     id: 4,
     title: "Bank Accounts",
     icon: HiOutlineLibrary,
-    path: "/dashboard/rewards/my-rewards",
+    path: "/dashboard/bank-account",
   },
   {
     id: 5,
@@ -188,13 +187,13 @@ export const sidebarLink = [
     id: 6,
     title: "Resources",
     icon: HiDocumentText,
-    path: "/",
+    path: "/dashboard/resources",
   },
   {
     id: 7,
     title: "Settings",
     icon: HiCog,
-    path: "/",
+    path: "/dashboard/settings",
   },
 ];
 

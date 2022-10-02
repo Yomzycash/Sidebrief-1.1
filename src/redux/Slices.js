@@ -110,7 +110,6 @@ export const { setBusinessFormInfo } = RegisteredBusinessesInfo.actions;
 const launchApplicationInfo = createSlice({
   name: "launchApplication",
   initialState: {
-    // token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ.O0AiYvD_MybRDhYmis03OdDOnvexu4fI9-hv8HlwETg",
     businessNames: [],
     selectedCountry: "",
     countryISO: "",
@@ -126,6 +125,8 @@ const launchApplicationInfo = createSlice({
     generatedBeneficialOwnerCode: "",
     editShareholderInfo: [],
     shareholderDocs: [],
+    directorDocs: [],
+    beneficiaryDocs: [],
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -183,6 +184,12 @@ const launchApplicationInfo = createSlice({
     setShareholderDocs: (state, action) => {
       state.shareholderDocs = action.payload;
     },
+    setDirectorDocs: (state, action) => {
+      state.directorDocs = action.payload;
+    },
+    setBeneficiaryDocs: (state, action) => {
+      state.beneficiaryDocs = action.payload;
+    },
   },
 });
 
@@ -204,6 +211,8 @@ export const {
   setGeneratedBeneficialOwnerCode,
   setUploadeddocs,
   setShareholderDocs,
+  setDirectorDocs,
+  setBeneficiaryDocs,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 const ApplicationSuccessPage = () => {
   const navigate = useNavigate()
   const handleNavigate = () => {
-    navigate('/')
+    navigate('')
   }
 
   return (
