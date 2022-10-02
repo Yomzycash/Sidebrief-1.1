@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import {
   BrowserRouter as Router,
@@ -89,10 +89,10 @@ const ShareholderReview = lazy(() =>
 const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 
 const AppRouter = () => {
-  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
-  const isLoggedIn = token?.length > 0 || user_token?.length > 0;
+  const isLoggedIn = token?.length > 0 || user_token > 0;
 
   return (
     <Suspense fallback={<Loader />}>
@@ -109,24 +109,9 @@ const AppRouter = () => {
             />
             <Route path="register" element={<Outlet />}>
               <Route index element={<AccountType />} />
-              <Route path="user" element={<Outlet />}>
-                <Route index element={<UserRegistration />} />
-                <Route path="success" element={<EmailSuccess />} />
-              </Route>
-              <Route path="reseller" element={<Outlet />}>
-                <Route index element={<ResellerRegistration />} />
-                <Route path="verifyotp" element={<Outlet />}>
-                  <Route index element={<EmailVerify />} />
-                  <Route path="success" element={<EmailSuccess />} />
-                </Route>
-              </Route>
-              <Route path="partner" element={<Outlet />}>
-                <Route index element={<PartnerRegistration />} />
-                <Route path="verifyotp" element={<Outlet />}>
-                  <Route index element={<EmailVerify />} />
-                  <Route path="success" element={<EmailSuccess />} />
-                </Route>
-              </Route>
+              <Route path="user" element={<UserRegistration />} />
+              <Route path="reseller" element={<ResellerRegistration />} />
+              <Route path="partner" element={<PartnerRegistration />} />
             </Route>
             <Route path="login" element={<Outlet />}>
               <Route index element={<SignIn />} />
@@ -178,9 +163,9 @@ const AppRouter = () => {
             <Route
               path="launch"
               element={
-                <Protected isVerified={isLoggedIn}>
-                  <Outlet />
-                </Protected>
+                // <Protected isVerified={loginStatus}>
+                <Outlet />
+                // </Protected>
               }
             >
               <Route index element={<BusinessInfo />} />

@@ -46,6 +46,7 @@ const EntitySelect = () => {
 
   // Set to state all entities of the specified country
   useEffect(() => {
+    console.log(error);
     setEntities(data);
   }, [data]);
 

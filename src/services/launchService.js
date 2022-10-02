@@ -5,7 +5,9 @@ export const launchApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://api.sidebrief.com/",
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().UserDataReducer.userInfo.token;
+      // const token = getState().UserDataReducer.userInfo.token;
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMzlhMGIxZTg4ZWRjZGZjNjcwMjVkYSIsImlhdCI6MTY2NDcyMTA3MywiZXhwIjoxNjY1OTMwNjczfQ.lYcS1Tzc0WkOJ-7NXFOIkrn9G12jrreS-3LlpGs5ICg";
       // If we have a token set in state, let's assume that we should be passing it.
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
