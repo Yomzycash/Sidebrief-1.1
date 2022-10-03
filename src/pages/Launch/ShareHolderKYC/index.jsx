@@ -36,9 +36,18 @@ const ShareHolderKYC = () => {
         name: shareholder.memberName,
         code: shareholder.shareholdingCode,
         files: {
-          government: "",
-          proof: "",
-          passport: "",
+          government: {
+            fileName: "",
+            filetype: "",
+          },
+          proof: {
+            fileName: "",
+            filetype: "",
+          },
+          passport: {
+            fileName: "",
+            filetype: "",
+          },
         },
       };
     })
@@ -97,23 +106,23 @@ const ShareHolderKYC = () => {
       console.log(res);
       console.log(res.url);
 
-      const requiredAddMemberData = {
-        launchCode: generatedLaunchCode,
-        memberCode: requiredMemberCode,
-        memberKYC: {
-          documentType: fName,
-          documentLink: res.url,
-        },
-      };
-      console.log(requiredAddMemberData);
-      const response = await addMemberKYC(requiredAddMemberData);
-      console.log(response);
-      if (response.data) {
-        toast.success("Document uploaded successfully");
-      } else if (response.error) {
-        console.log(response.error?.data.message);
-        toast.error(response.error?.data.message);
-      }
+      // const requiredAddMemberData = {
+      //   launchCode: generatedLaunchCode,
+      //   memberCode: requiredMemberCode,
+      //   memberKYC: {
+      //     documentType: fName,
+      //     documentLink: res.url,
+      //   },
+      // };
+      // console.log(requiredAddMemberData);
+      // const response = await addMemberKYC(requiredAddMemberData);
+      // console.log(response);
+      // if (response.data) {
+      //   toast.success("Document uploaded successfully");
+      // } else if (response.error) {
+      //   console.log(response.error?.data.message);
+      //   toast.error(response.error?.data.message);
+      // }
     }
   };
 
@@ -121,12 +130,8 @@ const ShareHolderKYC = () => {
   store.dispatch(setShareholderDocs(documentContainer));
 
   const handleNext = () => {
-    if (!uploadedFileDetails) {
-      setError("File is required");
-    } else {
-      navigate("/launch/directors-kyc");
-      store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
-    }
+    navigate("/launch/directors-kyc");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
   };
 
   const handleRemove = () => {
@@ -154,7 +159,8 @@ const ShareHolderKYC = () => {
                     TopText={"Government Issued ID"}
                     name="government"
                     onChange={(e) => handleChange(e, shareholder.code)}
-                    // type={type}
+                    type={type}
+                    fileName={fileName}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={
@@ -166,7 +172,8 @@ const ShareHolderKYC = () => {
                     TopText={"Proof of Home Address"}
                     name="proof"
                     onChange={(e) => handleChange(e, shareholder.code)}
-                    // type={type}
+                    type={type}
+                    fileName={fileName}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={
@@ -178,7 +185,8 @@ const ShareHolderKYC = () => {
                     TopText={"Passport Photograph"}
                     name="passport"
                     onChange={(e) => handleChange(e, shareholder.code)}
-                    // type={type}
+                    type={type}
+                    fileName={fileName}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={"Kindly ensure image is not larger than 3MB"}

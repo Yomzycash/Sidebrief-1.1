@@ -37,7 +37,8 @@ const Verify = ({ title, paragraph }) => {
     const resData = response?.data;
     const error = response?.error;
 
-    if (response) {
+    console.log(response);
+    if (resData) {
       console.log(resData);
       toast.success(resData.message);
       navigate(`${location.pathname}/resetpassword`, {
