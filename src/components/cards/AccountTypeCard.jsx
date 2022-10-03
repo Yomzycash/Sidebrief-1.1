@@ -3,19 +3,24 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const AccountTypeCard = ({ title, body, to }) => {
+const AccountTypeCard = ({ title, body, to, $shadow }) => {
   return (
     <NavLink to={to} style={{ textDecoration: "none" }}>
       <AccountType
         to={to}
-        initial={{ y: 20, opacity: 0 }}
+        key="AccountType"
+        initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 20, opacity: 0 }}
+        exit={{ y: 10, opacity: 0 }}
         transition={{ duration: 0.5 }}
         whileHover={{
           scale: 1.07,
-          transition: { duration: 0.2 },
+          border: "1px solid #00A2D4",
+          boxShadow:
+            "0px 20px 25px -5px #9596971a, 0px 10px 10px -5px #9596970a",
+          transition: { duration: 0.3 },
         }}
+        $shadow={$shadow}
       >
         <Title>{title}</Title>
         <Body> {body}</Body>
@@ -32,12 +37,19 @@ const AccountType = styled(motion.div)`
   justify-content: space-around;
   align-items: flex-start;
   border: 1px solid var(--BorderGrey);
-  box-shadow: 0px 20px 25px -5px #9596971a, 0px 10px 10px -5px #9596970a;
+  /* box-shadow: ${({ $shadow }) =>
+    $shadow
+      ? "0px 20px 25px -5px #9596971a, 0px 10px 10px -5px #9596970a"
+      : "0 0 0 black"}; */
+  box-shadow: 0 0 0 black;
+  filter: ${({ $shadow }) =>
+    $shadow ? "drop-shadow(0px 9px 12px #ebebeba1)" : ""};
   border-radius: 1rem;
   max-width: 25rem;
   padding: 2rem 1rem;
   gap: 0.5rem;
   height: 144px;
+  background-color: white;
   @media screen and (max-width: 630px) {
     max-width: 100%;
   }

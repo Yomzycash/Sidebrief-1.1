@@ -8,14 +8,14 @@ import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
 import { loginSchema } from "utils/config";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
-import { saveUserLoginInfo } from "redux/Slices";
+import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -29,6 +29,7 @@ const SignIn = () => {
   const [loginNewUser, { isLoading, isSuccess }] = useLoginNewUserMutation();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const TestRef = useRef();
 
@@ -63,22 +64,21 @@ const SignIn = () => {
     let response = await loginNewUser(JSON.stringify(formData));
     let data = response?.data;
     let error = response?.error;
-    if (response) {
-      store.dispatch(saveUserLoginInfo);
+    if (data) {
+      store.dispatch(saveUserInfo(data));
+      localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(data);
       toast.success(data.message);
       navigate("/dashboard");
     } else if (error) {
-      toast.error(error.data.message);
-      console.log(error.data.message);
+      if (error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(error.data?.message);
+      }
+      console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-    }
-  }, [isSuccess]);
 
   return (
     <AuthLayout register={true}>
@@ -112,6 +112,7 @@ const SignIn = () => {
                 errorMessage={errors.Password?.message}
               />
               <motion.div
+                key="SignInNavLink"
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 10, opacity: 0 }}

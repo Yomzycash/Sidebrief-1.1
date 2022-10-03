@@ -1,108 +1,103 @@
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import { CheckoutController } from 'containers'
-import { CheckoutFormInfo, CheckoutSection } from 'containers/Checkout'
-import LaunchFormContainer from 'containers/Checkout/CheckoutFormContainer/LaunchFormContainer'
-import LaunchPrimaryContainer from 'containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer'
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import { CheckoutController } from "containers";
+import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
+import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
+import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   setBeneficiariesLaunchInfo,
   setCheckoutProgress,
   setDirectorsLaunchInfo,
-} from 'redux/Slices'
-import { store } from 'redux/Store'
-import { AddMore, Body, Bottom, Container } from '../styled'
-import { ReactComponent as AddIcon } from 'asset/Launch/Add.svg'
-import { Dialog } from '@mui/material'
-import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
-import {
-  checkInfoBeneficiarySchema,
-  checkInfoDirectorSchema,
-} from 'utils/config'
+} from "redux/Slices";
+import { store } from "redux/Store";
+import { AddMore, Body, Bottom, Container } from "../styled";
+import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
+import { Dialog } from "@mui/material";
+import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
+import { checkInfoBeneficiarySchema } from "utils/config";
 import {
   useAddBeneficiaryMutation,
   useDeleteBeneficiaryMutation,
-  useDeleteMemberMutation,
   useUpdateBeneficiaryMutation,
-  useUpdateMemberMutation,
-} from 'services/launchService'
-import toast from 'react-hot-toast'
+} from "services/launchService";
+import toast from "react-hot-toast";
 
 const DirectorsInfo = () => {
-  const navigate = useNavigate()
-  const [openModal, setOpenModal] = useState(false)
-  const [cardAction, setCardAction] = useState()
-  const [selectedToEdit, setSelectedToEdit] = useState({})
-  const [selectedToDelete, setSelectedToDelete] = useState({})
-  const [useSidebriefBeneficiaries, setUseSidebriefBeneficiaries] = useState(
-    false,
-  )
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [cardAction, setCardAction] = useState();
+  const [selectedToEdit, setSelectedToEdit] = useState({});
+  const [selectedToDelete, setSelectedToDelete] = useState({});
+  const [useSidebriefBeneficiaries, setUseSidebriefBeneficiaries] =
+    useState(false);
 
   // Endpont hooks
-  const [addBeneficiary, addState] = useAddBeneficiaryMutation()
-  const [deleteBeneficiary, deleteState] = useDeleteBeneficiaryMutation()
-  const [updateBeneficiary, updateState] = useUpdateBeneficiaryMutation()
+  const [addBeneficiary, addState] = useAddBeneficiaryMutation();
+  const [deleteBeneficiary, deleteState] = useDeleteBeneficiaryMutation();
+  const [updateBeneficiary, updateState] = useUpdateBeneficiaryMutation();
 
   // This gets the beneficiary information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
-  const { beneficiariesLaunchInfo, generatedLaunchCode } = LaunchApplicationInfo
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  const { beneficiariesLaunchInfo, generatedLaunchCode } =
+    LaunchApplicationInfo;
 
   const handleNext = () => {
-    navigate('/launch/review-shareholder')
-    store.dispatch(setCheckoutProgress({ total: 10, current: 5 })) // total- total pages and current - current page
-  }
+    navigate("/launch/sharehholders-kyc");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 8 })); // total- total pages and current - current page
+  };
 
   const handlePrev = () => {
-    navigate(-1)
-    store.dispatch(setCheckoutProgress({ total: 10, current: 4 })) // total- total pages and current - current page
-  }
+    navigate(-1);
+    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
+  };
 
   const handleCheckbox = (checked) => {
-    setUseSidebriefBeneficiaries(checked)
-  }
+    setUseSidebriefBeneficiaries(checked);
+  };
 
   const handleAddMore = () => {
-    setCardAction('add')
-    setOpenModal(true)
-  }
+    setCardAction("add");
+    setOpenModal(true);
+  };
   const handleModalClose = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   const handleEdit = (beneficiary) => {
-    setCardAction('edit')
-    setOpenModal(true)
-    setSelectedToEdit(beneficiary)
-  }
+    setCardAction("edit");
+    setOpenModal(true);
+    setSelectedToEdit(beneficiary);
+  };
 
   // This deletes a beneficiary's informataion
   const handleDelete = async (beneficiary) => {
-    setSelectedToDelete(beneficiary)
+    setSelectedToDelete(beneficiary);
     const requiredDeleteData = {
       launchCode: generatedLaunchCode,
       beneficialOwnerCode: beneficiary.beneficialOwnerCode,
-    }
-    let deleteResponse = await deleteBeneficiary(requiredDeleteData)
-    console.log(deleteResponse)
+    };
+    let deleteResponse = await deleteBeneficiary(requiredDeleteData);
+    console.log(deleteResponse);
     if (deleteResponse.data) {
       // This filters and set the filtered beneficiaries info to the store
       let filteredBeneficiaries = beneficiariesLaunchInfo.filter(
         (beneficiary) =>
           beneficiary.beneficialOwnerCode !==
-          requiredDeleteData.beneficialOwnerCode,
-      )
+          requiredDeleteData.beneficialOwnerCode
+      );
       store.dispatch(
-        setBeneficiariesLaunchInfo({ info: filteredBeneficiaries }),
-      )
+        setBeneficiariesLaunchInfo({ info: filteredBeneficiaries })
+      );
     } else {
-      if (deleteResponse.error.status === 'FETCH_ERROR') {
-        toast.error('Please check your internet connection')
+      if (deleteResponse.error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
       } else {
-        toast.error(deleteResponse.error.data.message)
+        toast.error(deleteResponse.error.data.message);
       }
     }
-  }
+  };
 
   // This adds a new beneficiary
   const handleBeneficiaryAdd = async (formData, launchCode) => {
@@ -115,35 +110,35 @@ const DirectorsInfo = () => {
         beneficialOwnerOccupation: formData.occupation,
         beneficialOwnershipStake: formData.stake,
       },
-    }
+    };
 
-    let addBeneficiaryResponse = await addBeneficiary(requiredDirectorData)
-    console.log(addBeneficiaryResponse)
+    let addBeneficiaryResponse = await addBeneficiary(requiredDirectorData);
+    console.log(addBeneficiaryResponse);
     if (addBeneficiaryResponse.data) {
       // Get the information of all added beneficiaries
       const allBeneficiaries = Object.entries(
-        addBeneficiaryResponse.data.businessBeneficialOwners,
-      )
+        addBeneficiaryResponse.data.businessBeneficialOwners
+      );
       // Get the information of the just added beneficiary
-      const beneficiaryInfo = allBeneficiaries[allBeneficiaries.length - 1][1]
+      const beneficiaryInfo = allBeneficiaries[allBeneficiaries.length - 1][1];
       // Merge the member information and the beneficiary information of the just added beneficiary
       // Set the combined information to store
       store.dispatch(
-        setBeneficiariesLaunchInfo({ info: beneficiaryInfo, type: 'add' }),
-      )
-      setOpenModal(false)
-      console.log(addBeneficiaryResponse)
+        setBeneficiariesLaunchInfo({ info: beneficiaryInfo, type: "add" })
+      );
+      setOpenModal(false);
+      console.log(addBeneficiaryResponse);
     } else {
-      console.log(addBeneficiaryResponse.error)
-      toast.error(addBeneficiaryResponse.error.data.message)
+      console.log(addBeneficiaryResponse.error);
+      toast.error(addBeneficiaryResponse.error.data.message);
     }
-  }
+  };
 
   // This updates the beneficiary's information
   const handleBeneficiaryUpdate = async (
     formData,
     launchCode,
-    selectedBeneficiary,
+    selectedBeneficiary
   ) => {
     const requiredBeneficiaryUpdateData = {
       launchCode: launchCode,
@@ -154,35 +149,37 @@ const DirectorsInfo = () => {
         beneficialOwnerPhone: formData.phone,
         beneficialOwnershipStake: formData.stake,
       },
-    }
+    };
     // Responses from the backend
     let beneficiaryUpdateResponse = await updateBeneficiary(
-      requiredBeneficiaryUpdateData,
-    )
-    console.log(beneficiaryUpdateResponse)
+      requiredBeneficiaryUpdateData
+    );
+    console.log(beneficiaryUpdateResponse);
     // The data from the response got from the backend
     let beneficiariesUpdatedData =
-      beneficiaryUpdateResponse?.data?.businessBeneficialOwners
-    console.log(beneficiariesUpdatedData)
+      beneficiaryUpdateResponse?.data?.businessBeneficialOwners;
+    console.log(beneficiariesUpdatedData);
     // Executes if data is returned from the backend
     if (beneficiariesUpdatedData) {
-      store.dispatch(setDirectorsLaunchInfo({ info: beneficiariesUpdatedData }))
-      handleModalClose()
+      store.dispatch(
+        setDirectorsLaunchInfo({ info: beneficiariesUpdatedData })
+      );
+      handleModalClose();
     } else {
-      if (beneficiaryUpdateResponse.error.status === 'FETCH_ERROR') {
-        toast.error('Please check your internet connection')
+      if (beneficiaryUpdateResponse.error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
       } else {
-        toast.error(beneficiaryUpdateResponse.error.data.message)
+        toast.error(beneficiaryUpdateResponse.error.data.message);
       }
     }
-  }
+  };
 
   return (
     <Container>
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={'Beneficiaries Information'}
+          title={"Beneficiaries Information (Optional)"}
           checkbox="Beneficiaries"
           checkBoxAction={handleCheckbox}
           disableCheckbox={beneficiariesLaunchInfo.length > 0 ? true : false}
@@ -235,18 +232,18 @@ const DirectorsInfo = () => {
           <Bottom>
             <CheckoutController
               backAction={handlePrev}
-              backText={'Previous'}
+              backText={"Previous"}
               forwardAction={handleNext}
-              forwardText={'Proceed'}
+              forwardText={"Proceed"}
             />
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
     </Container>
-  )
-}
+  );
+};
 
-export default DirectorsInfo
+export default DirectorsInfo;
 
 // import HeaderCheckout from "components/Header/HeaderCheckout";
 // import { CheckoutController } from "containers";

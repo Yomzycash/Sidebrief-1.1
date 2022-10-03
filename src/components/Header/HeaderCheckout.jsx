@@ -3,9 +3,12 @@ import styled from "styled-components";
 import { ProgressBar } from "components/Indicators";
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
-const HeaderCheckout = () => {
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+const HeaderCheckout = ({ getStarted }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
   const { checkoutProgress } = LayoutInfo;
+  const navigate = useNavigate();
 
   const [headerShadow, setHeaderShadow] = useState(false);
   useEffect(() => {
@@ -13,12 +16,18 @@ const HeaderCheckout = () => {
       setHeaderShadow(window.pageXOffset > 0 ? true : false);
     });
   }, []);
+  const handleClick = () => {
+    toast.success("Saved");
+    navigate("/dashboard");
+  };
   return (
     <Wrapper headerShadow={headerShadow}>
-      <BackContainer>
-        <FiArrowLeft color="#151717" size={24} />
-        <Text>Save & Exit</Text>
-      </BackContainer>
+      {!getStarted ? (
+        <BackContainer onClick={handleClick}>
+          <FiArrowLeft color="#151717" size={24} />
+          <Text>Save & Exit</Text>
+        </BackContainer>
+      ) : null}
 
       <ProgressWrapper>
         <ProgressBar progress={checkoutProgress} />
@@ -50,6 +59,7 @@ const BackContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 `;
 const Text = styled.h3`
   font-family: "BR Firma";

@@ -15,7 +15,8 @@ export const Container = styled.div`
   justify-content: space-between;
   transition: all 0.2s;
   flex: 1;
-  cursor: ${({ rewardspage }) => (rewardspage ? "pointer" : "")};
+  /* cursor: ${({ rewardspage }) => (rewardspage ? "pointer" : "")}; */
+  cursor: pointer;
 
   ${({ hover }) =>
     hover &&

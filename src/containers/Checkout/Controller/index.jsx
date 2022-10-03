@@ -15,6 +15,7 @@ export const CheckoutController = ({
   backwardSubmit,
   forwardDisable,
   backDisable,
+  entity,
 }) => {
   return (
     <Container style={containerStyle}>
@@ -27,15 +28,17 @@ export const CheckoutController = ({
         style={backBottonStyle}
         disable={backDisable}
       />
-      <CheckoutButton
-        action={() => {
-          forwardAction();
-        }}
-        text={forwardText}
-        type={forwardSubmit ? "submit" : "button"}
-        style={forwardButtonStyle}
-        disable={forwardDisable}
-      />
+      {!entity && (
+        <CheckoutButton
+          action={() => {
+            forwardAction();
+          }}
+          text={forwardText}
+          type={forwardSubmit ? "submit" : "button"}
+          style={forwardButtonStyle}
+          disable={forwardDisable}
+        />
+      )}
     </Container>
   );
 };

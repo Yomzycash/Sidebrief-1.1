@@ -47,7 +47,7 @@ export const RewardCard = ({
         ""
       ) : (
         <StartButton onClick={action}>
-          <TextWithArrow blue={!hover}>Get started</TextWithArrow>
+          <TextWithArrow blue={!hover}>Claim Now</TextWithArrow>
         </StartButton>
       )}
     </Container>

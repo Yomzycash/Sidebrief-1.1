@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Navbar from "components/navbar";
 import { SuccessWrapper, Image } from "./styled";
-import success from "asset/images/Success.png";
+import success from "asset/svg/SuccessImage.svg";
 import { HeadText } from "components/texts";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const Success = ({ title, paragraph }) => {
 
   useEffect(() => {
     const redirectTine = setTimeout(() => {
-      navigate("/");
+      navigate("/dashboard");
     }, 2000);
 
     return () => {

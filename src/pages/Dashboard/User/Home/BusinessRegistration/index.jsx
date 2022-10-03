@@ -11,10 +11,25 @@ import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
+import { useSelector } from "react-redux";
+import { useGetAllRewardsQuery } from "services/RewardService";
 
 const BusinessRegistration = (props) => {
+  // Get user data information
+  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  let firstName_raw = userInfo?.first_name;
+  let firstName =
+    firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
+  let newUser = userInfo?.newUser;
+
+  const allRewardsResponse = useGetAllRewardsQuery();
+
+  const handleRewardClick = (rewardID) => {
+    navigate(`/dashboard/rewards/${rewardID}`);
+  };
+
   const analytics = {
     label: "Registrations",
     status1: {
@@ -46,7 +61,11 @@ const BusinessRegistration = (props) => {
       <Body>
         <Main>
           <DashboardSection
-            title="Welcome back, Ayomide"
+            title={
+              newUser
+                ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
+                : `Welcome back${firstName ? ", " + firstName : ""}`
+            }
             BigTitle="true"
             nowrap
           >
@@ -100,41 +119,15 @@ const BusinessRegistration = (props) => {
             }}
           >
             <ScrollBox>
-              <RewardCard
-                image={lendhaLogo}
-                title="Lendha Africa"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={SterlingLogo}
-                title="Sterling Bank PLC"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={GladeLogo}
-                title="Glade"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={OkraLogo}
-                title="Okra"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={SterlingLogo}
-                title="Sterling Bank PLC"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={GladeLogo}
-                title="Glade"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={OkraLogo}
-                title="Okra"
-                body="Get credit to register your business & pay later."
-              />
+              {allRewardsResponse.data?.slice(0, 8).map((reward, index) => (
+                <RewardCard
+                  key={index}
+                  title={reward?.rewardPartner}
+                  body={reward?.rewardName}
+                  image={reward?.rewardImage}
+                  action={() => handleRewardClick(reward.rewardID)}
+                />
+              ))}
             </ScrollBox>
           </DashboardSection>
         </Main>

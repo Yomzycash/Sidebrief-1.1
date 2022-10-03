@@ -55,6 +55,7 @@ export const DateInput = ({
 
   return (
     <Wrapper
+      key="DateInput"
       className={containerStyle}
       initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -77,6 +78,7 @@ export const DateInput = ({
         ref={inputRef}
         onFocus={handleBorder}
         onClick={() => setShowCalendar((prev) => !prev)}
+        onBlur={() => setActive(false)}
       >
         <Iconwrapper>
           <label htmlFor="date">

@@ -20,6 +20,7 @@ import {
   useAddDirectorMutation,
   useAddMembersMutation,
   useAddShareHolderMutation,
+  useUpdateDirectorMutation,
 } from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
 import Button, { CheckoutButton } from "components/button";

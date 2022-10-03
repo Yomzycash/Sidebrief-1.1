@@ -42,6 +42,7 @@ const Navbar = ({ dashboard, rewards }) => {
         <NavWrapper
           boxshadow={boxshadow}
           border="1px solid #EDF1F7"
+          key="Navbar"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -63,7 +64,7 @@ const Navbar = ({ dashboard, rewards }) => {
           </RightIcons>
         </NavWrapper>
       ) : (
-        <NavWrapper boxshadow={boxshadow}>
+        <NavWrapper boxshadow={boxshadow} key="NavbarImg">
           <Image src={logo} alt="logo" />
         </NavWrapper>
       )}

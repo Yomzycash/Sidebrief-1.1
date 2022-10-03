@@ -1,12 +1,13 @@
 import { CheckoutController, CheckoutSection } from 'containers'
 import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { Container } from '../styled'
 import styled from 'styled-components'
 import { ReviewTab } from 'utils/config'
 import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
 import HeaderCheckout from 'components/Header/HeaderCheckout'
 import { useSelector } from 'react-redux'
+import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -15,6 +16,17 @@ const BeneficiaryReview = () => {
     borderRadius: 0,
   }
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
+  const navigate = useNavigate()
+  const handleNext = () => {
+    navigate('/launch/review-success')
+  }
+  const handlePrev = () => {
+    navigate(-1)
+  }
+
+  const handleNavigate = () => {
+    navigate('/launch/beneficiary-info')
+  }
 
   return (
     <>
@@ -37,6 +49,13 @@ const BeneficiaryReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
+          <ContentWrapper>
+            <EditWrapper onClick={handleNavigate}>
+              <EditIcon />
+              <EditText>Edit beneficiary Information</EditText>
+            </EditWrapper>
+          </ContentWrapper>
+
           <CardWrapper>
             {LaunchApplicationInfo.beneficiariesLaunchInfo.map(
               (beneficiary, index) => (
@@ -54,7 +73,12 @@ const BeneficiaryReview = () => {
             )}
           </CardWrapper>
           <ButtonWrapper>
-            <CheckoutController backText={'Previous'} forwardText={'Proceed'} />
+            <CheckoutController
+              backText={'Previous'}
+              forwardText={'Done'}
+              forwardAction={handleNext}
+              backAction={handlePrev}
+            />
           </ButtonWrapper>
         </Body>
       </Container>
@@ -75,6 +99,7 @@ const Nav = styled.nav`
   align-items: center;
   gap: 24px;
 `
+
 const ReviweTabWrapper = styled.div`
   display: flex;
   flex: 1;
@@ -98,6 +123,24 @@ const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
+`
+const ContentWrapper = styled.div`
+  width: 100%;
+  padding: 40px;
+`
+const EditWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+`
+
+const EditText = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  color: #00a2d4;
 `
 const CardWrapper = styled.div`
   display: flex;
