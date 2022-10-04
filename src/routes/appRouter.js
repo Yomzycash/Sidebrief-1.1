@@ -10,6 +10,7 @@ import Loader from "../components/loader/loader";
 import { useSelector } from "react-redux";
 import Protected from "./Protected";
 import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
+import Test from "pages/Test";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -98,6 +99,7 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
+            <Route path="test" element={<Test />} />
             <Route
               index
               element={

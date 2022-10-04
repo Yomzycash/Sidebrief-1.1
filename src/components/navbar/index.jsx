@@ -22,6 +22,7 @@ import user from "../../asset/images/user.png";
 import down from "../../asset/images/down.png";
 import { Messages } from "utils/config";
 import Search from "./Search";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ dashboard, rewards }) => {
   const [boxshadow, setBoxShadow] = useState("false");
@@ -36,6 +37,8 @@ const Navbar = ({ dashboard, rewards }) => {
     }
   }, []);
 
+  let imgStyle = { width: "13%", textDecoration: "none" };
+
   return (
     <>
       {dashboard || rewards ? (
@@ -48,7 +51,9 @@ const Navbar = ({ dashboard, rewards }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Image src={logo} alt="logo" />
+          <Link to="/" style={imgStyle}>
+            <Image src={logo} alt="logo" />
+          </Link>
           {dashboard && <Search />}
           <RightIcons>
             <BellContainer
