@@ -93,8 +93,8 @@ const DirectorKYC = () => {
     });
 
     if (!isValidFileUploaded(uploadedFile)) {
-      toast.error("Only PDFs and JPEGs are supported");
-    } else if (size > 3000000) {
+      toast.error("Only PDFs, PNGs and JPEGs are supported");
+    } else if (uploadedFile.size > 3000000) {
       toast.error("File is too large");
     } else {
       toast.success("Valid Document");

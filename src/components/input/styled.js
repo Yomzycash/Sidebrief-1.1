@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export const InputWrapper = styled.div`
   border: ${(props) => props.border};
@@ -19,7 +19,7 @@ export const InputWrapper = styled.div`
   @media screen and (max-width: 600px) {
     height: 48px;
   }
-`
+`;
 
 export const DropWrapper = styled.div`
   border: 1px solid #ececec;
@@ -35,7 +35,7 @@ export const DropWrapper = styled.div`
   @media screen and (max-width: 600px) {
     height: 48px;
   }
-`
+`;
 
 export const Wrapper = styled(motion.div)`
   margin-bottom: 24px;
@@ -45,7 +45,7 @@ export const Wrapper = styled(motion.div)`
   @media screen and (max-width: 600px) {
     margin-bottom: 20px;
   }
-`
+`;
 
 export const Input = styled.input`
   color: #4e5152;
@@ -65,7 +65,7 @@ export const Input = styled.input`
   @media screen and (max-width: 600px) {
     font-size: 14px;
   }
-`
+`;
 
 export const Select = styled.select`
   color: #4e5152;
@@ -82,7 +82,7 @@ export const Select = styled.select`
   @media screen and (max-width: 600px) {
     font-size: 14px;
   }
-`
+`;
 
 export const Show = styled.p`
   cursor: pointer;
@@ -92,7 +92,7 @@ export const Show = styled.p`
   @media screen and (max-width: 600px) {
     font-size: 14px;
   }
-`
+`;
 
 export const Label = styled.label`
   color: #4e5152;
@@ -102,7 +102,7 @@ export const Label = styled.label`
   @media screen and (max-width: 600px) {
     font-size: 14px;
   }
-`
+`;
 
 export const Iconwrapper = styled.div`
   margin-right: 20px;
@@ -110,20 +110,20 @@ export const Iconwrapper = styled.div`
   @media screen and (max-width: 600px) {
     margin-right: 18px;
   }
-`
+`;
 
 export const ErrMsg = styled.div`
   color: red;
   font-size: 12px;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export const Top = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`
+`;
 
 export const DateWrapper = styled.div`
   width: 100%;
@@ -138,7 +138,7 @@ export const DateWrapper = styled.div`
     outline: none;
     font-size: 16px;
   }
-`
+`;
 
 export const TransparentBackdrop = styled.div`
   position: fixed;
@@ -147,7 +147,7 @@ export const TransparentBackdrop = styled.div`
   height: 100%;
   width: 100%;
   z-index: 1;
-`
+`;
 
 export const CalendarWrapper = styled.div`
   position: absolute;
@@ -167,7 +167,7 @@ export const CalendarWrapper = styled.div`
       max-width: 100%;
     }
   }
-`
+`;
 
 // width: ${props => props.width };
 
@@ -183,7 +183,7 @@ export const AllWrapper = styled.div`
   align-items: flex-start;
   justify-content: center;
   column-gap: 8px;
-`
+`;
 export const TagWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -191,13 +191,13 @@ export const TagWrapper = styled.div`
   gap: 20px;
   margin-bottom: 8px;
   min-width: fit-content;
-`
+`;
 export const TagInputWrapper = styled.div`
   width: 100%;
   height: 48px;
   display: flex;
   align-items: center;
-`
+`;
 export const TagItem = styled.div`
   display: inline-flex;
   flex-direction: row;
@@ -208,15 +208,15 @@ export const TagItem = styled.div`
   align-items: center;
   gap: 0.5em;
   color: #fafafa;
-`
+`;
 
 export const TagText = styled.span`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
-`
+`;
 export const Tagclose = styled.span`
   height: 21px;
   width: 21px;
@@ -227,7 +227,7 @@ export const Tagclose = styled.span`
   color: #fff;
   font-size: 30px;
   cursor: pointer;
-`
+`;
 export const TagInputField = styled.input`
   flex-grow: 1;
 
@@ -235,23 +235,29 @@ export const TagInputField = styled.input`
   height: inherit;
   outline: none;
 
-  border: 1px solid #00c3ff;
+  border: 1px solid #edf1f6;
   padding: 10px;
   border-radius: 8px;
-`
+
+  transition: 0.3s all ease;
+
+  &:focus {
+    border: 1px solid #00c3ff;
+  }
+`;
 export const TagLabel = styled.label`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
-`
+`;
 
 export const BottomText = styled.p`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-weight: 400;
   font-size: 12px;
   line-height: 21px;
   color: #4e5152;
-`
+`;

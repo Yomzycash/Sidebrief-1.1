@@ -10,8 +10,8 @@ const Pagination = () => {
     <ReactPaginate
       ref={pagination}
       pageCount={Math.ceil(613 / 25)}
-      pageRangeDisplayed={4}
-      marginPagesDisplayed={1}
+      pageRangeDisplayed={3}
+      marginPagesDisplayed={3}
       onPageChange={handlePageClick}
       containerClassName="pagination"
       activeClassName="active"

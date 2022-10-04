@@ -15,6 +15,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery } from "services/RewardService";
+import { store } from "redux/Store";
+import { setGeneratedLaunchCode } from "redux/Slices";
 
 const BusinessRegistration = (props) => {
   // Get user data information
@@ -52,6 +54,7 @@ const BusinessRegistration = (props) => {
   const navigate = useNavigate();
 
   const handleLaunch = () => {
+    store.dispatch(setGeneratedLaunchCode(""));
     navigate("/launch");
   };
 

@@ -54,7 +54,7 @@ const ShareHolderKYC = () => {
   };
 
   const isValidFileUploaded = (file) => {
-    const validExtensions = ["png", "jpeg", "jpg", "pdf"];
+    const validExtensions = ["jpeg", "jpg", "pdf"];
     const fileExtension = file.type.split("/")[1];
     return validExtensions.includes(fileExtension);
   };
@@ -88,8 +88,8 @@ const ShareHolderKYC = () => {
     });
 
     if (!isValidFileUploaded(uploadedFile)) {
-      toast.error("Only PDFs and JPEGs are supported");
-    } else if (size > 3000000) {
+      toast.error("Only PDFs, PNGs and JPEGs are supported");
+    } else if (uploadedFile.size > 3000000) {
       toast.error("File is too large");
     } else {
       toast.success("Valid Document");
@@ -101,11 +101,11 @@ const ShareHolderKYC = () => {
         launchCode: generatedLaunchCode,
         memberCode: requiredMemberCode,
         memberKYC: {
-          documentType: fName,
+          documentType: uploadedFile.type,
           documentLink: res.url,
         },
       };
-      console.log(requiredAddMemberData);
+      console.log("data to db", requiredAddMemberData);
       const response = await addMemberKYC(requiredAddMemberData);
       console.log(response);
       if (response.data) {
@@ -121,12 +121,8 @@ const ShareHolderKYC = () => {
   store.dispatch(setShareholderDocs(documentContainer));
 
   const handleNext = () => {
-    if (!uploadedFileDetails) {
-      setError("File is required");
-    } else {
-      navigate("/launch/directors-kyc");
-      store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
-    }
+    navigate("/launch/directors-kyc");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
   };
 
   const handleRemove = () => {
