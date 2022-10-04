@@ -61,7 +61,6 @@ const Navbar = ({ dashboard, rewards }) => {
   const handleCheck = (e, item) => {
     const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item);
     const updatedMsg = [...msgObj]; // creates a copy of the array
-
     updatedMsg[indexToUpdate].read = !item.read;
     setMsgObj(updatedMsg);
   };

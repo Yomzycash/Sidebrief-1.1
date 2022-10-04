@@ -54,7 +54,7 @@ const ShareHolderKYC = () => {
   };
 
   const isValidFileUploaded = (file) => {
-    const validExtensions = ["png", "jpeg", "jpg", "pdf"];
+    const validExtensions = ["jpeg", "jpg", "pdf"];
     const fileExtension = file.type.split("/")[1];
     return validExtensions.includes(fileExtension);
   };
@@ -101,7 +101,7 @@ const ShareHolderKYC = () => {
         launchCode: generatedLaunchCode,
         memberCode: requiredMemberCode,
         memberKYC: {
-          documentType: fName,
+          documentType: uploadedFile.type,
           documentLink: res.url,
         },
       };
