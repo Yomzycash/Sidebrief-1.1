@@ -113,13 +113,17 @@ const AppRouter = () => {
             />
             <Route path="register" element={<Outlet />}>
               <Route index element={<AccountType />} />
-              <Route path="user" element={<UserRegistration />} />
+              <Route path="user" element={<Outlet />}>
+                <Route index element={<UserRegistration />} />
+                <Route path="success" element={<EmailSuccess />} />
+              </Route>
               <Route path="reseller" element={<ResellerRegistration />} />
               <Route path="partner" element={<PartnerRegistration />} />
             </Route>
             <Route path="login" element={<Outlet />}>
               <Route index element={<SignIn />} />
               <Route path="verifyaccount" element={<EmailVerify />} />
+
               <Route path="forgotpassword" element={<Outlet />}>
                 <Route index element={<ForgotPassword />} />
                 <Route path="verifyotp" element={<Outlet />}>

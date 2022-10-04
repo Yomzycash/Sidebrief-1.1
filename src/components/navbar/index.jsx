@@ -13,6 +13,7 @@ import {
   NotificationMessages,
   Message,
   NoMessage,
+  NotificationBadge,
 } from "./styled";
 import LogoNav from "./LogoNav";
 
@@ -22,11 +23,14 @@ import user from "../../asset/images/user.png";
 import down from "../../asset/images/down.png";
 import { Messages } from "utils/config";
 import Search from "./Search";
+import { useMemo } from "react";
+import { store } from "redux/Store";
+import { setMessageObj } from "redux/Slices";
 
 const Navbar = ({ dashboard, rewards }) => {
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
-  const [message, setMessage] = useState(true);
+  const [msgObj, setMsgObj] = useState([]);
 
   useEffect(() => {
     if (!dashboard && !rewards) {
@@ -35,6 +39,32 @@ const Navbar = ({ dashboard, rewards }) => {
       });
     }
   }, []);
+
+  let localUserInfo = localStorage.getItem("userInfo");
+  let newUserObject = JSON.parse(localUserInfo);
+
+  useMemo(() => {
+    let status = newUserObject.verified;
+    if (status === false) {
+      setMsgObj((prev) => [
+        ...prev,
+        {
+          messageText: "Kindly check your email for the verification link",
+          read: false,
+        },
+      ]);
+    }
+  }, []);
+
+  console.log(msgObj);
+
+  const handleCheck = (e, item) => {
+    const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item);
+    const updatedMsg = [...msgObj]; // creates a copy of the array
+
+    updatedMsg[indexToUpdate].read = !item.read;
+    setMsgObj(updatedMsg);
+  };
 
   return (
     <>
@@ -54,6 +84,9 @@ const Navbar = ({ dashboard, rewards }) => {
             <BellContainer
               onClick={() => setShowNotification(!showNotification)}
             >
+              <NotificationBadge>
+                <p>{msgObj.length}</p>
+              </NotificationBadge>
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
             <UserContainer>
@@ -76,15 +109,18 @@ const Navbar = ({ dashboard, rewards }) => {
             <p>Mark all as read</p>
           </NotificationHeader>
 
-          {message ? (
+          {msgObj.length > 0 ? (
             <NotificationMessages>
-              {Messages.map((item, index) => (
-                <Message>
+              {msgObj.map((item, index) => (
+                <Message
+                  key={index}
+                  onClick={(e) => handleCheck(e, item.messageText)}
+                >
                   <h6>
-                    {item.message}
-                    <span>{item.span}</span>
+                    {item.messageText}
+                    {/* <span>{item.messageText}</span> */}
                   </h6>
-                  <p>{item.time}</p>
+                  <p>12:03pm</p>
                 </Message>
               ))}
             </NotificationMessages>

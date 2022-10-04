@@ -73,7 +73,7 @@ const UserRegistration = () => {
       );
       console.log(data.message);
       toast.success(data.message);
-      navigate("/dashboard");
+      navigate(`${location.pathname}/success`);
     } else if (error) {
       console.log(error.data.message);
       toast.error(error.data.message);

@@ -31,13 +31,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { allRewards } from "utils/config";
 import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
-import { useGetUserRewardQuery } from "services/RewardService";
+import { useGetAllRewardsQuery } from "services/RewardService";
 
 const RewardDetails = (props) => {
   const [open, setOpen] = useState(false);
   const [selectedReward, setSelectedReward] = useState({});
 
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
@@ -49,7 +49,7 @@ const RewardDetails = (props) => {
   }, []);
 
   const { rewardID } = useParams();
-
+  console.log("the data", data);
   useEffect(() => {
     const responseData = data === undefined ? [] : [...data];
 

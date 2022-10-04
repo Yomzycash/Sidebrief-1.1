@@ -36,18 +36,9 @@ const ShareHolderKYC = () => {
         name: shareholder.memberName,
         code: shareholder.shareholdingCode,
         files: {
-          government: {
-            fileName: "",
-            filetype: "",
-          },
-          proof: {
-            fileName: "",
-            filetype: "",
-          },
-          passport: {
-            fileName: "",
-            filetype: "",
-          },
+          government: "",
+          proof: "",
+          passport: "",
         },
       };
     })
@@ -97,8 +88,8 @@ const ShareHolderKYC = () => {
     });
 
     if (!isValidFileUploaded(uploadedFile)) {
-      toast.error("Only PDFs and JPEGs are supported");
-    } else if (size > 3000000) {
+      toast.error("Only PDFs, PNGs and JPEGs are supported");
+    } else if (uploadedFile.size > 3000000) {
       toast.error("File is too large");
     } else {
       toast.success("Valid Document");
@@ -106,23 +97,23 @@ const ShareHolderKYC = () => {
       console.log(res);
       console.log(res.url);
 
-      // const requiredAddMemberData = {
-      //   launchCode: generatedLaunchCode,
-      //   memberCode: requiredMemberCode,
-      //   memberKYC: {
-      //     documentType: fName,
-      //     documentLink: res.url,
-      //   },
-      // };
-      // console.log(requiredAddMemberData);
-      // const response = await addMemberKYC(requiredAddMemberData);
-      // console.log(response);
-      // if (response.data) {
-      //   toast.success("Document uploaded successfully");
-      // } else if (response.error) {
-      //   console.log(response.error?.data.message);
-      //   toast.error(response.error?.data.message);
-      // }
+      const requiredAddMemberData = {
+        launchCode: generatedLaunchCode,
+        memberCode: requiredMemberCode,
+        memberKYC: {
+          documentType: fName,
+          documentLink: res.url,
+        },
+      };
+      console.log("data to db", requiredAddMemberData);
+      const response = await addMemberKYC(requiredAddMemberData);
+      console.log(response);
+      if (response.data) {
+        toast.success("Document uploaded successfully");
+      } else if (response.error) {
+        console.log(response.error?.data.message);
+        toast.error(response.error?.data.message);
+      }
     }
   };
 
@@ -159,8 +150,7 @@ const ShareHolderKYC = () => {
                     TopText={"Government Issued ID"}
                     name="government"
                     onChange={(e) => handleChange(e, shareholder.code)}
-                    type={type}
-                    fileName={fileName}
+                    // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={
@@ -172,8 +162,7 @@ const ShareHolderKYC = () => {
                     TopText={"Proof of Home Address"}
                     name="proof"
                     onChange={(e) => handleChange(e, shareholder.code)}
-                    type={type}
-                    fileName={fileName}
+                    // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={
@@ -185,8 +174,7 @@ const ShareHolderKYC = () => {
                     TopText={"Passport Photograph"}
                     name="passport"
                     onChange={(e) => handleChange(e, shareholder.code)}
-                    type={type}
-                    fileName={fileName}
+                    // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={"Kindly ensure image is not larger than 3MB"}

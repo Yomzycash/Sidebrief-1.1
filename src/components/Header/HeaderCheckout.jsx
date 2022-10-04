@@ -4,12 +4,16 @@ import { ProgressBar } from "components/Indicators";
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Dialog } from "@mui/material";
 import toast from "react-hot-toast";
+import { CheckoutController } from "containers";
+import { HiX } from "react-icons/hi";
+
 const HeaderCheckout = ({ getStarted }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
   const { checkoutProgress } = LayoutInfo;
   const navigate = useNavigate();
-
+  const [openModal, setOpenModal] = useState(false);
   const [headerShadow, setHeaderShadow] = useState(false);
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -17,22 +21,51 @@ const HeaderCheckout = ({ getStarted }) => {
     });
   }, []);
   const handleClick = () => {
+    setOpenModal(true);
+  };
+  const handleNext = () => {
     toast.success("Saved");
+    setOpenModal(false);
     navigate("/dashboard");
   };
+  const handlePrev = () => {
+    setOpenModal(false);
+  };
   return (
-    <Wrapper headerShadow={headerShadow}>
-      {!getStarted ? (
-        <BackContainer onClick={handleClick}>
-          <FiArrowLeft color="#151717" size={24} />
-          <Text>Save & Exit</Text>
-        </BackContainer>
-      ) : null}
+    <>
+      <Wrapper headerShadow={headerShadow}>
+        {!getStarted ? (
+          <BackContainer onClick={handleClick}>
+            <FiArrowLeft color="#151717" size={24} />
+            <Text>Save & Exit</Text>
+          </BackContainer>
+        ) : null}
 
-      <ProgressWrapper>
-        <ProgressBar progress={checkoutProgress} />
-      </ProgressWrapper>
-    </Wrapper>
+        <ProgressWrapper>
+          <ProgressBar progress={checkoutProgress} />
+        </ProgressWrapper>
+      </Wrapper>
+
+      <Dialog open={openModal} fullWidth maxWidth="sm">
+        <ModalWrapper>
+          <Top>
+            <CloseWrapper onClick={() => setOpenModal(false)}>
+              <HiX size={20} />
+            </CloseWrapper>
+          </Top>
+
+          <Question>Save and continue later ?</Question>
+          <ModalButton>
+            <CheckoutController
+              backAction={handlePrev}
+              backText={"No"}
+              forwardAction={handleNext}
+              forwardText={"Yes"}
+            />
+          </ModalButton>
+        </ModalWrapper>
+      </Dialog>
+    </>
   );
 };
 
@@ -77,4 +110,35 @@ const ProgressWrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex: 1;
+`;
+
+const ModalWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 40px 0px;
+  flex-flow: column;
+`;
+export const ModalButton = styled.div`
+  display: flex;
+  width: 80%;
+`;
+const Question = styled.p`
+  font-size: clamp(16px, 1.5vw, 20px);
+`;
+const Top = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 80%;
+`;
+
+const CloseWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  padding: 10px;
+  border-radius: 100%;
+  background-color: #d7d7d7;
+  margin-bottom: 20px;
 `;

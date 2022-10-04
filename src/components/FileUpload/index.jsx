@@ -22,7 +22,7 @@ const FileUpload = ({
       </Top>
       <Middle>
         <label htmlFor="file">
-          {fileName ? (
+          {/* {fileName ? (
             <div
               style={{
                 display: "flex",
@@ -53,8 +53,8 @@ const FileUpload = ({
             <span>
               <FiUpload /> Drag & drop, or browse{" "}
             </span>
-          )}
-          {type && (
+          )} */}
+          {/* {type && (
             <>
               {imageTypeImage
                 .filter((i) => type === i.type)
@@ -70,9 +70,16 @@ const FileUpload = ({
                   />
                 ))}
             </>
-          )}
+          )} */}
+
+          <input
+            type="file"
+            id="file"
+            multiple
+            name={name}
+            onChange={onChange}
+          />
         </label>
-        <input type="file" id="file" multiple name={name} onChange={onChange} />
       </Middle>
       <Bottom>
         <p>{BottomText}</p>
@@ -110,7 +117,7 @@ const Middle = styled.div`
   display: flex;
   width: 100%;
   input {
-    display: none;
+    /* display: none; */
     &::-webkit-file-upload-button {
       display: none;
     }
