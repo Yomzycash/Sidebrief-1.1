@@ -6,6 +6,7 @@ import { RewardApi } from "services/RewardService";
 import {
   LaunchReducer,
   LayoutInfoReducer,
+  NotificationReducer,
   RegisteredBusinessesReducers,
   RewardReducer,
   UserDataReducer,
@@ -21,6 +22,7 @@ export const store = configureStore({
     RegisteredBusinessesInfo: RegisteredBusinessesReducers,
     LaunchReducer: LaunchReducer,
     RewardReducer: RewardReducer,
+    NotificationInfo: NotificationReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

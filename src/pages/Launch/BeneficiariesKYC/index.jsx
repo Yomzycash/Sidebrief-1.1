@@ -64,16 +64,7 @@ const BeneficiariesKYC = () => {
   );
 
   const handleNext = () => {
-    if (fileName === "") {
-      setError("Please upload a file");
-    } else if (size > 2000000) {
-      setError("File is too large");
-    } else if (type !== "application/pdf") {
-      setError("Only PDFs, JPEGs and PNGs are supported");
-    } else {
-      navigate("/launch/review");
-    }
-
+    navigate("/launch/review");
     store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
   };
 
@@ -134,11 +125,13 @@ const BeneficiariesKYC = () => {
         },
       };
 
+      console.log("input data to db", requiredBeneficialOwnerKYCData);
       const beneficialResult = await addBeneficialKYC(
         requiredBeneficialOwnerKYCData
       );
       console.log(beneficialResult);
       if (beneficialResult.data) {
+        console.log("successssssssssssssss");
         toast.success("Document uploaded successfully");
       } else if (beneficialResult.error) {
         console.log(beneficialResult.error?.data.message);
@@ -160,20 +153,20 @@ const BeneficiariesKYC = () => {
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={"Benefial KYC Documentation:"}
+          title={"Beneficiaries KYC Documentation:"}
           HeaderParagraph={
             "Please attach the necessary documents for all beneficials"
           }
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            {beneficiariesLaunchInfo.map((beneficiary, index) => (
+            {documentContainer.map((beneficiary, index) => (
               <FileContainer key={index}>
                 <Name>{beneficiary.name}</Name>
                 <ContentWrapper>
                   <FileUpload
                     TopText={"Government Issued ID"}
-                    name="file1"
+                    name="government"
                     onChange={(e) => handleChange(e, beneficiary.code)}
                     fileName={fileName}
                     type={type}
@@ -186,7 +179,7 @@ const BeneficiariesKYC = () => {
 
                   <FileUpload
                     TopText={"Proof of Home Address"}
-                    name="file2"
+                    name="proof"
                     onChange={(e) => handleChange(e, beneficiary.code)}
                     fileName={fileName}
                     type={type}
@@ -199,7 +192,7 @@ const BeneficiariesKYC = () => {
 
                   <FileUpload
                     TopText={"Passport Photograph"}
-                    name="file3"
+                    name="passport"
                     onChange={(e) => handleChange(e, beneficiary.code)}
                     fileName={fileName}
                     type={type}

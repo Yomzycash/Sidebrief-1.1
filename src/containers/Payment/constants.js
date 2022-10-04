@@ -4,20 +4,20 @@ import PaypalImg from "asset/payment/paypal.png";
 import InterSwitchImg from "asset/payment/interswitch.png";
 
 export const paymentProviders = [
-	{
-		name: "remita",
-		image: RemitaImg,
-	},
-	{
-		name: "interswitch",
-		image: InterSwitchImg,
-	},
-	{
-		name: "paypal",
-		image: PaypalImg,
-	},
-	{
-		name: "flutterwave",
-		image: FlutterwaveImg,
-	},
+  {
+    name: "remita",
+    image: RemitaImg,
+  },
+  {
+    name: "interswitch",
+    image: InterSwitchImg,
+  },
+  {
+    name: "paypal",
+    image: PaypalImg,
+  },
+  {
+    name: "flutterwave",
+    image: FlutterwaveImg,
+  },
 ];

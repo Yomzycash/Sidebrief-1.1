@@ -10,6 +10,11 @@ import Loader from "../components/loader/loader";
 import { useSelector } from "react-redux";
 import Protected from "./Protected";
 import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
+import Settings from "pages/Dashboard/User/Settings";
+import Resources from "pages/Dashboard/User/Resources";
+import Business from "pages/Dashboard/User/Business";
+import BankAccount from "pages/Dashboard/User/BankAccount";
+import Application from "pages/Dashboard/User/Application";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -108,13 +113,17 @@ const AppRouter = () => {
             />
             <Route path="register" element={<Outlet />}>
               <Route index element={<AccountType />} />
-              <Route path="user" element={<UserRegistration />} />
+              <Route path="user" element={<Outlet />}>
+                <Route index element={<UserRegistration />} />
+                <Route path="success" element={<EmailSuccess />} />
+              </Route>
               <Route path="reseller" element={<ResellerRegistration />} />
               <Route path="partner" element={<PartnerRegistration />} />
             </Route>
             <Route path="login" element={<Outlet />}>
               <Route index element={<SignIn />} />
               <Route path="verifyaccount" element={<EmailVerify />} />
+
               <Route path="forgotpassword" element={<Outlet />}>
                 <Route index element={<ForgotPassword />} />
                 <Route path="verifyotp" element={<Outlet />}>
@@ -141,11 +150,11 @@ const AppRouter = () => {
                 path="business-registration"
                 element={<BusinessRegistration />}
               />
-              {/* <Route path="application" element={<Application />}></Route>
+              <Route path="application" element={<Application />}></Route>
               <Route path="bank-account" element={<BankAccount />}></Route>
               <Route path="settings" element={<Settings />}></Route>
               <Route path="resources" element={<Resources />}></Route>
-              <Route path="business" element={<Business />}></Route> */}
+              <Route path="business" element={<Business />}></Route>
               <Route path="compliance" element={<Compliance />}></Route>
               <Route
                 path="hiring-and-payroll"

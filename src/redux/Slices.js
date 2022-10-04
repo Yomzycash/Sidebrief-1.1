@@ -70,6 +70,21 @@ export const LayoutInfoReducer = LayoutInfo.reducer;
 export const { setSidebarWidth, setCheckoutProgress, setRewardsPageHeader } =
   LayoutInfo.actions;
 
+const NotificationInfo = createSlice({
+  name: "Notification",
+  initialState: {
+    messageObj: [],
+  },
+  reducers: {
+    setMessageObj: (state, action) => {
+      state.messageObj = action.payload;
+    },
+  },
+});
+
+export const NotificationReducer = NotificationInfo.reducer;
+export const { setMessageObj } = NotificationInfo.actions;
+
 // This slice will hold all registered businesses and current registration information
 const RegisteredBusinessesInfo = createSlice({
   name: "registered businesses",

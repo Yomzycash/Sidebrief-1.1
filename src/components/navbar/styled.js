@@ -156,3 +156,20 @@ export const NoMessage = styled.div`
     text-align: center;
   }
 `;
+
+export const NotificationBadge = styled.div`
+  border-radius: 100%;
+  background-color: red;
+  padding: 2px 5px 0px 5px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  position: absolute;
+  bottom: 40px;
+  right: 115px;
+  color: white;
+  p {
+    font-size: 12px;
+    font-weight: bold;
+  }
+`;
