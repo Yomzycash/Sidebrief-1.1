@@ -120,7 +120,7 @@ const BeneficiariesKYC = () => {
         launchCode: generatedLaunchCode,
         beneficialOwnerCode: requiredOwnerCode,
         beneficialOwnerKYC: {
-          documentType: fName,
+          documentType: uploadedFile.type,
           documentLink: res.url,
         },
       };

@@ -106,7 +106,7 @@ const DirectorKYC = () => {
         launchCode: generatedLaunchCode,
         memberCode: requiredMemberCode,
         memberKYC: {
-          documentType: fName,
+          documentType: uploadedFile.type,
           documentLink: res.url,
         },
       };

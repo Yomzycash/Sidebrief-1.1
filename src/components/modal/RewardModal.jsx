@@ -5,22 +5,23 @@ import { ReactComponent as Close } from "asset/images/close.svg";
 import { ReactComponent as Copy } from "asset/images/copy.svg";
 import Button from "components/button/mainButton/index.jsx";
 import { useParams } from "react-router-dom";
-import { allRewards } from "utils/config";
+// import { allRewards } from "utils/config";
+import { useGetAllRewardsQuery } from "services/RewardService";
 const RewardModal = ({ handleClose }) => {
   const [successful, setSuccessful] = useState(false);
 
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+
   const { rewardID } = useParams();
 
-  const rewardDetails = allRewards.find(
-    (element) => element.title === rewardID
-  );
+  const rewardDetails = data?.find((element) => element.rewardID === rewardID);
 
   return (
     <Wrapper>
       <LogoCancelWrapper>
         <LogoWrapper>
-          {/* <img src={rewardDetails.image} alt="" /> */}
-          <LogoName>{rewardID}</LogoName>
+          <img src={rewardDetails.rewardImage} alt="" />
+          <LogoName>{rewardDetails.rewardPartner}</LogoName>
         </LogoWrapper>
         <Close onClick={handleClose} style={{ cursor: "pointer" }} />
       </LogoCancelWrapper>
@@ -32,9 +33,7 @@ const RewardModal = ({ handleClose }) => {
       )}
       <LowerContainer>
         <TextContainer>
-          <UpperText>
-            $200 off 1st-month subscription for payroll compliance.{" "}
-          </UpperText>
+          <UpperText>{rewardDetails.rewardName}</UpperText>
           <LowerText>
             Please redeem this reward by inputting the code below on the
             checkout page.

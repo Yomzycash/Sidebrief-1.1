@@ -3,4 +3,4 @@ import ProgressBar from "./progressbar";
 export { ProgressBar };
 export { StatusIndicator } from "./status";
 // export { ProgressBar } from "./progressbar";
-export { ObjectiveIndicator } from "./objective";
+export { TypeIndicator } from "./type";

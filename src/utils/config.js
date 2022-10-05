@@ -51,6 +51,12 @@ export const shareTypeOptions = [
   { value: "Common Shares", label: "Common Shares" },
 ];
 
+export const directorRoleOptions = [
+  { value: "Executive", label: "Executive" },
+  { value: "Non executive", label: "Non executive" },
+  { value: "Observer", label: "Observer" },
+];
+
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -161,36 +167,30 @@ export const sidebarLink = [
   },
   {
     id: 2,
-    title: "Application",
-    icon: HiDocumentText,
-    path: "/dashboard/application",
+    title: "Businesses",
+    icon: HiBriefcase,
+    path: "/dashboard/businesses",
   },
   {
     id: 3,
-    title: "Business",
-    icon: HiBriefcase,
-    path: "/dashboard/business",
-  },
-  {
-    id: 4,
     title: "Bank Accounts",
     icon: HiOutlineLibrary,
     path: "/dashboard/bank-account",
   },
   {
-    id: 5,
+    id: 4,
     title: "Rewards",
     icon: HiOutlineSparkles,
     path: "/dashboard/rewards/all-rewards",
   },
   {
-    id: 6,
+    id: 5,
     title: "Resources",
     icon: HiDocumentText,
     path: "/dashboard/resources",
   },
   {
-    id: 7,
+    id: 6,
     title: "Settings",
     icon: HiCog,
     path: "/dashboard/settings",

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import tinycolor from "tinycolor2";
 
 export const Container = styled.div`
 	width: max-content;
@@ -14,6 +15,8 @@ export const Container = styled.div`
 	line-height: 18px;
 	text-align: center;
 
-	background: rgba(21, 23, 23, 0.1);
-	color: #151717;
+	background: ${({ color }) => tinycolor(color).setAlpha(0.1)};
+	color: ${({ color }) => color};
+
+	text-transform: capitalize;
 `;

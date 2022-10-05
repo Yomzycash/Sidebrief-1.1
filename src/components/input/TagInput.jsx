@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   TagLabel,
   AllWrapper,
@@ -9,30 +9,36 @@ import {
   Tagclose,
   TagInputField,
   BottomText,
-} from './styled.js'
+} from "./styled.js";
 
 const TagInput = ({
-  label = 'Business Name',
-  bottomText = 'Please provide sidebrief with four names you want for your business, in order of preferences',
+  label = "Business Name",
+  bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences",
   getSelectedValues,
+  initialValues,
 }) => {
-  const [tags, setTags] = useState([])
+  const [tags, setTags] = useState([]);
 
   function handlekeydown(e) {
-    if (e.key !== 'Enter') return
-    const value = e.target.value
-    if (!value.trim()) return
-    setTags([...tags, value])
-    e.target.value = ''
+    if (e.key !== "Enter") return;
+    const value = e.target.value;
+    if (!value.trim()) return;
+    setTags([...tags, value]);
+    e.target.value = "";
   }
   function removeTags(index) {
-    setTags(tags.filter((el, i) => i !== index))
+    setTags(tags.filter((el, i) => i !== index));
   }
 
   // Return the tags array
   useEffect(() => {
-    if (getSelectedValues) getSelectedValues(tags)
-  }, [tags])
+    if (getSelectedValues) getSelectedValues(tags);
+  }, [tags]);
+
+  // This sets the values of the tags when the component mounts
+  useEffect(() => {
+    setTags([...initialValues]);
+  }, [initialValues.length]);
 
   return (
     <>
@@ -58,7 +64,7 @@ const TagInput = ({
         <BottomText>{bottomText}</BottomText>
       </AllWrapper>
     </>
-  )
-}
+  );
+};
 
-export default TagInput
+export default TagInput;

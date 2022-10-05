@@ -8,6 +8,7 @@ export const Container = styled.div`
 export const Body = styled.div`
   display: flex;
   flex-flow: column;
+  padding-top: 150px;
 `;
 export const Main = styled.div`
   display: flex;

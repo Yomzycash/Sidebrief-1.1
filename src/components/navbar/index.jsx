@@ -23,6 +23,7 @@ import user from "../../asset/images/user.png";
 import down from "../../asset/images/down.png";
 import { Messages } from "utils/config";
 import Search from "./Search";
+import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { store } from "redux/Store";
 import { setMessageObj } from "redux/Slices";
@@ -40,11 +41,12 @@ const Navbar = ({ dashboard, rewards }) => {
     }
   }, []);
 
+  let imgStyle = { width: "13%", textDecoration: "none" };
   let localUserInfo = localStorage.getItem("userInfo");
   let newUserObject = JSON.parse(localUserInfo);
 
   useMemo(() => {
-    let status = newUserObject.verified;
+    let status = newUserObject?.verified;
     if (status === false) {
       setMsgObj((prev) => [
         ...prev,
@@ -77,7 +79,9 @@ const Navbar = ({ dashboard, rewards }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Image src={logo} alt="logo" />
+          <Link to="/" style={imgStyle}>
+            <Image src={logo} alt="logo" />
+          </Link>
           {dashboard && <Search />}
           <RightIcons>
             <BellContainer

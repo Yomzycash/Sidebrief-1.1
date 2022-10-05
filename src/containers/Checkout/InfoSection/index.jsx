@@ -1,5 +1,5 @@
-import { Checkbox, DropDown, InputWithLabel } from "components/input";
-import React, { useEffect, useRef, useState } from "react";
+import { DropDown, InputWithLabel } from "components/input";
+import React, { useEffect, useState } from "react";
 import {
   DetailedSection,
   Title,
@@ -7,27 +7,15 @@ import {
   CheckInputWrapper,
   CheckboxWrapper,
 } from "./style";
-import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
-import { ReactComponent as DeleteIcon } from "asset/Launch/Delete.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { shareTypeOptions, checkInfoSchema } from "utils/config";
-import { shareTypeOptions } from "utils/config";
+import { directorRoleOptions, shareTypeOptions } from "utils/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import {
-  useAddBeneficiaryMutation,
-  useAddDirectorMutation,
-  useAddMembersMutation,
-  useAddShareHolderMutation,
-  useUpdateDirectorMutation,
-} from "services/launchService";
+import { useAddMembersMutation } from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
-import Button, { CheckoutButton } from "components/button";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
-import { store } from "redux/Store";
-import { setShareHoldersLaunchInfo } from "redux/Slices";
 import { ThreeDots } from "react-loading-icons";
 
 export const CheckoutFormInfo = ({
@@ -47,7 +35,7 @@ export const CheckoutFormInfo = ({
   directorsInfo,
 }) => {
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
-  // const [isDirector, setIsDirector] = useState(selectedToEdit.isDirector);
+  const [directorInitialRole, setDirectorInitialRole] = useState("");
 
   const {
     handleSubmit,
@@ -131,17 +119,22 @@ export const CheckoutFormInfo = ({
         "share_percentage",
         selectedToEdit?.shareholderOwnershipPercentage
       );
-      setValue("director_role", selectedToEdit?.director_role);
+      // setValue("director_role", selectedToEdit?.director_role);
       handleNumberChange(selectedToEdit?.memberPhone);
       handleShareTypeChange({
         share_type: selectedToEdit?.shareholderOwnershipType,
       });
+      console.log(directorsInfo);
       if (directorsInfo) {
         let directorInfo = directorsInfo.filter(
           (director) => director.memberCode === selectedToEdit.memberCode
         );
         if (directorInfo.length > 0) {
-          setValue("director_role", directorInfo[0].directorRole);
+          handleDirectorRoleChange({
+            director_role: directorInfo[0]?.directorRole,
+          });
+          // setValue("director_role", directorInfo[0].directorRole);
+          setDirectorInitialRole(directorInfo[0].directorRole);
           setIsDirector(true);
         }
       }
@@ -159,6 +152,13 @@ export const CheckoutFormInfo = ({
   const handleShareTypeChange = (value) => {
     var string = Object.values(value)[0];
     setValue("share_type", string, { shouldValidate: true });
+  };
+
+  // This sets the director role value - attached to the onChange event
+  const handleDirectorRoleChange = (value) => {
+    console.log(value);
+    var string = Object.values(value)[0];
+    setValue("director_role", string, { shouldValidate: true });
   };
 
   // This sets the phone number value - attached to the onChange event
@@ -250,17 +250,29 @@ export const CheckoutFormInfo = ({
           </DetailedSection>
         )}
         {director && (
-          <DetailedSection>
-            <InputWithLabel
-              name="director_role"
-              label="Director's Role"
-              labelStyle="input-label"
-              type="text"
-              inputClass="input-class"
-              register={register}
-              errorMessage={errors.director_role?.message}
-            />
-          </DetailedSection>
+          <DropDown
+            containerStyle={{ margin: 0, marginBottom: "24px" }}
+            label="Director Role"
+            labelStyle="input-label"
+            options={directorRoleOptions}
+            register={register}
+            onChange={handleDirectorRoleChange}
+            errorMessage={errors.director_role?.message}
+            cardAction={cardAction}
+            defaultValue={directorInitialRole}
+            launch
+          />
+          // <DetailedSection>
+          //   <InputWithLabel
+          //     name="director_role"
+          //     label="Director's Role"
+          //     labelStyle="input-label"
+          //     type="text"
+          //     inputClass="input-class"
+          //     register={register}
+          //     errorMessage={errors.director_role?.message}
+          //   />
+          // </DetailedSection>
         )}
         {beneficiary && (
           <DetailedSection>

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 export const Container = styled.div`
   display: flex;
   flex-flow: column;
@@ -7,11 +6,8 @@ export const Container = styled.div`
 `;
 export const Body = styled.div`
   display: flex;
-  flex-flow: column;
-  padding-top: 150px;
-`;
-export const Main = styled.div`
-  display: flex;
-  flex-flow: column;
-  gap: 20px;
+  gap: 42px;
+  padding: 40px 24px 24px;
+  border: 1px solid #edf1f7;
+  border-top: none;
 `;

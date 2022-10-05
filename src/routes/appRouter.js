@@ -15,7 +15,9 @@ import Resources from "pages/Dashboard/User/Resources";
 import Business from "pages/Dashboard/User/Business";
 import BankAccount from "pages/Dashboard/User/BankAccount";
 import Application from "pages/Dashboard/User/Application";
-
+import PendingApplications from "pages/Dashboard/User/Business/PendingApplications";
+import AllBusinesses from "pages/Dashboard/User/Business/AllBusinesses";
+import Test from "pages/Test";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -103,6 +105,7 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
+            <Route path="test" element={<Test />} />
             <Route
               index
               element={
@@ -154,7 +157,17 @@ const AppRouter = () => {
               <Route path="bank-account" element={<BankAccount />}></Route>
               <Route path="settings" element={<Settings />}></Route>
               <Route path="resources" element={<Resources />}></Route>
-              <Route path="business" element={<Business />}></Route>
+              <Route path="businesses" element={<Business />}>
+                <Route index element={<AllBusinesses />} />
+                <Route
+                  path="all-businesses"
+                  element={<AllBusinesses />}
+                ></Route>
+                <Route
+                  path="pending-applications"
+                  element={<PendingApplications />}
+                ></Route>
+              </Route>
               <Route path="compliance" element={<Compliance />}></Route>
               <Route
                 path="hiring-and-payroll"
