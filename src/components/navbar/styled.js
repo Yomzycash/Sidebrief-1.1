@@ -89,7 +89,7 @@ export const UserContainer = styled.div`
 `;
 export const NotificationWrapper = styled.div`
   width: 32%;
-  position: absolute;
+  position: fixed;
   right: 24px;
   z-index: 10;
   box-shadow: -4px 10px 10px 5px rgba(149, 150, 151, 0.08);
