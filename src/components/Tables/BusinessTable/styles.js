@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+	width: 100%;
 	border: 1px solid #edf1f7;
 	border-radius: 0px 0px 16px 16px;
+	overflow: hidden;
 `;
 
 export const Table = styled.table`
