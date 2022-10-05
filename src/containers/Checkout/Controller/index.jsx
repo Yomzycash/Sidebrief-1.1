@@ -31,7 +31,7 @@ export const CheckoutController = ({
       {!entity && (
         <CheckoutButton
           action={() => {
-            forwardAction();
+            forwardAction && forwardAction();
           }}
           text={forwardText}
           type={forwardSubmit ? "submit" : "button"}
