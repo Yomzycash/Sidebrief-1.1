@@ -19,7 +19,7 @@ export const NavWrapper = styled(motion.div)`
 
 export const Image = styled.img`
   max-width: 134px;
-  width: 18%;
+  width: 100%;
   min-width: 84px;
 `;
 export const BellIcon = styled.img`

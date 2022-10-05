@@ -32,6 +32,8 @@ import { BusinessObjectives } from "utils/config";
 import { useGetAllCountriesQuery } from "services/launchService";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const BusinessInfo = () => {
   const [businessNames, setBusinessNames] = useState([]);
@@ -43,13 +45,32 @@ const BusinessInfo = () => {
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
 
-  const navigate = useNavigate();
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
 
+  const navigate = useNavigate();
+  // console.log(selectedCountry);
+  // This runs when next button is clicked
   const handleNext = () => {
-    store.dispatch(setCountryISO(selectedCountryISO));
     store.dispatch(setCountry(selectedCountry));
-    store.dispatch(setSelectedBusinessNames(businessNames));
-    store.dispatch(setBusinessObjectives(selectedObjectives));
+    store.dispatch(setCountryISO(selectedCountryISO));
+
+    if (businessNames.length === 4) {
+      store.dispatch(setSelectedBusinessNames(businessNames));
+    } else {
+      toast.error("Please add exactly 4 business names");
+      return;
+    }
+    if (selectedObjectives.length >= 1) {
+      store.dispatch(setBusinessObjectives(selectedObjectives));
+    } else {
+      toast.error("Please add at least one objective");
+      return;
+    }
+    if (!selectedCountry) {
+      toast.error("Please select an operational country");
+      return;
+    }
+
     store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
     navigate("/launch/entity");
   };
@@ -114,14 +135,18 @@ const BusinessInfo = () => {
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            <TagInput getSelectedValues={handleBusinessNames} />
+            <TagInput
+              initialValues={LaunchInfo.businessNames}
+              getSelectedValues={handleBusinessNames}
+            />
 
             <TagInputWithSearch
               label="Business Objectives"
               list={BusinessObjectives}
               getValue={handleObjectives}
+              initialValues={LaunchInfo.selectedObjectives}
               MultiSelect
-              ExistsError="Tag has already been selected"
+              ExistsError="Objective has already been selected"
               MatchError="Please select objectives from the list"
               EmptyError="Please select at least one objective"
               MaxError="You cannot select more than 4"
@@ -131,6 +156,7 @@ const BusinessInfo = () => {
                 label="Operational Country"
                 list={countries}
                 getValue={handleCountry}
+                initialValue={LaunchInfo.selectedCountry}
               />
             </div>
           </LaunchFormContainer>

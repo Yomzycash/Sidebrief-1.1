@@ -30,7 +30,7 @@ const HeadText = ({
       <Title titlealign={titlealign}> {title}</Title>
       <Body bodyalign={bodyalign}>
         {body}
-        <span> {time} Sec</span>
+        <span> {time}</span>
       </Body>
     </HeadTextCont>
   );

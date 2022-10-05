@@ -81,7 +81,9 @@ const Sidebar = () => {
 
       <LogoutWrapper onClick={handleLogout}>
         <HiOutlineLogout color="#ed4e3a" size={20} />
-        {expanded ? <LogoutText>Logout</LogoutText> : null}
+        {expanded ? (
+          <LogoutText onClick={handleLogout}>Logout</LogoutText>
+        ) : null}
       </LogoutWrapper>
     </SidebarWrapper>
   );

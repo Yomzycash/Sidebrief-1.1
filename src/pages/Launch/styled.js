@@ -24,6 +24,14 @@ export const Body = styled.form`
   border-top: none;
 `;
 
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+`;
+
 export const AddMore = styled.div`
   display: flex;
   flex-flow: row nowrap;

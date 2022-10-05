@@ -13,6 +13,8 @@ const TagInputWithSearch = ({
   MatchError, // The error to display when reselecting an already selected value
   EmptyError, // () The error to display when no value is selected
   getValue, // (function): returns the selected tags as an argument
+  initialValue,
+  initialValues,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -24,6 +26,19 @@ const TagInputWithSearch = ({
 
   const suggestionContainer = useRef();
 
+  // This sets the tag values (if available) on mounth
+  useEffect(() => {
+    if (initialValues) {
+      setTags([...initialValues]);
+    }
+  }, []);
+
+  // This sets the select value (if available) on mounth
+  useEffect(() => {
+    if (initialValue) {
+      setValue(initialValue);
+    }
+  }, []);
   // Update list when it chages
   useEffect(() => {
     setFilteredList(list);
@@ -185,7 +200,7 @@ const TagInputWithSearch = ({
         {showSuggestions && (
           <Suggestions ref={suggestionContainer}>
             {filteredList.length === 0 ? (
-              <div style={{ displa: "flex", justifyContent: "center" }}>
+              <div style={{ display: "flex", justifyContent: "center" }}>
                 <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} />
               </div>
             ) : (
@@ -254,7 +269,7 @@ const Input = styled.div`
   display: flex;
 
   > input {
-    border: 1px solid #00c3ff;
+    border: 1px solid #edf1f6;
     padding: 24px;
     border-radius: 8px;
     height: 48px;
@@ -263,7 +278,8 @@ const Input = styled.div`
     transition: 0.3s all ease;
 
     &:focus {
-      box-shadow: -2px -2px 4px 2px #00c3ff28, 2px 2px 4px 2px #00c3ff28;
+      border: 1px solid #00c3ff;
+      /* box-shadow: -2px -2px 4px 2px #00c3ff28, 2px 2px 4px 2px #00c3ff28; */
     }
   }
 
@@ -285,6 +301,7 @@ const Suggestions = styled.div`
   background-color: white;
   border: 1px solid #edf1f7;
   border-radius: 8px;
+  box-shadow: 0 10px 15px #9d9d9d44;
   z-index: 1;
 
   > li {

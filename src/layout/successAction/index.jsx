@@ -27,7 +27,7 @@ const Success = ({ title, paragraph }) => {
         <HeadText
           title={title}
           body={paragraph}
-          time={count}
+          time={`${count} Sec`}
           titleAlign="center"
           bodyAlign="center"
           gap="clamp(8px, 1.5vw, 16px)"

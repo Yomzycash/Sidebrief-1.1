@@ -51,6 +51,12 @@ export const shareTypeOptions = [
   { value: "Common Shares", label: "Common Shares" },
 ];
 
+export const directorRoleOptions = [
+  { value: "Executive", label: "Executive" },
+  { value: "Non executive", label: "Non executive" },
+  { value: "Observer", label: "Observer" },
+];
+
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),

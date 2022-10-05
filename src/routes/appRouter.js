@@ -17,7 +17,7 @@ import BankAccount from "pages/Dashboard/User/BankAccount";
 import Application from "pages/Dashboard/User/Application";
 import PendingApplications from "pages/Dashboard/User/Business/PendingApplications";
 import AllBusinesses from "pages/Dashboard/User/Business/AllBusinesses";
-
+import Test from "pages/Test";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -105,6 +105,7 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
+            <Route path="test" element={<Test />} />
             <Route
               index
               element={
