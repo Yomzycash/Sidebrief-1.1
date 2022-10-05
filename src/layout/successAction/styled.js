@@ -5,8 +5,10 @@ export const SuccessWrapper = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  margin-top: 67px;
+  /* margin-top: 67px; */
   gap: 16px;
+
+  min-height: calc(100vh - 300px);
 
   @media screen and (max-width: 600px) {
     padding: 0px 24px;

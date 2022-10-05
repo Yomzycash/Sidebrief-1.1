@@ -46,7 +46,7 @@ const Navbar = ({ dashboard, rewards }) => {
   let newUserObject = JSON.parse(localUserInfo);
 
   useMemo(() => {
-    let status = newUserObject.verified;
+    let status = newUserObject?.verified;
     if (status === false) {
       setMsgObj((prev) => [
         ...prev,

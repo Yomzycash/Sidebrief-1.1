@@ -49,7 +49,7 @@ const RewardDetails = (props) => {
   }, []);
 
   const { rewardID } = useParams();
-  console.log("the data", data);
+
   useEffect(() => {
     const responseData = data === undefined ? [] : [...data];
 
@@ -58,8 +58,6 @@ const RewardDetails = (props) => {
     );
     setSelectedReward(rewardDetails);
     console.log(rewardDetails);
-
-    console.log(rewardID);
   }, [data]);
 
   const handleClickOpen = () => {
@@ -68,6 +66,11 @@ const RewardDetails = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleRewardClick = (reward) => {
+    setSelectedReward(reward);
+    console.log(reward);
   };
 
   return (
@@ -117,41 +120,15 @@ const RewardDetails = (props) => {
         }}
       >
         <ScrollBox>
-          <RewardCard
-            image={lendhaLogo}
-            title="Lendha Africa"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={SterlingLogo}
-            title="Sterling Bank PLC"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={GladeLogo}
-            title="Glade"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={OkraLogo}
-            title="Okra"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={SterlingLogo}
-            title="Sterling Bank PLC"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={GladeLogo}
-            title="Glade"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={OkraLogo}
-            title="Okra"
-            body="Get credit to register your business & pay later."
-          />
+          {data?.slice(0, 8).map((reward, index) => (
+            <RewardCard
+              key={index}
+              title={reward?.rewardPartner}
+              body={reward?.rewardName}
+              image={reward?.rewardImage}
+              action={() => handleRewardClick(reward)}
+            />
+          ))}
         </ScrollBox>
       </DashboardSection>
     </StaffContainer>
