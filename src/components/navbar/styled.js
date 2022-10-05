@@ -159,7 +159,7 @@ export const NoMessage = styled.div`
 
 export const NotificationBadge = styled.div`
   border-radius: 100%;
-  background-color: red;
+  background-color: #00a2d4;
   padding: 2px 5px 0px 5px;
   align-items: center;
   justify-content: center;

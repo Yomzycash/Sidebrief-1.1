@@ -34,7 +34,7 @@ export const MainHeader = styled.div`
 
 export const SubHeader = styled.div`
   display: flex;
-  height: clamp(48px, 10vw, 60px);
+  height: clamp(48px, 10vw, 58px);
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
@@ -81,6 +81,7 @@ export const Drop = styled.div`
     border: none;
     outline: none;
     width: 60px;
+    background: none;
   }
 `;
 export const ButtonWrapper = styled.div`
