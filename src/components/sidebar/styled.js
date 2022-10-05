@@ -50,8 +50,7 @@ export const SidebarContentItemIcon = styled.div`
 `;
 
 export const LogoutWrapper = styled.div`
-  position: absolute;
-  bottom: 40px;
+  margin-top: 200px;
   margin-left: 15px;
   display: flex;
   :hover {
