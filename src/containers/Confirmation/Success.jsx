@@ -1,13 +1,20 @@
-import Button from 'components/button'
-import React from 'react'
-import styled from 'styled-components'
+import Button from "components/button";
+import React from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+
+const spinTransition = {
+  // loop: Infinity,
+  ease: "linear",
+  duration: 1.5,
+};
 
 const Success = ({
-  title = 'Payment Successful',
+  title = "Payment Successful",
   image,
-  imageName = 'success',
-  description = 'We have confirmed your payment. Kindly continue to complete documentation.',
-  buttonTitle = 'continue',
+  imageName = "success",
+  description = "We have confirmed your payment. Kindly continue to complete documentation.",
+  buttonTitle = "continue",
   onClick,
   lastText,
   action,
@@ -15,7 +22,14 @@ const Success = ({
   return (
     <>
       <Wrapper>
-        <Image src={image} alt={imageName} />
+        <ImageWrapper
+          key="Success"
+          animate={{ rotate: 360 }}
+          transition={spinTransition}
+        >
+          <Image src={image} alt={imageName} />
+        </ImageWrapper>
+
         <TextWrapper>
           <Title>{title}</Title>
           <BottomText>{description}</BottomText>
@@ -24,10 +38,10 @@ const Success = ({
         {lastText && <FinalText onClick={action}>Save and Exit</FinalText>}
       </Wrapper>
     </>
-  )
-}
+  );
+};
 
-export default Success
+export default Success;
 const Wrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -35,10 +49,11 @@ const Wrapper = styled.div`
   justify-content: center;
   max-width: 628px;
   /* border: 1px solid red; */
-`
+`;
+const ImageWrapper = styled(motion.div)``;
 const Image = styled.img`
   margin: 0 auto;
-`
+`;
 const TextWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -47,18 +62,18 @@ const TextWrapper = styled.div`
   gap: 8px;
   text-align: center;
   margin-bottom: 24px;
-`
+`;
 const Title = styled.h3`
   font-weight: 700;
   font-size: 24px;
   line-height: 30px;
   color: #151717;
-`
+`;
 const BottomText = styled.p`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-`
+`;
 const FinalText = styled.p`
   font-weight: 500;
   font-size: 18px;
@@ -68,4 +83,4 @@ const FinalText = styled.p`
   margin-top: 24px;
 
   color: #00a2d4;
-`
+`;
