@@ -17,6 +17,7 @@ import NumberInput from "components/input/phoneNumberInput";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
 import { ThreeDots } from "react-loading-icons";
+import { memberAdd } from "./actions";
 
 export const CheckoutFormInfo = ({
   title,
@@ -26,16 +27,14 @@ export const CheckoutFormInfo = ({
   beneficiary,
   cardAction,
   checkInfoSchema,
-  isDirector,
-  setIsDirector,
   handleAdd,
   handleUpdate,
   addIsLoading,
   selectedToEdit,
-  directorsInfo,
 }) => {
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
-  const [directorInitialRole, setDirectorInitialRole] = useState("");
+  const [directorInitialRole] = useState(selectedToEdit?.directorRole);
+  const [isDirector, setIsDirector] = useState(false);
 
   const {
     handleSubmit,
@@ -61,13 +60,6 @@ export const CheckoutFormInfo = ({
   // Endpoints hooks from launch slice
   const [addMembers, { isLoading, isSuccess }] = useAddMembersMutation();
 
-  // Hide director's field on mount
-  // useEffect(() => {
-  //   if (isDirector) {
-  //     setIsDirector(false);
-  //   }
-  // }, []);
-
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
     console.log(formData);
@@ -80,32 +72,8 @@ export const CheckoutFormInfo = ({
       return;
     }
     if (cardAction === "add") {
-      const requiredMemberData = {
-        launchCode: generatedLaunchCode,
-        businessMember: {
-          memberName: formData.full_name,
-          memberEmail: formData.email,
-          memberPhone: formData.phone,
-        },
-      };
-
-      let addMemberResponse = await addMembers(requiredMemberData);
-
-      if (addMemberResponse.data) {
-        // Get the information of all added members
-        const allMembers = Object.entries(
-          addMemberResponse.data.businessMembers
-        );
-        // Get the information of the just added member
-        const memberInfo = allMembers[allMembers.length - 1][1];
-        handleAdd(formData, generatedLaunchCode, memberInfo);
-      } else {
-        if (addMemberResponse.error.status === "FETCH_ERROR") {
-          toast.error("Please check your internet connection");
-        }
-      }
+      handleAdd(formData, generatedLaunchCode);
     } else if (cardAction === "edit") {
-      setIsDirector(formData?.isDirector);
       handleUpdate(formData, selectedToEdit);
     }
   };
@@ -113,31 +81,24 @@ export const CheckoutFormInfo = ({
   // This populates the input fields value when edit botton is clicked
   useEffect(() => {
     if (cardAction === "edit") {
+      setIsDirector(selectedToEdit?.directorRole ? true : false);
+
       setValue("full_name", selectedToEdit?.memberName);
       setValue("email", selectedToEdit?.memberEmail);
       setValue(
         "share_percentage",
         selectedToEdit?.shareholderOwnershipPercentage
       );
-      // setValue("director_role", selectedToEdit?.director_role);
+
       handleNumberChange(selectedToEdit?.memberPhone);
       handleShareTypeChange({
         share_type: selectedToEdit?.shareholderOwnershipType,
       });
-      console.log(directorsInfo);
-      if (directorsInfo) {
-        let directorInfo = directorsInfo.filter(
-          (director) => director.memberCode === selectedToEdit.memberCode
-        );
-        if (directorInfo.length > 0) {
-          handleDirectorRoleChange({
-            director_role: directorInfo[0]?.directorRole,
-          });
-          // setValue("director_role", directorInfo[0].directorRole);
-          setDirectorInitialRole(directorInfo[0].directorRole);
-          setIsDirector(true);
-        }
-      }
+
+      handleDirectorRoleChange({
+        director_role: selectedToEdit?.directorRole,
+      });
+
       if (beneficiary) {
         setValue("full_name", selectedToEdit?.beneficialOwnerName);
         setValue("email", selectedToEdit?.beneficialOwnerEmail);
@@ -156,7 +117,7 @@ export const CheckoutFormInfo = ({
 
   // This sets the director role value - attached to the onChange event
   const handleDirectorRoleChange = (value) => {
-    console.log(value);
+    // console.log(value);
     var string = Object.values(value)[0];
     setValue("director_role", string, { shouldValidate: true });
   };
@@ -182,7 +143,9 @@ export const CheckoutFormInfo = ({
   return (
     <Form onSubmit={handleSubmit(submitForm)}>
       <Title>
-        <p>Add a {title}</p>
+        <p>
+          {cardAction === "edit" ? "Update" : "Add a"} {title}
+        </p>
         <CloseIcon onClick={handleClose} />
       </Title>
       <CheckInputWrapper>
@@ -249,7 +212,7 @@ export const CheckoutFormInfo = ({
             />
           </DetailedSection>
         )}
-        {director && (
+        {(isDirector || director) && (
           <DropDown
             containerStyle={{ margin: 0, marginBottom: "24px" }}
             label="Director Role"
@@ -262,17 +225,6 @@ export const CheckoutFormInfo = ({
             defaultValue={directorInitialRole}
             launch
           />
-          // <DetailedSection>
-          //   <InputWithLabel
-          //     name="director_role"
-          //     label="Director's Role"
-          //     labelStyle="input-label"
-          //     type="text"
-          //     inputClass="input-class"
-          //     register={register}
-          //     errorMessage={errors.director_role?.message}
-          //   />
-          // </DetailedSection>
         )}
         {beneficiary && (
           <DetailedSection>
@@ -315,12 +267,10 @@ export const CheckoutFormInfo = ({
                 id="member-type2"
                 name="isDirector"
                 checked={isDirector}
+                onClick={() => setIsDirector(!isDirector)}
                 {...register("isDirector")}
               />
-              <label
-                htmlFor="member-type2"
-                onClick={() => setIsDirector(!isDirector)}
-              >
+              <label onClick={() => setIsDirector(!isDirector)}>
                 Click here if {title} is a <span>Director</span>
               </label>
             </div>

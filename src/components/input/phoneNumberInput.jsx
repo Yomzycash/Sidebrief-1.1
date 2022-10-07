@@ -31,9 +31,7 @@ const NumberInput = ({
       inputRef.current.focus();
     }
   }, [active]);
-  const handleBorder = () => {
-    setActive(!active);
-  };
+
   return (
     <Wrapper
       key="PhoneNumberInput"
@@ -50,7 +48,8 @@ const NumberInput = ({
       <div
         className={errorMessage ? "error" : active ? "active" : "nonActive"}
         ref={inputRef}
-        onFocus={handleBorder}
+        onFocus={() => setActive(true)}
+        onBlur={() => setActive(false)}
         style={phoneInputStyles}
       >
         <PhoneInput
