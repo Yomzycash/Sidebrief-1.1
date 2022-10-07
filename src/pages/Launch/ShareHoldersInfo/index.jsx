@@ -23,14 +23,28 @@ import {
 } from "utils/config";
 import {
   useAddDirectorMutation,
+  useAddMembersMutation,
   useAddShareHolderMutation,
   useDeleteMemberMutation,
   useDeleteShareholderMutation,
   useGetUserDraftQuery,
+  useUpdateDirectorMutation,
   useUpdateMemberMutation,
   useUpdateShareholderMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
+import {
+  mergeInfo,
+  shareHolderAdd,
+  shareholderDelete,
+  shareholderUpdate,
+  updateDirectorRole,
+} from "./actions";
+import {
+  memberAdd,
+  memberUpdate,
+} from "containers/Checkout/InfoSection/actions";
+import { directorAdd, directorUpdate } from "../DirectorsInfo/actions";
 
 const ShareHoldersInfo = () => {
   const navigate = useNavigate();
@@ -46,9 +60,11 @@ const ShareHoldersInfo = () => {
   const [addShareHolder, addState] = useAddShareHolderMutation();
   const [deleteShareholder, deleteState] = useDeleteShareholderMutation();
   const [updateShareholder, updateState] = useUpdateShareholderMutation();
+  const [addMembers, memberAddState] = useAddMembersMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember] = useDeleteMemberMutation();
   const [addDirector, dirAddState] = useAddDirectorMutation();
+  const [updateDirector, dirUpdateState] = useUpdateDirectorMutation();
   const { data, error, isLoading, isSuccess } = useGetUserDraftQuery();
 
   // This gets some information from the store
@@ -84,42 +100,25 @@ const ShareHoldersInfo = () => {
     setSelectedToEdit(shareholder);
   };
 
+  //
   // This deletes a shareholder's informataion
   const handleDelete = async (shareholder) => {
     setSelectedToDelete(shareholder);
-    const requiredDeleteData = {
-      launchCode: shareholder.launchCode,
-      shareholdingCode: shareholder.shareholdingCode,
-      memberCode: shareholder.memberCode,
-      shareholderOwnershipPercentage:
-        shareholder.shareholderOwnershipPercentage,
-      shareholderOwnershipType: shareholder.shareholderOwnershipType,
-    };
     // The delete response gotten from the backend
-    let deleteResponse = await deleteShareholder(requiredDeleteData);
-    console.log(deleteResponse);
+    let deleteResponse = await shareholderDelete(
+      LaunchApplicationInfo,
+      shareholder,
+      deleteShareholder,
+      deleteMember
+    );
+
     // This fires off, if delete response is success
     if (deleteResponse.data) {
-      // This filters and set the filtered shareholders info to the store
-      let filteredShareholders = shareHoldersLaunchInfo.filter(
-        (shareholder) =>
-          shareholder.shareholdingCode !== requiredDeleteData.shareholdingCode
-      );
-      store.dispatch(setShareHoldersLaunchInfo({ info: filteredShareholders }));
-      // This checks if the deleted shareholder is a director
-      let memberCheck = directorsLaunchInfo.filter(
-        (director) => director?.memberCode === requiredDeleteData?.memberCode
-      );
-      // if memberCheck length is 0 (i.e the shareholder is not a director), member delete endpoint is called.
-      if (memberCheck.length === 0) {
-        let requiredMemberDeleteData = {
-          launchCode: shareholder.launchCode,
-          memberCode: shareholder.memberCode,
-        };
-        let memberDeleteResponse = await deleteMember(requiredMemberDeleteData);
-        console.log(memberDeleteResponse);
-      }
-    } else {
+      console.log(deleteResponse.data);
+      store.dispatch(setShareHoldersLaunchInfo({ info: deleteResponse.data }));
+    }
+    // This runs if an error is recieved
+    else {
       if (deleteResponse.error.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
       } else {
@@ -128,119 +127,171 @@ const ShareHoldersInfo = () => {
     }
   };
 
+  //
   // This adds a new director
-  const handleDirectorAdd = async (formData, launchCode, memberInfo) => {
-    const requiredDirectorData = {
-      launchCode: launchCode,
-      memberCode: memberInfo.memberCode,
-      directorRole: formData.director_role,
-    };
+  const handleDirectorAdd = async (launchCode, formData, memberInfo) => {
+    let addDirectorResponse = await directorAdd(
+      launchCode,
+      formData,
+      memberInfo,
+      addDirector
+    );
+    let directorAllInfo = addDirectorResponse?.data;
+    let error = addDirectorResponse?.error;
 
-    let addDirectorResponse = await addDirector(requiredDirectorData);
     if (addDirectorResponse.data) {
-      // Get the information of all added directors
-      const allDirectors = Object.entries(
-        addDirectorResponse.data.businessDirectors
-      );
-      // Get the information of the just added director
-      const directorInfo = allDirectors[allDirectors.length - 1][1];
-      // Merge the member information and the director information of the just added director
-      let directorAllInfo = { ...memberInfo, ...directorInfo };
       // Set the combined information to store
       store.dispatch(
         setDirectorsLaunchInfo({ info: directorAllInfo, type: "add" })
       );
       setOpenModal(false);
+      console.log(addDirectorResponse);
     } else {
-      toast.error(addDirectorResponse.error.data.message);
+      console.log(addDirectorResponse.error);
+      toast.error(error.data.message);
     }
   };
 
-  // This adds a new shareholder
-  const handleShareholderAdd = async (formData, launchCode, memberInfo) => {
-    const requiredShareholderData = {
-      launchCode: launchCode,
-      memberCode: memberInfo.memberCode,
-      shareholderOwnershipPercentage: formData.share_percentage,
-      shareholderOwnershipType: formData.share_type,
-    };
-
-    let addShareHolderResponse = await addShareHolder(requiredShareholderData);
-    if (addShareHolderResponse.data) {
-      // Get the information of all added shareholder
-      const allShareholders = Object.entries(
-        addShareHolderResponse.data.businessShareholders
-      );
-      // Get the information of the just added shareholder
-      const shareholderInfo = allShareholders[allShareholders.length - 1][1];
-      // Merge the member information and the shareholder information of the just added shareholder
-      let shareholderAllInfo = { ...memberInfo, ...shareholderInfo };
-      console.log(shareholderAllInfo);
-      // Set the combined information to store
-      store.dispatch(
-        setShareHoldersLaunchInfo({ info: shareholderAllInfo, type: "add" })
-      );
-      console.log(addShareHolderResponse);
-    } else {
-      toast.error(addShareHolderResponse.error.data.message);
-    }
-    if (isDirector) {
-      handleDirectorAdd(formData, launchCode, memberInfo);
-    } else {
-      setOpenModal(false);
-    }
-  };
-
-  // This updates the shareholders information
-  const handleShareholderUpdate = async (formData, selectedShareholder) => {
-    const requiredShareholderUpdateData = {
-      launchCode: selectedShareholder.launchCode,
-      memberCode: selectedShareholder.memberCode,
-      shareholderOwnershipPercentage: formData.share_percentage,
-      shareholderOwnershipType: formData.share_type,
-      shareholdingCode: selectedShareholder.shareholdingCode,
-    };
-    const requiredMemberUpdateData = {
-      launchCode: selectedShareholder.launchCode,
-      memberCode: selectedShareholder.memberCode,
-      businessMember: {
-        memberName: formData.full_name,
-        memberEmail: formData.email,
-        memberPhone: formData.phone,
-      },
-    };
+  //
+  // This updates the director's information
+  const handleDirectorUpdate = async (formData, selectedDirector) => {
     // Responses from the backend
-    let shareholdersUpdateResponse = await updateShareholder(
-      requiredShareholderUpdateData
+    let directorsUpdateResponse = await directorUpdate(
+      formData,
+      selectedDirector,
+      updateDirector
     );
-    let membersUpdateResponse = await updateMember(requiredMemberUpdateData);
+    let membersUpdateResponse = await memberUpdate(
+      formData,
+      selectedDirector,
+      updateMember
+    );
 
     // The data from the response got from the backend
-    let shareholdersUpdatedData =
-      shareholdersUpdateResponse?.data?.businessShareholders;
-    let membersUpdatedData = membersUpdateResponse?.data?.businessMembers;
+    let directorsUpdatedData = directorsUpdateResponse?.data;
+    let membersUpdatedData = membersUpdateResponse?.data;
+    let error = directorsUpdateResponse?.error;
+
+    // Executes if data is returned from the backend
+    if (directorsUpdatedData) {
+      const directorsMembersMerged = mergeInfo(
+        directorsUpdatedData,
+        membersUpdatedData
+      );
+      console.log(directorsMembersMerged);
+      store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
+      handleModalClose();
+    } else {
+      if (error?.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(error?.data.message);
+      }
+    }
+  };
+
+  //
+  // This adds a new shareholder
+  const handleShareholderAdd = async (formData, launchCode) => {
+    // Add a member
+    let addMemberResponse = await memberAdd(launchCode, formData, addMembers);
+    // Runs if successfully added member
+    if (addMemberResponse.data) {
+      const memberInfo = addMemberResponse.data;
+      const addShareHolderResponse = await shareHolderAdd(
+        launchCode,
+        formData,
+        memberInfo,
+        addShareHolder
+      );
+      let shareholderAllInfo = addShareHolderResponse?.data;
+      let error = addShareHolderResponse?.error;
+
+      if (shareholderAllInfo) {
+        // Push to store
+        console.log(formData);
+        store.dispatch(
+          setShareHoldersLaunchInfo({
+            info: {
+              ...shareholderAllInfo,
+              directorRole: formData?.director_role,
+            },
+            type: "add",
+          })
+        );
+      } else if (error) {
+        toast.error(error.data.message);
+      }
+      console.log(formData);
+      if (formData.director_role) {
+        await handleDirectorAdd(launchCode, formData, memberInfo);
+        setOpenModal(false);
+        handleDirectorAdd(formData, launchCode, memberInfo);
+      } else {
+        setOpenModal(false);
+      }
+    }
+    // Runs if failed to add member
+    else if (addMemberResponse.error) {
+      let error = addMemberResponse.error;
+      if (error.status === "FETCH_ERROR")
+        toast.error("Please check your internet connection");
+    }
+  };
+
+  //
+  // This updates the shareholders information
+  const handleShareholderUpdate = async (formData, selectedShareholder) => {
+    // Responses from the backend
+    let shareholdersUpdateResponse = await shareholderUpdate(
+      formData,
+      selectedShareholder,
+      updateShareholder
+    );
+    let membersUpdateResponse = await memberUpdate(
+      formData,
+      selectedShareholder,
+      updateMember
+    );
+
+    // The data from the response got from the backend
+    const shareholdersUpdatedData = await shareholdersUpdateResponse?.data;
+    const membersUpdatedData = await membersUpdateResponse?.data;
+    const error = shareholdersUpdateResponse.error;
 
     // Executes if data is returned from the backend
     if (shareholdersUpdatedData) {
-      let shareholdersMembersMerged = [];
-      shareholdersUpdatedData.forEach((shareholder) => {
-        membersUpdatedData.forEach((member) => {
-          if (member.memberCode === shareholder.memberCode) {
-            let merged = { ...shareholder, ...member };
-            shareholdersMembersMerged.push(merged);
-          }
-        });
-      });
-      // console.log(shareholdersMembersMerged);
-      store.dispatch(
-        setShareHoldersLaunchInfo({ info: shareholdersMembersMerged })
+      const shareholdersMembersMerged = mergeInfo(
+        shareholdersUpdatedData,
+        membersUpdatedData
       );
+      if (formData.director_role) {
+        updateDirectorRole(
+          formData,
+          shareholdersMembersMerged,
+          selectedShareholder
+        );
+        // let selectedDirector = directorsLaunchInfo.filter(
+        //   (dir) => dir.memberCode === selectedShareholder.memberCode
+        // );
+        // console.log(selectedDirector);
+        // let directorsUpdateResponse = await directorUpdate(
+        //   formData,
+        //   selectedDirector,
+        //   updateDirector
+        // );
+      }
+      // Save to store
+      store.dispatch(
+        setShareHoldersLaunchInfo({ info: [...shareholdersMembersMerged] })
+      );
+
       handleModalClose();
     } else {
-      if (shareholdersUpdateResponse.error.status === "FETCH_ERROR") {
+      if (error.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
       } else {
-        toast.error(shareholdersUpdateResponse.error.data.message);
+        toast.error(error.data.message);
       }
     }
   };
@@ -311,6 +362,7 @@ const ShareHoldersInfo = () => {
                   addState.isLoading ||
                   deleteState.isLoading ||
                   updateState.isLoading ||
+                  memberAddState.isLoading ||
                   memberUpdateState.isLoading ||
                   dirAddState.isLoading
                 }

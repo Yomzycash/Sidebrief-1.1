@@ -15,12 +15,23 @@ import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import { checkInfoDirectorSchema } from "utils/config";
 import {
   useAddDirectorMutation,
+  useAddMembersMutation,
   useDeleteDirectorMutation,
   useDeleteMemberMutation,
   useUpdateDirectorMutation,
   useUpdateMemberMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
+import {
+  directorAdd,
+  directorDelete,
+  directorUpdate,
+  mergeInfo,
+} from "./actions";
+import {
+  memberAdd,
+  memberUpdate,
+} from "containers/Checkout/InfoSection/actions";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -34,6 +45,7 @@ const DirectorsInfo = () => {
   const [addDirector, addState] = useAddDirectorMutation();
   const [deleteDirector, deleteState] = useDeleteDirectorMutation();
   const [updateDirector, updateState] = useUpdateDirectorMutation();
+  const [addMembers, memberAddState] = useAddMembersMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember] = useDeleteMemberMutation();
 
@@ -72,34 +84,17 @@ const DirectorsInfo = () => {
   // This deletes a director's informataion
   const handleDelete = async (director) => {
     setSelectedToDelete(director);
-    const requiredDeleteData = {
-      launchCode: director.launchCode,
-      directorCode: director.directorCode,
-      memberCode: director.memberCode,
-      directorRole: director.directorRole,
-    };
-    let deleteResponse = await deleteDirector(requiredDeleteData);
+
+    let deleteResponse = await directorDelete(
+      LaunchApplicationInfo,
+      director,
+      deleteDirector,
+      deleteMember
+    );
     console.log(deleteResponse);
+
     if (deleteResponse.data) {
-      // This filters and set the filtered directors info to the store
-      let filteredDirectors = directorsLaunchInfo.filter(
-        (director) => director.directorCode !== requiredDeleteData.directorCode
-      );
-      store.dispatch(setDirectorsLaunchInfo({ info: filteredDirectors }));
-      // This checks if the deleted director is a shareholder
-      let memberCheck = shareholdersLaunchInfo.filter(
-        (shareholder) =>
-          shareholder?.memberCode === requiredDeleteData?.memberCode
-      );
-      // if memberCheck length is 0 (i.e the director is not a shareholder), member delete endpoint is called.
-      if (memberCheck.length === 0) {
-        let requiredMemberDeleteData = {
-          launchCode: director.launchCode,
-          memberCode: director.memberCode,
-        };
-        let memberDeleteResponse = await deleteMember(requiredMemberDeleteData);
-        console.log(memberDeleteResponse);
-      }
+      store.dispatch(setDirectorsLaunchInfo({ info: deleteResponse.data }));
     } else {
       if (deleteResponse.error.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
@@ -110,82 +105,75 @@ const DirectorsInfo = () => {
   };
 
   // This adds a new director
-  const handleDirectorAdd = async (formData, launchCode, memberInfo) => {
-    const requiredDirectorData = {
-      launchCode: launchCode,
-      memberCode: memberInfo.memberCode,
-      directorRole: formData.director_role,
-    };
+  const handleDirectorAdd = async (formData, launchCode) => {
+    // Add a member
+    let addMemberResponse = await memberAdd(launchCode, formData, addMembers);
+    // Runs if successfully added member
+    if (addMemberResponse.data) {
+      const memberInfo = addMemberResponse.data;
 
-    let addDirectorResponse = await addDirector(requiredDirectorData);
-    if (addDirectorResponse.data) {
-      // Get the information of all added directors
-      const allDirectors = Object.entries(
-        addDirectorResponse.data.businessDirectors
+      const addDirectorResponse = await directorAdd(
+        launchCode,
+        formData,
+        memberInfo,
+        addDirector
       );
-      // Get the information of the just added director
-      const directorInfo = allDirectors[allDirectors.length - 1][1];
-      // Merge the member information and the director information of the just added director
-      let directorAllInfo = { ...memberInfo, ...directorInfo };
-      console.log(directorAllInfo);
-      // Set the combined information to store
-      store.dispatch(
-        setDirectorsLaunchInfo({ info: directorAllInfo, type: "add" })
-      );
-      setOpenModal(false);
-      console.log(addDirectorResponse);
-    } else {
-      console.log(addDirectorResponse.error);
-      toast.error(addDirectorResponse.error.data.message);
+      let directorAllInfo = addDirectorResponse?.data;
+      let error = addDirectorResponse?.error;
+
+      if (addDirectorResponse.data) {
+        // Set the combined information to store
+        store.dispatch(
+          setDirectorsLaunchInfo({ info: directorAllInfo, type: "add" })
+        );
+        setOpenModal(false);
+        console.log(addDirectorResponse);
+      } else {
+        console.log(addDirectorResponse.error);
+        toast.error(error.data.message);
+      }
+    }
+    // Runs if failed to add member
+    else if (addMemberResponse.error) {
+      let error = addMemberResponse.error;
+      if (error.status === "FETCH_ERROR")
+        toast.error("Please check your internet connection");
     }
   };
 
   // This updates the director's information
   const handleDirectorUpdate = async (formData, selectedDirector) => {
-    const requiredDirectorUpdateData = {
-      launchCode: selectedDirector.launchCode,
-      memberCode: selectedDirector.memberCode,
-      directorRole: formData.director_role,
-      directorCode: selectedDirector.directorCode,
-    };
-    const requiredMemberUpdateData = {
-      launchCode: selectedDirector.launchCode,
-      memberCode: selectedDirector.memberCode,
-      businessMember: {
-        memberName: formData.full_name,
-        memberEmail: formData.email,
-        memberPhone: formData.phone,
-      },
-    };
     // Responses from the backend
-    let directorsUpdateResponse = await updateDirector(
-      requiredDirectorUpdateData
+    let directorsUpdateResponse = await directorUpdate(
+      formData,
+      selectedDirector,
+      updateDirector
     );
-    let membersUpdateResponse = await updateMember(requiredMemberUpdateData);
+    let membersUpdateResponse = await memberUpdate(
+      formData,
+      selectedDirector,
+      updateMember
+    );
 
     // The data from the response got from the backend
-    let directorsUpdatedData = directorsUpdateResponse?.data?.businessDirectors;
-    let membersUpdatedData = membersUpdateResponse?.data?.businessMembers;
+    let directorsUpdatedData = directorsUpdateResponse?.data;
+    let membersUpdatedData = membersUpdateResponse?.data;
+    let error = directorsUpdateResponse?.error;
 
     // Executes if data is returned from the backend
     if (directorsUpdatedData) {
-      let directorsMembersMerged = [];
-      directorsUpdatedData.forEach((director) => {
-        membersUpdatedData.forEach((member) => {
-          if (member.memberCode === director.memberCode) {
-            let merged = { ...director, ...member };
-            directorsMembersMerged.push(merged);
-          }
-        });
-      });
+      const directorsMembersMerged = mergeInfo(
+        directorsUpdatedData,
+        membersUpdatedData
+      );
       console.log(directorsMembersMerged);
       store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
       handleModalClose();
     } else {
-      if (directorsUpdateResponse.error.status === "FETCH_ERROR") {
+      if (error?.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
       } else {
-        toast.error(directorsUpdateResponse.error.data.message);
+        toast.error(error?.data.message);
       }
     }
   };
@@ -239,6 +227,7 @@ const DirectorsInfo = () => {
                 addIsLoading={
                   addState.isLoading ||
                   deleteState.isLoading ||
+                  memberAddState.isLoading ||
                   updateState.isLoading ||
                   memberUpdateState.isLoading
                 }
