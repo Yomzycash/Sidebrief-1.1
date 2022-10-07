@@ -27,13 +27,10 @@ export const CheckoutFormInfo = ({
   beneficiary,
   cardAction,
   checkInfoSchema,
-  // isDirector,
-  // setIsDirector,
   handleAdd,
   handleUpdate,
   addIsLoading,
   selectedToEdit,
-  directorsInfo,
 }) => {
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
   const [directorInitialRole] = useState(selectedToEdit?.directorRole);

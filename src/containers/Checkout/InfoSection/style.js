@@ -15,7 +15,6 @@ export const TitleWrapper = styled.div`
 
 export const Form = styled.form`
   padding: 0 40px;
-  /* padding-inline: clamp(15px, 4vw, 40px); */
   width: 100%;
   max-width: 962px;
 
