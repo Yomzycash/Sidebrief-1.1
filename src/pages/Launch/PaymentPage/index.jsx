@@ -87,6 +87,13 @@ const PaymentPage = () => {
 						USDprice={845}
 					/>
 				</div>
+				<Bottom>
+					<CheckoutController
+						backText={"Previous"}
+						hideForward
+						backAction={handlePrev}
+					/>
+				</Bottom>
 			</Body>
 		</Container>
 	);

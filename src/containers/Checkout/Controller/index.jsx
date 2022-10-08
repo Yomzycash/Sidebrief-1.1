@@ -3,42 +3,44 @@ import { Container } from "./styles";
 import { CheckoutButton } from "components/button";
 
 export const CheckoutController = ({
-  backAction,
-  forwardAction,
-  backText,
-  forwardText,
-  hidePrev,
-  forwardSubmit,
-  containerStyle,
-  backBottonStyle,
-  forwardButtonStyle,
-  backwardSubmit,
-  forwardDisable,
-  backDisable,
-  entity,
+	backAction,
+	forwardAction,
+	backText,
+	forwardText,
+	hidePrev,
+	forwardSubmit,
+	containerStyle,
+	backBottonStyle,
+	forwardButtonStyle,
+	backwardSubmit,
+	forwardDisable,
+	backDisable,
+	entity,
+	hideForward,
 }) => {
-  return (
-    <Container style={containerStyle}>
-      <CheckoutButton
-        back
-        action={backAction}
-        text={backText}
-        hide={hidePrev}
-        type={backwardSubmit || "button"}
-        style={backBottonStyle}
-        disable={backDisable}
-      />
-      {!entity && (
-        <CheckoutButton
-          action={() => {
-            forwardAction && forwardAction();
-          }}
-          text={forwardText}
-          type={forwardSubmit ? "submit" : "button"}
-          style={forwardButtonStyle}
-          disable={forwardDisable}
-        />
-      )}
-    </Container>
-  );
+	return (
+		<Container style={containerStyle}>
+			<CheckoutButton
+				back
+				action={backAction}
+				text={backText}
+				hide={hidePrev}
+				type={backwardSubmit || "button"}
+				style={backBottonStyle}
+				disable={backDisable}
+			/>
+			{!entity && (
+				<CheckoutButton
+					action={() => {
+						forwardAction && forwardAction();
+					}}
+					text={forwardText}
+					type={forwardSubmit ? "submit" : "button"}
+					style={forwardButtonStyle}
+					disable={forwardDisable}
+					hide={hideForward}
+				/>
+			)}
+		</Container>
+	);
 };
