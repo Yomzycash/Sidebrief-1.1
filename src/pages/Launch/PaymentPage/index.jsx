@@ -5,34 +5,35 @@ import TagInput from "components/input/TagInput";
 import { Body } from "./styles.js";
 
 import {
-  CheckoutController,
-  CheckoutSection,
-  PaymentForm,
-  PaymentHeader,
-  PaymentSelector,
+	CheckoutController,
+	CheckoutSection,
+	PaymentForm,
+	PaymentHeader,
+	PaymentSelector,
 } from "containers";
 import {
-  NigeriaFlag,
-  KenyaFlag,
-  SouthAfricaFlag,
-  MalawiFlag,
-  ZimbabweFlag,
+	NigeriaFlag,
+	KenyaFlag,
+	SouthAfricaFlag,
+	MalawiFlag,
+	ZimbabweFlag,
 } from "asset/flags";
 import {
-  Bottom,
-  Container,
-  Header,
-  InputsWrapper,
-  CountryItem,
+	Bottom,
+	Container,
+	Header,
+	InputsWrapper,
+	CountryItem,
 } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
+import { useSelector } from "react-redux";
 import {
-  setCheckoutProgress,
-  setCountryISO,
-  setCountry,
-  setSelectedBusinessNames,
-  setBusinessObjectives,
+	setCheckoutProgress,
+	setCountryISO,
+	setCountry,
+	setSelectedBusinessNames,
+	setBusinessObjectives,
 } from "redux/Slices";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { BusinessObjectives } from "utils/config";
@@ -41,46 +42,54 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 
 const PaymentPage = () => {
-  const navigate = useNavigate();
+	const selectedEntity = useSelector(
+		(state) => state.LaunchReducer.selectedEntity
+	);
 
-  const handleNext = () => {
-    navigate("/launch/entity");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 3 })); // total- total pages and current - current page
-  };
+	const navigate = useNavigate();
 
-  const handlePrev = () => {
-    navigate(-1);
-  };
+	const handleNext = () => {
+		navigate("/launch/entity");
+		store.dispatch(setCheckoutProgress({ total: 13, current: 3 })); // total- total pages and current - current page
+	};
 
-  // This fires off whenever next button is clicked
-  // useEffect(() => {
-  //
-  // }, [nextClicked]);
+	const handlePrev = () => {
+		navigate(-1);
+	};
 
-  return (
-    <Container>
-      <Header>
-        <HeaderCheckout />
-      </Header>
+	// This fires off whenever next button is clicked
+	// useEffect(() => {
+	//
+	// }, [nextClicked]);
 
-      <Body>
-        <CheckoutSection
-          title="Payment Method"
-          HeaderParagraph="Please select a payment method to continue with."
-        />
-        <PaymentSelector />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "40px",
-          }}
-        >
-          <PaymentForm currency="NGN" amount={22000} USDprice={845} />
-        </div>
-      </Body>
-    </Container>
-  );
+	return (
+		<Container>
+			<Header>
+				<HeaderCheckout />
+			</Header>
+
+			<Body>
+				<CheckoutSection
+					title="Payment Method"
+					HeaderParagraph="Please select a payment method to continue with."
+				/>
+				<PaymentSelector />
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						paddingTop: "40px",
+					}}
+				>
+					<PaymentForm
+						currency={"NGN"}
+						amount={selectedEntity.entityFee}
+						USDprice={845}
+					/>
+				</div>
+			</Body>
+		</Container>
+	);
 };
 
 export default PaymentPage;
