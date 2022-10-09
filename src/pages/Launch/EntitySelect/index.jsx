@@ -62,7 +62,6 @@ const EntitySelect = () => {
   }, [data]);
   // This fires off when the next button is clicked
   const handleNext = async (selectedItem) => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
     store.dispatch(setSelectedEntity(selectedItem));
 
     // To be sent to the backend to create a launch
@@ -139,8 +138,12 @@ const EntitySelect = () => {
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

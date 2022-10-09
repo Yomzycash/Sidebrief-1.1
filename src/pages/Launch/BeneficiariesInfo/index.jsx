@@ -3,7 +3,7 @@ import { CheckoutController } from "containers";
 import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,6 +23,7 @@ import {
   useUpdateBeneficiaryMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
+import { beneficiaryAdd, beneficiaryDelete, beneficiaryUpdate } from "./action";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -45,12 +46,10 @@ const DirectorsInfo = () => {
 
   const handleNext = () => {
     navigate("/launch/sharehholders-kyc");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 8 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
   };
 
   const handleCheckbox = (checked) => {
@@ -71,25 +70,20 @@ const DirectorsInfo = () => {
     setSelectedToEdit(beneficiary);
   };
 
+  //
   // This deletes a beneficiary's informataion
   const handleDelete = async (beneficiary) => {
     setSelectedToDelete(beneficiary);
-    const requiredDeleteData = {
-      launchCode: generatedLaunchCode,
-      beneficialOwnerCode: beneficiary.beneficialOwnerCode,
-    };
-    let deleteResponse = await deleteBeneficiary(requiredDeleteData);
+
+    let deleteResponse = await beneficiaryDelete(
+      generatedLaunchCode,
+      beneficiary,
+      beneficiariesLaunchInfo,
+      deleteBeneficiary
+    );
     console.log(deleteResponse);
     if (deleteResponse.data) {
-      // This filters and set the filtered beneficiaries info to the store
-      let filteredBeneficiaries = beneficiariesLaunchInfo.filter(
-        (beneficiary) =>
-          beneficiary.beneficialOwnerCode !==
-          requiredDeleteData.beneficialOwnerCode
-      );
-      store.dispatch(
-        setBeneficiariesLaunchInfo({ info: filteredBeneficiaries })
-      );
+      store.dispatch(setBeneficiariesLaunchInfo({ info: deleteResponse.data }));
     } else {
       if (deleteResponse.error.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
@@ -99,70 +93,55 @@ const DirectorsInfo = () => {
     }
   };
 
+  //
   // This adds a new beneficiary
   const handleBeneficiaryAdd = async (formData, launchCode) => {
-    const requiredDirectorData = {
-      launchCode: launchCode,
-      beneficialOwner: {
-        beneficialOwnerName: formData.full_name,
-        beneficialOwnerEmail: formData.email,
-        beneficialOwnerPhone: formData.phone,
-        beneficialOwnerOccupation: formData.occupation,
-        beneficialOwnershipStake: formData.stake,
-      },
-    };
+    let addBeneficiaryResponse = await beneficiaryAdd(
+      launchCode,
+      formData,
+      addBeneficiary
+    );
 
-    let addBeneficiaryResponse = await addBeneficiary(requiredDirectorData);
-    console.log(addBeneficiaryResponse);
+    let beneficiaryInfo = addBeneficiaryResponse?.data;
+    let error = addBeneficiaryResponse?.error;
+
     if (addBeneficiaryResponse.data) {
-      // Get the information of all added beneficiaries
-      const allBeneficiaries = Object.entries(
-        addBeneficiaryResponse.data.businessBeneficialOwners
-      );
-      // Get the information of the just added beneficiary
-      const beneficiaryInfo = allBeneficiaries[allBeneficiaries.length - 1][1];
-      // Merge the member information and the beneficiary information of the just added beneficiary
-      // Set the combined information to store
+      console.log(beneficiaryInfo);
       store.dispatch(
         setBeneficiariesLaunchInfo({ info: beneficiaryInfo, type: "add" })
       );
       setOpenModal(false);
-      console.log(addBeneficiaryResponse);
+    } else if (error.status === "FETCH_ERROR") {
+      toast.error("Please check your internet connection");
     } else {
       console.log(addBeneficiaryResponse.error);
-      toast.error(addBeneficiaryResponse.error.data.message);
+      toast.error(error.data.message);
     }
   };
 
+  //
   // This updates the beneficiary's information
   const handleBeneficiaryUpdate = async (
     formData,
     launchCode,
     selectedBeneficiary
   ) => {
-    const requiredBeneficiaryUpdateData = {
-      launchCode: launchCode,
-      beneficialOwnerCode: selectedBeneficiary.beneficialOwnerCode,
-      beneficialOwner: {
-        beneficialOwnerName: formData.full_name,
-        beneficialOwnerEmail: formData.email,
-        beneficialOwnerPhone: formData.phone,
-        beneficialOwnershipStake: formData.stake,
-      },
-    };
-    // Responses from the backend
-    let beneficiaryUpdateResponse = await updateBeneficiary(
-      requiredBeneficiaryUpdateData
+    let beneficiaryUpdateResponse = await beneficiaryUpdate(
+      formData,
+      launchCode,
+      selectedBeneficiary,
+      updateBeneficiary
     );
     console.log(beneficiaryUpdateResponse);
+
     // The data from the response got from the backend
-    let beneficiariesUpdatedData =
-      beneficiaryUpdateResponse?.data?.businessBeneficialOwners;
+    let beneficiariesUpdatedData = beneficiaryUpdateResponse?.data;
     console.log(beneficiariesUpdatedData);
+
     // Executes if data is returned from the backend
     if (beneficiariesUpdatedData) {
       store.dispatch(
-        setDirectorsLaunchInfo({ info: beneficiariesUpdatedData })
+        setBeneficiariesLaunchInfo({ info: beneficiariesUpdatedData })
       );
       handleModalClose();
     } else {
@@ -173,6 +152,11 @@ const DirectorsInfo = () => {
       }
     }
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 7.5 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

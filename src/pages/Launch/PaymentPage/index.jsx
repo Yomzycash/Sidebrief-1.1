@@ -45,17 +45,16 @@ const PaymentPage = () => {
 
   const handleNext = () => {
     navigate("/launch/entity");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 3 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
   };
 
-  // This fires off whenever next button is clicked
-  // useEffect(() => {
-  //
-  // }, [nextClicked]);
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 4 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

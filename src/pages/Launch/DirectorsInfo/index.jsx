@@ -3,7 +3,7 @@ import { CheckoutController } from "containers";
 import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCheckoutProgress, setDirectorsLaunchInfo } from "redux/Slices";
@@ -55,12 +55,10 @@ const DirectorsInfo = () => {
 
   const handleNext = () => {
     navigate("/launch/beneficiaries-info");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 6 })); // total- total pages and current - current page
   };
 
   const handleCheckbox = (checked) => {
@@ -178,6 +176,11 @@ const DirectorsInfo = () => {
     }
   };
 
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
+  }, []);
+
   return (
     <Container>
       <HeaderCheckout />
@@ -240,6 +243,9 @@ const DirectorsInfo = () => {
               backText={"Previous"}
               forwardAction={handleNext}
               forwardText={"Proceed"}
+              forwardDisable={
+                directorsLaunchInfo.length === 0 && !useSidebriefDirectors
+              }
             />
           </Bottom>
         </LaunchPrimaryContainer>

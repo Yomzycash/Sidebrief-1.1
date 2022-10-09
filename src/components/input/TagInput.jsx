@@ -9,6 +9,7 @@ import {
   Tagclose,
   TagInputField,
   BottomText,
+  TagTop,
 } from "./styled.js";
 
 const TagInput = ({
@@ -18,16 +19,26 @@ const TagInput = ({
   initialValues,
 }) => {
   const [tags, setTags] = useState([]);
+  const [error, setError] = useState("");
 
   function handlekeydown(e) {
     if (e.key !== "Enter") return;
     const value = e.target.value;
     if (!value.trim()) return;
+    if (tags.length >= 4) {
+      setError("You cannot have more than 4 business names");
+      return;
+    }
+    if (value.length <= 2) {
+      setError("Business name must be at least 3 characters");
+      return;
+    }
     setTags([...tags, value]);
     e.target.value = "";
   }
   function removeTags(index) {
     setTags(tags.filter((el, i) => i !== index));
+    setError("");
   }
 
   // Return the tags array
@@ -43,7 +54,10 @@ const TagInput = ({
   return (
     <>
       <AllWrapper>
-        <TagLabel>{label}</TagLabel>
+        <TagTop>
+          <TagLabel> {label} </TagLabel>
+          <span>{error}</span>
+        </TagTop>
 
         <TagWrapper>
           {tags.map((tag, index) => (

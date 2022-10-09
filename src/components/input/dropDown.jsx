@@ -22,16 +22,6 @@ const DropDown = ({
   launch,
   ...rest
 }) => {
-  // const handleChange = (e) => {
-  //   let selectedValue = e.target.value;
-  //   onSelectedChange(selectedValue);
-  //   console.log(selectedValue);
-  // };
-  // let options = OptionValues.map((data) => (
-  //   <option key={data.id} value={data.value}>
-  //     {data.value}
-  //   </option>
-  // ));
   const selectStyle = {
     background: "red",
     container: (base, state) => ({

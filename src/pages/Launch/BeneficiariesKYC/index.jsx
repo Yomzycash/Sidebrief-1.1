@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { Page, Container, Bottom, Body } from "../styled";
 import {
@@ -25,8 +25,8 @@ const BeneficiariesKYC = () => {
   //geting the information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
-  console.log("bene", beneficiariesLaunchInfo[0].beneficialOwnerCode);
-  let requiredOwnerCode = beneficiariesLaunchInfo[0].beneficialOwnerCode;
+  console.log("bene", beneficiariesLaunchInfo[0]?.beneficialOwnerCode);
+  let requiredOwnerCode = beneficiariesLaunchInfo[0]?.beneficialOwnerCode;
   console.log(requiredOwnerCode);
 
   const navigate = useNavigate();
@@ -65,12 +65,10 @@ const BeneficiariesKYC = () => {
 
   const handleNext = () => {
     navigate("/launch/review");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
   };
 
   const isValidFileUploaded = (file) => {
@@ -147,6 +145,11 @@ const BeneficiariesKYC = () => {
     setFileName("");
     setUploadedFileDetails({});
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

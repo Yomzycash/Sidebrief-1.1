@@ -3,7 +3,7 @@ import { CheckoutController } from "containers";
 import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -74,12 +74,10 @@ const ShareHoldersInfo = () => {
 
   const handleNext = () => {
     navigate("/launch/directors-info");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 6 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 5 })); // total- total pages and current - current page
   };
 
   const handleCheckbox = (checked) => {
@@ -98,33 +96,6 @@ const ShareHoldersInfo = () => {
     setCardAction("edit");
     setOpenModal(true);
     setSelectedToEdit(shareholder);
-  };
-
-  //
-  // This deletes a shareholder's informataion
-  const handleDelete = async (shareholder) => {
-    setSelectedToDelete(shareholder);
-    // The delete response gotten from the backend
-    let deleteResponse = await shareholderDelete(
-      LaunchApplicationInfo,
-      shareholder,
-      deleteShareholder,
-      deleteMember
-    );
-
-    // This fires off, if delete response is success
-    if (deleteResponse.data) {
-      console.log(deleteResponse.data);
-      store.dispatch(setShareHoldersLaunchInfo({ info: deleteResponse.data }));
-    }
-    // This runs if an error is recieved
-    else {
-      if (deleteResponse.error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
-      } else {
-        toast.error(deleteResponse.error.data.message);
-      }
-    }
   };
 
   //
@@ -226,7 +197,6 @@ const ShareHoldersInfo = () => {
       if (formData.director_role) {
         await handleDirectorAdd(launchCode, formData, memberInfo);
         setOpenModal(false);
-        handleDirectorAdd(formData, launchCode, memberInfo);
       } else {
         setOpenModal(false);
       }
@@ -265,7 +235,13 @@ const ShareHoldersInfo = () => {
         shareholdersUpdatedData,
         membersUpdatedData
       );
+      console.log(formData);
       if (formData.director_role) {
+        console.log(
+          directorsLaunchInfo.filter(
+            (each) => each.memberCode === selectedShareholder.memberCode
+          )
+        );
         updateDirectorRole(
           formData,
           shareholdersMembersMerged,
@@ -296,6 +272,33 @@ const ShareHoldersInfo = () => {
     }
   };
 
+  //
+  // This deletes a shareholder's informataion
+  const handleDelete = async (shareholder) => {
+    setSelectedToDelete(shareholder);
+    // The delete response gotten from the backend
+    let deleteResponse = await shareholderDelete(
+      LaunchApplicationInfo,
+      shareholder,
+      deleteShareholder,
+      deleteMember
+    );
+
+    // This fires off, if delete response is success
+    if (deleteResponse.data) {
+      console.log(deleteResponse.data);
+      store.dispatch(setShareHoldersLaunchInfo({ info: deleteResponse.data }));
+    }
+    // This runs if an error is recieved
+    else {
+      if (deleteResponse.error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(deleteResponse.error.data.message);
+      }
+    }
+  };
+
   useState(() => {
     if (data) {
       let currentDraft = data.find(
@@ -304,6 +307,11 @@ const ShareHoldersInfo = () => {
       console.log(currentDraft);
     }
   }, [data]);
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 6.5 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>
@@ -349,13 +357,9 @@ const ShareHoldersInfo = () => {
                 handleAdd={handleShareholderAdd}
                 handleUpdate={handleShareholderUpdate}
                 cardAction={cardAction}
-                checkInfoSchema={
-                  isDirector
-                    ? checkInfoShareDirSchema
-                    : checkInfoShareholderSchema
-                }
+                checkInfoSchema={checkInfoShareholderSchema}
+                shareDirSchema={checkInfoShareDirSchema}
                 isDirector={isDirector}
-                setIsDirector={setIsDirector}
                 shareholder
                 director={isDirector ? true : false}
                 addIsLoading={
@@ -377,6 +381,9 @@ const ShareHoldersInfo = () => {
               backText={"Previous"}
               forwardAction={handleNext}
               forwardText={"Proceed"}
+              forwardDisable={
+                shareHoldersLaunchInfo.length === 0 && !useSidebriefShareholders
+              }
             />
           </Bottom>
         </LaunchPrimaryContainer>
