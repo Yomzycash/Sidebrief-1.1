@@ -21,6 +21,7 @@ import {
 } from "services/launchService";
 import { store } from "redux/Store";
 import { setGeneratedLaunchCode } from "redux/Slices";
+import { compareDesc } from "date-fns";
 
 const BusinessRegistration = (props) => {
 	// Get user data information
@@ -31,17 +32,25 @@ const BusinessRegistration = (props) => {
 	let newUser = userInfo?.newUser;
 
 	const allRewardsResponse = useGetAllRewardsQuery();
-	// const drafts = useGetUserDraftQuery();
-	// const submitted = useGetUserSubmittedQuery();
+	const drafts = useGetUserDraftQuery();
+	const submitted = useGetUserSubmittedQuery();
 
 	const handleRewardClick = (rewardID) => {
 		navigate(`/dashboard/rewards/${rewardID}`);
 	};
 
-	// useEffect(() => {
-	// 	console.log("drafts", drafts);
-	// 	console.log("submitted", submitted);
-	// }, [drafts, submitted]);
+	let allLaunch = [];
+
+	if (drafts.isSuccess && submitted.isSuccess) {
+		allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+		allLaunch.sort((launch1, launch2) =>
+			compareDesc(
+				new Date(launch1.updatedAt),
+				new Date(launch2.updatedAt)
+			)
+		);
+		console.log(allLaunch);
+	}
 
 	const analytics = {
 		label: "Registrations",
@@ -56,8 +65,8 @@ const BusinessRegistration = (props) => {
 			color: " #55D7FF",
 		},
 		status3: {
-			text: "Approval",
-			total: 1,
+			text: "In Draft",
+			total: drafts.isSuccess ? drafts?.currentData.length : 0,
 			color: " #CCF3FF",
 		},
 	};
@@ -109,21 +118,14 @@ const BusinessRegistration = (props) => {
 					>
 						<BusinessesChartCard analytics={analytics} user />
 						<Recently>
-							<StatusCard
-								name="Ayomide Construction and Husband's - LLC"
-								status="completed"
-								ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-							/>
-							<StatusCard
-								name="Ayomide Construction and Husband's - LLC"
-								status="awaiting"
-								ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-							/>
-							<StatusCard
-								name="Ayomide Construction and Husband's - LLC"
-								status="progress"
-								ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-							/>
+							{allLaunch.slice(0, 3).map((el) => (
+								<StatusCard
+									key={el.launchCode}
+									name={el.businessNames.businessName1}
+									status="draft"
+									ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
+								/>
+							))}
 						</Recently>
 					</DashboardSection>
 					<DashboardSection

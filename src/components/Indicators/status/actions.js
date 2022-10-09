@@ -8,6 +8,8 @@ export const getStatus = (status) => {
 			return "In Progress";
 		case "declined":
 			return "Declined";
+		case "draft":
+			return "Draft";
 		default:
 			return "";
 	}
