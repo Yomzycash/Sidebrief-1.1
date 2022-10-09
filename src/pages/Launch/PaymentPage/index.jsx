@@ -84,7 +84,7 @@ const PaymentPage = () => {
 					}}
 				>
 					<PaymentForm
-						currency={"NGN"}
+						currency={selectedEntity.entityCurrency}
 						amount={selectedEntity.entityFee}
 						USDprice={845}
 					/>

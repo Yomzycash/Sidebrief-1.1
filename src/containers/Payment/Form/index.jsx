@@ -78,7 +78,7 @@ export const PaymentForm = ({ amount, currency, USDprice }) => {
 			</RadioButtons>
 			<TextContainer>
 				<Price>
-					{symbol}
+					{symbol ? symbol : "??"}
 					{numeral(isUSD ? USDprice : amount).format("0,0.00")}
 				</Price>
 				<Text>Total amount for this purchase</Text>
