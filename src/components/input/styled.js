@@ -245,6 +245,19 @@ export const TagInputField = styled.input`
     border: 1px solid #00c3ff;
   }
 `;
+
+export const TagTop = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+
+  span {
+    font-size: clamp(10px, 1.5rem, 12px);
+    color: red;
+  }
+`;
+
 export const TagLabel = styled.label`
   font-family: "BR Firma";
   font-style: normal;

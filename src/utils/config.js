@@ -77,18 +77,6 @@ export const resellerRegistrationSchema = yup.object().shape({
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
 
-export const checkInfoShareholderSchema = yup.object().shape({
-  full_name: yup.string().required("Full name is a required field"),
-  phone: yup.string().required("Phone number is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  share_percentage: yup
-    .number("Must be a number")
-    .min(0.00001)
-    .max(100)
-    .required("Share percentage is from 1% to 100%"),
-  share_type: yup.string().required("Share type is a required field"),
-});
-
 export const fileFormSchema = yup.object().shape({
   file1: yup
     .mixed()
@@ -101,31 +89,20 @@ export const fileFormSchema = yup.object().shape({
     .test("file", "The file is too large", (file) => {
       return file && file.size > 2000000;
     }),
-
-  // file2: yup
-  //   .mixed()
-  //   .test("file", "You need to provide a file", (file) => {
-  //     if (file.length > 0) {
-  //       return true;
-  //     }
-  //     return false;
-  //   })
-  //   .test("file", "The file is too large", (file) => {
-  //     return file && file.size <= 2000000;
-  //   }),
-
-  // file3: yup
-  //   .mixed()
-  //   .test("file", "You need to provide a file", (file) => {
-  //     if (file.length > 0) {
-  //       return true;
-  //     }
-  //     return false;
-  //   })
-  //   .test("file", "The file is too large", (file) => {
-  //     return file && file.size <= 2000000;
-  //   }),
 });
+
+export const checkInfoShareholderSchema = yup.object().shape({
+  full_name: yup.string().required("Full name is a required field"),
+  phone: yup.string().required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  share_percentage: yup
+    .number("Must be a number")
+    .min(0.00001)
+    .max(100)
+    .required("Share percentage is from 1% to 100%"),
+  share_type: yup.string().required("Share type is a required field"),
+});
+
 export const checkInfoShareDirSchema = yup.object().shape({
   full_name: yup.string().required("Full name is a required field"),
   phone: yup.string().required("Phone number is a required field"),

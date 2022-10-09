@@ -42,13 +42,18 @@ const BusinessInfo = () => {
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [selectedCountryISO, setselectedCountryISO] = useState("");
+  const [errorWithin, setErrorWithin] = useState({
+    input1: "",
+    input2: "",
+    input3: "",
+  });
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
 
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
 
   const navigate = useNavigate();
-  // console.log(selectedCountry);
+
   // This runs when next button is clicked
   const handleNext = () => {
     store.dispatch(setCountry(selectedCountry));
@@ -71,7 +76,6 @@ const BusinessInfo = () => {
       return;
     }
 
-    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
     navigate("/launch/entity");
   };
 
@@ -82,11 +86,6 @@ const BusinessInfo = () => {
   const handleBusinessNames = (valuesSelected) => {
     setBusinessNames(valuesSelected);
   };
-
-  // This fires off whenever next button is clicked
-  // useEffect(() => {
-  //
-  // }, [nextClicked]);
 
   // Handle supported countries fetch
   const handleCountry = async (value) => {
@@ -124,6 +123,11 @@ const BusinessInfo = () => {
     e.preventDefault();
   };
 
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
+  }, []);
+  console.log(errorWithin);
   return (
     <Container onClick={handleSubmit}>
       <HeaderCheckout getStarted />
@@ -150,6 +154,8 @@ const BusinessInfo = () => {
               MatchError="Please select objectives from the list"
               EmptyError="Please select at least one objective"
               MaxError="You cannot select more than 4"
+              setErrorWithin={setErrorWithin}
+              errorWithin={errorWithin}
             />
             <div style={{ maxWidth: "430px" }}>
               <TagInputWithSearch
@@ -157,9 +163,12 @@ const BusinessInfo = () => {
                 list={countries}
                 getValue={handleCountry}
                 initialValue={LaunchInfo.selectedCountry}
+                setErrorWithin={setErrorWithin}
+                errorWithin={errorWithin}
               />
             </div>
           </LaunchFormContainer>
+          {console.log(errorWithin)}
           <Bottom>
             <CheckoutController
               forwardAction={handleNext}

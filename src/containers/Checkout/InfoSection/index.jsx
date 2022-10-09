@@ -27,6 +27,7 @@ export const CheckoutFormInfo = ({
   beneficiary,
   cardAction,
   checkInfoSchema,
+  shareDirSchema,
   handleAdd,
   handleUpdate,
   addIsLoading,
@@ -34,7 +35,9 @@ export const CheckoutFormInfo = ({
 }) => {
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
   const [directorInitialRole] = useState(selectedToEdit?.directorRole);
-  const [isDirector, setIsDirector] = useState(false);
+  const [isDirector, setIsDirector] = useState(
+    cardAction === "edit" ? selectedToEdit?.directorRole : false
+  );
 
   const {
     handleSubmit,
@@ -42,7 +45,7 @@ export const CheckoutFormInfo = ({
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(checkInfoSchema),
+    resolver: yupResolver(isDirector ? shareDirSchema : checkInfoSchema),
   });
 
   const launchInfoFromStore = useSelector((store) => store.LaunchReducer);
@@ -81,14 +84,13 @@ export const CheckoutFormInfo = ({
   // This populates the input fields value when edit botton is clicked
   useEffect(() => {
     if (cardAction === "edit") {
-      setIsDirector(selectedToEdit?.directorRole ? true : false);
-
       setValue("full_name", selectedToEdit?.memberName);
       setValue("email", selectedToEdit?.memberEmail);
       setValue(
         "share_percentage",
         selectedToEdit?.shareholderOwnershipPercentage
       );
+      setValue("isDirector", selectedToEdit?.directorRole ? true : false);
 
       handleNumberChange(selectedToEdit?.memberPhone);
       handleShareTypeChange({
@@ -117,7 +119,6 @@ export const CheckoutFormInfo = ({
 
   // This sets the director role value - attached to the onChange event
   const handleDirectorRoleChange = (value) => {
-    // console.log(value);
     var string = Object.values(value)[0];
     setValue("director_role", string, { shouldValidate: true });
   };
@@ -203,7 +204,6 @@ export const CheckoutFormInfo = ({
               label="Share Type"
               labelStyle="input-label"
               options={shareTypeOptions}
-              register={register}
               onChange={handleShareTypeChange}
               errorMessage={errors.share_type?.message}
               cardAction={cardAction}
@@ -218,7 +218,6 @@ export const CheckoutFormInfo = ({
             label="Director Role"
             labelStyle="input-label"
             options={directorRoleOptions}
-            register={register}
             onChange={handleDirectorRoleChange}
             errorMessage={errors.director_role?.message}
             cardAction={cardAction}
