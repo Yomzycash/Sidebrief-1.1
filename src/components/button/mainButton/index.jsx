@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react'
 // import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { motion } from "framer-motion";
+import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
 const Button = ({
-  title = "Test",
+  title = 'Test',
   onClick,
   type,
   disabled,
@@ -38,29 +38,32 @@ const Button = ({
     >
       {title}
     </ButtonWrapper>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
 const ButtonWrapper = styled(motion.button)`
   width: 100%;
   height: 59px;
   background-color: #00a2d4;
-  background-color: ${(props) => (props.bg_color ? props.bg_color : "#00a2d4")};
+  background-color: ${(props) => (props.bg_color ? props.bg_color : '#00a2d4')};
   border-radius: 8px;
-  color: ${(props) => (props.color ? props.color : "#ffffff")};
+  color: ${(props) => (props.color ? props.color : '#ffffff')};
   text-align: center;
   font-size: 18px;
-  border: ${(props) => (props.border ? props.border : "none")};
-  outline: ${(props) => (props.outline ? props.outline : "none")};
+  border: ${(props) => (props.border ? props.border : 'none')};
+  outline: ${(props) => (props.outline ? props.outline : 'none')};
   cursor: pointer;
   :hover {
     background-color: ${(props) =>
-      props.hover_bg_color ? props.hover_bg_color : ""};
-    color: ${(props) => (props.hv_color ? props.hv_color : "")};
+      props.hover_bg_color ? props.hover_bg_color : ''};
+    color: ${(props) => (props.hv_color ? props.hv_color : '')};
+  }
+  :disabled {
+    background-color: #9b9b9b;
   }
 
   @media screen and (max-width: 600px) {
     height: 48px;
   }
-`;
+`
