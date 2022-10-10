@@ -13,9 +13,9 @@ import {
   setShareHoldersLaunchInfo,
 } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container } from "../styled";
+import { AddMore, Body, Bottom, Container, modalStyle } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
-import { Dialog } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import {
   checkInfoShareDirSchema,
@@ -23,7 +23,7 @@ import {
 } from "utils/config";
 import {
   useAddDirectorMutation,
-  useAddMembersMutation,
+  useAddMemberMutation,
   useAddShareHolderMutation,
   useDeleteMemberMutation,
   useDeleteShareholderMutation,
@@ -60,7 +60,7 @@ const ShareHoldersInfo = () => {
   const [addShareHolder, addState] = useAddShareHolderMutation();
   const [deleteShareholder, deleteState] = useDeleteShareholderMutation();
   const [updateShareholder, updateState] = useUpdateShareholderMutation();
-  const [addMembers, memberAddState] = useAddMembersMutation();
+  const [addMember, memberAddState] = useAddMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember] = useDeleteMemberMutation();
   const [addDirector, dirAddState] = useAddDirectorMutation();
@@ -165,7 +165,7 @@ const ShareHoldersInfo = () => {
   // This adds a new shareholder
   const handleShareholderAdd = async (formData, launchCode) => {
     // Add a member
-    let addMemberResponse = await memberAdd(launchCode, formData, addMembers);
+    let addMemberResponse = await memberAdd(launchCode, formData, addMember);
     // Runs if successfully added member
     if (addMemberResponse.data) {
       const memberInfo = addMemberResponse.data;
@@ -204,8 +204,11 @@ const ShareHoldersInfo = () => {
     // Runs if failed to add member
     else if (addMemberResponse.error) {
       let error = addMemberResponse.error;
-      if (error.status === "FETCH_ERROR")
+      if (error.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
+      } else {
+        toast.error(error.data.message);
+      }
     }
   };
 
@@ -351,28 +354,30 @@ const ShareHoldersInfo = () => {
               </AddMore>
             )}
             <Dialog open={openModal}>
-              <CheckoutFormInfo
-                title="Shareholder"
-                handleClose={handleModalClose}
-                handleAdd={handleShareholderAdd}
-                handleUpdate={handleShareholderUpdate}
-                cardAction={cardAction}
-                checkInfoSchema={checkInfoShareholderSchema}
-                shareDirSchema={checkInfoShareDirSchema}
-                isDirector={isDirector}
-                shareholder
-                director={isDirector ? true : false}
-                addIsLoading={
-                  addState.isLoading ||
-                  deleteState.isLoading ||
-                  updateState.isLoading ||
-                  memberAddState.isLoading ||
-                  memberUpdateState.isLoading ||
-                  dirAddState.isLoading
-                }
-                selectedToEdit={selectedToEdit}
-                directorsInfo={directorsLaunchInfo}
-              />
+              <DialogContent style={modalStyle}>
+                <CheckoutFormInfo
+                  title="Shareholder"
+                  handleClose={handleModalClose}
+                  handleAdd={handleShareholderAdd}
+                  handleUpdate={handleShareholderUpdate}
+                  cardAction={cardAction}
+                  checkInfoSchema={checkInfoShareholderSchema}
+                  shareDirSchema={checkInfoShareDirSchema}
+                  isDirector={isDirector}
+                  shareholder
+                  director={isDirector ? true : false}
+                  addIsLoading={
+                    addState.isLoading ||
+                    deleteState.isLoading ||
+                    updateState.isLoading ||
+                    memberAddState.isLoading ||
+                    memberUpdateState.isLoading ||
+                    dirAddState.isLoading
+                  }
+                  selectedToEdit={selectedToEdit}
+                  directorsInfo={directorsLaunchInfo}
+                />
+              </DialogContent>
             </Dialog>
           </LaunchFormContainer>
           <Bottom>

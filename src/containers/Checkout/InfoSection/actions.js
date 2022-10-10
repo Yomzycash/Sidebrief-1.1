@@ -1,5 +1,5 @@
 // Add a member
-export const memberAdd = async (launchCode, formData, addMembers) => {
+export const memberAdd = async (launchCode, formData, addMember) => {
   const requiredMemberData = {
     launchCode: launchCode,
     businessMember: {
@@ -9,7 +9,7 @@ export const memberAdd = async (launchCode, formData, addMembers) => {
     },
   };
 
-  let addMemberResponse = await addMembers(requiredMemberData);
+  let addMemberResponse = await addMember(requiredMemberData);
 
   if (addMemberResponse.data) {
     // Get the information of all added members

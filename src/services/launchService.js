@@ -75,6 +75,16 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    // View business names
+    viewBusinessNames: builder.mutation({
+      query: (values) => ({
+        url: "/launch/names/view",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // Add business objectives
     addBusinessObjectives: builder.mutation({
       query: (values) => ({
@@ -89,6 +99,16 @@ export const launchApi = createApi({
     updateBusinessObjectives: builder.mutation({
       query: (values) => ({
         url: "/launch/objects/update",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // View business objectives
+    viewBusinessObjectives: builder.mutation({
+      query: (values) => ({
+        url: "/launch/objects/view",
         method: "POST",
         body: values,
       }),
@@ -115,8 +135,18 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    // View business address
+    viewBusinessAddress: builder.mutation({
+      query: (values) => ({
+        url: "/launch/address/view",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // Add Business Members
-    addMembers: builder.mutation({
+    addMember: builder.mutation({
       query: (values) => ({
         url: "/launch/members/add",
         method: "POST",
@@ -125,8 +155,8 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
-    // Add Business Members
-    updateMembers: builder.mutation({
+    // Add Business Member
+    updateMember: builder.mutation({
       query: (values) => ({
         url: "/launch/members/update",
         method: "POST",
@@ -139,6 +169,16 @@ export const launchApi = createApi({
     deleteMember: builder.mutation({
       query: (values) => ({
         url: "/launch/members/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // View business member
+    viewMember: builder.mutation({
+      query: (values) => ({
+        url: "/launch/members/view",
         method: "POST",
         body: values,
       }),
@@ -175,6 +215,16 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    // View business shareholder
+    viewShareholder: builder.mutation({
+      query: (values) => ({
+        url: "/launch/shareholders/view",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // Add Business Directors
     addDirector: builder.mutation({
       query: (values) => ({
@@ -198,7 +248,17 @@ export const launchApi = createApi({
     // Delete business director
     deleteDirector: builder.mutation({
       query: (values) => ({
-        url: "/launch/members/remove",
+        url: "/launch/directors/remove",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // View business director
+    viewDirector: builder.mutation({
+      query: (values) => ({
+        url: "/launch/directors/view",
         method: "POST",
         body: values,
       }),
@@ -235,7 +295,17 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
-    // Add MemberKYC
+    // View a beneficiary
+    viewBeneficiary: builder.mutation({
+      query: (values) => ({
+        url: "/launch/beneficialowners/view",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Add MemberKYC KYC
     addMemberKYC: builder.mutation({
       query: (values) => ({
         url: "/launch/members/addkyc",
@@ -245,7 +315,27 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
-    // add beneficial
+    // Delete MemberKYC KYC
+    deleteMemberKYC: builder.mutation({
+      query: (values) => ({
+        url: "/launch/members/removekyc",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // View MemberKYC KYC
+    viewMemberKYC: builder.mutation({
+      query: (values) => ({
+        url: "/launch/members/viewkyc",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // add beneficial KYC
     addBeneficialKYC: builder.mutation({
       query: (values) => ({
         url: "/launch/beneficialowners/addkyc",
@@ -255,10 +345,20 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
-    // Update business member
-    updateMember: builder.mutation({
+    // Delete beneficial KYC
+    deleteBeneficialKYC: builder.mutation({
       query: (values) => ({
-        url: "/launch/members/update",
+        url: "/launch/beneficialowners/removekyc",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // View beneficial KYC
+    viewBeneficialKYC: builder.mutation({
+      query: (values) => ({
+        url: "/launch/beneficialowners/viewkyc",
         method: "POST",
         body: values,
       }),
@@ -269,32 +369,52 @@ export const launchApi = createApi({
 
 export const {
   useGetUserDraftQuery,
+
   useGetAllCountriesQuery,
+
   useGetAllEntitiesQuery,
+
   useGetStartedMutation,
+
   useUpdateLaunchMutation,
+
   useAddBusinessNamesMutation,
   useUpdateBusinessNamesMutation,
+  useViewBusinessNamesMutation,
+
   useAddBusinessObjectivesMutation,
   useUpdateBusinessObjectivesMutation,
+  useViewBusinessObjectivesMutation,
+
   useAddBusinessAddressMutation,
   useUpdateBusinessAddressMutation,
-  useAddMembersMutation,
+  useViewBusinessAddressMutation,
+
+  useAddMemberMutation,
   useUpdateMemberMutation,
   useDeleteMemberMutation,
+  useViewMemberMutation,
+
   useAddShareHolderMutation,
   useUpdateShareholderMutation,
   useDeleteShareholderMutation,
+  useViewShareholderMutation,
+
   useAddDirectorMutation,
   useUpdateDirectorMutation,
   useDeleteDirectorMutation,
+  useViewDirectorMutation,
+
   useAddBeneficiaryMutation,
   useUpdateBeneficiaryMutation,
   useDeleteBeneficiaryMutation,
-  useAddMemberKYCMutation,
-  useAddBeneficialKYCMutation,
-} = launchApi;
+  useViewBeneficiaryMutation,
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-//   .eyJpZCI6IjYyYzNhYzlmNjUyMGZiMmVkNjk2OTliMSIsImlhdCI6MTY1Njk5MDg4MCwiZXhwIjoxNjY0NzY2ODgwfQ
-//   .O0AiYvD_MybRDhYmis03OdDOnvexu4fI9 - hv8HlwETg
+  useAddMemberKYCMutation,
+  useDeleteMemberKYCMutation,
+  useViewMemberKYCMutation,
+
+  useAddBeneficialKYCMutation,
+  useDeleteBeneficialKYCMutation,
+  useViewBeneficialKYCMutation,
+} = launchApi;

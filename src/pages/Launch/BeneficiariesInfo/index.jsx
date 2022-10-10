@@ -12,9 +12,9 @@ import {
   setDirectorsLaunchInfo,
 } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container } from "../styled";
+import { AddMore, Body, Bottom, Container, modalStyle } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
-import { Dialog } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import { checkInfoBeneficiarySchema } from "utils/config";
 import {
@@ -196,21 +196,23 @@ const DirectorsInfo = () => {
               </AddMore>
             )}
             <Dialog open={openModal}>
-              <CheckoutFormInfo
-                title="Beneficiary"
-                handleClose={handleModalClose}
-                handleAdd={handleBeneficiaryAdd}
-                handleUpdate={handleBeneficiaryUpdate}
-                cardAction={cardAction}
-                checkInfoSchema={checkInfoBeneficiarySchema}
-                beneficiary
-                selectedToEdit={selectedToEdit}
-                addIsLoading={
-                  addState.isLoading ||
-                  deleteState.isLoading ||
-                  updateState.isLoading
-                }
-              />
+              <DialogContent style={modalStyle}>
+                <CheckoutFormInfo
+                  title="Beneficiary"
+                  handleClose={handleModalClose}
+                  handleAdd={handleBeneficiaryAdd}
+                  handleUpdate={handleBeneficiaryUpdate}
+                  cardAction={cardAction}
+                  checkInfoSchema={checkInfoBeneficiarySchema}
+                  beneficiary
+                  selectedToEdit={selectedToEdit}
+                  addIsLoading={
+                    addState.isLoading ||
+                    deleteState.isLoading ||
+                    updateState.isLoading
+                  }
+                />
+              </DialogContent>
             </Dialog>
           </LaunchFormContainer>
           <Bottom>

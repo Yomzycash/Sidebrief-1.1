@@ -29,6 +29,7 @@ import {
 } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import toast from "react-hot-toast";
+import { Dialog, DialogContent } from "@mui/material";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
@@ -46,12 +47,15 @@ const EntitySelect = () => {
   const { data, error, isLoading, isSuccess } =
     useGetAllEntitiesQuery(countryISO);
 
-  const [getStarted] = useGetStartedMutation();
-  const [updateLaunch] = useUpdateLaunchMutation();
-  const [addBusinessNames] = useAddBusinessNamesMutation();
-  const [updateBusinessNames] = useUpdateBusinessNamesMutation();
-  const [addBusinessObjectives] = useAddBusinessObjectivesMutation();
-  const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
+  const [getStarted, launchState] = useGetStartedMutation();
+  const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation();
+  const [addBusinessNames, businessAddState] = useAddBusinessNamesMutation();
+  const [updateBusinessNames, businessUpdateState] =
+    useUpdateBusinessNamesMutation();
+  const [addBusinessObjectives, objectivesAddState] =
+    useAddBusinessObjectivesMutation();
+  const [updateBusinessObjectives, objectivesUpdateState] =
+    useUpdateBusinessObjectivesMutation();
 
   // Set to state all entities of the specified country
   useEffect(() => {
@@ -131,14 +135,19 @@ const EntitySelect = () => {
 
       navigate("/launch/payment");
     } else {
-      let error = launchResponse.error;
-      console.log(error);
+      if (launchResponse?.error?.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(launchResponse?.error?.error);
+      }
     }
   };
 
   const handlePrev = () => {
     navigate(-1);
   };
+
+  let loading = launchState.isLoading || launchUpdateState.isLoading;
 
   // Set the progress of the application
   useEffect(() => {
@@ -183,6 +192,13 @@ const EntitySelect = () => {
           />
         </Bottom>
       </Body>
+      {loading && (
+        <Dialog open={true}>
+          <DialogContent>
+            <Puff stroke="#ffffff" fill="#ffffff" width={60} />
+          </DialogContent>
+        </Dialog>
+      )}
     </Container>
   );
 };

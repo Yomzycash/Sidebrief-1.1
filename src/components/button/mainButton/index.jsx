@@ -42,6 +42,7 @@ const Button = ({
 };
 
 export default Button;
+
 const ButtonWrapper = styled(motion.button)`
   width: 100%;
   height: 59px;
@@ -54,6 +55,7 @@ const ButtonWrapper = styled(motion.button)`
   border: ${(props) => (props.border ? props.border : "none")};
   outline: ${(props) => (props.outline ? props.outline : "none")};
   cursor: pointer;
+
   :hover {
     background-color: ${(props) =>
       props.hover_bg_color ? props.hover_bg_color : ""};

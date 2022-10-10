@@ -8,14 +8,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCheckoutProgress, setDirectorsLaunchInfo } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container } from "../styled";
+import { AddMore, Body, Bottom, Container, modalStyle } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
-import { Dialog } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import { checkInfoDirectorSchema } from "utils/config";
 import {
   useAddDirectorMutation,
-  useAddMembersMutation,
+  useAddMemberMutation,
   useDeleteDirectorMutation,
   useDeleteMemberMutation,
   useUpdateDirectorMutation,
@@ -45,7 +45,7 @@ const DirectorsInfo = () => {
   const [addDirector, addState] = useAddDirectorMutation();
   const [deleteDirector, deleteState] = useDeleteDirectorMutation();
   const [updateDirector, updateState] = useUpdateDirectorMutation();
-  const [addMembers, memberAddState] = useAddMembersMutation();
+  const [addMember, memberAddState] = useAddMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember] = useDeleteMemberMutation();
 
@@ -105,7 +105,7 @@ const DirectorsInfo = () => {
   // This adds a new director
   const handleDirectorAdd = async (formData, launchCode) => {
     // Add a member
-    let addMemberResponse = await memberAdd(launchCode, formData, addMembers);
+    let addMemberResponse = await memberAdd(launchCode, formData, addMember);
     // Runs if successfully added member
     if (addMemberResponse.data) {
       const memberInfo = addMemberResponse.data;
@@ -134,8 +134,11 @@ const DirectorsInfo = () => {
     // Runs if failed to add member
     else if (addMemberResponse.error) {
       let error = addMemberResponse.error;
-      if (error.status === "FETCH_ERROR")
+      if (error?.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
+      } else {
+        toast.error(error?.data.message);
+      }
     }
   };
 
@@ -218,23 +221,25 @@ const DirectorsInfo = () => {
               </AddMore>
             )}
             <Dialog open={openModal}>
-              <CheckoutFormInfo
-                title="Director"
-                handleClose={handleModalClose}
-                handleAdd={handleDirectorAdd}
-                handleUpdate={handleDirectorUpdate}
-                cardAction={cardAction}
-                checkInfoSchema={checkInfoDirectorSchema}
-                director
-                selectedToEdit={selectedToEdit}
-                addIsLoading={
-                  addState.isLoading ||
-                  deleteState.isLoading ||
-                  memberAddState.isLoading ||
-                  updateState.isLoading ||
-                  memberUpdateState.isLoading
-                }
-              />
+              <DialogContent style={modalStyle}>
+                <CheckoutFormInfo
+                  title="Director"
+                  handleClose={handleModalClose}
+                  handleAdd={handleDirectorAdd}
+                  handleUpdate={handleDirectorUpdate}
+                  cardAction={cardAction}
+                  checkInfoSchema={checkInfoDirectorSchema}
+                  director
+                  selectedToEdit={selectedToEdit}
+                  addIsLoading={
+                    addState.isLoading ||
+                    deleteState.isLoading ||
+                    memberAddState.isLoading ||
+                    updateState.isLoading ||
+                    memberUpdateState.isLoading
+                  }
+                />
+              </DialogContent>
             </Dialog>
           </LaunchFormContainer>
           <Bottom>

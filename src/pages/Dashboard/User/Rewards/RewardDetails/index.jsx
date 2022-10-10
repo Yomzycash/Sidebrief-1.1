@@ -18,6 +18,7 @@ import {
   TextDes,
   TextLink,
   TextWrapper,
+  rewardModalStyle,
 } from "./styled";
 
 import Button from "components/button";
@@ -30,6 +31,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
 import { useGetAllRewardsQuery } from "services/RewardService";
+import { DialogContent } from "@mui/material";
 
 const RewardDetails = (props) => {
   const [open, setOpen] = useState(false);
@@ -93,7 +95,9 @@ const RewardDetails = (props) => {
         <ButtonWrapper>
           <Button title="Claim Reward" onClick={handleClickOpen} />
           <Dialog onClose={handleClose} open={open}>
-            <RewardModal handleClose={handleClose} />
+            <DialogContent style={rewardModalStyle}>
+              <RewardModal handleClose={handleClose} />
+            </DialogContent>
           </Dialog>
         </ButtonWrapper>
       </RewardShortDetails>

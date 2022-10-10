@@ -19,8 +19,6 @@ export const EntityCard = ({
   action,
   name,
   price,
-  shortname,
-  company,
   timeline,
   requirement,
   shares,
