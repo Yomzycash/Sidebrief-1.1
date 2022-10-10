@@ -49,7 +49,6 @@ const BusinessRegistration = (props) => {
 				new Date(launch2.updatedAt)
 			)
 		);
-		// console.log(allLaunch);
 	}
 
 	const analytics = {
@@ -119,7 +118,6 @@ const BusinessRegistration = (props) => {
 						<BusinessesChartCard analytics={analytics} user />
 						<Recently>
 							{allLaunch.slice(0, 3).map((el) => {
-								console.log(el.registrationType);
 								return (
 									<StatusCard
 										key={el.launchCode}
