@@ -39,6 +39,15 @@ export const launchApi = createApi({
 			query: (ISO) => `/entities/country/${ISO}`,
 		}),
 
+		//get address for launchcode
+		getAddressValue: builder.query({
+			query: (values) => ({
+				url: "/launch/address/view",
+				method: "POST",
+				body: values,
+			}),
+		}),
+
 		//create launch with registration country and registration type
 		getStarted: builder.mutation({
 			query: (values) => ({
@@ -276,6 +285,7 @@ export const {
 	useGetUserSubmittedQuery,
 	useGetAllCountriesQuery,
 	useGetAllEntitiesQuery,
+	useGetAddressValueQuery,
 	useGetStartedMutation,
 	useUpdateLaunchMutation,
 	useAddBusinessNamesMutation,

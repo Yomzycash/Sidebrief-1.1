@@ -15,6 +15,7 @@ import {
 	setCheckoutProgress,
 	setGeneratedLaunchCode,
 	setSelectedEntity,
+	setLaunchResponse,
 } from "redux/Slices";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
@@ -85,6 +86,23 @@ const EntitySelect = () => {
 
 		console.log(launchResponse);
 
+		if (generatedLaunchCode) {
+			store.dispatch(setLaunchResponse(launchResponse.data[0]));
+			localStorage.setItem(
+				"launchInfo",
+				JSON.stringify(launchResponse.data[0])
+			);
+		} else {
+			store.dispatch(setLaunchResponse(launchResponse.data));
+			localStorage.setItem(
+				"launchInfo",
+				JSON.stringify(launchResponse.data)
+			);
+		}
+
+		// store.dispatch(setLaunchResponse(launchResponse.data));
+		// localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
+
 		if (launchResponse.data) {
 			const launchCode = generatedLaunchCode
 				? await launchResponse.data[0].launchCode
@@ -94,7 +112,7 @@ const EntitySelect = () => {
 				store.dispatch(setGeneratedLaunchCode(launchCode));
 			}
 
-			console.log(launchCode);
+			// console.log(launchCode);
 
 			const requiredBusinessNamesData = {
 				launchCode: launchCode,
@@ -123,18 +141,18 @@ const EntitySelect = () => {
 				? await updateBusinessObjectives(requiredBusinessObjectives)
 				: await addBusinessObjectives(requiredBusinessObjectives);
 
-			console.log(businessNamesResponse);
+			// console.log(businessNamesResponse);
 
 			let error = businessNamesResponse?.error;
 			if (error) {
 				toast.error(error.data.message);
 			}
-			console.log(businessObjectivesResponse);
+			// console.log(businessObjectivesResponse);
 
 			navigate("/launch/payment");
 		} else {
 			let error = launchResponse.error;
-			console.log(error);
+			// console.log(error);
 		}
 	};
 
@@ -173,7 +191,6 @@ const EntitySelect = () => {
 						))}
 					</EntityCardsWrapper>
 				</CheckoutSection>
-
 
 				<Bottom>
 					<CheckoutController
