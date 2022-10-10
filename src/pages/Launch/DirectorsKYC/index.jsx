@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { Container, Bottom, Body } from "../styled";
 import { CheckoutController, CheckoutSection } from "containers";
@@ -18,8 +18,8 @@ const DirectorKYC = () => {
   //geting the information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { directorsLaunchInfo } = LaunchApplicationInfo;
-  console.log(directorsLaunchInfo[0].memberCode);
-  let requiredMemberCode = directorsLaunchInfo[0].memberCode;
+  console.log(directorsLaunchInfo[0]?.memberCode);
+  let requiredMemberCode = directorsLaunchInfo[0]?.memberCode;
   console.log(requiredMemberCode);
 
   const navigate = useNavigate();
@@ -50,12 +50,10 @@ const DirectorKYC = () => {
 
   const handleNext = () => {
     navigate("/launch/beneficiaries-kyc");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
   };
 
   const isValidFileUploaded = (file) => {
@@ -129,6 +127,11 @@ const DirectorKYC = () => {
     setFileName("");
     setUploadedFileDetails({});
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

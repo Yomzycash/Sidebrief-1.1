@@ -15,6 +15,8 @@ const TagInputWithSearch = ({
   getValue, // (function): returns the selected tags as an argument
   initialValue,
   initialValues,
+  setErrorWithin,
+  errorWithin,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -154,6 +156,7 @@ const TagInputWithSearch = ({
 
   // This function handles individual tag delete when clear(X) icon is clicked
   const handleTagDelete = (removedTag) => {
+    setError("");
     let filteredTags = tags.filter((tag) => tag !== removedTag);
     setTags(filteredTags);
   };
@@ -164,6 +167,16 @@ const TagInputWithSearch = ({
       getValue(MultiSelect ? tags : value);
     }
   }, [tags, value]);
+
+  useEffect(() => {
+    if (setErrorWithin) {
+      if (Tags.length === 0 || value.length === 0) {
+        setErrorWithin({ ...errorWithin, input2: error });
+      } else {
+        setErrorWithin({ ...errorWithin, input3: error });
+      }
+    }
+  }, [tags.length, value.length]);
 
   return (
     <Container>

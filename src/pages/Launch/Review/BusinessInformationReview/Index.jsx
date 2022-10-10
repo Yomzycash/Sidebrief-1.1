@@ -1,29 +1,36 @@
-import { CheckoutController, CheckoutSection } from 'containers'
-import React from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { Container } from '../styled'
-import styled from 'styled-components'
-import { ReviewTab } from 'utils/config'
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import BusinessInfoCard from 'components/cards/BusinessInfoCard/BusinessInfoCard'
-import BusinessAddressCard from 'components/cards/BusinessAddressCard/BusinessAddressCard'
-import { useSelector } from 'react-redux'
+import { CheckoutController, CheckoutSection } from "containers";
+import React, { useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Container } from "../styled";
+import styled from "styled-components";
+import { ReviewTab } from "utils/config";
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import BusinessInfoCard from "components/cards/BusinessInfoCard/BusinessInfoCard";
+import BusinessAddressCard from "components/cards/BusinessAddressCard/BusinessAddressCard";
+import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setCheckoutProgress } from "redux/Slices";
 const BusinessInformationReview = () => {
   const ActiveStyles = {
-    color: '#151717',
-    borderBottom: '4px solid #00A2D4',
+    color: "#151717",
+    borderBottom: "4px solid #00A2D4",
     borderRadius: 0,
-  }
-  const navigate = useNavigate()
+  };
+  const navigate = useNavigate();
   const handleNext = () => {
-    navigate('/launch/review-shareholder')
-  }
+    navigate("/launch/review-shareholder");
+  };
   const handlePrev = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
-  console.log(LaunchApplicationInfo.businessAddress)
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  console.log(LaunchApplicationInfo.businessAddress);
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <>
@@ -31,7 +38,7 @@ const BusinessInformationReview = () => {
         <HeaderCheckout />
         <Body>
           <CheckoutSection
-            title={'Review Information'}
+            title={"Review Information"}
             HeaderParagraph="Please ensure all information provided for this business are correct"
           />
           <Nav>
@@ -52,8 +59,8 @@ const BusinessInformationReview = () => {
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController
-              backText={'Previous'}
-              forwardText={'Proceed'}
+              backText={"Previous"}
+              forwardText={"Proceed"}
               forwardAction={handleNext}
               backAction={handlePrev}
             />
@@ -61,10 +68,10 @@ const BusinessInformationReview = () => {
         </Body>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default BusinessInformationReview
+export default BusinessInformationReview;
 
 const Nav = styled.nav`
   background: #ffffff;
@@ -76,7 +83,7 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
-`
+`;
 const ReviweTabWrapper = styled.div`
   display: flex;
   flex: 1;
@@ -100,19 +107,19 @@ const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
-`
+`;
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 40px;
   gap: 40px;
-`
+`;
 const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 40px;
-`
+`;
 const Body = styled.form`
   display: flex;
   flex-flow: column;
@@ -126,4 +133,4 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
-`
+`;

@@ -101,12 +101,10 @@ const BusinessAddress = () => {
 
   const handleNext = () => {
     navigate("/launch/shareholders-info");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 5 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 4 })); // total- total pages and current - current page
   };
 
   const getDraft = async () => {
@@ -122,6 +120,11 @@ const BusinessAddress = () => {
   useEffect(() => {
     getDraft();
   }, [data]);
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 5.5 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

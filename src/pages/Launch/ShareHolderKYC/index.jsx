@@ -18,8 +18,8 @@ const ShareHolderKYC = () => {
   //geting the information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { shareHoldersLaunchInfo } = LaunchApplicationInfo;
-  console.log(shareHoldersLaunchInfo[0].memberCode);
-  let requiredMemberCode = shareHoldersLaunchInfo[0].memberCode;
+  console.log(shareHoldersLaunchInfo[0]?.memberCode);
+  let requiredMemberCode = shareHoldersLaunchInfo[0]?.memberCode;
   console.log(requiredMemberCode);
 
   const navigate = useNavigate();
@@ -50,7 +50,6 @@ const ShareHolderKYC = () => {
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 13, current: 8 })); // total- total pages and current - current page
   };
 
   const isValidFileUploaded = (file) => {
@@ -122,13 +121,17 @@ const ShareHolderKYC = () => {
 
   const handleNext = () => {
     navigate("/launch/directors-kyc");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 9 })); // total- total pages and current - current page
   };
 
   const handleRemove = () => {
     setFileName("");
     setUploadedFileDetails({});
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 8.5 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

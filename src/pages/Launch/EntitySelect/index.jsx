@@ -174,6 +174,7 @@ const EntitySelect = () => {
 					</EntityCardsWrapper>
 				</CheckoutSection>
 
+
 				<Bottom>
 					<CheckoutController
 						backText={"Previous"}

@@ -21,14 +21,12 @@ import {
 } from "./styled";
 
 import Button from "components/button";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import { ScrollBox } from "containers";
 import { IoArrowForward } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setRewardsPageHeader } from "redux/Slices";
 import { useNavigate, useParams } from "react-router-dom";
-import { allRewards } from "utils/config";
 import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
 import { useGetAllRewardsQuery } from "services/RewardService";
