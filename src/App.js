@@ -4,7 +4,11 @@ import { createGlobalStyle } from "styled-components";
 import { AnimatePresence } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { saveUserInfo } from "redux/Slices";
+import {
+	saveUserInfo,
+	setLaunchResponse,
+	setGeneratedLaunchCode,
+} from "redux/Slices";
 import { store } from "redux/Store";
 
 // Added style reset
@@ -16,24 +20,33 @@ body{
 `;
 
 function App() {
-  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+	// const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
 
-  let localUserInfo = localStorage.getItem("userInfo");
-  useEffect(() => {
-    if (localUserInfo) {
-      store.dispatch(saveUserInfo(JSON.parse(localUserInfo)));
-      console.log(JSON.parse(localUserInfo));
-    }
-  }, [localUserInfo]);
+	let localUserInfo = localStorage.getItem("userInfo");
+	let launchInfo = localStorage.getItem("launchInfo");
+	useEffect(() => {
+		if (localUserInfo) {
+			store.dispatch(saveUserInfo(JSON.parse(localUserInfo)));
+			console.log(JSON.parse(localUserInfo));
+		}
+		console.log(launchInfo);
+		if (launchInfo) {
+			store.dispatch(setLaunchResponse(JSON.parse(launchInfo)));
+			store.dispatch(
+				setGeneratedLaunchCode(JSON.parse(launchInfo).launchCode)
+			);
+			console.log(JSON.parse(launchInfo));
+		}
+	}, [localUserInfo, launchInfo]);
 
-  return (
-    <>
-      <AnimatePresence exitBeforeEnter>
-        <GlobalStyle />
-        <AppRouter />
-      </AnimatePresence>
-    </>
-  );
+	return (
+		<>
+			<AnimatePresence exitBeforeEnter>
+				<GlobalStyle />
+				<AppRouter />
+			</AnimatePresence>
+		</>
+	);
 }
 
 export default App;
