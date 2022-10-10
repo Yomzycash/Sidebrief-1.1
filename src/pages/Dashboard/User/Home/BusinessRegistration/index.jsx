@@ -49,19 +49,19 @@ const BusinessRegistration = (props) => {
 				new Date(launch2.updatedAt)
 			)
 		);
-		console.log(allLaunch);
+		// console.log(allLaunch);
 	}
 
 	const analytics = {
 		label: "Registrations",
 		status1: {
 			text: "Completed",
-			total: 5,
+			total: 0,
 			color: "#00A2D4",
 		},
 		status2: {
 			text: "Pending",
-			total: 1,
+			total: submitted.isSuccess ? submitted?.currentData.length : 0,
 			color: " #55D7FF",
 		},
 		status3: {
@@ -118,14 +118,17 @@ const BusinessRegistration = (props) => {
 					>
 						<BusinessesChartCard analytics={analytics} user />
 						<Recently>
-							{allLaunch.slice(0, 3).map((el) => (
-								<StatusCard
-									key={el.launchCode}
-									name={el.businessNames.businessName1}
-									status="draft"
-									ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-								/>
-							))}
+							{allLaunch.slice(0, 3).map((el) => {
+								console.log(el.registrationType);
+								return (
+									<StatusCard
+										key={el.launchCode}
+										name={`${el.businessNames.businessName1} - ${el.registrationType}`}
+										status="draft"
+										ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
+									/>
+								);
+							})}
 						</Recently>
 					</DashboardSection>
 					<DashboardSection
