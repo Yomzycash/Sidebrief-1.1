@@ -30,12 +30,11 @@ const BusinessAddress = () => {
 
 	const [addBusinessAddress] = useAddBusinessAddressMutation();
 	const [updateBusinessAddress] = useUpdateBusinessAddressMutation();
+	const launchResponse = useSelector(
+		(state) => state.LaunchReducer.launchResponse
+	);
 
-	const { data, isSuccess } = useGetAddressValueQuery();
-
-	if (isSuccess) {
-		console.log(data);
-	}
+	const address = useGetAddressValueQuery(launchResponse);
 
 	const generatedLaunchCode = useSelector(
 		(store) => store.LaunchReducer.generatedLaunchCode
@@ -111,6 +110,24 @@ const BusinessAddress = () => {
 	const handlePrev = () => {
 		navigate(-1);
 	};
+
+	if (address.isSuccess) {
+		const addressData = address.currentData.businessAddress;
+		console.log(addressData);
+
+		// selectCountry(addressData.addressCountry);
+		setValue("country", addressData.addressCountry, {
+			shouldValidate: true,
+		});
+		setValue("state", addressData.addressState, { shouldValidate: true });
+		setValue("city", addressData.addressCity, { shouldValidate: true });
+		setValue("street", addressData.addressStreet, { shouldValidate: true });
+		setValue("number", addressData.addressNumber, { shouldValidate: true });
+		setValue("zipcode", addressData.addressZipCode, {
+			shouldValidate: true,
+		});
+		setValue("email", addressData.addressEmail, { shouldValidate: true });
+	}
 
 	// const getDraft = async () => {
 	// 	let draftData = await data;
