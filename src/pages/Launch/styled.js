@@ -7,6 +7,15 @@ export const Container = styled.div`
   background-color: #fcfcfc;
   flex: 1;
   min-height: 100vh;
+
+  .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+    border-radius: 16px !important;
+    /* width: 100% !important;
+  max-width: 962px !important; */
+    max-width: max-content !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
 `;
 export const Header = styled.div``;
 
@@ -105,3 +114,13 @@ export const Inputs = styled.div`
     color: #4e5152;
   }
 `;
+
+export const modalStyle = {
+  padding: 0,
+  backgroundColor: "white",
+  width: "100%",
+  maxWidth: "962px",
+  borderRadius: "16px",
+  boxShadow:
+    "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
+};

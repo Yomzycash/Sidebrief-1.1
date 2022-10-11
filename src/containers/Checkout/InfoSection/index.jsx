@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { directorRoleOptions, shareTypeOptions } from "utils/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useAddMembersMutation } from "services/launchService";
+import { useAddMemberMutation } from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
@@ -61,7 +61,7 @@ export const CheckoutFormInfo = ({
   );
 
   // Endpoints hooks from launch slice
-  const [addMembers, { isLoading, isSuccess }] = useAddMembersMutation();
+  const [addMember, { error, isLoading, isSuccess }] = useAddMemberMutation();
 
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
@@ -70,6 +70,7 @@ export const CheckoutFormInfo = ({
       if (cardAction === "add") {
         handleAdd(formData, generatedLaunchCode);
       } else if (cardAction === "edit") {
+        console.log(formData);
         handleUpdate(formData, generatedLaunchCode, selectedToEdit);
       }
       return;
