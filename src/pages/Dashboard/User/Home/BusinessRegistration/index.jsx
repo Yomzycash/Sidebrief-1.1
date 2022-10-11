@@ -42,6 +42,7 @@ const BusinessRegistration = (props) => {
 
 	if (drafts.isSuccess && submitted.isSuccess) {
 		allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+		console.log(allLaunch);
 		allLaunch.sort((launch1, launch2) =>
 			compareDesc(
 				new Date(launch1.updatedAt),
@@ -120,7 +121,11 @@ const BusinessRegistration = (props) => {
 								return (
 									<StatusCard
 										key={el.launchCode}
-										name={`${el.businessNames.businessName1} - ${el.registrationType}`}
+										name={`${
+											el.businessNames?.businessName1
+												? el.businessNames.businessName1
+												: "No name"
+										} - ${el.registrationType}`}
 										status="draft"
 										ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
 									/>
