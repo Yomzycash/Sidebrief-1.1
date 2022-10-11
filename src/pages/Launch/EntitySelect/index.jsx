@@ -36,26 +36,35 @@ const EntitySelect = () => {
   const [entities, setEntities] = useState([]);
 
   // Get necessary information from store
-  const countryISO = useSelector((store) => store.LaunchReducer.countryISO);
-  const selectCountry = useSelector(
-    (store) => store.LaunchReducer.selectedCountry
-  );
+  // const countryISO = useSelector((store) => store.LaunchReducer.countryISO);
+  // const selectCountry = useSelector(
+  //   (store) => store.LaunchReducer.selectedCountry
+  // );
 
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
-  const { selectedObjectives, generatedLaunchCode, businessNames } = LaunchInfo;
+  const {
+    selectedObjectives,
+    generatedLaunchCode,
+    businessNames,
+    countryISO,
+    selectedCountry,
+    launchResponse,
+  } = LaunchInfo;
 
-  const { data, error, isLoading, isSuccess } =
-    useGetAllEntitiesQuery(countryISO);
+  const countryISOView = launchResponse.registrationCountry;
+  const launchCodeView = launchResponse.launchCode;
+  const registrationTypeView = launchResponse.registrationType;
+
+  const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
+    countryISO ? countryISO : countryISOView
+  );
 
   const [getStarted, launchState] = useGetStartedMutation();
   const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation();
-  const [addBusinessNames, businessAddState] = useAddBusinessNamesMutation();
-  const [updateBusinessNames, businessUpdateState] =
-    useUpdateBusinessNamesMutation();
-  const [addBusinessObjectives, objectivesAddState] =
-    useAddBusinessObjectivesMutation();
-  const [updateBusinessObjectives, objectivesUpdateState] =
-    useUpdateBusinessObjectivesMutation();
+  const [addBusinessNames] = useAddBusinessNamesMutation();
+  const [updateBusinessNames] = useUpdateBusinessNamesMutation();
+  const [addBusinessObjectives] = useAddBusinessObjectivesMutation();
+  const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
 
   // Set to state all entities of the specified country
   useEffect(() => {
@@ -64,20 +73,21 @@ const EntitySelect = () => {
       toast.error("Please check your internet connection");
     }
   }, [data]);
+
   // This fires off when the next button is clicked
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
 
     // To be sent to the backend to create a launch
     const requiredLaunchData = {
-      registrationCountry: countryISO,
+      registrationCountry: selectedItem.entityCountry,
       registrationType: selectedItem.entityCode,
     };
 
     // To be sent to the backend to update a launch
     const requiredLaunchUpdateData = {
       launchCode: generatedLaunchCode,
-      registrationCountry: countryISO,
+      registrationCountry: selectedItem.entityCountry,
       registrationType: selectedItem.entityCode,
     };
 
@@ -85,7 +95,8 @@ const EntitySelect = () => {
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
 
-    console.log(launchResponse);
+    localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data[0]));
+    console.log(launchResponse.data[0]);
 
     if (launchResponse.data) {
       const launchCode = generatedLaunchCode
@@ -95,45 +106,11 @@ const EntitySelect = () => {
       if (!generatedLaunchCode) {
         store.dispatch(setGeneratedLaunchCode(launchCode));
       }
+      navigate("/launch/payment");
+
+      handleBusinessInfo(launchCode);
 
       console.log(launchCode);
-
-      const requiredBusinessNamesData = {
-        launchCode: launchCode,
-        businessNames: {
-          businessName1: businessNames[0],
-          businessName2: businessNames[1],
-          businessName3: businessNames[2],
-          businessName4: businessNames[3],
-        },
-      };
-
-      const requiredBusinessObjectives = {
-        launchCode: launchCode,
-        businessObjects: {
-          businessObject1: selectedObjectives[0],
-          businessObject2: selectedObjectives[1] || "null",
-          businessObject3: selectedObjectives[2] || "null",
-          businessObject4: selectedObjectives[3] || "null",
-        },
-      };
-      const businessNamesResponse = generatedLaunchCode
-        ? await updateBusinessNames(requiredBusinessNamesData)
-        : await addBusinessNames(requiredBusinessNamesData);
-
-      const businessObjectivesResponse = generatedLaunchCode
-        ? await updateBusinessObjectives(requiredBusinessObjectives)
-        : await addBusinessObjectives(requiredBusinessObjectives);
-
-      console.log(businessNamesResponse);
-
-      let error = businessNamesResponse?.error;
-      if (error) {
-        toast.error(error.data.message);
-      }
-      console.log(businessObjectivesResponse);
-
-      navigate("/launch/payment");
     } else {
       if (launchResponse?.error?.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
@@ -143,10 +120,50 @@ const EntitySelect = () => {
     }
   };
 
+  // Send business information to the backend
+  const handleBusinessInfo = (launchCode) => {
+    const requiredBusinessNamesData = {
+      launchCode: launchCode,
+      businessNames: {
+        businessName1: businessNames[0],
+        businessName2: businessNames[1],
+        businessName3: businessNames[2],
+        businessName4: businessNames[3],
+      },
+    };
+
+    const requiredBusinessObjectives = {
+      launchCode: launchCode,
+      businessObjects: {
+        businessObject1: selectedObjectives[0],
+        businessObject2: selectedObjectives[1] || "null",
+        businessObject3: selectedObjectives[2] || "null",
+        businessObject4: selectedObjectives[3] || "null",
+      },
+    };
+    const businessNamesResponse = launchCode
+      ? updateBusinessNames(requiredBusinessNamesData)
+      : addBusinessNames(requiredBusinessNamesData);
+
+    const businessObjectivesResponse = launchCode
+      ? updateBusinessObjectives(requiredBusinessObjectives)
+      : addBusinessObjectives(requiredBusinessObjectives);
+
+    console.log(businessNamesResponse);
+
+    let error = businessNamesResponse?.error;
+    if (error) {
+      toast.error(error.data.message);
+    }
+    console.log(businessObjectivesResponse);
+  };
+
+  // Navigate to the previous page
   const handlePrev = () => {
     navigate(-1);
   };
 
+  // Launch loading state
   let loading = launchState.isLoading || launchUpdateState.isLoading;
 
   // Set the progress of the application
@@ -160,7 +177,7 @@ const EntitySelect = () => {
         <HeaderCheckout />
       </Header>
       <Body style={{ maxWidth: "100%" }}>
-        <CheckoutSection title={"Operational Country: " + selectCountry}>
+        <CheckoutSection title={"Operational Country: " + selectedCountry}>
           {isLoading && (
             <Loading>
               <Puff stroke="#00A2D4" fill="white" width={60} />

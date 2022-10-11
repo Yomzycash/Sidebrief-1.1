@@ -12,8 +12,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   useAddBusinessAddressMutation,
-  useGetUserDraftQuery,
   useUpdateBusinessAddressMutation,
+  useViewBusinessAddressQuery,
 } from "services/launchService";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -29,8 +29,11 @@ const BusinessAddress = () => {
 
   const [addBusinessAddress] = useAddBusinessAddressMutation();
   const [updateBusinessAddress] = useUpdateBusinessAddressMutation();
+  const launchResponse = useSelector(
+    (state) => state.LaunchReducer.launchResponse
+  );
 
-  const { data } = useGetUserDraftQuery();
+  const address = useViewBusinessAddressQuery(launchResponse);
 
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
@@ -107,19 +110,36 @@ const BusinessAddress = () => {
     navigate(-1);
   };
 
-  const getDraft = async () => {
-    let draftData = await data;
-    let addressDraftData = draftData?.find(
-      (draft) => draft.launchCode === generatedLaunchCode
-    )?.businessAddress;
-    setAddressDraft(addressDraftData);
-    console.log(draftData);
-    console.log(addressDraftData);
-  };
+  if (address.isSuccess) {
+    // const addressData = address.currentData.businessAddress;
+    // console.log(addressData);
+    // // selectCountry(addressData.addressCountry);
+    // setValue("country", addressData?.addressCountry, {
+    //   shouldValidate: true,
+    // });
+    // setValue("state", addressData?.addressState, { shouldValidate: true });
+    // setValue("city", addressData?.addressCity, { shouldValidate: true });
+    // setValue("street", addressData?.addressStreet, { shouldValidate: true });
+    // setValue("number", addressData?.addressNumber, { shouldValidate: true });
+    // setValue("zipcode", addressData?.addressZipCode, {
+    //   shouldValidate: true,
+    // });
+    // setValue("email", addressData?.addressEmail, { shouldValidate: true });
+  }
 
-  useEffect(() => {
-    getDraft();
-  }, [data]);
+  // const getDraft = async () => {
+  // 	let draftData = await data;
+  // 	let addressDraftData = draftData?.find(
+  // 		(draft) => draft.launchCode === generatedLaunchCode
+  // 	)?.businessAddress;
+  // 	setAddressDraft(addressDraftData);
+  // 	console.log(draftData);
+  // 	console.log(addressDraftData);
+  // };
+
+  // useEffect(() => {
+  // 	getDraft();
+  // }, [data]);
 
   // Set the progress of the application
   useEffect(() => {

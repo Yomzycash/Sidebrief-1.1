@@ -1,11 +1,14 @@
 import { Container, PayProvide } from "./styles";
-import { paymentProviders } from "../constants";
 
-export const PaymentSelector = () => {
+export const PaymentSelector = ({ providers, activate }) => {
 	return (
 		<Container>
-			{paymentProviders.map((el, index) => (
-				<PayProvide key={index}>
+			{providers.map((el, index) => (
+				<PayProvide
+					key={index}
+					active={el.active}
+					onClick={() => activate(el.id)}
+				>
 					<img src={el.image} alt={el.name} />
 				</PayProvide>
 			))}

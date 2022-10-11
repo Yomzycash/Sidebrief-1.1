@@ -31,9 +31,13 @@ import {
   useUpdateDirectorMutation,
   useUpdateMemberMutation,
   useUpdateShareholderMutation,
+  useViewDirectorsMutation,
+  useViewMembersMutation,
+  useViewShareholdersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
 import {
+  mergeDirectorRole,
   mergeInfo,
   shareHolderAdd,
   shareholderDelete,
@@ -55,6 +59,7 @@ const ShareHoldersInfo = () => {
   const [selectedToDelete, setSelectedToDelete] = useState({});
   const [useSidebriefShareholders, setUseSidebriefShareholders] =
     useState(false);
+  const [shareholdersInfo, setShareholdersInfo] = useState([]);
 
   // Endpont hook for shareholder add
   const [addShareHolder, addState] = useAddShareHolderMutation();
@@ -65,11 +70,13 @@ const ShareHoldersInfo = () => {
   const [deleteMember] = useDeleteMemberMutation();
   const [addDirector, dirAddState] = useAddDirectorMutation();
   const [updateDirector, dirUpdateState] = useUpdateDirectorMutation();
-  const { data, error, isLoading, isSuccess } = useGetUserDraftQuery();
+  const [viewShareholders, viewState] = useViewShareholdersMutation();
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
+  const [viewDirectors, viewDirectorssState] = useViewDirectorsMutation();
 
   // This gets some information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { shareHoldersLaunchInfo, directorsLaunchInfo, generatedLaunchCode } =
+  const { shareHoldersLaunchInfo, directorsLaunchInfo, launchResponse } =
     LaunchApplicationInfo;
 
   const handleNext = () => {
@@ -180,20 +187,20 @@ const ShareHoldersInfo = () => {
 
       if (shareholderAllInfo) {
         // Push to store
-        console.log(formData);
-        store.dispatch(
-          setShareHoldersLaunchInfo({
-            info: {
-              ...shareholderAllInfo,
-              directorRole: formData?.director_role,
-            },
-            type: "add",
-          })
-        );
+        // console.log(formData);
+        // store.dispatch(
+        //   setShareHoldersLaunchInfo({
+        //     info: {
+        //       ...shareholderAllInfo,
+        //       directorRole: formData?.director_role,
+        //     },
+        //     type: "add",
+        //   })
+        // );
       } else if (error) {
         toast.error(error.data.message);
       }
-      console.log(formData);
+      // console.log(formData);
       if (formData.director_role) {
         await handleDirectorAdd(launchCode, formData, memberInfo);
         setOpenModal(false);
@@ -227,29 +234,29 @@ const ShareHoldersInfo = () => {
       updateMember
     );
 
-    // The data from the response got from the backend
+    // The data from the response got from backend
     const shareholdersUpdatedData = await shareholdersUpdateResponse?.data;
     const membersUpdatedData = await membersUpdateResponse?.data;
     const error = shareholdersUpdateResponse.error;
 
     // Executes if data is returned from the backend
     if (shareholdersUpdatedData) {
-      const shareholdersMembersMerged = mergeInfo(
-        shareholdersUpdatedData,
-        membersUpdatedData
-      );
-      console.log(formData);
+      // const shareholdersMembersMerged = mergeInfo(
+      //   shareholdersUpdatedData,
+      //   membersUpdatedData
+      // );
+      // console.log(formData);
       if (formData.director_role) {
-        console.log(
-          directorsLaunchInfo.filter(
-            (each) => each.memberCode === selectedShareholder.memberCode
-          )
-        );
-        updateDirectorRole(
-          formData,
-          shareholdersMembersMerged,
-          selectedShareholder
-        );
+        // console.log(
+        //   directorsLaunchInfo.filter(
+        //     (each) => each.memberCode === selectedShareholder.memberCode
+        //   )
+        // );
+        // updateDirectorRole(
+        //   formData,
+        //   shareholdersMembersMerged,
+        //   selectedShareholder
+        // );
         // let selectedDirector = directorsLaunchInfo.filter(
         //   (dir) => dir.memberCode === selectedShareholder.memberCode
         // );
@@ -261,9 +268,9 @@ const ShareHoldersInfo = () => {
         // );
       }
       // Save to store
-      store.dispatch(
-        setShareHoldersLaunchInfo({ info: [...shareholdersMembersMerged] })
-      );
+      // store.dispatch(
+      //   setShareHoldersLaunchInfo({ info: [...shareholdersMembersMerged] })
+      // );
 
       handleModalClose();
     } else {
@@ -302,14 +309,36 @@ const ShareHoldersInfo = () => {
     }
   };
 
-  useState(() => {
-    if (data) {
-      let currentDraft = data.find(
-        (draft) => draft.launchCode === generatedLaunchCode
-      );
-      console.log(currentDraft);
-    }
-  }, [data]);
+  const viewDraft = async () => {
+    let requiredData = {
+      launchCode: launchResponse.launchCode,
+      registrationCountry: launchResponse.registrationCountry,
+      registrationType: launchResponse.registrationType,
+    };
+
+    // Get data from view endpoints
+    let shareholders = await viewShareholders(requiredData);
+    let shareholdersData = [...shareholders.data.businessShareholders];
+    let members = await viewMembers(requiredData);
+    let membersData = [...members.data.businessMembers];
+    let directors = await viewDirectors(requiredData);
+    let directorsData = [...directors.data.businessDirectors];
+
+    // Merge shareholders shareholder's data and member data
+    let mergedInfo = mergeInfo(shareholdersData, membersData);
+
+    // Merge shareholders director role, if the shareholer is a director
+    mergeDirectorRole(mergedInfo, directorsData);
+
+    setShareholdersInfo(mergedInfo);
+
+    console.log(mergedInfo);
+    return mergedInfo;
+  };
+
+  useEffect(() => {
+    viewDraft();
+  }, [addState.isSuccess, deleteState.isSuccess, updateState.isSuccess]);
 
   // Set the progress of the application
   useEffect(() => {
@@ -324,11 +353,11 @@ const ShareHoldersInfo = () => {
           title={"Shareholders Information"}
           checkbox="Shareholders"
           checkBoxAction={handleCheckbox}
-          disableCheckbox={shareHoldersLaunchInfo?.length > 0 ? true : false}
+          disableCheckbox={shareholdersInfo?.length > 0 ? true : false}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            {shareHoldersLaunchInfo.map((shareholder, index) => (
+            {shareholdersInfo.map((shareholder, index) => (
               <LaunchSummaryCard
                 key={index}
                 number={index + 1}

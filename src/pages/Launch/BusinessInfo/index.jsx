@@ -48,6 +48,7 @@ const BusinessInfo = () => {
   const handleNext = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setCountryISO(selectedCountryISO));
+    localStorage.setItem("countryISO", selectedCountryISO);
 
     if (businessNames.length === 4) {
       store.dispatch(setSelectedBusinessNames(businessNames));

@@ -42,7 +42,6 @@ const Button = ({
 };
 
 export default Button;
-
 const ButtonWrapper = styled(motion.button)`
   width: 100%;
   height: 59px;
@@ -60,6 +59,9 @@ const ButtonWrapper = styled(motion.button)`
     background-color: ${(props) =>
       props.hover_bg_color ? props.hover_bg_color : ""};
     color: ${(props) => (props.hv_color ? props.hv_color : "")};
+  }
+  :disabled {
+    background-color: #9b9b9b;
   }
 
   @media screen and (max-width: 600px) {
