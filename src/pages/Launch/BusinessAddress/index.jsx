@@ -19,14 +19,20 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
+import { Loading } from "notiflix";
+import { useRef } from "react";
 
 const BusinessAddress = () => {
 	const [country, setCountry] = useState(defaultLocation);
 	const [state, setState] = useState(defaultLocation);
 	const [city, setCity] = useState(defaultLocation);
 
-	const [addBusinessAddress] = useAddBusinessAddressMutation();
-	const [updateBusinessAddress] = useUpdateBusinessAddressMutation();
+	const [addBusinessAddress, addAddressState] =
+		useAddBusinessAddressMutation();
+
+	const [updateBusinessAddress, updateAddressState] =
+		useUpdateBusinessAddressMutation();
+
 	const launchResponse = useSelector(
 		(state) => state.LaunchReducer.launchResponse
 	);
@@ -38,6 +44,16 @@ const BusinessAddress = () => {
 	const generatedLaunchCode = useSelector(
 		(store) => store.LaunchReducer.generatedLaunchCode
 	);
+
+	const loading = addAddressState.isLoading || updateAddressState.isLoading;
+
+	useEffect(() => {
+		loading
+			? Loading.pulse({
+					svgColor: "#fff",
+			  })
+			: Loading.remove();
+	}, [loading]);
 
 	const {
 		register,
@@ -104,8 +120,12 @@ const BusinessAddress = () => {
 			toast.error(response.error?.data.message);
 		}
 	};
+	let countries = useRef([defaultLocation]);
 
-	const countries = Country.getAllCountries();
+	useEffect(() => {
+		countries.current = Country.getAllCountries();
+	}, []);
+
 	const states = State.getStatesOfCountry(country.isoCode);
 	const cities = City.getCitiesOfState(country.isoCode, state.isoCode);
 
@@ -119,12 +139,19 @@ const BusinessAddress = () => {
 		navigate(-1);
 	};
 
+	if (address.isLoading) {
+		Loading.pulse({
+			svgColor: "#fff",
+		});
+	}
+
 	useEffect(() => {
 		if (address.isSuccess) {
+			Loading.remove();
 			const addressData = address.currentData.businessAddress;
 			console.log(addressData);
 			const theCountry = addressData
-				? countries.find(
+				? countries.current.find(
 						(country) => country.name === addressData.addressCountry
 				  )
 				: defaultLocation;
@@ -179,7 +206,7 @@ const BusinessAddress = () => {
 							<DropDownWithSearch
 								name={"country"}
 								title={"Country"}
-								list={countries}
+								list={countries.current}
 								renderer={({ item }) => (
 									<span>{item.name}</span>
 								)}
