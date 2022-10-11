@@ -20,6 +20,8 @@ import {
   useDeleteMemberMutation,
   useUpdateDirectorMutation,
   useUpdateMemberMutation,
+  useViewDirectorsMutation,
+  useViewMembersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
 import {
@@ -40,6 +42,7 @@ const DirectorsInfo = () => {
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
   const [useSidebriefDirectors, setUseSidebriefDirectors] = useState(false);
+  const [directorsInfo, setDirectorsInfo] = useState([]);
 
   // Endpont hooks
   const [addDirector, addState] = useAddDirectorMutation();
@@ -48,10 +51,13 @@ const DirectorsInfo = () => {
   const [addMember, memberAddState] = useAddMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember] = useDeleteMemberMutation();
+  const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
 
   // This gets the directors information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { directorsLaunchInfo, shareholdersLaunchInfo } = LaunchApplicationInfo;
+  const { directorsLaunchInfo, shareholdersLaunchInfo, launchResponse } =
+    LaunchApplicationInfo;
 
   const handleNext = () => {
     navigate("/launch/beneficiaries-info");
@@ -179,6 +185,32 @@ const DirectorsInfo = () => {
     }
   };
 
+  const viewDraft = async () => {
+    let requiredData = {
+      launchCode: launchResponse.launchCode,
+      registrationCountry: launchResponse.registrationCountry,
+      registrationType: launchResponse.registrationType,
+    };
+
+    // Get data from view endpoints
+    let members = await viewMembers(requiredData);
+    let membersData = [...members.data.businessMembers];
+    let directors = await viewDirectors(requiredData);
+    let directorsData = [...directors.data.businessDirectors];
+
+    // Merge shareholders shareholder's data and member data
+    let mergedInfo = mergeInfo(directorsData, membersData);
+
+    setDirectorsInfo(mergedInfo);
+
+    console.log(mergedInfo);
+    return mergedInfo;
+  };
+
+  useEffect(() => {
+    viewDraft();
+  }, [addState.isSuccess, deleteState.isSuccess, updateState.isSuccess]);
+
   // Set the progress of the application
   useEffect(() => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
@@ -192,11 +224,11 @@ const DirectorsInfo = () => {
           title={"Directors Information"}
           checkbox="Directors"
           checkBoxAction={handleCheckbox}
-          disableCheckbox={directorsLaunchInfo.length > 0 ? true : false}
+          disableCheckbox={directorsInfo.length > 0 ? true : false}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            {directorsLaunchInfo.map((director, index) => (
+            {directorsInfo.map((director, index) => (
               <LaunchSummaryCard
                 key={index}
                 number={index + 1}

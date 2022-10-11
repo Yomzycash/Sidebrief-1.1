@@ -70,6 +70,7 @@ export const CheckoutFormInfo = ({
       if (cardAction === "add") {
         handleAdd(formData, generatedLaunchCode);
       } else if (cardAction === "edit") {
+        console.log(formData);
         handleUpdate(formData, generatedLaunchCode, selectedToEdit);
       }
       return;

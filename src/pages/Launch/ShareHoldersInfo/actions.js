@@ -131,9 +131,9 @@ export const mergeDirectorRole = (shareholdersData, directorsData) => {
     directorsData.forEach((director) => {
       if (director.memberCode === shareholder.memberCode) {
         let shareholderIndex = shareholdersData.indexOf(shareholder);
-        shareholder.directorRole = director.directorRole;
         let shareholderCopy = { ...shareholder };
         shareholderCopy.directorRole = director.directorRole;
+        shareholderCopy.directorCode = director.directorCode;
         shareholdersData.splice(shareholderIndex, 1, shareholderCopy);
       }
     });
