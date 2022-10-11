@@ -11,6 +11,7 @@ import {
 	setCountryISO,
 } from "redux/Slices";
 import { store } from "redux/Store";
+import { Country } from "country-state-city";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
