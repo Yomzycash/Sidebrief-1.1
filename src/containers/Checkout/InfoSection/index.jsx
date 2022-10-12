@@ -36,16 +36,21 @@ export const CheckoutFormInfo = ({
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
   const [directorInitialRole] = useState(selectedToEdit?.directorRole);
   const [isDirector, setIsDirector] = useState(
-    cardAction === "edit" ? selectedToEdit?.directorRole : false
+    cardAction === "edit"
+      ? selectedToEdit?.directorRole
+        ? true
+        : false
+      : false
   );
-
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(isDirector ? shareDirSchema : checkInfoSchema),
+    resolver: yupResolver(
+      shareDirSchema && isDirector ? shareDirSchema : checkInfoSchema
+    ),
   });
 
   const launchInfoFromStore = useSelector((store) => store.LaunchReducer);
@@ -91,7 +96,7 @@ export const CheckoutFormInfo = ({
         "share_percentage",
         selectedToEdit?.shareholderOwnershipPercentage
       );
-      setValue("isDirector", selectedToEdit?.directorRole ? true : false);
+      setValue("isDirector", isDirector);
 
       handleNumberChange(selectedToEdit?.memberPhone);
       handleShareTypeChange({
@@ -111,6 +116,10 @@ export const CheckoutFormInfo = ({
       }
     }
   }, []);
+
+  useEffect(() => {
+    setValue("isDirector", isDirector);
+  }, [isDirector]);
 
   // This sets the share type value - attached to the onChange event
   const handleShareTypeChange = (value) => {
@@ -148,7 +157,9 @@ export const CheckoutFormInfo = ({
         <p>
           {cardAction === "edit" ? "Update" : "Add a"} {title}
         </p>
-        <CloseIcon onClick={handleClose} />
+        <div style={{ cursor: "pointer" }}>
+          <CloseIcon onClick={handleClose} />
+        </div>
       </Title>
       <CheckInputWrapper>
         <InputWithLabel
