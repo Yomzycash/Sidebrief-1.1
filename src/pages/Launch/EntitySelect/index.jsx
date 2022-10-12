@@ -15,6 +15,7 @@ import {
   setCheckoutProgress,
   setGeneratedLaunchCode,
   setSelectedEntity,
+  setLaunchResponse,
 } from "redux/Slices";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
@@ -95,8 +96,16 @@ const EntitySelect = () => {
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
 
-    localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data[0]));
-    console.log(launchResponse.data[0]);
+    if (generatedLaunchCode) {
+      store.dispatch(setLaunchResponse(launchResponse.data[0]));
+      localStorage.setItem(
+        "launchInfo",
+        JSON.stringify(launchResponse.data[0])
+      );
+    } else {
+      store.dispatch(setLaunchResponse(launchResponse.data));
+      localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
+    }
 
     if (launchResponse.data) {
       const launchCode = generatedLaunchCode
@@ -221,7 +230,3 @@ const EntitySelect = () => {
 };
 
 export default EntitySelect;
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-//   .eyJpZCI6IjYzMjM5MjlhNDdkZjU3MjdlNWQzZTg4ZSIsImlhdCI6MTY2MzI3NTY3NCwiZXhwIjoyNTI3Mjc1Njc0fQ
-//   .Ny2kvYtiUImSx6jmVHIhYp3MWWhlB9h2KrcZ1Sj10JI;
