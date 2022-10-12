@@ -368,6 +368,16 @@ export const launchApi = createApi({
       }),
       invalidatesTags: ["Application"],
     }),
+
+    // Submit Launch Request
+    submitLaunch: builder.mutation({
+      query: (values) => ({
+        url: "/launch/submit",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
   }),
 });
 
@@ -423,4 +433,6 @@ export const {
   useAddBeneficialKYCMutation,
   useDeleteBeneficialKYCMutation,
   useViewBeneficialsKYCMutation,
+
+  useSubmitLaunchMutation,
 } = launchApi;

@@ -9,7 +9,9 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useSelector } from "react-redux";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
+import toast from "react-hot-toast";
 import { setCheckoutProgress } from "redux/Slices";
+import { useSubmitLaunchMutation } from "services/launchService";
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -19,8 +21,24 @@ const BeneficiaryReview = () => {
   };
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const navigate = useNavigate();
-  const handleNext = () => {
-    navigate("/launch/review-success");
+  const [submitLaunch] = useSubmitLaunchMutation();
+  const generatedLaunchCode = useSelector(
+    (store) => store.LaunchReducer.generatedLaunchCode
+  );
+  console.log(generatedLaunchCode);
+  const handleNext = async () => {
+    const requiredData = {
+      launchCode: generatedLaunchCode,
+    };
+    const response = await submitLaunch(requiredData);
+    const error = response.error;
+    if (response.data) {
+      console.log(response.data.registrationStatus);
+      toast.success(response.data.registrationStatus);
+      navigate("/launch/review-success");
+    } else {
+      toast.error(error.data.message);
+    }
   };
   const handlePrev = () => {
     navigate(-1);
