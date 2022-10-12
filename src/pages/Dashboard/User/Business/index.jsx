@@ -1,5 +1,5 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
-import React from "react";
+import TabNavBar from 'components/TabNavBar/TabNavBar'
+import React from 'react'
 import {
   Body,
   ButtonWrapper,
@@ -11,22 +11,25 @@ import {
   BottomContent,
   MainHeader,
   Drop,
-} from "./styled";
-import image from "../../../../asset/images/coming.png";
-import { RewardSummaryCard } from "components/cards";
-import Search from "components/navbar/Search";
-import ActiveNav from "components/navbar/ActiveNav";
-import { Outlet } from "react-router-dom";
-import Button from "components/button";
-import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
+} from './styled'
+import image from '../../../../asset/images/coming.png'
+import { RewardSummaryCard } from 'components/cards'
+import Search from 'components/navbar/Search'
+import ActiveNav from 'components/navbar/ActiveNav'
+import { Outlet } from 'react-router-dom'
+import Button from 'components/button'
+import { ReactComponent as NoteIcon } from '../../../../asset/images/note.svg'
+import { useGetUserDraftQuery } from 'services/launchService'
 
 const searchStyle = {
-  borderRadius: "12px",
-  backgroundColor: "white",
-  maxWidth: "384px",
-};
+  borderRadius: '12px',
+  backgroundColor: 'white',
+  maxWidth: '384px',
+}
 
 const Business = () => {
+  const drafts = useGetUserDraftQuery()
+  console.log(drafts)
   return (
     <Container>
       <Header>
@@ -57,18 +60,23 @@ const Business = () => {
           <ActiveNav
             text="All Businesses"
             total={4}
-            path={"/dashboard/businesses/all-businesses"}
+            path={'/dashboard/businesses/all-businesses'}
           />
           <ActiveNav
             text="Pending Applications"
             total={1}
             path="/dashboard/businesses/pending-applications"
           />
+          <ActiveNav
+            text="Draft Applications"
+            total={drafts.isSuccess ? drafts?.currentData.length : 0}
+            path="/dashboard/businesses/draft-applications"
+          />
         </SubHeader>
       </Header>
       <Outlet />
     </Container>
-  );
-};
+  )
+}
 
-export default Business;
+export default Business
