@@ -3,21 +3,7 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
 import { CheckoutController, CheckoutSection } from "containers";
-import {
-  NigeriaFlag,
-  KenyaFlag,
-  SouthAfricaFlag,
-  MalawiFlag,
-  ZimbabweFlag,
-} from "asset/flags";
-import {
-  Body,
-  Bottom,
-  Container,
-  Header,
-  InputsWrapper,
-  CountryItem,
-} from "../styled";
+import { Body, Bottom, Container } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import {
@@ -29,28 +15,32 @@ import {
 } from "redux/Slices";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { BusinessObjectives } from "utils/config";
-import { useGetAllCountriesQuery } from "services/launchService";
+import {
+  useGetAllCountriesQuery,
+  useViewBusinessNamesMutation,
+  useViewBusinessObjectivesMutation,
+} from "services/launchService";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 const BusinessInfo = () => {
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
+
   const [businessNames, setBusinessNames] = useState([]);
-  const [selectedCountry, setselectedCountry] = useState("");
+  const [selectedCountry, setselectedCountry] = useState(
+    LaunchInfo.selectedCountry
+  );
   const [selectedObjectives, setselectedObjectives] = useState([]);
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [selectedCountryISO, setselectedCountryISO] = useState("");
-  const [errorWithin, setErrorWithin] = useState({
-    input1: "",
-    input2: "",
-    input3: "",
-  });
 
   const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
-
-  const LaunchInfo = useSelector((store) => store.LaunchReducer);
+  const [viewBusinessNames, viewNamesState] = useViewBusinessNamesMutation();
+  const [viewBusinessObjectives, viewObjectivesState] =
+    useViewBusinessObjectivesMutation();
 
   const navigate = useNavigate();
 
@@ -58,6 +48,7 @@ const BusinessInfo = () => {
   const handleNext = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setCountryISO(selectedCountryISO));
+    localStorage.setItem("countryISO", selectedCountryISO);
 
     if (businessNames.length === 4) {
       store.dispatch(setSelectedBusinessNames(businessNames));
@@ -127,7 +118,7 @@ const BusinessInfo = () => {
   useEffect(() => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
   }, []);
-  console.log(errorWithin);
+
   return (
     <Container onClick={handleSubmit}>
       <HeaderCheckout getStarted />
@@ -154,8 +145,6 @@ const BusinessInfo = () => {
               MatchError="Please select objectives from the list"
               EmptyError="Please select at least one objective"
               MaxError="You cannot select more than 4"
-              setErrorWithin={setErrorWithin}
-              errorWithin={errorWithin}
             />
             <div style={{ maxWidth: "430px" }}>
               <TagInputWithSearch
@@ -163,18 +152,20 @@ const BusinessInfo = () => {
                 list={countries}
                 getValue={handleCountry}
                 initialValue={LaunchInfo.selectedCountry}
-                setErrorWithin={setErrorWithin}
-                errorWithin={errorWithin}
               />
             </div>
           </LaunchFormContainer>
-          {console.log(errorWithin)}
           <Bottom>
             <CheckoutController
               forwardAction={handleNext}
               backAction={handlePrev}
               backText={"Previous"}
               forwardText={"Next"}
+              forwardDisable={
+                businessNames.length !== 4 ||
+                selectedObjectives.length < 1 ||
+                !selectedCountry
+              }
               hidePrev
             />
           </Bottom>

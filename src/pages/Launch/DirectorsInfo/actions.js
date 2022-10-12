@@ -1,6 +1,10 @@
 //
 
 import { memberDelete } from "containers/Checkout/InfoSection/actions";
+import {
+  useViewDirectorsMutation,
+  useViewShareholdersMutation,
+} from "services/launchService";
 
 // Add a new director
 export const directorAdd = async (
@@ -67,39 +71,45 @@ export const directorUpdate = async (
 //
 // Delete a shareholder
 export const directorDelete = async (
-  LaunchInfo,
+  // LaunchInfo,
   director,
-  deleteDirector,
-  deleteMember
+  // viewShareholders,
+  deleteDirector
+  // deleteMember
 ) => {
-  const { shareHoldersLaunchInfo, directorsLaunchInfo } = LaunchInfo;
+  // const { shareHoldersLaunchInfo, directorsLaunchInfo } = LaunchInfo;
 
-  const requiredDeleteData = {
+  const requiredData = {
     launchCode: director.launchCode,
     directorCode: director.directorCode,
     memberCode: director.memberCode,
     directorRole: director.directorRole,
   };
+
   // The delete response gotten from the backend
-  let deleteResponse = await deleteDirector(requiredDeleteData);
+  let deleteResponse = await deleteDirector(requiredData);
+
   // This fires off, if delete response is success
   if (deleteResponse.data) {
+    // Get data from view endpoints
+    // let shareholders = await viewShareholders(requiredData);
+    // let shareholdersData = [...shareholders.data.businessShareholders];
+    // let directors = await viewDirectors(requiredData);
+    // let directorsData = [...directors.data.businessDirectors];
     // This filters and set the filtered shareholders info to the store
-    let filteredDirectors = directorsLaunchInfo.filter(
-      (director) => director.directorCode !== requiredDeleteData.directorCode
-    );
+    // let filteredDirectors = directorsData.filter(
+    //   (director) => director.directorCode !== requiredData.directorCode
+    // );
     // This checks if the deleted shareholder is a director
-    let memberCheck = shareHoldersLaunchInfo.filter(
-      (shareholder) =>
-        shareholder?.memberCode === requiredDeleteData?.memberCode
-    );
-    // if memberCheck length is 0 (i.e the director is not a shareholder), membership is deleted.
-    if (memberCheck.length === 0) {
-      let memberDeleteResponse = await memberDelete(director, deleteMember);
-      console.log(memberDeleteResponse);
-    }
-
-    return { data: filteredDirectors };
+    // let memberCheck = shareholdersData.filter(
+    //   (shareholder) => shareholder?.memberCode === requiredData?.memberCode
+    // );
+    // // if memberCheck length is 0 (i.e the director is not a shareholder), membership is deleted.
+    // if (memberCheck.length === 0) {
+    //   let memberDeleteResponse = await memberDelete(director, deleteMember);
+    //   console.log(memberDeleteResponse);
+    // }
+    // return { data: filteredDirectors };
   } else {
     if (deleteResponse.error) {
       return { error: deleteResponse.error };

@@ -9,9 +9,8 @@ import {
 } from "components/cards";
 import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import "react-multi-carousel/lib/styles.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery } from "services/RewardService";
@@ -43,6 +42,7 @@ const BusinessRegistration = (props) => {
 
 	if (drafts.isSuccess && submitted.isSuccess) {
 		allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+		console.log(allLaunch);
 		allLaunch.sort((launch1, launch2) =>
 			compareDesc(
 				new Date(launch1.updatedAt),
@@ -121,7 +121,11 @@ const BusinessRegistration = (props) => {
 								return (
 									<StatusCard
 										key={el.launchCode}
-										name={`${el.businessNames.businessName1} - ${el.registrationType}`}
+										name={`${
+											el.businessNames?.businessName1
+												? el.businessNames.businessName1
+												: "No name"
+										} - ${el.registrationType}`}
 										status="draft"
 										ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
 									/>

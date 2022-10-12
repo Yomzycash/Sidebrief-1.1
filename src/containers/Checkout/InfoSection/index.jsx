@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { directorRoleOptions, shareTypeOptions } from "utils/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useAddMembersMutation } from "services/launchService";
+import { useAddMemberMutation } from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
@@ -36,16 +36,21 @@ export const CheckoutFormInfo = ({
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
   const [directorInitialRole] = useState(selectedToEdit?.directorRole);
   const [isDirector, setIsDirector] = useState(
-    cardAction === "edit" ? selectedToEdit?.directorRole : false
+    cardAction === "edit"
+      ? selectedToEdit?.directorRole
+        ? true
+        : false
+      : false
   );
-
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(isDirector ? shareDirSchema : checkInfoSchema),
+    resolver: yupResolver(
+      shareDirSchema && isDirector ? shareDirSchema : checkInfoSchema
+    ),
   });
 
   const launchInfoFromStore = useSelector((store) => store.LaunchReducer);
@@ -61,7 +66,7 @@ export const CheckoutFormInfo = ({
   );
 
   // Endpoints hooks from launch slice
-  const [addMembers, { isLoading, isSuccess }] = useAddMembersMutation();
+  const [addMember, { error, isLoading, isSuccess }] = useAddMemberMutation();
 
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
@@ -70,6 +75,7 @@ export const CheckoutFormInfo = ({
       if (cardAction === "add") {
         handleAdd(formData, generatedLaunchCode);
       } else if (cardAction === "edit") {
+        console.log(formData);
         handleUpdate(formData, generatedLaunchCode, selectedToEdit);
       }
       return;
@@ -90,7 +96,7 @@ export const CheckoutFormInfo = ({
         "share_percentage",
         selectedToEdit?.shareholderOwnershipPercentage
       );
-      setValue("isDirector", selectedToEdit?.directorRole ? true : false);
+      setValue("isDirector", isDirector);
 
       handleNumberChange(selectedToEdit?.memberPhone);
       handleShareTypeChange({
@@ -110,6 +116,10 @@ export const CheckoutFormInfo = ({
       }
     }
   }, []);
+
+  useEffect(() => {
+    setValue("isDirector", isDirector);
+  }, [isDirector]);
 
   // This sets the share type value - attached to the onChange event
   const handleShareTypeChange = (value) => {
@@ -147,7 +157,9 @@ export const CheckoutFormInfo = ({
         <p>
           {cardAction === "edit" ? "Update" : "Add a"} {title}
         </p>
-        <CloseIcon onClick={handleClose} />
+        <div style={{ cursor: "pointer" }}>
+          <CloseIcon onClick={handleClose} />
+        </div>
       </Title>
       <CheckInputWrapper>
         <InputWithLabel

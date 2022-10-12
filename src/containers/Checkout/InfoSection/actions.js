@@ -1,5 +1,5 @@
 // Add a member
-export const memberAdd = async (launchCode, formData, addMembers) => {
+export const memberAdd = async (launchCode, formData, addMember) => {
   const requiredMemberData = {
     launchCode: launchCode,
     businessMember: {
@@ -9,7 +9,7 @@ export const memberAdd = async (launchCode, formData, addMembers) => {
     },
   };
 
-  let addMemberResponse = await addMembers(requiredMemberData);
+  let addMemberResponse = await addMember(requiredMemberData);
 
   if (addMemberResponse.data) {
     // Get the information of all added members
@@ -36,11 +36,23 @@ export const memberUpdate = async (formData, selected, updateMember) => {
 
   let membersUpdateResponse = await updateMember(requiredMemberUpdateData);
 
-  let membersUpdatedData = membersUpdateResponse?.data?.businessMembers;
+  // let membersUpdatedData = membersUpdateResponse?.data?.businessMembers;
 
-  if (membersUpdatedData) {
-    return { data: membersUpdatedData };
+  if (membersUpdateResponse.data) {
+    // Get the information of all added members
+    const allMembers = Object.entries(
+      membersUpdateResponse.data.businessMembers
+    );
+    // Get the information of the just added member
+    const memberInfo = allMembers[allMembers.length - 1][1];
+    return { data: memberInfo };
+  } else if (membersUpdateResponse.error) {
+    return { error: membersUpdateResponse.error };
   }
+
+  // if (membersUpdatedData) {
+  //   return { data: membersUpdatedData };
+  // }
 };
 
 // Delete a member

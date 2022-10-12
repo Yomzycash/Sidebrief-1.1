@@ -8,8 +8,10 @@ import {
 	saveUserInfo,
 	setLaunchResponse,
 	setGeneratedLaunchCode,
+	setCountryISO,
 } from "redux/Slices";
 import { store } from "redux/Store";
+import { Country } from "country-state-city";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
@@ -20,16 +22,18 @@ body{
 `;
 
 function App() {
-	// const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
-
 	let localUserInfo = localStorage.getItem("userInfo");
 	let launchInfo = localStorage.getItem("launchInfo");
+	let countryISO = localStorage.getItem("countryISO");
+
 	useEffect(() => {
 		if (localUserInfo) {
 			store.dispatch(saveUserInfo(JSON.parse(localUserInfo)));
 			console.log(JSON.parse(localUserInfo));
 		}
-		console.log(launchInfo);
+	}, [localUserInfo]);
+
+	useEffect(() => {
 		if (launchInfo) {
 			store.dispatch(setLaunchResponse(JSON.parse(launchInfo)));
 			store.dispatch(
@@ -37,7 +41,14 @@ function App() {
 			);
 			console.log(JSON.parse(launchInfo));
 		}
-	}, [localUserInfo, launchInfo]);
+	}, [launchInfo]);
+
+	useEffect(() => {
+		if (countryISO) {
+			store.dispatch(setCountryISO(countryISO));
+			console.log(countryISO);
+		}
+	}, [countryISO]);
 
 	return (
 		<>
