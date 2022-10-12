@@ -13,7 +13,14 @@ import {
   setShareHoldersLaunchInfo,
 } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container, modalStyle } from "../styled";
+import {
+  AddMore,
+  Body,
+  Bottom,
+  Container,
+  Loading,
+  modalStyle,
+} from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
@@ -54,6 +61,7 @@ import {
   directorDelete,
   directorUpdate,
 } from "../DirectorsInfo/actions";
+import { Puff } from "react-loading-icons";
 
 const ShareHoldersInfo = () => {
   const navigate = useNavigate();
@@ -161,6 +169,33 @@ const ShareHoldersInfo = () => {
   };
 
   //
+  // This deletess the director's information
+  const handleDirectorDelete = async (selectedDirector) => {
+    let requiredData = {
+      launchCode: launchResponse.launchCode,
+      registrationCountry: launchResponse.registrationCountry,
+      registrationType: launchResponse.registrationType,
+    };
+    let directors = await viewDirectors(requiredData);
+    let directorsData = [...directors.data.businessDirectors];
+
+    let exists = directorsData.findIndex(
+      (e) => e.memberCode === selectedDirector.memberCode
+    );
+    console.log(exists);
+    if (exists >= 0) {
+      const res = await directorDelete(
+        // LaunchApplicationInfo,
+        selectedDirector,
+        // viewShareholders,
+        deleteDirector
+        // deleteMember
+      );
+      console.log(res);
+    }
+  };
+
+  //
   // This adds a new shareholder
   const handleShareholderAdd = async (formData, launchCode) => {
     // Add a member
@@ -206,7 +241,7 @@ const ShareHoldersInfo = () => {
       selectedShareholder,
       updateShareholder
     );
-    let membersUpdateResponse = await memberUpdate(
+    let memberUpdateResponse = await memberUpdate(
       formData,
       selectedShareholder,
       updateMember
@@ -214,9 +249,9 @@ const ShareHoldersInfo = () => {
 
     // The data from the response gotten from backend
     const shareholdersUpdatedData = await shareholdersUpdateResponse?.data;
-    const membersUpdatedData = await membersUpdateResponse?.data;
-
-    const error = shareholdersUpdateResponse.error;
+    const memberUpdatedData = await memberUpdateResponse?.data;
+    console.log(memberUpdatedData);
+    const error = shareholdersUpdateResponse?.error;
 
     const selectedDirector = {
       launchCode: selectedShareholder.launchCode,
@@ -226,14 +261,14 @@ const ShareHoldersInfo = () => {
     };
 
     // Executes if data is returned from the backend
-    if (shareholdersUpdatedData && membersUpdatedData) {
+    if (shareholdersUpdatedData && memberUpdatedData) {
       // Update or add director's role if role exists or does not respectively
-      if (formData.director_role) {
+      if (formData.isDirector) {
         if (!selectedShareholder.directorRole) {
           handleDirectorAdd(
             selectedShareholder.launchCode,
             formData,
-            membersUpdatedData
+            memberUpdatedData
           );
         } else {
           handleDirectorUpdate(formData, selectedDirector);
@@ -244,14 +279,11 @@ const ShareHoldersInfo = () => {
 
       // Else delete director info
       else {
-        const res = directorDelete(
-          LaunchApplicationInfo,
-          selectedDirector,
-          deleteDirector
-        );
-        console.log(res);
+        handleDirectorDelete(selectedDirector);
+        handleModalClose();
       }
     } else {
+      console.log(error);
       handleError(error);
     }
   };
@@ -276,6 +308,7 @@ const ShareHoldersInfo = () => {
     }
   };
 
+  // Get the data from backend and set to state
   const viewDraft = async () => {
     let requiredData = {
       launchCode: launchResponse.launchCode,
@@ -299,7 +332,6 @@ const ShareHoldersInfo = () => {
 
     setShareholdersInfo(mergedInfo);
 
-    console.log(mergedInfo);
     return mergedInfo;
   };
 
@@ -323,6 +355,12 @@ const ShareHoldersInfo = () => {
           disableCheckbox={shareholdersInfo?.length > 0 ? true : false}
         />
         <LaunchPrimaryContainer>
+          {viewState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading>
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
           <LaunchFormContainer>
             {shareholdersInfo.map((shareholder, index) => (
               <LaunchSummaryCard

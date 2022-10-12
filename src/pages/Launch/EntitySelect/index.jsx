@@ -179,7 +179,7 @@ const EntitySelect = () => {
       <Body style={{ maxWidth: "100%" }}>
         <CheckoutSection title={"Operational Country: " + selectedCountry}>
           {isLoading && (
-            <Loading>
+            <Loading height="300px">
               <Puff stroke="#00A2D4" fill="white" width={60} />
             </Loading>
           )}

@@ -39,7 +39,8 @@ export const Loading = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 300px;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;
 
 export const AddMore = styled.div`

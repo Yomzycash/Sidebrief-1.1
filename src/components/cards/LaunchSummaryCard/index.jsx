@@ -1,8 +1,8 @@
-import React from 'react'
-import { ReactComponent as DeleteIcon } from 'asset/svg/delete.svg'
-import { ReactComponent as EditIcon } from 'asset/svg/Edit.svg'
-import { Container, IconWrapper, SharesWrapper, Top } from './styled'
-import { SpinningCircles } from 'react-loading-icons'
+import React from "react";
+import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
+import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
+import { Container, IconWrapper, SharesWrapper, Top } from "./styled";
+import { SpinningCircles } from "react-loading-icons";
 
 const LaunchSummaryCard = ({
   number,
@@ -29,7 +29,9 @@ const LaunchSummaryCard = ({
           {stake && <div>{`Occupation: ${occupation} - Stake: ${stake}%`}</div>}
           {!icon && (
             <IconWrapper>
-              <EditIcon onClick={editAction} />
+              <div style={{ cursor: "pointer" }}>
+                <EditIcon onClick={editAction} />
+              </div>
               {isLoading ? (
                 <SpinningCircles
                   stroke="#00A2D4"
@@ -38,7 +40,9 @@ const LaunchSummaryCard = ({
                   height={25}
                 />
               ) : (
-                <DeleteIcon onClick={deleteAction} />
+                <div style={{ cursor: "pointer" }}>
+                  <DeleteIcon onClick={deleteAction} />
+                </div>
               )}
             </IconWrapper>
           )}
@@ -47,7 +51,7 @@ const LaunchSummaryCard = ({
       <div>{email}</div>
       <div>{phone}</div>
     </Container>
-  )
-}
+  );
+};
 
-export default LaunchSummaryCard
+export default LaunchSummaryCard;
