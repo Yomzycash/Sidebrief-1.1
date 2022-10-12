@@ -6,9 +6,6 @@ import {
 	BodyRight,
 	Container,
 	Footer,
-	Header,
-	MainHeader,
-	SubHeader,
 	Loading,
 } from "./styled";
 import { useNavigate, useSearchParams } from "react-router-dom";
