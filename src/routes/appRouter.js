@@ -208,9 +208,9 @@ const AppRouter = () => {
             <Route
               path="launch"
               element={
-                <Protected isVerified={isLoggedIn}>
-                  <Outlet />
-                </Protected>
+                // <Protected isVerified={isLoggedIn}>
+                <Outlet />
+                // </Protected>
               }
             >
               <Route index element={<BusinessInfo />} />
@@ -219,20 +219,20 @@ const AppRouter = () => {
               <Route
                 path="payment"
                 element={
-                  <Protected isVerified={launchCode} path="/launch">
-                    <PaymentPage />
-                  </Protected>
+                  // <Protected isVerified={launchCode} path="/launch">
+                  <PaymentPage />
+                  // </Protected>
                 }
               />
               <Route
                 path="address"
                 element={
-                  <Protected
-                    isVerified={launchCode && countryISO}
-                    path="/launch"
-                  >
-                    <BusinessAddress />
-                  </Protected>
+                  // <Protected
+                  //   isVerified={launchCode && countryISO}
+                  //   path="/launch"
+                  // >
+                  <BusinessAddress />
+                  // </Protected>
                 }
               />
               <Route
