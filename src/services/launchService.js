@@ -252,7 +252,7 @@ export const launchApi = createApi({
     // Delete business director
     deleteDirector: builder.mutation({
       query: (values) => ({
-        url: "/launch/members/remove",
+        url: "/launch/directors/remove",
         method: "POST",
         body: values,
       }),

@@ -8,7 +8,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCheckoutProgress, setDirectorsLaunchInfo } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container, modalStyle } from "../styled";
+import {
+  AddMore,
+  Body,
+  Bottom,
+  Container,
+  Loading,
+  modalStyle,
+} from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
@@ -34,6 +41,7 @@ import {
   memberAdd,
   memberUpdate,
 } from "containers/Checkout/InfoSection/actions";
+import { Puff } from "react-loading-icons";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -85,26 +93,24 @@ const DirectorsInfo = () => {
     setSelectedToEdit(director);
   };
 
+  const handleError = (error) => {
+    if (error?.status === "FETCH_ERROR") {
+      toast.error("Please check your internet connection");
+    } else {
+      toast.error(error?.data.message);
+    }
+  };
+
   // This deletes a director's informataion
   const handleDelete = async (director) => {
     setSelectedToDelete(director);
 
-    let deleteResponse = await directorDelete(
-      LaunchApplicationInfo,
-      director,
-      deleteDirector,
-      deleteMember
-    );
-    console.log(deleteResponse);
+    let deleteResponse = await directorDelete(director, deleteDirector);
 
-    if (deleteResponse.data) {
-      store.dispatch(setDirectorsLaunchInfo({ info: deleteResponse.data }));
-    } else {
-      if (deleteResponse.error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
-      } else {
-        toast.error(deleteResponse.error.data.message);
-      }
+    let error = deleteResponse?.error;
+
+    if (error) {
+      handleError(error);
     }
   };
 
@@ -112,6 +118,8 @@ const DirectorsInfo = () => {
   const handleDirectorAdd = async (formData, launchCode) => {
     // Add a member
     let addMemberResponse = await memberAdd(launchCode, formData, addMember);
+    let error = addMemberResponse?.error;
+
     // Runs if successfully added member
     if (addMemberResponse.data) {
       const memberInfo = addMemberResponse.data;
@@ -122,29 +130,21 @@ const DirectorsInfo = () => {
         memberInfo,
         addDirector
       );
-      let directorAllInfo = addDirectorResponse?.data;
+
+      let directorData = addDirectorResponse?.data;
       let error = addDirectorResponse?.error;
 
-      if (addDirectorResponse.data) {
-        // Set the combined information to store
-        store.dispatch(
-          setDirectorsLaunchInfo({ info: directorAllInfo, type: "add" })
-        );
+      if (directorData) {
         setOpenModal(false);
-        console.log(addDirectorResponse);
       } else {
         console.log(addDirectorResponse.error);
         toast.error(error.data.message);
       }
     }
     // Runs if failed to add member
-    else if (addMemberResponse.error) {
-      let error = addMemberResponse.error;
-      if (error?.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
-      } else {
-        toast.error(error?.data.message);
-      }
+    else if (error) {
+      console.log(error);
+      handleError(error);
     }
   };
 
@@ -169,22 +169,19 @@ const DirectorsInfo = () => {
 
     // Executes if data is returned from the backend
     if (directorsUpdatedData) {
-      const directorsMembersMerged = mergeInfo(
-        directorsUpdatedData,
-        membersUpdatedData
-      );
-      console.log(directorsMembersMerged);
-      store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
+      // const directorsMembersMerged = mergeInfo(
+      //   directorsUpdatedData,
+      //   membersUpdatedData
+      // );
+      // console.log(directorsMembersMerged);
+      // store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
       handleModalClose();
     } else {
-      if (error?.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
-      } else {
-        toast.error(error?.data.message);
-      }
+      handleError(error);
     }
   };
 
+  // Get the data from backend and set to state
   const viewDraft = async () => {
     let requiredData = {
       launchCode: launchResponse.launchCode,
@@ -209,7 +206,12 @@ const DirectorsInfo = () => {
 
   useEffect(() => {
     viewDraft();
-  }, [addState.isSuccess, deleteState.isSuccess, updateState.isSuccess]);
+  }, [
+    addState.isSuccess,
+    deleteState.isSuccess,
+    updateState.isSuccess,
+    openModal,
+  ]);
 
   // Set the progress of the application
   useEffect(() => {
@@ -227,6 +229,12 @@ const DirectorsInfo = () => {
           disableCheckbox={directorsInfo.length > 0 ? true : false}
         />
         <LaunchPrimaryContainer>
+          {viewDirectorsState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading>
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
           <LaunchFormContainer>
             {directorsInfo.map((director, index) => (
               <LaunchSummaryCard
@@ -281,7 +289,7 @@ const DirectorsInfo = () => {
               forwardAction={handleNext}
               forwardText={"Proceed"}
               forwardDisable={
-                directorsLaunchInfo.length === 0 && !useSidebriefDirectors
+                directorsInfo.length === 0 && !useSidebriefDirectors
               }
             />
           </Bottom>
