@@ -27,6 +27,8 @@ import {
   useUpdateBusinessNamesMutation,
   useUpdateBusinessObjectivesMutation,
   useUpdateLaunchMutation,
+  useViewBusinessNamesMutation,
+  useViewBusinessObjectivesMutation,
 } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import toast from "react-hot-toast";
@@ -66,6 +68,8 @@ const EntitySelect = () => {
   const [updateBusinessNames] = useUpdateBusinessNamesMutation();
   const [addBusinessObjectives] = useAddBusinessObjectivesMutation();
   const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
+  const [viewBusinessNames] = useViewBusinessNamesMutation();
+  const [viewBusinessObjectives] = useViewBusinessObjectivesMutation();
 
   // Set to state all entities of the specified country
   useEffect(() => {
@@ -75,6 +79,7 @@ const EntitySelect = () => {
     }
   }, [data]);
 
+  //
   // This fires off when the next button is clicked
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
@@ -92,32 +97,47 @@ const EntitySelect = () => {
       registrationType: selectedItem.entityCode,
     };
 
-    let launchResponse = generatedLaunchCode
+    // If generatedLaunchCode exists in store, then it runs update endpoint. If otherwise, it runs get started endpoint.
+    const launchResponse = generatedLaunchCode
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
 
+    console.log(launchResponse);
+
+    // Set the launch response to local storage
     if (generatedLaunchCode) {
+      // An array is returned, if update response
       store.dispatch(setLaunchResponse(launchResponse.data[0]));
       localStorage.setItem(
         "launchInfo",
         JSON.stringify(launchResponse.data[0])
       );
     } else {
+      // An object is returned, if getStarted response
       store.dispatch(setLaunchResponse(launchResponse.data));
       localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
     }
 
-    if (launchResponse.data) {
-      const launchCode = generatedLaunchCode
-        ? await launchResponse.data[0].launchCode
-        : await launchResponse.data.launchCode;
+    handleResponse(launchResponse, requiredLaunchUpdateData);
+  };
 
+  //
+  // Handle launch response
+  const handleResponse = (launchResponse, requiredLaunchInfo) => {
+    if (launchResponse.data) {
+      // Get launchCode from the launch response
+      const launchCode = generatedLaunchCode
+        ? launchResponse.data[0].launchCode
+        : launchResponse.data.launchCode;
+
+      // If launchCode does not exist, store the launch code gotten from the launch response
       if (!generatedLaunchCode) {
         store.dispatch(setGeneratedLaunchCode(launchCode));
       }
+
       navigate("/launch/payment");
 
-      handleBusinessInfo(launchCode);
+      handleBusinessInfo(requiredLaunchInfo, launchCode);
 
       console.log(launchCode);
     } else {
@@ -129,8 +149,16 @@ const EntitySelect = () => {
     }
   };
 
+  //
   // Send business information to the backend
-  const handleBusinessInfo = (launchCode) => {
+  const handleBusinessInfo = async (requiredLaunchInfo, launchCode) => {
+    // Check if business names or objectives exists
+    let existingNames = await viewBusinessNames(requiredLaunchInfo);
+    let existingObjectives = await viewBusinessObjectives(requiredLaunchInfo);
+
+    let namesExists = existingNames?.data?.businessNames;
+    let objectivesExists = existingObjectives?.data?.businessObjects;
+
     const requiredBusinessNamesData = {
       launchCode: launchCode,
       businessNames: {
@@ -150,21 +178,25 @@ const EntitySelect = () => {
         businessObject4: selectedObjectives[3] || "null",
       },
     };
-    const businessNamesResponse = launchCode
-      ? updateBusinessNames(requiredBusinessNamesData)
-      : addBusinessNames(requiredBusinessNamesData);
 
-    const businessObjectivesResponse = launchCode
-      ? updateBusinessObjectives(requiredBusinessObjectives)
-      : addBusinessObjectives(requiredBusinessObjectives);
+    // Update if business names exist, add if otherwise
+    const businessNamesResponse = namesExists
+      ? await updateBusinessNames(requiredBusinessNamesData)
+      : await addBusinessNames(requiredBusinessNamesData);
 
-    console.log(businessNamesResponse);
+    // Update if business objectives exist, add if otherwise
+    const businessObjectivesResponse = objectivesExists
+      ? await updateBusinessObjectives(requiredBusinessObjectives)
+      : await addBusinessObjectives(requiredBusinessObjectives);
 
     let error = businessNamesResponse?.error;
+    let error2 = businessObjectivesResponse?.error;
+
     if (error) {
+      console.log(error, error2);
       toast.error(error.data.message);
+      toast.error(error2.data.message);
     }
-    console.log(businessObjectivesResponse);
   };
 
   // Navigate to the previous page

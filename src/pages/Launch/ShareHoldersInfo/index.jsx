@@ -169,6 +169,24 @@ const ShareHoldersInfo = () => {
   };
 
   //
+  // Checks if a director exists
+  const directorExists = async (selectedDirector) => {
+    let requiredViewData = {
+      launchCode: launchResponse.launchCode,
+      registrationCountry: launchResponse.registrationCountry,
+      registrationType: launchResponse.registrationType,
+    };
+
+    const directors = await viewDirectors(requiredViewData);
+    const directorsData = directors?.data?.businessDirectors;
+    let isDirector = directorsData?.find(
+      (e) => e.directorCode === selectedDirector.directorCode
+    );
+
+    return isDirector;
+  };
+
+  //
   // This deletess the director's information
   const handleDirectorDelete = async (selectedDirector) => {
     let requiredData = {
@@ -250,7 +268,7 @@ const ShareHoldersInfo = () => {
     // The data from the response gotten from backend
     const shareholdersUpdatedData = await shareholdersUpdateResponse?.data;
     const memberUpdatedData = await memberUpdateResponse?.data;
-    console.log(memberUpdatedData);
+
     const error = shareholdersUpdateResponse?.error;
 
     const selectedDirector = {
@@ -260,11 +278,12 @@ const ShareHoldersInfo = () => {
       directorRole: selectedShareholder.directorRole,
     };
 
+    let isDirector = await directorExists(selectedDirector);
     // Executes if data is returned from the backend
     if (shareholdersUpdatedData && memberUpdatedData) {
       // Update or add director's role if role exists or does not respectively
       if (formData.isDirector) {
-        if (!selectedShareholder.directorRole) {
+        if (!isDirector) {
           handleDirectorAdd(
             selectedShareholder.launchCode,
             formData,
@@ -291,10 +310,19 @@ const ShareHoldersInfo = () => {
   //
   // This deletes a shareholder's informataion
   const handleDelete = async (shareholder) => {
+    const selectedDirector = {
+      launchCode: shareholder.launchCode,
+      memberCode: shareholder.memberCode,
+      directorCode: shareholder.directorCode,
+      directorRole: shareholder.directorRole,
+    };
+
+    const isDirector = await directorExists(selectedDirector);
+
     setSelectedToDelete(shareholder);
     // The delete response gotten from the backend
     let deleteResponse = await shareholderDelete(
-      LaunchApplicationInfo,
+      isDirector,
       shareholder,
       deleteShareholder,
       deleteMember
