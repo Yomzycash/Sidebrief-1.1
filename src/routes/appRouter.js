@@ -98,7 +98,27 @@ const AppRouter = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
-  const isLoggedIn = token?.length > 0 || user_token > 0;
+  const loggedIn = token?.length > 0 || user_token > 0;
+
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  let entityLaunchCode = launchInfo?.launchCode;
+  let selectedCountryISO = localStorage.getItem("countryISO");
+
+  const [isLoggedIn, setisLoggedIn] = useState(loggedIn);
+  const [launchCode, setLaunchCode] = useState(entityLaunchCode);
+  const [countryISO, setCountryISO] = useState(selectedCountryISO);
+
+  useEffect(() => {
+    setisLoggedIn(loggedIn);
+  }, [loggedIn]);
+
+  useEffect(() => {
+    setLaunchCode(entityLaunchCode);
+  }, [entityLaunchCode]);
+
+  useEffect(() => {
+    setCountryISO(selectedCountryISO);
+  }, [selectedCountryISO]);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -142,13 +162,11 @@ const AppRouter = () => {
               path="dashboard"
               element={
                 <Protected isVerified={isLoggedIn}>
-                  {" "}
                   <UserDashboard />
                 </Protected>
               }
             >
               <Route index element={<BusinessRegistration />} />
-
               <Route
                 path="business-registration"
                 element={<BusinessRegistration />}
@@ -190,49 +208,155 @@ const AppRouter = () => {
             <Route
               path="launch"
               element={
-                // <Protected isVerified={loginStatus}>
-                <Outlet />
-                // </Protected>
+                <Protected isVerified={isLoggedIn}>
+                  <Outlet />
+                </Protected>
               }
             >
               <Route index element={<BusinessInfo />} />
               <Route path="business-info" element={<BusinessInfo />} />
               <Route path="entity" element={<EntitySelect />} />
-              <Route path="payment" element={<PaymentPage />} />
-              <Route path="address" element={<BusinessAddress />} />
-              {/* <Route path="form-info" element={<BusinessForm />} /> */}
-              <Route path="shareholders-info" element={<ShareHoldersInfo />} />
-              <Route path="directors-info" element={<DirectorsInfo />} />
+              <Route
+                path="payment"
+                element={
+                  <Protected isVerified={launchCode} path="/launch">
+                    <PaymentPage />
+                  </Protected>
+                }
+              />
+              <Route
+                path="address"
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <BusinessAddress />
+                  </Protected>
+                }
+              />
+              <Route
+                path="shareholders-info"
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <ShareHoldersInfo />
+                  </Protected>
+                }
+              />
+              <Route
+                path="directors-info"
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <DirectorsInfo />
+                  </Protected>
+                }
+              />
               <Route
                 path="beneficiaries-info"
-                element={<BeneficiariesInfo />}
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <BeneficiariesInfo />
+                  </Protected>
+                }
               />
-              {/* review path */}
+              <Route
+                path="beneficiaries-kyc"
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <BeneficiariesKYC />
+                  </Protected>
+                }
+              />
+              <Route
+                path="sharehholders-kyc"
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <ShareHolderKYC />
+                  </Protected>
+                }
+              />
+              <Route
+                path="directors-kyc"
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <DirectorKYC />
+                  </Protected>
+                }
+              />
 
               <Route
                 path="/launch/review-beneficiary"
-                element={<BeneficiaryReview />}
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <BeneficiaryReview />
+                  </Protected>
+                }
               />
               <Route
                 path="/launch/review"
-                element={<BusinessInformationReview />}
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <BusinessInformationReview />
+                  </Protected>
+                }
               />
               <Route
                 path="/launch/review-director"
-                element={<DirectorReview />}
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <DirectorReview />
+                  </Protected>
+                }
               />
               <Route
                 path="/launch/review-shareholder"
-                element={<ShareholderReview />}
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <ShareholderReview />
+                  </Protected>
+                }
               />
               <Route
                 path="/launch/review-success"
-                element={<ApplicationSuccessPage />}
+                element={
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <ApplicationSuccessPage />
+                  </Protected>
+                }
               />
-
-              <Route path="beneficiaries-kyc" element={<BeneficiariesKYC />} />
-              <Route path="sharehholders-kyc" element={<ShareHolderKYC />} />
-              <Route path="directors-kyc" element={<DirectorKYC />} />
             </Route>
           </Route>
         </Routes>

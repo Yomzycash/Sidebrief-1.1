@@ -16,9 +16,11 @@ import image from "../../../../asset/images/coming.png";
 import { RewardSummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Button from "components/button";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
+import { setGeneratedLaunchCode } from "redux/Slices";
+import { store } from "redux/Store";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -27,6 +29,13 @@ const searchStyle = {
 };
 
 const Business = () => {
+  const navigate = useNavigate();
+
+  const handleLaunch = () => {
+    store.dispatch(setGeneratedLaunchCode(""));
+    navigate("/launch");
+  };
+
   return (
     <Container>
       <Header>
@@ -46,7 +55,7 @@ const Business = () => {
           <BottomContent>
             <Search style={searchStyle} />
             <ButtonWrapper>
-              <button>
+              <button onClick={handleLaunch}>
                 <NoteIcon />
                 Launch a Business
               </button>
