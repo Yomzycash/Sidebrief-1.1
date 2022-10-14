@@ -1,107 +1,123 @@
 import { RewardCard, RewardSummaryCard } from "components/cards";
-import ActiveNav from "components/navbar/ActiveNav";
-import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import {
-  Body,
-  BodyLeft,
-  BodyRight,
-  Container,
-  Footer,
-  Header,
-  MainHeader,
-  SubHeader,
+	Body,
+	BodyLeft,
+	BodyRight,
+	Container,
+	Footer,
+	Loading,
 } from "./styled";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { store } from "redux/Store";
 import { setMyClaimedRewards, setRewardsPageHeader } from "redux/Slices";
 import { useGetUserRewardQuery } from "services/RewardService";
+import { Puff } from "react-loading-icons";
 
-const rewardsCategories = ["All", "Human Resources", "Productivity"];
+// const rewardsCategories = ["All", "Human Resources", "Productivity"];
 
 const MyRewards = () => {
-  const [myRewards, setMyRewards] = useState([]);
-  const [filteredReward, setFilteredReward] = useState([]);
+	const [myRewards, setMyRewards] = useState([]);
+	const [filteredReward, setFilteredReward] = useState([]);
+	const [rewardsCategories, setRewardscategories] = useState(["All"]);
 
-  const [category, setCategory] = useSearchParams();
+	const [category, setCategory] = useSearchParams();
 
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
+	const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
 
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 
-  // This displays rewards header for this page
-  useEffect(() => {
-    store.dispatch(setRewardsPageHeader(true));
-  }, []);
+	// This displays rewards header for this page
+	useEffect(() => {
+		store.dispatch(setRewardsPageHeader(true));
+	}, []);
 
-  const handleRewardClick = (rewardID) => {
-    navigate(`/dashboard/rewards/${rewardID}`);
-  };
+	const handleRewardClick = (rewardID) => {
+		navigate(`/dashboard/rewards/${rewardID}`);
+	};
 
-  const handleCategory = (category) => {
-    setCategory({ category }); // converting category to object and category is the key
-  };
+	const handleCategory = (category) => {
+		setCategory({ category }); // converting category to object and category is the key
+	};
 
-  useEffect(() => {
-    setMyRewards(data);
-    store.dispatch(setMyClaimedRewards(data));
-  }, [data]);
+	useEffect(() => {
+		setMyRewards(data);
+		setRewardscategories((prev) => {
+			const categories = data
+				? data.map((element) => element.rewardCategory)
+				: [];
 
-  let selectedCategory = category.get("category");
+			return [...new Set([...prev, ...categories])];
+		});
+		store.dispatch(setMyClaimedRewards(data));
+	}, [data]);
 
-  // handles the rewards by category
-  useEffect(() => {
-    if (selectedCategory === "Productivity") {
-      let filtered = myRewards?.filter(
-        (reward) => reward.rewardCategory === "Productivity"
-      );
-      setFilteredReward(filtered);
-    } else if (selectedCategory === "Human Resources") {
-      let filtered = myRewards?.filter(
-        (reward) => reward?.rewardCategory === "Human Resources"
-      );
-      setFilteredReward(filtered);
-    } else {
-      setFilteredReward(myRewards);
-    }
-  }, [category, myRewards]);
+	// handles the rewards by category
+	useEffect(() => {
+		let selectedCategory = category.get("category");
 
-  return (
-    <Container>
-      <Body>
-        <BodyLeft>
-          <h3>Categories</h3>
-          <ul>
-            {rewardsCategories?.map((cat, index) => (
-              <li
-                key={index}
-                onClick={() => handleCategory(cat)}
-                style={{
-                  color: cat === category.get("category") ? "#00A2D4" : "",
-                }}
-              >
-                {cat}
-              </li>
-            ))}
-          </ul>
-        </BodyLeft>
-        <BodyRight>
-          {filteredReward?.map((reward, index) => (
-            <RewardCard
-              key={index}
-              title={reward?.rewardName}
-              body={reward?.rewardDescription}
-              image={reward?.rewardImage}
-              action={() => handleRewardClick(reward.rewardID)}
-              rewardspage
-            />
-          ))}
-        </BodyRight>
-      </Body>
-      <Footer></Footer>
-    </Container>
-  );
+		switch (selectedCategory) {
+			case null:
+			case "All":
+				setFilteredReward(myRewards);
+				break;
+			default:
+				let filtered = myRewards?.filter(
+					(reward) => reward?.rewardCategory === selectedCategory
+				);
+				setFilteredReward(filtered);
+				break;
+		}
+	}, [category, myRewards]);
+
+	return (
+		<Container>
+			<Body>
+				{isLoading ? (
+					<Loading height="300px">
+						<Puff stroke="#00A2D4" fill="white" width={60} />
+					</Loading>
+				) : (
+					<>
+						<BodyLeft>
+							<h3>Categories</h3>
+							<ul>
+								{rewardsCategories?.map((cat, index) => (
+									<li
+										key={index}
+										onClick={() => handleCategory(cat)}
+										style={{
+											color:
+												cat === category.get("category")
+													? "#00A2D4"
+													: "",
+										}}
+									>
+										{cat}
+									</li>
+								))}
+							</ul>
+						</BodyLeft>
+						<BodyRight>
+							{filteredReward?.map((reward, index) => (
+								<RewardCard
+									key={index}
+									title={reward?.rewardName}
+									body={reward?.rewardDescription}
+									image={reward?.rewardImage}
+									action={() =>
+										handleRewardClick(reward.rewardID)
+									}
+									rewardspage
+								/>
+							))}
+						</BodyRight>
+					</>
+				)}
+			</Body>
+			<Footer></Footer>
+		</Container>
+	);
 };
 
 export default MyRewards;
