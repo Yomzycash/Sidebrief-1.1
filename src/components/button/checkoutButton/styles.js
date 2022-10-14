@@ -6,6 +6,7 @@ export const Container = styled.button`
   background: #00a2d4;
   border-radius: 8px;
   border: none;
+  outline: none;
   color: #ffffff;
   cursor: pointer;
 

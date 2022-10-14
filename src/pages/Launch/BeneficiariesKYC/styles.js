@@ -28,3 +28,11 @@ export const ContentWrapper = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
+`;
