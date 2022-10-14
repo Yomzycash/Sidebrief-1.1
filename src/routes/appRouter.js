@@ -95,30 +95,37 @@ const ShareholderReview = lazy(() =>
 const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 
 const AppRouter = () => {
+  const userData = useSelector((store) => store.UserDataReducer);
+  const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
+  console.log(launchData);
+
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
-  const loggedIn = token?.length > 0 || user_token > 0;
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-  let entityLaunchCode = launchInfo?.launchCode;
-  let selectedCountryISO = localStorage.getItem("countryISO");
+  const entityLaunchCode = launchInfo?.launchCode;
+  const selectedCountryISO = localStorage.getItem("countryISO");
 
-  const [isLoggedIn, setisLoggedIn] = useState(loggedIn);
+  const [isLoggedIn, setisLoggedIn] = useState(
+    token?.length > 0 || user_token > 0
+  );
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
+  const loggedIn = token?.length > 0 || user_token > 0;
+
   useEffect(() => {
     setisLoggedIn(loggedIn);
-  }, [loggedIn]);
+  }, [loggedIn, userData.userInfo]);
 
   useEffect(() => {
     setLaunchCode(entityLaunchCode);
-  }, [entityLaunchCode]);
+  }, [entityLaunchCode, launchData.launchCode]);
 
   useEffect(() => {
     setCountryISO(selectedCountryISO);
-  }, [selectedCountryISO]);
+  }, [selectedCountryISO, launchData.registrationCountry]);
 
   return (
     <Suspense fallback={<Loader />}>

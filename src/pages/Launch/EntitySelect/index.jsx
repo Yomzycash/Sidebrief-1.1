@@ -80,7 +80,7 @@ const EntitySelect = () => {
   }, [data]);
 
   //
-  // This fires off when the next button is clicked
+  // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
 
@@ -107,14 +107,14 @@ const EntitySelect = () => {
     // Set the launch response to local storage
     if (generatedLaunchCode) {
       // An array is returned, if update response
-      store.dispatch(setLaunchResponse(launchResponse.data[0]));
+      store.dispatch(setLaunchResponse(launchResponse.data[0])); // !important DO NOT DELETE
       localStorage.setItem(
         "launchInfo",
         JSON.stringify(launchResponse.data[0])
       );
     } else {
       // An object is returned, if getStarted response
-      store.dispatch(setLaunchResponse(launchResponse.data));
+      store.dispatch(setLaunchResponse(launchResponse.data)); // !important DO NOT DELETE
       localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
     }
 
@@ -135,7 +135,9 @@ const EntitySelect = () => {
         store.dispatch(setGeneratedLaunchCode(launchCode));
       }
 
-      navigate("/launch/payment");
+      // Navigate if business names and objectives exist in the store
+      if (businessNames.length > 0 && selectedObjectives.length > 0)
+        navigate("/launch/payment");
 
       handleBusinessInfo(requiredLaunchInfo, launchCode);
 
@@ -158,6 +160,9 @@ const EntitySelect = () => {
 
     let namesExists = existingNames?.data?.businessNames;
     let objectivesExists = existingObjectives?.data?.businessObjects;
+
+    // Navigate if business names and objectives exist
+    if (namesExists && objectivesExists) navigate("/launch/payment");
 
     const requiredBusinessNamesData = {
       launchCode: launchCode,
@@ -221,7 +226,7 @@ const EntitySelect = () => {
         <CheckoutSection title={"Operational Country: " + selectedCountry}>
           {isLoading && (
             <Loading height="300px">
-              <Puff stroke="#00A2D4" fill="white" width={60} />
+              <Puff stroke="#00A2D4" fill="white" />
             </Loading>
           )}
           <EntityCardsWrapper>
