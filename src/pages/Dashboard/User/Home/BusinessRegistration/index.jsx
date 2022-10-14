@@ -71,8 +71,8 @@ const BusinessRegistration = (props) => {
 
   const handleLaunch = () => {
     store.dispatch(setGeneratedLaunchCode(""));
-    localStorage.clear("launchInfo");
-    localStorage.clear("countryISO");
+    localStorage.removeItem("launchInfo");
+    localStorage.removeItem("countryISO");
     navigate("/launch");
   };
 

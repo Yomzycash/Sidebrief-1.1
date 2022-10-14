@@ -108,6 +108,7 @@ const BusinessInfo = () => {
 
   // Set the selected country's ISO
   useEffect(() => {
+    viewDraft();
     const countryData = countriesData.filter(
       (data) => data.countryName === selectedCountry
     );
@@ -124,15 +125,15 @@ const BusinessInfo = () => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
   }, []);
 
+  // This calls the view endpoint and set the recieved data to the respective states
   const viewDraft = async () => {
     const namesData = await viewBusinessNames(launchResponse);
     const objectivesData = await viewBusinessObjectives(launchResponse);
-    if (objectivesData.data)
+    if (namesData.data)
       setBusinessNames(Object.values(namesData.data.businessNames));
-    if (objectivesData) {
+    if (objectivesData.data) {
       let objectives = Object.values(objectivesData.data.businessObjects);
       let filtered = objectives.filter((objective) => objective !== "null");
-      console.log(filtered);
       setselectedObjectives(filtered);
     }
   };
@@ -140,9 +141,6 @@ const BusinessInfo = () => {
   useEffect(() => {
     viewDraft();
   }, []);
-
-  // console.log(selectedCountry);
-  // console.log(selectedObjectives);
 
   return (
     <Container onClick={handleSubmit}>

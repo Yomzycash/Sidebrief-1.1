@@ -95,13 +95,17 @@ const ShareholderReview = lazy(() =>
 const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 
 const AppRouter = () => {
+  const userData = useSelector((store) => store.UserDataReducer);
+  const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
+  console.log(launchData);
+
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-  let entityLaunchCode = launchInfo?.launchCode;
-  let selectedCountryISO = localStorage.getItem("countryISO");
+  const entityLaunchCode = launchInfo?.launchCode;
+  const selectedCountryISO = localStorage.getItem("countryISO");
 
   const [isLoggedIn, setisLoggedIn] = useState(
     token?.length > 0 || user_token > 0
@@ -113,16 +117,15 @@ const AppRouter = () => {
 
   useEffect(() => {
     setisLoggedIn(loggedIn);
-  }, [loggedIn]);
+  }, [loggedIn, userData.userInfo]);
 
-  console.log(isLoggedIn);
   useEffect(() => {
     setLaunchCode(entityLaunchCode);
-  }, [entityLaunchCode]);
+  }, [entityLaunchCode, launchData.launchCode]);
 
   useEffect(() => {
     setCountryISO(selectedCountryISO);
-  }, [selectedCountryISO]);
+  }, [selectedCountryISO, launchData.registrationCountry]);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -223,20 +226,20 @@ const AppRouter = () => {
               <Route
                 path="payment"
                 element={
-                  // <Protected isVerified={launchCode} path="/launch">
-                  <PaymentPage />
-                  // </Protected>
+                  <Protected isVerified={launchCode} path="/launch">
+                    <PaymentPage />
+                  </Protected>
                 }
               />
               <Route
                 path="address"
                 element={
-                  // <Protected
-                  //   isVerified={launchCode && countryISO}
-                  //   path="/launch"
-                  // >
-                  <BusinessAddress />
-                  // </Protected>
+                  <Protected
+                    isVerified={launchCode && countryISO}
+                    path="/launch"
+                  >
+                    <BusinessAddress />
+                  </Protected>
                 }
               />
               <Route

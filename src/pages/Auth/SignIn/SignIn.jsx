@@ -65,7 +65,7 @@ const SignIn = () => {
     let data = response?.data;
     let error = response?.error;
     if (data) {
-      store.dispatch(saveUserInfo(data));
+      store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
       console.log(data);
       toast.success(data.message);
