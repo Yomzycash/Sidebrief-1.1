@@ -110,7 +110,11 @@ const BusinessRegistration = (props) => {
               icon: <IoArrowForward />,
             }}
           >
-            <BusinessesChartCard analytics={analytics} user />
+            <BusinessesChartCard
+              analytics={analytics}
+              user
+              loading={submitted.isLoading || drafts.isLoading}
+            />
             <Recently>
               {allLaunch.slice(0, 3).map((el) => {
                 return (
