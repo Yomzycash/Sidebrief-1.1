@@ -45,15 +45,15 @@ const BusinessAddress = () => {
 		(store) => store.LaunchReducer.generatedLaunchCode
 	);
 
-	const loading = addAddressState.isLoading || updateAddressState.isLoading;
+	// const loading = addAddressState.isLoading || updateAddressState.isLoading;
 
-	useEffect(() => {
-		loading
-			? Loading.pulse({
-					svgColor: "#fff",
-			  })
-			: Loading.remove();
-	}, [loading]);
+	// useEffect(() => {
+	// 	loading
+	// 		? Loading.pulse({
+	// 				svgColor: "#fff",
+	// 		  })
+	// 		: Loading.remove();
+	// }, [loading]);
 
 	const {
 		register,
