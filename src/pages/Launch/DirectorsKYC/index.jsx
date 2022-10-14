@@ -8,11 +8,20 @@ import { setCheckoutProgress, setDirectorDocs } from "redux/Slices";
 import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useAddMemberKYCMutation } from "services/launchService";
+import {
+  useAddMemberKYCMutation,
+  useViewDirectorsMutation,
+  useViewMembersMutation,
+} from "services/launchService";
 import { useSelector } from "react-redux";
-import { ContentWrapper, FileContainer, Name } from "./styles";
+import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
-import { convertToLink } from "utils/convertToUrl";
+import {
+  convertToLink,
+  isValidFileUploaded,
+  mergeInfo,
+} from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
 
 const DirectorKYC = () => {
   //geting the information from the store
@@ -29,20 +38,29 @@ const DirectorKYC = () => {
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
+  const launchResponse = useSelector(
+    (state) => state.LaunchReducer.launchResponse
+  );
+  const [viewMember, viewMembersState] = useViewMembersMutation();
+  const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
+  const [directorContainer, setDirectorContainer] = useState([]);
 
-  const [documentContainer, setDocumentContainer] = useState(
-    directorsLaunchInfo.map((director) => {
+  const [documentContainer, setDocumentContainer] = useState([]);
+
+  useEffect(() => {
+    const mapping = directorContainer.map((director) => {
       return {
         name: director.memberName,
-        code: director.directorCode,
+        code: director.memberCode,
         files: {
           government: "",
           proof: "",
           passport: "",
         },
       };
-    })
-  );
+    });
+    setDocumentContainer(mapping);
+  }, [directorContainer]);
 
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
@@ -56,11 +74,23 @@ const DirectorKYC = () => {
     navigate(-1);
   };
 
-  const isValidFileUploaded = (file) => {
-    const validExtensions = ["jpeg", "jpg", "pdf"];
-    const fileExtension = file.type.split("/")[1];
-    return validExtensions.includes(fileExtension);
+  const handleMerge = async () => {
+    let memberInfo = await viewMember(launchResponse);
+    let newMemberInfo = [...memberInfo.data.businessMembers];
+
+    let directorInfo = await viewDirectors(launchResponse);
+    let newDirectorInfo = [...directorInfo.data.businessDirectors];
+
+    let newMerge = mergeInfo(newDirectorInfo, newMemberInfo);
+    console.log("test", newMerge);
+    setDirectorContainer(newMerge);
+
+    return newMerge;
   };
+
+  useEffect(() => {
+    handleMerge();
+  }, []);
 
   const handleChange = async (e, director) => {
     console.log("value of the component is", e.target.name);
@@ -102,7 +132,7 @@ const DirectorKYC = () => {
 
       const requiredAddMemberData = {
         launchCode: generatedLaunchCode,
-        memberCode: requiredMemberCode,
+        memberCode: director,
         memberKYC: {
           documentType: uploadedFile.type,
           documentLink: res.url,
@@ -144,6 +174,11 @@ const DirectorKYC = () => {
           }
         />
         <LaunchPrimaryContainer>
+          {viewDirectorState.isLoading && (
+            <Loading height="50vh">
+              <Puff stroke="#00A2D4" fill="white" />
+            </Loading>
+          )}
           <LaunchFormContainer>
             {documentContainer.map((director, index) => (
               <FileContainer key={index}>

@@ -7,21 +7,23 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import { setCheckoutProgress, setShareholderDocs } from "redux/Slices";
 import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
-import { useAddMemberKYCMutation } from "services/launchService";
+import {
+  useAddMemberKYCMutation,
+  useViewMembersMutation,
+  useViewShareholdersMutation,
+} from "services/launchService";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { ContentWrapper, FileContainer, Name } from "./styles";
+import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
-import { convertToLink } from "utils/convertToUrl";
+import {
+  convertToLink,
+  isValidFileUploaded,
+  mergeInfo,
+} from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
 
 const ShareHolderKYC = () => {
-  //geting the information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { shareHoldersLaunchInfo } = LaunchApplicationInfo;
-  console.log(shareHoldersLaunchInfo[0]?.memberCode);
-  let requiredMemberCode = shareHoldersLaunchInfo[0]?.memberCode;
-  console.log(requiredMemberCode);
-
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
@@ -29,20 +31,47 @@ const ShareHolderKYC = () => {
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
+  const [viewMember, viewMembersState] = useViewMembersMutation();
+  const [viewShareholders, viewShareholderState] =
+    useViewShareholdersMutation();
+  const [shareholderContainer, setShareholder] = useState([]);
 
-  const [documentContainer, setDocumentContainer] = useState(
-    shareHoldersLaunchInfo.map((shareholder) => {
+  const launchResponse = useSelector(
+    (state) => state.LaunchReducer.launchResponse
+  );
+  const [documentContainer, setDocumentContainer] = useState([]);
+
+  useEffect(() => {
+    const mapping = shareholderContainer.map((shareholder) => {
       return {
         name: shareholder.memberName,
-        code: shareholder.shareholdingCode,
+        code: shareholder.memberCode,
         files: {
           government: "",
           proof: "",
           passport: "",
         },
       };
-    })
-  );
+    });
+    setDocumentContainer(mapping);
+  }, [shareholderContainer]);
+
+  const handleMerge = async () => {
+    let memberInfo = await viewMember(launchResponse);
+    let newMemberInfo = [...memberInfo.data.businessMembers];
+
+    let shareholderInfo = await viewShareholders(launchResponse);
+    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
+
+    let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setShareholder(newMerge);
+
+    return newMerge;
+  };
+
+  useEffect(() => {
+    handleMerge();
+  }, []);
 
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
@@ -50,12 +79,6 @@ const ShareHolderKYC = () => {
 
   const handlePrev = () => {
     navigate(-1);
-  };
-
-  const isValidFileUploaded = (file) => {
-    const validExtensions = ["jpeg", "jpg", "pdf"];
-    const fileExtension = file.type.split("/")[1];
-    return validExtensions.includes(fileExtension);
   };
 
   const handleChange = async (e, shareholder) => {
@@ -98,7 +121,7 @@ const ShareHolderKYC = () => {
 
       const requiredAddMemberData = {
         launchCode: generatedLaunchCode,
-        memberCode: requiredMemberCode,
+        memberCode: shareholder,
         memberKYC: {
           documentType: uploadedFile.type,
           documentLink: res.url,
@@ -144,6 +167,12 @@ const ShareHolderKYC = () => {
           }
         />
         <LaunchPrimaryContainer>
+          {viewShareholderState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading height="50vh">
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
           <LaunchFormContainer>
             {documentContainer.map((shareholder, index) => (
               <FileContainer key={index}>
