@@ -27,18 +27,22 @@ const TagInputWithSearch = ({
   const suggestionContainer = useRef();
 
   // This sets the tag values (if available) on mounth
-  useEffect(() => {
-    if (initialValues) {
-      setTags([...initialValues]);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (initialValues) {
+  //     setTags([...initialValues]);
+  //   }
+  // }, [initialValues.length]);
 
   // This sets the select value (if available) on mounth
-  useEffect(() => {
-    if (initialValue) {
-      setValue(initialValue);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (initialValue) {
+  //     setValue(initialValue);
+  //   }
+  // }, [initialValue]);
+
+  // console.log(initialValue);
+  // console.log(initialValues);
+
   // Update list when it chages
   useEffect(() => {
     setFilteredList(list);

@@ -27,11 +27,10 @@ import { useSelector } from "react-redux";
 
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
+  const { launchResponse } = LaunchInfo;
 
   const [businessNames, setBusinessNames] = useState([]);
-  const [selectedCountry, setselectedCountry] = useState(
-    LaunchInfo.selectedCountry
-  );
+  const [selectedCountry, setselectedCountry] = useState("");
   const [selectedObjectives, setselectedObjectives] = useState([]);
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
@@ -90,6 +89,12 @@ const BusinessInfo = () => {
       setCountries([...countries]);
       setselectedCountry(value);
     }
+    if (launchResponse && data) {
+      let countrySelected = data?.filter(
+        (country) => country.countryISO === launchResponse.registrationCountry
+      );
+      setselectedCountry(countrySelected[0].countryName);
+    }
   };
 
   const handleObjectives = (valuesSelected) => {
@@ -119,6 +124,26 @@ const BusinessInfo = () => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
   }, []);
 
+  const viewDraft = async () => {
+    const namesData = await viewBusinessNames(launchResponse);
+    const objectivesData = await viewBusinessObjectives(launchResponse);
+    if (objectivesData.data)
+      setBusinessNames(Object.values(namesData.data.businessNames));
+    if (objectivesData) {
+      let objectives = Object.values(objectivesData.data.businessObjects);
+      let filtered = objectives.filter((objective) => objective !== "null");
+      console.log(filtered);
+      setselectedObjectives(filtered);
+    }
+  };
+
+  useEffect(() => {
+    viewDraft();
+  }, []);
+
+  // console.log(selectedCountry);
+  // console.log(selectedObjectives);
+
   return (
     <Container onClick={handleSubmit}>
       <HeaderCheckout getStarted />
@@ -131,7 +156,7 @@ const BusinessInfo = () => {
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
             <TagInput
-              initialValues={LaunchInfo.businessNames}
+              initialValues={businessNames}
               getSelectedValues={handleBusinessNames}
             />
 
@@ -139,7 +164,7 @@ const BusinessInfo = () => {
               label="Business Objectives"
               list={BusinessObjectives}
               getValue={handleObjectives}
-              initialValues={LaunchInfo.selectedObjectives}
+              initialValues={selectedObjectives}
               MultiSelect
               ExistsError="Objective has already been selected"
               MatchError="Please select objectives from the list"
@@ -151,7 +176,7 @@ const BusinessInfo = () => {
                 label="Operational Country"
                 list={countries}
                 getValue={handleCountry}
-                initialValue={LaunchInfo.selectedCountry}
+                initialValue={selectedCountry}
               />
             </div>
           </LaunchFormContainer>

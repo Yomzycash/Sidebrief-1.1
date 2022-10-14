@@ -98,20 +98,24 @@ const AppRouter = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
-  const loggedIn = token?.length > 0 || user_token > 0;
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   let entityLaunchCode = launchInfo?.launchCode;
   let selectedCountryISO = localStorage.getItem("countryISO");
 
-  const [isLoggedIn, setisLoggedIn] = useState(loggedIn);
+  const [isLoggedIn, setisLoggedIn] = useState(
+    token?.length > 0 || user_token > 0
+  );
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
+
+  const loggedIn = token?.length > 0 || user_token > 0;
 
   useEffect(() => {
     setisLoggedIn(loggedIn);
   }, [loggedIn]);
 
+  console.log(isLoggedIn);
   useEffect(() => {
     setLaunchCode(entityLaunchCode);
   }, [entityLaunchCode]);
@@ -208,9 +212,9 @@ const AppRouter = () => {
             <Route
               path="launch"
               element={
-                // <Protected isVerified={isLoggedIn}>
-                <Outlet />
-                // </Protected>
+                <Protected isVerified={isLoggedIn}>
+                  <Outlet />
+                </Protected>
               }
             >
               <Route index element={<BusinessInfo />} />
