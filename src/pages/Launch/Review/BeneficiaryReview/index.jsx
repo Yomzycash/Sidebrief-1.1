@@ -1,52 +1,52 @@
-import { CheckoutController, CheckoutSection } from "containers";
-import React from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { Container } from "../styled";
-import styled from "styled-components";
-import { ReviewTab } from "utils/config";
-import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
-import HeaderCheckout from "components/Header/HeaderCheckout";
-import { useSelector } from "react-redux";
-import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
-import { store } from "redux/Store";
-import toast from "react-hot-toast";
-import { setCheckoutProgress } from "redux/Slices";
-import { useSubmitLaunchMutation } from "services/launchService";
+import { CheckoutController, CheckoutSection } from 'containers'
+import React from 'react'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Container } from '../styled'
+import styled from 'styled-components'
+import { ReviewTab } from 'utils/config'
+import LaunchSummaryCard from 'components/cards/LaunchSummaryCard'
+import HeaderCheckout from 'components/Header/HeaderCheckout'
+import { useSelector } from 'react-redux'
+import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
+import { store } from 'redux/Store'
+import toast from 'react-hot-toast'
+import { setCheckoutProgress } from 'redux/Slices'
+import { useSubmitLaunchMutation } from 'services/launchService'
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
-    color: "#151717",
-    borderBottom: "4px solid #00A2D4",
+    color: '#151717',
+    borderBottom: '4px solid #00A2D4',
     borderRadius: 0,
-  };
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const navigate = useNavigate();
-  const [submitLaunch] = useSubmitLaunchMutation();
+  }
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
+  const navigate = useNavigate()
+  const [submitLaunch] = useSubmitLaunchMutation()
   const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode
-  );
-  console.log(generatedLaunchCode);
+    (store) => store.LaunchReducer.generatedLaunchCode,
+  )
+  console.log(generatedLaunchCode)
   const handleNext = async () => {
     const requiredData = {
       launchCode: generatedLaunchCode,
-    };
-    const response = await submitLaunch(requiredData);
-    const error = response.error;
-    if (response.data) {
-      console.log(response.data.registrationStatus);
-      toast.success(response.data.registrationStatus);
-      navigate("/launch/review-success");
-    } else {
-      toast.error(error.data.message);
     }
-  };
+    const response = await submitLaunch(requiredData)
+    const error = response.error
+    if (response.data) {
+      console.log(response.data.registrationStatus)
+      toast.success(response.data.registrationStatus)
+      navigate('/launch/review-success')
+    } else {
+      toast.error(error.data.message)
+    }
+  }
   const handlePrev = () => {
-    navigate(-1);
-  };
+    navigate(-1)
+  }
 
   const handleNavigate = () => {
-    navigate("/launch/beneficiary-info");
-  };
+    navigate('/launch/beneficiary-info')
+  }
 
   return (
     <>
@@ -54,7 +54,7 @@ const BeneficiaryReview = () => {
         <HeaderCheckout />
         <Body>
           <CheckoutSection
-            title={"Review Information"}
+            title={'Review Information'}
             HeaderParagraph="Please ensure all information provided for this business are correct"
           />
           <Nav>
@@ -89,13 +89,13 @@ const BeneficiaryReview = () => {
                   stake={beneficiary.beneficialOwnershipStake}
                   icon
                 />
-              )
+              ),
             )}
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController
-              backText={"Previous"}
-              forwardText={"Done"}
+              backText={'Previous'}
+              forwardText={'Done'}
               forwardAction={handleNext}
               backAction={handlePrev}
             />
@@ -103,10 +103,10 @@ const BeneficiaryReview = () => {
         </Body>
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default BeneficiaryReview;
+export default BeneficiaryReview
 
 const Nav = styled.nav`
   background: #ffffff;
@@ -118,7 +118,7 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
-`;
+`
 
 const ReviweTabWrapper = styled.div`
   display: flex;
@@ -143,37 +143,37 @@ const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
-`;
+`
 const ContentWrapper = styled.div`
   width: 100%;
   padding: 40px 40px 0px;
-`;
+`
 const EditWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
   cursor: pointer;
-`;
+`
 
 const EditText = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 27px;
   color: #00a2d4;
-`;
+`
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 40px;
   gap: 40px;
-`;
+`
 const ButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   padding: 40px;
-`;
+`
 const Body = styled.form`
   display: flex;
   flex-flow: column;
@@ -187,4 +187,4 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
-`;
+`
