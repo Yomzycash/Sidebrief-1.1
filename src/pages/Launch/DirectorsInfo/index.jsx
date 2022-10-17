@@ -42,6 +42,7 @@ import {
   memberUpdate,
 } from "containers/Checkout/InfoSection/actions";
 import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -294,6 +295,7 @@ const DirectorsInfo = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Directors info" />
       </Body>
     </Container>
   );

@@ -39,6 +39,10 @@ export const launchApi = createApi({
       query: (ISO) => `/entities/country/${ISO}`,
     }),
 
+    getSingleEntity: builder.query({
+      query: (entityCode) => `/entities/${entityCode}`,
+    }),
+
     //create launch with registration country and registration type
     getStarted: builder.mutation({
       query: (values) => ({
@@ -53,6 +57,16 @@ export const launchApi = createApi({
     updateLaunch: builder.mutation({
       query: (values) => ({
         url: "/launch/update",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
+    // Send payment response
+    payLaunch: builder.mutation({
+      query: (values) => ({
+        url: "/launch/pay",
         method: "POST",
         body: values,
       }),
@@ -390,9 +404,13 @@ export const {
 
   useGetAllEntitiesQuery,
 
+  useGetSingleEntityQuery,
+
   useGetStartedMutation,
 
   useUpdateLaunchMutation,
+
+  usePayLaunchMutation,
 
   useAddBusinessNamesMutation,
   useUpdateBusinessNamesMutation,

@@ -33,6 +33,7 @@ import {
 import { Puff } from "react-loading-icons";
 import toast from "react-hot-toast";
 import { Dialog, DialogContent } from "@mui/material";
+import AppFeedback from "components/AppFeedback";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
@@ -61,6 +62,8 @@ const EntitySelect = () => {
   const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
     countryISO ? countryISO : countryISOView
   );
+
+  console.log(countryISO);
 
   const [getStarted, launchState] = useGetStartedMutation();
   const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation();
@@ -262,6 +265,7 @@ const EntitySelect = () => {
           </DialogContent>
         </Dialog>
       )}
+      <AppFeedback subProject="Entity select" />
     </Container>
   );
 };

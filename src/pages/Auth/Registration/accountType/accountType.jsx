@@ -14,6 +14,7 @@ import {
   Middle,
   Top,
 } from "./styled";
+import AppFeedback from "components/AppFeedback";
 
 const AccountType = () => {
   const location = useLocation();
@@ -72,6 +73,7 @@ const AccountType = () => {
           />
         </AccountFooter>
       </AccountTypeCont>
+      <AppFeedback subProject="Account type" />
     </AccountTypeMain>
   );
 };

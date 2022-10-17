@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
 import { setCheckoutProgress } from "redux/Slices";
+import { PaymentButton } from "containers/Payment/Form/styles.js";
+import AppFeedback from "components/AppFeedback/index.jsx";
 
 const PaymentPage = () => {
   const [providers, dispatch] = useReducer(
@@ -93,6 +95,7 @@ const PaymentPage = () => {
             backAction={handlePrev}
           />
         </Bottom>
+        <AppFeedback subProject="Payment page" />
       </Body>
     </Container>
   );

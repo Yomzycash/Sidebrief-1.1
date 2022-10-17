@@ -1,8 +1,8 @@
 import currencySymbol from "currency-symbol";
 
 export const useActions = ({ isUSD, currency, setIsUSD, setValue }) => {
-  const symbol = String.fromCharCode(
-    currencySymbol.symbol(isUSD ? "USD" : currency)?.slice(2, -1)
+  const symbol = String?.fromCharCode(
+    currencySymbol?.symbol(isUSD ? "USD" : currency)?.slice(2, -1)
   );
 
   const onSelectCurrencyType = (event) => {

@@ -24,6 +24,7 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import AppFeedback from "components/AppFeedback";
 
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
@@ -48,6 +49,8 @@ const BusinessInfo = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setCountryISO(selectedCountryISO));
     localStorage.setItem("countryISO", selectedCountryISO);
+    store.dispatch(setCountryISO(selectedCountryISO));
+    console.log(selectedCountryISO);
 
     if (businessNames.length === 4) {
       store.dispatch(setSelectedBusinessNames(businessNames));
@@ -79,7 +82,7 @@ const BusinessInfo = () => {
 
   // Handle supported countries fetch
   const handleCountry = async (value) => {
-    let responseData = await data;
+    let responseData = data;
     let countries = [];
     responseData?.forEach((data) => {
       countries = [...countries, data?.countryName];
@@ -88,12 +91,6 @@ const BusinessInfo = () => {
       setCountriesData([...responseData]);
       setCountries([...countries]);
       setselectedCountry(value);
-    }
-    if (launchResponse && data) {
-      let countrySelected = data?.filter(
-        (country) => country.countryISO === launchResponse.registrationCountry
-      );
-      setselectedCountry(countrySelected[0].countryName);
     }
   };
 
@@ -104,6 +101,12 @@ const BusinessInfo = () => {
   // Update the supported countries when data changes
   useEffect(() => {
     handleCountry();
+    if (launchResponse && data) {
+      let countrySelected = data?.filter(
+        (country) => country.countryISO === launchResponse.registrationCountry
+      );
+      setselectedCountry(countrySelected[0]?.countryName);
+    }
   }, [data]);
 
   // Set the selected country's ISO
@@ -193,6 +196,7 @@ const BusinessInfo = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Business Info" />
       </Body>
     </Container>
   );

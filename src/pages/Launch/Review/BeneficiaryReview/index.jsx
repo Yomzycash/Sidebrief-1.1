@@ -19,6 +19,7 @@ import {
 import { useEffect } from 'react'
 import { useState } from 'react'
 import ReviewCard from 'components/cards/ReviewCard'
+import AppFeedback from 'components/AppFeedback'
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -94,7 +95,7 @@ const BeneficiaryReview = () => {
   }
 
   const handleNavigate = () => {
-    navigate('/launch/beneficiary-info')
+    navigate('/launch/beneficiaries-info')
   }
 
   return (
@@ -154,6 +155,7 @@ const BeneficiaryReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
+          <AppFeedback subProject="Beneficiary review" />
         </Body>
       </Container>
     </>

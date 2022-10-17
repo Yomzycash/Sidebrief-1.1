@@ -33,8 +33,8 @@ const BusinessAddressCard = () => {
       <Wrapper>
         <TitleWrapper>
           <Title>Business Address</Title>
-          <EditWrapper>
-            <EditIcon onClick={handleNavigate} />
+          <EditWrapper onClick={handleNavigate}>
+            <EditIcon  />
             <EditText>Edit</EditText>
           </EditWrapper>
         </TitleWrapper>

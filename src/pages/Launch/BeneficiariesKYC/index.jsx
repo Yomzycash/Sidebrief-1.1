@@ -17,6 +17,7 @@ import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 import { convertToLink, isValidFileUploaded } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const BeneficiariesKYC = () => {
   const navigate = useNavigate();
@@ -217,6 +218,7 @@ const BeneficiariesKYC = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Beneficiary KYC" />
       </Body>
     </Container>
   );
