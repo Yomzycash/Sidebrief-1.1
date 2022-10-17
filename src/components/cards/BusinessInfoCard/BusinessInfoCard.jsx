@@ -3,14 +3,52 @@ import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import {
+  useViewBusinessNamesMutation,
+  useViewBusinessObjectivesMutation,
+} from 'services/launchService'
+
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { isElement } from 'react-dom/test-utils'
 
 const BusinessInfoCard = () => {
+  const [businessArray, setBusinessArray] = useState([])
+  const [objectiveArray, setObjectiveArray] = useState([])
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
-  console.log(LaunchApplicationInfo)
+  // console.log(LaunchApplicationInfo)
   let navigate = useNavigate()
   const handleNavigate = () => {
-    navigate('/launch/address')
+    navigate('/launch/business-info')
   }
+  const LaunchInfo = useSelector((store) => store.LaunchReducer)
+  const { launchResponse } = LaunchInfo
+  const [viewBusinessNames] = useViewBusinessNamesMutation()
+  const [viewBusinessObjects] = useViewBusinessObjectivesMutation()
+  const handleViewBusinessNames = async () => {
+    let responseData = await viewBusinessNames(launchResponse)
+    // console.log(responseData)
+    let responseArr = Object.values(responseData.data.businessNames)
+    setBusinessArray(responseArr)
+  }
+
+  const handleViewBusinessObject = async () => {
+    let responseData = await viewBusinessObjects(launchResponse)
+    console.log(responseData.data.businessObjects)
+    let responseArr = Object.values(responseData.data.businessObjects)
+    console.log(responseArr)
+    let filteredResponseArr = responseArr.filter(
+      (element) => element !== 'null',
+    )
+
+    console.log(filteredResponseArr)
+    setObjectiveArray(filteredResponseArr)
+  }
+  useEffect(() => {
+    handleViewBusinessNames()
+    handleViewBusinessObject()
+  }, [])
+  //console.log(businessArray)
   return (
     <>
       <Wrapper>
@@ -25,29 +63,25 @@ const BusinessInfoCard = () => {
           <SubContainer>
             <Heading>Business Names in order of preference</Heading>
             <TagContainer>
-              {LaunchApplicationInfo.businessNames.map(
-                (businessName, index) => (
-                  <>
-                    <TagWrapper>
-                      <Tag key={index}> {businessName}</Tag>
-                    </TagWrapper>
-                  </>
-                ),
-              )}
+              {businessArray.map((businessName, index) => (
+                <>
+                  <TagWrapper key={index}>
+                    <Tag> {businessName}</Tag>
+                  </TagWrapper>
+                </>
+              ))}
             </TagContainer>
           </SubContainer>
           <SubContainer>
             <Heading>Business Objectives</Heading>
             <TagContainer>
-              {LaunchApplicationInfo.selectedObjectives.map(
-                (objective, index) => (
-                  <>
-                    <TagWrapper>
-                      <Tag key={index}> {objective}</Tag>
-                    </TagWrapper>
-                  </>
-                ),
-              )}
+              {objectiveArray.map((objective, index) => (
+                <>
+                  <TagWrapper>
+                    <Tag key={index}> {objective}</Tag>
+                  </TagWrapper>
+                </>
+              ))}
             </TagContainer>
           </SubContainer>
         </LowerContainer>

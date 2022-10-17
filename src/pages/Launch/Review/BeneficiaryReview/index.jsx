@@ -11,7 +11,14 @@ import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
 import { store } from 'redux/Store'
 import toast from 'react-hot-toast'
 import { setCheckoutProgress } from 'redux/Slices'
-import { useSubmitLaunchMutation } from 'services/launchService'
+import {
+  useSubmitLaunchMutation,
+  useViewBeneficialsKYCMutation,
+  useViewBeneficiariesMutation,
+} from 'services/launchService'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import ReviewCard from 'components/cards/ReviewCard'
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -19,13 +26,55 @@ const BeneficiaryReview = () => {
     borderBottom: '4px solid #00A2D4',
     borderRadius: 0,
   }
+  const [beneficialArray, setBeneficialArray] = useState([])
+  const [beneficialKycArray, setBeneficialKycArray] = useState([])
+  const [mergedBeneficialKycArray, setMergedBeneficialKycArray] = useState([])
+
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
   const navigate = useNavigate()
   const [submitLaunch] = useSubmitLaunchMutation()
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode,
   )
-  console.log(generatedLaunchCode)
+  //console.log(generatedLaunchCode)
+  const launchResponse = useSelector(
+    (store) => store.LaunchReducer.launchResponse,
+  )
+  // console.log(launchResponse)
+  const [viewBeneficials] = useViewBeneficiariesMutation()
+  const [viewBeneficialKyc] = useViewBeneficialsKYCMutation()
+
+  const handleViewBeneficial = async () => {
+    let responseData = await viewBeneficials(launchResponse)
+    //console.log(responseData)
+    setBeneficialArray(responseData.data.businessBeneficialOwners)
+  }
+  const handleViewBeneficialKyc = async () => {
+    let responseData = await viewBeneficialKyc(launchResponse)
+    console.log(responseData)
+    setBeneficialKycArray(responseData.data.beneficialOwnersKYC)
+  }
+  console.log(beneficialArray)
+  console.log(beneficialKycArray)
+
+  useEffect(() => {
+    handleViewBeneficial()
+    handleViewBeneficialKyc()
+  }, [])
+  useEffect(() => {
+    const mergedData = []
+    beneficialArray.forEach((beneficial) => {
+      beneficialKycArray.forEach((kyc) => {
+        if (beneficial.beneficialOwnerCode === kyc.beneficialOwnerCode) {
+          let merged = { ...beneficial, ...kyc }
+          mergedData.push(merged)
+        }
+      })
+    })
+    setMergedBeneficialKycArray(mergedData)
+  }, [beneficialArray.length, beneficialKycArray.length])
+  console.log(mergedBeneficialKycArray)
+
   const handleNext = async () => {
     const requiredData = {
       launchCode: generatedLaunchCode,
@@ -77,20 +126,25 @@ const BeneficiaryReview = () => {
           </ContentWrapper>
 
           <CardWrapper>
-            {LaunchApplicationInfo.beneficiariesLaunchInfo.map(
-              (beneficiary, index) => (
-                <LaunchSummaryCard
-                  key={index}
-                  number={index + 1}
-                  name={beneficiary?.beneficialOwnerName}
-                  email={beneficiary?.beneficialOwnerEmail}
-                  phone={beneficiary?.beneficialOwnerPhone}
-                  occupation={beneficiary.beneficialOwnerOccupation}
-                  stake={beneficiary.beneficialOwnershipStake}
-                  icon
-                />
-              ),
-            )}
+            {mergedBeneficialKycArray.map((beneficiary, index) => (
+              <ReviewCard
+                key={index}
+                number={index + 1}
+                name={beneficiary?.beneficialOwnerName}
+                email={beneficiary?.beneficialOwnerEmail}
+                phone={beneficiary?.beneficialOwnerPhone}
+                occupation={beneficiary?.beneficialOwnerOccupation}
+                stake={beneficiary?.beneficialOwnershipStake}
+                icon
+                government={
+                  beneficiary.documentLink
+                    ? beneficiary.documentLink
+                    : 'no document'
+                }
+                proof
+                passport
+              />
+            ))}
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController
