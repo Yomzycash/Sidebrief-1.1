@@ -106,10 +106,10 @@ const RewardDetails = (props) => {
           {" "}
           <div>{selectedReward?.rewardDescription}</div>
         </TextDes>
-        <VisitLink to="">
+        {/* <VisitLink to="">
           <TextLink>Visit Guide's website</TextLink>
           <HiArrowNarrowRight />
-        </VisitLink>
+        </VisitLink> */}
       </RewardDescription>
       <DashboardSection
         title="Rewards"
