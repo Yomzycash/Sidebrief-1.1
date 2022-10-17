@@ -25,9 +25,6 @@ const BusinessInformationReview = () => {
     navigate(-1);
   };
 
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  console.log(LaunchApplicationInfo.businessAddress);
-
   // Set the progress of the application
   useEffect(() => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page

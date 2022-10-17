@@ -105,7 +105,7 @@ const BusinessInfo = () => {
       let countrySelected = data?.filter(
         (country) => country.countryISO === launchResponse.registrationCountry
       );
-      setselectedCountry(countrySelected[0].countryName);
+      setselectedCountry(countrySelected[0]?.countryName);
     }
   }, [data]);
 

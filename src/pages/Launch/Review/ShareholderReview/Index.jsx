@@ -1,5 +1,5 @@
 import { CheckoutController, CheckoutSection } from "containers";
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
@@ -10,6 +10,13 @@ import { useSelector } from "react-redux";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import ReviewCard from "components/cards/ReviewCard";
+import {
+  useViewMembersKYCMutation,
+  useViewMembersMutation,
+  useViewShareholdersMutation,
+} from "services/launchService";
+import { useEffect } from "react";
 import AppFeedback from "components/AppFeedback";
 const ShareholderReview = () => {
   const ActiveStyles = {
@@ -17,8 +24,12 @@ const ShareholderReview = () => {
     borderBottom: "4px solid #00A2D4",
     borderRadius: 0,
   };
+  const [shareholderInfo, setShareholderInfo] = useState([]);
+  const [shareholdersKycInfo, setShareholdersKycInfo] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [mergedResponse, setMergedResponse] = useState([]);
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  console.log(LaunchApplicationInfo);
+  //console.log(LaunchApplicationInfo)
 
   const navigate = useNavigate();
   const handleNext = () => {
@@ -28,9 +39,72 @@ const ShareholderReview = () => {
   const handlePrev = () => {
     navigate(-1);
   };
-  const handleNavigate = () => {
-    navigate("/launch/shareholder-info");
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
+  const { launchResponse } = LaunchInfo;
+  const [viewShareholders] = useViewShareholdersMutation();
+  const [viewShareholdersKyc] = useViewMembersKYCMutation();
+  const [viewMembers] = useViewMembersMutation();
+
+  const handleViewShareholders = async () => {
+    let responseData = await viewShareholders(launchResponse);
+    //    console.log(responseData)
+    setShareholderInfo(Object.values(responseData.data.businessShareholders));
   };
+  const handleViewShareholdersKyc = async () => {
+    let responseData = await viewShareholdersKyc(launchResponse);
+    // console.log(responseData)
+    setShareholdersKycInfo(Object.values(responseData.data.businessMembersKYC));
+  };
+  const handleMembers = async () => {
+    let responseData = await viewMembers(launchResponse);
+    // console.log(responseData.data.businessMembers)
+    setMembers(responseData.data.businessMembers);
+  };
+  // console.log(shareholderInfo)
+  // console.log(shareholdersKycInfo)
+  // console.log(members)
+
+  // console.log(mergedResponse)
+
+  // //merging the last endpoint
+  // const mergedKycData = []
+  // mergedData.forEach((shareholder) => {
+  //   shareholdersKycInfo.forEach((kyc) => {
+  //     if (kyc.memberCode === mergedData.memberCode) {
+  //       let merged = { ...shareholder, ...kyc }
+  //       mergedKycData.push(merged)
+  //     }
+  //   })
+  // })
+  // console.log(mergedKycData)
+
+  const handleNavigate = () => {
+    navigate("/launch/shareholders-info");
+  };
+  useEffect(() => {
+    handleViewShareholders();
+    handleViewShareholdersKyc();
+    handleMembers();
+  }, []);
+
+  useEffect(() => {
+    const mergedData = [];
+    members.forEach((member) => {
+      shareholderInfo.forEach((shareholder) => {
+        let merged = {};
+        if (shareholder.memberCode === member.memberCode) {
+          merged = { ...merged, ...shareholder, ...member };
+          let kycDocs = shareholdersKycInfo.filter(
+            (element) => element.memberCode === shareholder.memberCode
+          );
+          merged = { ...merged, documents: [...kycDocs] };
+          mergedData.push(merged);
+        }
+        console.log(mergedData);
+        setMergedResponse(mergedData);
+      });
+    });
+  }, [shareholderInfo.length, shareholdersKycInfo.length]);
 
   return (
     <>
@@ -61,20 +135,21 @@ const ShareholderReview = () => {
           </ContentWrapper>
 
           <CardWrapper>
-            {LaunchApplicationInfo.shareHoldersLaunchInfo.map(
-              (shareholder, index) => (
-                <LaunchSummaryCard
-                  key={index}
-                  number={index + 1}
-                  name={shareholder?.memberName}
-                  shares={shareholder?.shareholderOwnershipType}
-                  email={shareholder?.memberEmail}
-                  phone={shareholder?.memberPhone}
-                  sharesPercentage={shareholder?.shareholderOwnershipPercentage}
-                  icon
-                />
-              )
-            )}{" "}
+            {mergedResponse.map((shareholder, index) => (
+              <ReviewCard
+                key={index}
+                number={index + 1}
+                name={shareholder?.memberName}
+                shares={shareholder?.shareholderOwnershipType}
+                email={shareholder?.memberEmail}
+                phone={shareholder?.memberPhone}
+                sharesPercentage={shareholder?.shareholderOwnershipPercentage}
+                icon
+                government
+                proof
+                passport
+              />
+            ))}{" "}
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController

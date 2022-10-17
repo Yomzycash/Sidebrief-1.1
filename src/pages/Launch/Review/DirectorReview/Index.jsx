@@ -1,5 +1,5 @@
 import { CheckoutController, CheckoutSection } from "containers";
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
@@ -10,6 +10,11 @@ import { useSelector } from "react-redux";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import {
+  useViewDirectorsMutation,
+  useViewMembersKYCMutation,
+  useViewMembersMutation,
+} from "services/launchService";
 import AppFeedback from "components/AppFeedback";
 
 const DirectorReview = () => {
@@ -19,6 +24,31 @@ const DirectorReview = () => {
     borderRadius: 0,
   };
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  const launchResponse = useSelector(
+    (store) => store.LaunchReducer.launchResponse
+  );
+  // console.log(launchResponse)
+  const [viewDirectors] = useViewDirectorsMutation();
+  const [viewMembers] = useViewMembersMutation();
+  const [viewDirectorsKyc] = useViewMembersKYCMutation();
+
+  const handleViewMembers = async () => {
+    let responseData = await viewMembers(launchResponse);
+    console.log(responseData);
+  };
+  const handleViewDirectors = async () => {
+    let responseData = await viewDirectors(launchResponse);
+    console.log(responseData);
+  };
+  const handleViewDirectorsKyc = async () => {
+    let responseData = await viewDirectorsKyc(launchResponse);
+    console.log(responseData);
+  };
+  useEffect(() => {
+    handleViewMembers();
+    handleViewDirectors();
+    handleViewDirectorsKyc();
+  }, []);
   const navigate = useNavigate();
   const handleNext = () => {
     navigate("/launch/review-beneficiary");
@@ -28,7 +58,7 @@ const DirectorReview = () => {
   };
 
   const handleNavigate = () => {
-    navigate("/launch/director-info");
+    navigate("/launch/directors-info");
   };
 
   return (
