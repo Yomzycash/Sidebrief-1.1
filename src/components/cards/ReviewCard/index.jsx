@@ -55,7 +55,7 @@ const ReviewCard = ({
       <div>{email}</div>
       <div>{phone}</div>
 
-      <PdfContainer>
+      {/* <PdfContainer>
         <PdfWrapper>
           <TextWrapper>{government}</TextWrapper>
         </PdfWrapper>
@@ -65,7 +65,7 @@ const ReviewCard = ({
         <PdfWrapper>
           <TextWrapper>{passport}</TextWrapper>
         </PdfWrapper>
-      </PdfContainer>
+      </PdfContainer> */}
     </Container>
   )
 }
