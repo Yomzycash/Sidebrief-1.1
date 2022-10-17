@@ -127,7 +127,7 @@ const BeneficiaryReview = () => {
           </ContentWrapper>
 
           <CardWrapper>
-            {mergedBeneficialKycArray.map((beneficiary, index) => (
+            {beneficialArray.map((beneficiary, index) => (
               <ReviewCard
                 key={index}
                 number={index + 1}
@@ -137,11 +137,7 @@ const BeneficiaryReview = () => {
                 occupation={beneficiary?.beneficialOwnerOccupation}
                 stake={beneficiary?.beneficialOwnershipStake}
                 icon
-                government={
-                  beneficiary.documentLink
-                    ? beneficiary.documentLink
-                    : 'no document'
-                }
+                government
                 proof
                 passport
               />
