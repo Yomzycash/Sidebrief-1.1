@@ -12,6 +12,7 @@ import { store } from "redux/Store";
 import toast from "react-hot-toast";
 import { setCheckoutProgress } from "redux/Slices";
 import { useSubmitLaunchMutation } from "services/launchService";
+import AppFeedback from "components/AppFeedback";
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -100,6 +101,7 @@ const BeneficiaryReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
+          <AppFeedback subProject="Beneficiary review" />
         </Body>
       </Container>
     </>

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import AppFeedback from "components/AppFeedback";
 const ShareholderReview = () => {
   const ActiveStyles = {
     color: "#151717",
@@ -83,6 +84,7 @@ const ShareholderReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
+          <AppFeedback subProject="Shareholder review" />
         </Body>
       </Container>
     </>

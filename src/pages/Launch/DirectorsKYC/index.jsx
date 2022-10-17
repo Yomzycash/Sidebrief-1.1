@@ -22,6 +22,7 @@ import {
   mergeInfo,
 } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const DirectorKYC = () => {
   //geting the information from the store
@@ -233,6 +234,7 @@ const DirectorKYC = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Directors KYC" />
       </Body>
     </Container>
   );

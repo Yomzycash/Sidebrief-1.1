@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import AppFeedback from "components/AppFeedback";
 
 const DirectorReview = () => {
   const ActiveStyles = {
@@ -81,6 +82,7 @@ const DirectorReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
+          <AppFeedback subProject="Director review" />
         </Body>
       </Container>
     </>

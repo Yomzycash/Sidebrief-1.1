@@ -10,6 +10,7 @@ import BusinessAddressCard from "components/cards/BusinessAddressCard/BusinessAd
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import AppFeedback from "components/AppFeedback";
 const BusinessInformationReview = () => {
   const ActiveStyles = {
     color: "#151717",
@@ -65,6 +66,7 @@ const BusinessInformationReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
+          <AppFeedback subProject="Business info" />
         </Body>
       </Container>
     </>

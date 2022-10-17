@@ -1,14 +1,15 @@
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import Success from 'containers/Confirmation/Success'
-import React from 'react'
-import styled from 'styled-components'
-import Failed from 'asset/svg/Failed.svg'
-import { useNavigate } from 'react-router-dom'
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import Success from "containers/Confirmation/Success";
+import React from "react";
+import styled from "styled-components";
+import Failed from "asset/svg/Failed.svg";
+import { useNavigate } from "react-router-dom";
+import AppFeedback from "components/AppFeedback";
 const FailedPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate('')
-  }
+    navigate("");
+  };
 
   return (
     <>
@@ -23,12 +24,13 @@ const FailedPage = () => {
           onClick={handleNavigate}
           lastText
         />
+        <AppFeedback subProject="Failed page" />
       </Body>
     </>
-  )
-}
+  );
+};
 
-export default FailedPage
+export default FailedPage;
 const Body = styled.div`
   position: fixed;
   bottom: 0px;
@@ -38,4 +40,4 @@ const Body = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;

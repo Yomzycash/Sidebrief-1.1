@@ -1,14 +1,15 @@
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import Success from 'containers/Confirmation/Success'
-import React from 'react'
-import styled from 'styled-components'
-import SuccessImage from 'asset/svg/SuccessImage.svg'
-import { useNavigate } from 'react-router-dom'
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import Success from "containers/Confirmation/Success";
+import React from "react";
+import styled from "styled-components";
+import SuccessImage from "asset/svg/SuccessImage.svg";
+import { useNavigate } from "react-router-dom";
+import AppFeedback from "components/AppFeedback";
 const SuccessPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate('/launch/address')
-  }
+    navigate("/launch/address");
+  };
 
   return (
     <>
@@ -20,12 +21,13 @@ const SuccessPage = () => {
           buttonTitle="continue"
           onClick={handleNavigate}
         />
+        <AppFeedback subProject="Payment success" />
       </Body>
     </>
-  )
-}
+  );
+};
 
-export default SuccessPage
+export default SuccessPage;
 const Body = styled.div`
   position: fixed;
   bottom: 0px;
@@ -35,4 +37,4 @@ const Body = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`
+`;

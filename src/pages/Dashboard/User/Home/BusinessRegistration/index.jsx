@@ -19,8 +19,9 @@ import {
   useGetUserSubmittedQuery,
 } from "services/launchService";
 import { store } from "redux/Store";
-import { setGeneratedLaunchCode } from "redux/Slices";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { compareDesc } from "date-fns";
+import AppFeedback from "components/AppFeedback";
 
 const BusinessRegistration = (props) => {
   // Get user data information
@@ -71,6 +72,7 @@ const BusinessRegistration = (props) => {
 
   const handleLaunch = () => {
     store.dispatch(setGeneratedLaunchCode(""));
+    store.dispatch(setLaunchResponse({}));
     localStorage.removeItem("launchInfo");
     localStorage.removeItem("countryISO");
     navigate("/launch");
@@ -154,6 +156,7 @@ const BusinessRegistration = (props) => {
               ))}
             </ScrollBox>
           </DashboardSection>
+          <AppFeedback subProject="Dashboard" />
         </Main>
       </Body>
     </Container>

@@ -14,6 +14,7 @@ import { saveUserInfo, saveUserToken } from "redux/Slices";
 import { genderOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
 import { ThreeDots } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -71,6 +72,7 @@ const UserRegistration = () => {
         "userInfo",
         JSON.stringify({ ...data, newUser: true })
       );
+      localStorage.setItem("userEmail", formData.email);
       console.log(data.message);
       toast.success(data.message);
       navigate(`${location.pathname}/success`);
@@ -208,6 +210,7 @@ const UserRegistration = () => {
             />
           </Bottom>
         </Form>
+        <AppFeedback subProject="User registration" />
       </Registration>
     </AuthLayout>
   );

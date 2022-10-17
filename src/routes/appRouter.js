@@ -54,13 +54,11 @@ const BusinessRegistration = lazy(() =>
 );
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
-const BusinessForm = lazy(() => import("pages/Launch/BusinessForm"));
 const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
 const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
 const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
 const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
 const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
-const ReviewInformation = lazy(() => import("pages/Launch/Review"));
 const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
 const AllRewards = lazy(() =>
   import("pages/Dashboard/User/Rewards/AllRewards")
@@ -97,7 +95,6 @@ const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
   const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
-  console.log(launchData);
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;

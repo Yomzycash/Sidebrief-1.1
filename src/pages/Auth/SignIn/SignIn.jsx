@@ -67,6 +67,7 @@ const SignIn = () => {
     if (data) {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userEmail", formData.email);
       console.log(data);
       toast.success(data.message);
       navigate("/dashboard");
