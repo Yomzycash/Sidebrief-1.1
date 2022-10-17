@@ -22,16 +22,6 @@ const DropDown = ({
   launch,
   ...rest
 }) => {
-  // const handleChange = (e) => {
-  //   let selectedValue = e.target.value;
-  //   onSelectedChange(selectedValue);
-  //   console.log(selectedValue);
-  // };
-  // let options = OptionValues.map((data) => (
-  //   <option key={data.id} value={data.value}>
-  //     {data.value}
-  //   </option>
-  // ));
   const selectStyle = {
     background: "red",
     container: (base, state) => ({
@@ -65,6 +55,7 @@ const DropDown = ({
     }),
     option: (provided, state) => ({
       ...provided,
+      cursor: "pointer",
       padding: 20,
       fontSize: launch && 14,
     }),
@@ -72,6 +63,7 @@ const DropDown = ({
   return (
     <Wrapper
       // className={containerStyle}
+      key="DropDown"
       style={containerStyle && containerStyle}
       initial={{ y: 10, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}

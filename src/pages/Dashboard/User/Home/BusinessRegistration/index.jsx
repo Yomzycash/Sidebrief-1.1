@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Body, Main, Recently } from "./styled";
 import TabNavBar from "components/TabNavBar/TabNavBar";
 import {
@@ -9,27 +9,61 @@ import {
 } from "components/cards";
 import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import "react-multi-carousel/lib/styles.css";
 import { useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
+import { useSelector } from "react-redux";
+import { useGetAllRewardsQuery } from "services/RewardService";
+import {
+  useGetUserDraftQuery,
+  useGetUserSubmittedQuery,
+} from "services/launchService";
+import { store } from "redux/Store";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
+import { compareDesc } from "date-fns";
+import AppFeedback from "components/AppFeedback";
 
 const BusinessRegistration = (props) => {
+  // Get user data information
+  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  let firstName_raw = userInfo?.first_name;
+  let firstName =
+    firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
+  let newUser = userInfo?.newUser;
+
+  const allRewardsResponse = useGetAllRewardsQuery();
+  const drafts = useGetUserDraftQuery();
+  const submitted = useGetUserSubmittedQuery();
+
+  const handleRewardClick = (rewardID) => {
+    navigate(`/dashboard/rewards/${rewardID}`);
+  };
+
+  let allLaunch = [];
+
+  if (drafts.isSuccess && submitted.isSuccess) {
+    allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+    console.log(allLaunch);
+    allLaunch.sort((launch1, launch2) =>
+      compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
+    );
+  }
+
   const analytics = {
     label: "Registrations",
     status1: {
       text: "Completed",
-      total: 5,
+      total: 0,
       color: "#00A2D4",
     },
     status2: {
       text: "Pending",
-      total: 1,
+      total: submitted.isSuccess ? submitted?.currentData.length : 0,
       color: " #55D7FF",
     },
     status3: {
-      text: "Approval",
-      total: 1,
+      text: "In Draft",
+      total: drafts.isSuccess ? drafts?.currentData.length : 0,
       color: " #CCF3FF",
     },
   };
@@ -37,6 +71,10 @@ const BusinessRegistration = (props) => {
   const navigate = useNavigate();
 
   const handleLaunch = () => {
+    store.dispatch(setGeneratedLaunchCode(""));
+    store.dispatch(setLaunchResponse({}));
+    localStorage.removeItem("launchInfo");
+    localStorage.removeItem("countryISO");
     navigate("/launch");
   };
 
@@ -46,7 +84,11 @@ const BusinessRegistration = (props) => {
       <Body>
         <Main>
           <DashboardSection
-            title="Welcome back, Ayomide"
+            title={
+              newUser
+                ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
+                : `Welcome back${firstName ? ", " + firstName : ""}`
+            }
             BigTitle="true"
             nowrap
           >
@@ -70,23 +112,26 @@ const BusinessRegistration = (props) => {
               icon: <IoArrowForward />,
             }}
           >
-            <BusinessesChartCard analytics={analytics} user />
+            <BusinessesChartCard
+              analytics={analytics}
+              user
+              loading={submitted.isLoading || drafts.isLoading}
+            />
             <Recently>
-              <StatusCard
-                name="Ayomide Construction and Husband's - LLC"
-                status="completed"
-                ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-              />
-              <StatusCard
-                name="Ayomide Construction and Husband's - LLC"
-                status="awaiting"
-                ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-              />
-              <StatusCard
-                name="Ayomide Construction and Husband's - LLC"
-                status="progress"
-                ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-              />
+              {allLaunch.slice(0, 3).map((el) => {
+                return (
+                  <StatusCard
+                    key={el.launchCode}
+                    name={`${
+                      el.businessNames?.businessName1
+                        ? el.businessNames.businessName1
+                        : "No name"
+                    } - ${el.registrationType}`}
+                    status="draft"
+                    ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
+                  />
+                );
+              })}
             </Recently>
           </DashboardSection>
           <DashboardSection
@@ -95,48 +140,23 @@ const BusinessRegistration = (props) => {
             carousel
             link={{
               text: "View all",
-              to: "/rewards",
+              to: "/dashboard/rewards/all-rewards",
               icon: <IoArrowForward />,
             }}
           >
             <ScrollBox>
-              <RewardCard
-                image={lendhaLogo}
-                title="Lendha Africa"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={SterlingLogo}
-                title="Sterling Bank PLC"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={GladeLogo}
-                title="Glade"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={OkraLogo}
-                title="Okra"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={SterlingLogo}
-                title="Sterling Bank PLC"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={GladeLogo}
-                title="Glade"
-                body="Get credit to register your business & pay later."
-              />
-              <RewardCard
-                image={OkraLogo}
-                title="Okra"
-                body="Get credit to register your business & pay later."
-              />
+              {allRewardsResponse.data?.slice(0, 8).map((reward, index) => (
+                <RewardCard
+                  key={index}
+                  title={reward?.rewardPartner}
+                  body={reward?.rewardName}
+                  image={reward?.rewardImage}
+                  action={() => handleRewardClick(reward.rewardID)}
+                />
+              ))}
             </ScrollBox>
           </DashboardSection>
+          <AppFeedback subProject="Dashboard" />
         </Main>
       </Body>
     </Container>

@@ -1,9 +1,27 @@
 import React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { HeadText, BodyText, Checkbox } from "./styles";
-import { ObjectiveIndicator } from "components/Indicators";
+import { TypeIndicator } from "components/Indicators";
 
 const ColumnHelper = createColumnHelper();
+
+export const businessTypes = [
+	{
+		name: "c-corporation",
+		code: "CCORP",
+		color: "#00D448",
+	},
+	{
+		name: "limited liablity company",
+		code: "LLC",
+		color: "#00A2D4",
+	},
+	{
+		name: "public liablity company",
+		code: "PLC",
+		color: "#D400CC",
+	},
+];
 
 export const columns = [
 	ColumnHelper.display({
@@ -33,11 +51,13 @@ export const columns = [
 	}),
 	ColumnHelper.accessor("type", {
 		header: () => <HeadText>Type</HeadText>,
-		cell: (info) => <BodyText>{info.getValue()}</BodyText>,
-	}),
-	ColumnHelper.accessor("objective", {
-		header: () => <HeadText>Objective</HeadText>,
-		cell: (info) => <ObjectiveIndicator objective={info.getValue()} />,
+		cell: (info) => {
+			const typeName = info.getValue();
+			const color = businessTypes.find(
+				(type) => type.name === typeName
+			).color;
+			return <TypeIndicator color={color} type={typeName} />;
+		},
 	}),
 	ColumnHelper.accessor("country", {
 		header: () => <HeadText>Country</HeadText>,

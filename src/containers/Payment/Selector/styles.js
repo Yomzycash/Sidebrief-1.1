@@ -9,11 +9,22 @@ export const Container = styled.div`
 
 export const PayProvide = styled.button`
   flex: 1;
-  height: 80px;
+  max-height: 80px;
+
   background: #fff;
   border: none;
+  cursor: pointer;
+
+  ${({ active }) => (active ? ` background: #edf1f7;` : null)}
 
   &:hover {
     background: #edf1f7;
+  }
+
+  img {
+    height: 100%;
+    max-width: 150px;
+    width: 100%;
+    object-fit: contain;
   }
 `;

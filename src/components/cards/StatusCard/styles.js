@@ -9,7 +9,7 @@ export const Container = styled.div`
   padding: 10px 24px;
   display: flex;
   flex-flow: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   transition: 0.3s all ease;
 `;

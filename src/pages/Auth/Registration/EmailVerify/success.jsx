@@ -6,7 +6,7 @@ const EmailSuccess = () => {
     <Success
       title={"Account Creation Success"}
       paragraph={
-        "Your Sidebrief account has been successfully created. We are redirecting you to your dashboard."
+        "Your Sidebrief account has been successfully created. We are redirecting you to your dashboard in"
       }
     />
   );

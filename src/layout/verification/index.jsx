@@ -6,23 +6,74 @@ import OtpInput from "react-otp-input";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useSendVerificationMutation,
+  useValidateResetCodeMutation,
+} from "services/authService";
+import toast from "react-hot-toast";
+import { SecondaryText } from "components/text/text";
 
 const Verify = ({ title, paragraph }) => {
   const [otpcode, setOtpCode] = useState("");
+  const [validateResetCode] = useValidateResetCodeMutation();
+  const [sendVerification] = useSendVerificationMutation();
 
   const handleChange = (otp) => {
     setOtpCode(otp);
   };
 
+  const { state } = useLocation();
+  console.log("state is", state);
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (otpcode.length === 6) {
-      navigate(`${location.pathname}/resetpassword`);
-    }
-  }, [otpcode, navigate]);
+  const handleOtpResponse = async () => {
+    const requiredData = {
+      email: state,
+      code: otpcode,
+    };
+    console.log(requiredData);
+    const response = await validateResetCode(requiredData);
+    const resData = response?.data;
+    const error = response?.error;
 
+    console.log(response);
+    if (resData) {
+      console.log(resData);
+      toast.success(resData.message);
+      navigate(`${location.pathname}/resetpassword`, {
+        state: requiredData.email,
+      });
+    } else {
+      console.log(error);
+      toast.error(error.data.message);
+    }
+  };
+
+  useEffect(() => {
+    if (otpcode.length === 5) {
+      handleOtpResponse();
+    }
+  }, [otpcode]);
+
+  const resendVerification = async () => {
+    const data = {
+      email: state,
+    };
+
+    console.log(data);
+    const response = await sendVerification(data);
+    const resData = response?.data;
+    const error = response?.error;
+
+    if (response) {
+      console.log(resData);
+      toast.success(resData.message);
+      // navigate(`${location.pathname}/verifyotp`, { email: data.email });
+    } else {
+      toast.error(error.data.message);
+    }
+  };
   return (
     <>
       <Navbar />
@@ -38,7 +89,7 @@ const Verify = ({ title, paragraph }) => {
         <OtpInput
           value={otpcode}
           onChange={handleChange}
-          numInputs={6}
+          numInputs={5}
           inputStyle={{
             maxWidth: "92px",
             maxHeight: "72px",
@@ -54,14 +105,20 @@ const Verify = ({ title, paragraph }) => {
             minHeight: "30px",
           }}
         />
-        <TextsWithLink
+        <div style={{ display: "flex" }}>
+          <SecondaryText>Didn't get the code?</SecondaryText>
+          <SecondaryText clickColor cursor onClick={resendVerification}>
+            Resend verification
+          </SecondaryText>
+        </div>
+        {/* <TextsWithLink
           text={[
             {
               text: "Didn't get the code? ",
               link: { text: "Resend verification", to: location.pathname },
             },
           ]}
-        />
+        /> */}
       </SuccessWrapper>
     </>
   );

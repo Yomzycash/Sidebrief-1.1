@@ -56,10 +56,12 @@ export const Input = styled.input`
   outline: none;
   font-weight: 400;
   font-size: 16px;
+
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
+
   @media screen and (max-width: 600px) {
     font-size: 14px;
   }
@@ -184,10 +186,11 @@ export const AllWrapper = styled.div`
 `;
 export const TagWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   align-items: center;
   gap: 20px;
   margin-bottom: 8px;
+  min-width: fit-content;
 `;
 export const TagInputWrapper = styled.div`
   width: 100%;
@@ -232,10 +235,29 @@ export const TagInputField = styled.input`
   height: inherit;
   outline: none;
 
-  border: 1px solid #00c3ff;
+  border: 1px solid #edf1f6;
   padding: 10px;
   border-radius: 8px;
+
+  transition: 0.3s all ease;
+
+  &:focus {
+    border: 1px solid #00c3ff;
+  }
 `;
+
+export const TagTop = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+
+  span {
+    font-size: clamp(10px, 1.5rem, 12px);
+    color: red;
+  }
+`;
+
 export const TagLabel = styled.label`
   font-family: "BR Firma";
   font-style: normal;

@@ -17,7 +17,7 @@ export const PrimaryText = styled.h3`
 
 export const SecondaryText = styled.p`
   color: ${(props) => (props.clickColor ? "#00a2d4" : "#4E5152")};
-  font-size: 20px;
+  font-size: clamp(14px, 1.5vw, 18px);
   font-weight: 400;
   text-align: ${(props) => props.align};
   margin-top: ${(props) => props.top};
@@ -26,8 +26,4 @@ export const SecondaryText = styled.p`
   margin-left: ${(props) => props.left};
   width: ${(props) => props.width};
   cursor: ${(props) => props.cursor && "pointer"};
-
-  @media screen and (max-width: 600px) {
-    font-size: 14px;
-  }
 `;

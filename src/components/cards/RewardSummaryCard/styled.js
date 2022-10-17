@@ -9,6 +9,6 @@ export const Container = styled.p`
   background-color: #fafafa;
   border: 1px solid #edf1f7;
   border-radius: 12px;
-  padding-inline: 24px;
+  padding: 10px 16px;
   width: max-content;
 `;

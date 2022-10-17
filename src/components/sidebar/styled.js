@@ -50,8 +50,7 @@ export const SidebarContentItemIcon = styled.div`
 `;
 
 export const LogoutWrapper = styled.div`
-  position: absolute;
-  bottom: 40px;
+  margin-top: 200px;
   margin-left: 15px;
   display: flex;
   :hover {
@@ -62,4 +61,29 @@ export const LogoutWrapper = styled.div`
 export const LogoutText = styled.div`
   color: #ed4e3a;
   margin-left: 8px;
+`;
+
+export const SideLinkWrapper = styled.div`
+  > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.2s all ease;
+    height: max-content;
+
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+
+    color: #242627;
+    white-space: nowrap;
+    border: none;
+  }
+  :hover {
+    > a {
+      background: rgba(0, 162, 212, 0.1);
+      color: #00a2d4;
+    }
+  }
 `;

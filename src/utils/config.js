@@ -9,6 +9,11 @@ import {
 } from "react-icons/hi";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 
+import pdf from "../asset/images/pdf.png";
+import png from "../asset/images/png.png";
+import jpg from "../asset/images/jpg.png";
+import doc from "../asset/images/doc.png";
+
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -46,6 +51,12 @@ export const shareTypeOptions = [
   { value: "Common Shares", label: "Common Shares" },
 ];
 
+export const directorRoleOptions = [
+  { value: "Executive", label: "Executive" },
+  { value: "Non executive", label: "Non executive" },
+  { value: "Observer", label: "Observer" },
+];
+
 export const partnerRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
   last_name: yup.string().required("Last name is a required field"),
@@ -65,24 +76,20 @@ export const resellerRegistrationSchema = yup.object().shape({
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
-// export const checkInfoSchema = yup.object().shape({
-//   full_name: yup.string().required("Full name is a required field"),
-//   phone: yup.string().required("Phone number is a required field"),
-//   email: yup.string().email("Enter a valid email address").required(),
-//   share_percentage: yup
-//     .number("Must be a number")
-//     .min(0.00001)
-//     .max(100)
-//     .required("Share percentage is from 1% to 100%"),
-//   share_type: yup.string().required("Share type is a required field"),
-//   director_role: yup.string().required("Director's role is required"),
-//   stake: yup
-//     .number()
-//     .min(0.00001)
-//     .max(100)
-//     .required("Stake percentage is required"),
-//   occupation: yup.string().required("Occupation is required"),
-// });
+
+export const fileFormSchema = yup.object().shape({
+  file1: yup
+    .mixed()
+    .test("file", "You need to provide a file", (file) => {
+      if (file.length > 0) {
+        return true;
+      }
+      return false;
+    })
+    .test("file", "The file is too large", (file) => {
+      return file && file.size > 2000000;
+    }),
+});
 
 export const checkInfoShareholderSchema = yup.object().shape({
   full_name: yup.string().required("Full name is a required field"),
@@ -137,39 +144,33 @@ export const sidebarLink = [
   },
   {
     id: 2,
-    title: "Application",
-    icon: HiDocumentText,
-    path: "/dashboard",
+    title: "Businesses",
+    icon: HiBriefcase,
+    path: "/dashboard/businesses",
   },
   {
     id: 3,
-    title: "Business",
-    icon: HiBriefcase,
-    path: "/dashboard",
+    title: "Bank Accounts",
+    icon: HiOutlineLibrary,
+    path: "/dashboard/bank-account",
   },
   {
     id: 4,
-    title: "Bank Accounts",
-    icon: HiOutlineLibrary,
-    path: "/dashboard",
-  },
-  {
-    id: 5,
     title: "Rewards",
     icon: HiOutlineSparkles,
     path: "/dashboard/rewards/all-rewards",
   },
   {
-    id: 6,
+    id: 5,
     title: "Resources",
     icon: HiDocumentText,
-    path: "",
+    path: "/dashboard/resources",
   },
   {
-    id: 7,
+    id: 6,
     title: "Settings",
     icon: HiCog,
-    path: "/dashboard",
+    path: "/dashboard/settings",
   },
 ];
 
@@ -705,5 +706,53 @@ export const allRewards = [
     body: "Get 25% off you first year of using Landha Africa",
     alt: "Lendha",
     image: SterlingLogo,
+  },
+];
+export const ReviewTab = [
+  {
+    id: 1,
+    title: "Business Information",
+    path: "/launch/review",
+  },
+  {
+    id: 2,
+    title: "Shareholder Information",
+    path: "/launch/review-shareholder",
+  },
+  {
+    id: 3,
+    title: "Director Information",
+    path: "/launch/review-director",
+  },
+  {
+    id: 4,
+    title: "Beneficiary Information",
+    path: "/launch/review-beneficiary",
+  },
+];
+export const imageTypeImage = [
+  {
+    id: "1",
+    name: "pdf",
+    type: "application/pdf",
+    image: pdf,
+  },
+  {
+    id: "2",
+    name: "doc",
+    type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    image: doc,
+  },
+  {
+    id: "3",
+    name: "png",
+    type: "image/png",
+    image: png,
+  },
+  {
+    id: "4",
+    name: "jpeg",
+    type: "image/jpeg",
+    image: jpg,
   },
 ];

@@ -12,9 +12,11 @@ const HeadText = ({
   titlealign,
   bodyalign,
   gap,
+  time,
 }) => {
   return (
     <HeadTextCont
+      key="HeadText"
       align={align}
       justify={justify}
       margintop={margintop}
@@ -26,7 +28,10 @@ const HeadText = ({
       transition={{ duration: 0.5 }}
     >
       <Title titlealign={titlealign}> {title}</Title>
-      <Body bodyalign={bodyalign}>{body}</Body>
+      <Body bodyalign={bodyalign}>
+        {body}
+        <span> {time}</span>
+      </Body>
     </HeadTextCont>
   );
 };
@@ -56,4 +61,7 @@ const Body = styled.div`
   color: var(--PrimaryBlack);
   font-weight: 400;
   /* max-width: 550px; */
+  span {
+    color: #00a2d4;
+  }
 `;

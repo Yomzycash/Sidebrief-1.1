@@ -3,24 +3,46 @@ import { CheckoutController } from "containers";
 import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCheckoutProgress, setDirectorsLaunchInfo } from "redux/Slices";
 import { store } from "redux/Store";
-import { AddMore, Body, Bottom, Container } from "../styled";
+import {
+  AddMore,
+  Body,
+  Bottom,
+  Container,
+  Loading,
+  modalStyle,
+} from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
-import { Dialog } from "@mui/material";
+import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import { checkInfoDirectorSchema } from "utils/config";
 import {
   useAddDirectorMutation,
+  useAddMemberMutation,
   useDeleteDirectorMutation,
   useDeleteMemberMutation,
   useUpdateDirectorMutation,
   useUpdateMemberMutation,
+  useViewDirectorsMutation,
+  useViewMembersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
+import {
+  directorAdd,
+  directorDelete,
+  directorUpdate,
+  mergeInfo,
+} from "./actions";
+import {
+  memberAdd,
+  memberUpdate,
+} from "containers/Checkout/InfoSection/actions";
+import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -29,26 +51,29 @@ const DirectorsInfo = () => {
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
   const [useSidebriefDirectors, setUseSidebriefDirectors] = useState(false);
+  const [directorsInfo, setDirectorsInfo] = useState([]);
 
   // Endpont hooks
   const [addDirector, addState] = useAddDirectorMutation();
   const [deleteDirector, deleteState] = useDeleteDirectorMutation();
   const [updateDirector, updateState] = useUpdateDirectorMutation();
+  const [addMember, memberAddState] = useAddMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember] = useDeleteMemberMutation();
+  const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
 
   // This gets the directors information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { directorsLaunchInfo, shareholdersLaunchInfo } = LaunchApplicationInfo;
+  const { directorsLaunchInfo, shareholdersLaunchInfo, launchResponse } =
+    LaunchApplicationInfo;
 
   const handleNext = () => {
     navigate("/launch/beneficiaries-info");
-    store.dispatch(setCheckoutProgress({ total: 10, current: 5 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 10, current: 4 })); // total- total pages and current - current page
   };
 
   const handleCheckbox = (checked) => {
@@ -69,126 +94,130 @@ const DirectorsInfo = () => {
     setSelectedToEdit(director);
   };
 
+  const handleError = (error) => {
+    if (error?.status === "FETCH_ERROR") {
+      toast.error("Please check your internet connection");
+    } else {
+      toast.error(error?.data.message);
+    }
+  };
+
   // This deletes a director's informataion
   const handleDelete = async (director) => {
     setSelectedToDelete(director);
-    const requiredDeleteData = {
-      launchCode: director.launchCode,
-      directorCode: director.directorCode,
-      memberCode: director.memberCode,
-      directorRole: director.directorRole,
-    };
-    let deleteResponse = await deleteDirector(requiredDeleteData);
-    console.log(deleteResponse);
-    if (deleteResponse.data) {
-      // This filters and set the filtered directors info to the store
-      let filteredDirectors = directorsLaunchInfo.filter(
-        (director) => director.directorCode !== requiredDeleteData.directorCode
-      );
-      store.dispatch(setDirectorsLaunchInfo({ info: filteredDirectors }));
-      // This checks if the deleted director is a shareholder
-      let memberCheck = shareholdersLaunchInfo.filter(
-        (shareholder) =>
-          shareholder?.memberCode === requiredDeleteData?.memberCode
-      );
-      // if memberCheck length is 0 (i.e the director is not a shareholder), member delete endpoint is called.
-      if (memberCheck.length === 0) {
-        let requiredMemberDeleteData = {
-          launchCode: director.launchCode,
-          memberCode: director.memberCode,
-        };
-        let memberDeleteResponse = await deleteMember(requiredMemberDeleteData);
-        console.log(memberDeleteResponse);
-      }
-    } else {
-      if (deleteResponse.error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
-      } else {
-        toast.error(deleteResponse.error.data.message);
-      }
+
+    let deleteResponse = await directorDelete(director, deleteDirector);
+
+    let error = deleteResponse?.error;
+
+    if (error) {
+      handleError(error);
     }
   };
 
   // This adds a new director
-  const handleDirectorAdd = async (formData, launchCode, memberInfo) => {
-    const requiredDirectorData = {
-      launchCode: launchCode,
-      memberCode: memberInfo.memberCode,
-      directorRole: formData.director_role,
-    };
+  const handleDirectorAdd = async (formData, launchCode) => {
+    // Add a member
+    let addMemberResponse = await memberAdd(launchCode, formData, addMember);
+    let error = addMemberResponse?.error;
 
-    let addDirectorResponse = await addDirector(requiredDirectorData);
-    if (addDirectorResponse.data) {
-      // Get the information of all added directors
-      const allDirectors = Object.entries(
-        addDirectorResponse.data.businessDirectors
+    // Runs if successfully added member
+    if (addMemberResponse.data) {
+      const memberInfo = addMemberResponse.data;
+
+      const addDirectorResponse = await directorAdd(
+        launchCode,
+        formData,
+        memberInfo,
+        addDirector
       );
-      // Get the information of the just added director
-      const directorInfo = allDirectors[allDirectors.length - 1][1];
-      // Merge the member information and the director information of the just added director
-      let directorAllInfo = { ...memberInfo, ...directorInfo };
-      console.log(directorAllInfo);
-      // Set the combined information to store
-      store.dispatch(
-        setDirectorsLaunchInfo({ info: directorAllInfo, type: "add" })
-      );
-      setOpenModal(false);
-      console.log(addDirectorResponse);
-    } else {
-      console.log(addDirectorResponse.error);
-      toast.error(addDirectorResponse.error.data.message);
+
+      let directorData = addDirectorResponse?.data;
+      let error = addDirectorResponse?.error;
+
+      if (directorData) {
+        setOpenModal(false);
+      } else {
+        console.log(addDirectorResponse.error);
+        toast.error(error.data.message);
+      }
+    }
+    // Runs if failed to add member
+    else if (error) {
+      console.log(error);
+      handleError(error);
     }
   };
 
   // This updates the director's information
   const handleDirectorUpdate = async (formData, selectedDirector) => {
-    const requiredDirectorUpdateData = {
-      launchCode: selectedDirector.launchCode,
-      memberCode: selectedDirector.memberCode,
-      directorRole: formData.director_role,
-      directorCode: selectedDirector.directorCode,
-    };
-    const requiredMemberUpdateData = {
-      launchCode: selectedDirector.launchCode,
-      memberCode: selectedDirector.memberCode,
-      businessMember: {
-        memberName: formData.full_name,
-        memberEmail: formData.email,
-        memberPhone: formData.phone,
-      },
-    };
     // Responses from the backend
-    let directorsUpdateResponse = await updateDirector(
-      requiredDirectorUpdateData
+    let directorsUpdateResponse = await directorUpdate(
+      formData,
+      selectedDirector,
+      updateDirector
     );
-    let membersUpdateResponse = await updateMember(requiredMemberUpdateData);
+    let membersUpdateResponse = await memberUpdate(
+      formData,
+      selectedDirector,
+      updateMember
+    );
 
     // The data from the response got from the backend
-    let directorsUpdatedData = directorsUpdateResponse?.data?.businessDirectors;
-    let membersUpdatedData = membersUpdateResponse?.data?.businessMembers;
+    let directorsUpdatedData = directorsUpdateResponse?.data;
+    let membersUpdatedData = membersUpdateResponse?.data;
+    let error = directorsUpdateResponse?.error;
 
     // Executes if data is returned from the backend
     if (directorsUpdatedData) {
-      let directorsMembersMerged = [];
-      directorsUpdatedData.forEach((director) => {
-        membersUpdatedData.forEach((member) => {
-          if (member.memberCode === director.memberCode) {
-            let merged = { ...director, ...member };
-            directorsMembersMerged.push(merged);
-          }
-        });
-      });
-      console.log(directorsMembersMerged);
-      store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
+      // const directorsMembersMerged = mergeInfo(
+      //   directorsUpdatedData,
+      //   membersUpdatedData
+      // );
+      // console.log(directorsMembersMerged);
+      // store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
       handleModalClose();
     } else {
-      if (directorsUpdateResponse.error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
-      } else {
-        toast.error(directorsUpdateResponse.error.data.message);
-      }
+      handleError(error);
     }
   };
+
+  // Get the data from backend and set to state
+  const viewDraft = async () => {
+    let requiredData = {
+      launchCode: launchResponse.launchCode,
+      registrationCountry: launchResponse.registrationCountry,
+      registrationType: launchResponse.registrationType,
+    };
+
+    // Get data from view endpoints
+    let members = await viewMembers(requiredData);
+    let membersData = [...members.data.businessMembers];
+    let directors = await viewDirectors(requiredData);
+    let directorsData = [...directors.data.businessDirectors];
+
+    // Merge shareholders shareholder's data and member data
+    let mergedInfo = mergeInfo(directorsData, membersData);
+
+    setDirectorsInfo(mergedInfo);
+
+    console.log(mergedInfo);
+    return mergedInfo;
+  };
+
+  useEffect(() => {
+    viewDraft();
+  }, [
+    addState.isSuccess,
+    deleteState.isSuccess,
+    updateState.isSuccess,
+    openModal,
+  ]);
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 7 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>
@@ -198,11 +227,17 @@ const DirectorsInfo = () => {
           title={"Directors Information"}
           checkbox="Directors"
           checkBoxAction={handleCheckbox}
-          disableCheckbox={directorsLaunchInfo.length > 0 ? true : false}
+          disableCheckbox={directorsInfo.length > 0 ? true : false}
         />
         <LaunchPrimaryContainer>
+          {viewDirectorsState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading>
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
           <LaunchFormContainer>
-            {directorsLaunchInfo.map((director, index) => (
+            {directorsInfo.map((director, index) => (
               <LaunchSummaryCard
                 key={index}
                 number={index + 1}
@@ -227,22 +262,25 @@ const DirectorsInfo = () => {
               </AddMore>
             )}
             <Dialog open={openModal}>
-              <CheckoutFormInfo
-                title="Director"
-                handleClose={handleModalClose}
-                handleAdd={handleDirectorAdd}
-                handleUpdate={handleDirectorUpdate}
-                cardAction={cardAction}
-                checkInfoSchema={checkInfoDirectorSchema}
-                director
-                selectedToEdit={selectedToEdit}
-                addIsLoading={
-                  addState.isLoading ||
-                  deleteState.isLoading ||
-                  updateState.isLoading ||
-                  memberUpdateState.isLoading
-                }
-              />
+              <DialogContent style={modalStyle}>
+                <CheckoutFormInfo
+                  title="Director"
+                  handleClose={handleModalClose}
+                  handleAdd={handleDirectorAdd}
+                  handleUpdate={handleDirectorUpdate}
+                  cardAction={cardAction}
+                  checkInfoSchema={checkInfoDirectorSchema}
+                  director
+                  selectedToEdit={selectedToEdit}
+                  addIsLoading={
+                    addState.isLoading ||
+                    deleteState.isLoading ||
+                    memberAddState.isLoading ||
+                    updateState.isLoading ||
+                    memberUpdateState.isLoading
+                  }
+                />
+              </DialogContent>
             </Dialog>
           </LaunchFormContainer>
           <Bottom>
@@ -251,9 +289,13 @@ const DirectorsInfo = () => {
               backText={"Previous"}
               forwardAction={handleNext}
               forwardText={"Proceed"}
+              forwardDisable={
+                directorsInfo.length === 0 && !useSidebriefDirectors
+              }
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Directors info" />
       </Body>
     </Container>
   );

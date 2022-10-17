@@ -12,7 +12,7 @@ export const CheckoutButton = ({
 }) => {
   return (
     <Container
-      onClick={action}
+      onClick={action && action}
       isBack={back}
       hide={hide}
       type={type}

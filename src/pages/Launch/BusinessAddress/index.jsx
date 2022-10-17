@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController, CheckoutSection } from "containers";
 import { DropDownWithSearch, InputWithLabel } from "components/input";
@@ -10,21 +10,50 @@ import { setBusinessAddress, setCheckoutProgress } from "redux/Slices";
 import { defaultLocation, addressSchema } from "../constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAddBusinessAddressMutation } from "services/launchService";
+import {
+  useAddBusinessAddressMutation,
+  useUpdateBusinessAddressMutation,
+  useViewBusinessAddressQuery,
+} from "services/launchService";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
+import { Loading } from "notiflix";
+import { useRef } from "react";
+import AppFeedback from "components/AppFeedback";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState(defaultLocation);
   const [state, setState] = useState(defaultLocation);
   const [city, setCity] = useState(defaultLocation);
-  const [addressNo, setAddressNo] = useState("200");
-  const [addBusinessAddress] = useAddBusinessAddressMutation();
+
+  const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
+
+  const [updateBusinessAddress, updateAddressState] =
+    useUpdateBusinessAddressMutation();
+
+  const launchResponse = useSelector(
+    (state) => state.LaunchReducer.launchResponse
+  );
+
+  const address = useViewBusinessAddressQuery(launchResponse, {
+    refetchOnMountOrArgChange: true,
+  });
+
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
+
+  // const loading = addAddressState.isLoading || updateAddressState.isLoading;
+
+  // useEffect(() => {
+  // 	loading
+  // 		? Loading.pulse({
+  // 				svgColor: "#fff",
+  // 		  })
+  // 		: Loading.remove();
+  // }, [loading]);
 
   const {
     register,
@@ -36,23 +65,32 @@ const BusinessAddress = () => {
     resolver: yupResolver(addressSchema),
   });
 
-  const selectCountry = (data) => {
-    setCountry(data);
-    setValue("country", data.name, { shouldValidate: true });
-    setState(defaultLocation);
-    setCity(defaultLocation);
-  };
+  const selectCountry = useCallback(
+    (data) => {
+      setCountry(data);
+      setValue("country", data.name, { shouldValidate: true });
+      setState(defaultLocation);
+      setCity(defaultLocation);
+    },
+    [setValue]
+  );
 
-  const selectState = (data) => {
-    setState(data);
-    setValue("state", data.name, { shouldValidate: true });
-    setCity(defaultLocation);
-  };
+  const selectState = useCallback(
+    (data) => {
+      setState(data);
+      setValue("state", data.name, { shouldValidate: true });
+      setCity(defaultLocation);
+    },
+    [setValue]
+  );
 
-  const selectCity = (data) => {
-    setCity(data);
-    setValue("city", data.name, { shouldValidate: true });
-  };
+  const selectCity = useCallback(
+    (data) => {
+      setCity(data);
+      setValue("city", data.name, { shouldValidate: true });
+    },
+    [setValue]
+  );
 
   const SubmitForm = async (data) => {
     const requiredAddressData = {
@@ -64,12 +102,14 @@ const BusinessAddress = () => {
         addressCity: data.city,
         addressStreet: data.street,
         addressZipCode: data.zipcode,
-        addressNumber: addressNo,
+        addressNumber: data.number,
         addressEmail: data.email,
       },
     };
 
-    const response = await addBusinessAddress(requiredAddressData);
+    const response = address.currentData.businessAddress
+      ? await updateBusinessAddress(requiredAddressData)
+      : await addBusinessAddress(requiredAddressData);
     console.log(response);
 
     if (response.data) {
@@ -80,8 +120,12 @@ const BusinessAddress = () => {
       toast.error(response.error?.data.message);
     }
   };
+  let countries = useRef([defaultLocation]);
 
-  const countries = Country.getAllCountries();
+  useEffect(() => {
+    countries.current = Country.getAllCountries();
+  }, []);
+
   const states = State.getStatesOfCountry(country.isoCode);
   const cities = City.getCitiesOfState(country.isoCode, state.isoCode);
 
@@ -89,13 +133,63 @@ const BusinessAddress = () => {
 
   const handleNext = () => {
     navigate("/launch/shareholders-info");
-    store.dispatch(setCheckoutProgress({ total: 10, current: 3 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
-    store.dispatch(setCheckoutProgress({ total: 10, current: 2 })); // total- total pages and current - current page
   };
+
+  if (address.isLoading) {
+    Loading.pulse({
+      svgColor: "#fff",
+    });
+  }
+
+  useEffect(() => {
+    if (address.isSuccess) {
+      Loading.remove();
+      const addressData = address.currentData.businessAddress;
+      console.log(addressData);
+      const theCountry = addressData
+        ? countries.current.find(
+            (country) => country.name === addressData.addressCountry
+          )
+        : defaultLocation;
+      const theState = addressData
+        ? State.getStatesOfCountry(theCountry.isoCode).find(
+            (state) => state.name === addressData.addressState
+          )
+        : defaultLocation;
+      const theCity = addressData
+        ? City.getCitiesOfState(theCountry.isoCode, theState.isoCode).find(
+            (city) => city.name === addressData.addressCity
+          )
+        : defaultLocation;
+
+      if (addressData) {
+        selectCountry(theCountry);
+        selectState(theState);
+        selectCity(theCity);
+        setValue("street", addressData?.addressStreet, {
+          shouldValidate: true,
+        });
+        setValue("number", addressData?.addressNumber, {
+          shouldValidate: true,
+        });
+        setValue("zipcode", addressData?.addressZipCode, {
+          shouldValidate: true,
+        });
+        setValue("email", addressData?.addressEmail, {
+          shouldValidate: true,
+        });
+      }
+    }
+  }, [address, setValue, countries, selectCountry, selectCity, selectState]);
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 5.5 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>
@@ -111,7 +205,7 @@ const BusinessAddress = () => {
               <DropDownWithSearch
                 name={"country"}
                 title={"Country"}
-                list={countries}
+                list={countries.current}
                 renderer={({ item }) => <span>{item.name}</span>}
                 selectAction={selectCountry}
                 filterBy={"name"}
@@ -191,6 +285,7 @@ const BusinessAddress = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Business Address" />
       </Body>
     </Container>
   );

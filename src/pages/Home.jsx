@@ -1,56 +1,46 @@
 import React from "react";
-import RewardModal from "components/modal/RewardModal";
-import StaffModalCards from "components/modal/StaffModalCards";
-import PdfCards from "components/cards/PdfCard/PdfCards";
-import { BusinessTable } from "components/Tables";
-import {
-  CheckoutFormInfo,
-  PaymentForm,
-  PaymentHeader,
-  PaymentSelector,
-} from "containers";
-import SummaryCard from "components/cards/LaunchSummaryCard";
-import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
+import styled from "styled-components";
+import Navbar from "components/navbar";
+import { useSelector } from "react-redux";
+import BusinessRegistration from "./Dashboard/User/Home/BusinessRegistration";
+import Sidebar from "components/sidebar";
 
 const Home = () => {
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
+
   return (
-    <>
-      {/* <RewardModal />
-			<StaffModalCards />
-			<PdfCards />
-			<CheckoutFormInfo title="Shareholder's Information" />
-			<BusinessTable
-				data={[
-					{
-						name: "Sidebrief Africa",
-						type: "LLC",
-						objective: "science",
-						country: "Nigeria",
-						date: "28/07/2022",
-					},
-					{
-						name: "Quick chef",
-						type: "LLC",
-						objective: "construction",
-						country: "Rwanda",
-						date: "28/07/2022",
-					},
-				]}
-			/> */}
-      {/* <PaymentHeader />
-			<PaymentSelector />
-			<PaymentForm amount={22000} currency={"NGN"} USDprice={50.45} /> */}
-      <div style={{ width: "100%", padding: "20px" }}>
-        <LaunchSummaryCard
-          number={1}
-          name="Femi Bamidele"
-          shares="Preference Shares"
-          email="oluwole5@gmail.com"
-          phone={99999999}
-          sharesPercentage={50}
-        />
-      </div>
-    </>
+    <Dashboard>
+      <Navbar dashboard />
+      <Body>
+        <BodyLeft>
+          <Sidebar />
+        </BodyLeft>
+        <BodyRight SidebarWidth={sidebarWidth}>
+          <BusinessRegistration />
+        </BodyRight>
+      </Body>
+    </Dashboard>
   );
 };
 export default Home;
+
+const Dashboard = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  flex: 1;
+`;
+const Body = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+`;
+const BodyLeft = styled.div``;
+const BodyRight = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
+  @media screen and (max-width: 1050px) {
+    width: 100%;
+  }
+`;

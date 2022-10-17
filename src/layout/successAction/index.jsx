@@ -1,22 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "components/navbar";
 import { SuccessWrapper, Image } from "./styled";
-import success from "asset/images/Success.png";
+import success from "asset/svg/SuccessImage.svg";
 import { HeadText } from "components/texts";
 import { useNavigate } from "react-router-dom";
 
 const Success = ({ title, paragraph }) => {
   const navigate = useNavigate();
+  const [count, setCount] = useState(5);
 
   useEffect(() => {
-    const redirectTine = setTimeout(() => {
-      navigate("/");
-    }, 2000);
-
-    return () => {
-      clearTimeout(redirectTine);
-    };
-  }, [navigate]);
+    const timer =
+      count > 0
+        ? setInterval(() => {
+            setCount(count - 1);
+          }, 1000)
+        : navigate("/dashboard");
+    return () => clearInterval(timer);
+  }, [count]);
 
   return (
     <>
@@ -26,6 +27,7 @@ const Success = ({ title, paragraph }) => {
         <HeadText
           title={title}
           body={paragraph}
+          time={`${count} Sec`}
           titleAlign="center"
           bodyAlign="center"
           gap="clamp(8px, 1.5vw, 16px)"

@@ -21,8 +21,13 @@ html {
 p {
   margin: 0;
 }
+
 .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
-  border-radius: 16px !important;
   width: 100% !important;
-  max-width: 962px !important;
+  max-width: 96vw !important;
+  align-items: center;
+  overflow: visible !important;
+
+  background-color: transparent !important;
+  box-shadow: none !important;
 }

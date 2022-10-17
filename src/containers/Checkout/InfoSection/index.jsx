@@ -1,5 +1,5 @@
-import { Checkbox, DropDown, InputWithLabel } from "components/input";
-import React, { useEffect, useRef, useState } from "react";
+import { DropDown, InputWithLabel } from "components/input";
+import React, { useEffect, useState } from "react";
 import {
   DetailedSection,
   Title,
@@ -7,27 +7,17 @@ import {
   CheckInputWrapper,
   CheckboxWrapper,
 } from "./style";
-import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
-import { ReactComponent as DeleteIcon } from "asset/Launch/Delete.svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { shareTypeOptions, checkInfoSchema } from "utils/config";
-import { shareTypeOptions } from "utils/config";
+import { directorRoleOptions, shareTypeOptions } from "utils/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import {
-  useAddBeneficiaryMutation,
-  useAddDirectorMutation,
-  useAddMembersMutation,
-  useAddShareHolderMutation,
-} from "services/launchService";
+import { useAddMemberMutation } from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
-import Button, { CheckoutButton } from "components/button";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
-import { store } from "redux/Store";
-import { setShareHoldersLaunchInfo } from "redux/Slices";
 import { ThreeDots } from "react-loading-icons";
+import { memberAdd } from "./actions";
 
 export const CheckoutFormInfo = ({
   title,
@@ -37,24 +27,30 @@ export const CheckoutFormInfo = ({
   beneficiary,
   cardAction,
   checkInfoSchema,
-  isDirector,
-  setIsDirector,
+  shareDirSchema,
   handleAdd,
   handleUpdate,
   addIsLoading,
   selectedToEdit,
-  directorsInfo,
 }) => {
   const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
-  // const [isDirector, setIsDirector] = useState(selectedToEdit.isDirector);
-
+  const [directorInitialRole] = useState(selectedToEdit?.directorRole);
+  const [isDirector, setIsDirector] = useState(
+    cardAction === "edit"
+      ? selectedToEdit?.directorRole
+        ? true
+        : false
+      : false
+  );
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(checkInfoSchema),
+    resolver: yupResolver(
+      shareDirSchema && isDirector ? shareDirSchema : checkInfoSchema
+    ),
   });
 
   const launchInfoFromStore = useSelector((store) => store.LaunchReducer);
@@ -70,14 +66,7 @@ export const CheckoutFormInfo = ({
   );
 
   // Endpoints hooks from launch slice
-  const [addMembers, { isLoading, isSuccess }] = useAddMembersMutation();
-
-  // Hide director's field on mount
-  // useEffect(() => {
-  //   if (isDirector) {
-  //     setIsDirector(false);
-  //   }
-  // }, []);
+  const [addMember, { error, isLoading, isSuccess }] = useAddMemberMutation();
 
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
@@ -86,37 +75,14 @@ export const CheckoutFormInfo = ({
       if (cardAction === "add") {
         handleAdd(formData, generatedLaunchCode);
       } else if (cardAction === "edit") {
+        console.log(formData);
         handleUpdate(formData, generatedLaunchCode, selectedToEdit);
       }
       return;
     }
     if (cardAction === "add") {
-      const requiredMemberData = {
-        launchCode: generatedLaunchCode,
-        businessMember: {
-          memberName: formData.full_name,
-          memberEmail: formData.email,
-          memberPhone: formData.phone,
-        },
-      };
-
-      let addMemberResponse = await addMembers(requiredMemberData);
-
-      if (addMemberResponse.data) {
-        // Get the information of all added members
-        const allMembers = Object.entries(
-          addMemberResponse.data.businessMembers
-        );
-        // Get the information of the just added member
-        const memberInfo = allMembers[allMembers.length - 1][1];
-        handleAdd(formData, generatedLaunchCode, memberInfo);
-      } else {
-        if (addMemberResponse.error.status === "FETCH_ERROR") {
-          toast.error("Please check your internet connection");
-        }
-      }
+      handleAdd(formData, generatedLaunchCode);
     } else if (cardAction === "edit") {
-      setIsDirector(formData?.isDirector);
       handleUpdate(formData, selectedToEdit);
     }
   };
@@ -130,20 +96,17 @@ export const CheckoutFormInfo = ({
         "share_percentage",
         selectedToEdit?.shareholderOwnershipPercentage
       );
-      setValue("director_role", selectedToEdit?.director_role);
+      setValue("isDirector", isDirector);
+
       handleNumberChange(selectedToEdit?.memberPhone);
       handleShareTypeChange({
         share_type: selectedToEdit?.shareholderOwnershipType,
       });
-      if (directorsInfo) {
-        let directorInfo = directorsInfo.filter(
-          (director) => director.memberCode === selectedToEdit.memberCode
-        );
-        if (directorInfo.length > 0) {
-          setValue("director_role", directorInfo[0].directorRole);
-          setIsDirector(true);
-        }
-      }
+
+      handleDirectorRoleChange({
+        director_role: selectedToEdit?.directorRole,
+      });
+
       if (beneficiary) {
         setValue("full_name", selectedToEdit?.beneficialOwnerName);
         setValue("email", selectedToEdit?.beneficialOwnerEmail);
@@ -154,10 +117,20 @@ export const CheckoutFormInfo = ({
     }
   }, []);
 
+  useEffect(() => {
+    setValue("isDirector", isDirector);
+  }, [isDirector]);
+
   // This sets the share type value - attached to the onChange event
   const handleShareTypeChange = (value) => {
     var string = Object.values(value)[0];
     setValue("share_type", string, { shouldValidate: true });
+  };
+
+  // This sets the director role value - attached to the onChange event
+  const handleDirectorRoleChange = (value) => {
+    var string = Object.values(value)[0];
+    setValue("director_role", string, { shouldValidate: true });
   };
 
   // This sets the phone number value - attached to the onChange event
@@ -181,8 +154,12 @@ export const CheckoutFormInfo = ({
   return (
     <Form onSubmit={handleSubmit(submitForm)}>
       <Title>
-        <p>Add a {title}</p>
-        <CloseIcon onClick={handleClose} />
+        <p>
+          {cardAction === "edit" ? "Update" : "Add a"} {title}
+        </p>
+        <div style={{ cursor: "pointer" }}>
+          <CloseIcon onClick={handleClose} />
+        </div>
       </Title>
       <CheckInputWrapper>
         <InputWithLabel
@@ -239,7 +216,6 @@ export const CheckoutFormInfo = ({
               label="Share Type"
               labelStyle="input-label"
               options={shareTypeOptions}
-              register={register}
               onChange={handleShareTypeChange}
               errorMessage={errors.share_type?.message}
               cardAction={cardAction}
@@ -248,18 +224,18 @@ export const CheckoutFormInfo = ({
             />
           </DetailedSection>
         )}
-        {director && (
-          <DetailedSection>
-            <InputWithLabel
-              name="director_role"
-              label="Director's Role"
-              labelStyle="input-label"
-              type="text"
-              inputClass="input-class"
-              register={register}
-              errorMessage={errors.director_role?.message}
-            />
-          </DetailedSection>
+        {(isDirector || director) && (
+          <DropDown
+            containerStyle={{ margin: 0, marginBottom: "24px" }}
+            label="Director Role"
+            labelStyle="input-label"
+            options={directorRoleOptions}
+            onChange={handleDirectorRoleChange}
+            errorMessage={errors.director_role?.message}
+            cardAction={cardAction}
+            defaultValue={directorInitialRole}
+            launch
+          />
         )}
         {beneficiary && (
           <DetailedSection>
@@ -302,12 +278,10 @@ export const CheckoutFormInfo = ({
                 id="member-type2"
                 name="isDirector"
                 checked={isDirector}
+                onClick={() => setIsDirector(!isDirector)}
                 {...register("isDirector")}
               />
-              <label
-                htmlFor="member-type2"
-                onClick={() => setIsDirector(!isDirector)}
-              >
+              <label onClick={() => setIsDirector(!isDirector)}>
                 Click here if {title} is a <span>Director</span>
               </label>
             </div>

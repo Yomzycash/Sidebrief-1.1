@@ -18,26 +18,26 @@ import {
   TextDes,
   TextLink,
   TextWrapper,
+  rewardModalStyle,
 } from "./styled";
 
 import Button from "components/button";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 import { ScrollBox } from "containers";
 import { IoArrowForward } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setRewardsPageHeader } from "redux/Slices";
 import { useNavigate, useParams } from "react-router-dom";
-import { allRewards } from "utils/config";
 import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
-import { useGetUserRewardQuery } from "services/RewardService";
+import { useGetAllRewardsQuery } from "services/RewardService";
+import { DialogContent } from "@mui/material";
 
 const RewardDetails = (props) => {
   const [open, setOpen] = useState(false);
   const [selectedReward, setSelectedReward] = useState({});
 
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
@@ -58,8 +58,6 @@ const RewardDetails = (props) => {
     );
     setSelectedReward(rewardDetails);
     console.log(rewardDetails);
-
-    console.log(rewardID);
   }, [data]);
 
   const handleClickOpen = () => {
@@ -68,6 +66,11 @@ const RewardDetails = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleRewardClick = (reward) => {
+    setSelectedReward(reward);
+    console.log(reward);
   };
 
   return (
@@ -92,7 +95,9 @@ const RewardDetails = (props) => {
         <ButtonWrapper>
           <Button title="Claim Reward" onClick={handleClickOpen} />
           <Dialog onClose={handleClose} open={open}>
-            <RewardModal handleClose={handleClose} />
+            <DialogContent style={rewardModalStyle}>
+              <RewardModal handleClose={handleClose} />
+            </DialogContent>
           </Dialog>
         </ButtonWrapper>
       </RewardShortDetails>
@@ -117,41 +122,15 @@ const RewardDetails = (props) => {
         }}
       >
         <ScrollBox>
-          <RewardCard
-            image={lendhaLogo}
-            title="Lendha Africa"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={SterlingLogo}
-            title="Sterling Bank PLC"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={GladeLogo}
-            title="Glade"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={OkraLogo}
-            title="Okra"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={SterlingLogo}
-            title="Sterling Bank PLC"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={GladeLogo}
-            title="Glade"
-            body="Get credit to register your business & pay later."
-          />
-          <RewardCard
-            image={OkraLogo}
-            title="Okra"
-            body="Get credit to register your business & pay later."
-          />
+          {data?.slice(0, 8).map((reward, index) => (
+            <RewardCard
+              key={index}
+              title={reward?.rewardPartner}
+              body={reward?.rewardName}
+              image={reward?.rewardImage}
+              action={() => handleRewardClick(reward)}
+            />
+          ))}
         </ScrollBox>
       </DashboardSection>
     </StaffContainer>
