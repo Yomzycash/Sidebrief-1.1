@@ -15,12 +15,17 @@ const RewardModal = ({ handleClose }) => {
   const { rewardID } = useParams();
 
   const rewardDetails = data?.find((element) => element.rewardID === rewardID);
-
+  const imagestyle = {
+    borderRadius: "50%",
+    width: "45px",
+  };
   return (
     <Wrapper>
       <LogoCancelWrapper>
         <LogoWrapper>
-          <img src={rewardDetails.rewardImage} alt="" />
+          <ImageWrapper>
+            <img src={rewardDetails.rewardImage} alt="" style={imagestyle} />
+          </ImageWrapper>
           <LogoName>{rewardDetails.rewardPartner}</LogoName>
         </LogoWrapper>
         <Close onClick={handleClose} style={{ cursor: "pointer" }} />
@@ -64,8 +69,16 @@ const Wrapper = styled.div`
 const LogoCancelWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
 `;
 
+const ImageWrapper = styled.div`
+  align-items: center;
+  display: flex;
+  position: relative;
+  height: 50px;
+`;
 const ModalClose = styled.div`
   width: 24px;
   height: 24px;
@@ -85,7 +98,6 @@ const LogoWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 8px;
-  margin-bottom: 40px;
 `;
 const MiddleContainer = styled.div`
   display: flex;
