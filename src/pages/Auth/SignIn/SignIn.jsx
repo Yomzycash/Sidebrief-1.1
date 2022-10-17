@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
 import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
+import AppFeedback from "components/AppFeedback";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -153,6 +154,7 @@ const SignIn = () => {
             />
           </Bottom>
         </Form>
+        <AppFeedback subProject="Sign in" />
       </Registration>
     </AuthLayout>
   );
