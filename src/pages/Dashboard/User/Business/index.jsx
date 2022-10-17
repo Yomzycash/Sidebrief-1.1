@@ -21,6 +21,7 @@ import Button from "components/button";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
 import { setGeneratedLaunchCode } from "redux/Slices";
 import { store } from "redux/Store";
+import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -29,6 +30,8 @@ const searchStyle = {
 };
 
 const Business = () => {
+  const drafts = useGetUserDraftQuery()
+  const submitted = useGetUserSubmittedQuery()
   const navigate = useNavigate();
 
   const handleLaunch = () => {
@@ -70,8 +73,13 @@ const Business = () => {
           />
           <ActiveNav
             text="Pending Applications"
-            total={1}
+            total={submitted.isSuccess ? submitted?.currentData.length : 0}
             path="/dashboard/businesses/pending-applications"
+          />
+           <ActiveNav
+            text="Draft Applications"
+            total={drafts.isSuccess ? drafts?.currentData.length : 0}
+            path="/dashboard/businesses/draft-applications"
           />
         </SubHeader>
       </Header>
