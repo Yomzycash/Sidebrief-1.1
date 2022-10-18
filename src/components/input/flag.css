@@ -37,13 +37,13 @@
   margin-top: 20px !important;
 }
 
-.active {
+.flag .active {
   border: 1px solid #00a2d4;
   height: 56px;
   border-radius: 10px;
   margin-top: 20px;
 }
-.nonActive {
+/* .nonActive {
   border: 1px solid #ececec;
   height: 56px;
   border-radius: 10px;
@@ -54,7 +54,7 @@
   height: 56px;
   border-radius: 10px;
   margin-top: 20px;
-}
+} */
 
 .react-tel-input {
   border: none;

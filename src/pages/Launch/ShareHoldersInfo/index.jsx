@@ -62,6 +62,7 @@ import {
   directorUpdate,
 } from "../DirectorsInfo/actions";
 import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const ShareHoldersInfo = () => {
   const navigate = useNavigate();
@@ -455,6 +456,7 @@ const ShareHoldersInfo = () => {
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
+      <AppFeedback subProject="Shareholders Info" />
     </Container>
   );
 };

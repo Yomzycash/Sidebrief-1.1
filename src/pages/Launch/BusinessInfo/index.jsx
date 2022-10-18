@@ -146,59 +146,61 @@ const BusinessInfo = () => {
   }, []);
 
   return (
-    <Container onClick={handleSubmit}>
-      <HeaderCheckout getStarted />
+    <>
+      <Container onClick={handleSubmit}>
+        <HeaderCheckout getStarted />
 
-      <Body>
-        <CheckoutSection
-          title="Business Information"
-          HeaderParagraph="Let's sail you through, take this swift walk with us."
-        />
-        <LaunchPrimaryContainer>
-          <LaunchFormContainer>
-            <TagInput
-              initialValues={businessNames}
-              getSelectedValues={handleBusinessNames}
-            />
-
-            <TagInputWithSearch
-              label="Business Objectives"
-              list={BusinessObjectives}
-              getValue={handleObjectives}
-              initialValues={selectedObjectives}
-              MultiSelect
-              ExistsError="Objective has already been selected"
-              MatchError="Please select objectives from the list"
-              EmptyError="Please select at least one objective"
-              MaxError="You cannot select more than 4"
-            />
-            <div style={{ maxWidth: "430px" }}>
-              <TagInputWithSearch
-                label="Operational Country"
-                list={countries}
-                getValue={handleCountry}
-                initialValue={selectedCountry}
+        <Body>
+          <CheckoutSection
+            title="Business Information"
+            HeaderParagraph="Let's sail you through, take this swift walk with us."
+          />
+          <LaunchPrimaryContainer>
+            <LaunchFormContainer>
+              <TagInput
+                initialValues={businessNames}
+                getSelectedValues={handleBusinessNames}
               />
-            </div>
-          </LaunchFormContainer>
-          <Bottom>
-            <CheckoutController
-              forwardAction={handleNext}
-              backAction={handlePrev}
-              backText={"Previous"}
-              forwardText={"Next"}
-              forwardDisable={
-                businessNames.length !== 4 ||
-                selectedObjectives.length < 1 ||
-                !selectedCountry
-              }
-              hidePrev
-            />
-          </Bottom>
-        </LaunchPrimaryContainer>
-        <AppFeedback subProject="Business Info" />
-      </Body>
-    </Container>
+
+              <TagInputWithSearch
+                label="Business Objectives"
+                list={BusinessObjectives}
+                getValue={handleObjectives}
+                initialValues={selectedObjectives}
+                MultiSelect
+                ExistsError="Objective has already been selected"
+                MatchError="Please select objectives from the list"
+                EmptyError="Please select at least one objective"
+                MaxError="You cannot select more than 4"
+              />
+              <div style={{ maxWidth: "430px" }}>
+                <TagInputWithSearch
+                  label="Operational Country"
+                  list={countries}
+                  getValue={handleCountry}
+                  initialValue={selectedCountry}
+                />
+              </div>
+            </LaunchFormContainer>
+            <Bottom>
+              <CheckoutController
+                forwardAction={handleNext}
+                backAction={handlePrev}
+                backText={"Previous"}
+                forwardText={"Next"}
+                forwardDisable={
+                  businessNames.length !== 4 ||
+                  selectedObjectives.length < 1 ||
+                  !selectedCountry
+                }
+                hidePrev
+              />
+            </Bottom>
+          </LaunchPrimaryContainer>
+        </Body>
+      </Container>
+      <AppFeedback subProject="Business information" />
+    </>
   );
 };
 

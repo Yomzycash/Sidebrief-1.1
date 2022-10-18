@@ -24,8 +24,8 @@ const FailedPage = () => {
           onClick={handleNavigate}
           lastText
         />
-        <AppFeedback subProject="Failed page" />
       </Body>
+        <AppFeedback subProject="Failed page" />
     </>
   );
 };

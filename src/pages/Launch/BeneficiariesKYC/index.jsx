@@ -218,8 +218,8 @@ const BeneficiariesKYC = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
-        <AppFeedback subProject="Beneficiary KYC" />
       </Body>
+      <AppFeedback subProject="Beneficiary KYC" />s
     </Container>
   );
 };
