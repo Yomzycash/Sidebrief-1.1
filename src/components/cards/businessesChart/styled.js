@@ -1,22 +1,5 @@
 import styled from "styled-components";
 
-// Chart comoponent's styles
-export const Label = styled.div`
-	display: flex;
-	flex-flow: column;
-	align-items: center;
-	justify-content: center;
-	font-weight: 500;
-	font-size: clamp(10px, 2vw, 12px);
-	color: #727474;
-	gap: 5px;
-	> p {
-		color: #00a2d4;
-		font-weight: 700;
-		font-size: clamp(20px, 2vw, 24px);
-	}
-`;
-
 // BusinessChart component's styles (index)
 export const BusinessesChart = styled.div`
 	display: flex;
@@ -154,4 +137,30 @@ export const TopContent = styled.div`
 
 export const Loader = styled(Indicator)`
 	width: 100%;
+`;
+
+export const DonutContainer = styled.div`
+	position: relative;
+`;
+
+// Chart comoponent's styles
+export const Label = styled.div`
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+	font-weight: 500;
+	font-size: clamp(10px, 2vw, 12px);
+	color: #727474;
+	gap: 5px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	> p {
+		color: #00a2d4;
+		font-weight: 700;
+		font-size: clamp(20px, 2vw, 24px);
+	}
 `;
