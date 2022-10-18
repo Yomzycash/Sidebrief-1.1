@@ -32,6 +32,20 @@ const NumberInput = ({
     }
   }, [active]);
 
+  const activeStyle = {
+    border: "1px solid #00a2d4",
+    height: "56px",
+    borderRadius: "10px",
+    marginTop: "20px",
+  };
+
+  const nonActiveStyle = {
+    border: "1px solid #ececec",
+    height: "56px",
+    borderRadius: "10px",
+    marginTop: "20px",
+  };
+
   return (
     <Wrapper
       key="PhoneNumberInput"
@@ -46,11 +60,17 @@ const NumberInput = ({
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
       <div
-        className={errorMessage ? "error" : active ? "active" : "nonActive"}
+        // className={errorMessage ? "error" : active ? "active" : "nonActive"}
+        className={errorMessage ? "error" : ""}
         ref={inputRef}
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
-        style={phoneInputStyles}
+        style={
+          !errorMessage && active
+            ? { ...phoneInputStyles, activeStyle }
+            : { ...phoneInputStyles, ...nonActiveStyle }
+        }
+        // style={phoneInputStyles}
       >
         <PhoneInput
           country={"ng"}

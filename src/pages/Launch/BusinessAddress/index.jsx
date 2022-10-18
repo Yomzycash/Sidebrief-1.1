@@ -285,8 +285,8 @@ const BusinessAddress = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
-        <AppFeedback subProject="Business Address" />
       </Body>
+      <AppFeedback subProject="Business Address" />
     </Container>
   );
 };

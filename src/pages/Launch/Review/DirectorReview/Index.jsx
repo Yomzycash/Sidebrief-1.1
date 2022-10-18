@@ -1,5 +1,5 @@
 import { CheckoutController, CheckoutSection } from "containers";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
@@ -16,6 +16,7 @@ import {
   useViewMembersMutation,
 } from "services/launchService";
 import AppFeedback from "components/AppFeedback";
+import ReviewCard from "components/cards/ReviewCard";
 
 const DirectorReview = () => {
   const ActiveStyles = {
@@ -23,6 +24,11 @@ const DirectorReview = () => {
     borderBottom: "4px solid #00A2D4",
     borderRadius: 0,
   };
+  const [directorsInfo, setDirectorsInfo] = useState([]);
+  const [directorsKycInfo, setDirectorsKycInfo] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [mergedResponse, setMergedResponse] = useState([]);
+
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
@@ -35,20 +41,45 @@ const DirectorReview = () => {
   const handleViewMembers = async () => {
     let responseData = await viewMembers(launchResponse);
     console.log(responseData);
+    setMembers(responseData.data.businessMembers);
   };
   const handleViewDirectors = async () => {
     let responseData = await viewDirectors(launchResponse);
     console.log(responseData);
+    setDirectorsInfo(Object.values(responseData.data.businessDirectors));
   };
-  const handleViewDirectorsKyc = async () => {
-    let responseData = await viewDirectorsKyc(launchResponse);
-    console.log(responseData);
-  };
+  // const handleViewDirectorsKyc = async () => {
+  //   let responseData = await viewDirectorsKyc(launchResponse)
+  //   console.log(responseData)
+  //   setDirectorsKycInfo(Object.values(responseData.data.businessMembersKYC))
+  // }
   useEffect(() => {
     handleViewMembers();
     handleViewDirectors();
-    handleViewDirectorsKyc();
   }, []);
+  console.log(directorsInfo);
+  console.log(members);
+
+  useEffect(() => {
+    const mergedData = [];
+    members.forEach((member) => {
+      directorsInfo.forEach((directors) => {
+        let merged = {};
+        if (directors.memberCode === member.memberCode) {
+          merged = { ...merged, ...directors, ...member };
+          mergedData.push(merged);
+          // let kycDocs = directorsKycInfo.filter(
+          //   (element) => element.memberCode === directors.memberCode,
+          // )
+          // merged = { ...merged, documents: [...kycDocs] }
+          // mergedData.push(merged)
+        }
+        console.log(mergedData);
+        setMergedResponse(mergedData);
+      });
+    });
+  }, [directorsInfo.length, directorsKycInfo.length]);
+
   const navigate = useNavigate();
   const handleNext = () => {
     navigate("/launch/review-beneficiary");
@@ -90,19 +121,17 @@ const DirectorReview = () => {
           </ContentWrapper>
 
           <CardWrapper>
-            {LaunchApplicationInfo.directorsLaunchInfo.map(
-              (director, index) => (
-                <LaunchSummaryCard
-                  key={index}
-                  number={index + 1}
-                  name={director?.memberName}
-                  email={director?.memberEmail}
-                  phone={director?.memberPhone}
-                  director_role={director.directorRole}
-                  icon
-                />
-              )
-            )}
+            {mergedResponse.map((director, index) => (
+              <ReviewCard
+                key={index}
+                number={index + 1}
+                name={director?.memberName}
+                email={director?.memberEmail}
+                phone={director?.memberPhone}
+                director_role={director.directorRole}
+                icon
+              />
+            ))}
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController
@@ -112,8 +141,8 @@ const DirectorReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
-          <AppFeedback subProject="Director review" />
         </Body>
+        <AppFeedback subProject="Director review" />
       </Container>
     </>
   );

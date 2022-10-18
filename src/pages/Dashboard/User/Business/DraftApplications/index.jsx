@@ -1,11 +1,14 @@
-import { BusinessTable } from "components/Tables";
-import React, { useEffect, useState } from "react";
-import { Body, Container } from "./styled";
+import { BusinessTable } from 'components/Tables'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import {
+  useGetAllCountriesQuery,
+  useGetUserDraftQuery,
+} from 'services/launchService'
+import { Body, Container } from './styled'
 import { format } from 'date-fns'
-import { useGetAllCountriesQuery, useGetUserSubmittedQuery } from "services/launchService";
-
-const PendingApplications = () => {
-  const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery()
+const DraftApplications = () => {
+  const { data, error, isLoading, isSuccess } = useGetUserDraftQuery()
 
   const countries = useGetAllCountriesQuery()
   console.log(countries)
@@ -17,6 +20,7 @@ const PendingApplications = () => {
       setDataArr(data)
     }
   }, [data, isSuccess, countries.isSuccess])
+
   return (
     <Container>
       <Body>
@@ -36,7 +40,7 @@ const PendingApplications = () => {
         />
       </Body>
     </Container>
-  );
-};
+  )
+}
 
-export default PendingApplications;
+export default DraftApplications

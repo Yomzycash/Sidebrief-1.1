@@ -1,45 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import { Container, Bottom, Body } from '../styled'
-import { CheckoutController, CheckoutSection } from 'containers'
-import LaunchPrimaryContainer from 'containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer'
-import LaunchFormContainer from 'containers/Checkout/CheckoutFormContainer/LaunchFormContainer'
-import { setCheckoutProgress, setShareholderDocs } from 'redux/Slices'
-import { store } from 'redux/Store'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import { Container, Bottom, Body } from "../styled";
+import { CheckoutController, CheckoutSection } from "containers";
+import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
+import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
+import { setCheckoutProgress, setShareholderDocs } from "redux/Slices";
+import { store } from "redux/Store";
+import { useNavigate } from "react-router-dom";
 import {
   useAddMemberKYCMutation,
   useViewMembersMutation,
   useViewShareholdersMutation,
-} from 'services/launchService'
-import { useSelector } from 'react-redux'
-import toast from 'react-hot-toast'
-import { ContentWrapper, FileContainer, Loading, Name } from './styles'
-import FileUpload from 'components/FileUpload'
+} from "services/launchService";
+import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
+import FileUpload from "components/FileUpload";
 import {
   convertToLink,
   isValidFileUploaded,
   mergeInfo,
-} from 'utils/LaunchHelper'
+} from "utils/LaunchHelper";
 
-import { Puff } from 'react-loading-icons'
+import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const ShareHolderKYC = () => {
-  const navigate = useNavigate()
-  const [fileName, setFileName] = useState('')
-  const [type, setType] = useState('')
-  const [size, setSize] = useState(0)
-  const [addMemberKYC] = useAddMemberKYCMutation()
-  const [error, setError] = useState('')
-  const [uploadedFileDetails, setUploadedFileDetails] = useState('')
-  const [viewMember, viewMembersState] = useViewMembersMutation()
-  const [viewShareholders, viewShareholderState] = useViewShareholdersMutation()
-  const [shareholderContainer, setShareholder] = useState([])
+  const navigate = useNavigate();
+  const [fileName, setFileName] = useState("");
+  const [type, setType] = useState("");
+  const [size, setSize] = useState(0);
+  const [addMemberKYC] = useAddMemberKYCMutation();
+  const [error, setError] = useState("");
+  const [uploadedFileDetails, setUploadedFileDetails] = useState("");
+  const [viewMember, viewMembersState] = useViewMembersMutation();
+  const [viewShareholders, viewShareholderState] =
+    useViewShareholdersMutation();
+  const [shareholderContainer, setShareholder] = useState([]);
 
   const launchResponse = useSelector(
-    (state) => state.LaunchReducer.launchResponse,
-  )
-  const [documentContainer, setDocumentContainer] = useState([])
+    (state) => state.LaunchReducer.launchResponse
+  );
+  const [documentContainer, setDocumentContainer] = useState([]);
 
   useEffect(() => {
     const mapping = shareholderContainer.map((shareholder) => {
@@ -47,56 +49,56 @@ const ShareHolderKYC = () => {
         name: shareholder.memberName,
         code: shareholder.memberCode,
         files: {
-          government: '',
-          proof: '',
-          passport: '',
+          government: "",
+          proof: "",
+          passport: "",
         },
-      }
-    })
-    setDocumentContainer(mapping)
-  }, [shareholderContainer])
+      };
+    });
+    setDocumentContainer(mapping);
+  }, [shareholderContainer]);
 
   const handleMerge = async () => {
-    let memberInfo = await viewMember(launchResponse)
-    let newMemberInfo = [...memberInfo.data.businessMembers]
+    let memberInfo = await viewMember(launchResponse);
+    let newMemberInfo = [...memberInfo.data.businessMembers];
 
-    let shareholderInfo = await viewShareholders(launchResponse)
-    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders]
+    let shareholderInfo = await viewShareholders(launchResponse);
+    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
 
-    let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo)
-    setShareholder(newMerge)
+    let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setShareholder(newMerge);
 
-    return newMerge
-  }
+    return newMerge;
+  };
 
   useEffect(() => {
-    handleMerge()
-  }, [])
+    handleMerge();
+  }, []);
 
   const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode,
-  )
+    (store) => store.LaunchReducer.generatedLaunchCode
+  );
 
   const handlePrev = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   const handleChange = async (e, shareholder) => {
-    console.log('value of the component is', e.target.name)
+    console.log("value of the component is", e.target.name);
 
-    const uploadedFile = e.target.files[0]
-    setUploadedFileDetails(uploadedFile)
-    setFileName(uploadedFile.name)
-    setType(uploadedFile.type)
-    setSize(uploadedFile.size)
+    const uploadedFile = e.target.files[0];
+    setUploadedFileDetails(uploadedFile);
+    setFileName(uploadedFile.name);
+    setType(uploadedFile.type);
+    setSize(uploadedFile.size);
 
-    let fName = e.target.name
-    let value = e.target.value
+    let fName = e.target.name;
+    let value = e.target.value;
 
     setDocumentContainer((prev) => {
-      const updatedState = [...prev]
+      const updatedState = [...prev];
 
-      const index = updatedState.findIndex((el) => el.code === shareholder)
+      const index = updatedState.findIndex((el) => el.code === shareholder);
 
       updatedState[index] = {
         ...updatedState[index],
@@ -104,20 +106,20 @@ const ShareHolderKYC = () => {
           ...updatedState[index].files,
           [fName]: value,
         },
-      }
+      };
 
-      return updatedState
-    })
+      return updatedState;
+    });
 
     if (!isValidFileUploaded(uploadedFile)) {
-      toast.error('Only PDFs, PNGs and JPEGs are supported')
+      toast.error("Only PDFs, PNGs and JPEGs are supported");
     } else if (uploadedFile.size > 3000000) {
-      toast.error('File is too large')
+      toast.error("File is too large");
     } else {
-      toast.success('Valid Document')
-      const res = await convertToLink(e.target.files[0])
-      console.log(res)
-      console.log(res.url)
+      toast.success("Valid Document");
+      const res = await convertToLink(e.target.files[0]);
+      console.log(res);
+      console.log(res.url);
 
       const requiredAddMemberData = {
         launchCode: generatedLaunchCode,
@@ -126,44 +128,44 @@ const ShareHolderKYC = () => {
           documentType: uploadedFile.type,
           documentLink: res.url,
         },
-      }
-      console.log('data to db', requiredAddMemberData)
-      const response = await addMemberKYC(requiredAddMemberData)
-      console.log(response)
+      };
+      console.log("data to db", requiredAddMemberData);
+      const response = await addMemberKYC(requiredAddMemberData);
+      console.log(response);
       if (response.data) {
-        toast.success('Document uploaded successfully')
+        toast.success("Document uploaded successfully");
       } else if (response.error) {
-        console.log(response.error?.data.message)
-        toast.error(response.error?.data.message)
+        console.log(response.error?.data.message);
+        toast.error(response.error?.data.message);
       }
     }
-  }
+  };
 
-  console.log(documentContainer)
-  store.dispatch(setShareholderDocs(documentContainer))
+  console.log(documentContainer);
+  store.dispatch(setShareholderDocs(documentContainer));
 
   const handleNext = () => {
-    navigate('/launch/directors-kyc')
-  }
+    navigate("/launch/directors-kyc");
+  };
 
   const handleRemove = () => {
-    setFileName('')
-    setUploadedFileDetails({})
-  }
+    setFileName("");
+    setUploadedFileDetails({});
+  };
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 8.5 })) // total- total pages and current - current page
-  }, [])
+    store.dispatch(setCheckoutProgress({ total: 13, current: 8.5 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>
       <HeaderCheckout />
       <Body>
         <CheckoutSection
-          title={'Shareholder KYC Documentation:'}
+          title={"Shareholder KYC Documentation:"}
           HeaderParagraph={
-            'Please attach the necessary documents for all shareholders'
+            "Please attach the necessary documents for all shareholders"
           }
         />
         <LaunchPrimaryContainer>
@@ -179,37 +181,37 @@ const ShareHolderKYC = () => {
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
                   <FileUpload
-                    TopText={'Government Issued ID'}
+                    TopText={"Government Issued ID"}
                     name="government"
                     onChange={(e) => handleChange(e, shareholder.code)}
                     // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={
-                      'Driver’s Licence, National ID Card, Voters Card or International Passport'
+                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
                     }
                   />
 
                   <FileUpload
-                    TopText={'Proof of Home Address'}
+                    TopText={"Proof of Home Address"}
                     name="proof"
                     onChange={(e) => handleChange(e, shareholder.code)}
                     // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={
-                      'Utility Bill, Water Corporation Bill or a Rent Invoice'
+                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
                     }
                   />
 
                   <FileUpload
-                    TopText={'Passport Photograph'}
+                    TopText={"Passport Photograph"}
                     name="passport"
                     onChange={(e) => handleChange(e, shareholder.code)}
                     // type={type}
                     handleRemove={handleRemove}
                     errorMsg={error}
-                    BottomText={'Kindly ensure image is not larger than 3MB'}
+                    BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
                 </ContentWrapper>
               </FileContainer>
@@ -221,15 +223,16 @@ const ShareHolderKYC = () => {
           <Bottom>
             <CheckoutController
               backAction={handlePrev}
-              backText={'Previous'}
+              backText={"Previous"}
               forwardAction={handleNext}
-              forwardText={'Proceed'}
+              forwardText={"Proceed"}
             />
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
+      <AppFeedback subProject="Shareholder KYC" />
     </Container>
-  )
-}
+  );
+};
 
-export default ShareHolderKYC
+export default ShareHolderKYC;

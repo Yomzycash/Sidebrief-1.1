@@ -50,40 +50,23 @@ const ShareholderReview = () => {
     //    console.log(responseData)
     setShareholderInfo(Object.values(responseData.data.businessShareholders));
   };
-  const handleViewShareholdersKyc = async () => {
-    let responseData = await viewShareholdersKyc(launchResponse);
-    // console.log(responseData)
-    setShareholdersKycInfo(Object.values(responseData.data.businessMembersKYC));
-  };
+  // const handleViewShareholdersKyc = async () => {
+  //   let responseData = await viewShareholdersKyc(launchResponse)
+  //   // console.log(responseData)
+  //   setShareholdersKycInfo(Object.values(responseData.data.businessMembersKYC))
+  // }
   const handleMembers = async () => {
     let responseData = await viewMembers(launchResponse);
     // console.log(responseData.data.businessMembers)
     setMembers(responseData.data.businessMembers);
   };
-  // console.log(shareholderInfo)
-  // console.log(shareholdersKycInfo)
-  // console.log(members)
-
-  // console.log(mergedResponse)
-
-  // //merging the last endpoint
-  // const mergedKycData = []
-  // mergedData.forEach((shareholder) => {
-  //   shareholdersKycInfo.forEach((kyc) => {
-  //     if (kyc.memberCode === mergedData.memberCode) {
-  //       let merged = { ...shareholder, ...kyc }
-  //       mergedKycData.push(merged)
-  //     }
-  //   })
-  // })
-  // console.log(mergedKycData)
 
   const handleNavigate = () => {
     navigate("/launch/shareholders-info");
   };
   useEffect(() => {
     handleViewShareholders();
-    handleViewShareholdersKyc();
+    //handleViewShareholdersKyc()
     handleMembers();
   }, []);
 
@@ -94,17 +77,16 @@ const ShareholderReview = () => {
         let merged = {};
         if (shareholder.memberCode === member.memberCode) {
           merged = { ...merged, ...shareholder, ...member };
-          let kycDocs = shareholdersKycInfo.filter(
-            (element) => element.memberCode === shareholder.memberCode
-          );
-          merged = { ...merged, documents: [...kycDocs] };
+          // let kycDocs = shareholdersKycInfo.filter(
+          //   (element) => element.memberCode === shareholder.memberCode,
+          // )
           mergedData.push(merged);
         }
         console.log(mergedData);
         setMergedResponse(mergedData);
       });
     });
-  }, [shareholderInfo.length, shareholdersKycInfo.length]);
+  }, [shareholderInfo.length]);
 
   return (
     <>
@@ -159,8 +141,8 @@ const ShareholderReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
-          <AppFeedback subProject="Shareholder review" />
         </Body>
+        <AppFeedback subProject="Shareholder review" />
       </Container>
     </>
   );
