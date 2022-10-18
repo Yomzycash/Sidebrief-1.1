@@ -1,5 +1,5 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
-import React from "react";
+import TabNavBar from 'components/TabNavBar/TabNavBar'
+import React from 'react'
 import {
   Body,
   ButtonWrapper,
@@ -24,10 +24,10 @@ import { store } from "redux/Store";
 import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
 
 const searchStyle = {
-  borderRadius: "12px",
-  backgroundColor: "white",
-  maxWidth: "384px",
-};
+  borderRadius: '12px',
+  backgroundColor: 'white',
+  maxWidth: '384px',
+}
 
 const Business = () => {
   const drafts = useGetUserDraftQuery()
@@ -69,7 +69,7 @@ const Business = () => {
           <ActiveNav
             text="All Businesses"
             total={4}
-            path={"/dashboard/businesses/all-businesses"}
+            path={'/dashboard/businesses/all-businesses'}
           />
           <ActiveNav
             text="Pending Applications"
@@ -85,7 +85,7 @@ const Business = () => {
       </Header>
       <Outlet />
     </Container>
-  );
-};
+  )
+}
 
-export default Business;
+export default Business

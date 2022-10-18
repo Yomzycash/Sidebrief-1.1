@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import React, { Suspense, lazy, useState, useEffect } from 'react'
+import { Toaster } from 'react-hot-toast'
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -467,4 +467,4 @@ const AppRouter = () => {
 	);
 };
 
-export default AppRouter;
+export default AppRouter

@@ -53,6 +53,7 @@ const Navbar = ({ dashboard, rewards }) => {
         ...prev,
         {
           messageText: 'Kindly check your email for the verification link',
+
           read: false,
         },
       ])
