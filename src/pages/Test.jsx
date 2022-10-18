@@ -1,8 +1,13 @@
-import Pagination from "components/Pagination";
-import React from "react";
+import StaffBusinessCard from 'components/cards/StaffBusinessCard/StaffBusinessCard'
+import Pagination from 'components/Pagination'
+import React from 'react'
 
 const Test = () => {
-  return <Pagination />;
-};
+  return
+  ;<>
+    <Pagination />
+    // <StaffBusinessCard />
+  </>
+}
 
-export default Test;
+export default Test
