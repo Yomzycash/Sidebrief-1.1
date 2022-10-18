@@ -4,6 +4,7 @@ import Status from "./Status";
 import { BusinessesChart, Indicator, Bottom, Loader } from "./styled";
 import { Title } from "./styled";
 import { Puff } from "react-loading-icons";
+import { Donut } from "./Donut";
 
 const BusinessesChartCard = ({ staff, user, analytics, loading }) => {
 	// const total = completed + pending + awaiting;
@@ -30,12 +31,13 @@ const BusinessesChartCard = ({ staff, user, analytics, loading }) => {
 						<Puff stroke="#00A2D4" />
 					</Loader>
 				) : (
-					<Chart
-						analytics={analytics}
-						label={analytics.label}
-						staff={staff}
-						user={user}
-					/>
+					// <Chart
+					// 	analytics={analytics}
+					// 	label={analytics.label}
+					// 	staff={staff}
+					// 	user={user}
+					// />
+					<Donut analytics={analytics} />
 				)}
 			</Indicator>
 			<Bottom>
