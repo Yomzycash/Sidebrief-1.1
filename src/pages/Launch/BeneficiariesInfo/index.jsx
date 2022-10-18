@@ -33,6 +33,7 @@ import {
 import toast from "react-hot-toast";
 import { beneficiaryAdd, beneficiaryDelete, beneficiaryUpdate } from "./action";
 import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -253,6 +254,7 @@ const DirectorsInfo = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Beneficiary Info" />
       </Body>
     </Container>
   );

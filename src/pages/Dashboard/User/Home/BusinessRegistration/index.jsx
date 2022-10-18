@@ -19,8 +19,9 @@ import {
 	useGetUserSubmittedQuery,
 } from "services/launchService";
 import { store } from "redux/Store";
-import { setGeneratedLaunchCode } from "redux/Slices";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { compareDesc } from "date-fns";
+import AppFeedback from "components/AppFeedback";
 
 const BusinessRegistration = (props) => {
 	// Get user data information
@@ -74,6 +75,9 @@ const BusinessRegistration = (props) => {
 
 	const handleLaunch = () => {
 		store.dispatch(setGeneratedLaunchCode(""));
+		store.dispatch(setLaunchResponse({}));
+		localStorage.removeItem("launchInfo");
+		localStorage.removeItem("countryISO");
 		navigate("/launch");
 	};
 
@@ -115,7 +119,11 @@ const BusinessRegistration = (props) => {
 							icon: <IoArrowForward />,
 						}}
 					>
-						<BusinessesChartCard analytics={analytics} user />
+						<BusinessesChartCard
+							analytics={analytics}
+							user
+							loading={submitted.isLoading || drafts.isLoading}
+						/>
 						<Recently>
 							{allLaunch.slice(0, 3).map((el) => {
 								return (
@@ -139,7 +147,7 @@ const BusinessRegistration = (props) => {
 						carousel
 						link={{
 							text: "View all",
-							to: "/rewards",
+							to: "/dashboard/rewards/all-rewards",
 							icon: <IoArrowForward />,
 						}}
 					>
@@ -159,6 +167,7 @@ const BusinessRegistration = (props) => {
 								))}
 						</ScrollBox>
 					</DashboardSection>
+					<AppFeedback subProject="Dashboard" />
 				</Main>
 			</Body>
 		</Container>

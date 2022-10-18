@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { Page, Container, Bottom, Body } from "../styled";
-import {
-  CheckoutController,
-  CheckoutSection,
-  CheckoutInfoKYC,
-} from "containers";
+import { CheckoutController, CheckoutSection } from "containers";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { setBeneficiaryDocs, setCheckoutProgress } from "redux/Slices";
@@ -14,32 +10,34 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
   useAddBeneficialKYCMutation,
-  useAddMemberKYCMutation,
+  useViewBeneficiariesMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
-import { ContentWrapper, FileContainer, Name } from "./styles";
+import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
-import { convertToLink } from "utils/convertToUrl";
+import { convertToLink, isValidFileUploaded } from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
 
 const BeneficiariesKYC = () => {
-  //geting the information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { beneficiariesLaunchInfo } = LaunchApplicationInfo;
-  console.log("bene", beneficiariesLaunchInfo[0]?.beneficialOwnerCode);
-  let requiredOwnerCode = beneficiariesLaunchInfo[0]?.beneficialOwnerCode;
-  console.log(requiredOwnerCode);
-
   const navigate = useNavigate();
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
   const [size, setSize] = useState(0);
-  const [addMemberKYC] = useAddMemberKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
   const [addBeneficialKYC] = useAddBeneficialKYCMutation();
 
-  const [documentContainer, setDocumentContainer] = useState(
-    beneficiariesLaunchInfo.map((beneficiary) => {
+  const launchResponse = useSelector(
+    (state) => state.LaunchReducer.launchResponse
+  );
+  const [viewBeneficiaries, viewBeneficiariesState] =
+    useViewBeneficiariesMutation();
+  const [beneficiaryContainer, setBeneficiaryContainer] = useState([]);
+  const [documentContainer, setDocumentContainer] = useState([]);
+
+  useEffect(() => {
+    const mapping = beneficiaryContainer.map((beneficiary) => {
       return {
         name: beneficiary.beneficialOwnerName,
         code: beneficiary.beneficialOwnerCode,
@@ -49,18 +47,12 @@ const BeneficiariesKYC = () => {
           passport: "",
         },
       };
-    })
-  );
+    });
+    setDocumentContainer(mapping);
+  }, [beneficiaryContainer]);
 
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
-  );
-  const generatedMemberCode = useSelector(
-    (store) => store.LaunchReducer.generatedMemberCode
-  );
-
-  const generatedbeneficialOwnerCode = useSelector(
-    (store) => store.LaunchReducer.generatedBeneficialOwnerCode
   );
 
   const handleNext = () => {
@@ -71,11 +63,15 @@ const BeneficiariesKYC = () => {
     navigate(-1);
   };
 
-  const isValidFileUploaded = (file) => {
-    const validExtensions = ["jpeg", "jpg", "pdf"];
-    const fileExtension = file.type.split("/")[1];
-    return validExtensions.includes(fileExtension);
+  const handleFetch = async () => {
+    let beneficiaryInfo = await viewBeneficiaries(launchResponse);
+    let newBeneficiaryInfo = [...beneficiaryInfo.data.businessBeneficialOwners];
+    setBeneficiaryContainer(newBeneficiaryInfo);
   };
+
+  useEffect(() => {
+    handleFetch();
+  }, []);
 
   const handleChange = async (e, beneficiary) => {
     console.log("value of the component is", e.target.name);
@@ -116,7 +112,7 @@ const BeneficiariesKYC = () => {
 
       const requiredBeneficialOwnerKYCData = {
         launchCode: generatedLaunchCode,
-        beneficialOwnerCode: requiredOwnerCode,
+        beneficialOwnerCode: beneficiary,
         beneficialOwnerKYC: {
           documentType: uploadedFile.type,
           documentLink: res.url,
@@ -141,6 +137,7 @@ const BeneficiariesKYC = () => {
   console.log(documentContainer);
   store.dispatch(setBeneficiaryDocs(documentContainer));
 
+  console.log(beneficiaryContainer);
   const handleRemove = () => {
     setFileName("");
     setUploadedFileDetails({});
@@ -158,10 +155,15 @@ const BeneficiariesKYC = () => {
         <CheckoutSection
           title={"Beneficiaries KYC Documentation:"}
           HeaderParagraph={
-            "Please attach the necessary documents for all beneficials"
+            "Please attach the necessary documents for all beneficiaries"
           }
         />
         <LaunchPrimaryContainer>
+          {viewBeneficiariesState.isLoading && (
+            <Loading height="50vh">
+              <Puff stroke="#00A2D4" fill="white" />
+            </Loading>
+          )}
           <LaunchFormContainer>
             {documentContainer.map((beneficiary, index) => (
               <FileContainer key={index}>
@@ -216,6 +218,7 @@ const BeneficiariesKYC = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
+        <AppFeedback subProject="Beneficiary KYC" />
       </Body>
     </Container>
   );

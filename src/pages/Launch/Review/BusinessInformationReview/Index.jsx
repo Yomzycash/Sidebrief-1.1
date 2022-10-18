@@ -10,6 +10,7 @@ import BusinessAddressCard from "components/cards/BusinessAddressCard/BusinessAd
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
+import AppFeedback from "components/AppFeedback";
 const BusinessInformationReview = () => {
   const ActiveStyles = {
     color: "#151717",
@@ -23,9 +24,6 @@ const BusinessInformationReview = () => {
   const handlePrev = () => {
     navigate(-1);
   };
-
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  console.log(LaunchApplicationInfo.businessAddress);
 
   // Set the progress of the application
   useEffect(() => {
@@ -65,6 +63,7 @@ const BusinessInformationReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
+          <AppFeedback subProject="Business info" />
         </Body>
       </Container>
     </>

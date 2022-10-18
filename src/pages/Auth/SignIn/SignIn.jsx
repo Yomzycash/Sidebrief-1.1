@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
 import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
+import AppFeedback from "components/AppFeedback";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -65,8 +66,9 @@ const SignIn = () => {
     let data = response?.data;
     let error = response?.error;
     if (data) {
-      store.dispatch(saveUserInfo(data));
+      store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userEmail", formData.email);
       console.log(data);
       toast.success(data.message);
       navigate("/dashboard");
@@ -152,6 +154,7 @@ const SignIn = () => {
             />
           </Bottom>
         </Form>
+        <AppFeedback subProject="Sign In" />
       </Registration>
     </AuthLayout>
   );

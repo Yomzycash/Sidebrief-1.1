@@ -67,13 +67,11 @@ export const shareholderUpdate = async (
 //
 // Delete a shareholder
 export const shareholderDelete = async (
-  LaunchInfo,
+  isDirector,
   shareholder,
   deleteShareholder,
   deleteMember
 ) => {
-  const { shareHoldersLaunchInfo, directorsLaunchInfo } = LaunchInfo;
-
   const requiredDeleteData = {
     launchCode: shareholder.launchCode,
     shareholdingCode: shareholder.shareholdingCode,
@@ -85,22 +83,13 @@ export const shareholderDelete = async (
   let deleteResponse = await deleteShareholder(requiredDeleteData);
   // This fires off, if delete response is success
   if (deleteResponse.data) {
-    // This filters and set the filtered shareholders info to the store
-    let filteredShareholders = shareHoldersLaunchInfo.filter(
-      (shareholder) =>
-        shareholder.shareholdingCode !== requiredDeleteData.shareholdingCode
-    );
-    // This checks if the deleted shareholder is a director
-    let memberCheck = directorsLaunchInfo.filter(
-      (director) => director?.memberCode === requiredDeleteData?.memberCode
-    );
-    // if memberCheck length is 0 (i.e the shareholder is not a director), membership is deleted.
-    if (memberCheck.length === 0) {
+    // if the shareholder is not a director, membership is deleted.
+    if (!isDirector) {
       let memberDeleteResponse = await memberDelete(shareholder, deleteMember);
       console.log(memberDeleteResponse);
     }
 
-    return { data: filteredShareholders };
+    return { data: "Deleted" };
   } else {
     if (deleteResponse.error) {
       return { error: deleteResponse.error };

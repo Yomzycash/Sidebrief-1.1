@@ -31,14 +31,18 @@ const TagInputWithSearch = ({
     if (initialValues) {
       setTags([...initialValues]);
     }
-  }, []);
+  }, [initialValues?.length]);
 
   // This sets the select value (if available) on mounth
   useEffect(() => {
     if (initialValue) {
       setValue(initialValue);
     }
-  }, []);
+  }, [initialValue?.length]);
+
+  // console.log(initialValue);
+  // console.log(initialValues);
+
   // Update list when it chages
   useEffect(() => {
     setFilteredList(list);
