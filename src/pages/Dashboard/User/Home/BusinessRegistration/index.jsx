@@ -56,13 +56,12 @@ const BusinessRegistration = (props) => {
 		label: "Registrations",
 		status1: {
 			text: "Completed",
-			total: 5,
+			total: 0,
 			color: "#00A2D4",
 		},
 		status2: {
 			text: "Pending",
-			total: 15,
-			// total: submitted.isSuccess ? submitted?.currentData.length : 0,
+			total: submitted.isSuccess ? submitted?.currentData.length : 0,
 			color: " #55D7FF",
 		},
 		status3: {
