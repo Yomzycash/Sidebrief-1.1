@@ -9,6 +9,7 @@ import {
   useGetAllRewardsQuery,
   useGetUserRewardQuery,
 } from "services/RewardService";
+import AppFeedback from "components/AppFeedback";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -67,6 +68,7 @@ const Rewards = () => {
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>
+          <AppFeedback subProject="Rewards" />
         </Header>
       )}
       <Outlet />

@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <App className="App" />
+      <App style={{ display: "none" }} />
     </React.StrictMode>
   </Provider>
 );
