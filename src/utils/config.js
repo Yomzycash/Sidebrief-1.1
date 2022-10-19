@@ -13,6 +13,14 @@ import pdf from "../asset/images/pdf.png";
 import png from "../asset/images/png.png";
 import jpg from "../asset/images/jpg.png";
 import doc from "../asset/images/doc.png";
+import {
+  BankAccountIcon,
+  BusinessesIcon,
+  HomeIcon,
+  ResourcesIcon,
+  RewardIcon,
+  SettingsIcon,
+} from "asset/Icons";
 
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
@@ -139,37 +147,37 @@ export const sidebarLink = [
   {
     id: 1,
     title: "Home",
-    icon: HiHome,
+    icon: HomeIcon,
     path: "/dashboard/business-registration",
   },
   {
     id: 2,
     title: "Businesses",
-    icon: HiBriefcase,
+    icon: BusinessesIcon,
     path: "/dashboard/businesses",
   },
   {
     id: 3,
     title: "Bank Accounts",
-    icon: HiOutlineLibrary,
+    icon: BankAccountIcon,
     path: "/dashboard/bank-account",
   },
   {
     id: 4,
     title: "Rewards",
-    icon: HiOutlineSparkles,
+    icon: RewardIcon,
     path: "/dashboard/rewards/all-rewards",
   },
   {
     id: 5,
     title: "Resources",
-    icon: HiDocumentText,
+    icon: ResourcesIcon,
     path: "/dashboard/resources",
   },
   {
     id: 6,
     title: "Settings",
-    icon: HiCog,
+    icon: SettingsIcon,
     path: "/dashboard/settings",
   },
 ];

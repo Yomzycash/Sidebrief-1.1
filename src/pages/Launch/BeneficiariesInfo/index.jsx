@@ -254,8 +254,8 @@ const DirectorsInfo = () => {
             />
           </Bottom>
         </LaunchPrimaryContainer>
-        <AppFeedback subProject="Beneficiary Info" />
       </Body>
+        <AppFeedback subProject="Beneficiary Info" />
     </Container>
   );
 };

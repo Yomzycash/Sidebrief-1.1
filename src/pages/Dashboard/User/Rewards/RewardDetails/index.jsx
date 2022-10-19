@@ -32,6 +32,7 @@ import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { DialogContent } from "@mui/material";
+import AppFeedback from "components/AppFeedback";
 
 const RewardDetails = (props) => {
   const [open, setOpen] = useState(false);
@@ -106,10 +107,10 @@ const RewardDetails = (props) => {
           {" "}
           <div>{selectedReward?.rewardDescription}</div>
         </TextDes>
-        <VisitLink to="">
+        {/* <VisitLink to="">
           <TextLink>Visit Guide's website</TextLink>
           <HiArrowNarrowRight />
-        </VisitLink>
+        </VisitLink> */}
       </RewardDescription>
       <DashboardSection
         title="Rewards"
@@ -133,6 +134,7 @@ const RewardDetails = (props) => {
           ))}
         </ScrollBox>
       </DashboardSection>
+      <AppFeedback subProject="Rewards details" />
     </StaffContainer>
   );
 };

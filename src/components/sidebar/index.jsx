@@ -2,21 +2,29 @@ import React, { useEffect, useState } from "react";
 import { sidebarLink } from "utils/config";
 import {
   ListWrapper,
+  Logout,
   LogoutText,
   LogoutWrapper,
   SidebarContentItem,
   SidebarContentItemIcon,
   SidebarContentItemLink,
+  SidebarLinks,
   SidebarWrapper,
   SideLinkWrapper,
+  Top,
 } from "./styled";
 import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
+  const [iconHovered, setIconHovered] = useState(0);
+
+  const location = useLocation();
+  const locationPath = location.pathname;
+
   const navigate = useNavigate();
   const [expanded, setExpaned] = useState(true);
 
@@ -52,39 +60,44 @@ const Sidebar = () => {
       variants={sidebarVariants}
       animate={expanded ? `${expanded}` : ""}
     >
-      <ListWrapper onClick={() => setExpaned(!expanded)}>
-        <HiMenu color="#00A2D4" size={24} />
-      </ListWrapper>
-      {sidebarLink.map((item, index) => (
-        <SideLinkWrapper key={index}>
-          <NavLink
-            to={item.path}
-            style={({ isActive }) => (isActive ? ActiveStyle : {})}
-            // background={active === index ? "rgba(0, 162, 212, 0.1)" : "white"}
+      <Top>
+        <ListWrapper onClick={() => setExpaned(!expanded)}>
+          <HiMenu color="#00A2D4" size={24} />
+        </ListWrapper>
+        <SidebarLinks>
+          {sidebarLink.map((item, index) => (
+            <SideLinkWrapper key={index}>
+              {
+                <NavLink
+                  to={item.path}
+                  style={({ isActive }) => (isActive ? ActiveStyle : {})}
+                  onMouseEnter={() => setIconHovered(item.id)}
+                  onMouseLeave={() => setIconHovered(0)}
+                >
+                  <SidebarContentItemIcon>
+                    <item.icon
+                      filled={locationPath?.includes(item.path)}
+                      hover={iconHovered === item.id}
+                    />
+                  </SidebarContentItemIcon>
+                  <SidebarContentItemLink>
+                    {expanded ? item.title : null}
+                  </SidebarContentItemLink>
+                </NavLink>
+              }
+            </SideLinkWrapper>
+          ))}
+        </SidebarLinks>
+      </Top>
 
-            // onClick={() => setActive(index)}
-          >
-            <SidebarContentItemIcon>
-              <item.icon
-                // color={active === index ? "#00A2D4" : "black"}
-                size={20}
-              />
-            </SidebarContentItemIcon>
-            <SidebarContentItemLink
-            // color={active === index ? "#00A2D4" : "black"}
-            >
-              {expanded ? item.title : null}
-            </SidebarContentItemLink>
-          </NavLink>
-        </SideLinkWrapper>
-      ))}
-
-      <LogoutWrapper onClick={handleLogout}>
-        <HiOutlineLogout color="#ed4e3a" size={20} />
-        {expanded ? (
-          <LogoutText onClick={handleLogout}>Logout</LogoutText>
-        ) : null}
-      </LogoutWrapper>
+      <Logout>
+        <LogoutWrapper onClick={handleLogout}>
+          <HiOutlineLogout color="#ed4e3a" size={20} />
+          {expanded ? (
+            <LogoutText onClick={handleLogout}>Logout</LogoutText>
+          ) : null}
+        </LogoutWrapper>
+      </Logout>
     </SidebarWrapper>
   );
 };

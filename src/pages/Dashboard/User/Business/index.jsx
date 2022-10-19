@@ -1,5 +1,5 @@
 import TabNavBar from "components/TabNavBar/TabNavBar";
-import React from "react";
+import React, { useState } from "react";
 import {
   Body,
   ButtonWrapper,
@@ -21,7 +21,10 @@ import Button from "components/button";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
 import { setGeneratedLaunchCode } from "redux/Slices";
 import { store } from "redux/Store";
-import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
+import {
+  useGetUserDraftQuery,
+  useGetUserSubmittedQuery,
+} from "services/launchService";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -30,13 +33,32 @@ const searchStyle = {
 };
 
 const Business = () => {
-  const drafts = useGetUserDraftQuery()
-  const submitted = useGetUserSubmittedQuery()
+  const [businessesShown, setBusinessesShown] = useState({ all: 0, shown: 0 });
+  const [applicationsShown, setAllApplicationsShown] = useState({
+    all: 0,
+    shown: 0,
+  });
+  const [draftsShown, setDraftsShown] = useState({ all: 0, shown: 0 });
+
+  const drafts = useGetUserDraftQuery();
+  const submitted = useGetUserSubmittedQuery();
   const navigate = useNavigate();
 
   const handleLaunch = () => {
     store.dispatch(setGeneratedLaunchCode(""));
     navigate("/launch");
+  };
+
+  const handleBusinessesShown = (shown, all) => {
+    setBusinessesShown({ all: all, shown: shown });
+  };
+
+  const handleApplications = (shown, all) => {
+    setAllApplicationsShown({ all: all, shown: shown });
+  };
+
+  const handleDrafts = (shown, all) => {
+    setDraftsShown({ all: all, shown: shown });
   };
 
   return (
@@ -68,18 +90,21 @@ const Business = () => {
         <SubHeader>
           <ActiveNav
             text="All Businesses"
-            total={4}
+            total={0}
             path={"/dashboard/businesses/all-businesses"}
+            handleShown={handleBusinessesShown}
           />
           <ActiveNav
             text="Pending Applications"
             total={submitted.isSuccess ? submitted?.currentData.length : 0}
             path="/dashboard/businesses/pending-applications"
+            handleShown={handleApplications}
           />
-           <ActiveNav
+          <ActiveNav
             text="Draft Applications"
             total={drafts.isSuccess ? drafts?.currentData.length : 0}
             path="/dashboard/businesses/draft-applications"
+            handleShown={handleDrafts}
           />
         </SubHeader>
       </Header>

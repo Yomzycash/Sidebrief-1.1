@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   Image,
   BellIcon,
@@ -14,71 +14,72 @@ import {
   Message,
   NoMessage,
   NotificationBadge,
-} from './styled'
-import LogoNav from './LogoNav'
+} from "./styled";
+import LogoNav from "./LogoNav";
 
-import logo from '../../asset/images/SidebriefLogo.png'
-import bell from '../../asset/images/bell.png'
-import user from '../../asset/images/user.png'
-import down from '../../asset/images/down.png'
-import { Messages } from 'utils/config'
-import Search from './Search'
-import { Link } from 'react-router-dom'
-import { useMemo } from 'react'
-import { store } from 'redux/Store'
-import { setMessageObj } from 'redux/Slices'
-import { useRef } from 'react'
+import logo from "../../asset/images/SidebriefLogo.png";
+import bell from "../../asset/images/bell.png";
+import user from "../../asset/images/user.png";
+import down from "../../asset/images/down.png";
+import { Messages } from "utils/config";
+import Search from "./Search";
+import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { store } from "redux/Store";
+import { setMessageObj } from "redux/Slices";
+import { useRef } from "react";
 
 const Navbar = ({ dashboard, rewards }) => {
-  const [boxshadow, setBoxShadow] = useState('false')
-  const [showNotification, setShowNotification] = useState(false)
-  const [msgObj, setMsgObj] = useState([])
+  const [boxshadow, setBoxShadow] = useState("false");
+  const [showNotification, setShowNotification] = useState(false);
+  const [msgObj, setMsgObj] = useState([]);
 
   useEffect(() => {
     if (!dashboard && !rewards) {
-      window.addEventListener('scroll', () => {
-        setBoxShadow(window.pageYOffset > 0 ? 'true' : 'false')
-      })
+      window.addEventListener("scroll", () => {
+        setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
+      });
     }
-  }, [])
+  }, []);
 
-  let imgStyle = { width: '13%', textDecoration: 'none' }
-  let localUserInfo = localStorage.getItem('userInfo')
-  let newUserObject = JSON.parse(localUserInfo)
+  let imgStyle = { width: "13%", textDecoration: "none" };
+  let localUserInfo = localStorage.getItem("userInfo");
+  let newUserObject = JSON.parse(localUserInfo);
 
   useMemo(() => {
-    let status = newUserObject?.verified
+    let status = newUserObject?.verified;
     if (status === false) {
       setMsgObj((prev) => [
         ...prev,
         {
-          messageText: 'Kindly check your email for the verification link',
+          messageText: "Kindly check your email for the verification link",
+
           read: false,
         },
-      ])
+      ]);
     }
-  }, [])
+  }, []);
 
-  console.log(msgObj)
+  console.log(msgObj);
 
   const handleCheck = (e, item) => {
-    const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item)
-    const updatedMsg = [...msgObj] // creates a copy of the array
-    updatedMsg[indexToUpdate].read = !item.read
-    setMsgObj(updatedMsg)
-  }
-  let menuRef = useRef()
+    const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item);
+    const updatedMsg = [...msgObj]; // creates a copy of the array
+    updatedMsg[indexToUpdate].read = !item.read;
+    setMsgObj(updatedMsg);
+  };
+  let menuRef = useRef();
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!menuRef.current.contains(event.target)) {
-        setShowNotification(false)
+      if (!menuRef.current?.contains(event.target)) {
+        setShowNotification(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
+    };
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  })
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
 
   return (
     <>
@@ -151,8 +152,8 @@ const Navbar = ({ dashboard, rewards }) => {
         </NotificationWrapper>
       )}
     </>
-  )
-}
+  );
+};
 
-export default Navbar
-export { LogoNav }
+export default Navbar;
+export { LogoNav };
