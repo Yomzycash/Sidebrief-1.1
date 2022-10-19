@@ -10,6 +10,8 @@ import {
   useGetUserRewardQuery,
 } from "services/RewardService";
 import AppFeedback from "components/AppFeedback";
+import { setRewardsShown } from "redux/Slices";
+import { store } from "redux/Store";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -19,15 +21,16 @@ const searchStyle = {
 
 const Rewards = () => {
   const [boxshadow, setBoxShadow] = useState("false");
-  const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
+  // const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
+  const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
+
+  const location = useLocation();
 
   const allRewardsResponse = useGetAllRewardsQuery();
   const myRewardsResponse = useGetUserRewardQuery();
 
   let allRewardsTotal = allRewardsResponse.data?.length;
   let myRewardsTotal = myRewardsResponse.data?.length;
-
-  const location = useLocation();
 
   const mainHeaderRef = useRef();
 
@@ -52,11 +55,16 @@ const Rewards = () => {
     }
   }, [boxshadow]);
 
+  // This sets the shown of all rewards
   useEffect(() => {
     if (location.pathname === "/dashboard/rewards/all-rewards")
-      setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal });
+      store.dispatch(
+        setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal })
+      );
     if (location.pathname === "/dashboard/rewards/my-rewards")
-      setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal });
+      store.dispatch(
+        setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal })
+      );
   }, [location.pathname]);
 
   return (
