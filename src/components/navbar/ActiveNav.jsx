@@ -1,8 +1,9 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { AiTwotoneAlert } from "react-icons/ai";
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const ActiveNav = ({ text, total, path }) => {
+const ActiveNav = ({ text, total, path, handleShown }) => {
   const ActiveStyles = {
     color: "#151717",
     borderBottom: "4px solid #00A2D4",
@@ -51,7 +52,7 @@ export const Container = styled.div`
     text-decoration: none;
     margin: 0;
     border: none;
-    padding-inline: 16px;
+    padding: 16px;
   }
 `;
 const StyledLink = styled(NavLink)``;

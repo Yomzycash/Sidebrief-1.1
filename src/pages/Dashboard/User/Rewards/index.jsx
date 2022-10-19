@@ -3,7 +3,7 @@ import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Header, MainHeader, SubHeader } from "./styled";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   useGetAllRewardsQuery,
@@ -19,8 +19,15 @@ const searchStyle = {
 
 const Rewards = () => {
   const [boxshadow, setBoxShadow] = useState("false");
+  const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
+
   const allRewardsResponse = useGetAllRewardsQuery();
   const myRewardsResponse = useGetUserRewardQuery();
+
+  let allRewardsTotal = allRewardsResponse.data?.length;
+  let myRewardsTotal = myRewardsResponse.data?.length;
+
+  const location = useLocation();
 
   const mainHeaderRef = useRef();
 
@@ -45,6 +52,13 @@ const Rewards = () => {
     }
   }, [boxshadow]);
 
+  useEffect(() => {
+    if (location.pathname === "/dashboard/rewards/all-rewards")
+      setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal });
+    if (location.pathname === "/dashboard/rewards/my-rewards")
+      setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal });
+  }, [location.pathname]);
+
   return (
     <Container>
       {rewardsPageHeader && (
@@ -52,19 +66,22 @@ const Rewards = () => {
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
             <div>
-              <RewardSummaryCard shown={9} total={323} />
+              <RewardSummaryCard
+                shown={rewardsShown.shown}
+                total={rewardsShown.total}
+              />
               <Search style={searchStyle} />
             </div>
           </MainHeader>
           <SubHeader>
             <ActiveNav
               text="All Rewards"
-              total={allRewardsResponse.data?.length}
+              total={allRewardsTotal}
               path={"/dashboard/rewards/all-rewards"}
             />
             <ActiveNav
               text="My Rewards"
-              total={myRewardsResponse.data?.length}
+              total={myRewardsTotal}
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>

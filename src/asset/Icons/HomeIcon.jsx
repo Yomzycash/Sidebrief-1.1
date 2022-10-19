@@ -35,7 +35,7 @@ export const HomeIcon = ({ filled, hover }) => {
           >
             <path
               fillRule="evenodd"
-              clip-rule="evenodd"
+              clipRule="evenodd"
               d="M2.3385 1.33398H19.4217V19.2548H2.3385V1.33398Z"
               fill="white"
             />
