@@ -41,13 +41,13 @@ export const Donut = ({ analytics, staff }) => {
 		],
 	};
 
-	return (
-		<DonutContainer>
-			<Doughnut data={data} height={128} width={128} />
-			<Label>
-				<p>{total}</p>
-				<div>{analytics.label}</div>
-			</Label>
-		</DonutContainer>
-	);
+  return (
+    <DonutContainer>
+      <Doughnut data={data} height={128} width={128} />
+      <Label>
+        <p>{total}</p>
+        <div>{analytics.label}</div>
+      </Label>
+    </DonutContainer>
+  );
 };

@@ -147,7 +147,7 @@ const SignIn = () => {
             <TextsWithLink
               text={[
                 {
-                  text: "Already have an account? ",
+                  text: "Don't have an account? ",
                   link: { text: "Sign Up", to: "/register" },
                 },
               ]}

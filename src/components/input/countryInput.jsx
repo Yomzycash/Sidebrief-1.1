@@ -31,6 +31,21 @@ const CountryInput = ({
   const handleBorder = () => {
     setActive(!active);
   };
+
+  const activeStyle = {
+    border: "1px solid #00a2d4",
+    height: "56px",
+    borderRadius: "10px",
+    marginTop: "20px",
+  };
+
+  const nonActiveStyle = {
+    border: "1px solid #ececec",
+    height: "56px",
+    borderRadius: "10px",
+    marginTop: "20px",
+  };
+
   return (
     <Wrapper
       key="CountryInput"
@@ -46,7 +61,9 @@ const CountryInput = ({
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
       <div
-        className={errorMessage ? "error" : active ? "active" : "nonActive"}
+        style={!errorMessage && active ? activeStyle : nonActiveStyle}
+        className={errorMessage ? "error" : ""}
+        // className={errorMessage ? "error" : active ? "active" : "nonActive"}
         ref={inputRef}
         onFocus={handleBorder}
       >
