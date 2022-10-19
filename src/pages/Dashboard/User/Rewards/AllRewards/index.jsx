@@ -8,12 +8,13 @@ import {
   Footer,
   Loading,
 } from "./styled";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { store } from "redux/Store";
 import { setAllAvailableRewards, setRewardsPageHeader } from "redux/Slices";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { Puff } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
+import { setRewardsShown } from "redux/Slices";
 
 // const rewardsCategories = ["All", "Human Resources", "Productivity"];
 
@@ -23,6 +24,8 @@ const AllRewards = () => {
   const [rewardsCategories, setRewardscategories] = useState(["All"]);
 
   const [category, setCategory] = useSearchParams();
+
+  const location = useLocation();
 
   const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
 
@@ -71,6 +74,18 @@ const AllRewards = () => {
         break;
     }
   }, [category, allRewards]);
+  console.log(filteredReward.length);
+
+  // This sets the shown of all rewards
+  useEffect(() => {
+    if (category.get("category") !== null)
+      store.dispatch(
+        setRewardsShown({
+          total: filteredReward.length,
+          shown: filteredReward.length,
+        })
+      );
+  }, [category.get("category"), filteredReward.length]);
 
   return (
     <Container>

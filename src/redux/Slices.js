@@ -86,7 +86,7 @@ export const NotificationReducer = NotificationInfo.reducer;
 export const { setMessageObj } = NotificationInfo.actions;
 
 // This slice will hold all registered businesses and current registration information
-const RegisteredBusinessesInfo = createSlice({
+const BusinessesInfo = createSlice({
   name: "registered businesses",
   initialState: {
     currentBusiness: {
@@ -94,6 +94,7 @@ const RegisteredBusinessesInfo = createSlice({
       directors: "",
       beneficiaries: "",
     },
+    businessesShown: { total: 0, shown: 0 },
   },
   reducers: {
     setBusinessFormInfo: (state, action) => {
@@ -115,11 +116,16 @@ const RegisteredBusinessesInfo = createSlice({
           break;
       }
     },
+    setBusinessesShown: (state, action) => {
+      const { total, shown } = action.payload;
+      state.businessesShown = { total: total, shown: shown };
+    },
   },
 });
 
-export const RegisteredBusinessesReducers = RegisteredBusinessesInfo.reducer;
-export const { setBusinessFormInfo } = RegisteredBusinessesInfo.actions;
+export const BusinessesReducers = BusinessesInfo.reducer;
+export const { setBusinessFormInfo, setBusinessesShown } =
+  BusinessesInfo.actions;
 
 // This slice will hold all launch application information
 const launchApplicationInfo = createSlice({
@@ -238,6 +244,7 @@ const RewardInfo = createSlice({
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMjI5NTZhODlmMGFkOTRiNjEwMmJlNCIsImlhdCI6MTY2MzIxMDg1OCwiZXhwIjoyNTI3MjEwODU4fQ.DWx81pLGpaVYdC_fD_vfr8spAScz3mP-GsXldfEGMoA",
     allRewards: [],
     myRewards: [],
+    rewardsShown: { shown: 0, total: 0 },
   },
   reducers: {
     setAllAvailableRewards: (state, action) => {
@@ -246,9 +253,13 @@ const RewardInfo = createSlice({
     setMyClaimedRewards: (state, action) => {
       state.myRewards = action.payload;
     },
+    setRewardsShown: (state, action) => {
+      const { shown, total } = action.payload;
+      state.rewardsShown = { shown: shown, total: total };
+    },
   },
 });
 
 export const RewardReducer = RewardInfo.reducer;
-export const { setAllAvailableRewards, setMyClaimedRewards } =
+export const { setAllAvailableRewards, setMyClaimedRewards, setRewardsShown } =
   RewardInfo.actions;

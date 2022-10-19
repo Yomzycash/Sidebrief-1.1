@@ -7,7 +7,7 @@ import {
   LaunchReducer,
   LayoutInfoReducer,
   NotificationReducer,
-  RegisteredBusinessesReducers,
+  BusinessesReducers,
   RewardReducer,
   UserDataReducer,
 } from "./Slices";
@@ -19,7 +19,7 @@ export const store = configureStore({
     [RewardApi.reducerPath]: RewardApi.reducer,
     UserDataReducer: UserDataReducer,
     LayoutInfo: LayoutInfoReducer,
-    RegisteredBusinessesInfo: RegisteredBusinessesReducers,
+    BusinessesInfo: BusinessesReducers,
     LaunchReducer: LaunchReducer,
     RewardReducer: RewardReducer,
     NotificationInfo: NotificationReducer,
