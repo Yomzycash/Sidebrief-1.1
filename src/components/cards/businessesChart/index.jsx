@@ -30,7 +30,7 @@ const BusinessesChartCard = ({ staff, user, analytics, loading }) => {
 						<Puff stroke="#00A2D4" />
 					</Loader>
 				) : (
-					<Donut analytics={analytics} />
+					<Donut analytics={analytics} staff={staff} />
 				)}
 			</Indicator>
 			<Bottom>
