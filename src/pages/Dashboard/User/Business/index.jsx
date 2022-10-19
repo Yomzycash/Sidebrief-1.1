@@ -1,5 +1,5 @@
 import TabNavBar from "components/TabNavBar/TabNavBar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Body,
   ButtonWrapper,
@@ -16,15 +16,16 @@ import image from "../../../../asset/images/coming.png";
 import { RewardSummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "components/button";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
-import { setGeneratedLaunchCode } from "redux/Slices";
+import { setBusinessesShown, setGeneratedLaunchCode } from "redux/Slices";
 import { store } from "redux/Store";
 import {
   useGetUserDraftQuery,
   useGetUserSubmittedQuery,
 } from "services/launchService";
+import { useSelector } from "react-redux";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -33,33 +34,39 @@ const searchStyle = {
 };
 
 const Business = () => {
-  const [businessesShown, setBusinessesShown] = useState({ all: 0, shown: 0 });
-  const [applicationsShown, setAllApplicationsShown] = useState({
-    all: 0,
-    shown: 0,
-  });
-  const [draftsShown, setDraftsShown] = useState({ all: 0, shown: 0 });
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const drafts = useGetUserDraftQuery();
   const submitted = useGetUserSubmittedQuery();
-  const navigate = useNavigate();
+
+  const businessesShown = useSelector(
+    (store) => store.BusinessesInfo.businessesShown
+  );
+
+  console.log(businessesShown);
+
+  let submittedTotal = submitted?.currentData?.length;
+  let draftTotal = drafts?.currentData?.length;
 
   const handleLaunch = () => {
     store.dispatch(setGeneratedLaunchCode(""));
     navigate("/launch");
   };
 
-  const handleBusinessesShown = (shown, all) => {
-    setBusinessesShown({ all: all, shown: shown });
-  };
-
-  const handleApplications = (shown, all) => {
-    setAllApplicationsShown({ all: all, shown: shown });
-  };
-
-  const handleDrafts = (shown, all) => {
-    setDraftsShown({ all: all, shown: shown });
-  };
+  // This sets the shown of all rewards
+  useEffect(() => {
+    if (location.pathname === "/dashboard/businesses/all-businesses")
+      store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
+    if (location.pathname === "/dashboard/businesses/pending-applications")
+      store.dispatch(
+        setBusinessesShown({ total: submittedTotal, shown: submittedTotal })
+      );
+    if (location.pathname === "/dashboard/businesses/draft-applications")
+      store.dispatch(
+        setBusinessesShown({ total: draftTotal, shown: draftTotal })
+      );
+  }, [location.pathname]);
 
   return (
     <Container>
@@ -68,7 +75,10 @@ const Business = () => {
           <TopContent>
             <div>
               <PageTitle>Businesses</PageTitle>
-              <RewardSummaryCard shown={7} total={7} />
+              <RewardSummaryCard
+                shown={businessesShown.shown}
+                total={businessesShown.total}
+              />
             </div>
             <Drop>
               <select>
@@ -92,19 +102,16 @@ const Business = () => {
             text="All Businesses"
             total={0}
             path={"/dashboard/businesses/all-businesses"}
-            handleShown={handleBusinessesShown}
           />
           <ActiveNav
             text="Pending Applications"
             total={submitted.isSuccess ? submitted?.currentData.length : 0}
             path="/dashboard/businesses/pending-applications"
-            handleShown={handleApplications}
           />
           <ActiveNav
             text="Draft Applications"
             total={drafts.isSuccess ? drafts?.currentData.length : 0}
             path="/dashboard/businesses/draft-applications"
-            handleShown={handleDrafts}
           />
         </SubHeader>
       </Header>
