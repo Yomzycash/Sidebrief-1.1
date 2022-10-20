@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react'
-import { Toaster } from 'react-hot-toast'
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -105,7 +105,7 @@ const AppRouter = () => {
 
 	const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
 	const entityLaunchCode = launchInfo?.launchCode;
-	const selectedCountryISO = localStorage.getItem("countryISO");
+	const selectedCountryISO = JSON.parse(localStorage.getItem("country")).ISO;
 
 	const [isLoggedIn, setisLoggedIn] = useState(
 		token?.length > 0 || user_token > 0
@@ -114,14 +114,15 @@ const AppRouter = () => {
 	const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
 	const loggedIn = token?.length > 0 || user_token > 0;
+	const allowLaunch = launchCode && countryISO;
 
 	useEffect(() => {
 		setisLoggedIn(loggedIn);
-	}, [loggedIn, userData.userInfo]);
+	}, [loggedIn]);
 
 	useEffect(() => {
 		setLaunchCode(entityLaunchCode);
-	}, [entityLaunchCode, launchData.launchCode]);
+	}, [entityLaunchCode]);
 
 	useEffect(() => {
 		setCountryISO(selectedCountryISO);
@@ -296,7 +297,7 @@ const AppRouter = () => {
 								path="address"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<BusinessAddress />
@@ -307,7 +308,7 @@ const AppRouter = () => {
 								path="shareholders-info"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<ShareHoldersInfo />
@@ -318,7 +319,7 @@ const AppRouter = () => {
 								path="directors-info"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<DirectorsInfo />
@@ -329,7 +330,7 @@ const AppRouter = () => {
 								path="beneficiaries-info"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<BeneficiariesInfo />
@@ -340,7 +341,7 @@ const AppRouter = () => {
 								path="beneficiaries-kyc"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<BeneficiariesKYC />
@@ -351,7 +352,7 @@ const AppRouter = () => {
 								path="sharehholders-kyc"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<ShareHolderKYC />
@@ -362,7 +363,7 @@ const AppRouter = () => {
 								path="directors-kyc"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<DirectorKYC />
@@ -374,7 +375,7 @@ const AppRouter = () => {
 								path="/launch/review-beneficiary"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<BeneficiaryReview />
@@ -385,7 +386,7 @@ const AppRouter = () => {
 								path="/launch/review"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<BusinessInformationReview />
@@ -396,7 +397,7 @@ const AppRouter = () => {
 								path="/launch/review-director"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<DirectorReview />
@@ -407,7 +408,7 @@ const AppRouter = () => {
 								path="/launch/review-shareholder"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<ShareholderReview />
@@ -418,7 +419,7 @@ const AppRouter = () => {
 								path="/launch/review-success"
 								element={
 									<Protected
-										isVerified={launchCode && countryISO}
+										isVerified={allowLaunch}
 										path="/launch"
 									>
 										<ApplicationSuccessPage />
@@ -467,4 +468,4 @@ const AppRouter = () => {
 	);
 };
 
-export default AppRouter
+export default AppRouter;
