@@ -4,6 +4,7 @@ import Navbar from "components/navbar";
 import Sidebar from "../../../components/sidebar";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import MobileNavbar from "components/navbar/MobileNavbar";
 
 const UserDashboard = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -12,6 +13,7 @@ const UserDashboard = () => {
   return (
     <Dashboard>
       <Navbar dashboard />
+      <MobileNavbar />
       <Body>
         <BodyLeft>
           <Sidebar />

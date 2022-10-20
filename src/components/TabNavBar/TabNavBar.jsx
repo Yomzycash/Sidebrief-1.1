@@ -54,6 +54,7 @@ const TabNavBar = ({ icon }) => {
 };
 
 export default TabNavBar;
+
 const More = styled.div`
   position: relative;
   display: flex;
