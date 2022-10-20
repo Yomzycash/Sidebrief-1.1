@@ -30,6 +30,10 @@ export const Container = styled.div`
     align-items: center;
     font-size: 16px;
     font-weight: 400;
+
+    @media screen and (max-width: 600px) {
+      font-size: 14px;
+    }
   }
 
   span {
@@ -42,6 +46,9 @@ export const Container = styled.div`
     font-size: 14px;
     font-weight: 500;
     height: max-content;
+    @media screen and (max-width: 600px) {
+      font-size: 12px;
+    }
   }
   a {
     display: flex;

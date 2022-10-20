@@ -115,6 +115,7 @@ const ErrorWrapper = styled.p`
 `;
 const Middle = styled.div`
   display: flex;
+  border: solid red;
   width: 100%;
   input {
     /* display: none; */

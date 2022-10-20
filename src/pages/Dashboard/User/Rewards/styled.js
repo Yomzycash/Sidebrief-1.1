@@ -44,6 +44,11 @@ export const MainHeader = styled.div`
     flex: 1;
     justify-content: space-between;
   }
+
+  @media screen and (max-width: 600px) {
+    border: solid red;
+    display: none;
+  }
 `;
 
 export const SubHeader = styled.div`
@@ -51,4 +56,32 @@ export const SubHeader = styled.div`
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
+
+  @media screen and (max-width: 600px) {
+    padding-inline: 24px;
+  }
+`;
+
+export const MobileHeader = styled.div`
+  display: none;
+  @media screen and (max-width: 600px) {
+    display: flex;
+    gap: 16px;
+    padding: 16px 24px;
+  }
+`;
+
+export const Drop = styled.div`
+  display: flex;
+  border: 1px solid #f1f1f1;
+  border-radius: 12px;
+  background-color: #f1f1f1;
+  padding: 8px 16px;
+
+  select {
+    border: none;
+    outline: none;
+    width: 60px;
+    background: none;
+  }
 `;

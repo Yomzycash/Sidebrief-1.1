@@ -13,7 +13,7 @@ const Search = ({ style }) => {
       <SearchIconWrapper>
         <SearchIcon src={search} alt="logo" />
       </SearchIconWrapper>
-      <SearchBar placeholder="Search something..." />
+      <SearchBar placeholder="Search for a reward" />
     </SearchBarWrapper>
   );
 };
