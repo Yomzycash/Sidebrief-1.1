@@ -1,5 +1,5 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react'
-import { Toaster } from 'react-hot-toast'
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import {
   BrowserRouter as Router,
   Routes,
@@ -97,15 +97,22 @@ const AppRouter = () => {
   let token = userInfo?.token
   let user_token = userInfo?.user_token
 
+
   const launchInfo = JSON.parse(localStorage.getItem('launchInfo'))
   const entityLaunchCode = launchInfo?.launchCode
   const selectedCountryISO = localStorage.getItem('countryISO')
+
+	const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+	const entityLaunchCode = launchInfo?.launchCode;
+	const selectedCountryISO = JSON.parse(localStorage.getItem("country")).ISO;
+
 
   const [isLoggedIn, setisLoggedIn] = useState(
     token?.length > 0 || user_token > 0,
   )
   const [launchCode, setLaunchCode] = useState(entityLaunchCode)
   const [countryISO, setCountryISO] = useState(selectedCountryISO)
+
 
   const loggedIn = token?.length > 0 || user_token > 0
 
@@ -116,6 +123,17 @@ const AppRouter = () => {
   useEffect(() => {
     setLaunchCode(entityLaunchCode)
   }, [entityLaunchCode, launchData.launchCode])
+
+	const loggedIn = token?.length > 0 || user_token > 0;
+	const allowLaunch = launchCode && countryISO;
+
+	useEffect(() => {
+		setisLoggedIn(loggedIn);
+	}, [loggedIn]);
+
+	useEffect(() => {
+		setLaunchCode(entityLaunchCode);
+	}, [entityLaunchCode]);
 
   useEffect(() => {
     setCountryISO(selectedCountryISO)
@@ -403,5 +421,306 @@ const AppRouter = () => {
     </Suspense>
   )
 }
+						<Route path="forgotpassword" element={<Outlet />}>
+								<Route index element={<ForgotPassword />} />
+								<Route path="verifyotp" element={<Outlet />}>
+									<Route index element={<ResetVerify />} />
+									<Route
+										path="resetpassword"
+										element={<Outlet />}
+									>
+										<Route
+											index
+											element={<ResetPassword />}
+										/>
+										<Route
+											path="success"
+											element={<ResetSuccess />}
+										/>
+									</Route>
+								</Route>
+							</Route>
+						</Route>
+						<Route
+							path="dashboard"
+							element={
+								<Protected isVerified={isLoggedIn}>
+									<UserDashboard />
+								</Protected>
+							}
+						>
+							<Route index element={<BusinessRegistration />} />
+							<Route
+								path="business-registration"
+								element={<BusinessRegistration />}
+							/>
+							<Route
+								path="application"
+								element={<Application />}
+							></Route>
+							<Route
+								path="bank-account"
+								element={<BankAccount />}
+							></Route>
+							<Route
+								path="settings"
+								element={<Settings />}
+							></Route>
+							<Route
+								path="resources"
+								element={<Resources />}
+							></Route>
+							<Route path="businesses" element={<Business />}>
+								<Route index element={<AllBusinesses />} />
+								<Route
+									path="all-businesses"
+									element={<AllBusinesses />}
+								></Route>
+								<Route
+									path="pending-applications"
+									element={<PendingApplications />}
+								></Route>
+								<Route
+									path="draft-applications"
+									element={<DraftApplications />}
+								></Route>
+							</Route>
+							<Route
+								path="compliance"
+								element={<Compliance />}
+							></Route>
+							<Route
+								path="hiring-and-payroll"
+								element={<HiringAndPayroll />}
+							></Route>
+							<Route
+								path="intellectualAssets"
+								element={<InetellectualAssets />}
+							></Route>
+							<Route path="taxes" element={<Taxes />}></Route>
+							<Route path="rewards" element={<Rewards />}>
+								<Route index element={<AllRewards />} />
+								<Route
+									path="all-rewards"
+									element={<AllRewards />}
+								></Route>
+								<Route
+									path="my-rewards"
+									element={<MyRewards />}
+								></Route>
+								<Route
+									path=":rewardID"
+									element={<RewardDetails />}
+								/>
+							</Route>
+							<Route
+								path="reward-details"
+								element={<RewardDetails />}
+							/>
+						</Route>
+						<Route
+							path="dashboard-staff"
+							element={<StaffDashboard />}
+						></Route>
+						<Route
+							path="launch"
+							element={
+								<Protected isVerified={isLoggedIn}>
+									<Outlet />
+								</Protected>
+							}
+						>
+							<Route index element={<BusinessInfo />} />
+							<Route
+								path="business-info"
+								element={<BusinessInfo />}
+							/>
+							<Route path="entity" element={<EntitySelect />} />
+							<Route
+								path="payment"
+								element={
+									<Protected
+										isVerified={launchCode}
+										path="/launch"
+									>
+										<PaymentPage />
+									</Protected>
+								}
+							/>
+							<Route
+								path="address"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<BusinessAddress />
+									</Protected>
+								}
+							/>
+							<Route
+								path="shareholders-info"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<ShareHoldersInfo />
+									</Protected>
+								}
+							/>
+							<Route
+								path="directors-info"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<DirectorsInfo />
+									</Protected>
+								}
+							/>
+							<Route
+								path="beneficiaries-info"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<BeneficiariesInfo />
+									</Protected>
+								}
+							/>
+							<Route
+								path="beneficiaries-kyc"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<BeneficiariesKYC />
+									</Protected>
+								}
+							/>
+							<Route
+								path="sharehholders-kyc"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<ShareHolderKYC />
+									</Protected>
+								}
+							/>
+							<Route
+								path="directors-kyc"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<DirectorKYC />
+									</Protected>
+								}
+							/>
 
-export default AppRouter
+							<Route
+								path="/launch/review-beneficiary"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<BeneficiaryReview />
+									</Protected>
+								}
+							/>
+							<Route
+								path="/launch/review"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<BusinessInformationReview />
+									</Protected>
+								}
+							/>
+							<Route
+								path="/launch/review-director"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<DirectorReview />
+									</Protected>
+								}
+							/>
+							<Route
+								path="/launch/review-shareholder"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<ShareholderReview />
+									</Protected>
+								}
+							/>
+							<Route
+								path="/launch/review-success"
+								element={
+									<Protected
+										isVerified={allowLaunch}
+										path="/launch"
+									>
+										<ApplicationSuccessPage />
+									</Protected>
+								}
+							/>
+						</Route>
+					</Route>
+				</Routes>
+				<Toaster
+					position="top-right"
+					toastOptions={{
+						className: "",
+						style: {
+							margin: "30px",
+							padding: "10px",
+							display: "inline-flex",
+							fontSize: "14px",
+							zIndex: 999999,
+						},
+						duration: 4000,
+						error: {
+							style: {
+								background: "#ff6363",
+								color: "white",
+							},
+							iconTheme: {
+								primary: "white",
+								secondary: "red",
+							},
+						},
+						success: {
+							style: {
+								background: "green",
+								color: "white",
+							},
+							iconTheme: {
+								primary: "white",
+								secondary: "green",
+							},
+						},
+					}}
+				/>
+			</Router>
+		</Suspense>
+	);
+};
+
+
+export default AppRouter;
