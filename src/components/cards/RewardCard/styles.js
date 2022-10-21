@@ -1,27 +1,27 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  min-width: 304px;
+  min-width: clamp(181px, 22vw, 304px);
   max-width: 304px;
   max-height: 238px;
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-  padding-block: 24px;
+  padding: clamp(16px, 1.5vw, 24px);
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 17px;
   transition: all 0.2s;
   flex: 1;
-  cursor: pointer;
+  cursor: ${({ rewardspage }) => (rewardspage ? "pointer" : "")};
   overflow: hidden;
 
   ${({ hover }) =>
     hover &&
     `
-			// background: #00a2d4;
       border: 1px solid #00A2D4;
 			box-shadow: 0px 20px 25px -5px rgba(149, 150, 151, 0.1);
 		`};
@@ -30,14 +30,6 @@ export const Container = styled.div`
     max-width: 100%;
     max-height: 100px;
   }
-`;
-
-export const StartButton = styled.button`
-  height: 36px;
-  border-radius: 8px;
-  border: none;
-  background: transparent;
-  padding-inline: 24px;
 `;
 
 export const Corner = styled.div`
@@ -67,7 +59,6 @@ export const Frame = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-inline: 24px;
 
   @media screen and (max-width: 532px) {
     flex-direction: row;
@@ -90,7 +81,7 @@ export const ImageHolder = styled.div`
 export const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(4px, 1.5vw, 8px);
 `;
 
 export const Title = styled.h4`

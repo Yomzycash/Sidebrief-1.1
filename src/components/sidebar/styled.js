@@ -8,11 +8,12 @@ export const SidebarWrapper = styled(motion.div)`
   display: flex;
   flex-flow: column;
   flex: 1;
-  /* justify-content: space-between; */
   gap: 16px;
 
   position: sticky;
   top: 73px;
+
+  font-size: 14px;
   width: ${(props) => props.width};
   box-sizing: border-box;
   padding: 0px 24px;
@@ -69,13 +70,12 @@ export const SidebarContentItemIcon = styled.div`
 export const Logout = styled.div`
   display: flex;
   flex-flow: column;
-  justify-content: center;
+  justify-content: flex-end;
   height: 100%;
-  padding: 12px 16px;
+  padding: 12px 16px 100px;
 `;
 
 export const LogoutWrapper = styled.div`
-  /* margin-left: 15px; */
   display: flex;
 
   :hover {
