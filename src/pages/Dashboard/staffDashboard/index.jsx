@@ -1,8 +1,8 @@
 import { BusinessesChartCard } from "components/cards";
 import AnalyticsChart from "components/cards/businessesChart/analyticsChart";
 import StatusCard from "components/cards/StatusCard/StaffStatusCard";
-import { ApplicationTable } from "components/Tables";
-import { MockData } from "components/Tables/ApplicationTable/constants";
+import { ApplicationTable } from "components/Staff/Tables";
+import { MockData } from "components/Staff/Tables/ApplicationTable/constants";
 import DashboardSection from "layout/DashboardSection";
 import React from "react";
 import { StaffContainer, StatusCardContainer } from "./styled";
@@ -14,12 +14,12 @@ const StaffDashboard = (props) => {
     status1: {
       text: "Total Users",
       total: 825,
-      color: "#55D7FF",
+      color: "rgba(255, 255, 255, 0.4)",
     },
     status2: {
       text: "Registrations",
       total: 450,
-      color: " #fff",
+      color: "#ffffff",
     },
   };
 

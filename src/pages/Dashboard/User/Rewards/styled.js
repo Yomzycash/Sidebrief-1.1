@@ -56,6 +56,7 @@ export const SubHeader = styled.div`
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
+  padding-left: 24px;
 
   @media screen and (max-width: 600px) {
     padding-inline: 24px;

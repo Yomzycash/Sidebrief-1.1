@@ -63,8 +63,8 @@ const BusinessInformationReview = () => {
               backAction={handlePrev}
             />
           </ButtonWrapper>
-          <AppFeedback subProject="Business info" />
         </Body>
+        <AppFeedback subProject="Business info review" />
       </Container>
     </>
   );

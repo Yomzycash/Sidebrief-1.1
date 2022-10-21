@@ -1,5 +1,5 @@
-import TabNavBar from 'components/TabNavBar/TabNavBar'
-import React from 'react'
+import TabNavBar from "components/TabNavBar/TabNavBar";
+import React, { useEffect, useState } from "react";
 import {
   Body,
   ButtonWrapper,
@@ -11,36 +11,62 @@ import {
   BottomContent,
   MainHeader,
   Drop,
-} from './styled'
-import image from '../../../../asset/images/coming.png'
-import { RewardSummaryCard } from 'components/cards'
-import Search from 'components/navbar/Search'
-import ActiveNav from 'components/navbar/ActiveNav'
-import { Outlet, useNavigate } from 'react-router-dom'
-import Button from 'components/button'
-import { ReactComponent as NoteIcon } from '../../../../asset/images/note.svg'
-import { setGeneratedLaunchCode } from 'redux/Slices'
-import { store } from 'redux/Store'
+} from "./styled";
+import image from "../../../../asset/images/coming.png";
+import { RewardSummaryCard } from "components/cards";
+import Search from "components/navbar/Search";
+import ActiveNav from "components/navbar/ActiveNav";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import Button from "components/button";
+import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
+import { setBusinessesShown, setGeneratedLaunchCode } from "redux/Slices";
+import { store } from "redux/Store";
 import {
   useGetUserDraftQuery,
   useGetUserSubmittedQuery,
-} from 'services/launchService'
+} from "services/launchService";
+import { useSelector } from "react-redux";
 
 const searchStyle = {
-  borderRadius: '12px',
-  backgroundColor: 'white',
-  maxWidth: '384px',
-}
+  borderRadius: "12px",
+  backgroundColor: "white",
+  maxWidth: "384px",
+};
 
 const Business = () => {
-  const drafts = useGetUserDraftQuery()
-  const submitted = useGetUserSubmittedQuery()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const drafts = useGetUserDraftQuery();
+  const submitted = useGetUserSubmittedQuery();
+
+  const businessesShown = useSelector(
+    (store) => store.BusinessesInfo.businessesShown
+  );
+
+  console.log(businessesShown);
+
+  let submittedTotal = submitted?.currentData?.length;
+  let draftTotal = drafts?.currentData?.length;
 
   const handleLaunch = () => {
-    store.dispatch(setGeneratedLaunchCode(''))
-    navigate('/launch')
-  }
+    store.dispatch(setGeneratedLaunchCode(""));
+    navigate("/launch");
+  };
+
+  // This sets the shown of all rewards
+  useEffect(() => {
+    if (location.pathname === "/dashboard/businesses/all-businesses")
+      store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
+    if (location.pathname === "/dashboard/businesses/pending-applications")
+      store.dispatch(
+        setBusinessesShown({ total: submittedTotal, shown: submittedTotal })
+      );
+    if (location.pathname === "/dashboard/businesses/draft-applications")
+      store.dispatch(
+        setBusinessesShown({ total: draftTotal, shown: draftTotal })
+      );
+  }, [location.pathname]);
 
   return (
     <Container>
@@ -49,7 +75,10 @@ const Business = () => {
           <TopContent>
             <div>
               <PageTitle>Businesses</PageTitle>
-              <RewardSummaryCard shown={7} total={7} />
+              <RewardSummaryCard
+                shown={businessesShown.shown}
+                total={businessesShown.total}
+              />
             </div>
             <Drop>
               <select>
@@ -71,8 +100,8 @@ const Business = () => {
         <SubHeader>
           <ActiveNav
             text="All Businesses"
-            total={4}
-            path={'/dashboard/businesses/all-businesses'}
+            total={0}
+            path={"/dashboard/businesses/all-businesses"}
           />
           <ActiveNav
             text="Pending Applications"
@@ -88,7 +117,7 @@ const Business = () => {
       </Header>
       <Outlet />
     </Container>
-  )
-}
+  );
+};
 
-export default Business
+export default Business;

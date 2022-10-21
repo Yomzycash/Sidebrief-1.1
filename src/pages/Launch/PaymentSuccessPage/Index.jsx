@@ -21,8 +21,8 @@ const SuccessPage = () => {
           buttonTitle="continue"
           onClick={handleNavigate}
         />
-        <AppFeedback subProject="Payment success" />
       </Body>
+      <AppFeedback subProject="Payment success" />
     </>
   );
 };

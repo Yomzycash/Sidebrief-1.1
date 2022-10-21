@@ -1,14 +1,16 @@
 import React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { DonutContainer, Label } from "./styled";
 
-ChartJS.register(ArcElement);
+ChartJS.register(ArcElement, Tooltip);
 
-export const Donut = ({ analytics }) => {
+export const Donut = ({ analytics, staff }) => {
 	const label = analytics.label;
 	const noLabelAnalytics = { ...analytics };
 	delete noLabelAnalytics.label;
+	delete noLabelAnalytics.title;
+	delete noLabelAnalytics.options;
 	const total = Object.values(noLabelAnalytics)
 		.map((el) => el.total)
 		.reduce((a, b) => {
@@ -30,8 +32,8 @@ export const Donut = ({ analytics }) => {
 					(element) => element.color
 				),
 				borderWidth: 1,
-				borderRadius: 10,
-				cutout: "85%",
+				// borderRadius: 10,
+				cutout: !staff ? "85%" : "90%",
 				borderJoinStyle: "bevel",
 				// borderAlign: "center",
 				// weight: 10,
@@ -39,13 +41,13 @@ export const Donut = ({ analytics }) => {
 		],
 	};
 
-	return (
-		<DonutContainer>
-			<Doughnut data={data} height={128} width={128} />
-			<Label>
-				<p>{total}</p>
-				<div>{analytics.label}</div>
-			</Label>
-		</DonutContainer>
-	);
+  return (
+    <DonutContainer>
+      <Doughnut data={data} height={128} width={128} />
+      <Label>
+        <p>{total}</p>
+        <div>{analytics.label}</div>
+      </Label>
+    </DonutContainer>
+  );
 };

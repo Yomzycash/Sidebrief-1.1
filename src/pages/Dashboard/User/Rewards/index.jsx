@@ -10,12 +10,15 @@ import {
   MobileHeader,
   SubHeader,
 } from "./styled";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   useGetAllRewardsQuery,
   useGetUserRewardQuery,
 } from "services/RewardService";
+import AppFeedback from "components/AppFeedback";
+import { setRewardsShown } from "redux/Slices";
+import { store } from "redux/Store";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -25,8 +28,16 @@ const searchStyle = {
 
 const Rewards = () => {
   const [boxshadow, setBoxShadow] = useState("false");
+  // const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
+  const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
+
+  const location = useLocation();
+
   const allRewardsResponse = useGetAllRewardsQuery();
   const myRewardsResponse = useGetUserRewardQuery();
+
+  let allRewardsTotal = allRewardsResponse.data?.length;
+  let myRewardsTotal = myRewardsResponse.data?.length;
 
   const mainHeaderRef = useRef();
 
@@ -51,6 +62,18 @@ const Rewards = () => {
     }
   }, [boxshadow]);
 
+  // This sets the shown of all rewards
+  useEffect(() => {
+    if (location.pathname === "/dashboard/rewards/all-rewards")
+      store.dispatch(
+        setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal })
+      );
+    if (location.pathname === "/dashboard/rewards/my-rewards")
+      store.dispatch(
+        setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal })
+      );
+  }, [location.pathname]);
+
   return (
     <Container>
       {rewardsPageHeader && (
@@ -58,19 +81,22 @@ const Rewards = () => {
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
             <div>
-              <RewardSummaryCard shown={9} total={323} />
+              <RewardSummaryCard
+                shown={rewardsShown.shown}
+                total={rewardsShown.total}
+              />
               <Search style={searchStyle} />
             </div>
           </MainHeader>
           <SubHeader>
             <ActiveNav
               text="All Rewards"
-              total={allRewardsResponse.data?.length}
+              total={allRewardsTotal}
               path={"/dashboard/rewards/all-rewards"}
             />
             <ActiveNav
               text="My Rewards"
-              total={myRewardsResponse.data?.length}
+              total={myRewardsTotal}
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>
@@ -83,6 +109,7 @@ const Rewards = () => {
               </select>
             </Drop>
           </MobileHeader>
+          <AppFeedback subProject="Rewards" />
         </Header>
       )}
       <Outlet />

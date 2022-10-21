@@ -64,12 +64,13 @@ export const Body = styled.div`
 export const BodyLeft = styled.div`
   position: sticky;
   top: 220px;
-  height: max-content;
   display: flex;
   flex-flow: column;
   gap: 16px;
   white-space: nowrap;
   font-size: clamp(14px, 1.5rem, 16px);
+  height: max-content;
+  padding-inline: 0 20px;
 
   h3 {
     font-weight: 600;
