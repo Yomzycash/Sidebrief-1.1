@@ -85,7 +85,7 @@ const Rewards = () => {
                 shown={rewardsShown.shown}
                 total={rewardsShown.total}
               />
-              <Search style={searchStyle} />
+              <Search style={searchStyle} placeholder={"Search for a reward"} />
             </div>
           </MainHeader>
           <SubHeader>
