@@ -11,6 +11,7 @@ export const Section = styled.div`
   margin-right: ${(props) => props.MarginRight};
   user-select: ${({ carousel }) => (carousel ? "none" : "")};
 `;
+
 export const Header = styled.div`
   display: flex;
   flex-flow: column;
@@ -19,6 +20,7 @@ export const Header = styled.div`
   gap: 14px;
   width: 100%;
 `;
+
 export const HeaderTop = styled.div`
   display: flex;
   flex-flow: row nowrap;
@@ -26,14 +28,13 @@ export const HeaderTop = styled.div`
   gap: 4px;
   width: 100%;
   > p {
+    line-height: 24px;
     font-weight: 600;
-    font-size: ${(props) =>
-      props.BigTitle === "true"
-        ? "clamp(20px, 2vw, 24px)"
-        : "clamp(17px, 2vw, 20px)"};
+    font-size: clamp(18px, 2vw, 20px);
     color: #151717;
   }
 `;
+
 export const Right = styled(Link)`
   display: flex;
   flex-flow: row nowrap;
@@ -42,7 +43,7 @@ export const Right = styled(Link)`
   text-decoration: none;
   gap: 6px;
   color: #00a2d4;
-  font-size: clamp(13px, 1.5vw, 16px);
+  font-size: clamp(13px, 1.5vw, 14px);
   transition: 0.3s all ease;
   > p,
   div {
@@ -52,6 +53,7 @@ export const Right = styled(Link)`
     opacity: 0.8;
   }
 `;
+
 export const HeaderBody = styled.div`
   display: flex;
   p {
@@ -60,10 +62,11 @@ export const HeaderBody = styled.div`
     color: #727474;
   }
 `;
+
 export const Body = styled.div`
   display: flex;
   flex-flow: ${({ carousel }) => (carousel ? "column" : "row")} nowrap;
-  gap: 24px;
+  gap: 19px;
   width: 100%;
   max-width: 100vw;
 
