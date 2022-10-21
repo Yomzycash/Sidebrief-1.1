@@ -21,6 +21,9 @@ export const Heading = styled.h3`
   line-height: 21px;
   color: #151717;
   /* letter-spacing: 0px; */
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
 
   span {
     font-size: 14px;

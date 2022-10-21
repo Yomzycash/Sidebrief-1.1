@@ -1,8 +1,8 @@
-import { RewardCard } from "components/cards";
+import { RewardCard } from 'components/cards'
 
-import DashboardSection from "layout/DashboardSection";
-import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
-import React, { useEffect, useState } from "react";
+import DashboardSection from 'layout/DashboardSection'
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from 'react-icons/hi'
+import React, { useEffect, useState } from 'react'
 import {
   StaffContainer,
   NavigationWrapper,
@@ -19,65 +19,65 @@ import {
   TextLink,
   TextWrapper,
   rewardModalStyle,
-} from "./styled";
+} from './styled'
 
-import Button from "components/button";
-import { ScrollBox } from "containers";
-import { IoArrowForward } from "react-icons/io5";
-import { useSelector } from "react-redux";
-import { store } from "redux/Store";
-import { setRewardsPageHeader } from "redux/Slices";
-import { useNavigate, useParams } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import RewardModal from "components/modal/RewardModal";
-import { useGetAllRewardsQuery } from "services/RewardService";
-import { DialogContent } from "@mui/material";
-import AppFeedback from "components/AppFeedback";
+import Button from 'components/button'
+import { ScrollBox } from 'containers'
+import { IoArrowForward } from 'react-icons/io5'
+import { useSelector } from 'react-redux'
+import { store } from 'redux/Store'
+import { setRewardsPageHeader } from 'redux/Slices'
+import { useNavigate, useParams } from 'react-router-dom'
+import Dialog from '@mui/material/Dialog'
+import RewardModal from 'components/modal/RewardModal'
+import { useGetAllRewardsQuery } from 'services/RewardService'
+import { DialogContent } from '@mui/material'
+import AppFeedback from 'components/AppFeedback'
 
 const RewardDetails = (props) => {
-  const [open, setOpen] = useState(false);
-  const [selectedReward, setSelectedReward] = useState({});
+  const [open, setOpen] = useState(false)
+  const [selectedReward, setSelectedReward] = useState({})
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery()
 
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
+  const layoutInfo = useSelector((store) => store.LayoutInfo)
+  const { sidebarWidth } = layoutInfo
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    store.dispatch(setRewardsPageHeader(false));
-  }, []);
-
-  const { rewardID } = useParams();
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const responseData = data === undefined ? [] : [...data];
+    store.dispatch(setRewardsPageHeader(false))
+  }, [])
+
+  const { rewardID } = useParams()
+
+  useEffect(() => {
+    const responseData = data === undefined ? [] : [...data]
 
     const rewardDetails = responseData.find(
-      (reward) => reward.rewardID === rewardID
-    );
-    setSelectedReward(rewardDetails);
-    console.log(rewardDetails);
-  }, [data]);
+      (reward) => reward.rewardID === rewardID,
+    )
+    setSelectedReward(rewardDetails)
+    console.log(rewardDetails)
+  }, [data])
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleRewardClick = (reward) => {
-    setSelectedReward(reward);
-    console.log(reward);
-  };
+    setSelectedReward(reward)
+    console.log(reward)
+  }
 
   return (
     <StaffContainer sidebarWidth={sidebarWidth}>
       <NavigationWrapper
-        onClick={() => navigate("/dashboard/rewards/all-rewards")}
+        onClick={() => navigate('/dashboard/rewards/all-rewards')}
       >
         <HiArrowNarrowLeft />
         <p>Back to Rewards</p>
@@ -104,7 +104,7 @@ const RewardDetails = (props) => {
       </RewardShortDetails>
       <RewardDescription>
         <TextDes>
-          {" "}
+          {' '}
           <div>{selectedReward?.rewardDescription}</div>
         </TextDes>
         {/* <VisitLink to="">
@@ -117,8 +117,8 @@ const RewardDetails = (props) => {
         body="Accept offers and rewards when you register your business with Sidebrief"
         carousel
         link={{
-          text: "View all",
-          to: "/dashboard",
+          text: 'View all',
+          to: '/dashboard',
           icon: <IoArrowForward />,
         }}
       >
@@ -136,7 +136,7 @@ const RewardDetails = (props) => {
       </DashboardSection>
       <AppFeedback subProject="Rewards details" />
     </StaffContainer>
-  );
-};
+  )
+}
 
-export default RewardDetails;
+export default RewardDetails
