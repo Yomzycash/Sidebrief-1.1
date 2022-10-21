@@ -103,7 +103,7 @@ const AppRouter = () => {
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   const entityLaunchCode = launchInfo?.launchCode;
-  const selectedCountryISO = JSON.parse(localStorage.getItem("country")).ISO;
+  const selectedCountryISO = JSON.parse(localStorage.getItem("country"))?.ISO;
 
   const [isLoggedIn, setisLoggedIn] = useState(
     token?.length > 0 || user_token > 0

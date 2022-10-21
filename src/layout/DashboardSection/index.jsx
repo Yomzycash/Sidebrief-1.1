@@ -6,7 +6,6 @@ const DashboardSection = ({
   body,
   children,
   MarginRight,
-  BigTitle,
   link,
   nowrap,
   column,
@@ -15,7 +14,7 @@ const DashboardSection = ({
   return (
     <Section MarginRight={MarginRight} carousel={carousel}>
       <Header>
-        <HeaderTop BigTitle={BigTitle}>
+        <HeaderTop>
           <p>{title}</p>
           {link && (
             <Right to={link?.to}>

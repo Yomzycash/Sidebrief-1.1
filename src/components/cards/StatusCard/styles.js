@@ -12,6 +12,12 @@ export const Container = styled.div`
   align-items: stretch;
   justify-content: center;
   transition: 0.3s all ease;
+
+  &:hover {
+    border: 1px solid #00c3ff;
+    box-shadow: 0px 20px 25px -5px rgba(149, 150, 151, 0.1),
+      0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  }
 `;
 
 export const TextContainer = styled.div`

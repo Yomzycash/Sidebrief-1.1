@@ -47,8 +47,7 @@ export const NavLinkWrapper = styled.div`
   }
   :hover {
     > a {
-      background: rgba(0, 162, 212, 0.1);
-      color: #00a2d4;
+      background: #edf1f6;
     }
   }
 `;

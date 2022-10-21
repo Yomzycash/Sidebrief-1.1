@@ -41,15 +41,12 @@ const BusinessRegistration = (props) => {
 
   let allLaunch = [];
 
-	if (drafts.isSuccess && submitted.isSuccess) {
-		allLaunch = [...drafts?.currentData, ...submitted?.currentData];
-		allLaunch.sort((launch1, launch2) =>
-			compareDesc(
-				new Date(launch1.updatedAt),
-				new Date(launch2.updatedAt)
-			)
-		);
-	}
+  if (drafts.isSuccess && submitted.isSuccess) {
+    allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+    allLaunch.sort((launch1, launch2) =>
+      compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
+    );
+  }
 
   const analytics = {
     label: "Registrations",
@@ -91,7 +88,6 @@ const BusinessRegistration = (props) => {
                 ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
                 : `Welcome back${firstName ? ", " + firstName : ""}`
             }
-            BigTitle="true"
             nowrap
           >
             <LongCard

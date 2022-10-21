@@ -14,23 +14,23 @@ const MobileNavbar = () => {
   const services = [
     {
       title: "Registration",
-      path: "business-registration",
+      path: "/dashboard/business-registration",
     },
     {
       title: "Compliance",
-      path: "compliance",
+      path: "/dashboard/compliance",
     },
     {
       title: "Taxes",
-      path: "taxes",
+      path: "/dashboard/taxes",
     },
     {
       title: "Hiring & Payroll",
-      path: "hiring-and-payroll",
+      path: "/dashboard/hiring-and-payroll",
     },
     {
       title: "Intellectual Assets",
-      path: "intellectualAssets",
+      path: "/dashboard/intellectualAssets",
     },
   ];
 
