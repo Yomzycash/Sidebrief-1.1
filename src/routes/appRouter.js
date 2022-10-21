@@ -5,21 +5,21 @@ import {
   Routes,
   Route,
   Outlet,
-} from 'react-router-dom'
-import Loader from '../components/loader/loader'
-import { useSelector } from 'react-redux'
-import Protected from './Protected'
-import ApplicationSuccessPage from 'pages/Launch/ApplicationSuccessPage'
-import Settings from 'pages/Dashboard/User/Settings'
-import Resources from 'pages/Dashboard/User/Resources'
-import Business from 'pages/Dashboard/User/Business'
-import BankAccount from 'pages/Dashboard/User/BankAccount'
-import Application from 'pages/Dashboard/User/Application'
-import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications'
-import AllBusinesses from 'pages/Dashboard/User/Business/AllBusinesses'
-import Test from 'pages/Test'
-import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications'
-const Home = lazy(() => import('../pages/Home'))
+} from "react-router-dom";
+import Loader from "../components/loader/loader";
+import { useSelector } from "react-redux";
+import Protected from "./Protected";
+import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
+import Settings from "pages/Dashboard/User/Settings";
+import Resources from "pages/Dashboard/User/Resources";
+import Business from "pages/Dashboard/User/Business";
+import BankAccount from "pages/Dashboard/User/BankAccount";
+import Application from "pages/Dashboard/User/Application";
+import PendingApplications from "pages/Dashboard/User/Business/PendingApplications";
+import AllBusinesses from "pages/Dashboard/User/Business/AllBusinesses";
+import Test from "pages/Test";
+import DraftApplications from "pages/Dashboard/User/Business/DraftApplications";
+const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
 );
@@ -113,6 +113,14 @@ const AppRouter = () => {
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
   const loggedIn = token?.length > 0 || user_token > 0;
+  useEffect(() => {
+    setisLoggedIn(loggedIn);
+  }, [loggedIn, userData.userInfo]);
+
+  useEffect(() => {
+    setLaunchCode(entityLaunchCode);
+  }, [entityLaunchCode, launchData.launchCode]);
+
   const allowLaunch = launchCode && countryISO;
 
   useEffect(() => {
@@ -373,6 +381,5 @@ const AppRouter = () => {
     </Suspense>
   );
 };
-
 
 export default AppRouter;

@@ -1,4 +1,3 @@
-import MobileNavbar from "components/navbar/MobileNavbar";
 import Pagination from "components/Pagination";
 import React from "react";
 import { BusinessesChartCard } from "components/cards";
@@ -6,6 +5,7 @@ import { BusinessHomeTable } from "components/Staff/Tables";
 
 const Test = () => {
   const analytics = {
+    title: "User analytics",
     status1: {
       text: "Total Users",
       total: 825,
@@ -45,5 +45,4 @@ const Test = () => {
   );
 };
 
-
-export default Test
+export default Test;
