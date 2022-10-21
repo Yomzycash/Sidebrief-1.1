@@ -35,7 +35,9 @@ const Success = ({
           <BottomText>{description}</BottomText>
         </TextWrapper>
         <Button title={buttonTitle} onClick={onClick} />
-        {lastText && <FinalText onClick={action}>Save and Exit</FinalText>}
+        {lastText && (
+          <FinalText onClick={action}>Change Payment Method</FinalText>
+        )}
       </Wrapper>
     </>
   )
@@ -49,6 +51,12 @@ const Wrapper = styled.div`
   justify-content: center;
   max-width: 628px;
   /* border: 1px solid red; */
+  @media screen and (max-width: 608px) {
+    max-width: 380px;
+  }
+  @media screen and (max-width: 405px) {
+    max-width: 250px;
+  }
 `
 const ImageWrapper = styled(motion.div)``
 const Image = styled.img`
@@ -68,11 +76,22 @@ const Title = styled.h3`
   font-size: 24px;
   line-height: 30px;
   color: #151717;
+  @media screen and (max-width: 600px) {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `
 const BottomText = styled.p`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
+  @media screen and (max-width: 600px) {
+    max-width: 380px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `
 const FinalText = styled.p`
   font-weight: 500;
@@ -82,4 +101,10 @@ const FinalText = styled.p`
   cursor: pointer;
   margin-top: 24px;
   color: #00a2d4;
+  @media screen and (max-width: 600px) {
+    max-width: 380px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
 `

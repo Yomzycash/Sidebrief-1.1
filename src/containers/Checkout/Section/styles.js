@@ -18,6 +18,24 @@ export const Container = styled.div`
 `;
 
 export const Heading = styled.h3`
+  display: flex;
+  justify-content: space-between;
+  font-family: BR Firma;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 21px;
+  color: #151717;
+  /* letter-spacing: 0px; */
+  @media screen and (max-width: 600px) {
+    font-size: 20px;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 400;
+    color: red;
+  }
+`
 	display: flex;
 	justify-content: space-between;
 	font-family: BR Firma;
@@ -33,6 +51,7 @@ export const Heading = styled.h3`
 		color: red;
 	}
 `;
+
 
 export const CheckBox = styled.div`
 	display: flex;

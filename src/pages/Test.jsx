@@ -1,3 +1,17 @@
+
+import StaffBusinessCard from 'components/cards/StaffBusinessCard/StaffBusinessCard'
+import Pagination from 'components/Pagination'
+import React from 'react'
+import FailedPage from './Launch/FailedPage'
+
+const Test = () => {
+  return (
+    <>
+      <FailedPage />
+    </>
+  )
+}
+
 import Pagination from "components/Pagination";
 import React from "react";
 import { BusinessesChartCard } from "components/cards";
@@ -45,4 +59,5 @@ const Test = () => {
 	);
 };
 
-export default Test;
+
+export default Test
