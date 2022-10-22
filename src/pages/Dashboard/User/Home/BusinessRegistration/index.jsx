@@ -49,6 +49,7 @@ const BusinessRegistration = (props) => {
 				new Date(launch2.updatedAt)
 			)
 		);
+		console.log(allLaunch);
 	}
 
 	const analytics = {
@@ -68,6 +69,26 @@ const BusinessRegistration = (props) => {
 			total: drafts.isSuccess ? drafts?.currentData.length : 0,
 			color: " #CCF3FF",
 		},
+	};
+
+	const getStatus = (regStatus) => {
+		switch (regStatus) {
+			case "pending":
+				return {
+					text: "draft",
+					color: "#00A2D4",
+				};
+			case "submitted":
+				return {
+					text: "pending",
+					color: "#D400CC",
+				};
+			default:
+				return {
+					text: "unknown",
+					color: "black",
+				};
+		}
 	};
 
 	const navigate = useNavigate();

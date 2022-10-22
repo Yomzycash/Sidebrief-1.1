@@ -14,3 +14,8 @@ export const getStatus = (status) => {
 			return "";
 	}
 };
+
+export const checkIsString = (string) => {
+	if (typeof string === "string" || string instanceof String) return true;
+	else return false;
+};
