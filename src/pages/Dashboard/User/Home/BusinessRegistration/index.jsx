@@ -135,7 +135,7 @@ const BusinessRegistration = (props) => {
 							body="Manage all your business registration in one place"
 							link={{
 								text: "View all",
-								to: "/dashboard",
+								to: "/dashboard/businesses",
 								icon: <IoArrowForward />,
 							}}
 						>
