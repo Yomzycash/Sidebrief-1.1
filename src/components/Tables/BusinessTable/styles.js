@@ -1,10 +1,20 @@
 import styled from "styled-components";
 
+/**
+ * MAKE TABLES RESPONSIVE
+ *
+ * 1. Add overflow-x scroll to Container (Wrapping the table)
+ * 2. Add a padding to the text, both head and body
+ * */
+
 export const Container = styled.div`
 	width: 100%;
 	border: 1px solid #edf1f7;
 	border-radius: 0px 0px 16px 16px;
-	overflow: hidden;
+	/* overflow: hidden; */
+
+	overflow-x: scroll;
+	overflow-y: hidden;
 `;
 
 export const Table = styled.table`
@@ -65,6 +75,7 @@ export const HeadText = styled.h5`
 	font-size: 16px;
 	line-height: 131%;
 	letter-spacing: 0.02em;
+	padding-inline: 24px;
 
 	color: #151717;
 `;
@@ -76,6 +87,7 @@ export const BodyText = styled.p`
 	font-size: 16px;
 	line-height: 131%;
 	letter-spacing: 0.02em;
+	padding-inline: 24px;
 
 	color: #151717;
 `;

@@ -55,6 +55,10 @@ export const Body = styled.div`
   padding: 40px 24px 24px;
   border: 1px solid #edf1f7;
   border-top: none;
+
+  @media screen and (max-width: 600px) {
+    border: none;
+  }
 `;
 
 export const BodyLeft = styled.div`
@@ -89,11 +93,18 @@ export const BodyLeft = styled.div`
       cursor: pointer;
     }
   }
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 `;
 export const BodyRight = styled.div`
   display: flex;
   flex-flow: row wrap;
   gap: 24px;
+  @media screen and (max-width: 532px) {
+    justify-content: center;
+  }
 `;
 export const Footer = styled.div``;
 

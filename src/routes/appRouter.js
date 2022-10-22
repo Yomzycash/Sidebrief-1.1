@@ -105,6 +105,7 @@ const AppRouter = () => {
   const entityLaunchCode = launchInfo?.launchCode;
   const selectedCountryISO = JSON.parse(localStorage.getItem("country"))?.ISO;
 
+
   const [isLoggedIn, setisLoggedIn] = useState(
     token?.length > 0 || user_token > 0
   );
@@ -112,6 +113,14 @@ const AppRouter = () => {
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
   const loggedIn = token?.length > 0 || user_token > 0;
+  useEffect(() => {
+    setisLoggedIn(loggedIn);
+  }, [loggedIn, userData.userInfo]);
+
+  useEffect(() => {
+    setLaunchCode(entityLaunchCode);
+  }, [entityLaunchCode, launchData.launchCode]);
+
   const allowLaunch = launchCode && countryISO;
 
   useEffect(() => {

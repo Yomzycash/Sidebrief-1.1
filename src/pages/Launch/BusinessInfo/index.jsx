@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
@@ -48,13 +48,9 @@ const BusinessInfo = () => {
 	const handleNext = () => {
 		store.dispatch(setCountry(selectedCountry));
 		store.dispatch(setCountryISO(selectedCountryISO));
-		localStorage.setItem(
-			"country",
-			JSON.stringify({
-				ISO: selectedCountryISO,
-				name: selectedCountry,
-			})
-		);
+		localStorage.setItem("countryISO", selectedCountryISO);
+		store.dispatch(setCountryISO(selectedCountryISO));
+		console.log(selectedCountryISO);
 
 		if (businessNames.length === 4) {
 			store.dispatch(setSelectedBusinessNames(businessNames));
@@ -85,18 +81,21 @@ const BusinessInfo = () => {
 	};
 
 	// Handle supported countries fetch
-	const handleCountry = async (value) => {
-		let responseData = data;
-		let countries = [];
-		responseData?.forEach((data) => {
-			countries = [...countries, data?.countryName];
-		});
-		if (responseData) {
-			setCountriesData([...responseData]);
-			setCountries([...countries]);
-			setselectedCountry(value);
-		}
-	};
+	const handleCountry = useCallback(
+		async (value) => {
+			let responseData = data;
+			let countries = [];
+			responseData?.forEach((data) => {
+				countries = [...countries, data?.countryName];
+			});
+			if (responseData) {
+				setCountriesData([...responseData]);
+				setCountries([...countries]);
+				setselectedCountry(value);
+			}
+		},
+		[data]
+	);
 
 	const handleObjectives = (valuesSelected) => {
 		setselectedObjectives(valuesSelected);
@@ -112,7 +111,7 @@ const BusinessInfo = () => {
 			);
 			setselectedCountry(countrySelected[0]?.countryName);
 		}
-	}, [data]);
+	}, [data, handleCountry, launchResponse]);
 
 	// Set the selected country's ISO
 	useEffect(() => {
@@ -171,7 +170,7 @@ const BusinessInfo = () => {
 
 							<TagInputWithSearch
 								label="Business Objectives"
-								list={BusinessObjectives}
+								list={BusinessObjectives.sort()}
 								getValue={handleObjectives}
 								initialValues={selectedObjectives}
 								MultiSelect

@@ -2,7 +2,14 @@ import { RewardSummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Header, MainHeader, SubHeader } from "./styled";
+import {
+  Container,
+  Drop,
+  Header,
+  MainHeader,
+  MobileHeader,
+  SubHeader,
+} from "./styled";
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -78,7 +85,7 @@ const Rewards = () => {
                 shown={rewardsShown.shown}
                 total={rewardsShown.total}
               />
-              <Search style={searchStyle} />
+              <Search style={searchStyle} placeholder={"Search for a reward"} />
             </div>
           </MainHeader>
           <SubHeader>
@@ -93,6 +100,15 @@ const Rewards = () => {
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>
+          <MobileHeader>
+            <Search style={searchStyle} />
+            <Drop>
+              <select>
+                <option value="Sort">Sort</option>
+                <option value="All">All</option>
+              </select>
+            </Drop>
+          </MobileHeader>
           <AppFeedback subProject="Rewards" />
         </Header>
       )}

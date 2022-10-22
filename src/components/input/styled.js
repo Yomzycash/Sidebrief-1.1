@@ -192,7 +192,8 @@ export const TagWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  gap: 20px;
+  column-gap: 16px;
+  row-gap: 8px;
   margin-bottom: 8px;
   min-width: fit-content;
 `;

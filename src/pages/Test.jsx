@@ -1,4 +1,8 @@
 import React, { useCallback, useMemo, useState } from "react";
+import Pagination from "components/Pagination";
+import { BusinessesChartCard } from "components/cards";
+import { BusinessHomeTable } from "components/Staff/Tables";
+import { Header as BusinessDetailHeader } from "containers/BusinessDetail";
 import { useDropzone } from "react-dropzone";
 import {
   Audio,
@@ -78,6 +82,37 @@ const Test = () => {
   //   acceptedFiles.splice(0, 1);
   //   setDeleted(true);
   // };
+  const analytics = {
+    title: "User analytics",
+    status1: {
+      text: "Total Users",
+      total: 825,
+      color: "rgba(255, 255, 255, 0.4)",
+    },
+    status2: {
+      text: "Registrations",
+      total: 450,
+      color: "#ffffff",
+    },
+  };
+
+  const tableMockData = [
+    {
+      name: "Slideshow Africa",
+      country: "Nigeria",
+      date: "12/12/2022",
+    },
+    {
+      name: "Ayomide Africa",
+      country: "Nigeria",
+      date: "12/12/2022",
+    },
+    {
+      name: "Image Deity Industries",
+      country: "Kenya",
+      date: "12/12/2022",
+    },
+  ];
 
   return (
     <>
@@ -93,6 +128,12 @@ const Test = () => {
       <Grid stroke="#98ff98" fill="white" width={60} />
       <Hearts stroke="#98ff98" fill="white" width={60} /> */}
       <Oval stroke="#0976b5" fill="white" width={24} height={24} />
+      <BusinessDetailHeader
+        deleteAction={() => console.log("Delete action")}
+        searchAndSort={true}
+      />
+      <BusinessesChartCard staff analytics={analytics} />
+      <BusinessHomeTable data={tableMockData} />
       {/* <Puff stroke="#98ff98" fill="white" width={60} />
       <Rings stroke="#98ff98" fill="white" width={60} />
       <SpinningCircles stroke="#98ff98" fill="white" width={60} />
