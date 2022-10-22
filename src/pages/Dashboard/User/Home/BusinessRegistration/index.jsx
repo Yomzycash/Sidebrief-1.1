@@ -129,37 +129,44 @@ const BusinessRegistration = (props) => {
 							notready="true"
 						/>
 					</DashboardSection>
-					<DashboardSection
-						title="Businesses"
-						body="Manage all your business registration in one place"
-						link={{
-							text: "View all",
-							to: "/dashboard/businesses",
-							icon: <IoArrowForward />,
-						}}
-					>
-						<BusinessesChartCard
-							analytics={analytics}
-							user
-							loading={submitted.isLoading || drafts.isLoading}
-						/>
-						<Recently>
-							{allLaunch.slice(0, 3).map((el) => {
-								return (
-									<StatusCard
-										key={el.launchCode}
-										name={`${
-											el.businessNames?.businessName1
-												? el.businessNames.businessName1
-												: "No name"
-										} - ${el.registrationType}`}
-										status="draft"
-										ShortDescription="Start your business registration process with no paperwork. Start your business registration process with no paperwork"
-									/>
-								);
-							})}
-						</Recently>
-					</DashboardSection>
+					{allLaunch.length > 0 ? (
+						<DashboardSection
+							title="Businesses"
+							body="Manage all your business registration in one place"
+							link={{
+								text: "View all",
+								to: "/dashboard",
+								icon: <IoArrowForward />,
+							}}
+						>
+							<BusinessesChartCard
+								analytics={analytics}
+								user
+								loading={
+									submitted.isLoading || drafts.isLoading
+								}
+							/>
+							<Recently>
+								{allLaunch.slice(0, 3).map((el) => {
+									return (
+										<StatusCard
+											key={el.launchCode}
+											name={`${
+												el.businessNames?.businessName1
+													? el.businessNames
+															.businessName1
+													: "No name"
+											}`}
+											status={getStatus(
+												el.registrationStatus
+											)}
+											ShortDescription={`launchID - ${el.launchCode}`}
+										/>
+									);
+								})}
+							</Recently>
+						</DashboardSection>
+					) : null}
 					<DashboardSection
 						title="Rewards"
 						body="Accept offers and rewards when you register your business with Sidebrief"
