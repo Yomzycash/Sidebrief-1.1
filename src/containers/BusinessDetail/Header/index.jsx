@@ -95,8 +95,10 @@ export const Header = ({ deleteAction, searchAndSort }) => {
 			</SubHeader>
 			{searchAndSort ? (
 				<SearchAndSort>
-					{/* it changes based on the page it's on */}
+					{/* placeholder changes based on the page it's on */}
+					{/* not implemented yet */}
 					<Search triggerSearch={triggerSearch} />
+					{/* Sort should be here */}
 				</SearchAndSort>
 			) : null}
 		</Container>
