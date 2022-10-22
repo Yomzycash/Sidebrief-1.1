@@ -119,7 +119,7 @@ const UserRegistration = () => {
           <Body>
             <div>
               <InputWithLabel
-                placeholder="First Name"
+                placeholder="Enter your first name"
                 label="First name"
                 type="text"
                 name="first_name"
@@ -127,7 +127,7 @@ const UserRegistration = () => {
                 errorMessage={errors.first_name?.message}
               />
               <InputWithLabel
-                placeholder="Last Name"
+                placeholder="Enter your last name"
                 label="Last name"
                 type="text"
                 name="last_name"
@@ -135,7 +135,7 @@ const UserRegistration = () => {
                 errorMessage={errors.last_name?.message}
               />
               <InputWithLabel
-                placeholder="example@example.com"
+                placeholder="Enter your email address"
                 label="Email"
                 type="email"
                 name="email"
@@ -183,20 +183,15 @@ const UserRegistration = () => {
                 },
                 {
                   text: "&",
-                  link: { text: "Terms of Use", to: "/" },
+                  link: { text: "Terms of Use.", to: "/" },
                 },
               ]}
             />
             <TestButton
-              title={
-                isLoading === true ? (
-                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
-                ) : (
-                  "Sign Up"
-                )
-              }
+              title="Sign Up"
               type="submit"
-              disabled={isLoading ? true : false}
+              loading={isLoading}
+              disabled={isLoading}
             />
           </Body>
           <Bottom>
@@ -207,6 +202,7 @@ const UserRegistration = () => {
                   link: { text: "Sign In", to: "/login" },
                 },
               ]}
+              $mobileResponsive
             />
           </Bottom>
         </Form>

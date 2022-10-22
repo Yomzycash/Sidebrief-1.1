@@ -83,10 +83,10 @@ const SignIn = () => {
   };
 
   return (
-    <AuthLayout register={true}>
+    <AuthLayout>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} nav_sticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} $loginPage />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Welcome Back"
@@ -125,6 +125,8 @@ const SignIn = () => {
                   style={{
                     textDecoration: "none",
                     color: "var(--SecondaryBlue)",
+                    fontSize: "14px",
+                    fontWeight: "400",
                   }}
                 >
                   Forgot password?
@@ -132,15 +134,10 @@ const SignIn = () => {
               </motion.div>
             </div>
             <TestButton
-              title={
-                isLoading === true ? (
-                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
-                ) : (
-                  "Sign In"
-                )
-              }
+              title="Sign In"
               type="submit"
-              disabled={isLoading ? true : false}
+              loading={isLoading}
+              disabled={isLoading}
             />
           </Body>
           <Bottom>
@@ -151,6 +148,7 @@ const SignIn = () => {
                   link: { text: "Sign Up", to: "/register" },
                 },
               ]}
+              $mobileResponsive
             />
           </Bottom>
         </Form>
@@ -166,6 +164,11 @@ const Registration = styled.div`
   display: flex;
   flex-flow: column;
   height: max-content;
+  gap: 8px;
+
+  @media screen and (max-width: 1000px) {
+    gap: 32px;
+  }
 `;
 const TestBlock = styled.div`
   height: 1px;
@@ -174,7 +177,7 @@ const TestBlock = styled.div`
 const Form = styled.form`
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: 40px;
   height: max-content;
 `;
 const Body = styled.div`

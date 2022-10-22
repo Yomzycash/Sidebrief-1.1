@@ -22,7 +22,8 @@ const schema = yup.object().shape({
 
 const ForgotPassword = () => {
   const [navSticked, setNavSticked] = useState("");
-  const [sendResetPasswordCode] = useSendResetPasswordCodeMutation();
+  const [sendResetPasswordCode, { isLoading, isSuccess }] =
+    useSendResetPasswordCodeMutation();
   const {
     handleSubmit,
     register,
@@ -113,7 +114,12 @@ const ForgotPassword = () => {
                 },
               ]}
             />
-            <TestButton title="Reset Password" type="submit" />
+            <TestButton
+              title="Reset Password"
+              type="submit"
+              loading={isLoading}
+              disabled={isLoading}
+            />
           </Body>
           <Bottom>
             <TextsWithLink
@@ -123,6 +129,7 @@ const ForgotPassword = () => {
                   link: { text: "Sign In", to: "/login" },
                 },
               ]}
+              $mobileResponsive
             />
           </Bottom>
         </Form>

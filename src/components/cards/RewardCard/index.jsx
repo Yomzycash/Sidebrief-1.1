@@ -29,28 +29,24 @@ export const RewardCard = ({
   }, []);
 
   const getDisplay = () => {
-    window.addEventListener("resize", () => {
-      const buttonDisplay = window.getComputedStyle(
-        buttonRef.current,
-        null
-      ).display;
-      let display = buttonDisplayValue;
-      if (buttonDisplay !== display) {
-        display = buttonDisplay;
-        setButtonDisplayValue(buttonDisplay);
-        console.log(buttonDisplay !== display);
-      }
-    });
+    const buttonDisplay = window.getComputedStyle(
+      buttonRef.current,
+      null
+    ).display;
+    if (buttonDisplay !== buttonDisplayValue) {
+      setButtonDisplayValue(buttonDisplay);
+    }
+    if (rewardspage) setButtonDisplayValue("none");
   };
-
-  // console.log(buttonDisplayValue);
 
   return (
     <Container
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       hover={hover}
-      onClick={rewardspage && action}
+      onClick={
+        buttonDisplayValue === "none" ? (action ? action : "") : () => {}
+      }
       rewardspage={rewardspage}
     >
       <Corner>

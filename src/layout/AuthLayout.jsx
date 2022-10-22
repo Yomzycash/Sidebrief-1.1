@@ -55,23 +55,27 @@ const LayoutLeftContent = styled.div`
   width: 80%;
   height: 90%;
   padding-bottom: 4rem;
+
   img {
     max-width: 80%;
-    margin: 0 8%;
+    margin-inline: 4% 0;
     max-height: 284px;
   }
+
   div {
     display: flex;
     margin-top: 100px;
     flex-flow: column nowrap;
-    gap: 2rem;
+    gap: 24px;
+
     p:nth-of-type(1) {
-      font-size: clamp(30px, 3vw, 36px);
+      font-size: 28px;
       color: white;
       font-weight: 700;
     }
+
     p:nth-of-type(2) {
-      font-size: clamp(14px, 1vw, 20px);
+      font-size: 18px;
       color: var(--TextGrey);
       font-weight: 400;
     }
@@ -83,9 +87,9 @@ const LayoutRight = styled.div`
   align-items: flex-start;
   flex: 1;
   width: 60%;
-  margin: 0 1.3rem;
+  /* margin: 0 1.3rem; */
   > div {
-    width: 80%;
+    width: clamp(400px, 52%, 100%);
     margin: 2rem auto;
     @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
       width: 90%;

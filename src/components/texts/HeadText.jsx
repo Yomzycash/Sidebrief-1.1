@@ -13,6 +13,8 @@ const HeadText = ({
   bodyalign,
   gap,
   time,
+  titleStyle,
+  bodyStyle,
 }) => {
   return (
     <HeadTextCont
@@ -27,8 +29,11 @@ const HeadText = ({
       exit={{ y: 10, opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Title titlealign={titlealign}> {title}</Title>
-      <Body bodyalign={bodyalign}>
+      <Title titlealign={titlealign} style={{ ...titleStyle }}>
+        {" "}
+        {title}
+      </Title>
+      <Body bodyalign={bodyalign} style={{ ...bodyStyle }}>
         {body}
         <span> {time}</span>
       </Body>
@@ -45,22 +50,22 @@ const HeadTextCont = styled(motion.div)`
   justify-content: ${(props) => props.justify || "flex-start"};
   margin-top: ${(props) => props.margintop || "0"};
   margin-bottom: ${(props) => props.marginbottom || "0"};
-  gap: ${(props) => props.gap || "8px"};
+  gap: ${(props) => props.gap || "clamp(4px, 1.4vw, 8px)"};
 `;
 
 const Title = styled.div`
   display: flex;
   text-align: ${(props) => props.titlealign || "left"};
-  font-size: clamp(20px, 2vw, 28px);
-  color: var(--SecondaryBlack);
+  font-size: clamp(20px, 2vw, 24px);
+  color: #242627;
   font-weight: 700;
 `;
+
 const Body = styled.div`
   text-align: ${(props) => props.bodyalign || "left"};
-  font-size: clamp(14px, 1.5vw, 20px);
+  font-size: clamp(14px, 1.4vw, 20px);
   color: var(--PrimaryBlack);
   font-weight: 400;
-  /* max-width: 550px; */
   span {
     color: #00a2d4;
   }

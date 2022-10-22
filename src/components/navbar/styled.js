@@ -9,14 +9,14 @@ export const NavWrapper = styled(motion.div)`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  padding: 15px clamp(20px, 5vw, 40px);
+  padding: 30px clamp(24px, 6vw, 80px);
   border-bottom: ${(prop) => prop.border};
   background-color: white;
   z-index: 4;
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
-  @media screen and (max-width: 760px) {
+  @media screen and (max-width: 631px) {
     display: none;
   }
 `;

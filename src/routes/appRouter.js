@@ -339,7 +339,7 @@ const AppRouter = () => {
           toastOptions={{
             className: "",
             style: {
-              margin: "30px",
+              margin: "10px",
               padding: "10px",
               display: "inline-flex",
               fontSize: "14px",
