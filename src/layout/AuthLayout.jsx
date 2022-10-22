@@ -90,7 +90,7 @@ const LayoutRight = styled.div`
   /* margin: 0 1.3rem; */
   > div {
     width: clamp(400px, 52%, 100%);
-    margin: 2rem auto;
+    margin: 2rem auto 63px;
     @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
       width: 90%;
     }

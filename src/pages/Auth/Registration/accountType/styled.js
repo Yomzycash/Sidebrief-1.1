@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 export const AccountTypeMain = styled.div`
   display: flex;
   flex-flow: column;
-  gap: clamp(48px, 9vw, 112px);
 
   @media screen and (max-width: 630px) {
     /* max-width: 90%; */
@@ -18,6 +17,7 @@ export const AccountTypeCont = styled.div`
   gap: clamp(48px, 10vw, 134px);
   align-self: "center";
   padding-inline: clamp(24px, 6vw, 80px);
+  margin-top: clamp(48px, 9vw, 112px);
 `;
 
 export const AccountTypeBody = styled.div`

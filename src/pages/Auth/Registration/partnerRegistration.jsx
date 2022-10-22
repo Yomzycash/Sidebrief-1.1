@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
@@ -173,7 +173,7 @@ const PartnerRegistration = () => {
                 },
               ]}
             />
-            <TestButton
+            <MainButton
               title="Sign Up"
               type="submit"
               loading={isLoading}

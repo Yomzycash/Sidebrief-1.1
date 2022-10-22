@@ -33,9 +33,9 @@ export const ParagraphText = styled.p`
 `;
 
 export const Image = styled.img`
-  min-width: 120px;
-  width: 20vw;
-  max-width: 200px;
+  min-width: 80px;
+  width: 15vw;
+  max-width: 104px;
 `;
 
 export const ResendTextWrapper = styled.div`

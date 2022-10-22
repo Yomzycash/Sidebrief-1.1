@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
@@ -133,7 +133,7 @@ const SignIn = () => {
                 </NavLink>
               </motion.div>
             </div>
-            <TestButton
+            <MainButton
               title="Sign In"
               type="submit"
               loading={isLoading}
@@ -183,7 +183,7 @@ const Form = styled.form`
 const Body = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 1rem;
+  gap: 24px;
 `;
 const Bottom = styled.div`
   display: flex;

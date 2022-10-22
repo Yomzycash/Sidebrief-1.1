@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
@@ -70,12 +70,17 @@ const ForgotPassword = () => {
     const resData = response?.data;
     const error = response?.error;
 
-    if (response) {
+    if (resData) {
       console.log(resData);
       toast.success(resData.message);
       navigate(`${location.pathname}/verifyotp`, { state: data.email });
     } else {
-      toast.error(error.data.message);
+      if (error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(error.data?.message);
+      }
+      console.log(error);
     }
   };
   return (
@@ -95,7 +100,7 @@ const ForgotPassword = () => {
               <InputWithLabel
                 error={errors}
                 placeholder="example@example.com"
-                label="email"
+                label="Email"
                 type="email"
                 name="email"
                 register={register}
@@ -106,15 +111,15 @@ const ForgotPassword = () => {
               text={[
                 {
                   text: "By creating an account , you agree to Sidebrief's",
-                  link: { text: "Privacy Policy", to: "/" },
+                  link: { text: "Privacy Policy", to: "" },
                 },
                 {
                   text: "&",
-                  link: { text: "Terms of Use", to: "/" },
+                  link: { text: "Terms of Use", to: "" },
                 },
               ]}
             />
-            <TestButton
+            <MainButton
               title="Reset Password"
               type="submit"
               loading={isLoading}
@@ -144,17 +149,25 @@ const Registration = styled.div`
   display: flex;
   flex-flow: column;
   height: max-content;
+  gap: 8px;
+
+  @media screen and (max-width: 1000px) {
+    gap: 32px;
+  }
 `;
+
 const TestBlock = styled.div`
   height: 1px;
   width: 100%;
 `;
+
 const Form = styled.form`
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: 48px;
   height: max-content;
 `;
+
 const Body = styled.div`
   display: flex;
   flex-flow: column;

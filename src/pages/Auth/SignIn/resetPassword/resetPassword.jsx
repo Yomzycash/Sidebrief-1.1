@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
@@ -121,7 +121,7 @@ const ResetPassword = () => {
                 errorMessage={errors.confirmPassword?.message}
               />
             </div>
-            <TestButton
+            <MainButton
               title="Reset Password"
               type="submit"
               loading={isLoading}
@@ -132,7 +132,7 @@ const ResetPassword = () => {
             <TextsWithLink
               text={[
                 {
-                  text: "Already have an account? ",
+                  text: "Remember your password? ",
                   link: { text: "Sign In", to: "/login" },
                 },
               ]}
@@ -151,6 +151,11 @@ const Registration = styled.div`
   display: flex;
   flex-flow: column;
   height: max-content;
+  gap: 8px;
+
+  @media screen and (max-width: 1000px) {
+    gap: 32px;
+  }
 `;
 const TestBlock = styled.div`
   height: 1px;
@@ -159,7 +164,7 @@ const TestBlock = styled.div`
 const Form = styled.form`
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: 48px;
   height: max-content;
 `;
 const Body = styled.div`

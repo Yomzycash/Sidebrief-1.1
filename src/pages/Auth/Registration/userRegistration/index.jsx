@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Body, Bottom, Form, Registration, TestBlock } from "./styles";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { DateInput, DropDown, InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText, TextsWithLink } from "components/texts";
@@ -187,7 +187,7 @@ const UserRegistration = () => {
                 },
               ]}
             />
-            <TestButton
+            <MainButton
               title="Sign Up"
               type="submit"
               loading={isLoading}

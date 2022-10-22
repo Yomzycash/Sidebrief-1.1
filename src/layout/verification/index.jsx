@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "components/navbar";
+import Navbar, { LogoNav } from "components/navbar";
 import { SuccessWrapper, Image } from "./styled";
 import verify from "asset/images/verify.png";
 import OtpInput from "react-otp-input";
@@ -57,6 +57,7 @@ const Verify = ({ title, paragraph }) => {
   }, [otpcode]);
 
   const resendVerification = async () => {
+    console.log("sent");
     const data = {
       email: state,
     };
@@ -66,17 +67,22 @@ const Verify = ({ title, paragraph }) => {
     const resData = response?.data;
     const error = response?.error;
 
-    if (response) {
+    if (resData) {
       console.log(resData);
-      toast.success(resData.message);
+      toast.success(resData?.message);
       // navigate(`${location.pathname}/verifyotp`, { email: data.email });
     } else {
-      toast.error(error.data.message);
+      if (error.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
+      } else {
+        toast.error(error.data?.message);
+      }
+      console.log(error);
     }
   };
   return (
-    <>
-      <Navbar />
+    <div>
+      <Navbar $displayMobile />
       <SuccessWrapper>
         <Image src={verify} alt="verify" />
         <HeadText
@@ -85,15 +91,16 @@ const Verify = ({ title, paragraph }) => {
           titleAlign="center"
           bodyAlign="center"
           gap="clamp(8px, 1.5vw, 16px)"
+          bodyStyle={{ textAlign: "center" }}
         />
         <OtpInput
           value={otpcode}
           onChange={handleChange}
           numInputs={5}
           inputStyle={{
-            maxWidth: "92px",
-            maxHeight: "72px",
-            width: "100%",
+            maxWidth: "64px",
+            maxHeight: "64px",
+            width: "8vw",
             height: "8vw",
             margin: "30px clamp(5px, 12%, 16px)",
             fontSize: "18px",
@@ -105,22 +112,23 @@ const Verify = ({ title, paragraph }) => {
             minHeight: "30px",
           }}
         />
-        <div style={{ display: "flex" }}>
+        {/* <div style={{ display: "flex" }}>
           <SecondaryText>Didn't get the code?</SecondaryText>
-          <SecondaryText clickColor cursor onClick={resendVerification}>
+          <SecondaryText clickColor $cursor onClick={resendVerification}>
             Resend verification
           </SecondaryText>
-        </div>
-        {/* <TextsWithLink
+        </div> */}
+        <TextsWithLink
           text={[
             {
               text: "Didn't get the code? ",
               link: { text: "Resend verification", to: location.pathname },
+              action: resendVerification,
             },
           ]}
-        /> */}
+        />
       </SuccessWrapper>
-    </>
+    </div>
   );
 };
 

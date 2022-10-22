@@ -17,13 +17,13 @@ export const NavWrapper = styled(motion.div)`
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
   @media screen and (max-width: 631px) {
-    display: none;
+    display: ${({ $displayMobile }) => ($displayMobile ? "" : "none")};
   }
 `;
 
 export const Image = styled.img`
   max-width: 134px;
-  width: 100%;
+  width: 11vw;
   min-width: 84px;
 `;
 export const BellIcon = styled.img`

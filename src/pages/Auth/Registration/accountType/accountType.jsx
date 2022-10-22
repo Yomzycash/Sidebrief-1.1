@@ -70,6 +70,7 @@ const AccountType = () => {
               title="Get started with Sidebrief"
               body="How would you like to use your account?"
               titleStyle={{ fontSize: "clamp(20px, 2vw, 28px)" }}
+              bodyStyle={{ fontSize: "clamp(14px, 1.4vw, 20px)" }}
             />
           </Top>
           <Middle
@@ -108,11 +109,11 @@ const AccountType = () => {
             text={[
               {
                 text: "Already have an account? ",
-                link: { text: "Sign In", to: "/login" },
+                link: { text: "Sign in", to: "/login" },
               },
             ]}
-            textStyle={{ fontSize: "clamp(14px, 1.4vw, 20px)" }}
-            linkStyle={{ fontSize: "clamp(14px, 1.4vw, 20px)" }}
+            textStyle={{ fontSize: "clamp(14px, 1.4vw, 18px)" }}
+            linkStyle={{ fontSize: "clamp(14px, 1.4vw, 18px)" }}
           />
         </AccountFooter>
       </AccountTypeCont>

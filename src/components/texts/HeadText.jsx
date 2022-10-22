@@ -63,7 +63,7 @@ const Title = styled.div`
 
 const Body = styled.div`
   text-align: ${(props) => props.bodyalign || "left"};
-  font-size: clamp(14px, 1.4vw, 20px);
+  font-size: 14px;
   color: var(--PrimaryBlack);
   font-weight: 400;
   span {

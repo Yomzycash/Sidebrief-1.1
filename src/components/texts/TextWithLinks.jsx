@@ -18,7 +18,11 @@ const TextsWithLink = ({ text, textStyle, linkStyle, $mobileResponsive }) => {
           <p key={element.text} style={{ ...textStyle }}>
             {" "}
             {element.text}{" "}
-            <Link to={element.link.to} style={{ ...linkStyle }}>
+            <Link
+              to={element.link.to}
+              style={{ ...linkStyle }}
+              onClick={element.action && element.action}
+            >
               <motion.span
                 key="TextWithLinkSpan"
                 whileHover={{ color: "#03769a" }}
@@ -39,9 +43,11 @@ const TextContainer = styled(motion.div)`
   display: inline;
   flex-flow: row wrap;
   font-size: 14px;
+
   p {
     display: inline;
     color: #4e5152;
+    text-align: center;
   }
   span {
     color: var(--SecondaryBlue);

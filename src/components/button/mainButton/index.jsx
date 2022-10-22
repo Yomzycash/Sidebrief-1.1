@@ -36,13 +36,14 @@ const Button = ({
       {loading ? (
         <Oval stroke="#ffffff" fill="white" width={24} height={24} />
       ) : (
-        title
+        <p>{title}</p>
       )}
     </ButtonWrapper>
   );
 };
 
 export default Button;
+
 const ButtonWrapper = styled(motion.button)`
   width: 100%;
   height: clamp(48px, 5vw, 59px);
@@ -51,7 +52,7 @@ const ButtonWrapper = styled(motion.button)`
   border-radius: 8px;
   color: ${(props) => (props.color ? props.color : "#ffffff")};
   text-align: center;
-  font-size: clamp(16px, 1.4vw, 18vw);
+  font-size: clamp(16px, 1.6vw, 18px);
   border: ${(props) => (props.border ? props.border : "none")};
   outline: ${(props) => (props.outline ? props.outline : "none")};
   cursor: pointer;
