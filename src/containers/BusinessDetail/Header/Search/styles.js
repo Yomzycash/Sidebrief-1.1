@@ -25,7 +25,7 @@ export const Input = styled.input`
 `;
 
 export const Container = styled.form`
-	max-width: 384px;
+	width: 384px;
 	height: 40px;
 	background: #ffffff;
 	border: 1px solid #edf1f7;

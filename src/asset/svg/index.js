@@ -8,3 +8,4 @@ export { ReactComponent as Mark } from "./mark.svg";
 export { ReactComponent as ThreeDot } from "./threeDot.svg";
 export { ReactComponent as RedTrash } from "./red-trash.svg";
 export { ReactComponent as MagGlass } from "./magGlass.svg";
+export { ReactComponent as DropDownArrow } from "./dropdownArrow.svg";
