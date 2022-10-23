@@ -9,7 +9,14 @@ export const convertToLink = async (image) => {
       method: "post",
       body: data,
     }
-  );
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   return await res;
 };
 
