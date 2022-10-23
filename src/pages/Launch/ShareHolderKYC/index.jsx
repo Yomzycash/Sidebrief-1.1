@@ -8,6 +8,7 @@ import { setCheckoutProgress, setShareholderDocs } from "redux/Slices";
 import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import {
+
   useAddMemberKYCMutation,
   useDeleteMemberKYCMutation,
   useViewMembersMutation,
@@ -18,9 +19,9 @@ import toast from "react-hot-toast";
 import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 import {
-  convertToLink,
-  isValidFileUploaded,
-  mergeInfo,
+	convertToLink,
+	isValidFileUploaded,
+	mergeInfo,
 } from "utils/LaunchHelper";
 
 import { Puff } from "react-loading-icons";

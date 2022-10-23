@@ -14,6 +14,8 @@ export const Status = styled.p`
 	font-size: 12px;
 	line-height: 18px;
 	text-align: center;
+	background: ${({ color }) => tinycolor(color).setAlpha(0.1)};
+	color: ${({ color }) => color};
 
 	${({ status }) => {
 		switch (status) {
