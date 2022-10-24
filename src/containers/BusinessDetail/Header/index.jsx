@@ -75,22 +75,22 @@ export const Header = ({ deleteAction, searchAndSort }) => {
 				<ActiveNav
 					text={"Business Information"}
 					// total={0}
-					path={"/test"}
+					path={"/dashboard/business/detail"}
 				/>
 				<ActiveNav
 					text={"Shareholders"}
 					total={0}
-					path={"/test/shareholders"}
+					path={"/dashboard/business/shareholders"}
 				/>
 				<ActiveNav
 					text={"Directors"}
 					total={0}
-					path={"/test/directors"}
+					path={"/dashboard/business/directors"}
 				/>
 				<ActiveNav
 					text={"Beneficiaries"}
 					total={0}
-					path={"/test/beneficiaries"}
+					path={"/dashboard/business/beneficiaries"}
 				/>
 			</SubHeader>
 			{searchAndSort ? (
