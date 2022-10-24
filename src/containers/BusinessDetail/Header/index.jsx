@@ -22,7 +22,7 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 // import Search from "components/navbar/Search";
 import { Search } from "./Search";
-import { useState } from "react";
+import { SortDropdown } from "./SortDropdown";
 
 export const Header = ({ deleteAction, searchAndSort }) => {
 	// const [searchTerm, setSearchTerm] = useState("");
@@ -98,7 +98,7 @@ export const Header = ({ deleteAction, searchAndSort }) => {
 					{/* placeholder changes based on the page it's on */}
 					{/* not implemented yet */}
 					<Search triggerSearch={triggerSearch} />
-					{/* Sort should be here */}
+					<SortDropdown />
 				</SearchAndSort>
 			) : null}
 		</Container>
