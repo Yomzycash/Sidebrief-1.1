@@ -7,6 +7,7 @@ import {
   Header,
   EntityCardsWrapper,
   Loading,
+  EntityTitle,
 } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
@@ -227,11 +228,17 @@ const EntitySelect = () => {
       </Header>
       <Body style={{ maxWidth: "100%" }}>
         <CheckoutSection
-          title={`${selectedCountry.toUpperCase()}: Please select a business type to get started`}
-          titleStyles={{
-            fontWeight: 600,
-          }}
+        // title={`${selectedCountry.toUpperCase()}: Please select a business type to get started`}
+        // titleStyles={{
+        //   fontWeight: 600,
+        // }}
         >
+          {selectedCountry && (
+            <EntityTitle>
+              {selectedCountry}:
+              <span> Please select a business type to get started</span>{" "}
+            </EntityTitle>
+          )}
           {console.log(entities)}
           {isLoading && (
             <Loading height="300px">

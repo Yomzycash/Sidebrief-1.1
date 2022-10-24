@@ -20,8 +20,15 @@ export const ProgressLine = styled.div`
   max-width: 89%;
   height: 2px;
   z-index: 10;
+
   @media screen and (max-width: 300px) {
     max-width: 70%;
+  }
+
+  @media screen and (max-width: 700px) {
+    top: 22px;
+    left: 2%;
+    max-width: 96%;
   }
 `;
 export const Progress = styled.div`
@@ -38,6 +45,10 @@ export const Container = styled.div`
   justify-content: space-between;
   height: 100%;
   z-index: 11;
+
+  @media screen and (max-width: 700px) {
+    justify-content: center;
+  }
 `;
 export const Circle = styled.div`
   display: flex;
@@ -52,5 +63,9 @@ export const Circle = styled.div`
 export const Text = styled.p`
   font-weight: 400;
   font-size: clamp(12px, 1.5vw, 14px);
-  color: ${({ color }) => (color === "active" ? "#00a2d4" : "#D7D7D7")}; ;
+  color: ${({ color }) => (color === "active" ? "#00a2d4" : "#D7D7D7")};
+
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;

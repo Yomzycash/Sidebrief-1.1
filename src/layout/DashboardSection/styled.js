@@ -6,8 +6,8 @@ export const Section = styled.div`
   flex-flow: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 32px;
-  margin: 38px clamp(20px, 5vw, 40px);
+  gap: clamp(24px, 2.4vw, 32px);
+  margin: clamp(2px, 4vw, 38px) clamp(20px, 5vw, 40px);
   margin-right: ${(props) => props.MarginRight};
   user-select: ${({ carousel }) => (carousel ? "none" : "")};
 `;
@@ -56,10 +56,11 @@ export const Right = styled(Link)`
 
 export const HeaderBody = styled.div`
   display: flex;
-  p {
+  > p {
     font-weight: 400;
     font-size: clamp(12px, 1.5vw, 14px);
     color: #727474;
+    line-height: 21px;
   }
 `;
 

@@ -117,6 +117,16 @@ export const Inputs = styled.div`
   }
 `;
 
+export const EntityTitle = styled.p`
+  font-weight: 600;
+  font-size: clamp(18px, 1.8vw, 20px);
+
+  span {
+    font-weight: 400;
+    font-size: clamp(14px, 1.2vw, 16px);
+  }
+`;
+
 export const modalStyle = {
   padding: 0,
   backgroundColor: "white",

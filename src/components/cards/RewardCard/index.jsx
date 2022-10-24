@@ -8,9 +8,12 @@ import {
   Title,
   Body,
   Frame,
+  CornerMobile,
+  CornerDesktop,
 } from "./styles";
-import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
+// import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { TextWithArrow } from "components/texts";
+import { CornerPetal } from "asset/svg";
 
 export const RewardCard = ({
   image,
@@ -50,7 +53,12 @@ export const RewardCard = ({
       rewardspage={rewardspage}
     >
       <Corner>
-        <CornerPetal />
+        <CornerMobile>
+          <CornerPetal viewBox="0 0 50 200" />
+        </CornerMobile>
+        <CornerDesktop>
+          <CornerPetal />
+        </CornerDesktop>
       </Corner>
       <Frame>
         <ImageHolder>
