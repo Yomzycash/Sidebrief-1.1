@@ -16,7 +16,7 @@ export const CheckoutButton = ({
     <Container
       onClick={action && action}
       isBack={back}
-      hide={hide}
+      $hide={hide}
       type={type}
       style={style}
       disabled={disable}

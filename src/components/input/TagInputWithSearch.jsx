@@ -262,7 +262,7 @@ const Tag = styled.p`
   color: white;
   background-color: #0082aa;
   border-radius: 8px;
-  padding: 11.5px 8px;
+  padding: clamp(4px, 1vw, 7px) clamp(7px, 1vw, 11px);
 `;
 const InputWrapper = styled.div`
   position: relative;

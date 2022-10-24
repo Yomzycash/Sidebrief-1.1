@@ -20,6 +20,7 @@ export const CheckoutSection = ({
   to,
   disableCheckbox,
   checked,
+  titleStyles,
 }) => {
   const handleCheckbox = (e) => {
     checkBoxAction(e.target.checked);
@@ -27,7 +28,7 @@ export const CheckoutSection = ({
 
   return (
     <Container>
-      <Heading>{title}</Heading>
+      <Heading style={{ ...titleStyles }}>{title}</Heading>
       {HeaderParagraph && <p>{HeaderParagraph}</p>}
       {checkbox && (
         <CheckBox disabled={disableCheckbox}>

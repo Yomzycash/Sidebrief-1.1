@@ -11,6 +11,8 @@ export const Container = styled.button`
   cursor: pointer;
   transition: 0.3s all ease;
 
+  display: ${({ $hide }) => ($hide ? "none" : "")};
+
   :hover {
     background-color: ${(props) =>
       props.hover_bg_color ? props.hover_bg_color : "#0082AA"};
