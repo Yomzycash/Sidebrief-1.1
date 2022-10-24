@@ -206,20 +206,21 @@ export const TagInputWrapper = styled.div`
 export const TagItem = styled.div`
   display: inline-flex;
   flex-direction: row;
-  padding: 11px 8px;
+  padding: clamp(4px, 1vw, 7px) clamp(7px, 1vw, 11px);
   background: #0082aa;
   border-radius: 8px;
   justify-content: space-between;
   align-items: center;
   gap: 0.5em;
   color: #fafafa;
+  text-transform: capitalize;
 `;
 
 export const TagText = styled.span`
   font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: clamp(12px, 1.5vw, 14px);
   line-height: 21px;
 `;
 export const Tagclose = styled.span`
