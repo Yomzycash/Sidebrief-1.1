@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export const Container = styled.header`
 	width: 100%;
 	border: 1px solid #edf1f7;
+	border-top: none;
 `;
 
 export const Top = styled.div`
