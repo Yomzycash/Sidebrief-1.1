@@ -1,5 +1,5 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
-import React from "react";
+import TabNavBar from 'components/TabNavBar/TabNavBar'
+import React from 'react'
 import {
   Body,
   BoldText,
@@ -8,8 +8,8 @@ import {
   Image,
   Main,
   ParagraphText,
-} from "./styled";
-import image from "../../../../asset/images/coming.png";
+} from './styled'
+import image from '../../../../asset/images/coming.png'
 const Application = () => {
   return (
     <Container>
@@ -26,7 +26,7 @@ const Application = () => {
         </Main>
       </Body>
     </Container>
-  );
-};
+  )
+}
 
-export default Application;
+export default Application
