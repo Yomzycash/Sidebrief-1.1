@@ -34,16 +34,16 @@ const NumberInput = ({
 
   const activeStyle = {
     border: "1px solid #00a2d4",
-    height: "56px",
+    height: "48px",
     borderRadius: "10px",
-    marginTop: "20px",
+    // marginTop: "20px",
   };
 
   const nonActiveStyle = {
     border: "1px solid #ececec",
-    height: "56px",
+    height: "48px",
     borderRadius: "10px",
-    marginTop: "20px",
+    // marginTop: "20px",
   };
 
   return (
@@ -67,8 +67,8 @@ const NumberInput = ({
         onBlur={() => setActive(false)}
         style={
           !errorMessage && active
-            ? { ...phoneInputStyles, activeStyle }
-            : { ...phoneInputStyles, ...nonActiveStyle }
+            ? { ...activeStyle, ...phoneInputStyles }
+            : { ...nonActiveStyle, ...phoneInputStyles }
         }
         // style={phoneInputStyles}
       >
@@ -81,7 +81,7 @@ const NumberInput = ({
             borderRadius: "20px",
           }}
           inputStyle={{
-            paddingLeft: "65px",
+            paddingLeft: "clamp(60px, 4vw, 65px)",
             width: "100%",
             height: "95%",
             fontSize: phoneInputStyles?.fontSize,

@@ -164,7 +164,7 @@ const BeneficiariesKYC = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loading>
           )}
-          <LaunchFormContainer>
+          <LaunchFormContainer style={{ paddingTop: "40px" }}>
             {documentContainer.map((beneficiary, index) => (
               <FileContainer key={index}>
                 <Name>{beneficiary.name}</Name>

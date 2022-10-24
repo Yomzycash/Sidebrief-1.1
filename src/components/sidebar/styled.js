@@ -9,15 +9,16 @@ export const SidebarWrapper = styled(motion.div)`
   flex-flow: column;
   flex: 1;
   gap: 16px;
+  background-color: white;
 
   position: sticky;
-  top: 73px;
+  top: 57.1px;
 
   font-size: 14px;
   width: ${(props) => props.width};
   box-sizing: border-box;
   padding: 0px 24px;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 57.1px);
   border-right: 1px solid #edf1f7;
 
   @media screen and (max-width: 1050px) {
@@ -25,9 +26,10 @@ export const SidebarWrapper = styled(motion.div)`
   }
 `;
 export const ListWrapper = styled.div`
-  padding: 20px 15px;
-  margin-bottom: 12px;
+  margin: 20px 15px 32px;
+  width: max-content;
   z-index: 15;
+  cursor: pointer;
 `;
 
 export const SideLinkWrapper = styled.div`

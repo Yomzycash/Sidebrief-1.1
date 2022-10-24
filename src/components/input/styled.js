@@ -41,7 +41,7 @@ export const DropWrapper = styled.div`
 export const Wrapper = styled(motion.div)`
   display: flex;
   flex-flow: column;
-  gap: 12px;
+  gap: clamp(8px, 0.8px, 12px);
   margin-bottom: 24px;
   width: 100%;
   position: relative;

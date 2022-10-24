@@ -4,7 +4,7 @@ import { Container } from "./styled";
 export const RewardSummaryCard = ({ shown, total }) => {
   return (
     <Container>
-      Showing {shown} of {total}
+      Showing {shown} of {total} results
     </Container>
   );
 };

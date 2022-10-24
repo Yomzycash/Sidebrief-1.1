@@ -18,6 +18,7 @@ import {
   TailSpin,
   ThreeDots,
 } from "react-loading-icons";
+import StaffBusinessInfoCard from "components/cards/StaffBsinessInfoCard/Index";
 
 const Test = () => {
   // const [deleted, setDeleted] = useState(false);
@@ -134,6 +135,7 @@ const Test = () => {
       />
       <BusinessesChartCard staff analytics={analytics} />
       <BusinessHomeTable data={tableMockData} />
+      <StaffBusinessInfoCard />
       {/* <Puff stroke="#98ff98" fill="white" width={60} />
       <Rings stroke="#98ff98" fill="white" width={60} />
       <SpinningCircles stroke="#98ff98" fill="white" width={60} />

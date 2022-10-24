@@ -71,8 +71,9 @@ const ShareHoldersInfo = () => {
   const [isDirector, setIsDirector] = useState(false);
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
-  const [useSidebriefShareholders, setUseSidebriefShareholders] =
-    useState(false);
+  const [useSidebriefShareholders, setUseSidebriefShareholders] = useState(
+    localStorage.getItem("useSidebriefShareholders")
+  );
   const [shareholdersInfo, setShareholdersInfo] = useState([]);
 
   // Endpont hook for shareholder add
@@ -103,7 +104,12 @@ const ShareHoldersInfo = () => {
   };
 
   const handleCheckbox = (checked) => {
-    setUseSidebriefShareholders(checked);
+    setUseSidebriefShareholders(checked === true ? checked : false);
+    if (checked) {
+      localStorage.setItem("useSidebriefShareholders", checked);
+    } else {
+      localStorage.removeItem("useSidebriefShareholders");
+    }
   };
 
   const handleAddMore = () => {
@@ -361,6 +367,11 @@ const ShareHoldersInfo = () => {
 
     setShareholdersInfo(mergedInfo);
 
+    if (mergedInfo.length > 0) {
+      setUseSidebriefShareholders(false);
+      localStorage.removeItem("useSidebriefShareholders");
+    }
+
     return mergedInfo;
   };
 
@@ -382,6 +393,7 @@ const ShareHoldersInfo = () => {
           checkbox="Shareholders"
           checkBoxAction={handleCheckbox}
           disableCheckbox={shareholdersInfo?.length > 0 ? true : false}
+          checked={useSidebriefShareholders}
         />
         <LaunchPrimaryContainer>
           {viewState.isLoading ||

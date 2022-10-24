@@ -75,7 +75,8 @@ const ButtonWrapper = styled(motion.button)`
   }
 
   :disabled {
-    background-color: #29add5;
+    background-color: #79c7df;
+    color: #fff;
   }
 
   @media screen and (max-width: 600px) {

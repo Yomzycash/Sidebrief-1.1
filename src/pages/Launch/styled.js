@@ -58,7 +58,7 @@ export const AddMore = styled.div`
 export const Bottom = styled.div`
   display: flex;
   width: 100%;
-  padding: 40px;
+  padding: 32px clamp(24px, 3.4vw, 40px);
 `;
 export const EntityCardsWrapper = styled.div`
   display: flex;

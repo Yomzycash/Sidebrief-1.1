@@ -4,12 +4,15 @@ export const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 40px 40px 20px 40px;
+  padding: 40px 40px 20px;
+  padding: clamp(24px, 3.4vw, 40px) clamp(24px, 3.4vw, 40px)
+    clamp(10px, 1.4vw, 20px);
 
   > p {
     font-size: 14px;
     color: #151717;
     margin-top: 40px;
+    margin-top: clamp(8px, 2vw, 30px);
   }
 
   @media screen and (max-width: 600px) {
@@ -21,14 +24,10 @@ export const Heading = styled.h3`
   display: flex;
   justify-content: space-between;
   font-family: BR Firma;
-  font-size: 24px;
+  font-size: clamp(18px, 1.8vw, 20px);
   font-weight: 600;
   line-height: 21px;
   color: #151717;
-  /* letter-spacing: 0px; */
-  @media screen and (max-width: 600px) {
-    font-size: 20px;
-  }
 
   span {
     font-size: 14px;
@@ -40,9 +39,9 @@ export const Heading = styled.h3`
 export const CheckBox = styled.div`
   display: flex;
   gap: 16px;
-  margin-top: 40px;
+  margin-top: clamp(8px, 2vw, 40px);
   color: #151717;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 
   input {

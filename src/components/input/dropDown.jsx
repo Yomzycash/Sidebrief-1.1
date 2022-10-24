@@ -20,6 +20,8 @@ const DropDown = ({
   defaultValue,
   register,
   launch,
+  height,
+  fontSize,
   ...rest
 }) => {
   const selectStyle = {
@@ -32,9 +34,9 @@ const DropDown = ({
       ...base,
       boxShadow: "none",
       borderRadius: 10,
-      height: 48,
+      height: height || 48,
       paddingInline: 20,
-      fontSize: launch && 14,
+      fontSize: fontSize ? fontSize : launch && 14,
       outline: "none",
       "&:hover": {
         borderColor: "none",
@@ -46,11 +48,11 @@ const DropDown = ({
     }),
     placeholder: (base, state) => ({
       ...base,
-      fontSize: 14,
+      fontSize: fontSize ? fontSize : 14,
     }),
     input: (provided, state) => ({
       ...provided,
-      height: 46,
+      height: height || 46,
       borderRadius: 15,
       margin: 0,
       padding: 0,
@@ -60,7 +62,7 @@ const DropDown = ({
       ...provided,
       cursor: "pointer",
       padding: 20,
-      fontSize: 14,
+      fontSize: fontSize ? fontSize : 14,
     }),
   };
   return (

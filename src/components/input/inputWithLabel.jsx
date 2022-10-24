@@ -31,6 +31,7 @@ const InputWithLabel = ({
   bottomText,
   topStyles,
   inputClass,
+  bottomTextClass,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -102,7 +103,9 @@ const InputWithLabel = ({
         ) : null}
       </InputWrapper>
 
-      {bottomText ? <BottomText>{bottomText}</BottomText> : null}
+      {bottomText ? (
+        <BottomText className={bottomTextClass}>{bottomText}</BottomText>
+      ) : null}
     </Wrapper>
   );
 };
