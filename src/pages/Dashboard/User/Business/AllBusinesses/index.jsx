@@ -6,36 +6,36 @@ const AllBusinesses = () => {
   return (
     <Container>
       <Body>
-        <BusinessTable
+        {/* <BusinessTable
           data={
             [
-              // {
-              //   name: 'Sidebrief Africa',
-              //   type: 'c-corporation',
-              //   country: 'Nigeria',
-              //   date: '28/09/2022',
-              // },
-              // {
-              //   name: 'Ayomide technologies',
-              //   type: 'limited liablity company',
-              //   country: 'Kenya',
-              //   date: '28/09/2022',
-              // },
-              // {
-              //   name: 'Sidebrief Africa',
-              //   type: 'c-corporation',
-              //   country: 'Nigeria',
-              //   date: '28/09/2022',
-              // },
-              // {
-              //   name: 'Ayomide technologies',
-              //   type: 'limited liablity company',
-              //   country: 'Kenya',
-              //   date: '28/09/202',
-              // },
+              {
+                name: 'Sidebrief Africa',
+                type: 'c-corporation',
+                country: 'Nigeria',
+                date: '28/09/2022',
+              },
+              {
+                name: 'Ayomide technologies',
+                type: 'limited liablity company',
+                country: 'Kenya',
+                date: '28/09/2022',
+              },
+              {
+                name: 'Sidebrief Africa',
+                type: 'c-corporation',
+                country: 'Nigeria',
+                date: '28/09/2022',
+              },
+              {
+                name: 'Ayomide technologies',
+                type: 'limited liablity company',
+                country: 'Kenya',
+                date: '28/09/202',
+              },
             ]
           }
-        />
+        /> */}
       </Body>
     </Container>
   );

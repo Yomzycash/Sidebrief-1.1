@@ -25,5 +25,5 @@ export const SecondaryText = styled.p`
   margin-right: ${(props) => props.right};
   margin-left: ${(props) => props.left};
   width: ${(props) => props.width};
-  cursor: ${(props) => props.cursor && "pointer"};
+  cursor: ${(props) => props.$cursor && "pointer"};
 `;

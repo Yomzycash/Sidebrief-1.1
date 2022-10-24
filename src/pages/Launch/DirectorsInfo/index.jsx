@@ -50,7 +50,9 @@ const DirectorsInfo = () => {
   const [cardAction, setCardAction] = useState();
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
-  const [useSidebriefDirectors, setUseSidebriefDirectors] = useState(false);
+  const [useSidebriefDirectors, setUseSidebriefDirectors] = useState(
+    localStorage.getItem("useSidebriefDirectors")
+  );
   const [directorsInfo, setDirectorsInfo] = useState([]);
 
   // Endpont hooks
@@ -77,7 +79,12 @@ const DirectorsInfo = () => {
   };
 
   const handleCheckbox = (checked) => {
-    setUseSidebriefDirectors(checked);
+    setUseSidebriefDirectors(checked === true ? checked : false);
+    if (checked) {
+      localStorage.setItem("useSidebriefDirectors", checked);
+    } else {
+      localStorage.removeItem("useSidebriefDirectors");
+    }
   };
 
   const handleAddMore = () => {
@@ -201,7 +208,11 @@ const DirectorsInfo = () => {
 
     setDirectorsInfo(mergedInfo);
 
-    console.log(mergedInfo);
+    if (mergedInfo.length > 0) {
+      setUseSidebriefDirectors(false);
+      localStorage.removeItem("useSidebriefDirectors");
+    }
+
     return mergedInfo;
   };
 
@@ -228,6 +239,7 @@ const DirectorsInfo = () => {
           checkbox="Directors"
           checkBoxAction={handleCheckbox}
           disableCheckbox={directorsInfo.length > 0 ? true : false}
+          checked={useSidebriefDirectors}
         />
         <LaunchPrimaryContainer>
           {viewDirectorsState.isLoading ||

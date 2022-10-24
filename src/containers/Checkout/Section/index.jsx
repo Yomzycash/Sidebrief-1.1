@@ -1,12 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Heading,
   ContentWrapper,
   SectionContainer,
   CheckBox,
-} from './styles'
+} from "./styles";
 
 export const CheckoutSection = ({
   title,
@@ -19,10 +19,11 @@ export const CheckoutSection = ({
   checkBoxAction,
   to,
   disableCheckbox,
+  checked,
 }) => {
   const handleCheckbox = (e) => {
-    checkBoxAction(e.target.checked)
-  }
+    checkBoxAction(e.target.checked);
+  };
 
   return (
     <Container>
@@ -33,8 +34,9 @@ export const CheckoutSection = ({
           <input
             type="checkbox"
             id="checkbox"
-            onClick={handleCheckbox}
+            onChange={handleCheckbox}
             disabled={disableCheckbox}
+            checked={checked}
           />
           <label htmlFor="checkbox">
             Click here to use Sidebrief's <span>{checkbox}</span> until you
@@ -49,10 +51,10 @@ export const CheckoutSection = ({
           <Link
             to={to}
             style={{
-              textDecoration: 'none',
-              fontSize: '14px',
-              color: '#00A2D4',
-              cursor: 'pointer',
+              textDecoration: "none",
+              fontSize: "14px",
+              color: "#00A2D4",
+              cursor: "pointer",
             }}
           >
             {linkTitle}
@@ -61,5 +63,5 @@ export const CheckoutSection = ({
       )}
       <ContentWrapper>{children}</ContentWrapper>
     </Container>
-  )
-}
+  );
+};

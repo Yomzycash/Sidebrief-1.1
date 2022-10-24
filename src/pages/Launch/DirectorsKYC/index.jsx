@@ -195,7 +195,7 @@ const DirectorKYC = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loading>
           )}
-          <LaunchFormContainer>
+          <LaunchFormContainer style={{ paddingTop: "40px" }}>
             {documentContainer.map((director, index) => (
               <FileContainer key={index}>
                 <Name>{director.name}</Name>

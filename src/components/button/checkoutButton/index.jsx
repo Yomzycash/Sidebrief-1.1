@@ -1,4 +1,5 @@
 import React from "react";
+import { Oval } from "react-loading-icons";
 import { Container } from "./styles";
 
 export const CheckoutButton = ({
@@ -9,6 +10,7 @@ export const CheckoutButton = ({
   type,
   style,
   disable,
+  loading,
 }) => {
   return (
     <Container
@@ -19,7 +21,11 @@ export const CheckoutButton = ({
       style={style}
       disabled={disable}
     >
-      <span>{text}</span>
+      {loading ? (
+        <Oval stroke="#ffffff" fill="white" width={24} height={24} />
+      ) : (
+        <span>{text}</span>
+      )}
     </Container>
   );
 };

@@ -1,4 +1,9 @@
-import React from 'react'
+import React, { useState } from "react";
+import TabNavBar from "components/TabNavBar/TabNavBar";
+import CommingSoon from "components/ComingSoon";
+import CountryCard from "components/cards/CountryCard";
+import Stepbar from "components/Indicators/Stepbar";
+import FileUpload from "components/FileUpload";
 import {
   Body,
   BoldText,
@@ -7,12 +12,12 @@ import {
   Image,
   Main,
   ParagraphText,
-} from './styled'
-import image from '../../../../../asset/images/coming.png'
-import { useNavigate } from 'react-router-dom'
-import TabNavBar from 'components/TabNavBar/TabNavBar'
+} from "./styled";
+import image from "../../../../../asset/images/coming.png";
+import { useNavigate } from "react-router-dom";
+
 const Taxes = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Container>
       <TabNavBar />
@@ -25,14 +30,14 @@ const Taxes = () => {
             the moment. However once it’s live, you’ll be the first to know.
           </ParagraphText>
           <ComingBtn
-            onClick={() => navigate('/dashboard/business-registration')}
+            onClick={() => navigate("/dashboard/business-registration")}
           >
             Back to Dashboard
           </ComingBtn>
         </Main>
       </Body>
     </Container>
-  )
-}
+  );
+};
 
-export default Taxes
+export default Taxes;

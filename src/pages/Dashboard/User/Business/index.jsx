@@ -31,7 +31,10 @@ const searchStyle = {
   borderRadius: "12px",
   backgroundColor: "white",
   maxWidth: "384px",
+  height: "40px",
 };
+
+const iconStyle = { width: "17px", height: "17px" };
 
 const Business = () => {
   const location = useLocation();
@@ -88,7 +91,7 @@ const Business = () => {
             </Drop>
           </TopContent>
           <BottomContent>
-            <Search style={searchStyle} />
+            <Search style={searchStyle} iconStyle={iconStyle} />
             <ButtonWrapper>
               <button onClick={handleLaunch}>
                 <NoteIcon />

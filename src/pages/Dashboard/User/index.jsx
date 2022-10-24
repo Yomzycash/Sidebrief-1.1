@@ -12,7 +12,11 @@ const UserDashboard = () => {
 
   return (
     <Dashboard>
-      <Navbar dashboard />
+      <Navbar
+        dashboard
+        imgStyles={{ maxWidth: "100px" }}
+        style={{ padding: "12px 39px" }}
+      />
       <MobileNavbar />
       <Body>
         <BodyLeft>
@@ -39,10 +43,12 @@ const Body = styled.div`
   flex-flow: row nowrap;
 `;
 const BodyLeft = styled.div``;
+
 const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
+
   @media screen and (max-width: 1050px) {
     width: 100%;
   }
