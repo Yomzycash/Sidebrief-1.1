@@ -135,6 +135,10 @@ const ShareHolderKYC = () => {
 
   console.log(documentContainer);
   store.dispatch(setShareholderDocs(documentContainer));
+  localStorage.setItem(
+    "localShareholderInfo",
+    JSON.stringify(documentContainer)
+  );
 
   const handleNext = () => {
     navigate("/launch/directors-kyc");

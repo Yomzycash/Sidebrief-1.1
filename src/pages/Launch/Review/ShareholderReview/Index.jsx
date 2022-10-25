@@ -87,6 +87,11 @@ const ShareholderReview = () => {
     handleMerge();
   }, [shareholderDocumentContainer]);
 
+  let shareholderLocalStorage = JSON.parse(
+    localStorage.getItem("localShareholderInfo")
+  );
+
+  console.log("package from local", shareholderLocalStorage);
   return (
     <>
       <Container>
