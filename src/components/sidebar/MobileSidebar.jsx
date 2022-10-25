@@ -5,6 +5,7 @@ import {
   Logout,
   LogoutText,
   LogoutWrapper,
+  MobileSidebarWrapper,
   SidebarContentItem,
   SidebarContentItemIcon,
   SidebarContentItemLink,
@@ -18,30 +19,15 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { MdClear } from "react-icons/md";
 
-const Sidebar = () => {
+const MobileSidebar = ({ toggleDrawer }) => {
   const [iconHovered, setIconHovered] = useState(0);
 
   const location = useLocation();
   const locationPath = location.pathname;
 
   const navigate = useNavigate();
-  const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
-
-  const sidebarVariants = {
-    true: {
-      width: "236px",
-    },
-    false: {
-      width: "0px",
-    },
-  };
-
-  useEffect(() => {
-    store.dispatch(
-      setSidebarWidth(expanded ? sidebarVariants.true.width : "100px")
-    );
-  }, [expanded]);
 
   const ActiveStyle = {
     background: "rgba(0, 162, 212, 0.1)",
@@ -50,23 +36,22 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
+    toggleDrawer(false);
     navigate("/login");
   };
 
   return (
-    <SidebarWrapper
-      width="100px"
-      key="sidebar"
-      variants={sidebarVariants}
-      animate={expanded ? `${expanded}` : ""}
-    >
+    <MobileSidebarWrapper>
       <Top>
-        <ListWrapper onClick={() => setExpaned(!expanded)}>
-          <HiMenu color="#00A2D4" size={24} />
-        </ListWrapper>
+        <MdClear
+          size={25}
+          style={{ marginBottom: "28px", left: "10px", position: "relative" }}
+          onClick={toggleDrawer(false)}
+        />
+
         <SidebarLinks>
           {sidebarLink.map((item, index) => (
-            <SideLinkWrapper key={index}>
+            <SideLinkWrapper key={index} onMouseDown={toggleDrawer(false)}>
               {
                 <NavLink
                   to={item.path}
@@ -80,9 +65,7 @@ const Sidebar = () => {
                       hover={iconHovered === item.id}
                     />
                   </SidebarContentItemIcon>
-                  <SidebarContentItemLink>
-                    {expanded ? item.title : null}
-                  </SidebarContentItemLink>
+                  <SidebarContentItemLink>{item.title}</SidebarContentItemLink>
                 </NavLink>
               }
             </SideLinkWrapper>
@@ -93,13 +76,11 @@ const Sidebar = () => {
       <Logout>
         <LogoutWrapper onClick={handleLogout}>
           <HiOutlineLogout color="#ed4e3a" size={20} />
-          {expanded ? (
-            <LogoutText onClick={handleLogout}>Logout</LogoutText>
-          ) : null}
+          <LogoutText onClick={handleLogout}>Logout</LogoutText>
         </LogoutWrapper>
       </Logout>
-    </SidebarWrapper>
+    </MobileSidebarWrapper>
   );
 };
 
-export default Sidebar;
+export default MobileSidebar;

@@ -1,18 +1,19 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-`
-export const Top = styled.div``
+`;
+export const Top = styled.div``;
 export const Body = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
   padding-top: 150px;
-`
+  margin-inline: 25px;
+`;
 export const Main = styled.div`
   display: flex;
   flex-flow: column;
@@ -21,10 +22,10 @@ export const Main = styled.div`
   align-items: center;
   margin: auto 0;
   max-width: 628px;
-`
+`;
 export const Image = styled.img`
   margin-bottom: 24px;
-`
+`;
 export const BoldText = styled.h3`
   color: #151717;
   font-size: clamp(20px, 1.5vw, 28px);
@@ -34,10 +35,10 @@ export const BoldText = styled.h3`
   margin-bottom: ${(props) => props.bottom};
   margin-right: ${(props) => props.right};
   margin-left: ${(props) => props.left};
-`
+`;
 
 export const ParagraphText = styled.p`
-  color: ${(props) => (props.clickColor ? '#00a2d4' : '#4E5152')};
+  color: ${(props) => (props.clickColor ? "#00a2d4" : "#4E5152")};
   font-size: clamp(14px, 1.5vw, 16px);
   font-weight: 400;
   text-align: ${(props) => props.align};
@@ -46,8 +47,8 @@ export const ParagraphText = styled.p`
   margin-right: ${(props) => props.right};
   margin-left: ${(props) => props.left};
   width: ${(props) => props.width};
-  cursor: ${(props) => props.cursor && 'pointer'};
-`
+  cursor: ${(props) => props.cursor && "pointer"};
+`;
 
 export const ComingBtn = styled.button`
   border: 1px solid #00a2d4;
@@ -63,4 +64,4 @@ export const ComingBtn = styled.button`
     background-color: #00a2d4;
     color: white;
   }
-`
+`;

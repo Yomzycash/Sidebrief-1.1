@@ -100,7 +100,7 @@ const NavBarCont = styled(motion.div)`
     text-decoration: none;
   }
 
-  @media screen and (min-width: 631px) {
+  @media screen and (min-width: 701px) {
     display: ${({ $mobile }) => $mobile && "none"};
   }
 `;

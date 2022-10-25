@@ -9,16 +9,22 @@ export const Container = styled.div`
     margin: 0;
   }
 `;
+
 export const Header = styled.div`
   position: sticky;
-  top: 65px;
+  top: 57.1px;
   display: flex;
   flex-flow: column;
   background-color: white;
   z-index: 2;
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
+
+  @media screen and (max-width: 700px) {
+    top: 76px;
+  }
 `;
+
 export const MainHeader = styled.div`
   display: flex;
   align-items: center;
@@ -45,28 +51,34 @@ export const MainHeader = styled.div`
     justify-content: space-between;
   }
 
-  @media screen and (max-width: 600px) {
-    border: solid red;
+  @media screen and (max-width: 700px) {
     display: none;
   }
 `;
 
 export const SubHeader = styled.div`
   display: flex;
+  align-items: center;
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
   padding-left: 24px;
+  max-width: 100%;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 700px) {
     padding-inline: 24px;
   }
 `;
 
 export const MobileHeader = styled.div`
   display: none;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 700px) {
     display: flex;
+    align-items: center;
     gap: 16px;
     padding: 16px 24px;
   }
@@ -77,12 +89,13 @@ export const Drop = styled.div`
   border: 1px solid #f1f1f1;
   border-radius: 12px;
   background-color: #f1f1f1;
-  padding: 8px 16px;
+  padding: 8px clamp(8px, 1vw, 16px);
+  font-size: clamp(14px, 1.4vw, 16px);
 
   select {
     border: none;
     outline: none;
-    width: 60px;
+    gap: clamp(8px, 1vw, 16px);
     background: none;
   }
 `;

@@ -16,7 +16,7 @@ export const NavWrapper = styled(motion.div)`
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
-  @media screen and (max-width: 631px) {
+  @media screen and (max-width: 701px) {
     display: ${({ $displayMobile }) => ($displayMobile ? "" : "none")};
   }
 `;
@@ -40,19 +40,23 @@ export const DownIcon = styled.img`
   cursor: pointer;
 `;
 export const SearchIcon = styled.img`
-  width: 12px;
-  height: 12px;
+  width: clamp(12px, 1.2vw, 18px);
+  height: clamp(12px, 1.2vw, 18px);
 `;
 export const SearchBar = styled.input`
   background: transparent;
   outline: none;
-  width: 90%;
+  flex: 1;
+  /* width: 90%; */
   border: none;
   margin-left: 8px;
+  font-size: clamp(12px, 1.2vw, 14px);
+  line-height: clamp(18px, 1.8vw, 21px);
+  font-weight: 400;
 
   &::placeholder {
-    font-size: 12px;
-    line-height: 18px;
+    font-size: clamp(12px, 1.2vw, 14px);
+    line-height: clamp(18px, 1.8vw, 21px);
     font-weight: 400;
   }
 `;
@@ -66,13 +70,13 @@ export const SearchIconWrapper = styled.div`
 
 export const SearchBarWrapper = styled.div`
   max-width: 563px;
-  width: 100%;
   border: 1px solid #edf1f7;
   border-radius: 20px;
   background: #fafafa;
   display: flex;
+  flex: 1;
   padding-inline: 17px;
-  height: 32px;
+  height: 40px;
 
   font-size: 12px;
   line-height: 18px;
