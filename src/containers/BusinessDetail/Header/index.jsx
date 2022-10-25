@@ -20,14 +20,57 @@ import { FiArrowLeft } from "react-icons/fi";
 import { StatusIndicator } from "components/Indicators";
 import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
-// import Search from "components/navbar/Search";
 import { Search } from "./Search";
 import { SortDropdown } from "./SortDropdown";
+import { useLocation, useParams } from "react-router-dom";
+import { useViewLaunchRequestQuery } from "services/launchService";
+import { useSelector } from "react-redux";
 
-export const Header = ({ deleteAction, searchAndSort }) => {
-	// const [searchTerm, setSearchTerm] = useState("");
+export const Header = () => {
+	const { code } = useParams();
+	const { pathname } = useLocation();
+	const launchResponse = useSelector(
+		(store) => store.LaunchReducer.launchResponse
+	);
+	const { first_name, last_name } = useSelector(
+		(store) => store.UserDataReducer.userInfo
+	);
+
+	const launchRequest = useViewLaunchRequestQuery(launchResponse, {
+		refetchOnMountOrArgChange: true,
+	});
+
+	if (launchRequest.isSuccess) {
+		console.log(launchRequest.data);
+	}
+
+	const page = pathname.split("/").pop();
+
+	const deleteAction = () => {
+		// perform delete action here
+	};
 
 	const triggerSearch = (query) => {};
+
+	const getStatus = (stat) => {
+		switch (stat) {
+			case "pending":
+				return {
+					text: "draft",
+					color: "#00A2D4",
+				};
+			case "submitted":
+				return {
+					text: "pending",
+					color: "#D400CC",
+				};
+			default:
+				return {
+					text: stat,
+					color: "black",
+				};
+		}
+	};
 
 	return (
 		<Container>
@@ -40,25 +83,32 @@ export const Header = ({ deleteAction, searchAndSort }) => {
 					<LHS>
 						<TopInfo>
 							<CompanyName>
-								Ayomide Construction and Husbands
+								{launchRequest.isLoading
+									? `--`
+									: Object.values(
+											launchRequest.data.businessNames
+									  )[0]}
 							</CompanyName>
 							{/* Status */}
 							<StatusIndicator
-								status={{
-									text: "In progress",
-									color: "#FFBF29",
-								}}
+								status={getStatus(
+									launchRequest.isLoading
+										? `--`
+										: launchRequest.data.registrationStatus
+								)}
 							/>
 							{/* Type */}
 							<StatusIndicator
 								status={{
-									text: "L.L.C",
+									text: launchRequest.isLoading
+										? `--`
+										: launchRequest.data.registrationType,
 									color: "#00A2D4",
 								}}
 							/>
 						</TopInfo>
 						<BottomInfo>
-							<UserName>Ayomide Olopade</UserName>
+							<UserName>{`${first_name} ${last_name}`}</UserName>
 							<DotSeperator />
 							<DateText>28th August 2022</DateText>
 						</BottomInfo>
@@ -75,29 +125,41 @@ export const Header = ({ deleteAction, searchAndSort }) => {
 				<ActiveNav
 					text={"Business Information"}
 					// total={0}
-					path={"/dashboard/business/detail"}
+					path={`/dashboard/business/${code}/detail`}
 				/>
 				<ActiveNav
 					text={"Shareholders"}
-					total={0}
-					path={"/dashboard/business/shareholders"}
+					total={
+						launchRequest.isLoading
+							? 0
+							: launchRequest.data.businessShareholders.length
+					}
+					path={`/dashboard/business/${code}/shareholders`}
 				/>
 				<ActiveNav
 					text={"Directors"}
-					total={0}
-					path={"/dashboard/business/directors"}
+					total={
+						launchRequest.isLoading
+							? 0
+							: launchRequest.data.businessDirectors.length
+					}
+					path={`/dashboard/business/${code}/directors`}
 				/>
 				<ActiveNav
 					text={"Beneficiaries"}
-					total={0}
-					path={"/dashboard/business/beneficiaries"}
+					total={
+						launchRequest.isLoading
+							? 0
+							: launchRequest.data.businessBeneficialOwners.length
+					}
+					path={`/dashboard/business/${code}/beneficiaries`}
 				/>
 			</SubHeader>
-			{searchAndSort ? (
+			{page !== "detail" ? (
 				<SearchAndSort>
 					{/* placeholder changes based on the page it's on */}
 					{/* not implemented yet */}
-					<Search triggerSearch={triggerSearch} />
+					<Search triggerSearch={triggerSearch} page={page} />
 					<SortDropdown />
 				</SearchAndSort>
 			) : null}

@@ -20,6 +20,7 @@ export const BackContainer = styled(Link)`
 	align-items: center;
 	gap: 8px;
 	text-decoration: none;
+	align-self: flex-start;
 `;
 
 export const Text = styled.p`
@@ -77,6 +78,7 @@ export const UserName = styled.p`
 	line-height: 24px;
 	text-decoration-line: underline;
 	color: #00a2d4;
+	text-transform: capitalize;
 `;
 
 export const DotSeperator = styled.div`
