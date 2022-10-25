@@ -52,9 +52,9 @@ const ShareHolderKYC = () => {
         name: shareholder.memberName,
         code: shareholder.memberCode,
         files: {
-          government: "",
-          proof: "",
-          passport: "",
+          government_id: "",
+          proof_of_home_address: "",
+          passport_photograph: "",
         },
       };
     });
@@ -90,14 +90,6 @@ const ShareHolderKYC = () => {
     console.log("value of the component is", files);
     console.log("shareholder is", shareholder);
     console.log("component name", type);
-    // const uploadedFile = e.target.files[0];
-    // setUploadedFileDetails(uploadedFile);
-    // setFileName(uploadedFile.name);
-    // setType(uploadedFile.type);
-    // setSize(uploadedFile.size);
-
-    // // let fName = e.target.name;
-    // // let value = e.target.value;
 
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
@@ -115,12 +107,6 @@ const ShareHolderKYC = () => {
       return updatedState;
     });
 
-    // if (!isValidFileUploaded(uploadedFile)) {
-    //   toast.error("Only PDFs, PNGs and JPEGs are supported");
-    // } else if (uploadedFile.size > 3000000) {
-    //   toast.error("File is too large");
-    // } else {
-    //   toast.success("Valid Document");
     const res = await convertToLink(files[0]);
     console.log("conversion", res.url);
 
@@ -128,7 +114,7 @@ const ShareHolderKYC = () => {
       launchCode: generatedLaunchCode,
       memberCode: shareholder,
       memberKYC: {
-        documentType: files[0].type,
+        documentType: type,
         documentLink: res.url,
       },
     };
@@ -200,7 +186,7 @@ const ShareHolderKYC = () => {
                   <KYCFileUpload
                     TopText={"Government Issued ID"}
                     onDrop={(files) =>
-                      handleChange(files, shareholder.code, "government")
+                      handleChange(files, shareholder.code, "Government ID")
                     }
                     handleRemove={handleRemove(shareholder.code)}
                     BottomText={
@@ -211,7 +197,11 @@ const ShareHolderKYC = () => {
                   <KYCFileUpload
                     TopText={"Proof of Home Address"}
                     onDrop={(files) =>
-                      handleChange(files, shareholder.code, "proof")
+                      handleChange(
+                        files,
+                        shareholder.code,
+                        "Proof of Home Address"
+                      )
                     }
                     handleRemove={handleRemove(shareholder.code)}
                     BottomText={
@@ -222,7 +212,11 @@ const ShareHolderKYC = () => {
                   <KYCFileUpload
                     TopText={"Passport Photograph"}
                     onDrop={(files) =>
-                      handleChange(files, shareholder.code, "passport")
+                      handleChange(
+                        files,
+                        shareholder.code,
+                        "Passport Photograph"
+                      )
                     }
                     handleRemove={handleRemove(shareholder.code)}
                     BottomText={"Kindly ensure image is not larger than 3MB"}

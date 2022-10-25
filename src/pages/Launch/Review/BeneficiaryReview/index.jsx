@@ -39,6 +39,14 @@ const BeneficiaryReview = () => {
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
+  // getting the beneficiary container from store
+  const beneficiaryDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.beneficiaryDocs
+  );
+  console.log(
+    "bene container",
+    beneficiaryDocumentContainer[0].files.government_id
+  );
   //console.log(generatedLaunchCode)
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
@@ -129,6 +137,20 @@ const BeneficiaryReview = () => {
                 passport
               />
             ))}
+            {beneficiaryDocumentContainer.map((beneficiary, index) => (
+              <DocumentWrapper>
+                <h3>{beneficiary.name}</h3>
+                <Document>
+                  <p>{beneficiary.files.government_id}</p>
+                </Document>
+                {/* <Document>
+                  <p>{beneficiary.files.proof_of_home_address}</p>
+                </Document>
+                <Document>
+                  <p>{beneficiary.files.passport_photograph}</p>
+                </Document> */}
+              </DocumentWrapper>
+            ))}
           </CardWrapper>
 
           <ButtonWrapper>
@@ -147,7 +169,19 @@ const BeneficiaryReview = () => {
 };
 
 export default BeneficiaryReview;
-
+const DocumentWrapper = styled.div`
+  border: solid red;
+`;
+const Document = styled.div`
+  border: 1px dashed #edf1f7;
+  border-radius: 8px;
+  padding: 10.5px 16px;
+  background-color: #fafafa;
+  width: 100%;
+  p {
+    text-decoration: underline;
+  }
+`;
 const Nav = styled.nav`
   background: #ffffff;
   width: 100%;
@@ -208,6 +242,7 @@ const CardWrapper = styled.div`
   align-items: flex-start;
   padding: 40px;
   gap: 40px;
+  border: solid red;
 `;
 const ButtonWrapper = styled.div`
   display: flex;

@@ -46,9 +46,9 @@ const BeneficiariesKYC = () => {
         name: beneficiary.beneficialOwnerName,
         code: beneficiary.beneficialOwnerCode,
         files: {
-          government: {},
-          proof: {},
-          passport: {},
+          government_id: {},
+          proof_of_home_address: {},
+          passport_photograph: {},
         },
       };
     });
@@ -116,12 +116,13 @@ const BeneficiariesKYC = () => {
     const res = await convertToLink(files[0]);
     console.log("conversion", res.url);
 
+    const formatType = type.split("_").join(" ");
     const requiredBeneficialOwnerKYCData = {
       launchCode: generatedLaunchCode,
       beneficialOwnerCode: beneficiary,
       beneficialOwnerKYC: {
         documentType: files[0].type,
-        documentLink: res.url,
+        documentLink: formatType,
       },
     };
 
@@ -150,7 +151,7 @@ const BeneficiariesKYC = () => {
           ...updatedState[index],
           files: {
             ...updatedState[index].files,
-            [type]: lastElememt,
+            [type]: files[0].name,
           },
         };
         return updatedState;
@@ -244,10 +245,10 @@ const BeneficiariesKYC = () => {
                   <KYCFileUpload
                     TopText={"Government Issued ID"}
                     onDrop={(files) =>
-                      handleChange(files, beneficiary.code, "government")
+                      handleChange(files, beneficiary.code, "government_id")
                     }
                     handleRemove={(files) =>
-                      handleRemove(beneficiary.code, "government")
+                      handleRemove(beneficiary.code, "government_id")
                     }
                     BottomText={
                       "Utility Bill, Water Corporation Bill or a Rent Invoice"
@@ -257,9 +258,16 @@ const BeneficiariesKYC = () => {
                   <KYCFileUpload
                     TopText={"Proof of Home Address"}
                     onDrop={(files) =>
-                      handleChange(files, beneficiary.code, "proof")
+                      handleChange(
+                        files,
+                        beneficiary.code,
+                        "proof_of_home_address"
+                      )
                     }
-                    handleRemove={handleRemove(beneficiary.code, "proof")}
+                    handleRemove={handleRemove(
+                      beneficiary.code,
+                      "proof_of_home_address"
+                    )}
                     BottomText={
                       "Driver’s Licence, National ID Card, Voters Card or International Passport"
                     }
@@ -268,9 +276,16 @@ const BeneficiariesKYC = () => {
                   <KYCFileUpload
                     TopText={"Passport Photograph"}
                     onDrop={(files) =>
-                      handleChange(files, beneficiary.code, "passport")
+                      handleChange(
+                        files,
+                        beneficiary.code,
+                        "passport_photograph"
+                      )
                     }
-                    handleRemove={handleRemove(beneficiary.code, "passport")}
+                    handleRemove={handleRemove(
+                      beneficiary.code,
+                      "passport_photograph"
+                    )}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
 
