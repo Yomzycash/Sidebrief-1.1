@@ -41,7 +41,7 @@ const HeaderCheckout = ({ getStarted }) => {
           </BackContainer>
         ) : null}
 
-        <ProgressWrapper>
+        <ProgressWrapper style={{ left: getStarted && 0 }}>
           <ProgressBar progress={checkoutProgress} />
         </ProgressWrapper>
       </Wrapper>

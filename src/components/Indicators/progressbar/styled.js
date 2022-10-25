@@ -10,6 +10,7 @@ export const ProgressContainer = styled.div`
   max-width: 737px;
   height: 45px;
   background-color: #ffffff;
+  justify-self: center;
 `;
 export const ProgressLine = styled.div`
   position: absolute;
