@@ -4,10 +4,13 @@ import { ReactComponent as MenuIcon } from "asset/Icons/MenuIcon.svg";
 import { ReactComponent as ArrowDownIcon } from "asset/Icons/ArrowDownIcon.svg";
 import { ReactComponent as NotificationIcon } from "asset/Icons/NotificationIcon.svg";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Dialog } from "@mui/material";
+import Sidebar from "components/sidebar";
 
 const MobileNavbar = () => {
   const [selected, setSelected] = useState("Registration");
   const [showServices, setShowServices] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);
 
   const navigate = useNavigate();
 
@@ -50,7 +53,10 @@ const MobileNavbar = () => {
 
   return (
     <MobileNavContainer>
-      <MenuIcon />
+      <MenuIcon onClick={() => setOpenSidebar(true)} />
+      <Dialog open={openSidebar} onClose={() => setOpenSidebar(false)}>
+        {/* <Sidebar /> */}
+      </Dialog>
       <Select>
         <span onClick={() => setShowServices(!showServices)}>
           {selected}

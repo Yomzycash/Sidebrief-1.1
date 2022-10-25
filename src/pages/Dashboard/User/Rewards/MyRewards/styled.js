@@ -95,7 +95,9 @@ export const BodyLeft = styled.div`
   }
 `;
 export const BodyRight = styled.div`
-  display: flex;
+  /* display: flex; */
+  display: grid;
+  grid-template-columns: auto auto auto;
   flex-flow: row wrap;
   gap: 24px;
 `;

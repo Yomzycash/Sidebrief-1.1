@@ -41,7 +41,7 @@ const HeaderCheckout = ({ getStarted }) => {
           </BackContainer>
         ) : null}
 
-        <ProgressWrapper>
+        <ProgressWrapper style={{ left: getStarted && 0 }}>
           <ProgressBar progress={checkoutProgress} />
         </ProgressWrapper>
       </Wrapper>
@@ -82,7 +82,8 @@ const Wrapper = styled.div`
   position: sticky;
   z-index: 4;
   top: 0;
-  padding-inline: 8%;
+  /* padding-inline: 8%; */
+  padding-inline: clamp(24px, 3.4vw, 40px);
   box-shadow: ${(props) =>
     props.headerShadow === true ? "0px 10px 15px -5px #9596971a" : null};
 `;
@@ -101,6 +102,10 @@ const Text = styled.h3`
   font-size: 14px;
   line-height: 21px;
   color: #151717;
+
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const ProgressWrapper = styled.div`
