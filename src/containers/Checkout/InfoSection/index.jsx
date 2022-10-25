@@ -140,8 +140,8 @@ export const CheckoutFormInfo = ({
 
   const buttonStyles = {
     maxWidth: "197px",
-    width: "25%",
-    height: "59px",
+    width: "20%",
+    height: "clamp(45px, 6vw, 56px)",
     padding: "0",
     minWidth: "100px",
   };
@@ -169,6 +169,8 @@ export const CheckoutFormInfo = ({
           type="text"
           name="full_name"
           inputClass="input-class"
+          bottomTextClass="bottom-text-class"
+          containerStyle="input-container-class"
           register={register}
           errorMessage={errors.full_name?.message}
         />
@@ -177,13 +179,15 @@ export const CheckoutFormInfo = ({
           <NumberInput
             label="Phone number"
             labelStyle="input-label"
+            containerStyle="input-container-class"
             name="phone"
             value={defaultPhone}
             type="number"
             phoneInputStyles={{
-              height: "48px",
-              marginTop: "8px",
-              fontSize: "14px",
+              // height: "48px",
+              marginTop: "clamp(0, 3vw, 8px)",
+              fontSize: "clamp(12px, 1.2vw, 14px",
+              height: "40px",
             }}
             errorMessage={errors.phone?.message}
             register={register}
@@ -193,6 +197,7 @@ export const CheckoutFormInfo = ({
           <InputWithLabel
             label="Email Address"
             labelStyle="input-label"
+            containerStyle="input-container-class"
             type="email"
             name="email"
             inputClass="input-class"
@@ -206,6 +211,7 @@ export const CheckoutFormInfo = ({
               name="share_percentage"
               label="Share Percentage"
               labelStyle="input-label"
+              containerStyle="input-container-class"
               type="number"
               inputClass="input-class"
               register={register}
@@ -220,6 +226,8 @@ export const CheckoutFormInfo = ({
               errorMessage={errors.share_type?.message}
               cardAction={cardAction}
               defaultValue={selectedToEdit?.shareholderOwnershipType}
+              fontSize="clamp(12px, 1.2vw, 14px)"
+              height="40px"
               launch
             />
           </DetailedSection>
@@ -234,6 +242,8 @@ export const CheckoutFormInfo = ({
             errorMessage={errors.director_role?.message}
             cardAction={cardAction}
             defaultValue={directorInitialRole}
+            fontSize="clamp(12px, 1.2vw, 14px)"
+            height="40px"
             launch
           />
         )}
@@ -243,6 +253,7 @@ export const CheckoutFormInfo = ({
               name="stake"
               label="Stake Percentage"
               labelStyle="input-label"
+              containerStyle="input-container-class"
               type="number"
               inputClass="input-class"
               register={register}
@@ -252,6 +263,7 @@ export const CheckoutFormInfo = ({
               name="occupation"
               label="Occupation"
               labelStyle="input-label"
+              containerStyle="input-container-class"
               type="text"
               inputClass="input-class"
               register={register}
@@ -296,14 +308,16 @@ export const CheckoutFormInfo = ({
         backBottonStyle={buttonStyles}
         forwardButtonStyle={buttonStyles}
         forwardSubmit
+        forwardLoading={addIsLoading || isLoading || isSuccess}
         forwardText={
-          addIsLoading || isLoading || isSuccess ? (
-            <ThreeDots stroke="#98ff98" fill="white" width={50} />
-          ) : (
-            buttonText
-          )
+          // addIsLoading || isLoading || isSuccess ? (
+          //   <ThreeDots stroke="#98ff98" fill="white" width={50} />
+          // ) : (
+          buttonText
+          // )
         }
         forwardDisable={addIsLoading || isLoading || isSuccess}
+        $modal
       />
     </Form>
   );

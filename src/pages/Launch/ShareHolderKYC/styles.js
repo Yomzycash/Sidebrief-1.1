@@ -1,21 +1,21 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   width: 100%;
-  margin-bottom: 40px;
-`
+  margin-bottom: 20px;
+`;
 
 export const Name = styled.h3`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 600;
   font-size: 18px;
   line-height: 88%;
   color: #151717;
-`
+`;
 
 export const ContentWrapper = styled.div`
   width: 100%;
@@ -26,7 +26,7 @@ export const ContentWrapper = styled.div`
   @media screen and (max-width: 900px) {
     grid-template-columns: 1fr;
   }
-`
+`;
 
 export const Loading = styled.div`
   display: flex;
@@ -35,4 +35,4 @@ export const Loading = styled.div`
   width: 100%;
   padding: 40px;
   height: ${({ height }) => height && height};
-`
+`;

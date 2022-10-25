@@ -41,8 +41,9 @@ const DirectorsInfo = () => {
   const [cardAction, setCardAction] = useState();
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
-  const [useSidebriefBeneficiaries, setUseSidebriefBeneficiaries] =
-    useState(false);
+  const [useSidebriefBeneficiaries, setUseSidebriefBeneficiaries] = useState(
+    localStorage.getItem("useSidebriefBeneficiaries")
+  );
   const [beneficiariesInfo, setBeneficiariesInfo] = useState([]);
 
   // Endpont hooks
@@ -57,15 +58,39 @@ const DirectorsInfo = () => {
     LaunchApplicationInfo;
 
   const handleNext = () => {
-    navigate("/launch/sharehholders-kyc");
-  };
+    let useSidebriefShareholders = localStorage.getItem(
+      "useSidebriefShareholders"
+    );
+    let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+    let useSidebriefBeneficiaries = localStorage.getItem(
+      "useSidebriefBeneficiaries"
+    );
+    console.log(
+      useSidebriefShareholders,
+      useSidebriefDirectors,
+      useSidebriefBeneficiaries
+    );
 
+    let navigateTo = "";
+
+    if (useSidebriefShareholders) navigateTo = "/launch/directors-kyc";
+    if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+    if (useSidebriefBeneficiaries) navigateTo = "/launch/review";
+
+    navigate(navigateTo ? navigateTo : "/launch/sharehholders-kyc");
+    // navigate("/launch/sharehholders-kyc");
+  };
   const handlePrev = () => {
     navigate(-1);
   };
 
   const handleCheckbox = (checked) => {
-    setUseSidebriefBeneficiaries(checked);
+    setUseSidebriefBeneficiaries(checked === true ? checked : false);
+    if (checked) {
+      localStorage.setItem("useSidebriefBeneficiaries", checked);
+    } else {
+      localStorage.removeItem("useSidebriefBeneficiaries");
+    }
   };
 
   const handleAddMore = () => {
@@ -172,6 +197,11 @@ const DirectorsInfo = () => {
 
     setBeneficiariesInfo(beneficiariesData);
     console.log(beneficiariesData);
+
+    if (beneficiariesData.length > 0) {
+      setUseSidebriefBeneficiaries(false);
+      localStorage.removeItem("useSidebriefBeneficiaries");
+    }
   };
 
   useEffect(() => {
@@ -192,6 +222,7 @@ const DirectorsInfo = () => {
           checkbox="Beneficiaries"
           checkBoxAction={handleCheckbox}
           disableCheckbox={beneficiariesInfo.length > 0 ? true : false}
+          checked={useSidebriefBeneficiaries}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
@@ -255,7 +286,7 @@ const DirectorsInfo = () => {
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
-        <AppFeedback subProject="Beneficiary Info" />
+      <AppFeedback subProject="Beneficiary Info" />
     </Container>
   );
 };

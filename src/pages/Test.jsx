@@ -2,6 +2,8 @@ import Pagination from "components/Pagination";
 import React from "react";
 import { BusinessesChartCard } from "components/cards";
 import { BusinessHomeTable } from "components/Staff/Tables";
+import { Header } from "containers/BusinessDetail";
+import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
 
 const Test = () => {
   const analytics = {
@@ -39,8 +41,10 @@ const Test = () => {
   return (
     <>
       {/* <Pagination /> */}
-      <BusinessesChartCard staff analytics={analytics} />
-      <BusinessHomeTable data={tableMockData} />
+      {/* <BusinessesChartCard staff analytics={analytics} />
+      <BusinessHomeTable data={tableMockData} /> */}
+      <Header searchAndSort />
+      <StaffBusinessInfoCard />
     </>
   );
 };

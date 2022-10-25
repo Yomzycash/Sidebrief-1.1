@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
@@ -83,10 +83,10 @@ const SignIn = () => {
   };
 
   return (
-    <AuthLayout register={true}>
+    <AuthLayout>
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} nav_sticked={navSticked} />
+        <LogoNav stick={0} nav_sticked={navSticked} $loginPage />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Welcome Back"
@@ -125,22 +125,19 @@ const SignIn = () => {
                   style={{
                     textDecoration: "none",
                     color: "var(--SecondaryBlue)",
+                    fontSize: "14px",
+                    fontWeight: "400",
                   }}
                 >
                   Forgot password?
                 </NavLink>
               </motion.div>
             </div>
-            <TestButton
-              title={
-                isLoading === true ? (
-                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
-                ) : (
-                  "Sign In"
-                )
-              }
+            <MainButton
+              title="Sign In"
               type="submit"
-              disabled={isLoading ? true : false}
+              loading={isLoading}
+              disabled={isLoading}
             />
           </Body>
           <Bottom>
@@ -151,6 +148,7 @@ const SignIn = () => {
                   link: { text: "Sign Up", to: "/register" },
                 },
               ]}
+              $mobileResponsive
             />
           </Bottom>
         </Form>
@@ -166,6 +164,11 @@ const Registration = styled.div`
   display: flex;
   flex-flow: column;
   height: max-content;
+  gap: 8px;
+
+  @media screen and (max-width: 1000px) {
+    gap: 32px;
+  }
 `;
 const TestBlock = styled.div`
   height: 1px;
@@ -174,13 +177,13 @@ const TestBlock = styled.div`
 const Form = styled.form`
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: 40px;
   height: max-content;
 `;
 const Body = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 1rem;
+  gap: 24px;
 `;
 const Bottom = styled.div`
   display: flex;

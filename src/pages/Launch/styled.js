@@ -58,7 +58,7 @@ export const AddMore = styled.div`
 export const Bottom = styled.div`
   display: flex;
   width: 100%;
-  padding: 40px;
+  padding: 32px clamp(24px, 3.4vw, 40px);
 `;
 export const EntityCardsWrapper = styled.div`
   display: flex;
@@ -114,6 +114,16 @@ export const Inputs = styled.div`
     font-size: clamp(13px, 1.5vw, 14px);
     line-height: 21px;
     color: #4e5152;
+  }
+`;
+
+export const EntityTitle = styled.p`
+  font-weight: 600;
+  font-size: clamp(18px, 1.8vw, 20px);
+
+  span {
+    font-weight: 400;
+    font-size: clamp(14px, 1.2vw, 16px);
   }
 `;
 

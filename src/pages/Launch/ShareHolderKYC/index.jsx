@@ -46,6 +46,7 @@ const ShareHolderKYC = () => {
     (state) => state.LaunchReducer.launchResponse
   );
   const [documentContainer, setDocumentContainer] = useState([]);
+
   useEffect(() => {
     const mapping = shareholderContainer.map((shareholder) => {
       return {
@@ -110,11 +111,12 @@ const ShareHolderKYC = () => {
     const res = await convertToLink(files[0]);
     console.log("conversion", res.url);
 
+    const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: generatedLaunchCode,
       memberCode: shareholder,
       memberKYC: {
-        documentType: type,
+        documentType: formatType,
         documentLink: res.url,
       },
     };
@@ -178,7 +180,7 @@ const ShareHolderKYC = () => {
                 <Puff stroke="#00A2D4" fill="white" />
               </Loading>
             ))}
-          <LaunchFormContainer>
+          <LaunchFormContainer style={{ paddingTop: "40px" }}>
             {documentContainer.map((shareholder, index) => (
               <FileContainer key={index}>
                 <Name>{shareholder.name}</Name>
@@ -186,7 +188,7 @@ const ShareHolderKYC = () => {
                   <KYCFileUpload
                     TopText={"Government Issued ID"}
                     onDrop={(files) =>
-                      handleChange(files, shareholder.code, "Government ID")
+                      handleChange(files, shareholder.code, "government_id")
                     }
                     handleRemove={handleRemove(shareholder.code)}
                     BottomText={
@@ -200,7 +202,7 @@ const ShareHolderKYC = () => {
                       handleChange(
                         files,
                         shareholder.code,
-                        "Proof of Home Address"
+                        "proof-of-home-address"
                       )
                     }
                     handleRemove={handleRemove(shareholder.code)}
@@ -215,7 +217,7 @@ const ShareHolderKYC = () => {
                       handleChange(
                         files,
                         shareholder.code,
-                        "Passport Photograph"
+                        "passport_photograph"
                       )
                     }
                     handleRemove={handleRemove(shareholder.code)}

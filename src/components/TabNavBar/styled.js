@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export const NavWrapper = styled.nav`
   position: sticky;
-  top: 73px;
+  top: 57.1px;
   display: flex;
   align-items: center;
   justify-content: flex-start;

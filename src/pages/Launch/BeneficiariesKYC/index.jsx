@@ -46,9 +46,9 @@ const BeneficiariesKYC = () => {
         name: beneficiary.beneficialOwnerName,
         code: beneficiary.beneficialOwnerCode,
         files: {
-          government_id: {},
-          proof_of_home_address: {},
-          passport_photograph: {},
+          government_id: "",
+          proof_of_home_address: "",
+          passport_photograph: "",
         },
       };
     });
@@ -121,8 +121,8 @@ const BeneficiariesKYC = () => {
       launchCode: generatedLaunchCode,
       beneficialOwnerCode: beneficiary,
       beneficialOwnerKYC: {
-        documentType: files[0].type,
-        documentLink: formatType,
+        documentType: formatType,
+        documentLink: res.url,
       },
     };
 

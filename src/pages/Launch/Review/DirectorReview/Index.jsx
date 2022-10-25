@@ -18,7 +18,7 @@ import {
 import AppFeedback from "components/AppFeedback";
 import ReviewCard from "components/cards/ReviewCard";
 import { Puff } from "react-loading-icons";
-import { mergeInfo } from "utils/LaunchHelper";
+import { mergeInfo, mergeThreeInfo } from "utils/LaunchHelper";
 
 const DirectorReview = () => {
   const ActiveStyles = {
@@ -36,6 +36,11 @@ const DirectorReview = () => {
     (store) => store.LaunchReducer.launchResponse
   );
   // console.log(launchResponse)
+
+  // getting the director container from store
+  const directorDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.directorDocs
+  );
   const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
   const [viewDirectorsKyc] = useViewMembersKYCMutation();
@@ -47,15 +52,40 @@ const DirectorReview = () => {
     let directorInfo = await viewDirectors(launchResponse);
     let newDirectorInfo = [...directorInfo.data.businessDirectors];
 
-    let newMerge = mergeInfo(newDirectorInfo, newMemberInfo);
-    setMergedResponse(newMerge);
+    let titlesMembersMerged = [];
+    newDirectorInfo.forEach((title) => {
+      newMemberInfo.forEach((member) => {
+        directorDocumentContainer.forEach((store) => {
+          if (
+            member.memberCode === title.memberCode &&
+            title.memberCode === store.code
+          ) {
+            let merged = { ...title, ...member, ...store };
+            titlesMembersMerged.push(merged);
+          }
+        });
+      });
+    });
 
-    return newMerge;
+    // let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setMergedResponse(titlesMembersMerged);
+
+    // return newMerge;
+
+    // let newMerge = mergeThreeInfo(
+    //   newDirectorInfo,
+    //   newMemberInfo,
+    //   directorDocumentContainer
+    // );
+    // setMergedResponse(newMerge);
+
+    // console.log("ttttttttt", newMerge);
+    // return newMerge;
   };
 
   useEffect(() => {
     handleMerge();
-  }, []);
+  }, [directorDocumentContainer]);
 
   const navigate = useNavigate();
   const handleNext = () => {
@@ -114,6 +144,9 @@ const DirectorReview = () => {
                 phone={director?.memberPhone}
                 director_role={director.directorRole}
                 icon
+                government={director.files.government_id}
+                proof={director.files.proof_of_home_address}
+                passport={director.files.passport_photograph}
               />
             ))}
           </CardWrapper>
@@ -144,6 +177,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 const ReviweTabWrapper = styled.div`
   display: flex;

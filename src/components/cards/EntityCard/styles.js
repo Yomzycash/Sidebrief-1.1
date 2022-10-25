@@ -3,13 +3,13 @@ import styled from "styled-components";
 export const Container = styled.div`
   max-width: 550px;
   min-width: 350px;
-  height: 340px;
+  height: clamp(284px, 30vw, 340px);
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
 
-  padding: 48px 24px 16px 24px;
+  padding: clamp(24px, 2.7vw, 48px) 24px 16px;
 
   position: relative;
   display: flex;
@@ -59,7 +59,7 @@ export const Top = styled.div`
 export const Title = styled.h4`
   font-family: "BR Firma";
   font-weight: 600;
-  font-size: 16px;
+  font-size: clamp(14px, 1.4vw, 16px);
   line-height: 24px;
   color: #242627;
 
@@ -72,7 +72,7 @@ export const TimeLine = styled.p`
   font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   line-height: 21px;
   color: #4e5152;
   margin: 0;
@@ -93,6 +93,7 @@ export const Bottom = styled.div`
 export const Price = styled.p`
   font-family: "BR Firma";
   font-weight: 700;
+  font-size: clamp(18px, 1.8vw, 24px);
   font-size: 24px;
   line-height: 36px;
   color: #00a2d4;
@@ -120,7 +121,7 @@ export const Content = styled.p`
   text-transform: capitalize;
   font-family: "BR Firma";
   font-weight: 400;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   line-height: 21px;
   color: #4e5152;
 

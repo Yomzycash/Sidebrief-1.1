@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import { Container, Table, Head, HeadData, Row, RowData } from './styles'
+import React, { useState } from "react";
+import { Container, Table, Head, HeadData, Row, RowData } from "./styles";
 import {
   useReactTable,
   flexRender,
   getCoreRowModel,
-} from '@tanstack/react-table'
-import { columns } from './constants'
+} from "@tanstack/react-table";
+import { columns } from "./constants";
 
 export const BusinessTable = ({ data }) => {
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     columns,
@@ -18,12 +18,13 @@ export const BusinessTable = ({ data }) => {
       rowSelection,
     },
     onRowSelectionChange: setRowSelection,
-  })
+  });
+  console.log(rowSelection);
 
   // returns SelectedRows
   const getSelectedRows = () => {
-    return table.getSelectedRowModel().flatRows
-  }
+    return table.getSelectedRowModel().flatRows;
+  };
 
   return (
     <Container>
@@ -38,7 +39,7 @@ export const BusinessTable = ({ data }) => {
                     ? null
                     : flexRender(
                         header.column.columnDef.header,
-                        header.getContext(),
+                        header.getContext()
                       )}
                 </HeadData>
               ))}
@@ -59,5 +60,5 @@ export const BusinessTable = ({ data }) => {
       </Table>
       {/* The pagination controller */}
     </Container>
-  )
-}
+  );
+};
