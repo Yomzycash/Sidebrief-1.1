@@ -39,3 +39,23 @@ export const mergeInfo = (titlesUpdatedData, membersUpdatedData) => {
 
   return titlesMembersMerged;
 };
+
+export const mergeThreeInfo = (
+  titlesUpdatedData,
+  membersUpdatedData,
+  storeDocument
+) => {
+  let titlesMembersMerged = [];
+  titlesUpdatedData.forEach((title) => {
+    membersUpdatedData.forEach((member) => {
+      storeDocument.forEach((store) => {
+        if ((member.memberCode === title.memberCode) === store.code) {
+          let merged = { ...title, ...member, ...store };
+          titlesMembersMerged.push(merged);
+        }
+      });
+    });
+  });
+
+  return titlesMembersMerged;
+};

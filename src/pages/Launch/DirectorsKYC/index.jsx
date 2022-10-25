@@ -56,9 +56,9 @@ const DirectorKYC = () => {
         name: director.memberName,
         code: director.memberCode,
         files: {
-          government: "",
-          proof: "",
-          passport: "",
+          government_id: "",
+          proof_of_home_address: "",
+          passport_photograph: "",
         },
       };
     });
@@ -134,11 +134,12 @@ const DirectorKYC = () => {
     const res = await convertToLink(files[0]);
     console.log("conversion", res.url);
 
+    const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: generatedLaunchCode,
       memberCode: director,
       memberKYC: {
-        documentType: files[0].type,
+        documentType: formatType,
         documentLink: res.url,
       },
     };
@@ -203,7 +204,7 @@ const DirectorKYC = () => {
                   <KYCFileUpload
                     TopText={"Government Issued ID"}
                     onDrop={(files) =>
-                      handleChange(files, director.code, "government")
+                      handleChange(files, director.code, "government_id")
                     }
                     handleRemove={handleRemove(director.code)}
                     BottomText={
@@ -214,7 +215,11 @@ const DirectorKYC = () => {
                   <KYCFileUpload
                     TopText={"Proof of Home Address"}
                     onDrop={(files) =>
-                      handleChange(files, director.code, "proof")
+                      handleChange(
+                        files,
+                        director.code,
+                        "proof_of_home_address"
+                      )
                     }
                     handleRemove={handleRemove(director.code)}
                     BottomText={
@@ -225,7 +230,7 @@ const DirectorKYC = () => {
                   <KYCFileUpload
                     TopText={"Passport Photograph"}
                     onDrop={(files) =>
-                      handleChange(files, director.code, "passport")
+                      handleChange(files, director.code, "passport_photograph")
                     }
                     handleRemove={handleRemove(director.code)}
                     BottomText={"Kindly ensure image is not larger than 3MB"}

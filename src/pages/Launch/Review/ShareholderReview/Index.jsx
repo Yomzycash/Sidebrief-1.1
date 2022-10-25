@@ -32,7 +32,10 @@ const ShareholderReview = () => {
   const [mergedResponse, setMergedResponse] = useState([]);
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   //console.log(LaunchApplicationInfo)
-
+  // getting the shareholder container from store
+  const shareholderDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.shareholderDocs
+  );
   const navigate = useNavigate();
   const handleNext = () => {
     navigate("/launch/review-director");
@@ -59,16 +62,36 @@ const ShareholderReview = () => {
     let shareholderInfo = await viewShareholders(launchResponse);
     let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
 
-    let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
-    setMergedResponse(newMerge);
+    let titlesMembersMerged = [];
+    newShareHolderInfo.forEach((title) => {
+      newMemberInfo.forEach((member) => {
+        shareholderDocumentContainer.forEach((store) => {
+          if (
+            member.memberCode === title.memberCode &&
+            title.memberCode === store.code
+          ) {
+            let merged = { ...title, ...member, ...store };
+            titlesMembersMerged.push(merged);
+          }
+        });
+      });
+    });
 
-    return newMerge;
+    // let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setMergedResponse(titlesMembersMerged);
+
+    // return newMerge;
   };
 
   useEffect(() => {
     handleMerge();
-  }, []);
+  }, [shareholderDocumentContainer]);
 
+  let shareholderLocalStorage = JSON.parse(
+    localStorage.getItem("localShareholderInfo")
+  );
+
+  console.log("package from local", shareholderLocalStorage);
   return (
     <>
       <Container>
@@ -115,9 +138,9 @@ const ShareholderReview = () => {
                 phone={shareholder?.memberPhone}
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
                 icon
-                government
-                proof
-                passport
+                government={shareholder.files.government_id}
+                proof={shareholder.files.proof_of_home_address}
+                passport={shareholder.files.passport_photograph}
               />
             ))}{" "}
           </CardWrapper>
@@ -148,6 +171,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 const ReviweTabWrapper = styled.div`
   display: flex;
