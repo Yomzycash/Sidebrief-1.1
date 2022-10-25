@@ -51,7 +51,7 @@ const StaffBusinessInfoCard = ({
 							<TitleWrapper>Operational Country</TitleWrapper>
 							<SingleContainer>
 								<TitleWrapper>
-									{address.addressState}
+									{address.addressCountry}
 								</TitleWrapper>
 							</SingleContainer>
 						</Wrapper>

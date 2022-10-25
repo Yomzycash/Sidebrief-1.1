@@ -16,7 +16,7 @@ const BusinessDetail = () => {
 				businessNames={isLoading ? {} : data.businessNames}
 				businessObjectives={isLoading ? {} : data.businessObjects}
 				address={isLoading ? {} : data.businessAddress}
-				type={isLoading ? {} : data.registrationType}
+				type={isLoading ? `` : data.registrationType}
 			/>
 			<StepBar />
 		</DetailContainer>

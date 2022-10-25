@@ -26,6 +26,22 @@ export const businessTypes = [
 	},
 ];
 
+const navigateToDetailPage = (navigate, info) => {
+	const originalRow = info.row.original;
+
+	const launchInfo = {
+		launchCode: originalRow.code,
+		registrationCountry: originalRow.countryISO,
+		registrationType: originalRow.type,
+	};
+	// set the launchInfo to store and localstorage
+	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
+	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
+	// navigate
+	navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
+	console.log(launchInfo);
+};
+
 export const columns = [
 	ColumnHelper.display({
 		id: "checkbox",
@@ -54,28 +70,7 @@ export const columns = [
 			const navigate = createNavigate();
 
 			return (
-				<Clickable
-					onClick={() => {
-						const originalRow = info.row.original;
-
-						const launchInfo = {
-							launchCode: originalRow.code,
-							registrationCountry: originalRow.countryISO,
-							registrationType: originalRow.type,
-						};
-						// set the launchInfo to store and localstorage
-						store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-						localStorage.setItem(
-							"launchInfo",
-							JSON.stringify(launchInfo)
-						);
-						// navigate
-						navigate(
-							`/dashboard/business/${launchInfo.launchCode}/detail`
-						);
-						console.log(launchInfo);
-					}}
-				>
+				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
 			);
@@ -84,12 +79,13 @@ export const columns = [
 	ColumnHelper.accessor("type", {
 		header: () => <HeadText nopadding>Type</HeadText>,
 		cell: (info) => {
+			const navigate = createNavigate();
 			const typeName = info.getValue();
 			// const color = businessTypes.find(
 			// 	(type) => type.name === typeName
 			// ).color;
 			return (
-				<Clickable>
+				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
 					<TypeIndicator color={"blue"} type={typeName} />
 				</Clickable>
 			);
@@ -97,19 +93,25 @@ export const columns = [
 	}),
 	ColumnHelper.accessor("country", {
 		header: () => <HeadText>Country</HeadText>,
-		cell: (info) => (
-			<Clickable>
-				<BodyText>{info.getValue()}</BodyText>
-			</Clickable>
-		),
+		cell: (info) => {
+			const navigate = createNavigate();
+			return (
+				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
+					<BodyText>{info.getValue()}</BodyText>
+				</Clickable>
+			);
+		},
 	}),
 	ColumnHelper.accessor("date", {
 		header: () => <HeadText>Date</HeadText>,
-		cell: (info) => (
-			<Clickable>
-				<BodyText>{info.getValue()}</BodyText>
-			</Clickable>
-		),
+		cell: (info) => {
+			const navigate = createNavigate();
+			return (
+				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
+					<BodyText>{info.getValue()}</BodyText>
+				</Clickable>
+			);
+		},
 	}),
 ];
 
