@@ -1,5 +1,14 @@
+import { PdfCard } from "components/cards";
+import { CardContainer } from "./styles";
+
 const DetailShareholder = () => {
-	return <div>This is the Shareholder section</div>;
+	return (
+		<CardContainer>
+			<PdfCard />
+			<PdfCard />
+			<PdfCard />
+		</CardContainer>
+	);
 };
 
 export default DetailShareholder;
