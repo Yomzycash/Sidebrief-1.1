@@ -4,8 +4,9 @@ import { ReactComponent as MenuIcon } from "asset/Icons/MenuIcon.svg";
 import { ReactComponent as ArrowDownIcon } from "asset/Icons/ArrowDownIcon.svg";
 import { ReactComponent as NotificationIcon } from "asset/Icons/NotificationIcon.svg";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Dialog } from "@mui/material";
+import { Box, Dialog, Drawer, List } from "@mui/material";
 import Sidebar from "components/sidebar";
+import MobileSidebar from "components/sidebar/MobileSidebar";
 
 const MobileNavbar = () => {
   const [selected, setSelected] = useState("Registration");
@@ -51,12 +52,32 @@ const MobileNavbar = () => {
     }
   }, [showServices]);
 
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setOpenSidebar(open);
+  };
+
   return (
     <MobileNavContainer>
       <MenuIcon onClick={() => setOpenSidebar(true)} />
-      <Dialog open={openSidebar} onClose={() => setOpenSidebar(false)}>
-        {/* <Sidebar /> */}
-      </Dialog>
+      <React.Fragment key="left">
+        <Drawer anchor="left" open={openSidebar} onClose={toggleDrawer(false)}>
+          <Box
+            sx={{ height: "100%", padding: "40px 24px 0" }}
+            role="presentation"
+          >
+            <List sx={{ height: "100%" }}>
+              <MobileSidebar toggleDrawer={toggleDrawer} />
+            </List>
+          </Box>
+        </Drawer>
+      </React.Fragment>
+      {/* </Dialog> */}
       <Select>
         <span onClick={() => setShowServices(!showServices)}>
           {selected}
@@ -110,7 +131,7 @@ export const MobileNavContainer = styled.div`
   box-shadow: 0px 4px 4px #95969714;
   z-index: 3;
 
-  @media screen and (min-width: 761px) {
+  @media screen and (min-width: 701px) {
     display: none;
   }
 `;

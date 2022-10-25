@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Navbar from "components/navbar";
 import Sidebar from "../../../components/sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MobileNavbar from "components/navbar/MobileNavbar";
 
@@ -10,12 +10,17 @@ const UserDashboard = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
+  const location = useLocation();
+
+  let hideSearch = location.pathname.includes("/dashboard/rewards");
+
   return (
     <Dashboard>
       <Navbar
         dashboard
         imgStyles={{ maxWidth: "100px" }}
-        style={{ padding: "12px 39px" }}
+        style={{ padding: "12px 24px" }}
+        hideSearch={hideSearch}
       />
       <MobileNavbar />
       <Body>

@@ -42,7 +42,7 @@ const AccountType = styled(motion.div)`
   height: 144px;
   background-color: white;
 
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     max-width: 100%;
   }
 `;

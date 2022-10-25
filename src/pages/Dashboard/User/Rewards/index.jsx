@@ -27,7 +27,7 @@ const searchStyle = {
 };
 
 const Rewards = () => {
-  const [boxshadow, setBoxShadow] = useState("false");
+  // const [boxshadow, setBoxShadow] = useState("false");
   // const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
   const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
 
@@ -46,21 +46,21 @@ const Rewards = () => {
     (store) => store.LayoutInfo.rewardsPageHeader
   );
 
-  useEffect(() => {
-    rewardsPageHeader &&
-      window.addEventListener("scroll", () => {
-        setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-      });
-  }, []);
+  // useEffect(() => {
+  //   rewardsPageHeader &&
+  //     window.addEventListener("scroll", () => {
+  //       setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
+  //     });
+  // }, []);
 
   // This reduces the header's height when scrolled
-  useEffect(() => {
-    if (rewardsPageHeader && boxshadow === "true") {
-      mainHeaderRef.current.style.height = "80px";
-    } else if (rewardsPageHeader) {
-      mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
-    }
-  }, [boxshadow]);
+  // useEffect(() => {
+  //   if (rewardsPageHeader && boxshadow === "true") {
+  //     mainHeaderRef.current.style.height = "80px";
+  //   } else if (rewardsPageHeader) {
+  //     mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
+  //   }
+  // }, [boxshadow]);
 
   // This sets the shown of all rewards
   useEffect(() => {
@@ -77,7 +77,7 @@ const Rewards = () => {
   return (
     <Container>
       {rewardsPageHeader && (
-        <Header boxshadow={boxshadow}>
+        <Header>
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
             <div>
@@ -101,7 +101,14 @@ const Rewards = () => {
             />
           </SubHeader>
           <MobileHeader>
-            <Search style={searchStyle} />
+            <Search
+              style={{
+                ...searchStyle,
+                maxWidth: "100%",
+                minWidth: "140px",
+                padding: "10px",
+              }}
+            />
             <Drop>
               <select>
                 <option value="Sort">Sort</option>

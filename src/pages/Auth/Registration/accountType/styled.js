@@ -5,7 +5,7 @@ export const AccountTypeMain = styled.div`
   display: flex;
   flex-flow: column;
 
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     /* max-width: 90%; */
     margin: auto;
   }
@@ -26,13 +26,13 @@ export const AccountTypeBody = styled.div`
   justify-content: center;
   gap: clamp(32px, 5.5vw, 64px);
   width: 100%;
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     align-items: flex-start;
   }
 `;
 
 export const Top = styled.div`
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     div {
       align-items: flex-start;
     }
@@ -53,11 +53,11 @@ export const Middle = styled(motion.div)`
     gap: 0.5rem;
     border-radius: 1rem;
     padding: 1rem;
-    @media screen and (max-width: 630px) {
+    @media screen and (max-width: 700px) {
       width: 100%;
     }
   }
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     justify-content: flex-start;
     width: 100%;
   }
@@ -69,7 +69,7 @@ export const Bottom = styled.div`
   align-items: center;
   gap: clamp(20px, 3vw, 64px);
   width: 100%;
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     flex-flow: column;
     align-items: stretch;
     /* gap: 1rem; */
@@ -87,7 +87,7 @@ export const AccountFooter = styled.div`
   /* max-width: 381px; */
   width: 100%;
 
-  @media screen and (max-width: 630px) {
+  @media screen and (max-width: 700px) {
     padding: 0px 0px;
     justify-content: flex-start;
   }

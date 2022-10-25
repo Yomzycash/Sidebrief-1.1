@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   min-width: clamp(181px, 18vw, 263px);
-  max-width: 263px;
+  width: 100%;
+  /* max-width: 263px; */
+  max-width: 300px;
   min-height: 120px;
   max-height: 238px;
   background: #ffffff;
@@ -14,6 +16,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex: 1;
   gap: 17px;
   transition: all 0.2s;
   flex: 1;
