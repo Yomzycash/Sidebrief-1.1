@@ -1,5 +1,14 @@
+import { PdfCard } from "components/cards";
+import { CardContainer } from "./styles";
+
 const DetailDirectors = () => {
-	return <div>This is the Directors section</div>;
+	return (
+		<CardContainer>
+			<PdfCard />
+			<PdfCard />
+			<PdfCard />
+		</CardContainer>
+	);
 };
 
 export default DetailDirectors;

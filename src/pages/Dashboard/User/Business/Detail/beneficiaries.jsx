@@ -1,5 +1,14 @@
+import { PdfCard } from "components/cards";
+import { CardContainer } from "./styles";
+
 const DetailBeneficiaries = () => {
-	return <div>This is the Beneficiaries section</div>;
+	return (
+		<CardContainer>
+			<PdfCard />
+			<PdfCard />
+			<PdfCard />
+		</CardContainer>
+	);
 };
 
 export default DetailBeneficiaries;

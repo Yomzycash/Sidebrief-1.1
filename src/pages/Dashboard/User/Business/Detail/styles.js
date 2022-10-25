@@ -18,3 +18,9 @@ export const DetailContainer = styled.div`
 		flex: 1;
 	}
 `;
+
+export const CardContainer = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	gap: 24px;
+`;
