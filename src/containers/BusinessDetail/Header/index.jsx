@@ -36,9 +36,7 @@ export const Header = () => {
 		(store) => store.UserDataReducer.userInfo
 	);
 
-	const launchRequest = useViewLaunchRequestQuery(launchResponse, {
-		refetchOnMountOrArgChange: true,
-	});
+	const launchRequest = useViewLaunchRequestQuery(launchResponse);
 
 	if (launchRequest.isSuccess) {
 		console.log(launchRequest.data);
