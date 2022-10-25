@@ -18,6 +18,8 @@ import {
 } from "services/launchService";
 import { useEffect } from "react";
 import AppFeedback from "components/AppFeedback";
+import { mergeInfo } from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
 const ShareholderReview = () => {
   const ActiveStyles = {
     color: "#151717",
@@ -41,52 +43,31 @@ const ShareholderReview = () => {
   };
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
-  const [viewShareholders] = useViewShareholdersMutation();
+  const [viewShareholders, viewShareholderState] =
+    useViewShareholdersMutation();
   const [viewShareholdersKyc] = useViewMembersKYCMutation();
-  const [viewMembers] = useViewMembersMutation();
-
-  const handleViewShareholders = async () => {
-    let responseData = await viewShareholders(launchResponse);
-    //    console.log(responseData)
-    setShareholderInfo(Object.values(responseData.data.businessShareholders));
-  };
-  // const handleViewShareholdersKyc = async () => {
-  //   let responseData = await viewShareholdersKyc(launchResponse)
-  //   // console.log(responseData)
-  //   setShareholdersKycInfo(Object.values(responseData.data.businessMembersKYC))
-  // }
-  const handleMembers = async () => {
-    let responseData = await viewMembers(launchResponse);
-    // console.log(responseData.data.businessMembers)
-    setMembers(responseData.data.businessMembers);
-  };
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
 
   const handleNavigate = () => {
     navigate("/launch/shareholders-info");
   };
-  useEffect(() => {
-    handleViewShareholders();
-    //handleViewShareholdersKyc()
-    handleMembers();
-  }, []);
+
+  const handleMerge = async () => {
+    let memberInfo = await viewMembers(launchResponse);
+    let newMemberInfo = [...memberInfo.data.businessMembers];
+
+    let shareholderInfo = await viewShareholders(launchResponse);
+    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
+
+    let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setMergedResponse(newMerge);
+
+    return newMerge;
+  };
 
   useEffect(() => {
-    const mergedData = [];
-    members.forEach((member) => {
-      shareholderInfo.forEach((shareholder) => {
-        let merged = {};
-        if (shareholder.memberCode === member.memberCode) {
-          merged = { ...merged, ...shareholder, ...member };
-          // let kycDocs = shareholdersKycInfo.filter(
-          //   (element) => element.memberCode === shareholder.memberCode,
-          // )
-          mergedData.push(merged);
-        }
-        console.log(mergedData);
-        setMergedResponse(mergedData);
-      });
-    });
-  }, [shareholderInfo.length]);
+    handleMerge();
+  }, []);
 
   return (
     <>
@@ -115,6 +96,13 @@ const ShareholderReview = () => {
               <EditText>Edit Shareholder Information</EditText>
             </EditWrapper>
           </ContentWrapper>
+
+          {viewShareholderState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading height="50vh">
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
 
           <CardWrapper>
             {mergedResponse.map((shareholder, index) => (
@@ -228,4 +216,13 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;

@@ -176,36 +176,42 @@ const BeneficiariesKYC = () => {
 
   console.log("favour", functionToPrintObject("government"));
 
-  // documentContainer.forEach((item) => {
-  //   Object.keys(item.files).forEach((key, index) => {
-  //     console.log("mylist", key);
-  //     console.log(item.files[index]);
-  //     setStoreType(key);
-  //   });
-  // });
+  useEffect(() => {
+    documentContainer.forEach((item) => {
+      console.log("tee", item.files);
+      Object.keys(item.files).forEach((key) => {
+        console.log("mylist", key);
+        // console.log(item.files[index]);
+        setStoreType(key);
+      });
+    });
+  }, [documentContainer]);
   store.dispatch(setBeneficiaryDocs(documentContainer));
 
   console.log(beneficiaryContainer);
 
+  console.log("get type", storeType);
   const handleRemove = (beneficiary, type) => {
-    // console.log("beneficiary delete", beneficiary);
-    // console.log("type fttt", type);
+    console.log("beneficiary delete", beneficiary);
+    console.log("type fttt", type);
+    // console.log("get type", storeType);
     // if (type === storeType) {
-    //   let generatedDocumentType
-    // const requiredDeleteData = {
-    //   launchCode: generatedLaunchCode,
-    //   memberCode: shareholder,
-    //   documentCode: generatedDocumentType,
-    // };
-    // console.log("delete data to be", requiredDeleteData);
-    // const response = await deleteMemberKYC(requiredDeleteData);
-    // console.log(response);
-    // if (response.data) {
-    //   toast.success("Document deleted successfully");
-    // } else if (response.error) {
-    //   console.log(response.error?.data.message);
-    //   toast.error(response.error?.data.message);
-    // }
+    //   // let generatedDocumentType
+    //   console.log("freeeeee", documentContainer.files.type.documentCode);
+    //   // const requiredDeleteData = {
+    //   //   launchCode: generatedLaunchCode,
+    //   //   memberCode: shareholder,
+    //   //   documentCode: generatedDocumentType,
+    //   // };
+    //   // console.log("delete data to be", requiredDeleteData);
+    //   // const response = await deleteMemberKYC(requiredDeleteData);
+    //   // console.log(response);
+    //   // if (response.data) {
+    //   //   toast.success("Document deleted successfully");
+    //   // } else if (response.error) {
+    //   //   console.log(response.error?.data.message);
+    //   //   toast.error(response.error?.data.message);
+    //   // }
     // }
   };
 

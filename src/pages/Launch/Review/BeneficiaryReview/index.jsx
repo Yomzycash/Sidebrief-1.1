@@ -20,6 +20,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import ReviewCard from "components/cards/ReviewCard";
 import AppFeedback from "components/AppFeedback";
+import { mergeInfo } from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -28,8 +30,8 @@ const BeneficiaryReview = () => {
     borderRadius: 0,
   };
   const [beneficialArray, setBeneficialArray] = useState([]);
-  const [beneficialKycArray, setBeneficialKycArray] = useState([]);
-  const [mergedBeneficialKycArray, setMergedBeneficialKycArray] = useState([]);
+  // const [beneficialKycArray, setBeneficialKycArray] = useState([]);
+  // const [mergedBeneficialKycArray, setMergedBeneficialKycArray] = useState([]);
 
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const navigate = useNavigate();
@@ -42,39 +44,9 @@ const BeneficiaryReview = () => {
     (store) => store.LaunchReducer.launchResponse
   );
   // console.log(launchResponse)
-  const [viewBeneficials] = useViewBeneficiariesMutation();
-  const [viewBeneficialKyc] = useViewBeneficialsKYCMutation();
-
-  const handleViewBeneficial = async () => {
-    let responseData = await viewBeneficials(launchResponse);
-    //console.log(responseData)
-    setBeneficialArray(responseData.data.businessBeneficialOwners);
-  };
-  const handleViewBeneficialKyc = async () => {
-    let responseData = await viewBeneficialKyc(launchResponse);
-    console.log(responseData);
-    setBeneficialKycArray(responseData.data.beneficialOwnersKYC);
-  };
-  console.log(beneficialArray);
-  console.log(beneficialKycArray);
-
-  useEffect(() => {
-    handleViewBeneficial();
-    handleViewBeneficialKyc();
-  }, []);
-  useEffect(() => {
-    const mergedData = [];
-    beneficialArray.forEach((beneficial) => {
-      beneficialKycArray.forEach((kyc) => {
-        if (beneficial.beneficialOwnerCode === kyc.beneficialOwnerCode) {
-          let merged = { ...beneficial, ...kyc };
-          mergedData.push(merged);
-        }
-      });
-    });
-    setMergedBeneficialKycArray(mergedData);
-  }, [beneficialArray.length, beneficialKycArray.length]);
-  console.log(mergedBeneficialKycArray);
+  const [viewBeneficials, viewBeneficialState] = useViewBeneficiariesMutation();
+  const [viewBeneficialKyc, viewBeneficialKycState] =
+    useViewBeneficialsKYCMutation();
 
   const handleNext = async () => {
     const requiredData = {
@@ -97,6 +69,15 @@ const BeneficiaryReview = () => {
   const handleNavigate = () => {
     navigate("/launch/beneficiaries-info");
   };
+
+  const handleBeneficialArray = async () => {
+    let beneficialInfo = await viewBeneficials(launchResponse);
+    setBeneficialArray(beneficialInfo.data.businessBeneficialOwners);
+  };
+
+  useEffect(() => {
+    handleBeneficialArray();
+  }, []);
 
   return (
     <>
@@ -126,6 +107,12 @@ const BeneficiaryReview = () => {
             </EditWrapper>
           </ContentWrapper>
 
+          {viewBeneficialState.isLoading && (
+            <Loading height="50vh">
+              <Puff stroke="#00A2D4" fill="white" />
+            </Loading>
+          )}
+
           <CardWrapper>
             {beneficialArray.map((beneficiary, index) => (
               <ReviewCard
@@ -143,6 +130,7 @@ const BeneficiaryReview = () => {
               />
             ))}
           </CardWrapper>
+
           <ButtonWrapper>
             <CheckoutController
               backText={"Previous"}
@@ -239,4 +227,13 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;
