@@ -15,8 +15,6 @@ const DetailBeneficiaries = () => {
 		console.log(data);
 	}
 
-	const members = isSuccess ? data.businessMembers : [];
-
 	return (
 		<>
 			{isLoading ? (
@@ -26,15 +24,12 @@ const DetailBeneficiaries = () => {
 			) : (
 				<CardContainer>
 					{data.businessBeneficialOwners.map((item) => {
-						const member = members.find(
-							(el) => el.memberCode === item.memberCode
-						);
 						return (
 							<PdfCard
-								name={member.memberName}
-								email={member.memberEmail}
-								phone={`+${member.memberPhone}`}
-								// title={`${item.shareholderOwnershipType} - ${item.shareholderOwnershipPercentage}%`}
+								name={item.beneficialOwnerName}
+								email={item.beneficialOwnerEmail}
+								phone={`+${item.beneficialOwnerPhone}`}
+								title={`${item.beneficialOwnerOccupation} - ${item.beneficialOwnershipStake}% stake`}
 							/>
 						);
 					})}
