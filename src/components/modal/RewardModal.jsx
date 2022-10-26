@@ -6,27 +6,58 @@ import { ReactComponent as Copy } from "asset/images/copy.svg";
 import Button from "components/button/mainButton/index.jsx";
 import { useParams } from "react-router-dom";
 // import { allRewards } from "utils/config";
-import { useGetAllRewardsQuery } from "services/RewardService";
+import {
+  useClaimRewardMutation,
+  useGetAllRewardsQuery,
+} from "services/RewardService";
+import toast from "react-hot-toast";
 const RewardModal = ({ handleClose }) => {
   const [successful, setSuccessful] = useState(false);
 
   const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
 
+  const [claimReward, claimState] = useClaimRewardMutation();
+
   const { rewardID } = useParams();
 
   const rewardDetails = data?.find((element) => element.rewardID === rewardID);
+
+  const handleClaimReward = async () => {
+    let required = {
+      rewardID: rewardDetails.rewardID,
+    };
+
+    let claimedResponse = await claimReward(required);
+    let claimedData = claimedResponse?.data;
+    let error = claimedResponse?.error;
+
+    if (claimedData) {
+      setSuccessful(true);
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
+    } else if (error) {
+      if (error.status === "FETCH_ERROR")
+        toast.error("Please check your internet connection");
+      else toast.error(error.data.message);
+    }
+
+    console.log(claimedResponse);
+  };
+
   const imagestyle = {
     borderRadius: "50%",
     width: "45px",
   };
+
   return (
     <Wrapper>
       <LogoCancelWrapper>
         <LogoWrapper>
           <ImageWrapper>
-            <img src={rewardDetails.rewardImage} alt="" style={imagestyle} />
+            <img src={rewardDetails?.rewardImage} alt="" style={imagestyle} />
           </ImageWrapper>
-          <LogoName>{rewardDetails.rewardPartner}</LogoName>
+          <LogoName>{rewardDetails?.rewardPartner}</LogoName>
         </LogoWrapper>
         <Close onClick={handleClose} style={{ cursor: "pointer" }} />
       </LogoCancelWrapper>
@@ -38,7 +69,7 @@ const RewardModal = ({ handleClose }) => {
       )}
       <LowerContainer>
         <TextContainer>
-          <UpperText>{rewardDetails.rewardName}</UpperText>
+          <UpperText>{rewardDetails?.rewardName}</UpperText>
           <LowerText>
             Please redeem this reward by inputting the code below on the
             checkout page.
@@ -48,11 +79,14 @@ const RewardModal = ({ handleClose }) => {
           <CopyDetails>SIDEBRIEFPROMO</CopyDetails>
           <Copy />
         </CopyContainer>
-        <Button
-          title="Claim Reward"
-          onClick={() => setSuccessful(true)}
-          style={{ width: "171px", height: "44px" }}
-        />
+        {rewardDetails && (
+          <Button
+            title="Claim Reward"
+            onClick={handleClaimReward}
+            style={{ width: "171px", height: "44px" }}
+            disabled={successful}
+          />
+        )}
       </LowerContainer>
     </Wrapper>
   );

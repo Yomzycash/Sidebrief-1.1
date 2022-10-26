@@ -4,10 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-  margin: 0 40px;
-  @media screen and (max-width: 1050px) {
-    margin: 0;
-  }
 `;
 
 export const Header = styled.div`

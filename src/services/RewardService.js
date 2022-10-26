@@ -39,6 +39,16 @@ export const RewardApi = createApi({
       invalidatesTags: ["Reward"],
     }),
 
+    // claim reward
+    claimReward: builder.mutation({
+      query: (values) => ({
+        url: "/reward/claimreward",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Reward"],
+    }),
+
     //get rewards by category
     getRewardsByCategory: builder.mutation({
       query: (values) => ({
@@ -55,4 +65,5 @@ export const {
   useGetUserRewardQuery,
   useViewRewardMutation,
   useGetRewardsByCategoryMutation,
+  useClaimRewardMutation,
 } = RewardApi;

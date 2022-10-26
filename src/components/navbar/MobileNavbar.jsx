@@ -8,7 +8,7 @@ import { Box, Dialog, Drawer, List } from "@mui/material";
 import Sidebar from "components/sidebar";
 import MobileSidebar from "components/sidebar/MobileSidebar";
 
-const MobileNavbar = () => {
+const MobileNavbar = ({ hideNav }) => {
   const [selected, setSelected] = useState("Registration");
   const [showServices, setShowServices] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -63,7 +63,7 @@ const MobileNavbar = () => {
   };
 
   return (
-    <MobileNavContainer>
+    <MobileNavContainer $hideNav={hideNav}>
       <MenuIcon onClick={() => setOpenSidebar(true)} />
       <React.Fragment key="left">
         <Drawer anchor="left" open={openSidebar} onClose={toggleDrawer(false)}>
@@ -133,6 +133,10 @@ export const MobileNavContainer = styled.div`
 
   @media screen and (min-width: 701px) {
     display: none;
+  }
+
+  @media screen and (max-width: 700px) {
+    display: ${({ $hideNav }) => $hideNav && "none"};
   }
 `;
 

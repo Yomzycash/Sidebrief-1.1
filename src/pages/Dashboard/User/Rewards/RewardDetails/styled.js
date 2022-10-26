@@ -1,36 +1,61 @@
 import styled from "styled-components";
-
 import { Link } from "react-router-dom";
+
 export const StaffContainer = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
   max-width: calc(99vw - ${({ sidebarWidth }) => sidebarWidth});
-  @media screen and (max-width: 1050px) {
+
+  @media screen and (max-width: 700px) {
     max-width: 100%;
+    min-height: calc(100vh - 71px);
   }
+
   h3 {
     font-size: 24px;
     margin-left: 40px;
   }
 `;
 
+export const Back = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  margin-left: 8px;
+  width: max-content;
+`;
+
 export const NavigationWrapper = styled.div`
-  padding: 24px;
+  padding: 24px clamp(24px, 2.5vw, 40px);
   border-bottom: 1px solid #edf1f6;
   display: flex;
   align-items: center;
-  width: max-content;
-  cursor: pointer;
+  width: 100%;
 
   p {
-    margin-left: 8px;
+    margin-left: 5px;
+
+    @media screen and (max-width: 700px) {
+      display: none;
+    }
+  }
+
+  span {
+    position: relative;
+    left: -16px;
+    margin: auto;
+
+    @media screen and (min-width: 701px) {
+      display: none;
+    }
   }
 `;
 
 export const RewardShortDetails = styled.div`
   width: inherit;
-  padding: 40px;
+  padding: 40px clamp(24px, 2.5vw, 40px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -77,9 +102,27 @@ export const BadgeText = styled.p`
   font-size: 12px;
   font-weight: 400;
 `;
+
 export const ButtonWrapper = styled.div`
   width: 200px;
+
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
+
+export const MobileButtonWrapper = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  width: calc(100% - 48px);
+  margin: 24px;
+
+  @media screen and (min-width: 701px) {
+    display: none;
+  }
+`;
+
 export const RewardShortText = styled.p`
   font-size: 16px;
   color: #4e5152;
@@ -124,3 +167,9 @@ export const rewardModalStyle = {
   boxShadow:
     "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
 };
+
+export const RewardsScroll = styled.div`
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+`;
