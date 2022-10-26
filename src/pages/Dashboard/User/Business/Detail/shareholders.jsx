@@ -11,10 +11,6 @@ const DetailShareholder = () => {
 	const { data, isLoading, isSuccess } =
 		useViewLaunchRequestQuery(launchResponse);
 
-	if (isSuccess) {
-		console.log(data);
-	}
-
 	const members = isSuccess ? data.businessMembers : [];
 
 	return (

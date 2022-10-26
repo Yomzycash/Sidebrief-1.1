@@ -20,12 +20,10 @@ const BusinessDetail = () => {
 			) : (
 				<DetailContainer>
 					<StaffBusinessInfoCard
-						businessNames={isLoading ? {} : data.businessNames}
-						businessObjectives={
-							isLoading ? {} : data.businessObjects
-						}
-						address={isLoading ? {} : data.businessAddress}
-						type={isLoading ? `` : data.registrationType}
+						businessNames={data.businessNames}
+						businessObjectives={data.businessObjects}
+						address={data.businessAddress}
+						type={data.registrationType}
 					/>
 					<StepBar />
 				</DetailContainer>

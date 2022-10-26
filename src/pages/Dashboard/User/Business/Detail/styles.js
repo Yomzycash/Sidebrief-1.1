@@ -21,7 +21,7 @@ export const DetailContainer = styled.div`
 
 export const CardContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(500px, 50%));
+	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 	gap: 24px;
 `;
 
