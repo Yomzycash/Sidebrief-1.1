@@ -24,7 +24,9 @@ const MyRewards = () => {
 
   const [category, setCategory] = useSearchParams();
 
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
+  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   const navigate = useNavigate();
 
@@ -79,7 +81,7 @@ const MyRewards = () => {
             <Puff stroke="#00A2D4" fill="white" width={60} />
           </Loading>
         ) : (
-          filteredReward.length > 0 && (
+          filteredReward?.length > 0 && (
             <>
               <BodyLeft>
                 {/* <h3>Categories</h3> */}

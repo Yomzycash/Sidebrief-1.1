@@ -33,8 +33,12 @@ const Rewards = () => {
 
   const location = useLocation();
 
-  const allRewardsResponse = useGetAllRewardsQuery();
-  const myRewardsResponse = useGetUserRewardQuery();
+  const allRewardsResponse = useGetAllRewardsQuery({
+    refetchOnMountOrArgChange: true,
+  });
+  const myRewardsResponse = useGetUserRewardQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   let allRewardsTotal = allRewardsResponse.data?.length;
   let myRewardsTotal = myRewardsResponse.data?.length;
