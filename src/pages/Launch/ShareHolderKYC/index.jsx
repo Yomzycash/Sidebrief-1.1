@@ -206,7 +206,7 @@ const ShareHolderKYC = () => {
                       handleChange(
                         files,
                         shareholder.code,
-                        "proof-of-home-address"
+                        "proof_of_home_address"
                       )
                     }
                     handleRemove={handleRemove(shareholder.code)}
