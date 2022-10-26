@@ -6,7 +6,7 @@ import {
 	useGetUserDraftQuery,
 } from "services/launchService";
 import { Body, Container, Loading } from "./styled";
-import { format } from "date-fns";
+import { format, compareDesc } from "date-fns";
 import { Puff } from "react-loading-icons";
 
 const DraftApplications = () => {
@@ -17,8 +17,14 @@ const DraftApplications = () => {
 	const [dataArr, setDataArr] = useState([]);
 	useEffect(() => {
 		if (isSuccess && countries.isSuccess) {
-			setDataArr(data);
-			// console.log(data[0]);
+			const response = [...data];
+			response.sort((launch1, launch2) => {
+				return compareDesc(
+					new Date(launch1.updatedAt),
+					new Date(launch2.updatedAt)
+				);
+			});
+			setDataArr(response);
 		}
 	}, [data, isSuccess, countries.isSuccess]);
 
