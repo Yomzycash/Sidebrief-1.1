@@ -38,20 +38,22 @@ const StaffBusinessInfoCard = ({
 							);
 						})}
 					</Wrapper>
-					<Wrapper>
-						<TitleWrapper>Business Address</TitleWrapper>
-						<SingleContainer>
-							<TitleWrapper>
-								{`${address.addressNumber}, ${address.addressStreet},  ${address.addressCity},  ${address.addressState},  ${address.addressCountry}`}
-							</TitleWrapper>
-						</SingleContainer>
-					</Wrapper>
+					{address ? (
+						<Wrapper>
+							<TitleWrapper>Business Address</TitleWrapper>
+							<SingleContainer>
+								<TitleWrapper>
+									{`${address.addressNumber}, ${address.addressStreet},  ${address.addressCity},  ${address.addressState},  ${address.addressCountry}`}
+								</TitleWrapper>
+							</SingleContainer>
+						</Wrapper>
+					) : null}
 					<LastWrapper>
 						<Wrapper>
 							<TitleWrapper>Operational Country</TitleWrapper>
 							<SingleContainer>
 								<TitleWrapper>
-									{address.addressCountry}
+									{address?.addressCountry}
 								</TitleWrapper>
 							</SingleContainer>
 						</Wrapper>

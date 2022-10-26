@@ -73,7 +73,19 @@ export const Header = () => {
 	return (
 		<Container>
 			<Top>
-				<BackContainer to="/dashboard/businesses">
+				<BackContainer
+					to={`/dashboard/businesses/${
+						launchRequest.isLoading
+							? `all-businesses`
+							: launchRequest.data.registrationStatus ===
+							  "pending"
+							? `draft-applications`
+							: launchRequest.data.registrationStatus ===
+							  "submitted"
+							? "pending-applications"
+							: null
+					}`}
+				>
 					<FiArrowLeft color="#151717" size={24} />
 					<Text>Back to Applications</Text>
 				</BackContainer>
