@@ -4,21 +4,18 @@ import { ReactComponent as PhoneIcon } from "asset/svg/phone.svg";
 import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
-const PdfCards = ({
-  name = "Opeyemi Falana",
-  title = "Executive Director",
-  email = "opeyemiexample@email.com",
-  phone = "+2348123456789",
-}) => {
+const PdfCards = ({ name = "", title = "", email = "", phone = "" }) => {
   return (
     <>
       <Wrapper>
         <DetailWrapper>
           <Top>
             <NameWrapper>{name}</NameWrapper>
-            <TitleWrapper>
-              <Title>{title}</Title>
-            </TitleWrapper>
+            {title ? (
+              <TitleWrapper>
+                <Title>{title}</Title>
+              </TitleWrapper>
+            ) : null}
           </Top>
           <EmailWrapper>
             <IconWrapper>
@@ -39,7 +36,7 @@ const PdfCards = ({
               <IconWrapper>
                 <PdfIcon />
               </IconWrapper>
-              <Details>Proof of Address.pdf</Details>
+              <Details>Proofof Address.pdf</Details>
             </PdfLowerWrapper>
 
             <IconWrapper>

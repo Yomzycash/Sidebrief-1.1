@@ -24,3 +24,10 @@ export const CardContainer = styled.div`
 	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 	gap: 24px;
 `;
+
+export const Loader = styled.div`
+	display: grid;
+	place-items: center;
+	width: 100%;
+	height: 100px;
+`;

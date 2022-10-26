@@ -118,7 +118,8 @@ const AppRouter = () => {
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   const entityLaunchCode = launchInfo?.launchCode;
-  const selectedCountryISO = JSON.parse(localStorage.getItem("country"))?.ISO;
+  //const selectedCountryISO = JSON.parse(localStorage.getItem('country'))?.ISO
+  const selectedCountryISO = localStorage.getItem("countryISO");
 
   const [isLoggedIn, setisLoggedIn] = useState(
     token?.length > 0 || user_token > 0
@@ -136,6 +137,7 @@ const AppRouter = () => {
   }, [entityLaunchCode, launchData.launchCode]);
 
   const allowLaunch = launchCode && countryISO;
+  console.log(launchCode);
 
   useEffect(() => {
     setisLoggedIn(loggedIn);
@@ -148,6 +150,7 @@ const AppRouter = () => {
   useEffect(() => {
     setCountryISO(selectedCountryISO);
   }, [selectedCountryISO, launchData.registrationCountry]);
+  console.log(countryISO);
 
   return (
     <Suspense fallback={<Loader />}>
