@@ -21,6 +21,13 @@ export const DetailContainer = styled.div`
 
 export const CardContainer = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(500px, 50%));
 	gap: 24px;
+`;
+
+export const Loader = styled.div`
+	display: grid;
+	place-items: center;
+	width: 100%;
+	height: 100px;
 `;

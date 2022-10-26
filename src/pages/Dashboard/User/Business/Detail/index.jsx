@@ -1,8 +1,9 @@
-import { DetailContainer } from "./styles";
+import { DetailContainer, Loader } from "./styles";
 import { StepBar } from "components/Indicators";
 import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
 import { useSelector } from "react-redux";
 import { useViewLaunchRequestQuery } from "services/launchService";
+import { Puff } from "react-loading-icons";
 
 const BusinessDetail = () => {
 	const launchResponse = useSelector(
@@ -11,15 +12,25 @@ const BusinessDetail = () => {
 	const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
 
 	return (
-		<DetailContainer>
-			<StaffBusinessInfoCard
-				businessNames={isLoading ? {} : data.businessNames}
-				businessObjectives={isLoading ? {} : data.businessObjects}
-				address={isLoading ? {} : data.businessAddress}
-				type={isLoading ? `` : data.registrationType}
-			/>
-			<StepBar />
-		</DetailContainer>
+		<>
+			{isLoading ? (
+				<Loader>
+					<Puff stroke="#00A2D4" fill="white" />
+				</Loader>
+			) : (
+				<DetailContainer>
+					<StaffBusinessInfoCard
+						businessNames={isLoading ? {} : data.businessNames}
+						businessObjectives={
+							isLoading ? {} : data.businessObjects
+						}
+						address={isLoading ? {} : data.businessAddress}
+						type={isLoading ? `` : data.registrationType}
+					/>
+					<StepBar />
+				</DetailContainer>
+			)}
+		</>
 	);
 };
 
