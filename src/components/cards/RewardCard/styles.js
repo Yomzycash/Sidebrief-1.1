@@ -29,6 +29,10 @@ export const Container = styled.div`
       border: 1px solid #00A2D4;
 			box-shadow: 0px 20px 25px -5px rgba(149, 150, 151, 0.1);
 		`};
+
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+  }
 `;
 
 export const Corner = styled.div`

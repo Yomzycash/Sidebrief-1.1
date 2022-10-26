@@ -14,6 +14,10 @@ const UserDashboard = () => {
 
   let hideSearch = location.pathname.includes("/dashboard/rewards");
 
+  let hideMobileNav =
+    location.pathname.includes("/dashboard/rewards") &&
+    location.pathname.length > 31;
+
   return (
     <Dashboard>
       <Navbar
@@ -22,7 +26,7 @@ const UserDashboard = () => {
         style={{ padding: "12px 24px" }}
         hideSearch={hideSearch}
       />
-      <MobileNavbar />
+      <MobileNavbar hideNav={hideMobileNav} />
       <Body>
         <BodyLeft>
           <Sidebar />
