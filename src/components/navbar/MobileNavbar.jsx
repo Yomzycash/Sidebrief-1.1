@@ -3,13 +3,18 @@ import styled from "styled-components";
 import { ReactComponent as MenuIcon } from "asset/Icons/MenuIcon.svg";
 import { ReactComponent as ArrowDownIcon } from "asset/Icons/ArrowDownIcon.svg";
 import { ReactComponent as NotificationIcon } from "asset/Icons/NotificationIcon.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Box, Dialog, Drawer, List } from "@mui/material";
 import Sidebar from "components/sidebar";
 import MobileSidebar from "components/sidebar/MobileSidebar";
 
 const MobileNavbar = ({ hideNav }) => {
-  const [selected, setSelected] = useState("Registration");
+  const location = useLocation();
+
+  let path = location.pathname;
+  let current = path.slice(path.lastIndexOf("/") + 1, path.length);
+
+  const [selected, setSelected] = useState(current);
   const [showServices, setShowServices] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -52,21 +57,35 @@ const MobileNavbar = ({ hideNav }) => {
     }
   }, [showServices]);
 
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
+  const toggleDrawer = (open) => {
+    // if (
+    //   event.type === "keydown" &&
+    //   (event.key === "Tab" || event.key === "Shift")
+    // ) {
+    //   return;
+    // }
     setOpenSidebar(open);
   };
+
+  useEffect(() => {
+    if (current === "business-registration")
+      setSelected("Business Registration");
+    else if (current === "hiring-and-payroll") setSelected("Hiring & Payroll");
+    else if (current === "intellectualAssets")
+      setSelected("Intellectual Assets");
+    else setSelected(current);
+    console.log(current);
+  }, [current]);
 
   return (
     <MobileNavContainer $hideNav={hideNav}>
       <MenuIcon onClick={() => setOpenSidebar(true)} />
       <React.Fragment key="left">
-        <Drawer anchor="left" open={openSidebar} onClose={toggleDrawer(false)}>
+        <Drawer
+          anchor="left"
+          open={openSidebar}
+          onClose={() => toggleDrawer(false)}
+        >
           <Box
             sx={{ height: "100%", padding: "40px 24px 0" }}
             role="presentation"
@@ -148,6 +167,7 @@ export const Select = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+    text-transform: capitalize;
   }
 `;
 

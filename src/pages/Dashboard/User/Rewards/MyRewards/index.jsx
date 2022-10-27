@@ -25,7 +25,9 @@ const MyRewards = () => {
   const [category, setCategory] = useSearchParams();
 
   const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery({
+    pollingInterval: 3000,
     refetchOnMountOrArgChange: true,
+    skip: false,
   });
 
   const navigate = useNavigate();

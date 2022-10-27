@@ -61,8 +61,11 @@ export const BodyRight = styled.div`
   gap: clamp(16px, 1.6vw, 24px);
   width: 100%;
 
-  @media screen and (max-width: 532px) {
-    grid-template-columns: auto;
+  @media screen and (max-width: 430px) {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 16px;
   }
 
   @media screen and (max-width: 1000px) {

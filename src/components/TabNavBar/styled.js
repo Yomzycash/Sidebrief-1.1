@@ -13,7 +13,7 @@ export const NavWrapper = styled.nav`
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
-  @media screen and (max-width: 760px) {
+  @media screen and (max-width: 700px) {
     display: none;
   }
 `;
