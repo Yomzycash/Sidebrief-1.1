@@ -30,7 +30,7 @@ const DetailDirectors = () => {
 								name={member.memberName}
 								email={member.memberEmail}
 								phone={`+${member.memberPhone}`}
-								// title={`${item.shareholderOwnershipType} - ${item.shareholderOwnershipPercentage}%`}
+								title={`${item.directorRole}`}
 							/>
 						);
 					})}

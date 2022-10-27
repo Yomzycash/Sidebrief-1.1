@@ -40,24 +40,30 @@ const MobileSidebar = ({ toggleDrawer }) => {
     navigate("/login");
   };
 
+  const handleNavigate = (path) => {
+    toggleDrawer(false);
+    navigate(path);
+  };
+
   return (
     <MobileSidebarWrapper>
       <Top>
         <MdClear
           size={25}
           style={{ marginBottom: "28px", left: "10px", position: "relative" }}
-          onClick={toggleDrawer(false)}
+          onClick={() => toggleDrawer(false)}
         />
 
         <SidebarLinks>
           {sidebarLink.map((item, index) => (
-            <SideLinkWrapper key={index} onMouseDown={toggleDrawer(false)}>
+            <SideLinkWrapper key={index}>
               {
                 <NavLink
                   to={item.path}
                   style={({ isActive }) => (isActive ? ActiveStyle : {})}
                   onMouseEnter={() => setIconHovered(item.id)}
                   onMouseLeave={() => setIconHovered(0)}
+                  onClick={() => handleNavigate(item.path)}
                 >
                   <SidebarContentItemIcon>
                     <item.icon

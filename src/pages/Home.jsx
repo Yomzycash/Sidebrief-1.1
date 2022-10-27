@@ -42,7 +42,7 @@ const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
-  @media screen and (max-width: 1050px) {
+  /* @media screen and (max-width: 1050px) {
     width: 100%;
-  }
+  } */
 `;

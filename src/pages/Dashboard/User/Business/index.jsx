@@ -1,16 +1,16 @@
 import TabNavBar from "components/TabNavBar/TabNavBar";
 import React, { useEffect, useState } from "react";
 import {
-	Body,
-	ButtonWrapper,
-	PageTitle,
-	Container,
-	Header,
-	SubHeader,
-	TopContent,
-	BottomContent,
-	MainHeader,
-	Drop,
+  Body,
+  ButtonWrapper,
+  PageTitle,
+  Container,
+  Header,
+  SubHeader,
+  TopContent,
+  BottomContent,
+  MainHeader,
+  Drop,
 } from "./styled";
 import image from "../../../../asset/images/coming.png";
 import { RewardSummaryCard } from "components/cards";
@@ -20,128 +20,124 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "components/button";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
 import {
-	setBusinessesShown,
-	setGeneratedLaunchCode,
-	setLaunchResponse,
+  setBusinessesShown,
+  setGeneratedLaunchCode,
+  setLaunchResponse,
 } from "redux/Slices";
 import { store } from "redux/Store";
 import {
-	useGetUserDraftQuery,
-	useGetUserSubmittedQuery,
+  useGetUserDraftQuery,
+  useGetUserSubmittedQuery,
 } from "services/launchService";
 import { useSelector } from "react-redux";
+import AppFeedback from "components/AppFeedback";
 
 const searchStyle = {
-	borderRadius: "12px",
-	backgroundColor: "white",
-	maxWidth: "384px",
-	height: "40px",
+  borderRadius: "12px",
+  backgroundColor: "white",
+  maxWidth: "384px",
+  height: "40px",
 };
 
 const iconStyle = { width: "17px", height: "17px" };
 
 const Business = () => {
-	const location = useLocation();
-	const navigate = useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-	const drafts = useGetUserDraftQuery();
-	const submitted = useGetUserSubmittedQuery();
+  const drafts = useGetUserDraftQuery();
+  const submitted = useGetUserSubmittedQuery();
 
-	const businessesShown = useSelector(
-		(store) => store.BusinessesInfo.businessesShown
-	);
+  const businessesShown = useSelector(
+    (store) => store.BusinessesInfo.businessesShown
+  );
 
-	console.log(businessesShown);
+  console.log(businessesShown);
 
-	let submittedTotal = submitted?.currentData?.length;
-	let draftTotal = drafts?.currentData?.length;
+  let submittedTotal = submitted?.currentData?.length;
+  let draftTotal = drafts?.currentData?.length;
 
-	const handleLaunch = () => {
-		store.dispatch(setGeneratedLaunchCode(""));
-		navigate("/launch");
-	};
+  const handleLaunch = () => {
+    store.dispatch(setGeneratedLaunchCode(""));
+    navigate("/launch");
+  };
 
-	// This sets the shown of all rewards
-	useEffect(() => {
-		if (location.pathname === "/dashboard/businesses/all-businesses")
-			store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
-		if (location.pathname === "/dashboard/businesses/pending-applications")
-			store.dispatch(
-				setBusinessesShown({
-					total: submittedTotal,
-					shown: submittedTotal,
-				})
-			);
-		if (location.pathname === "/dashboard/businesses/draft-applications")
-			store.dispatch(
-				setBusinessesShown({ total: draftTotal, shown: draftTotal })
-			);
-	}, [location.pathname]);
+  // This sets the shown of all rewards
+  useEffect(() => {
+    if (location.pathname === "/dashboard/businesses/all-businesses")
+      store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
+    if (location.pathname === "/dashboard/businesses/pending-applications")
+      store.dispatch(
+        setBusinessesShown({
+          total: submittedTotal,
+          shown: submittedTotal,
+        })
+      );
+    if (location.pathname === "/dashboard/businesses/draft-applications")
+      store.dispatch(
+        setBusinessesShown({ total: draftTotal, shown: draftTotal })
+      );
+  }, [location.pathname]);
 
-	useEffect(() => {
-		// clear the localstorage when this page is entered
-		store.dispatch(setGeneratedLaunchCode(""));
-		store.dispatch(setLaunchResponse({}));
-		localStorage.removeItem("launchInfo");
-		localStorage.removeItem("countryISO");
-	}, []);
+  useEffect(() => {
+    // clear the localstorage when this page is entered
+    store.dispatch(setGeneratedLaunchCode(""));
+    store.dispatch(setLaunchResponse({}));
+    localStorage.removeItem("launchInfo");
+    localStorage.removeItem("countryISO");
+  }, []);
 
-	return (
-		<Container>
-			<Header>
-				<MainHeader>
-					<TopContent>
-						<div>
-							<PageTitle>Businesses</PageTitle>
-							<RewardSummaryCard
-								shown={businessesShown.shown}
-								total={businessesShown.total}
-							/>
-						</div>
-						<Drop>
-							<select>
-								<option value="Sort">Sort</option>
-								<option value="All">All</option>
-							</select>
-						</Drop>
-					</TopContent>
-					<BottomContent>
-						<Search style={searchStyle} iconStyle={iconStyle} />
-						<ButtonWrapper>
-							<button onClick={handleLaunch}>
-								<NoteIcon />
-								Launch a Business
-							</button>
-						</ButtonWrapper>
-					</BottomContent>
-				</MainHeader>
-				<SubHeader>
-					<ActiveNav
-						text="All Businesses"
-						total={0}
-						path={"/dashboard/businesses/all-businesses"}
-					/>
-					<ActiveNav
-						text="Pending Applications"
-						total={
-							submitted.isSuccess
-								? submitted?.currentData.length
-								: 0
-						}
-						path="/dashboard/businesses/pending-applications"
-					/>
-					<ActiveNav
-						text="Draft Applications"
-						total={
-							drafts.isSuccess ? drafts?.currentData.length : 0
-						}
-						path="/dashboard/businesses/draft-applications"
-					/>
-				</SubHeader>
-			</Header>
-			<Outlet />
-		</Container>
-	);
+  return (
+    <Container>
+      <Header>
+        <MainHeader>
+          <TopContent>
+            <div>
+              <PageTitle>Businesses</PageTitle>
+              <RewardSummaryCard
+                shown={businessesShown.shown}
+                total={businessesShown.total}
+              />
+            </div>
+            <Drop>
+              <select>
+                <option value="Sort">Sort</option>
+                <option value="All">All</option>
+              </select>
+            </Drop>
+          </TopContent>
+          <BottomContent>
+            <Search style={searchStyle} iconStyle={iconStyle} />
+            <ButtonWrapper>
+              <button onClick={handleLaunch}>
+                <NoteIcon />
+                Launch a Business
+              </button>
+            </ButtonWrapper>
+          </BottomContent>
+        </MainHeader>
+        <SubHeader>
+          <ActiveNav
+            text="All Businesses"
+            total={0}
+            path={"/dashboard/businesses/all-businesses"}
+          />
+          <ActiveNav
+            text="Pending Applications"
+            total={submitted.isSuccess ? submitted?.currentData.length : 0}
+            path="/dashboard/businesses/pending-applications"
+          />
+          <ActiveNav
+            text="Draft Applications"
+            total={drafts.isSuccess ? drafts?.currentData.length : 0}
+            path="/dashboard/businesses/draft-applications"
+          />
+        </SubHeader>
+      </Header>
+      <Outlet />
+      <AppFeedback subProject="Businesses" />
+    </Container>
+  );
 };
 
 export default Business;
