@@ -4,6 +4,7 @@ import { BusinessesChartCard } from "components/cards";
 import { BusinessHomeTable } from "components/Staff/Tables";
 import { Header } from "containers/BusinessDetail";
 import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
+import Loader from "components/loader/loader";
 
 const Test = () => {
   const analytics = {
@@ -43,8 +44,9 @@ const Test = () => {
       {/* <Pagination /> */}
       {/* <BusinessesChartCard staff analytics={analytics} />
       <BusinessHomeTable data={tableMockData} /> */}
-      <Header searchAndSort />
-      <StaffBusinessInfoCard />
+      {/* <Header searchAndSort />
+      <StaffBusinessInfoCard /> */}
+      <Loader />
     </>
   );
 };
