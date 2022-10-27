@@ -1,15 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
   margin: 0 40px;
-  /* border: 1px solid red; */
   @media screen and (max-width: 1050px) {
     margin: 0;
   }
-`;
+`
 
 export const Header = styled.div`
   position: sticky;
@@ -18,7 +17,10 @@ export const Header = styled.div`
   flex-flow: column;
   background-color: white;
   z-index: 2;
-`;
+  @media screen and (max-width: 700px) {
+    flex-flow: column-reverse;
+  }
+`
 
 export const MainHeader = styled.div`
   display: flex;
@@ -30,7 +32,10 @@ export const MainHeader = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
   transition: 0.2s all ease;
-`;
+  @media screen and (max-width: 700px) {
+    padding: 16px 24px 32px 24px !important;
+  }
+`
 
 export const SubHeader = styled.div`
   display: flex;
@@ -43,7 +48,7 @@ export const SubHeader = styled.div`
   overflow-y: hidden;
 
   //TODO: maybe hide scroll bar
-`;
+`
 
 export const TopContent = styled.div`
   display: flex;
@@ -52,19 +57,26 @@ export const TopContent = styled.div`
   padding-inline: 24px;
   flex: 1;
   justify-content: space-between;
+
   > div {
     display: flex;
     gap: 48px;
     justify-content: space-between;
   }
-`;
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+`
 export const PageTitle = styled.div`
   display: flex;
   align-items: center;
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   color: #151717;
-`;
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+`
 
 export const BottomContent = styled.div`
   display: flex;
@@ -73,7 +85,14 @@ export const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
-`;
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    padding-inline: 0px !important;
+  }
+`
 
 export const Drop = styled.div`
   display: flex;
@@ -88,9 +107,12 @@ export const Drop = styled.div`
     width: 60px;
     background: none;
   }
-`;
+`
 export const ButtonWrapper = styled.div`
   width: 200px;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
 
   button {
     width: 100%;
@@ -106,5 +128,20 @@ export const ButtonWrapper = styled.div`
     padding: 10px 24px;
     display: flex;
     align-items: center;
+    @media screen and (max-width: 700px) {
+      width: 100%;
+      display: flex;
+      align-items: center !important;
+      justify-content: center !important;
+    }
   }
-`;
+`
+export const searchStyle = styled.div`
+  border-radius: 12px;
+  background-color: 'white';
+  max-width: 384px;
+  height: 40px;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
+`

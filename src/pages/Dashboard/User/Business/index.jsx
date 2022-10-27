@@ -1,5 +1,5 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
-import React, { useEffect, useState } from "react";
+import TabNavBar from 'components/TabNavBar/TabNavBar'
+import React, { useEffect, useState } from 'react'
 import {
   Body,
   ButtonWrapper,
@@ -11,81 +11,82 @@ import {
   BottomContent,
   MainHeader,
   Drop,
-} from "./styled";
-import image from "../../../../asset/images/coming.png";
-import { RewardSummaryCard } from "components/cards";
-import Search from "components/navbar/Search";
-import ActiveNav from "components/navbar/ActiveNav";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Button from "components/button";
-import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
+} from './styled'
+import image from '../../../../asset/images/coming.png'
+import { RewardSummaryCard } from 'components/cards'
+import Search from 'components/navbar/Search'
+import ActiveNav from 'components/navbar/ActiveNav'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import Button from 'components/button'
+import { ReactComponent as NoteIcon } from '../../../../asset/images/note.svg'
 import {
   setBusinessesShown,
   setGeneratedLaunchCode,
   setLaunchResponse,
-} from "redux/Slices";
-import { store } from "redux/Store";
+} from 'redux/Slices'
+import { store } from 'redux/Store'
 import {
   useGetUserDraftQuery,
   useGetUserSubmittedQuery,
-} from "services/launchService";
-import { useSelector } from "react-redux";
-import AppFeedback from "components/AppFeedback";
+} from 'services/launchService'
+import { useSelector } from 'react-redux'
+import AppFeedback from 'components/AppFeedback'
+import styled from 'styled-components'
 
 const searchStyle = {
-  borderRadius: "12px",
-  backgroundColor: "white",
-  maxWidth: "384px",
-  height: "40px",
-};
+  borderRadius: '12px',
+  backgroundColor: 'white',
+  width: '100%',
+  height: '100%',
+}
 
-const iconStyle = { width: "17px", height: "17px" };
+const iconStyle = { width: '17px', height: '17px' }
 
 const Business = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation()
+  const navigate = useNavigate()
 
-  const drafts = useGetUserDraftQuery();
-  const submitted = useGetUserSubmittedQuery();
+  const drafts = useGetUserDraftQuery()
+  const submitted = useGetUserSubmittedQuery()
 
   const businessesShown = useSelector(
-    (store) => store.BusinessesInfo.businessesShown
-  );
+    (store) => store.BusinessesInfo.businessesShown,
+  )
 
-  console.log(businessesShown);
+  console.log(businessesShown)
 
-  let submittedTotal = submitted?.currentData?.length;
-  let draftTotal = drafts?.currentData?.length;
+  let submittedTotal = submitted?.currentData?.length
+  let draftTotal = drafts?.currentData?.length
 
   const handleLaunch = () => {
-    store.dispatch(setGeneratedLaunchCode(""));
-    navigate("/launch");
-  };
+    store.dispatch(setGeneratedLaunchCode(''))
+    navigate('/launch')
+  }
 
   // This sets the shown of all rewards
   useEffect(() => {
-    if (location.pathname === "/dashboard/businesses/all-businesses")
-      store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
-    if (location.pathname === "/dashboard/businesses/pending-applications")
+    if (location.pathname === '/dashboard/businesses/all-businesses')
+      store.dispatch(setBusinessesShown({ total: 0, shown: 0 }))
+    if (location.pathname === '/dashboard/businesses/pending-applications')
       store.dispatch(
         setBusinessesShown({
           total: submittedTotal,
           shown: submittedTotal,
-        })
-      );
-    if (location.pathname === "/dashboard/businesses/draft-applications")
+        }),
+      )
+    if (location.pathname === '/dashboard/businesses/draft-applications')
       store.dispatch(
-        setBusinessesShown({ total: draftTotal, shown: draftTotal })
-      );
-  }, [location.pathname]);
+        setBusinessesShown({ total: draftTotal, shown: draftTotal }),
+      )
+  }, [location.pathname])
 
   useEffect(() => {
     // clear the localstorage when this page is entered
-    store.dispatch(setGeneratedLaunchCode(""));
-    store.dispatch(setLaunchResponse({}));
-    localStorage.removeItem("launchInfo");
-    localStorage.removeItem("countryISO");
-  }, []);
+    store.dispatch(setGeneratedLaunchCode(''))
+    store.dispatch(setLaunchResponse({}))
+    localStorage.removeItem('launchInfo')
+    localStorage.removeItem('countryISO')
+  }, [])
 
   return (
     <Container>
@@ -107,7 +108,9 @@ const Business = () => {
             </Drop>
           </TopContent>
           <BottomContent>
-            <Search style={searchStyle} iconStyle={iconStyle} />
+            <SearchWrapper>
+              <Search style={searchStyle} iconStyle={iconStyle} />
+            </SearchWrapper>
             <ButtonWrapper>
               <button onClick={handleLaunch}>
                 <NoteIcon />
@@ -118,17 +121,17 @@ const Business = () => {
         </MainHeader>
         <SubHeader>
           <ActiveNav
-            text="All Businesses"
+            text="All"
             total={0}
-            path={"/dashboard/businesses/all-businesses"}
+            path={'/dashboard/businesses/all-businesses'}
           />
           <ActiveNav
-            text="Pending Applications"
+            text="Pending"
             total={submitted.isSuccess ? submitted?.currentData.length : 0}
             path="/dashboard/businesses/pending-applications"
           />
           <ActiveNav
-            text="Draft Applications"
+            text="Draft"
             total={drafts.isSuccess ? drafts?.currentData.length : 0}
             path="/dashboard/businesses/draft-applications"
           />
@@ -137,7 +140,17 @@ const Business = () => {
       <Outlet />
       <AppFeedback subProject="Businesses" />
     </Container>
-  );
-};
+  )
+}
 
-export default Business;
+export default Business
+
+const SearchWrapper = styled.div`
+  max-width: 384px;
+  height: 40px;
+  width: 100%;
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+    width: 100%;
+  }
+`
