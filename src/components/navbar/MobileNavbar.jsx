@@ -75,7 +75,7 @@ const MobileNavbar = ({ hideNav }) => {
       setSelected("Intellectual Assets");
     else setSelected(current);
     console.log(current);
-  }, []);
+  }, [current]);
 
   return (
     <MobileNavContainer $hideNav={hideNav}>
