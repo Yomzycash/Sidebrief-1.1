@@ -9,6 +9,7 @@ import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import {
   useAddMemberKYCMutation,
+  useDeleteMemberKYCMutation,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
@@ -24,9 +25,11 @@ import {
 
 import { Puff } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
+import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 
 const ShareHolderKYC = () => {
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
   const [size, setSize] = useState(0);
@@ -34,6 +37,7 @@ const ShareHolderKYC = () => {
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
   const [viewMember, viewMembersState] = useViewMembersMutation();
+  const [deleteMemberKYC] = useDeleteMemberKYCMutation();
   const [viewShareholders, viewShareholderState] =
     useViewShareholdersMutation();
   const [shareholderContainer, setShareholder] = useState([]);
@@ -49,9 +53,9 @@ const ShareHolderKYC = () => {
         name: shareholder.memberName,
         code: shareholder.memberCode,
         files: {
-          government: "",
-          proof: "",
-          passport: "",
+          government_id: "",
+          proof_of_home_address: "",
+          passport_photograph: "",
         },
       };
     });
@@ -83,17 +87,10 @@ const ShareHolderKYC = () => {
     navigate(-1);
   };
 
-  const handleChange = async (e, shareholder) => {
-    console.log("value of the component is", e.target.name);
-
-    const uploadedFile = e.target.files[0];
-    setUploadedFileDetails(uploadedFile);
-    setFileName(uploadedFile.name);
-    setType(uploadedFile.type);
-    setSize(uploadedFile.size);
-
-    let fName = e.target.name;
-    let value = e.target.value;
+  const handleChange = async (files, shareholder, type) => {
+    console.log("value of the component is", files);
+    console.log("shareholder is", shareholder);
+    console.log("component name", type);
 
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
@@ -104,53 +101,65 @@ const ShareHolderKYC = () => {
         ...updatedState[index],
         files: {
           ...updatedState[index].files,
-          [fName]: value,
+          [type]: files[0].name,
         },
       };
 
       return updatedState;
     });
 
-    if (!isValidFileUploaded(uploadedFile)) {
-      toast.error("Only PDFs, PNGs and JPEGs are supported");
-    } else if (uploadedFile.size > 3000000) {
-      toast.error("File is too large");
-    } else {
-      toast.success("Valid Document");
-      const res = await convertToLink(e.target.files[0]);
-      console.log(res);
-      console.log(res.url);
+    const res = await convertToLink(files[0]);
+    console.log("conversion", res.url);
 
-      const requiredAddMemberData = {
-        launchCode: generatedLaunchCode,
-        memberCode: shareholder,
-        memberKYC: {
-          documentType: uploadedFile.type,
-          documentLink: res.url,
-        },
-      };
-      console.log("data to db", requiredAddMemberData);
-      const response = await addMemberKYC(requiredAddMemberData);
-      console.log(response);
-      if (response.data) {
-        toast.success("Document uploaded successfully");
-      } else if (response.error) {
-        console.log(response.error?.data.message);
-        toast.error(response.error?.data.message);
-      }
+    const formatType = type.split("_").join(" ");
+    const requiredAddMemberData = {
+      launchCode: generatedLaunchCode,
+      memberCode: shareholder,
+      memberKYC: {
+        documentType: formatType,
+        documentLink: res.url,
+      },
+    };
+    console.log("data to db", requiredAddMemberData);
+    const response = await addMemberKYC(requiredAddMemberData);
+    console.log(response);
+    if (response.data) {
+      console.log(response.data);
+      toast.success("Document uploaded successfully");
+    } else if (response.error) {
+      console.log(response.error?.data.message);
+      toast.error(response.error?.data.message);
     }
+    // }
   };
 
   console.log(documentContainer);
   store.dispatch(setShareholderDocs(documentContainer));
+  localStorage.setItem(
+    "localShareholderInfo",
+    JSON.stringify(documentContainer)
+  );
 
   const handleNext = () => {
     navigate("/launch/directors-kyc");
   };
 
-  const handleRemove = () => {
-    setFileName("");
-    setUploadedFileDetails({});
+  const handleRemove = (shareholder) => {
+    console.log("shareholder delete", shareholder);
+    // const requiredDeleteData = {
+    //   launchCode: generatedLaunchCode,
+    //   memberCode: shareholder,
+    //   documentCode: "",
+    // };
+    // console.log("delete data to be", requiredDeleteData);
+    // const response = await deleteMemberKYC(requiredDeleteData);
+    // console.log(response);
+    // if (response.data) {
+    //   toast.success("Document deleted successfully");
+    // } else if (response.error) {
+    //   console.log(response.error?.data.message);
+    //   toast.error(response.error?.data.message);
+    // }
   };
 
   // Set the progress of the application
@@ -175,12 +184,51 @@ const ShareHolderKYC = () => {
                 <Puff stroke="#00A2D4" fill="white" />
               </Loading>
             ))}
-          <LaunchFormContainer>
+          <LaunchFormContainer style={{ paddingTop: "40px" }}>
             {documentContainer.map((shareholder, index) => (
               <FileContainer key={index}>
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
-                  <FileUpload
+                  <KYCFileUpload
+                    TopText={"Government Issued ID"}
+                    onDrop={(files) =>
+                      handleChange(files, shareholder.code, "government_id")
+                    }
+                    handleRemove={handleRemove(shareholder.code)}
+                    BottomText={
+                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
+                    }
+                  />
+
+                  <KYCFileUpload
+                    TopText={"Proof of Home Address"}
+                    onDrop={(files) =>
+                      handleChange(
+                        files,
+                        shareholder.code,
+                        "proof_of_home_address"
+                      )
+                    }
+                    handleRemove={handleRemove(shareholder.code)}
+                    BottomText={
+                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
+                    }
+                  />
+
+                  <KYCFileUpload
+                    TopText={"Passport Photograph"}
+                    onDrop={(files) =>
+                      handleChange(
+                        files,
+                        shareholder.code,
+                        "passport_photograph"
+                      )
+                    }
+                    handleRemove={handleRemove(shareholder.code)}
+                    BottomText={"Kindly ensure image is not larger than 3MB"}
+                  />
+
+                  {/* <FileUpload
                     TopText={"Government Issued ID"}
                     name="government"
                     onChange={(e) => handleChange(e, shareholder.code)}
@@ -191,6 +239,7 @@ const ShareHolderKYC = () => {
                       "Driver’s Licence, National ID Card, Voters Card or International Passport"
                     }
                   />
+
 
                   <FileUpload
                     TopText={"Proof of Home Address"}
@@ -212,7 +261,7 @@ const ShareHolderKYC = () => {
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
-                  />
+                  /> */}
                 </ContentWrapper>
               </FileContainer>
             ))}

@@ -8,7 +8,7 @@ import AppFeedback from "components/AppFeedback";
 const ApplicationSuccessPage = () => {
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate("");
+    navigate("/dashboard/businesses/pending-applications");
   };
 
   return (
@@ -34,9 +34,13 @@ const Body = styled.div`
   position: fixed;
   bottom: 0px;
   width: 100%;
-  height: 81.5vh;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  @media screen and (min-width: 768px) {
+    height: 81.5vh;
+  }
 `;

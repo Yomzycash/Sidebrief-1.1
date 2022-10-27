@@ -3,9 +3,9 @@ import styled from "styled-components";
 export const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 export const Name = styled.h3`

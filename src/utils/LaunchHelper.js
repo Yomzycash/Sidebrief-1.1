@@ -9,7 +9,14 @@ export const convertToLink = async (image) => {
       method: "post",
       body: data,
     }
-  );
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   return await res;
 };
 
@@ -27,6 +34,26 @@ export const mergeInfo = (titlesUpdatedData, membersUpdatedData) => {
         let merged = { ...title, ...member };
         titlesMembersMerged.push(merged);
       }
+    });
+  });
+
+  return titlesMembersMerged;
+};
+
+export const mergeThreeInfo = (
+  titlesUpdatedData,
+  membersUpdatedData,
+  storeDocument
+) => {
+  let titlesMembersMerged = [];
+  titlesUpdatedData.forEach((title) => {
+    membersUpdatedData.forEach((member) => {
+      storeDocument.forEach((store) => {
+        if ((member.memberCode === title.memberCode) === store.code) {
+          let merged = { ...title, ...member, ...store };
+          titlesMembersMerged.push(merged);
+        }
+      });
     });
   });
 

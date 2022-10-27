@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AccountTypeCard } from "../../../../components/cards";
 import { HeadText } from "../../../../components/texts";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import Navbar from "../../../../components/navbar";
+import Navbar, { LogoNav } from "../../../../components/navbar";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { useLocation } from "react-router-dom";
 import {
@@ -15,19 +15,62 @@ import {
   Top,
 } from "./styled";
 import AppFeedback from "components/AppFeedback";
+import { TestBlock } from "../userRegistration/styles";
 
 const AccountType = () => {
+  const [navSticked, setNavSticked] = useState("");
+
   const location = useLocation();
+
+  const TestRef = useRef();
+
+  useEffect(() => {
+    var observer = new IntersectionObserver((e) => {
+      if (e[0].intersectionRatio === 0) {
+        setNavSticked("true");
+      } else if (e[0].intersectionRatio === 1) {
+        setNavSticked("");
+      }
+    });
+    if (TestRef.current) {
+      observer.observe(TestRef.current);
+    } else {
+      const mutationObserver = new MutationObserver(() => {
+        if (TestRef.current) {
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
+        }
+        mutationObserver.observe(document, {
+          subtree: true,
+          childList: true,
+        });
+      });
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <AccountTypeMain>
+      <TestBlock ref={TestRef} id="testdiv" />
       <Navbar />
+      <LogoNav
+        stick={0}
+        nav_sticked={navSticked}
+        style={{ padding: "15px clamp(20px, 5vw, 40px)", marginTop: "15px" }}
+        $mobile
+        $hideSignIn
+      />
+
       <AccountTypeCont>
         <AccountTypeBody>
           <Top>
             <HeadText
               title="Get started with Sidebrief"
-              body="How would you like to use your account"
+              body="How would you like to use your account?"
+              titleStyle={{ fontSize: "clamp(20px, 2vw, 28px)" }}
+              bodyStyle={{ fontSize: "clamp(14px, 1.4vw, 20px)" }}
             />
           </Top>
           <Middle
@@ -52,7 +95,6 @@ const AccountType = () => {
               title="As a Business Owner"
               body="The fastest way to build and scale businesses faster        "
               to={`${location.pathname}/user`}
-              $shadow
             />
             <AccountTypeCard
               title="As a Partner"
@@ -67,9 +109,11 @@ const AccountType = () => {
             text={[
               {
                 text: "Already have an account? ",
-                link: { text: "Sign In", to: "/login" },
+                link: { text: "Sign in", to: "/login" },
               },
             ]}
+            textStyle={{ fontSize: "clamp(14px, 1.4vw, 18px)" }}
+            linkStyle={{ fontSize: "clamp(14px, 1.4vw, 18px)" }}
           />
         </AccountFooter>
       </AccountTypeCont>

@@ -24,7 +24,11 @@ const MyRewards = () => {
 
   const [category, setCategory] = useSearchParams();
 
-  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery();
+  const { data, isLoading, isError, isSuccess } = useGetUserRewardQuery({
+    pollingInterval: 3000,
+    refetchOnMountOrArgChange: true,
+    skip: false,
+  });
 
   const navigate = useNavigate();
 
@@ -79,36 +83,39 @@ const MyRewards = () => {
             <Puff stroke="#00A2D4" fill="white" width={60} />
           </Loading>
         ) : (
-          <>
-            <BodyLeft>
-              <h3>Categories</h3>
-              <ul>
-                {rewardsCategories?.map((cat, index) => (
-                  <li
+          filteredReward?.length > 0 && (
+            <>
+              <BodyLeft>
+                {/* <h3>Categories</h3> */}
+                <ul>
+                  {rewardsCategories?.map((cat, index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleCategory(cat)}
+                      style={{
+                        color:
+                          cat === category.get("category") ? "#00A2D4" : "",
+                      }}
+                    >
+                      {cat}
+                    </li>
+                  ))}
+                </ul>
+              </BodyLeft>
+              <BodyRight>
+                {filteredReward?.map((reward, index) => (
+                  <RewardCard
                     key={index}
-                    onClick={() => handleCategory(cat)}
-                    style={{
-                      color: cat === category.get("category") ? "#00A2D4" : "",
-                    }}
-                  >
-                    {cat}
-                  </li>
+                    title={reward?.rewardName}
+                    body={reward?.rewardDescription}
+                    image={reward?.rewardImage}
+                    action={() => handleRewardClick(reward.rewardID)}
+                    rewardspage
+                  />
                 ))}
-              </ul>
-            </BodyLeft>
-            <BodyRight>
-              {filteredReward?.map((reward, index) => (
-                <RewardCard
-                  key={index}
-                  title={reward?.rewardName}
-                  body={reward?.rewardDescription}
-                  image={reward?.rewardImage}
-                  action={() => handleRewardClick(reward.rewardID)}
-                  rewardspage
-                />
-              ))}
-            </BodyRight>
-          </>
+              </BodyRight>
+            </>
+          )
         )}
       </Body>
       <AppFeedback subProject="My rewards" />

@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
-import { ReviewTab } from "utils/config";
+import { imageTypeImage, ReviewTab } from "utils/config";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useSelector } from "react-redux";
@@ -20,6 +20,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import ReviewCard from "components/cards/ReviewCard";
 import AppFeedback from "components/AppFeedback";
+import { mergeInfo } from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
 
 const BeneficiaryReview = () => {
   const ActiveStyles = {
@@ -28,8 +30,8 @@ const BeneficiaryReview = () => {
     borderRadius: 0,
   };
   const [beneficialArray, setBeneficialArray] = useState([]);
-  const [beneficialKycArray, setBeneficialKycArray] = useState([]);
-  const [mergedBeneficialKycArray, setMergedBeneficialKycArray] = useState([]);
+  // const [beneficialKycArray, setBeneficialKycArray] = useState([]);
+  // const [mergedBeneficialKycArray, setMergedBeneficialKycArray] = useState([]);
 
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const navigate = useNavigate();
@@ -37,44 +39,17 @@ const BeneficiaryReview = () => {
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
-  //console.log(generatedLaunchCode)
+  // getting the beneficiary container from store
+  const beneficiaryDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.beneficiaryDocs
+  );
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
   );
-  // console.log(launchResponse)
-  const [viewBeneficials] = useViewBeneficiariesMutation();
-  const [viewBeneficialKyc] = useViewBeneficialsKYCMutation();
 
-  const handleViewBeneficial = async () => {
-    let responseData = await viewBeneficials(launchResponse);
-    //console.log(responseData)
-    setBeneficialArray(responseData.data.businessBeneficialOwners);
-  };
-  const handleViewBeneficialKyc = async () => {
-    let responseData = await viewBeneficialKyc(launchResponse);
-    console.log(responseData);
-    setBeneficialKycArray(responseData.data.beneficialOwnersKYC);
-  };
-  console.log(beneficialArray);
-  console.log(beneficialKycArray);
-
-  useEffect(() => {
-    handleViewBeneficial();
-    handleViewBeneficialKyc();
-  }, []);
-  useEffect(() => {
-    const mergedData = [];
-    beneficialArray.forEach((beneficial) => {
-      beneficialKycArray.forEach((kyc) => {
-        if (beneficial.beneficialOwnerCode === kyc.beneficialOwnerCode) {
-          let merged = { ...beneficial, ...kyc };
-          mergedData.push(merged);
-        }
-      });
-    });
-    setMergedBeneficialKycArray(mergedData);
-  }, [beneficialArray.length, beneficialKycArray.length]);
-  console.log(mergedBeneficialKycArray);
+  const [viewBeneficials, viewBeneficialState] = useViewBeneficiariesMutation();
+  const [viewBeneficialKyc, viewBeneficialKycState] =
+    useViewBeneficialsKYCMutation();
 
   const handleNext = async () => {
     const requiredData = {
@@ -83,7 +58,6 @@ const BeneficiaryReview = () => {
     const response = await submitLaunch(requiredData);
     const error = response.error;
     if (response.data) {
-      console.log(response.data.registrationStatus);
       toast.success(response.data.registrationStatus);
       navigate("/launch/review-success");
     } else {
@@ -97,6 +71,45 @@ const BeneficiaryReview = () => {
   const handleNavigate = () => {
     navigate("/launch/beneficiaries-info");
   };
+
+  const handleBeneficialArray = async () => {
+    let titlesMembersMerged = [];
+
+    let beneficialInfo = await viewBeneficials(launchResponse);
+    // setBeneficialArray(beneficialInfo.data.businessBeneficialOwners);
+    let newBeneficiaryInfo = [...beneficialInfo.data.businessBeneficialOwners];
+    newBeneficiaryInfo.forEach((title) => {
+      beneficiaryDocumentContainer.forEach((member) => {
+        if (member.code === title.beneficialOwnerCode) {
+          let merged = { ...title, ...member };
+          titlesMembersMerged.push(merged);
+        }
+      });
+    });
+    setBeneficialArray(titlesMembersMerged);
+  };
+
+  // useEffect(() => {
+  //   let titlesMembersMerged = [];
+
+  //   let beneficialInfo = await viewBeneficials(launchResponse);
+  //   // setBeneficialArray(beneficialInfo.data.businessBeneficialOwners);
+  //   console.log(beneficialInfo.data.businessBeneficialOwners);
+  //   let newBeneficiaryInfo = [...beneficialInfo.data.businessBeneficialOwners]
+  //   newBeneficiaryInfo.forEach((title) => {
+  //     beneficiaryDocumentContainer.forEach((member) => {
+  //       if (member.code === title.beneficialOwnerCode) {
+  //         let merged = { ...title, ...member };
+  //         titlesMembersMerged.push(merged);
+  //       }
+  //     });
+  //   });
+  //   setBeneficialArray(titlesMembersMerged);
+  //   console.log("testing files", titlesMembersMerged);
+  // }, [beneficiaryDocumentContainer]);
+  useEffect(() => {
+    handleBeneficialArray();
+  }, [beneficiaryDocumentContainer]);
 
   return (
     <>
@@ -126,6 +139,12 @@ const BeneficiaryReview = () => {
             </EditWrapper>
           </ContentWrapper>
 
+          {viewBeneficialState.isLoading && (
+            <Loading height="50vh">
+              <Puff stroke="#00A2D4" fill="white" />
+            </Loading>
+          )}
+
           <CardWrapper>
             {beneficialArray.map((beneficiary, index) => (
               <ReviewCard
@@ -136,13 +155,13 @@ const BeneficiaryReview = () => {
                 phone={beneficiary?.beneficialOwnerPhone}
                 occupation={beneficiary?.beneficialOwnerOccupation}
                 stake={beneficiary?.beneficialOwnershipStake}
-                icon
-                government
-                proof
-                passport
+                government={beneficiary.files.government_id}
+                proof={beneficiary.files.proof_of_home_address}
+                passport={beneficiary.files.passport_photograph}
               />
             ))}
           </CardWrapper>
+
           <ButtonWrapper>
             <CheckoutController
               backText={"Previous"}
@@ -159,7 +178,6 @@ const BeneficiaryReview = () => {
 };
 
 export default BeneficiaryReview;
-
 const Nav = styled.nav`
   background: #ffffff;
   width: 100%;
@@ -170,6 +188,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 
 const ReviweTabWrapper = styled.div`
@@ -239,4 +259,13 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;

@@ -19,6 +19,9 @@ import {
   TextLink,
   TextWrapper,
   rewardModalStyle,
+  Back,
+  RewardsScroll,
+  MobileButtonWrapper,
 } from "./styled";
 
 import Button from "components/button";
@@ -27,7 +30,7 @@ import { IoArrowForward } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setRewardsPageHeader } from "redux/Slices";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
 import { useGetAllRewardsQuery } from "services/RewardService";
@@ -38,7 +41,9 @@ const RewardDetails = (props) => {
   const [open, setOpen] = useState(false);
   const [selectedReward, setSelectedReward] = useState({});
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
@@ -76,11 +81,12 @@ const RewardDetails = (props) => {
 
   return (
     <StaffContainer sidebarWidth={sidebarWidth}>
-      <NavigationWrapper
-        onClick={() => navigate("/dashboard/rewards/all-rewards")}
-      >
-        <HiArrowNarrowLeft />
-        <p>Back to Rewards</p>
+      <NavigationWrapper>
+        <Back to="/dashboard/rewards/all-rewards">
+          <HiArrowNarrowLeft />
+          <p>Back to Rewards</p>
+        </Back>
+        <span>Rewards</span>
       </NavigationWrapper>
       <RewardShortDetails>
         <ImageWrapper>
@@ -95,12 +101,12 @@ const RewardDetails = (props) => {
         </ImageWrapper>
         <ButtonWrapper>
           <Button title="Claim Reward" onClick={handleClickOpen} />
-          <Dialog onClose={handleClose} open={open}>
-            <DialogContent style={rewardModalStyle}>
-              <RewardModal handleClose={handleClose} />
-            </DialogContent>
-          </Dialog>
         </ButtonWrapper>
+        <Dialog onClose={handleClose} open={open}>
+          <DialogContent style={rewardModalStyle}>
+            <RewardModal handleClose={handleClose} />
+          </DialogContent>
+        </Dialog>
       </RewardShortDetails>
       <RewardDescription>
         <TextDes>
@@ -112,28 +118,33 @@ const RewardDetails = (props) => {
           <HiArrowNarrowRight />
         </VisitLink> */}
       </RewardDescription>
-      <DashboardSection
-        title="Rewards"
-        body="Accept offers and rewards when you register your business with Sidebrief"
-        carousel
-        link={{
-          text: "View all",
-          to: "/dashboard",
-          icon: <IoArrowForward />,
-        }}
-      >
-        <ScrollBox>
-          {data?.slice(0, 8).map((reward, index) => (
-            <RewardCard
-              key={index}
-              title={reward?.rewardPartner}
-              body={reward?.rewardName}
-              image={reward?.rewardImage}
-              action={() => handleRewardClick(reward)}
-            />
-          ))}
-        </ScrollBox>
-      </DashboardSection>
+      <MobileButtonWrapper>
+        <Button title="Claim Reward" onClick={handleClickOpen} />
+      </MobileButtonWrapper>
+      <RewardsScroll>
+        <DashboardSection
+          title="Rewards"
+          body="Accept offers and rewards when you register your business with Sidebrief"
+          carousel
+          link={{
+            text: "View all",
+            to: "/dashboard",
+            icon: <IoArrowForward />,
+          }}
+        >
+          <ScrollBox>
+            {data?.slice(0, 8).map((reward, index) => (
+              <RewardCard
+                key={index}
+                title={reward?.rewardPartner}
+                body={reward?.rewardName}
+                image={reward?.rewardImage}
+                action={() => handleRewardClick(reward)}
+              />
+            ))}
+          </ScrollBox>
+        </DashboardSection>
+      </RewardsScroll>
       <AppFeedback subProject="Rewards details" />
     </StaffContainer>
   );

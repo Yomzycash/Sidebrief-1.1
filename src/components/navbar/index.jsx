@@ -29,7 +29,14 @@ import { store } from "redux/Store";
 import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
 
-const Navbar = ({ dashboard, rewards }) => {
+const Navbar = ({
+  dashboard,
+  rewards,
+  $displayMobile,
+  imgStyles,
+  style,
+  hideSearch,
+}) => {
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [msgObj, setMsgObj] = useState([]);
@@ -92,11 +99,13 @@ const Navbar = ({ dashboard, rewards }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
+          $displayMobile={$displayMobile}
+          style={{ ...style }}
         >
           <Link to="/" style={imgStyle}>
-            <Image src={logo} alt="logo" />
+            <Image src={logo} alt="logo" style={{ ...imgStyles }} />
           </Link>
-          {dashboard && <Search />}
+          {!hideSearch && <Search style={{ height: "32px" }} />}
           <RightIcons>
             <BellContainer
               onClick={() => setShowNotification(!showNotification)}
@@ -114,8 +123,13 @@ const Navbar = ({ dashboard, rewards }) => {
           </RightIcons>
         </NavWrapper>
       ) : (
-        <NavWrapper boxshadow={boxshadow} key="NavbarImg">
-          <Image src={logo} alt="logo" />
+        <NavWrapper
+          boxshadow={boxshadow}
+          key="NavbarImg"
+          $displayMobile={$displayMobile}
+          style={{ ...style }}
+        >
+          <Image src={logo} alt="logo" style={{ ...imgStyles }} />
         </NavWrapper>
       )}
 

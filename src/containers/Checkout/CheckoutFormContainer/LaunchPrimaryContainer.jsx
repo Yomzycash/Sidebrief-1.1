@@ -1,6 +1,6 @@
 import React from "react";
 
-const LaunchPrimaryContainer = ({ children }) => {
+const LaunchPrimaryContainer = ({ children, style }) => {
   return (
     <div
       style={{
@@ -8,6 +8,7 @@ const LaunchPrimaryContainer = ({ children }) => {
         justifyContent: "space-between",
         flexFlow: "column",
         flex: 1,
+        ...style,
       }}
     >
       {children}

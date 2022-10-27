@@ -1,5 +1,5 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
-import React from "react";
+import TabNavBar from 'components/TabNavBar/TabNavBar'
+import React from 'react'
 import {
   Body,
   BoldText,
@@ -8,11 +8,11 @@ import {
   Image,
   Main,
   ParagraphText,
-} from "./styled";
-import image from "../../../../asset/images/coming.png";
-import { useNavigate } from "react-router-dom";
+} from './styled'
+import image from '../../../../asset/images/coming.png'
+import { useNavigate } from 'react-router-dom'
 const BankAccount = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <Container>
       <TabNavBar />
@@ -25,14 +25,14 @@ const BankAccount = () => {
             the moment. However once it’s live, you’ll be the first to know.
           </ParagraphText>
           <ComingBtn
-            onClick={() => navigate("/dashboard/business-registration")}
+            onClick={() => navigate('/dashboard/business-registration')}
           >
             Back to Dashboard
           </ComingBtn>
         </Main>
       </Body>
     </Container>
-  );
-};
+  )
+}
 
-export default BankAccount;
+export default BankAccount

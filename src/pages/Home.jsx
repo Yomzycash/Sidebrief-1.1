@@ -4,6 +4,7 @@ import Navbar from "components/navbar";
 import { useSelector } from "react-redux";
 import BusinessRegistration from "./Dashboard/User/Home/BusinessRegistration";
 import Sidebar from "components/sidebar";
+import MobileNavbar from "components/navbar/MobileNavbar";
 
 const Home = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -11,6 +12,7 @@ const Home = () => {
 
   return (
     <Dashboard>
+      <MobileNavbar />
       <Navbar dashboard />
       <Body>
         <BodyLeft>
@@ -40,7 +42,7 @@ const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
-  @media screen and (max-width: 1050px) {
+  /* @media screen and (max-width: 1050px) {
     width: 100%;
-  }
+  } */
 `;

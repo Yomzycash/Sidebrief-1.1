@@ -5,61 +5,22 @@ export const Container = styled.div`
   flex-flow: column;
   flex: 1;
 `;
-export const Header = styled.div`
-  position: sticky;
-  top: 65px;
-  display: flex;
-  flex-flow: column;
-  background-color: white;
-  z-index: 2;
-  box-shadow: ${(props) =>
-    props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
-`;
-export const MainHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 48px;
-  width: 100%;
-  height: clamp(80px, 10vw, 120px);
-  padding-inline: 24px;
-  border: 1px solid #edf1f7;
-  border-top: none;
-  transition: 0.2s all ease;
-
-  > p {
-    display: flex;
-    align-items: center;
-    font-size: clamp(20px, 1.5vw, 24px);
-    font-weight: 700;
-    color: #151717;
-  }
-
-  > div {
-    display: flex;
-    gap: 48px;
-    flex: 1;
-    justify-content: space-between;
-  }
-`;
-
-export const SubHeader = styled.div`
-  display: flex;
-  gap: 24px;
-  border: 1px solid #edf1f7;
-  border-top: none;
-`;
 
 export const Body = styled.div`
   display: flex;
-  gap: 42px;
-  padding: 40px 24px 24px;
+  gap: clamp(24px, 2.4vw, 42px);
+  padding: clamp(16px, 3.6vw, 24px) 24px 24px;
   border: 1px solid #edf1f7;
   border-top: none;
+
+  @media screen and (max-width: 700px) {
+    border: none;
+  }
 `;
 
 export const BodyLeft = styled.div`
   position: sticky;
-  top: 220px;
+  top: clamp(222px, 24vw, 262px);
   display: flex;
   flex-flow: column;
   gap: 16px;
@@ -89,11 +50,31 @@ export const BodyLeft = styled.div`
       cursor: pointer;
     }
   }
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 export const BodyRight = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: clamp(16px, 1.6vw, 24px);
+  width: 100%;
+
+  @media screen and (max-width: 430px) {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: auto auto;
+  }
+
+  @media screen and (min-width: 1550px) {
+    grid-template-columns: auto auto auto auto;
+  }
 `;
 export const Footer = styled.div``;
 

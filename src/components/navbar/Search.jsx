@@ -7,13 +7,18 @@ import {
 } from "./styled";
 import search from "../../asset/images/search.png";
 
-const Search = ({ style }) => {
+const Search = ({
+  style,
+  iconStyle,
+  placeholder = "Search something...",
+  onChange,
+}) => {
   return (
     <SearchBarWrapper style={style}>
       <SearchIconWrapper>
-        <SearchIcon src={search} alt="logo" />
+        <SearchIcon src={search} alt="logo" style={iconStyle} />
       </SearchIconWrapper>
-      <SearchBar placeholder="Search something..." />
+      <SearchBar placeholder={placeholder} onChange={onChange} />
     </SearchBarWrapper>
   );
 };

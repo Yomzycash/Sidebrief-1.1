@@ -19,19 +19,27 @@ import ActiveNav from "components/navbar/ActiveNav";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button from "components/button";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
-import { setBusinessesShown, setGeneratedLaunchCode } from "redux/Slices";
+import {
+  setBusinessesShown,
+  setGeneratedLaunchCode,
+  setLaunchResponse,
+} from "redux/Slices";
 import { store } from "redux/Store";
 import {
   useGetUserDraftQuery,
   useGetUserSubmittedQuery,
 } from "services/launchService";
 import { useSelector } from "react-redux";
+import AppFeedback from "components/AppFeedback";
 
 const searchStyle = {
   borderRadius: "12px",
   backgroundColor: "white",
   maxWidth: "384px",
+  height: "40px",
 };
+
+const iconStyle = { width: "17px", height: "17px" };
 
 const Business = () => {
   const location = useLocation();
@@ -60,13 +68,24 @@ const Business = () => {
       store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
     if (location.pathname === "/dashboard/businesses/pending-applications")
       store.dispatch(
-        setBusinessesShown({ total: submittedTotal, shown: submittedTotal })
+        setBusinessesShown({
+          total: submittedTotal,
+          shown: submittedTotal,
+        })
       );
     if (location.pathname === "/dashboard/businesses/draft-applications")
       store.dispatch(
         setBusinessesShown({ total: draftTotal, shown: draftTotal })
       );
   }, [location.pathname]);
+
+  useEffect(() => {
+    // clear the localstorage when this page is entered
+    store.dispatch(setGeneratedLaunchCode(""));
+    store.dispatch(setLaunchResponse({}));
+    localStorage.removeItem("launchInfo");
+    localStorage.removeItem("countryISO");
+  }, []);
 
   return (
     <Container>
@@ -88,7 +107,7 @@ const Business = () => {
             </Drop>
           </TopContent>
           <BottomContent>
-            <Search style={searchStyle} />
+            <Search style={searchStyle} iconStyle={iconStyle} />
             <ButtonWrapper>
               <button onClick={handleLaunch}>
                 <NoteIcon />
@@ -116,6 +135,7 @@ const Business = () => {
         </SubHeader>
       </Header>
       <Outlet />
+      <AppFeedback subProject="Businesses" />
     </Container>
   );
 };

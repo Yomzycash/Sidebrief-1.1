@@ -11,9 +11,10 @@ export const Container = styled.div`
   border-radius: 16px;
   padding: clamp(15px, 1.5vw, 24px);
   display: flex;
-  gap: 24px;
+  gap: 22px;
   transition: 0.3s all ease;
   opacity: ${({ notready }) => (notready ? "0.6" : "")};
+
   @media screen and (max-width: 1140px) {
     &:hover {
       cursor: ${({ notready }) => (notready ? "" : "pointer")};
@@ -26,7 +27,7 @@ export const Container = styled.div`
   }
   @media screen and (min-width: 1140px) {
     &:hover {
-      outline: ${({ notready }) => (notready ? "" : "1px solid #00a2d4")};
+      border: ${({ notready }) => (notready ? "" : "1px solid #00a2d4")};
     }
   }
 `;
@@ -34,7 +35,7 @@ export const Container = styled.div`
 export const FirstPart = styled.div`
   display: flex;
   flex: 2;
-  gap: 16px;
+  gap: 8px;
   width: 100%;
   min-width: 40%;
   @media screen and (max-width: 600px) {
@@ -50,7 +51,7 @@ export const IconWrapper = styled.div`
   width: 36px;
   border-radius: 8px;
   background-color: ${({ notready }) =>
-    notready === "true" ? "#F9C4BD" : "#ffffff"};
+    notready === "true" ? "#F9C4BD" : "rgba(0, 162, 212, 0.1)"};
   transition: 0.3s all ease;
 `;
 
@@ -63,12 +64,12 @@ export const MiddlePart = styled.div`
 
 export const Title = styled.h4`
   display: flex;
-  flex-flow: row;
+  flex-flow: row wrap;
   align-items: center;
   gap: 7px;
   font-family: "BR Firma";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   letter-spacing: -0.02em;
   color: #151717;

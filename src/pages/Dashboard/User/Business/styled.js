@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -9,16 +9,16 @@ export const Container = styled.div`
   @media screen and (max-width: 1050px) {
     margin: 0;
   }
-`
+`;
 
 export const Header = styled.div`
   position: sticky;
-  top: 65px;
+  top: 57.1px;
   display: flex;
   flex-flow: column;
   background-color: white;
   z-index: 2;
-`
+`;
 
 export const MainHeader = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ export const MainHeader = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
   transition: 0.2s all ease;
-`
+`;
 
 export const SubHeader = styled.div`
   display: flex;
@@ -38,7 +38,12 @@ export const SubHeader = styled.div`
   gap: 24px;
   border: 1px solid #edf1f7;
   border-top: none;
-`
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  //TODO: maybe hide scroll bar
+`;
 
 export const TopContent = styled.div`
   display: flex;
@@ -52,14 +57,14 @@ export const TopContent = styled.div`
     gap: 48px;
     justify-content: space-between;
   }
-`
+`;
 export const PageTitle = styled.div`
   display: flex;
   align-items: center;
-  font-size: clamp(20px, 1.5vw, 24px);
+  font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   color: #151717;
-`
+`;
 
 export const BottomContent = styled.div`
   display: flex;
@@ -68,7 +73,7 @@ export const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
-`
+`;
 
 export const Drop = styled.div`
   display: flex;
@@ -83,7 +88,7 @@ export const Drop = styled.div`
     width: 60px;
     background: none;
   }
-`
+`;
 export const ButtonWrapper = styled.div`
   width: 200px;
 
@@ -102,4 +107,4 @@ export const ButtonWrapper = styled.div`
     display: flex;
     align-items: center;
   }
-`
+`;

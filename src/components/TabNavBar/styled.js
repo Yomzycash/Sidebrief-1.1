@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 
 export const NavWrapper = styled.nav`
   position: sticky;
-  top: 73px;
+  top: 57.1px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -12,6 +12,10 @@ export const NavWrapper = styled.nav`
   z-index: 6;
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
+
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 export const ContentWrapper = styled.div`
   flex: 1;
@@ -43,8 +47,7 @@ export const NavLinkWrapper = styled.div`
   }
   :hover {
     > a {
-      background: rgba(0, 162, 212, 0.1);
-      color: #00a2d4;
+      background: #edf1f6;
     }
   }
 `;

@@ -7,6 +7,7 @@ import {
   Header,
   EntityCardsWrapper,
   Loading,
+  EntityTitle,
 } from "../styled";
 import { EntityCard } from "components/cards";
 import HeaderCheckout from "components/Header/HeaderCheckout";
@@ -80,7 +81,7 @@ const EntitySelect = () => {
     if (error?.status === "FETCH_ERROR") {
       toast.error("Please check your internet connection");
     }
-  }, [data]);
+  }, [data, error?.status]);
 
   //
   // This fires off when an entity is selected
@@ -226,26 +227,41 @@ const EntitySelect = () => {
         <HeaderCheckout />
       </Header>
       <Body style={{ maxWidth: "100%" }}>
-        <CheckoutSection title={"Operational Country: " + selectedCountry}>
+        <CheckoutSection
+        // title={`${selectedCountry.toUpperCase()}: Please select a business type to get started`}
+        // titleStyles={{
+        //   fontWeight: 600,
+        // }}
+        >
+          {selectedCountry && (
+            <EntityTitle>
+              {selectedCountry}:
+              <span> Please select a business type to get started</span>{" "}
+            </EntityTitle>
+          )}
+          {console.log(entities)}
           {isLoading && (
             <Loading height="300px">
               <Puff stroke="#00A2D4" fill="white" />
             </Loading>
           )}
           <EntityCardsWrapper>
-            {entities?.map((item, index) => (
-              <EntityCard
-                key={index}
-                name={item?.entityName}
-                shares={item?.entityShares}
-                type={item?.entityType}
-                timeline={item?.entityTimeline}
-                requirement={item?.entityRequirements}
-                price={item?.entityFee}
-                currency={item?.entityCurrency}
-                action={() => handleNext(item)}
-              />
-            ))}
+            {entities &&
+              [...entities]
+                ?.sort((a, b) => a?.entityFee - b?.entityFee)
+                .map((item, index) => (
+                  <EntityCard
+                    key={index}
+                    name={item?.entityName}
+                    shares={item?.entityShares}
+                    type={item?.entityType}
+                    timeline={item?.entityTimeline}
+                    requirement={item?.entityRequirements}
+                    price={item?.entityFee}
+                    currency={item?.entityCurrency}
+                    action={() => handleNext(item)}
+                  />
+                ))}
           </EntityCardsWrapper>
         </CheckoutSection>
 

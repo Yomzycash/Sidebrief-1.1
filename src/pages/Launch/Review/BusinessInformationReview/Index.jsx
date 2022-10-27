@@ -82,6 +82,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 const ReviweTabWrapper = styled.div`
   display: flex;

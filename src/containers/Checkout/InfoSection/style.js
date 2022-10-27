@@ -14,19 +14,31 @@ export const TitleWrapper = styled.div`
 `;
 
 export const Form = styled.form`
-  padding: 0 40px;
+  padding: 0 clamp(20px, 3vw, 40px);
   width: 100%;
   max-width: 962px;
 
-  .input-label {
-    font-size: 14px;
+  .input-container-class {
+    gap: clamp(6px, 0.6vw, 12px);
   }
+
+  .input-label {
+    font-size: clamp(12px, 1.2vw, 14px);
+  }
+
   .input-class {
-    height: 48px;
-    margin-top: 8px;
+    height: clamp(40px, 3vw, 48px);
+    margin-top: clamp(0, 0.4vw, 8px);
+    padding: 0 clamp(12px, 1.2vw, 24px);
+
     input {
-      font-size: 14px;
+      font-size: clamp(12px, 1.2vw, 14px);
     }
+  }
+
+  .bottom-text-class {
+    font-size: clamp(10px, 1.2vw, 12px);
+    line-height: clamp(12px, 1.2vw, 21px);
   }
 `;
 
@@ -38,9 +50,10 @@ export const Title = styled.h3`
   font-size: clamp(15px, 1.5vw, 18px);
   font-weight: 400;
   color: #151717;
+  padding: clamp(20px, 3vw, 40px) 0;
   /* padding: 40px; */
-  padding: clamp(20px, 5%, 40px) 40px;
-  margin: 0 -40px;
+  /* padding: clamp(20px, 5%, 40px) 40px; */
+  /* margin: 0 -40px; */
   border-bottom: 1px solid #edf1f7;
 `;
 export const ButtonLink = styled.h4`
@@ -124,7 +137,7 @@ export const CheckboxWrapper = styled.div`
   align-items: center;
   width: 100%;
   gap: 20px;
-  font-size: clamp(13px, 1.5vw, 14px);
+  font-size: clamp(12px, 1.5vw, 14px);
   color: #4e5152;
   font-weight: 400;
 

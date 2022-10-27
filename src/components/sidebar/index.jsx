@@ -26,7 +26,7 @@ const Sidebar = () => {
   const locationPath = location.pathname;
 
   const navigate = useNavigate();
-  const [expanded, setExpaned] = useState(true);
+  const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
 
   const sidebarVariants = {
     true: {

@@ -18,6 +18,8 @@ import {
 } from "services/launchService";
 import { useEffect } from "react";
 import AppFeedback from "components/AppFeedback";
+import { mergeInfo } from "utils/LaunchHelper";
+import { Puff } from "react-loading-icons";
 const ShareholderReview = () => {
   const ActiveStyles = {
     color: "#151717",
@@ -30,7 +32,10 @@ const ShareholderReview = () => {
   const [mergedResponse, setMergedResponse] = useState([]);
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   //console.log(LaunchApplicationInfo)
-
+  // getting the shareholder container from store
+  const shareholderDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.shareholderDocs
+  );
   const navigate = useNavigate();
   const handleNext = () => {
     navigate("/launch/review-director");
@@ -41,53 +46,52 @@ const ShareholderReview = () => {
   };
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
-  const [viewShareholders] = useViewShareholdersMutation();
+  const [viewShareholders, viewShareholderState] =
+    useViewShareholdersMutation();
   const [viewShareholdersKyc] = useViewMembersKYCMutation();
-  const [viewMembers] = useViewMembersMutation();
-
-  const handleViewShareholders = async () => {
-    let responseData = await viewShareholders(launchResponse);
-    //    console.log(responseData)
-    setShareholderInfo(Object.values(responseData.data.businessShareholders));
-  };
-  // const handleViewShareholdersKyc = async () => {
-  //   let responseData = await viewShareholdersKyc(launchResponse)
-  //   // console.log(responseData)
-  //   setShareholdersKycInfo(Object.values(responseData.data.businessMembersKYC))
-  // }
-  const handleMembers = async () => {
-    let responseData = await viewMembers(launchResponse);
-    // console.log(responseData.data.businessMembers)
-    setMembers(responseData.data.businessMembers);
-  };
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
 
   const handleNavigate = () => {
     navigate("/launch/shareholders-info");
   };
-  useEffect(() => {
-    handleViewShareholders();
-    //handleViewShareholdersKyc()
-    handleMembers();
-  }, []);
 
-  useEffect(() => {
-    const mergedData = [];
-    members.forEach((member) => {
-      shareholderInfo.forEach((shareholder) => {
-        let merged = {};
-        if (shareholder.memberCode === member.memberCode) {
-          merged = { ...merged, ...shareholder, ...member };
-          // let kycDocs = shareholdersKycInfo.filter(
-          //   (element) => element.memberCode === shareholder.memberCode,
-          // )
-          mergedData.push(merged);
-        }
-        console.log(mergedData);
-        setMergedResponse(mergedData);
+  const handleMerge = async () => {
+    let memberInfo = await viewMembers(launchResponse);
+    let newMemberInfo = [...memberInfo.data.businessMembers];
+
+    let shareholderInfo = await viewShareholders(launchResponse);
+    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
+
+    let titlesMembersMerged = [];
+    newShareHolderInfo.forEach((title) => {
+      newMemberInfo.forEach((member) => {
+        shareholderDocumentContainer.forEach((store) => {
+          if (
+            member.memberCode === title.memberCode &&
+            title.memberCode === store.code
+          ) {
+            let merged = { ...title, ...member, ...store };
+            titlesMembersMerged.push(merged);
+          }
+        });
       });
     });
-  }, [shareholderInfo.length]);
 
+    // let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setMergedResponse(titlesMembersMerged);
+
+    // return newMerge;
+  };
+
+  useEffect(() => {
+    handleMerge();
+  }, [shareholderDocumentContainer]);
+
+  let shareholderLocalStorage = JSON.parse(
+    localStorage.getItem("localShareholderInfo")
+  );
+
+  console.log("package from local", shareholderLocalStorage);
   return (
     <>
       <Container>
@@ -116,6 +120,13 @@ const ShareholderReview = () => {
             </EditWrapper>
           </ContentWrapper>
 
+          {viewShareholderState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading height="50vh">
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
+
           <CardWrapper>
             {mergedResponse.map((shareholder, index) => (
               <ReviewCard
@@ -127,9 +138,9 @@ const ShareholderReview = () => {
                 phone={shareholder?.memberPhone}
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
                 icon
-                government
-                proof
-                passport
+                government={shareholder.files.government_id}
+                proof={shareholder.files.proof_of_home_address}
+                passport={shareholder.files.passport_photograph}
               />
             ))}{" "}
           </CardWrapper>
@@ -160,6 +171,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 const ReviweTabWrapper = styled.div`
   display: flex;
@@ -228,4 +241,13 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;

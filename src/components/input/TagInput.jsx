@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { MdClear } from "react-icons/md";
 import {
   TagLabel,
   AllWrapper,
@@ -63,7 +64,7 @@ const TagInput = ({
           {tags.map((tag, index) => (
             <TagItem key={index}>
               <TagText>{tag}</TagText>
-              <Tagclose onClick={() => removeTags(index)}>&times;</Tagclose>
+              <MdClear size={20} onClick={() => removeTags(index)} />
             </TagItem>
           ))}
         </TagWrapper>

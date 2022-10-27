@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Body,
   BoldText,
@@ -7,13 +7,13 @@ import {
   Image,
   Main,
   ParagraphText,
-} from "./styled";
-import image from "../../../../../asset/images/coming.png";
-import { useNavigate } from "react-router-dom";
-import TabNavBar from "components/TabNavBar/TabNavBar";
+} from './styled'
+import image from '../../../../../asset/images/coming.png'
+import { useNavigate } from 'react-router-dom'
+import TabNavBar from 'components/TabNavBar/TabNavBar'
 
 const Compliance = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <Container>
       <TabNavBar />
@@ -26,14 +26,14 @@ const Compliance = () => {
             the moment. However once it’s live, you’ll be the first to know.
           </ParagraphText>
           <ComingBtn
-            onClick={() => navigate("/dashboard/business-registration")}
+            onClick={() => navigate('/dashboard/business-registration')}
           >
             Back to Dashboard
           </ComingBtn>
         </Main>
       </Body>
     </Container>
-  );
-};
+  )
+}
 
-export default Compliance;
+export default Compliance

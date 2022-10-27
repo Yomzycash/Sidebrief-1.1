@@ -8,25 +8,32 @@ export const SidebarWrapper = styled(motion.div)`
   display: flex;
   flex-flow: column;
   flex: 1;
-  /* justify-content: space-between; */
   gap: 16px;
+  background-color: white;
 
   position: sticky;
-  top: 73px;
+  top: 57.1px;
+
+  font-size: 14px;
   width: ${(props) => props.width};
   box-sizing: border-box;
   padding: 0px 24px;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 57.1px);
   border-right: 1px solid #edf1f7;
 
-  @media screen and (max-width: 1050px) {
+  @media screen and (max-width: 700px) {
     display: none;
   }
 `;
 export const ListWrapper = styled.div`
-  padding: 20px 15px;
-  margin-bottom: 12px;
+  margin: 20px 15px 22px;
+  width: max-content;
   z-index: 15;
+  cursor: pointer;
+
+  @media screen and (max-width: 1050px) {
+    display: none;
+  }
 `;
 
 export const SideLinkWrapper = styled.div`
@@ -69,13 +76,13 @@ export const SidebarContentItemIcon = styled.div`
 export const Logout = styled.div`
   display: flex;
   flex-flow: column;
-  justify-content: center;
-  height: 100%;
-  padding: 12px 16px;
+  justify-content: flex-end;
+  /* height: 100%; */
+  flex: 1;
+  padding: 12px 16px 100px;
 `;
 
 export const LogoutWrapper = styled.div`
-  /* margin-left: 15px; */
   display: flex;
 
   :hover {
@@ -92,4 +99,11 @@ export const SidebarLinks = styled.div`
   display: flex;
   flex-flow: column;
   gap: 16px;
+  padding-top: 10px;
+`;
+
+export const MobileSidebarWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-flow: column;
 `;

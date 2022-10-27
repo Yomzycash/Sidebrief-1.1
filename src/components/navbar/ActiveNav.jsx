@@ -16,7 +16,7 @@ const ActiveNav = ({ text, total, path, handleShown }) => {
         to={path}
         style={({ isActive }) => (isActive ? ActiveStyles : {})}
       >
-        <p>{text}</p> <span>{total}</span>
+        <p>{text}</p> {typeof total === "number" ? <span>{total}</span> : null}
       </NavLink>
     </Container>
   );
@@ -29,8 +29,14 @@ export const Container = styled.div`
   p {
     display: flex;
     align-items: center;
+    text-align: center;
     font-size: 16px;
     font-weight: 400;
+    white-space: nowrap;
+
+    @media screen and (max-width: 600px) {
+      font-size: 14px;
+    }
   }
 
   span {
@@ -43,6 +49,9 @@ export const Container = styled.div`
     font-size: 14px;
     font-weight: 500;
     height: max-content;
+    @media screen and (max-width: 600px) {
+      font-size: 12px;
+    }
   }
   a {
     display: flex;

@@ -23,6 +23,7 @@ import {
 } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
+import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 
 const DirectorKYC = () => {
   //geting the information from the store
@@ -33,6 +34,7 @@ const DirectorKYC = () => {
   console.log(requiredMemberCode);
 
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState("");
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
   const [size, setSize] = useState(0);
@@ -54,9 +56,9 @@ const DirectorKYC = () => {
         name: director.memberName,
         code: director.memberCode,
         files: {
-          government: "",
-          proof: "",
-          passport: "",
+          government_id: "",
+          proof_of_home_address: "",
+          passport_photograph: "",
         },
       };
     });
@@ -93,17 +95,19 @@ const DirectorKYC = () => {
     handleMerge();
   }, []);
 
-  const handleChange = async (e, director) => {
-    console.log("value of the component is", e.target.name);
+  const handleChange = async (files, director, type) => {
+    console.log("value of the component is", files);
+    console.log("director is", director);
+    console.log("component name", type);
 
-    const uploadedFile = e.target.files[0];
-    setUploadedFileDetails(uploadedFile);
-    setFileName(uploadedFile.name);
-    setType(uploadedFile.type);
-    setSize(uploadedFile.size);
+    // const uploadedFile = e.target.files[0];
+    // setUploadedFileDetails(uploadedFile);
+    // setFileName(uploadedFile.name);
+    // setType(uploadedFile.type);
+    // setSize(uploadedFile.size);
 
-    let fName = e.target.name;
-    let value = e.target.value;
+    // let fName = e.target.name;
+    // let value = e.target.value;
 
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
@@ -114,49 +118,61 @@ const DirectorKYC = () => {
         ...updatedState[index],
         files: {
           ...updatedState[index].files,
-          [fName]: value,
+          [type]: files[0].name,
         },
       };
 
       return updatedState;
     });
 
-    if (!isValidFileUploaded(uploadedFile)) {
-      toast.error("Only PDFs, PNGs and JPEGs are supported");
-    } else if (uploadedFile.size > 3000000) {
-      toast.error("File is too large");
-    } else {
-      toast.success("Valid Document");
-      const res = await convertToLink(e.target.files[0]);
-      console.log(res);
-      console.log(res.url);
+    // if (!isValidFileUploaded(uploadedFile)) {
+    //   toast.error("Only PDFs, PNGs and JPEGs are supported");
+    // } else if (uploadedFile.size > 3000000) {
+    //   toast.error("File is too large");
+    // } else {
+    //   toast.success("Valid Document");
+    const res = await convertToLink(files[0]);
+    console.log("conversion", res.url);
 
-      const requiredAddMemberData = {
-        launchCode: generatedLaunchCode,
-        memberCode: director,
-        memberKYC: {
-          documentType: uploadedFile.type,
-          documentLink: res.url,
-        },
-      };
-      console.log(requiredAddMemberData);
-      const response = await addMemberKYC(requiredAddMemberData);
-      console.log(response);
-      if (response.data) {
-        toast.success("Document uploaded successfully");
-      } else if (response.error) {
-        console.log(response.error?.data.message);
-        toast.error(response.error?.data.message);
-      }
+    const formatType = type.split("_").join(" ");
+    const requiredAddMemberData = {
+      launchCode: generatedLaunchCode,
+      memberCode: director,
+      memberKYC: {
+        documentType: formatType,
+        documentLink: res.url,
+      },
+    };
+    console.log(requiredAddMemberData);
+    const response = await addMemberKYC(requiredAddMemberData);
+    console.log(response);
+    if (response.data) {
+      toast.success("Document uploaded successfully");
+    } else if (response.error) {
+      console.log(response.error?.data.message);
+      toast.error(response.error?.data.message);
     }
   };
 
   console.log(documentContainer);
   store.dispatch(setDirectorDocs(documentContainer));
 
-  const handleRemove = () => {
-    setFileName("");
-    setUploadedFileDetails({});
+  const handleRemove = (director) => {
+    console.log("director delete", director);
+    // const requiredDeleteData = {
+    //   launchCode: generatedLaunchCode,
+    //   memberCode: shareholder,
+    //   documentCode: "",
+    // };
+    // console.log("delete data to be", requiredDeleteData);
+    // const response = await deleteMemberKYC(requiredDeleteData);
+    // console.log(response);
+    // if (response.data) {
+    //   toast.success("Document deleted successfully");
+    // } else if (response.error) {
+    //   console.log(response.error?.data.message);
+    //   toast.error(response.error?.data.message);
+    // }
   };
 
   // Set the progress of the application
@@ -180,12 +196,47 @@ const DirectorKYC = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loading>
           )}
-          <LaunchFormContainer>
+          <LaunchFormContainer style={{ paddingTop: "40px" }}>
             {documentContainer.map((director, index) => (
               <FileContainer key={index}>
                 <Name>{director.name}</Name>
                 <ContentWrapper>
-                  <FileUpload
+                  <KYCFileUpload
+                    TopText={"Government Issued ID"}
+                    onDrop={(files) =>
+                      handleChange(files, director.code, "government_id")
+                    }
+                    handleRemove={handleRemove(director.code)}
+                    BottomText={
+                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
+                    }
+                  />
+
+                  <KYCFileUpload
+                    TopText={"Proof of Home Address"}
+                    onDrop={(files) =>
+                      handleChange(
+                        files,
+                        director.code,
+                        "proof_of_home_address"
+                      )
+                    }
+                    handleRemove={handleRemove(director.code)}
+                    BottomText={
+                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
+                    }
+                  />
+
+                  <KYCFileUpload
+                    TopText={"Passport Photograph"}
+                    onDrop={(files) =>
+                      handleChange(files, director.code, "passport_photograph")
+                    }
+                    handleRemove={handleRemove(director.code)}
+                    BottomText={"Kindly ensure image is not larger than 3MB"}
+                  />
+
+                  {/* <FileUpload
                     TopText={"Government Issued ID"}
                     name="government"
                     onChange={(e) => handleChange(e, director.code)}
@@ -220,7 +271,7 @@ const DirectorKYC = () => {
                     handleRemove={handleRemove}
                     errorMsg={error}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
-                  />
+                  /> */}
                 </ContentWrapper>
               </FileContainer>
             ))}

@@ -8,8 +8,8 @@ export const InputWrapper = styled.div`
   flex-direction: row;
   border-radius: 10px;
   padding: 8px 24px;
-  margin-top: 20px;
-  height: 56px;
+  height: 48px;
+  transition: 0.3s all ease;
 
   &:focus {
     outline: none;
@@ -30,7 +30,8 @@ export const DropWrapper = styled.div`
   border: solid red;
   padding: 0px 20px;
   margin-top: 20px;
-  height: 56px;
+  height: 48px;
+  transition: 0.3s all ease;
 
   @media screen and (max-width: 600px) {
     height: 48px;
@@ -38,6 +39,9 @@ export const DropWrapper = styled.div`
 `;
 
 export const Wrapper = styled(motion.div)`
+  display: flex;
+  flex-flow: column;
+  gap: clamp(8px, 0.8px, 12px);
   margin-bottom: 24px;
   width: 100%;
   position: relative;
@@ -49,17 +53,21 @@ export const Wrapper = styled(motion.div)`
 
 export const Input = styled.input`
   color: #4e5152;
-  height: 56px;
+  height: 48px;
   width: 90%;
   border: none;
   background: none;
   outline: none;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
+  }
+
+  &::placeholder {
+    font-size: 14px;
   }
 
   @media screen and (max-width: 600px) {
@@ -69,7 +77,7 @@ export const Input = styled.input`
 
 export const Select = styled.select`
   color: #4e5152;
-  height: 56px;
+  height: 48px;
   width: 100%;
   border: none;
   padding: 5px 4px;
@@ -77,7 +85,7 @@ export const Select = styled.select`
   cursor: inherit;
   outline: none;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
 
   @media screen and (max-width: 600px) {
     font-size: 14px;
@@ -87,7 +95,7 @@ export const Select = styled.select`
 export const Show = styled.p`
   cursor: pointer;
   color: #4e5152;
-  font-size: 16px;
+  font-size: 14px;
 
   @media screen and (max-width: 600px) {
     font-size: 14px;
@@ -96,12 +104,8 @@ export const Show = styled.p`
 
 export const Label = styled.label`
   color: #4e5152;
-  font-weight: 400;
-  font-size: 16px;
-
-  @media screen and (max-width: 600px) {
-    font-size: 14px;
-  }
+  font-weight: 500;
+  font-size: clamp(12px, 1.3vw, 14px);
 `;
 
 export const Iconwrapper = styled.div`
@@ -136,7 +140,7 @@ export const DateWrapper = styled.div`
     width: 100%;
     height: 100%;
     outline: none;
-    font-size: 16px;
+    font-size: 14px;
   }
 `;
 
@@ -188,7 +192,8 @@ export const TagWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  gap: 20px;
+  column-gap: 16px;
+  row-gap: 8px;
   margin-bottom: 8px;
   min-width: fit-content;
 `;
@@ -201,20 +206,21 @@ export const TagInputWrapper = styled.div`
 export const TagItem = styled.div`
   display: inline-flex;
   flex-direction: row;
-  padding: 11px 8px;
+  padding: clamp(4px, 1vw, 7px) clamp(7px, 1vw, 11px);
   background: #0082aa;
   border-radius: 8px;
   justify-content: space-between;
   align-items: center;
   gap: 0.5em;
   color: #fafafa;
+  text-transform: capitalize;
 `;
 
 export const TagText = styled.span`
   font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: clamp(12px, 1.5vw, 14px);
   line-height: 21px;
 `;
 export const Tagclose = styled.span`

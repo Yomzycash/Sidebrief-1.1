@@ -1,7 +1,16 @@
 import React from "react";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
-import { Container, IconWrapper, SharesWrapper, Top } from "./styled";
+import {
+  Container,
+  Email,
+  IconWrapper,
+  InfoDesktop,
+  InfoMobile,
+  Phone,
+  SharesWrapper,
+  Top,
+} from "./styled";
 import { SpinningCircles } from "react-loading-icons";
 
 const LaunchSummaryCard = ({
@@ -24,32 +33,49 @@ const LaunchSummaryCard = ({
       <Top>
         <p>{`${number}. ${name}`}</p>
         <SharesWrapper shares={shares}>
-          {shares && <div>{`${shares} - ${sharesPercentage}%`}</div>}
-          {director_role && <div>{`Role - ${director_role}`}</div>}
-          {stake && <div>{`Occupation: ${occupation} - Stake: ${stake}%`}</div>}
+          {shares && (
+            <InfoDesktop
+              shares={shares}
+            >{`${shares} - ${sharesPercentage}%`}</InfoDesktop>
+          )}
+          {director_role && (
+            <InfoDesktop>{`Role - ${director_role}`}</InfoDesktop>
+          )}
+          {stake && (
+            <InfoDesktop>{`Occupation: ${occupation} - Stake: ${stake}%`}</InfoDesktop>
+          )}
           {!icon && (
             <IconWrapper>
               <div style={{ cursor: "pointer" }}>
-                <EditIcon onClick={editAction} />
+                <EditIcon onClick={editAction} width={24} />
               </div>
               {isLoading ? (
                 <SpinningCircles
                   stroke="#00A2D4"
                   fill="#00A2D4"
-                  width={25}
-                  height={25}
+                  width={24}
+                  height={24}
                 />
               ) : (
                 <div style={{ cursor: "pointer" }}>
-                  <DeleteIcon onClick={deleteAction} />
+                  <DeleteIcon onClick={deleteAction} width={24} />
                 </div>
               )}
             </IconWrapper>
           )}
         </SharesWrapper>
       </Top>
-      <div>{email}</div>
-      <div>{phone}</div>
+      {shares && (
+        <InfoMobile shares={shares}>
+          {`${shares} - ${sharesPercentage}%`}
+        </InfoMobile>
+      )}
+      {director_role && <InfoMobile>{`Role - ${director_role}`}</InfoMobile>}
+      {stake && (
+        <InfoMobile>{`Occupation: ${occupation} - Stake: ${stake}%`}</InfoMobile>
+      )}
+      <Email>{email}</Email>
+      <Phone>+{phone}</Phone>
     </Container>
   );
 };

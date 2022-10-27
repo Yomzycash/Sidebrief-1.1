@@ -2,7 +2,14 @@ import { RewardSummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Header, MainHeader, SubHeader } from "./styled";
+import {
+  Container,
+  Drop,
+  Header,
+  MainHeader,
+  MobileHeader,
+  SubHeader,
+} from "./styled";
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -20,14 +27,18 @@ const searchStyle = {
 };
 
 const Rewards = () => {
-  const [boxshadow, setBoxShadow] = useState("false");
+  // const [boxshadow, setBoxShadow] = useState("false");
   // const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
   const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
 
   const location = useLocation();
 
-  const allRewardsResponse = useGetAllRewardsQuery();
-  const myRewardsResponse = useGetUserRewardQuery();
+  const allRewardsResponse = useGetAllRewardsQuery({
+    refetchOnMountOrArgChange: true,
+  });
+  const myRewardsResponse = useGetUserRewardQuery({
+    refetchOnMountOrArgChange: true,
+  });
 
   let allRewardsTotal = allRewardsResponse.data?.length;
   let myRewardsTotal = myRewardsResponse.data?.length;
@@ -39,21 +50,21 @@ const Rewards = () => {
     (store) => store.LayoutInfo.rewardsPageHeader
   );
 
-  useEffect(() => {
-    rewardsPageHeader &&
-      window.addEventListener("scroll", () => {
-        setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-      });
-  }, []);
+  // useEffect(() => {
+  //   rewardsPageHeader &&
+  //     window.addEventListener("scroll", () => {
+  //       setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
+  //     });
+  // }, []);
 
   // This reduces the header's height when scrolled
-  useEffect(() => {
-    if (rewardsPageHeader && boxshadow === "true") {
-      mainHeaderRef.current.style.height = "80px";
-    } else if (rewardsPageHeader) {
-      mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
-    }
-  }, [boxshadow]);
+  // useEffect(() => {
+  //   if (rewardsPageHeader && boxshadow === "true") {
+  //     mainHeaderRef.current.style.height = "80px";
+  //   } else if (rewardsPageHeader) {
+  //     mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
+  //   }
+  // }, [boxshadow]);
 
   // This sets the shown of all rewards
   useEffect(() => {
@@ -70,7 +81,7 @@ const Rewards = () => {
   return (
     <Container>
       {rewardsPageHeader && (
-        <Header boxshadow={boxshadow}>
+        <Header>
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
             <div>
@@ -78,7 +89,7 @@ const Rewards = () => {
                 shown={rewardsShown.shown}
                 total={rewardsShown.total}
               />
-              <Search style={searchStyle} />
+              <Search style={searchStyle} placeholder={"Search for a reward"} />
             </div>
           </MainHeader>
           <SubHeader>
@@ -93,6 +104,22 @@ const Rewards = () => {
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>
+          <MobileHeader>
+            <Search
+              style={{
+                ...searchStyle,
+                maxWidth: "100%",
+                minWidth: "140px",
+                padding: "10px",
+              }}
+            />
+            <Drop>
+              <select>
+                <option value="Sort">Sort</option>
+                <option value="All">All</option>
+              </select>
+            </Drop>
+          </MobileHeader>
           <AppFeedback subProject="Rewards" />
         </Header>
       )}

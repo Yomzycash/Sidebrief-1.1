@@ -17,6 +17,8 @@ import {
 } from "services/launchService";
 import AppFeedback from "components/AppFeedback";
 import ReviewCard from "components/cards/ReviewCard";
+import { Puff } from "react-loading-icons";
+import { mergeInfo, mergeThreeInfo } from "utils/LaunchHelper";
 
 const DirectorReview = () => {
   const ActiveStyles = {
@@ -34,51 +36,56 @@ const DirectorReview = () => {
     (store) => store.LaunchReducer.launchResponse
   );
   // console.log(launchResponse)
-  const [viewDirectors] = useViewDirectorsMutation();
-  const [viewMembers] = useViewMembersMutation();
+
+  // getting the director container from store
+  const directorDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.directorDocs
+  );
+  const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
   const [viewDirectorsKyc] = useViewMembersKYCMutation();
 
-  const handleViewMembers = async () => {
-    let responseData = await viewMembers(launchResponse);
-    console.log(responseData);
-    setMembers(responseData.data.businessMembers);
-  };
-  const handleViewDirectors = async () => {
-    let responseData = await viewDirectors(launchResponse);
-    console.log(responseData);
-    setDirectorsInfo(Object.values(responseData.data.businessDirectors));
-  };
-  // const handleViewDirectorsKyc = async () => {
-  //   let responseData = await viewDirectorsKyc(launchResponse)
-  //   console.log(responseData)
-  //   setDirectorsKycInfo(Object.values(responseData.data.businessMembersKYC))
-  // }
-  useEffect(() => {
-    handleViewMembers();
-    handleViewDirectors();
-  }, []);
-  console.log(directorsInfo);
-  console.log(members);
+  const handleMerge = async () => {
+    let memberInfo = await viewMembers(launchResponse);
+    let newMemberInfo = [...memberInfo.data.businessMembers];
 
-  useEffect(() => {
-    const mergedData = [];
-    members.forEach((member) => {
-      directorsInfo.forEach((directors) => {
-        let merged = {};
-        if (directors.memberCode === member.memberCode) {
-          merged = { ...merged, ...directors, ...member };
-          mergedData.push(merged);
-          // let kycDocs = directorsKycInfo.filter(
-          //   (element) => element.memberCode === directors.memberCode,
-          // )
-          // merged = { ...merged, documents: [...kycDocs] }
-          // mergedData.push(merged)
-        }
-        console.log(mergedData);
-        setMergedResponse(mergedData);
+    let directorInfo = await viewDirectors(launchResponse);
+    let newDirectorInfo = [...directorInfo.data.businessDirectors];
+
+    let titlesMembersMerged = [];
+    newDirectorInfo.forEach((title) => {
+      newMemberInfo.forEach((member) => {
+        directorDocumentContainer.forEach((store) => {
+          if (
+            member.memberCode === title.memberCode &&
+            title.memberCode === store.code
+          ) {
+            let merged = { ...title, ...member, ...store };
+            titlesMembersMerged.push(merged);
+          }
+        });
       });
     });
-  }, [directorsInfo.length, directorsKycInfo.length]);
+
+    // let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
+    setMergedResponse(titlesMembersMerged);
+
+    // return newMerge;
+
+    // let newMerge = mergeThreeInfo(
+    //   newDirectorInfo,
+    //   newMemberInfo,
+    //   directorDocumentContainer
+    // );
+    // setMergedResponse(newMerge);
+
+    // console.log("ttttttttt", newMerge);
+    // return newMerge;
+  };
+
+  useEffect(() => {
+    handleMerge();
+  }, [directorDocumentContainer]);
 
   const navigate = useNavigate();
   const handleNext = () => {
@@ -120,6 +127,13 @@ const DirectorReview = () => {
             </EditWrapper>
           </ContentWrapper>
 
+          {viewDirectorState.isLoading ||
+            (viewMembersState.isLoading && (
+              <Loading height="50vh">
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            ))}
+
           <CardWrapper>
             {mergedResponse.map((director, index) => (
               <ReviewCard
@@ -130,6 +144,9 @@ const DirectorReview = () => {
                 phone={director?.memberPhone}
                 director_role={director.directorRole}
                 icon
+                government={director.files.government_id}
+                proof={director.files.proof_of_home_address}
+                passport={director.files.passport_photograph}
               />
             ))}
           </CardWrapper>
@@ -160,6 +177,8 @@ const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 const ReviweTabWrapper = styled.div`
   display: flex;
@@ -228,4 +247,13 @@ const Body = styled.form`
   flex: 1;
   padding-bottom: 50px;
   border-top: none;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;

@@ -759,8 +759,45 @@ export const imageTypeImage = [
   },
   {
     id: "4",
-    name: "jpeg",
+    name: "jpg",
     type: "image/jpeg",
     image: jpg,
+  },
+];
+export const StaffBusinessNames = [
+  {
+    id: "1",
+    name: "Ayomide Constructions and Husbands",
+  },
+  {
+    id: "2",
+    name: "Quick Kitchen",
+  },
+  {
+    id: "3",
+    name: "Quick Chef",
+  },
+  {
+    id: "4",
+    name: "Quick Kitchen.NG",
+  },
+];
+
+export const StaffBusinessObjectives = [
+  {
+    id: "1",
+    objective: "Marketing",
+  },
+  {
+    id: "2",
+    objective: "Marketing",
+  },
+  {
+    id: "3",
+    objective: "Marketing",
+  },
+  {
+    id: "4",
+    objective: "Marketing",
   },
 ];

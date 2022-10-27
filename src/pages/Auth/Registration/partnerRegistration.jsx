@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
-import TestButton from "components/button";
+import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
@@ -173,16 +173,11 @@ const PartnerRegistration = () => {
                 },
               ]}
             />
-            <TestButton
-              title={
-                isLoading === true ? (
-                  <ThreeDots stroke="#98ff98" fill="white" width={60} />
-                ) : (
-                  "Sign Up"
-                )
-              }
+            <MainButton
+              title="Sign Up"
               type="submit"
-              disabled={isLoading ? true : false}
+              loading={isLoading}
+              disabled={isLoading}
             />
           </Body>
           <Bottom>
@@ -193,6 +188,7 @@ const PartnerRegistration = () => {
                   link: { text: "Sign In", to: "/login" },
                 },
               ]}
+              $mobileResponsive
             />
           </Bottom>
         </Form>
@@ -208,17 +204,25 @@ const Registration = styled.div`
   display: flex;
   flex-flow: column;
   height: max-content;
+  gap: 12px;
 `;
+
 const TestBlock = styled.div`
   height: 1px;
   width: 100%;
 `;
+
 const Form = styled.form`
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: clamp(32px, 3.2vw, 40px);
   height: max-content;
+
+  @media screen and (max-width: 1000px) {
+    margin-top: 20px;
+  }
 `;
+
 const Body = styled.div`
   display: flex;
   flex-flow: column;

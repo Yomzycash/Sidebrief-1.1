@@ -74,7 +74,7 @@ const AllRewards = () => {
         break;
     }
   }, [category, allRewards]);
-  console.log(filteredReward.length);
+  // console.log(filteredReward.length);
 
   // This sets the shown of all rewards
   useEffect(() => {
@@ -85,7 +85,7 @@ const AllRewards = () => {
           shown: filteredReward.length,
         })
       );
-  }, [category.get("category"), filteredReward.length]);
+  }, [filteredReward, category]);
 
   return (
     <Container>

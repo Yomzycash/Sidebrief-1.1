@@ -9,7 +9,10 @@ export const Top = styled.div``;
 export const Body = styled.div`
   display: flex;
   flex-flow: column;
+  justify-content: center;
+  align-items: center;
   padding-top: 150px;
+  margin-inline: 25px;
 `;
 export const Main = styled.div`
   display: flex;
@@ -17,7 +20,8 @@ export const Main = styled.div`
   gap: 20px;
   justify-content: center;
   align-items: center;
-  margin: auto 250px;
+  margin: auto 0;
+  max-width: 628px;
 `;
 export const Image = styled.img`
   margin-bottom: 24px;
@@ -49,7 +53,7 @@ export const ParagraphText = styled.p`
 export const ComingBtn = styled.button`
   border: 1px solid #00a2d4;
   padding: 16px 7px;
-  width: 500px;
+  width: 100%;
   color: #00a2d4;
   background: none;
   border-radius: 8px;
