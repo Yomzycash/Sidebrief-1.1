@@ -16,60 +16,80 @@ import {
   SubHeader,
   SearchAndSort,
   StatusType,
-} from './styles'
-import { FiArrowLeft } from 'react-icons/fi'
-import { StatusIndicator } from 'components/Indicators'
-import { RedTrash } from 'asset/svg'
-import ActiveNav from 'components/navbar/ActiveNav'
-import { Search } from './Search'
-import { SortDropdown } from './SortDropdown'
-import { useLocation, useParams } from 'react-router-dom'
-import { useViewLaunchRequestQuery } from 'services/launchService'
-import { useSelector } from 'react-redux'
+} from "./styles";
+import { FiArrowLeft } from "react-icons/fi";
+import { StatusIndicator } from "components/Indicators";
+import { RedTrash } from "asset/svg";
+import ActiveNav from "components/navbar/ActiveNav";
+import { Search } from "./Search";
+import { SortDropdown } from "./SortDropdown";
+import { useLocation, useParams } from "react-router-dom";
+import { useViewLaunchRequestQuery } from "services/launchService";
+import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 
 export const Header = () => {
-  const { code } = useParams()
-  const { pathname } = useLocation()
-  const launchResponse = useSelector(
-    (store) => store.LaunchReducer.launchResponse,
-  )
-  const { first_name, last_name } = useSelector(
-    (store) => store.UserDataReducer.userInfo,
-  )
+  const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 
-  const launchRequest = useViewLaunchRequestQuery(launchResponse)
+  const { code } = useParams();
+  const { pathname } = useLocation();
+
+  const launchResponse = useSelector(
+    (store) => store.LaunchReducer.launchResponse
+  );
+
+  const { first_name, last_name } = useSelector(
+    (store) => store.UserDataReducer.userInfo
+  );
+
+  const launchRequest = useViewLaunchRequestQuery(launchResponse);
 
   if (launchRequest.isSuccess) {
-    console.log(launchRequest.data)
+    console.log(launchRequest.data);
   }
 
-  const page = pathname.split('/').pop()
+  const page = pathname.split("/").pop();
 
   const deleteAction = () => {
     // perform delete action here
-  }
+  };
 
-  const triggerSearch = (query) => {}
+  const triggerSearch = (query) => {};
 
   const getStatus = (stat) => {
     switch (stat) {
-      case 'pending':
+      case "pending":
         return {
-          text: 'draft',
-          color: '#00A2D4',
-        }
-      case 'submitted':
+          text: "draft",
+          color: "#00A2D4",
+        };
+      case "submitted":
         return {
-          text: 'pending',
-          color: '#D400CC',
-        }
+          text: "pending",
+          color: "#D400CC",
+        };
       default:
         return {
           text: stat,
-          color: 'black',
-        }
+          color: "black",
+        };
     }
-  }
+  };
+
+  const subHeader = useRef();
+
+  useEffect(() => {
+    const subHeaderContainer = subHeader.current;
+    // Listen to the mouse wheel event
+    subHeaderContainer.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      subHeaderContainer.scrollLeft += e.deltaY;
+    });
+
+    return () => {
+      subHeaderContainer.removeEventListener("wheel", () => {});
+    };
+  }, []);
 
   return (
     <Container>
@@ -78,10 +98,10 @@ export const Header = () => {
           to={`/dashboard/businesses/${
             launchRequest.isLoading
               ? `all-businesses`
-              : launchRequest.data.registrationStatus === 'pending'
+              : launchRequest.data.registrationStatus === "pending"
               ? `draft-applications`
-              : launchRequest.data.registrationStatus === 'submitted'
-              ? 'pending-applications'
+              : launchRequest.data.registrationStatus === "submitted"
+              ? "pending-applications"
               : null
           }`}
         >
@@ -102,7 +122,7 @@ export const Header = () => {
                   status={getStatus(
                     launchRequest.isLoading
                       ? `--`
-                      : launchRequest.data.registrationStatus,
+                      : launchRequest.data.registrationStatus
                   )}
                 />
                 {/* Type */}
@@ -111,7 +131,7 @@ export const Header = () => {
                     text: launchRequest.isLoading
                       ? `--`
                       : launchRequest.data.registrationType,
-                    color: '#00A2D4',
+                    color: "#00A2D4",
                   }}
                 />
               </StatusType>
@@ -130,14 +150,19 @@ export const Header = () => {
           </RHS>
         </TitleContainer>
       </Top>
-      <SubHeader>
+      <SubHeader
+        ref={subHeader}
+        onMouseEnter={() => setSubHeaderHovered(true)}
+        onMouseLeave={() => setSubHeaderHovered(false)}
+        $hovered={subHeaderHovered}
+      >
         <ActiveNav
-          text={'Business Information'}
+          text={"Business Information"}
           // total={0}
           path={`/dashboard/business/${code}/detail`}
         />
         <ActiveNav
-          text={'Shareholders'}
+          text={"Shareholders"}
           total={
             launchRequest.isLoading
               ? 0
@@ -146,7 +171,7 @@ export const Header = () => {
           path={`/dashboard/business/${code}/shareholders`}
         />
         <ActiveNav
-          text={'Directors'}
+          text={"Directors"}
           total={
             launchRequest.isLoading
               ? 0
@@ -155,7 +180,7 @@ export const Header = () => {
           path={`/dashboard/business/${code}/directors`}
         />
         <ActiveNav
-          text={'Beneficiaries'}
+          text={"Beneficiaries"}
           total={
             launchRequest.isLoading
               ? 0
@@ -164,7 +189,7 @@ export const Header = () => {
           path={`/dashboard/business/${code}/beneficiaries`}
         />
       </SubHeader>
-      {page !== 'detail' ? (
+      {page !== "detail" ? (
         <SearchAndSort>
           {/* placeholder changes based on the page it's on */}
           {/* not implemented yet */}
@@ -173,5 +198,5 @@ export const Header = () => {
         </SearchAndSort>
       ) : null}
     </Container>
-  )
-}
+  );
+};

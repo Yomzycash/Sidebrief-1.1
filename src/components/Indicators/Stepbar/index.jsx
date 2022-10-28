@@ -1,36 +1,36 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const data = [
   {
-    id: '1',
-    title: 'Applied',
-    color: '#00A2D4',
-    background: 'rgba(0, 162, 212, 0.05)',
-    date: '12th August',
+    id: "1",
+    title: "Applied",
+    color: "#00A2D4",
+    background: "rgba(0, 162, 212, 0.05)",
+    date: "12th August",
   },
   {
-    id: '2',
-    title: 'Approved',
-    color: '#D400CC',
-    background: 'rgba(212, 0, 204, 0.05)',
-    date: '-',
+    id: "2",
+    title: "Approved",
+    color: "#D400CC",
+    background: "rgba(212, 0, 204, 0.05)",
+    date: "-",
   },
   {
-    id: '3',
-    title: 'In Progress',
-    color: '#FFBF29',
-    background: 'rgba(255, 191, 41, 0.05)',
-    date: '-',
+    id: "3",
+    title: "In Progress",
+    color: "#FFBF29",
+    background: "rgba(255, 191, 41, 0.05)",
+    date: "-",
   },
   {
-    id: '4',
-    title: 'completed',
-    color: '#00D448',
-    background: 'rgba(0, 212, 72, 0.05)',
-    date: '-',
+    id: "4",
+    title: "completed",
+    color: "#00D448",
+    background: "rgba(0, 212, 72, 0.05)",
+    date: "-",
   },
-]
+];
 
 const Stepbar = () => {
   return (
@@ -41,17 +41,17 @@ const Stepbar = () => {
             <ListItem color={item.color}>
               <ListSpan color={item.color} backgroundColor={item.background}>
                 {item.title}
-              </ListSpan>{' '}
+              </ListSpan>{" "}
               <br /> <DateSpan>{item.date}</DateSpan>
             </ListItem>
           ))}
         </List>
       </div>
     </StepContainer>
-  )
-}
+  );
+};
 
-export default Stepbar
+export default Stepbar;
 
 const StepContainer = styled.div`
   border: 1px solid #edf1f7;
@@ -60,20 +60,23 @@ const StepContainer = styled.div`
   background-color: white;
   padding-top: 40px;
   padding-bottom: 40px;
-  padding-right: 97px;
-  padding-left: 24px;
-  width: 300px;
+  padding: 24px 32px;
+  max-width: 300px;
+  flex: 1;
+
   @media screen and (max-width: 700px) {
     display: none;
   }
 
   div {
     border-left: dashed #727474 1px;
-    height: calc(100% - 35px);
+    /* height: calc(100% - 35px); */
+    height: 280px;
+    margin-bottom: 50px;
     transform: translateY(3%);
     position: relative;
   }
-`
+`;
 
 const List = styled.ul`
   gap: 48px;
@@ -89,13 +92,13 @@ const List = styled.ul`
     width: 3px;
     z-index: 1px; */
   }
-`
+`;
 
 const ListItem = styled.li`
   list-style-type: none;
   margin: -5px auto 0px auto;
   ::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 16px;
     height: 16px;
@@ -103,7 +106,7 @@ const ListItem = styled.li`
     border-radius: 50%;
     left: -8px;
   }
-`
+`;
 
 const ListSpan = styled.span`
   color: ${(props) => props.color};
@@ -111,9 +114,9 @@ const ListSpan = styled.span`
   padding: 4px 16px;
   display: inline;
   border-radius: 12px;
-`
+`;
 const DateSpan = styled.span`
   font-size: 14px;
   line-height: 31px;
   color: #4e5152;
-`
+`;

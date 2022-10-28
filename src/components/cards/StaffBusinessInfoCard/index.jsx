@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const StaffBusinessInfoCard = ({
   businessNames,
@@ -18,20 +18,20 @@ const StaffBusinessInfoCard = ({
                 <SingleContainer key={id}>
                   <TitleWrapper>{businessNames[id]}</TitleWrapper>
                 </SingleContainer>
-              )
+              );
             })}
           </Wrapper>
           <Wrapper>
             <TitleWrapper>Business Objectives</TitleWrapper>
             {Object.keys(businessObjectives).map((id) => {
-              if (businessObjectives[id] === 'null') {
-                return ``
+              if (businessObjectives[id] === "null") {
+                return ``;
               }
               return (
                 <SingleContainer key={id}>
                   <TitleWrapper>{businessObjectives[id]}</TitleWrapper>
                 </SingleContainer>
-              )
+              );
             })}
           </Wrapper>
           {address ? (
@@ -61,10 +61,10 @@ const StaffBusinessInfoCard = ({
         </AllWrapper>
       </AllContainer>
     </>
-  )
-}
+  );
+};
 
-export default StaffBusinessInfoCard
+export default StaffBusinessInfoCard;
 
 const AllContainer = styled.div`
   max-width: 825px;
@@ -72,10 +72,8 @@ const AllContainer = styled.div`
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-  //padding : 40px 245px 42px 24px;
   padding-block: 40px;
-  padding-inline-end: 245px;
-  padding-inline-start: 24px;
+  padding-inline: 24px;
 
   @media screen and (max-width: 700px) {
     padding-inline-end: 0;
@@ -84,7 +82,7 @@ const AllContainer = styled.div`
     padding-block: 0;
     width: 100%;
   }
-`
+`;
 const AllWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -99,7 +97,7 @@ const AllWrapper = styled.div`
     max-width: 700px;
     width: 100%;
   }
-`
+`;
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,13 +109,13 @@ const Wrapper = styled.div`
   @media screen and (min-width: 701px) {
     max-width: 544px;
   }
-`
+`;
 const TitleWrapper = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
-`
+`;
 const SingleContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -129,7 +127,7 @@ const SingleContainer = styled.div`
   background: #fafafa;
   border: 1px solid #edf1f7;
   border-radius: 8px;
-`
+`;
 const LastWrapper = styled.div`
   display: flex;
   gap: 24px;
@@ -138,4 +136,4 @@ const LastWrapper = styled.div`
   @media screen and (max-width: 700px) {
     flex-direction: column;
   }
-`
+`;
