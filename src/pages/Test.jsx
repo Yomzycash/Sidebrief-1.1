@@ -5,6 +5,7 @@ import { BusinessHomeTable } from "components/Staff/Tables";
 import { Header } from "containers/BusinessDetail";
 import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
 import Loader from "components/loader/loader";
+import BusinessesCard from "components/cards/BusinessAddressCard/Index";
 
 const Test = () => {
   const analytics = {
@@ -47,6 +48,8 @@ const Test = () => {
       {/* <Header searchAndSort />
       <StaffBusinessInfoCard /> */}
       <Loader />
+      <BusinessesCard
+      name="femi"/>
     </>
   );
 };

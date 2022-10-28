@@ -8,7 +8,10 @@ import {
 import { Body, Container, Loading } from './styled'
 import { format, compareDesc } from 'date-fns'
 import { Puff } from 'react-loading-icons'
-import Media from 'react-media'
+import { useMediaQuery } from '@mui/material'
+import BusinessesCard from 'components/cards/BusinessAddressCard/Index'
+import styled from 'styled-components'
+
 const DraftApplications = () => {
   const { data, error, isLoading, isSuccess } = useGetUserDraftQuery()
 
@@ -27,44 +30,51 @@ const DraftApplications = () => {
       setDataArr(response)
     }
   }, [data, isSuccess, countries.isSuccess])
+  const matches = useMediaQuery('(max-width:700px)')
 
   return (
     <Container>
       <Body>
-        {isLoading || countries.isLoading ? (
-          <Loading>
-            <Puff stroke="#00A2D4" />
-          </Loading>
-        ) : dataArr.length > 0 ? (
-          <>
-            <Media query="(max-width:600px)">
-              {(matches) => {
-                return matches ? (
-                  <BusinessTable
-                    data={dataArr.map((element) => {
-                      return {
-                        name: element.businessNames
-                          ? element.businessNames.businessName1
-                          : 'No name ',
-                        type: element?.registrationType,
-                        country: countries?.data?.find(
-                          (country) =>
-                            country.countryISO === element.registrationCountry,
-                        ).countryName,
-                        date: format(new Date(element.updatedAt), 'dd/MM/yyyy'),
-                        code: element.launchCode,
-                        countryISO: element.registrationCountry,
-                      }
-                    })}
-                  />
-                ) : (
-                  <h2>femi</h2>
-                )
-              }}
-            </Media>
-          </>
-        ) : (
-          ''
+        {isLoading ||
+          (countries.isLoading && (
+            <Loading>
+              <Puff stroke="#00A2D4" />
+            </Loading>
+          ))}
+        {!matches && dataArr.length > 0 && (
+          <BusinessTable
+            data={dataArr.map((element) => {
+              return {
+                name: element.businessNames
+                  ? element.businessNames.businessName1
+                  : 'No name ',
+                type: element?.registrationType,
+                country: countries?.data?.find(
+                  (country) =>
+                    country.countryISO === element.registrationCountry,
+                ).countryName,
+                date: format(new Date(element.updatedAt), 'dd/MM/yyyy'),
+                code: element.launchCode,
+                countryISO: element.registrationCountry,
+              }
+            })}
+          />
+        )}
+        {matches && dataArr.length > 0 && (
+          <MobileContainer>
+            {dataArr.map((element) => {
+              return (
+                <BusinessesCard
+                  name={
+                    element.businessNames
+                      ? element.businessNames.businessName1
+                      : 'No name '
+                  }
+                  type={element?.registrationType}
+                />
+              )
+            })}
+          </MobileContainer>
         )}
         {error?.status === 'FETCH_ERROR' ||
         countries?.isLoading === 'FETCH_ERROR' ? (
@@ -79,3 +89,14 @@ const DraftApplications = () => {
 }
 
 export default DraftApplications
+
+const MobileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: inherit;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+`

@@ -5,6 +5,7 @@ export const Container = styled.div`
   flex-flow: column;
   flex: 1;
   margin: 0 40px;
+
   @media screen and (max-width: 1050px) {
     margin: 0;
   }
@@ -17,6 +18,7 @@ export const Header = styled.div`
   flex-flow: column;
   background-color: white;
   z-index: 2;
+  
   @media screen and (max-width: 700px) {
     flex-flow: column-reverse;
   }
@@ -46,6 +48,7 @@ export const SubHeader = styled.div`
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+ 
 
   //TODO: maybe hide scroll bar
 `
@@ -85,6 +88,7 @@ export const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
+
   @media screen and (max-width: 700px) {
     flex-direction: column;
     align-items: flex-start;
