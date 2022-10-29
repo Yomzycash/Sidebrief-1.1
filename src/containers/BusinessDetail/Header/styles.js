@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.header`
   width: 100%;
@@ -9,7 +9,7 @@ export const Container = styled.header`
   @media screen and (max-width: 700px) {
     border: 0;
   }
-`
+`;
 
 export const Top = styled.div`
   padding-inline: 40px;
@@ -21,7 +21,7 @@ export const Top = styled.div`
     padding-block: 0;
     padding-inline: 0px;
   }
-`
+`;
 
 export const BackContainer = styled(Link)`
   display: flex;
@@ -29,20 +29,20 @@ export const BackContainer = styled(Link)`
   gap: 8px;
   text-decoration: none;
   align-self: flex-start;
-  border: 1px solid blue;
+
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 
 export const Text = styled.p`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
   color: #151717;
-`
+`;
 
 export const TitleContainer = styled.div`
   padding-block: 28px;
@@ -51,16 +51,16 @@ export const TitleContainer = styled.div`
   justify-content: space-between;
   gap: 24px;
   width: 100%;
-`
+`;
 
 export const TopInfo = styled.div`
   display: flex;
   gap: 24px;
   align-items: center;
-`
+`;
 
 export const CompanyName = styled.h2`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -70,7 +70,7 @@ export const CompanyName = styled.h2`
     font-weight: 600;
     font-size: 16px;
   }
-`
+`;
 
 export const LHS = styled.div`
   display: flex;
@@ -78,8 +78,9 @@ export const LHS = styled.div`
   gap: 24px;
   @media screen and (max-width: 700px) {
     gap: 16px;
+    padding-inline: 24px;
   }
-`
+`;
 export const StatusType = styled.div`
   display: flex;
   align-items: center;
@@ -87,15 +88,13 @@ export const StatusType = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 
 export const RHS = styled.div`
-  border: 1px solid red;
-
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 
 export const BottomInfo = styled.div`
   display: flex;
@@ -105,10 +104,10 @@ export const BottomInfo = styled.div`
     gap: 16px;
     font-size: 14px;
   }
-`
+`;
 
 export const UserName = styled.p`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -120,17 +119,17 @@ export const UserName = styled.p`
     font-weight: 500;
     font-size: 14px;
   }
-`
+`;
 
 export const DotSeperator = styled.div`
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: #959697;
-`
+`;
 
 export const DateText = styled.p`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -140,7 +139,7 @@ export const DateText = styled.p`
     font-weight: 400;
     font-size: 14px;
   }
-`
+`;
 
 export const DeleteButton = styled.button`
   border: none;
@@ -151,7 +150,7 @@ export const DeleteButton = styled.button`
   padding: 8px;
 
   p {
-    font-family: 'BR Firma';
+    font-family: "BR Firma";
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -159,7 +158,7 @@ export const DeleteButton = styled.button`
     letter-spacing: 0.02em;
     color: #ed4e3a;
   }
-`
+`;
 
 export const SubHeader = styled.div`
   border-top: 1px solid #edf1f7;
@@ -169,16 +168,28 @@ export const SubHeader = styled.div`
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  @media screen and (max-width: 700px) {
-    border-width: 1px 0px;
-    border-style: solid;
-    border-color: #edf1f7;
+  scroll-behavior: smooth;
+
+  &::-webkit-scrollbar {
+    height: 5px;
+    background: ${({ $hovered }) => ($hovered ? "#aaaaaa33" : "#fff")};
   }
-`
+  &::-webkit-scrollbar-thumb {
+    background: ${({ $hovered }) => ($hovered ? "#aaaaaa" : "#fff")};
+    border-radius: 15px;
+  }
+
+  @media screen and (max-width: 700px) {
+    /* border-width: 1px 0px;
+    border-style: solid; */
+    border-bottom: 1px solid #edf1f7;
+    /* border-color: #edf1f7; */
+  }
+`;
 
 export const SearchAndSort = styled.div`
-  padding: 40px 24px;
+  padding: clamp(20px, 2vw, 40px) 24px;
   border-top: 1px solid #edf1f7;
   display: flex;
   gap: 24px;
-`
+`;
