@@ -26,51 +26,52 @@ export const businessTypes = [
 	},
 ];
 
-const navigateToDetailPage = (navigate, info) => {
-	const originalRow = info.row.original;
-
-	const launchInfo = {
-		launchCode: originalRow.code,
-		registrationCountry: originalRow.countryISO,
-		registrationType: originalRow.type,
-	};
+export const navigateToDetailPage = (navigate, launchInfo) => {
 	// set the launchInfo to store and localstorage
 	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
 	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
 	// navigate
 	navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
-	console.log(launchInfo);
 };
 
 export const columns = [
-	ColumnHelper.display({
-		id: "checkbox",
-		header: ({ table }) => {
-			return (
-				<IndeterminateCheckbox
-					checked={table.getIsAllRowsSelected()}
-					indeterminate={table.getIsSomeRowsSelected()}
-					onChange={table.getToggleAllRowsSelectedHandler()}
-				/>
-			);
-		},
-		cell: ({ row }) => {
-			return (
-				<IndeterminateCheckbox
-					checked={row.getIsSelected()}
-					indeterminate={row.getIsSomeSelected()}
-					onChange={row.getToggleSelectedHandler()}
-				/>
-			);
-		},
-	}),
+	// ColumnHelper.display({
+	// 	id: "checkbox",
+	// 	header: ({ table }) => {
+	// 		return (
+	// 			<IndeterminateCheckbox
+	// 				checked={table.getIsAllRowsSelected()}
+	// 				indeterminate={table.getIsSomeRowsSelected()}
+	// 				onChange={table.getToggleAllRowsSelectedHandler()}
+	// 			/>
+	// 		);
+	// 	},
+	// 	cell: ({ row }) => {
+	// 		return (
+	// 			<IndeterminateCheckbox
+	// 				checked={row.getIsSelected()}
+	// 				indeterminate={row.getIsSomeSelected()}
+	// 				onChange={row.getToggleSelectedHandler()}
+	// 			/>
+	// 		);
+	// 	},
+	// }),
 	ColumnHelper.accessor("name", {
 		header: () => <HeadText>Business Name</HeadText>,
 		cell: (info) => {
 			const navigate = createNavigate();
+			const originalRow = info.row.original;
+
+			const launchInfo = {
+				launchCode: originalRow.code,
+				registrationCountry: originalRow.countryISO,
+				registrationType: originalRow.type,
+			};
 
 			return (
-				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
+				<Clickable
+					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+				>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
 			);
@@ -80,12 +81,21 @@ export const columns = [
 		header: () => <HeadText nopadding>Type</HeadText>,
 		cell: (info) => {
 			const navigate = createNavigate();
+			const originalRow = info.row.original;
+
+			const launchInfo = {
+				launchCode: originalRow.code,
+				registrationCountry: originalRow.countryISO,
+				registrationType: originalRow.type,
+			};
 			const typeName = info.getValue();
 			// const color = businessTypes.find(
 			// 	(type) => type.name === typeName
 			// ).color;
 			return (
-				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
+				<Clickable
+					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+				>
 					<TypeIndicator color={"blue"} type={typeName} />
 				</Clickable>
 			);
@@ -95,8 +105,17 @@ export const columns = [
 		header: () => <HeadText>Country</HeadText>,
 		cell: (info) => {
 			const navigate = createNavigate();
+			const originalRow = info.row.original;
+
+			const launchInfo = {
+				launchCode: originalRow.code,
+				registrationCountry: originalRow.countryISO,
+				registrationType: originalRow.type,
+			};
 			return (
-				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
+				<Clickable
+					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+				>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
 			);
@@ -106,8 +125,17 @@ export const columns = [
 		header: () => <HeadText>Date</HeadText>,
 		cell: (info) => {
 			const navigate = createNavigate();
+			const originalRow = info.row.original;
+
+			const launchInfo = {
+				launchCode: originalRow.code,
+				registrationCountry: originalRow.countryISO,
+				registrationType: originalRow.type,
+			};
 			return (
-				<Clickable onClick={() => navigateToDetailPage(navigate, info)}>
+				<Clickable
+					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+				>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
 			);
