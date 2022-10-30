@@ -22,8 +22,8 @@ const PendingApplications = () => {
 			const response = [...data];
 			response.sort((launch1, launch2) => {
 				return compareDesc(
-					new Date(launch1.updatedAt),
-					new Date(launch2.updatedAt)
+					new Date(launch1.createdAt),
+					new Date(launch2.createdAt)
 				);
 			});
 			setDataArr(response);
@@ -53,7 +53,7 @@ const PendingApplications = () => {
 										element.registrationCountry
 								).countryName,
 								date: format(
-									new Date(element.updatedAt),
+									new Date(element.createdAt),
 									"dd/MM/yyyy"
 								),
 								code: element.launchCode,
