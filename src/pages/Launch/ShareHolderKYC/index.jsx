@@ -141,7 +141,9 @@ const ShareHolderKYC = () => {
   );
 
   const handleNext = () => {
-    navigate("/launch/directors-kyc");
+    let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+    if (useSidebriefDirectors) navigate("/launch/beneficiaries-kyc");
+    else navigate("/launch/directors-kyc");
   };
 
   const handleRemove = (shareholder) => {

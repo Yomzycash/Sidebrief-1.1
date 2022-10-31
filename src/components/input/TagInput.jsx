@@ -1,102 +1,99 @@
 import React, { useEffect, useState } from "react";
 import { MdClear } from "react-icons/md";
 import {
-	TagLabel,
-	AllWrapper,
-	TagWrapper,
-	TagInputWrapper,
-	TagItem,
-	TagText,
-	Tagclose,
-	TagInputField,
-	BottomText,
-	TagTop,
+  TagLabel,
+  AllWrapper,
+  TagWrapper,
+  TagInputWrapper,
+  TagItem,
+  TagText,
+  Tagclose,
+  TagInputField,
+  BottomText,
+  TagTop,
 } from "./styled.js";
 
 const TagInput = ({
-	label = "Business Name",
-	bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences",
-	getSelectedValues,
-	initialValues,
+  label = "Business Name",
+  bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences",
+  getSelectedValues,
+  initialValues,
 }) => {
-	const [tags, setTags] = useState([]);
-	const [error, setError] = useState("");
-	const [currentInput, setCurrentInput] = useState("");
+  const [tags, setTags] = useState([]);
+  const [error, setError] = useState("");
+  const [currentInput, setCurrentInput] = useState("");
 
-	function handlekeydown(e) {
-		if (e.key === "Tab") e.preventDefault();
+  function handlekeydown(e) {
+    if (e.key === "Tab") e.preventDefault();
 
-		if (!(e.key === "Enter" || e.key === "," || e.key === "Tab")) return;
+    if (!(e.key === "Enter" || e.key === "," || e.key === "Tab")) return;
 
-		const value = currentInput;
-		if (!value.trim()) return;
-		if (tags.length >= 4) {
-			setError("You cannot have more than 4 business names");
-			return;
-		}
-		if (value.length <= 2) {
-			setError("Business name must be at least 3 characters");
-			return;
-		}
-		setTags([...tags, value]);
-		setCurrentInput("");
-	}
+    const value = currentInput;
+    if (!value.trim()) return;
+    if (tags.length >= 4) {
+      setError("You cannot choose more than 4 business names");
+      return;
+    }
+    if (value.length <= 2) {
+      setError("Business name must be at least 3 characters");
+      return;
+    }
+    setTags([...tags, value]);
+    setCurrentInput("");
+  }
 
-	const handleChange = (e) => {
-		const value = e.target.value;
-		const noTrailingComma =
-			value.slice(-1) === "," ? value.slice(0, -1) : value;
-		setCurrentInput(noTrailingComma);
-	};
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const noTrailingComma =
+      value.slice(-1) === "," ? value.slice(0, -1) : value;
+    setCurrentInput(noTrailingComma);
+  };
 
-	function removeTags(index) {
-		setTags(tags.filter((el, i) => i !== index));
-		setError("");
-	}
+  function removeTags(index) {
+    setTags(tags.filter((el, i) => i !== index));
+    setError("");
+  }
 
-	// Return the tags array
-	useEffect(() => {
-		if (getSelectedValues) getSelectedValues(tags);
-	}, [tags]);
+  // Return the tags array
+  useEffect(() => {
+    if (getSelectedValues) getSelectedValues(tags);
+  }, [tags]);
 
-	// This sets the values of the tags when the component mounts
-	useEffect(() => {
-		setTags([...initialValues]);
-	}, [initialValues.length]);
+  // This sets the values of the tags when the component mounts
+  useEffect(() => {
+    setTags([...initialValues]);
+  }, [initialValues.length]);
 
-	return (
-		<>
-			<AllWrapper>
-				<TagTop>
-					<TagLabel> {label} </TagLabel>
-					<span>{error}</span>
-				</TagTop>
+  return (
+    <>
+      <AllWrapper>
+        <TagTop>
+          <TagLabel> {label} </TagLabel>
+          <span>{error}</span>
+        </TagTop>
 
-				<TagWrapper>
-					{tags.map((tag, index) => (
-						<TagItem key={index}>
-							<TagText>{tag}</TagText>
-							<MdClear
-								size={20}
-								onClick={() => removeTags(index)}
-							/>
-						</TagItem>
-					))}
-				</TagWrapper>
+        <TagWrapper>
+          {tags.map((tag, index) => (
+            <TagItem key={index}>
+              <TagText>{tag}</TagText>
+              <MdClear size={20} onClick={() => removeTags(index)} />
+            </TagItem>
+          ))}
+        </TagWrapper>
 
-				<TagInputWrapper>
-					<TagInputField
-						type="text"
-						placeholder="Type your Business name "
-						onKeyDown={handlekeydown}
-						value={currentInput}
-						onChange={handleChange}
-					/>
-				</TagInputWrapper>
-				<BottomText>{bottomText}</BottomText>
-			</AllWrapper>
-		</>
-	);
+        <TagInputWrapper>
+          <TagInputField
+            type="text"
+            placeholder="Type your Business name "
+            onKeyDown={handlekeydown}
+            value={currentInput}
+            onChange={handleChange}
+          />
+        </TagInputWrapper>
+        <BottomText>{bottomText}</BottomText>
+      </AllWrapper>
+    </>
+  );
 };
 
 export default TagInput;
