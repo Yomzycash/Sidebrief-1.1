@@ -35,9 +35,9 @@ export const HeadData = styled.th`
 	text-align: left;
 	// position: sticky;
 
-	${Head} &:first-child {
+	/* ${Head} &:first-child {
 		padding-left: 24px;
-	}
+	} */
 
 	${Head} &:last-child {
 		padding-right: 24px;
@@ -56,10 +56,10 @@ export const Row = styled.tr`
 		background: #fcfcfc;
 	}
 
-	& > :first-child {
+	/* & > :first-child {
 		padding-left: 24px;
 		width: 48px;
-	}
+	} */
 
 	& > :last-child {
 		padding-right: 24px;
