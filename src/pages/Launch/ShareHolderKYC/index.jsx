@@ -29,7 +29,7 @@ import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 
 const ShareHolderKYC = () => {
   const navigate = useNavigate();
-  const [imageUrl, setImageUrl] = useState("");
+  const [isChanged, setIsChanged] = useState(false);
   const [fileName, setFileName] = useState("");
   const [type, setType] = useState("");
   const [size, setSize] = useState(0);
@@ -71,6 +71,7 @@ const ShareHolderKYC = () => {
 
     let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
     setShareholder(newMerge);
+    console.log("merge dataaaaaa", newMerge);
 
     return newMerge;
   };
@@ -118,19 +119,21 @@ const ShareHolderKYC = () => {
       memberKYC: {
         documentType: formatType,
         documentLink: res.url,
+        fileName: files[0].name,
+        fileType: files[0].type,
       },
     };
     console.log("data to db", requiredAddMemberData);
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log(response);
+    console.log("document respsonse", response.data);
     if (response.data) {
-      console.log(response.data);
+      console.log("returned data", response.data);
       toast.success("Document uploaded successfully");
+      setIsChanged(!isChanged);
     } else if (response.error) {
       console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
-    // }
   };
 
   console.log(documentContainer);
@@ -144,8 +147,10 @@ const ShareHolderKYC = () => {
     navigate("/launch/directors-kyc");
   };
 
-  const handleRemove = (shareholder) => {
-    console.log("shareholder delete", shareholder);
+  const handleRemove = async (documentName) => {
+    console.log("document name is", documentName);
+
+    // console.log("shareholder deleteeeeeeeeeeee", shareholder);
     // const requiredDeleteData = {
     //   launchCode: generatedLaunchCode,
     //   memberCode: shareholder,
@@ -190,18 +195,24 @@ const ShareHolderKYC = () => {
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
                   <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"government id"}
                     TopText={"Government Issued ID"}
+                    memberCode={shareholder.code}
                     onDrop={(files) =>
                       handleChange(files, shareholder.code, "government_id")
                     }
-                    handleRemove={handleRemove(shareholder.code)}
+                    handleRemove={() => handleRemove("government id")}
                     BottomText={
                       "Utility Bill, Water Corporation Bill or a Rent Invoice"
                     }
                   />
 
                   <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"proof of home address"}
                     TopText={"Proof of Home Address"}
+                    memberCode={shareholder.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
@@ -209,14 +220,17 @@ const ShareHolderKYC = () => {
                         "proof_of_home_address"
                       )
                     }
-                    handleRemove={handleRemove(shareholder.code)}
+                    handleRemove={() => handleRemove("proof of home address")}
                     BottomText={
                       "Driver’s Licence, National ID Card, Voters Card or International Passport"
                     }
                   />
 
                   <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"passport photograph"}
                     TopText={"Passport Photograph"}
+                    memberCode={shareholder.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
@@ -224,7 +238,7 @@ const ShareHolderKYC = () => {
                         "passport_photograph"
                       )
                     }
-                    handleRemove={handleRemove(shareholder.code)}
+                    handleRemove={() => handleRemove("passport photograph")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
 
