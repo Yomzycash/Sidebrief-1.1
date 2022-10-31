@@ -9,7 +9,7 @@ import { Body, Container, Loading } from "./styled";
 import { format, compareDesc } from "date-fns";
 import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
-import BusinessesCard from "components/cards/BusinessAddressCard";
+import BusinessesCard from "components/cards/BusinessAddressCard/Index";
 import styled from "styled-components";
 
 const DraftApplications = () => {

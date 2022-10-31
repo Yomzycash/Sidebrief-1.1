@@ -9,7 +9,7 @@ import {
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
-import BusinessesCard from "components/cards/BusinessAddressCard";
+import BusinessesCard from "components/cards/BusinessAddressCard/Index";
 
 const PendingApplications = () => {
 	const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery();

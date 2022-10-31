@@ -1,18 +1,35 @@
-import { DetailContainer, DetailWrapper, Loader } from "./styles";
-import { StepBar } from "components/Indicators";
-import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
-import { useSelector } from "react-redux";
-import { useViewLaunchRequestQuery } from "services/launchService";
-import { Puff } from "react-loading-icons";
-import { useMediaQuery } from "@mui/material";
-import styled from "styled-components";
+import { DetailContainer, DetailWrapper, Loader } from './styles'
+import { StepBar } from 'components/Indicators'
+import StaffBusinessInfoCard from 'components/cards/StaffBusinessInfoCard'
+import { useSelector } from 'react-redux'
+import { useViewLaunchRequestQuery } from 'services/launchService'
+import { Puff } from 'react-loading-icons'
+import { Dialog, DialogContent, useMediaQuery } from '@mui/material'
+import styled from 'styled-components'
+import { useState } from 'react'
 
 const BusinessDetail = () => {
+  const [open, setOpen] = useState(false)
   const launchResponse = useSelector(
-    (store) => store.LaunchReducer.launchResponse
-  );
-  const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
-  const matches = useMediaQuery("(max-width:700px)");
+    (store) => store.LaunchReducer.launchResponse,
+  )
+  const { data, isLoading } = useViewLaunchRequestQuery(launchResponse)
+  const matches = useMediaQuery('(max-width:700px)')
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+  const StepbarStyle = {
+    padding: 0,
+    backgroundColor: 'white',
+    width: 'max-width',
+    borderRadius: '16px',
+    boxShadow:
+      '0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)',
+  }
   return (
     <>
       {isLoading ? (
@@ -26,7 +43,12 @@ const BusinessDetail = () => {
               <Status> Status</Status>
               <LowerContainer>
                 <StatusContent>In Progress</StatusContent>
-                <TimeLine>View timeline</TimeLine>
+                <TimeLine onClick={handleClickOpen}>View timeline</TimeLine>
+                <Dialog onClose={handleClose} open={open}>
+                  <DialogContent style={StepbarStyle}>
+                    <StepBar mobile handleClose={handleClose} />
+                  </DialogContent>
+                </Dialog>
               </LowerContainer>
             </StatusWrapper>
           )}
@@ -42,10 +64,10 @@ const BusinessDetail = () => {
         </DetailWrapper>
       )}
     </>
-  );
-};
+  )
+}
 
-export default BusinessDetail;
+export default BusinessDetail
 
 const StatusWrapper = styled.div`
   display: flex;
@@ -54,13 +76,13 @@ const StatusWrapper = styled.div`
   padding: 0px;
   gap: 8px;
   width: 100%;
-`;
+`
 const Status = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
-`;
+`
 const LowerContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -69,7 +91,7 @@ const LowerContainer = styled.div`
   justify-content: space-between;
   padding-block: 4px;
   width: 100%;
-`;
+`
 const StatusContent = styled.div`
   font-weight: 500;
   font-size: 14px;
@@ -79,11 +101,11 @@ const StatusContent = styled.div`
   background: rgba(255, 191, 41, 0.05);
   border-radius: 12px;
   padding: 4px 16px;
-`;
-const TimeLine = styled.h3`
+`
+const TimeLine = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   cursor: pointer;
   color: #00a2d4;
-`;
+`
