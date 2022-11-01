@@ -407,6 +407,15 @@ export const launchApi = createApi({
 			}),
 			invalidatesTags: ["Application"],
 		}),
+
+		deleteLaunchRequest: builder.mutation({
+			query: (values) => ({
+				url: "/launch/remove",
+				method: "POST",
+				body: values,
+			}),
+			invalidatesTags: ["Application"],
+		}),
 	}),
 });
 
@@ -471,4 +480,6 @@ export const {
 	useViewLaunchRequestQuery,
 
 	useSubmitLaunchMutation,
+
+	useDeleteLaunchRequestMutation,
 } = launchApi;
