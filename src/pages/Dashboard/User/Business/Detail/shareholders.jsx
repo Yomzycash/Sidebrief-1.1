@@ -12,6 +12,7 @@ const DetailShareholder = () => {
 		useViewLaunchRequestQuery(launchResponse);
 
 	const members = isSuccess ? data.businessMembers : [];
+	const memberKYC = isSuccess ? data.businessMembersKYC : [];
 
 	return (
 		<>
@@ -21,16 +22,38 @@ const DetailShareholder = () => {
 				</Loader>
 			) : (
 				<CardContainer>
-					{data.businessShareholders.map((item) => {
+					{data.businessShareholders.map((shareholder) => {
 						const member = members.find(
-							(el) => el.memberCode === item.memberCode
+							(el) => el.memberCode === shareholder.memberCode
 						);
+						const currentmemberKYC = memberKYC.filter(
+							(el) => el.memberCode === shareholder.memberCode
+						);
+						const governmentFile = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("government")
+							)
+							.slice(-1)[0];
+						const passportFile = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("passport")
+							)
+							.slice(-1)[0];
+						const proofFile = currentmemberKYC
+							.filter((el) => el.documentType.includes("proof"))
+							.slice(-1)[0];
+
+						console.log(member.memberName, proofFile);
+
 						return (
 							<PdfCard
 								name={member.memberName}
 								email={member.memberEmail}
 								phone={`+${member.memberPhone}`}
-								title={`${item.shareholderOwnershipType} - ${item.shareholderOwnershipPercentage}%`}
+								title={`${shareholder.shareholderOwnershipType} - ${shareholder.shareholderOwnershipPercentage}%`}
+								government={governmentFile}
+								proof={proofFile}
+								passport={passportFile}
 							/>
 						);
 					})}
