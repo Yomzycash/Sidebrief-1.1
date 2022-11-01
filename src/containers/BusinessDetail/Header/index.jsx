@@ -23,17 +23,22 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 import { Search } from "./Search";
 import { SortDropdown } from "./SortDropdown";
-import { useLocation, useParams } from "react-router-dom";
-import { useViewLaunchRequestQuery } from "services/launchService";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import {
+	useViewLaunchRequestQuery,
+	useDeleteLaunchRequestMutation,
+} from "services/launchService";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 
 export const Header = () => {
 	const [subHeaderHovered, setSubHeaderHovered] = useState(false);
+	const [deleteLaunch] = useDeleteLaunchRequestMutation();
 
 	const { code } = useParams();
 	const { pathname } = useLocation();
+	const navigate = useNavigate();
 
 	const launchResponse = useSelector(
 		(store) => store.LaunchReducer.launchResponse
@@ -51,11 +56,27 @@ export const Header = () => {
 
 	const page = pathname.split("/").pop();
 
-	const deleteAction = () => {
+	const deleteAction = async () => {
 		// perform delete action here
+		await deleteLaunch({
+			launchCode: launchResponse.launchCode,
+		});
+		navigate(
+			`/dashboard/businesses/${
+				launchRequest.isLoading
+					? `all-businesses`
+					: launchRequest.data.registrationStatus === "pending"
+					? `draft-applications`
+					: launchRequest.data.registrationStatus === "submitted"
+					? "pending-applications"
+					: null
+			}`
+		);
 	};
 
-	const triggerSearch = (query) => {};
+	const triggerSearch = (query) => {
+		// perform search filter here
+	};
 
 	const getStatus = (stat) => {
 		switch (stat) {
