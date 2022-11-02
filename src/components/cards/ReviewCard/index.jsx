@@ -35,7 +35,6 @@ const ReviewCard = ({
   const [governmentId, setGovernmentId] = useState({});
   const [proofD, setProof] = useState({});
   const [passportD, setPassport] = useState({});
-  console.log("yyyyyyyyyyyysayo", memberCode);
 
   const handleShareHolder = async () => {
     const response = await viewMemberKYC(launchInfo);
@@ -44,14 +43,12 @@ const ReviewCard = ({
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.memberCode === memberCode
     );
-    console.log(fileInfo);
 
     const uploadedDetail = fileInfo.filter(
       (item) => item.documentType === "government id"
     );
 
     let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
-    console.log(lastUploadDetail);
     setGovernmentId(lastUploadDetail);
 
     //proof
@@ -61,7 +58,6 @@ const ReviewCard = ({
 
     let lastUploadProofDetail =
       uploadedProofDetail[uploadedProofDetail.length - 1];
-    console.log(lastUploadProofDetail);
     setProof(lastUploadProofDetail);
 
     // passport
@@ -72,7 +68,6 @@ const ReviewCard = ({
 
     let lastUploadPassportDetail =
       uploadedPassportDetail[uploadedPassportDetail.length - 1];
-    console.log(lastUploadPassportDetail);
     setPassport(lastUploadPassportDetail);
   };
 
@@ -221,7 +216,7 @@ const ReviewCard = ({
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => governmentId?.fileType === fil.type)
+            .filter((fil) => proofD?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -238,7 +233,7 @@ const ReviewCard = ({
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => governmentId?.fileType === fil.type)
+            .filter((fil) => passportD?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
