@@ -102,12 +102,12 @@ const DirectorReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
-          <ContentWrapper>
+          {/* <ContentWrapper>
             <EditWrapper onClick={handleNavigate}>
               <EditIcon />
               <EditText>Edit Director Information</EditText>
             </EditWrapper>
-          </ContentWrapper>
+          </ContentWrapper> */}
 
           {viewDirectorState.isLoading ||
             (viewMembersState.isLoading && (
@@ -126,6 +126,7 @@ const DirectorReview = () => {
                 phone={director?.memberPhone}
                 director_role={director.directorRole}
                 memberCode={director.memberCode}
+                editAction={handleNavigate}
                 icon
               />
             ))}

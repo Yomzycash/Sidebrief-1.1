@@ -107,12 +107,12 @@ const ShareholderReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
-          <ContentWrapper>
+          {/* <ContentWrapper>
             <EditWrapper onClick={handleNavigate}>
               <EditIcon />
               <EditText>Edit Shareholder Information</EditText>
             </EditWrapper>
-          </ContentWrapper>
+          </ContentWrapper> */}
 
           {viewShareholderState.isLoading ||
             (viewMembersState.isLoading && (
@@ -133,8 +133,9 @@ const ShareholderReview = () => {
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
                 icon
                 memberCode={shareholder?.memberCode}
+                editAction={handleNavigate}
               />
-            ))}{" "}
+            ))}
           </CardWrapper>
           <ButtonWrapper>
             <CheckoutController
