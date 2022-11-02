@@ -44,7 +44,7 @@ const PdfCards = ({
 					<PdfWrapper>
 						<PdfLowerWrapper>
 							<IconWrapper>
-								{government ? (
+								{government.fileType ? (
 									<img
 										src={
 											imageTypeImage.find(
