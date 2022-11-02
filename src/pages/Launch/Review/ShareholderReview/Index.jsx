@@ -50,6 +50,7 @@ const ShareholderReview = () => {
     useViewShareholdersMutation();
   const [viewShareholdersKyc] = useViewMembersKYCMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
+  const [viewMemberKYC] = useViewMembersKYCMutation();
 
   const handleNavigate = () => {
     navigate("/launch/shareholders-info");
@@ -138,6 +139,7 @@ const ShareholderReview = () => {
                 phone={shareholder?.memberPhone}
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
                 icon
+                memberCode={shareholder?.memberCode}
                 government={shareholder.files.government_id}
                 proof={shareholder.files.proof_of_home_address}
                 passport={shareholder.files.passport_photograph}
