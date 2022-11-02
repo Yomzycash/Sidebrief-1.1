@@ -148,6 +148,7 @@ export const DeleteButton = styled.button`
   align-items: center;
   gap: 16px;
   padding: 8px;
+  cursor: pointer;
 
   p {
     font-family: "BR Firma";

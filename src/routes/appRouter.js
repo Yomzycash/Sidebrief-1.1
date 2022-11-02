@@ -1,152 +1,156 @@
-import React, { Suspense, lazy, useState, useEffect } from 'react'
-import { Toaster } from 'react-hot-toast'
+import React, { Suspense, lazy, useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
-} from 'react-router-dom'
-import Loader from '../components/loader/loader'
-import { useSelector } from 'react-redux'
-import Protected from './Protected'
-import ApplicationSuccessPage from 'pages/Launch/ApplicationSuccessPage'
-import Settings from 'pages/Dashboard/User/Settings'
-import Resources from 'pages/Dashboard/User/Resources'
-import Business from 'pages/Dashboard/User/Business'
-import BankAccount from 'pages/Dashboard/User/BankAccount'
-import Application from 'pages/Dashboard/User/Application'
-import AllBusinesses from 'pages/Dashboard/User/Business/AllBusinesses'
-import Test from 'pages/Test'
-import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications/Index'
-import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications/Index'
-const Home = lazy(() => import('../pages/Home'))
+} from "react-router-dom";
+import Loader from "../components/loader/loader";
+import { useSelector } from "react-redux";
+import Protected from "./Protected";
+import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
+import Settings from "pages/Dashboard/User/Settings";
+import Resources from "pages/Dashboard/User/Resources";
+import Business from "pages/Dashboard/User/Business";
+import BankAccount from "pages/Dashboard/User/BankAccount";
+import Application from "pages/Dashboard/User/Application";
+import AllBusinesses from "pages/Dashboard/User/Business/AllBusinesses";
+import Test from "pages/Test";
+import DraftApplications from "pages/Dashboard/User/Business/DraftApplications";
+import PendingApplications from "pages/Dashboard/User/Business/PendingApplications";
+const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
-  import('pages/Auth/Registration/EmailVerify/success'),
-)
+  import("pages/Auth/Registration/EmailVerify/success")
+);
 const EmailVerify = lazy(() =>
-  import('pages/Auth/Registration/EmailVerify/verify'),
-)
-const ResetSuccess = lazy(() => import('pages/Auth/SignIn/resetVerify/success'))
-const ResetVerify = lazy(() => import('pages/Auth/SignIn/resetVerify/verify'))
+  import("pages/Auth/Registration/EmailVerify/verify")
+);
+const ResetSuccess = lazy(() =>
+  import("pages/Auth/SignIn/resetVerify/success")
+);
+const ResetVerify = lazy(() => import("pages/Auth/SignIn/resetVerify/verify"));
 const AccountType = lazy(() =>
-  import('pages/Auth/Registration/accountType/accountType'),
-)
+  import("pages/Auth/Registration/accountType/accountType")
+);
 const PartnerRegistration = lazy(() =>
-  import('pages/Auth/Registration/partnerRegistration'),
-)
+  import("pages/Auth/Registration/partnerRegistration")
+);
 const ForgotPassword = lazy(() =>
-  import('pages/Auth/SignIn/forgotPassword/forgotpassword.jsx'),
-)
+  import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
+);
 const ResetPassword = lazy(() =>
-  import('pages/Auth/SignIn/resetPassword/resetPassword.jsx'),
-)
-const SignIn = lazy(() => import('pages/Auth/SignIn/SignIn'))
+  import("pages/Auth/SignIn/resetPassword/resetPassword.jsx")
+);
+const SignIn = lazy(() => import("pages/Auth/SignIn/SignIn"));
 const UserRegistration = lazy(() =>
-  import('../pages/Auth/Registration/userRegistration'),
-)
+  import("../pages/Auth/Registration/userRegistration")
+);
 const ResellerRegistration = lazy(() =>
-  import('../pages/Auth/Registration/ResellerRegister'),
-)
-const UserDashboard = lazy(() => import('pages/Dashboard/User'))
+  import("../pages/Auth/Registration/ResellerRegister")
+);
+const UserDashboard = lazy(() => import("pages/Dashboard/User"));
 const BusinessRegistration = lazy(() =>
-  import('pages/Dashboard/User/Home/BusinessRegistration'),
-)
-const StaffDashboard = lazy(() => import('pages/Dashboard/staffDashboard'))
-const BusinessAddress = lazy(() => import('pages/Launch/BusinessAddress'))
-const BusinessInfo = lazy(() => import('pages/Launch/BusinessInfo'))
-const EntitySelect = lazy(() => import('pages/Launch/EntitySelect'))
-const ShareHoldersInfo = lazy(() => import('pages/Launch/ShareHoldersInfo'))
-const DirectorsInfo = lazy(() => import('pages/Launch/DirectorsInfo'))
-const BeneficiariesInfo = lazy(() => import('pages/Launch/BeneficiariesInfo'))
-const BeneficiariesKYC = lazy(() => import('pages/Launch/BeneficiariesKYC'))
-const AllRewards = lazy(() => import('pages/Dashboard/User/Rewards/AllRewards'))
-const MyRewards = lazy(() => import('pages/Dashboard/User/Rewards/MyRewards'))
+  import("pages/Dashboard/User/Home/BusinessRegistration")
+);
+const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
+const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
+const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
+const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
+const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
+const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
+const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
+const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
+const AllRewards = lazy(() =>
+  import("pages/Dashboard/User/Rewards/AllRewards")
+);
+const MyRewards = lazy(() => import("pages/Dashboard/User/Rewards/MyRewards"));
 const RewardDetails = lazy(() =>
-  import('pages/Dashboard/User/Rewards/RewardDetails'),
-)
-const ShareHolderKYC = lazy(() => import('pages/Launch/ShareHolderKYC'))
-const Compliance = lazy(() => import('pages/Dashboard/User/Home/Compliance'))
+  import("pages/Dashboard/User/Rewards/RewardDetails")
+);
+const ShareHolderKYC = lazy(() => import("pages/Launch/ShareHolderKYC"));
+const Compliance = lazy(() => import("pages/Dashboard/User/Home/Compliance"));
 const HiringAndPayroll = lazy(() =>
-  import('pages/Dashboard/User/Home/HiringAndPayroll'),
-)
+  import("pages/Dashboard/User/Home/HiringAndPayroll")
+);
 const InetellectualAssets = lazy(() =>
-  import('pages/Dashboard/User/Home/IntellectualAssets'),
-)
-const Taxes = lazy(() => import('pages/Dashboard/User/Home/Taxes'))
-const Rewards = lazy(() => import('pages/Dashboard/User/Rewards'))
-const PaymentPage = lazy(() => import('pages/Launch/PaymentPage'))
+  import("pages/Dashboard/User/Home/IntellectualAssets")
+);
+const Taxes = lazy(() => import("pages/Dashboard/User/Home/Taxes"));
+const Rewards = lazy(() => import("pages/Dashboard/User/Rewards"));
+const PaymentPage = lazy(() => import("pages/Launch/PaymentPage"));
 const BeneficiaryReview = lazy(() =>
-  import('pages/Launch/Review/BeneficiaryReview'),
-)
+  import("pages/Launch/Review/BeneficiaryReview")
+);
 const BusinessInformationReview = lazy(() =>
-  import('pages/Launch/Review/BusinessInformationReview/Index'),
-)
+  import("pages/Launch/Review/BusinessInformationReview/Index")
+);
 const DirectorReview = lazy(() =>
-  import('pages/Launch/Review/DirectorReview/Index'),
-)
+  import("pages/Launch/Review/DirectorReview/Index")
+);
 const ShareholderReview = lazy(() =>
-  import('pages/Launch/Review/ShareholderReview/Index'),
-)
-const DirectorKYC = lazy(() => import('pages/Launch/DirectorsKYC'))
+  import("pages/Launch/Review/ShareholderReview/Index")
+);
+const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 const BusinessDetailLayout = lazy(() =>
-  import('pages/Dashboard/User/Business/Detail/layout'),
-)
+  import("pages/Dashboard/User/Business/Detail/layout")
+);
 const BusinessDetail = lazy(() =>
-  import('pages/Dashboard/User/Business/Detail'),
-)
+  import("pages/Dashboard/User/Business/Detail")
+);
 const DetailShareholders = lazy(() =>
-  import('pages/Dashboard/User/Business/Detail/shareholders'),
-)
+  import("pages/Dashboard/User/Business/Detail/shareholders")
+);
 const DetailDirectors = lazy(() =>
-  import('pages/Dashboard/User/Business/Detail/directors'),
-)
+  import("pages/Dashboard/User/Business/Detail/directors")
+);
 const DetailBeneficiaries = lazy(() =>
-  import('pages/Dashboard/User/Business/Detail/beneficiaries'),
-)
+  import("pages/Dashboard/User/Business/Detail/beneficiaries")
+);
 
 const AppRouter = () => {
-  const userData = useSelector((store) => store.UserDataReducer)
-  const launchData = useSelector((store) => store.LaunchReducer.launchResponse)
+  const userData = useSelector((store) => store.UserDataReducer);
+  const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
 
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-  let token = userInfo?.token
-  let user_token = userInfo?.user_token
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let token = userInfo?.token;
+  let user_token = userInfo?.user_token;
 
-  const launchInfo = JSON.parse(localStorage.getItem('launchInfo'))
-  const entityLaunchCode = launchInfo?.launchCode
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const entityLaunchCode = launchInfo?.launchCode;
   //const selectedCountryISO = JSON.parse(localStorage.getItem('country'))?.ISO
-  const selectedCountryISO = localStorage.getItem('countryISO')
+  const selectedCountryISO = localStorage.getItem("countryISO");
 
   const [isLoggedIn, setisLoggedIn] = useState(
-    token?.length > 0 || user_token > 0,
-  )
-  const [launchCode, setLaunchCode] = useState(entityLaunchCode)
-  const [countryISO, setCountryISO] = useState(selectedCountryISO)
+    token?.length > 0 || user_token > 0
+  );
+  const [launchCode, setLaunchCode] = useState(entityLaunchCode);
+  const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
-  const loggedIn = token?.length > 0 || user_token > 0
+  const loggedIn = token?.length > 0 || user_token > 0;
   useEffect(() => {
-    setisLoggedIn(loggedIn)
-  }, [loggedIn, userData.userInfo])
-
-  useEffect(() => {
-    setLaunchCode(entityLaunchCode)
-  }, [entityLaunchCode, launchData.launchCode])
-
-  const allowLaunch = launchCode && countryISO
-  console.log(launchCode)
+    setisLoggedIn(loggedIn);
+  }, [loggedIn, userData.userInfo]);
 
   useEffect(() => {
-    setisLoggedIn(loggedIn)
-  }, [loggedIn])
+    setLaunchCode(entityLaunchCode);
+  }, [entityLaunchCode, launchData.launchCode]);
+
+  const allowLaunch = launchCode && countryISO;
+  console.log(launchCode);
 
   useEffect(() => {
-    setLaunchCode(entityLaunchCode)
-  }, [entityLaunchCode])
+    setisLoggedIn(loggedIn);
+  }, [loggedIn]);
 
   useEffect(() => {
-    setCountryISO(selectedCountryISO)
-  }, [selectedCountryISO, launchData.registrationCountry])
-  console.log(countryISO)
+    setLaunchCode(entityLaunchCode);
+  }, [entityLaunchCode]);
+
+  useEffect(() => {
+    setCountryISO(selectedCountryISO);
+  }, [selectedCountryISO, launchData.registrationCountry]);
+  console.log(countryISO);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -365,40 +369,40 @@ const AppRouter = () => {
         <Toaster
           position="top-right"
           toastOptions={{
-            className: '',
+            className: "",
             style: {
-              margin: '10px',
-              padding: '10px',
-              display: 'inline-flex',
-              fontSize: '14px',
+              margin: "10px",
+              padding: "10px",
+              display: "inline-flex",
+              fontSize: "14px",
               zIndex: 999999,
             },
             duration: 4000,
             error: {
               style: {
-                background: '#ff6363',
-                color: 'white',
+                background: "#ff6363",
+                color: "white",
               },
               iconTheme: {
-                primary: 'white',
-                secondary: 'red',
+                primary: "white",
+                secondary: "red",
               },
             },
             success: {
               style: {
-                background: 'green',
-                color: 'white',
+                background: "green",
+                color: "white",
               },
               iconTheme: {
-                primary: 'white',
-                secondary: 'green',
+                primary: "white",
+                secondary: "green",
               },
             },
           }}
         />
       </Router>
     </Suspense>
-  )
-}
+  );
+};
 
-export default AppRouter
+export default AppRouter;

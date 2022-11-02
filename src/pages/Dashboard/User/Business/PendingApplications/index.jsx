@@ -9,10 +9,12 @@ import {
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
-import BusinessesCard from "components/cards/BusinessAddressCard/Index";
+import BusinessesCard from "components/cards/BusinessAddressCard";
 
 const PendingApplications = () => {
-	const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery();
+	const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery({
+		refetchOnMountOrArgChange: true,
+	});
 
 	const countries = useGetAllCountriesQuery();
 
@@ -22,8 +24,8 @@ const PendingApplications = () => {
 			const response = [...data];
 			response.sort((launch1, launch2) => {
 				return compareDesc(
-					new Date(launch1.updatedAt),
-					new Date(launch2.updatedAt)
+					new Date(launch1.createdAt),
+					new Date(launch2.createdAt)
 				);
 			});
 			setDataArr(response);
@@ -53,7 +55,7 @@ const PendingApplications = () => {
 										element.registrationCountry
 								).countryName,
 								date: format(
-									new Date(element.updatedAt),
+									new Date(element.createdAt),
 									"dd/MM/yyyy"
 								),
 								code: element.launchCode,
@@ -86,6 +88,7 @@ const PendingApplications = () => {
 };
 
 export default PendingApplications;
+
 const MobileContainer = styled.div`
 	display: flex;
 	flex-direction: column;

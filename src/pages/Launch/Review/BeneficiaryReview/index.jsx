@@ -132,12 +132,12 @@ const BeneficiaryReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
-          <ContentWrapper>
+          {/* <ContentWrapper>
             <EditWrapper onClick={handleNavigate}>
               <EditIcon />
               <EditText>Edit beneficiary Information</EditText>
             </EditWrapper>
-          </ContentWrapper>
+          </ContentWrapper> */}
 
           {viewBeneficialState.isLoading && (
             <Loading height="50vh">
@@ -158,6 +158,8 @@ const BeneficiaryReview = () => {
                 government={beneficiary.files.government_id}
                 proof={beneficiary.files.proof_of_home_address}
                 passport={beneficiary.files.passport_photograph}
+                beneficialOwnerCode={beneficiary?.beneficialOwnerCode}
+                editAction={handleNavigate}
               />
             ))}
           </CardWrapper>

@@ -60,4 +60,11 @@ export const IconWrapper = styled.div`
   display: flex;
   flex-flow: row;
   gap: 27px;
+  color: #00a2d4;
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
 `;

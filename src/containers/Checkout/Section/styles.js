@@ -37,7 +37,7 @@ export const Heading = styled.h3`
 `;
 
 export const CheckBox = styled.div`
-  display: flex;
+  display: ${({ $hide }) => ($hide ? "hidden" : "flex")};
   gap: 16px;
   margin-top: clamp(8px, 2vw, 40px);
   color: #151717;

@@ -6,11 +6,7 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  setBeneficiariesLaunchInfo,
-  setCheckoutProgress,
-  setDirectorsLaunchInfo,
-} from "redux/Slices";
+import { setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
 import {
   AddMore,
@@ -41,9 +37,6 @@ const DirectorsInfo = () => {
   const [cardAction, setCardAction] = useState();
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
-  const [useSidebriefBeneficiaries, setUseSidebriefBeneficiaries] = useState(
-    localStorage.getItem("useSidebriefBeneficiaries")
-  );
   const [beneficiariesInfo, setBeneficiariesInfo] = useState([]);
 
   // Endpont hooks
@@ -62,35 +55,18 @@ const DirectorsInfo = () => {
       "useSidebriefShareholders"
     );
     let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-    let useSidebriefBeneficiaries = localStorage.getItem(
-      "useSidebriefBeneficiaries"
-    );
-    console.log(
-      useSidebriefShareholders,
-      useSidebriefDirectors,
-      useSidebriefBeneficiaries
-    );
 
     let navigateTo = "";
 
+    if (!useSidebriefShareholders) navigateTo = "/launch/sharehholders-kyc";
     if (useSidebriefShareholders) navigateTo = "/launch/directors-kyc";
-    if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-    if (useSidebriefBeneficiaries) navigateTo = "/launch/review";
+    if (useSidebriefDirectors && useSidebriefShareholders)
+      navigateTo = "/launch/beneficiaries-kyc";
 
     navigate(navigateTo ? navigateTo : "/launch/sharehholders-kyc");
-    // navigate("/launch/sharehholders-kyc");
   };
   const handlePrev = () => {
     navigate(-1);
-  };
-
-  const handleCheckbox = (checked) => {
-    setUseSidebriefBeneficiaries(checked === true ? checked : false);
-    if (checked) {
-      localStorage.setItem("useSidebriefBeneficiaries", checked);
-    } else {
-      localStorage.removeItem("useSidebriefBeneficiaries");
-    }
   };
 
   const handleAddMore = () => {
@@ -197,11 +173,6 @@ const DirectorsInfo = () => {
 
     setBeneficiariesInfo(beneficiariesData);
     console.log(beneficiariesData);
-
-    if (beneficiariesData.length > 0) {
-      setUseSidebriefBeneficiaries(false);
-      localStorage.removeItem("useSidebriefBeneficiaries");
-    }
   };
 
   useEffect(() => {
@@ -219,10 +190,7 @@ const DirectorsInfo = () => {
       <Body>
         <CheckoutSection
           title={"Beneficiaries Information (Optional)"}
-          checkbox="Beneficiaries"
-          checkBoxAction={handleCheckbox}
-          disableCheckbox={beneficiariesInfo.length > 0 ? true : false}
-          checked={useSidebriefBeneficiaries}
+          hideCheckbox={true}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
@@ -250,12 +218,11 @@ const DirectorsInfo = () => {
                 }
               />
             ))}
-            {!useSidebriefBeneficiaries && (
-              <AddMore onClick={handleAddMore}>
-                <AddIcon />
-                <span>Add a Beneficiary</span>
-              </AddMore>
-            )}
+            <AddMore onClick={handleAddMore}>
+              <AddIcon />
+              <span>Add a Beneficiary</span>
+            </AddMore>
+            {/* )} */}
             <Dialog open={openModal}>
               <DialogContent style={modalStyle}>
                 <CheckoutFormInfo

@@ -47,40 +47,22 @@ const DirectorReview = () => {
 
   const handleMerge = async () => {
     let memberInfo = await viewMembers(launchResponse);
-    let newMemberInfo = [...memberInfo.data.businessMembers];
+    let membersUpdatedData = [...memberInfo.data.businessMembers];
 
     let directorInfo = await viewDirectors(launchResponse);
-    let newDirectorInfo = [...directorInfo.data.businessDirectors];
+    let directorsUpdatedData = [...directorInfo.data.businessDirectors];
 
-    let titlesMembersMerged = [];
-    newDirectorInfo.forEach((title) => {
-      newMemberInfo.forEach((member) => {
-        directorDocumentContainer.forEach((store) => {
-          if (
-            member.memberCode === title.memberCode &&
-            title.memberCode === store.code
-          ) {
-            let merged = { ...title, ...member, ...store };
-            titlesMembersMerged.push(merged);
-          }
-        });
+    let directorsMembersMerged = [];
+    directorsUpdatedData.forEach((shareholder) => {
+      membersUpdatedData.forEach((member) => {
+        if (member.memberCode === shareholder.memberCode) {
+          let merged = { ...shareholder, ...member };
+          directorsMembersMerged.push(merged);
+        }
       });
     });
-
-    // let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
-    setMergedResponse(titlesMembersMerged);
-
-    // return newMerge;
-
-    // let newMerge = mergeThreeInfo(
-    //   newDirectorInfo,
-    //   newMemberInfo,
-    //   directorDocumentContainer
-    // );
-    // setMergedResponse(newMerge);
-
-    // console.log("ttttttttt", newMerge);
-    // return newMerge;
+    console.log(directorsMembersMerged);
+    setMergedResponse(directorsMembersMerged);
   };
 
   useEffect(() => {
@@ -120,12 +102,12 @@ const DirectorReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
-          <ContentWrapper>
+          {/* <ContentWrapper>
             <EditWrapper onClick={handleNavigate}>
               <EditIcon />
               <EditText>Edit Director Information</EditText>
             </EditWrapper>
-          </ContentWrapper>
+          </ContentWrapper> */}
 
           {viewDirectorState.isLoading ||
             (viewMembersState.isLoading && (
@@ -143,10 +125,9 @@ const DirectorReview = () => {
                 email={director?.memberEmail}
                 phone={director?.memberPhone}
                 director_role={director.directorRole}
+                memberCode={director.memberCode}
+                editAction={handleNavigate}
                 icon
-                government={director.files.government_id}
-                proof={director.files.proof_of_home_address}
-                passport={director.files.passport_photograph}
               />
             ))}
           </CardWrapper>

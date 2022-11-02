@@ -9,11 +9,13 @@ import { Body, Container, Loading } from "./styled";
 import { format, compareDesc } from "date-fns";
 import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
-import BusinessesCard from "components/cards/BusinessAddressCard/Index";
+import BusinessesCard from "components/cards/BusinessAddressCard";
 import styled from "styled-components";
 
 const DraftApplications = () => {
-	const { data, error, isLoading, isSuccess } = useGetUserDraftQuery();
+	const { data, error, isLoading, isSuccess } = useGetUserDraftQuery({
+		refetchOnMountOrArgChange: true,
+	});
 
 	const countries = useGetAllCountriesQuery();
 
@@ -23,8 +25,8 @@ const DraftApplications = () => {
 			const response = [...data];
 			response.sort((launch1, launch2) => {
 				return compareDesc(
-					new Date(launch1.updatedAt),
-					new Date(launch2.updatedAt)
+					new Date(launch1.createdAt),
+					new Date(launch2.createdAt)
 				);
 			});
 			setDataArr(response);
@@ -55,7 +57,7 @@ const DraftApplications = () => {
 										element.registrationCountry
 								).countryName,
 								date: format(
-									new Date(element.updatedAt),
+									new Date(element.createdAt),
 									"dd/MM/yyyy"
 								),
 								code: element.launchCode,
