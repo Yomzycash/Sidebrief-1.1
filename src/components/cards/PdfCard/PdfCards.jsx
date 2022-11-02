@@ -4,7 +4,17 @@ import { ReactComponent as PhoneIcon } from "asset/svg/phone.svg";
 import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
-const PdfCards = ({ name = "", title = "", email = "", phone = "" }) => {
+import { imageTypeImage } from "utils/config";
+
+const PdfCards = ({
+  name = "",
+  title = "",
+  email = "",
+  phone = "",
+  government,
+  proof,
+  passport,
+}) => {
   return (
     <>
       <Wrapper>
@@ -34,9 +44,28 @@ const PdfCards = ({ name = "", title = "", email = "", phone = "" }) => {
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
-                <PdfIcon />
+                {government.fileType ? (
+                  <img
+                    src={
+                      imageTypeImage.find(
+                        (el) => el.type === government.fileType
+                      ).image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
               </IconWrapper>
-              <Details>Proofof Address.pdf</Details>
+              <Details>
+                {government ? government.fileName : "upload a file"}
+              </Details>
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -47,9 +76,25 @@ const PdfCards = ({ name = "", title = "", email = "", phone = "" }) => {
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
-                <PdfIcon />
+                {proof ? (
+                  <img
+                    src={
+                      imageTypeImage.find((el) => el.type === proof.fileType)
+                        .image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
               </IconWrapper>
-              <Details>ID Card-Ope?Falana.pdf</Details>
+              <Details>{proof ? proof.fileName : "upload a file"}</Details>
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -60,9 +105,27 @@ const PdfCards = ({ name = "", title = "", email = "", phone = "" }) => {
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
-                <PdfIcon />
+                {passport ? (
+                  <img
+                    src={
+                      imageTypeImage.find((el) => el.type === passport.fileType)
+                        .image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
               </IconWrapper>
-              <Details>Passport - Ope_Falana.jpg</Details>
+              <Details>
+                {passport ? passport.fileName : "upload a file"}
+              </Details>
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -178,7 +241,7 @@ const PdfLowerWrapper = styled.div`
   flex-direction: row;
   align-items: flex-start;
 
-  gap: 24px;
+  gap: 10px;
 `;
 const IconWrapper = styled.div`
   display: flex;
@@ -195,4 +258,7 @@ const Details = styled.h3`
   text-decoration-line: underline;
   color: #151717;
   cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;

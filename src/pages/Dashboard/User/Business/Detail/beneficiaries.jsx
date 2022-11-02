@@ -15,6 +15,8 @@ const DetailBeneficiaries = () => {
 		console.log(data);
 	}
 
+	const beneficiaryKYC = isSuccess ? data.beneficialOwnersKYC : [];
+
 	return (
 		<>
 			{isLoading ? (
@@ -23,13 +25,36 @@ const DetailBeneficiaries = () => {
 				</Loader>
 			) : (
 				<CardContainer>
-					{data.businessBeneficialOwners.map((item) => {
+					{data.businessBeneficialOwners.map((beneficiary) => {
+						const currentmemberKYC = beneficiaryKYC.filter(
+							(el) =>
+								el.beneficialOwnerCode ===
+								beneficiary.beneficialOwnerCode
+						);
+
+						const governmentFile = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("government")
+							)
+							.slice(-1)[0];
+						const passportFile = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("passport")
+							)
+							.slice(-1)[0];
+						const proofFile = currentmemberKYC
+							.filter((el) => el.documentType.includes("proof"))
+							.slice(-1)[0];
+
 						return (
 							<PdfCard
-								name={item.beneficialOwnerName}
-								email={item.beneficialOwnerEmail}
-								phone={`+${item.beneficialOwnerPhone}`}
-								title={`${item.beneficialOwnerOccupation} - ${item.beneficialOwnershipStake}% stake`}
+								name={beneficiary.beneficialOwnerName}
+								email={beneficiary.beneficialOwnerEmail}
+								phone={`+${beneficiary.beneficialOwnerPhone}`}
+								title={`${beneficiary.beneficialOwnerOccupation} - ${beneficiary.beneficialOwnershipStake}% stake`}
+								government={governmentFile}
+								proof={proofFile}
+								passport={passportFile}
 							/>
 						);
 					})}
