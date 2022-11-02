@@ -158,6 +158,7 @@ const BeneficiaryReview = () => {
                 government={beneficiary.files.government_id}
                 proof={beneficiary.files.proof_of_home_address}
                 passport={beneficiary.files.passport_photograph}
+                beneficialOwnerCode={beneficiary?.beneficialOwnerCode}
               />
             ))}
           </CardWrapper>

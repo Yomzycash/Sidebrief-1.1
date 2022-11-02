@@ -9,10 +9,12 @@ import {
 import { Puff } from 'react-loading-icons'
 import styled from 'styled-components'
 import { useMediaQuery } from '@mui/material'
-import BusinessesCard from 'components/cards/BusinessAddressCard/Index'
+import BusinessesCard from 'components/cards/BusinessAddressCard'
 
 const PendingApplications = () => {
-  const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery()
+  const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery({
+    refetchOnMountOrArgChange: true,
+  })
 
   const countries = useGetAllCountriesQuery()
 
@@ -81,6 +83,7 @@ const PendingApplications = () => {
 }
 
 export default PendingApplications
+
 const MobileContainer = styled.div`
   display: flex;
   flex-direction: column;

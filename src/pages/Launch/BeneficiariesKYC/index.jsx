@@ -22,6 +22,7 @@ import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 
 const BeneficiariesKYC = () => {
   const navigate = useNavigate();
+  const [isChanged, setIsChanged] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [storeType, setStoreType] = useState("");
   const [fileName, setFileName] = useState("");
@@ -123,6 +124,8 @@ const BeneficiariesKYC = () => {
       beneficialOwnerKYC: {
         documentType: formatType,
         documentLink: res.url,
+        fileName: files[0].name,
+        fileType: files[0].type,
       },
     };
 
@@ -141,6 +144,7 @@ const BeneficiariesKYC = () => {
       console.log("last member added is", lastElememt);
 
       toast.success("Document uploaded successfully");
+      setIsChanged(!isChanged);
 
       setDocumentContainer((prev) => {
         const updatedState = [...prev];
@@ -243,7 +247,10 @@ const BeneficiariesKYC = () => {
                 <Name>{beneficiary.name}</Name>
                 <ContentWrapper>
                   <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"government id"}
                     TopText={"Government Issued ID"}
+                    beneficiaryCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(files, beneficiary.code, "government_id")
                     }
@@ -256,7 +263,10 @@ const BeneficiariesKYC = () => {
                   />
 
                   <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"proof of home address"}
                     TopText={"Proof of Home Address"}
+                    beneficiaryCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
@@ -274,7 +284,10 @@ const BeneficiariesKYC = () => {
                   />
 
                   <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"passport photograph"}
                     TopText={"Passport Photograph"}
+                    beneficiaryCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(
                         files,

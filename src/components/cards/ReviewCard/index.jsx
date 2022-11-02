@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
 import { Container, IconWrapper, SharesWrapper, Top } from "./styled";
 import { SpinningCircles } from "react-loading-icons";
 import styled from "styled-components";
 import { imageTypeImage } from "utils/config";
+import {
+  useViewBeneficialsKYCMutation,
+  useViewMembersKYCMutation,
+} from "services/launchService";
 
 const ReviewCard = ({
   number,
@@ -20,10 +24,148 @@ const ReviewCard = ({
   occupation,
   isLoading,
   icon,
-  government,
-  proof,
-  passport,
+  memberCode,
+  beneficialOwnerCode,
 }) => {
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+
+  const [documentInfo, setDocumentInfo] = useState({});
+  const [viewMemberKYC] = useViewMembersKYCMutation();
+  const [viewBeneficials] = useViewBeneficialsKYCMutation();
+  const [governmentId, setGovernmentId] = useState({});
+  const [proofD, setProof] = useState({});
+  const [passportD, setPassport] = useState({});
+  console.log("yyyyyyyyyyyysayo", memberCode);
+
+  const handleShareHolder = async () => {
+    const response = await viewMemberKYC(launchInfo);
+
+    const MemberKYCInfo = [...response.data.businessMembersKYC];
+    let fileInfo = MemberKYCInfo.filter(
+      (member) => member.memberCode === memberCode
+    );
+    console.log(fileInfo);
+
+    const uploadedDetail = fileInfo.filter(
+      (item) => item.documentType === "government id"
+    );
+
+    let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
+    console.log(lastUploadDetail);
+    setGovernmentId(lastUploadDetail);
+
+    //proof
+    const uploadedProofDetail = fileInfo.filter(
+      (item) => item.documentType === "proof of home address"
+    );
+
+    let lastUploadProofDetail =
+      uploadedProofDetail[uploadedProofDetail.length - 1];
+    console.log(lastUploadProofDetail);
+    setProof(lastUploadProofDetail);
+
+    // passport
+
+    const uploadedPassportDetail = fileInfo.filter(
+      (item) => item.documentType === "passport photograph"
+    );
+
+    let lastUploadPassportDetail =
+      uploadedPassportDetail[uploadedPassportDetail.length - 1];
+    console.log(lastUploadPassportDetail);
+    setPassport(lastUploadPassportDetail);
+  };
+
+  // const handleDirector = async () => {
+  //   const response = await viewMemberKYC(launchInfo);
+  //   const MemberKYCInfo = [...response.data.businessMembersKYC];
+  //   let fileInfo = MemberKYCInfo.filter(
+  //     (member) => member.memberCode === memberCode
+  //   );
+
+  //   const uploadedDetail = fileInfo.filter(
+  //     (item) => item.documentType === "government id"
+  //   );
+  //   console.log(uploadedDetail);
+
+  //   let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
+  //   console.log(lastUploadDetail);
+  //   setGovernmentId(lastUploadDetail);
+
+  //   //proof
+  //   const uploadedProofDetail = fileInfo.filter(
+  //     (item) => item.documentType === "proof of home address"
+  //   );
+  //   console.log(uploadedDetail);
+
+  //   let lastUploadProofDetail =
+  //     uploadedProofDetail[uploadedProofDetail.length - 1];
+  //   console.log(lastUploadDetail);
+  //   setProof(lastUploadProofDetail);
+
+  //   // passport
+
+  //   const uploadedPassportDetail = fileInfo.filter(
+  //     (item) => item.documentType === "passport photograph"
+  //   );
+  //   console.log(uploadedDetail);
+
+  //   let lastUploadPassportDetail =
+  //     uploadedPassportDetail[uploadedPassportDetail.length - 1];
+  //   console.log(lastUploadPassportDetail);
+  //   setPassport(lastUploadPassportDetail);
+  // };
+
+  const handleBeneficiary = async () => {
+    const response = await viewBeneficials(launchInfo);
+    const MemberKYCInfo = [...response.data.beneficialOwnersKYC];
+    console.log(MemberKYCInfo);
+    let fileInfo = MemberKYCInfo.filter(
+      (member) => member.beneficialOwnerCode === beneficialOwnerCode
+    );
+
+    const uploadedDetail = fileInfo.filter(
+      (item) => item.documentType === "government id"
+    );
+    console.log(uploadedDetail);
+
+    let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
+    console.log(lastUploadDetail);
+    setGovernmentId(lastUploadDetail);
+
+    //proof
+    const uploadedProofDetail = fileInfo.filter(
+      (item) => item.documentType === "proof of home address"
+    );
+    console.log(uploadedDetail);
+
+    let lastUploadProofDetail =
+      uploadedProofDetail[uploadedProofDetail.length - 1];
+    console.log(lastUploadDetail);
+    setProof(lastUploadProofDetail);
+
+    // passport
+
+    const uploadedPassportDetail = fileInfo.filter(
+      (item) => item.documentType === "passport photograph"
+    );
+    console.log(uploadedDetail);
+
+    let lastUploadPassportDetail =
+      uploadedPassportDetail[uploadedPassportDetail.length - 1];
+    console.log(lastUploadPassportDetail);
+    setPassport(lastUploadPassportDetail);
+  };
+
+  useEffect(() => {
+    if (beneficialOwnerCode) {
+      handleBeneficiary();
+    } else {
+      handleShareHolder();
+      // handleDirector();
+    }
+  }, []);
+
   return (
     <Container>
       <Top>
@@ -56,10 +198,13 @@ const ReviewCard = ({
       <div>{email}</div>
       <div>{phone}</div>
 
+      {/* {
+  documentInfo.lastIndexOf((item) => item.documentType === "government id").map(())
+} */}
       <PdfContainer>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => government.slice(-3) === fil.name)
+            ?.filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -72,11 +217,11 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{government}</TextWrapper>
+          <TextWrapper>{governmentId?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => proof.slice(-3) === fil.name)
+            .filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -89,11 +234,11 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{proof}</TextWrapper>
+          <TextWrapper>{proofD?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => passport.slice(-3) === fil.name)
+            .filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -106,7 +251,7 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{passport}</TextWrapper>
+          <TextWrapper>{passportD?.fileName}</TextWrapper>
         </PdfWrapper>
       </PdfContainer>
     </Container>

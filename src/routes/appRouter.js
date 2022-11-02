@@ -12,13 +12,13 @@ import Protected from './Protected'
 import ApplicationSuccessPage from 'pages/Launch/ApplicationSuccessPage'
 import Settings from 'pages/Dashboard/User/Settings'
 import Resources from 'pages/Dashboard/User/Resources'
-import Business from 'pages/Dashboard/User/Business/Index'
+import Business from 'pages/Dashboard/User/Business'
 import BankAccount from 'pages/Dashboard/User/BankAccount'
 import Application from 'pages/Dashboard/User/Application'
 import AllBusinesses from 'pages/Dashboard/User/Business/AllBusinesses'
 import Test from 'pages/Test'
-import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications/Index'
-import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications/Index'
+import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications'
+import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications'
 const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
   import('pages/Auth/Registration/EmailVerify/success'),
