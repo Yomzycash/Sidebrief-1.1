@@ -21,35 +21,36 @@ import { mergeInfo } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
 
 const ShareholderReview = () => {
-	const ActiveStyles = {
-		color: "#151717",
-		borderBottom: "4px solid #00A2D4",
-		borderRadius: 0,
-	};
-	const [shareholderInfo, setShareholderInfo] = useState([]);
-	const [shareholdersKycInfo, setShareholdersKycInfo] = useState([]);
-	const [members, setMembers] = useState([]);
-	const [mergedResponse, setMergedResponse] = useState([]);
-	const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-	//console.log(LaunchApplicationInfo)
-	// getting the shareholder container from store
-	const shareholderDocumentContainer = useSelector(
-		(state) => state.LaunchReducer.shareholderDocs
-	);
-	const navigate = useNavigate();
-	const handleNext = () => {
-		navigate("/launch/review-director");
-		store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
-	};
-	const handlePrev = () => {
-		navigate(-1);
-	};
-	const LaunchInfo = useSelector((store) => store.LaunchReducer);
-	const { launchResponse } = LaunchInfo;
-	const [viewShareholders, viewShareholderState] =
-		useViewShareholdersMutation();
-	const [viewShareholdersKyc] = useViewMembersKYCMutation();
-	const [viewMembers, viewMembersState] = useViewMembersMutation();
+  const ActiveStyles = {
+    color: "#151717",
+    borderBottom: "4px solid #00A2D4",
+    borderRadius: 0,
+  };
+  const [shareholderInfo, setShareholderInfo] = useState([]);
+  const [shareholdersKycInfo, setShareholdersKycInfo] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [mergedResponse, setMergedResponse] = useState([]);
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  //console.log(LaunchApplicationInfo)
+  // getting the shareholder container from store
+  const shareholderDocumentContainer = useSelector(
+    (state) => state.LaunchReducer.shareholderDocs
+  );
+  const navigate = useNavigate();
+  const handleNext = () => {
+    navigate("/launch/review-director");
+    store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
+  };
+  const handlePrev = () => {
+    navigate(-1);
+  };
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
+  const { launchResponse } = LaunchInfo;
+  const [viewShareholders, viewShareholderState] =
+    useViewShareholdersMutation();
+  const [viewShareholdersKyc] = useViewMembersKYCMutation();
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
+  const [viewMemberKYC] = useViewMembersKYCMutation();
 
 	const handleNavigate = () => {
 		navigate("/launch/shareholders-info");
@@ -129,38 +130,37 @@ const ShareholderReview = () => {
 							</Loading>
 						))}
 
-					<CardWrapper>
-						{mergedResponse.map((shareholder, index) => (
-							<ReviewCard
-								key={index}
-								number={index + 1}
-								name={shareholder?.memberName}
-								shares={shareholder?.shareholderOwnershipType}
-								email={shareholder?.memberEmail}
-								phone={shareholder?.memberPhone}
-								sharesPercentage={
-									shareholder?.shareholderOwnershipPercentage
-								}
-								icon
-								government={shareholder.files.government_id}
-								proof={shareholder.files.proof_of_home_address}
-								passport={shareholder.files.passport_photograph}
-							/>
-						))}{" "}
-					</CardWrapper>
-					<ButtonWrapper>
-						<CheckoutController
-							backText={"Previous"}
-							forwardText={"Proceed"}
-							forwardAction={handleNext}
-							backAction={handlePrev}
-						/>
-					</ButtonWrapper>
-				</Body>
-				<AppFeedback subProject="Shareholder review" />
-			</Container>
-		</>
-	);
+          <CardWrapper>
+            {mergedResponse.map((shareholder, index) => (
+              <ReviewCard
+                key={index}
+                number={index + 1}
+                name={shareholder?.memberName}
+                shares={shareholder?.shareholderOwnershipType}
+                email={shareholder?.memberEmail}
+                phone={shareholder?.memberPhone}
+                sharesPercentage={shareholder?.shareholderOwnershipPercentage}
+                icon
+                memberCode={shareholder?.memberCode}
+                government={shareholder.files.government_id}
+                proof={shareholder.files.proof_of_home_address}
+                passport={shareholder.files.passport_photograph}
+              />
+            ))}{" "}
+          </CardWrapper>
+          <ButtonWrapper>
+            <CheckoutController
+              backText={"Previous"}
+              forwardText={"Proceed"}
+              forwardAction={handleNext}
+              backAction={handlePrev}
+            />
+          </ButtonWrapper>
+        </Body>
+        <AppFeedback subProject="Shareholder review" />
+      </Container>
+    </>
+  );
 };
 
 export default ShareholderReview;
