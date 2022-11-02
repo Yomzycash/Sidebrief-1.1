@@ -1,49 +1,47 @@
-import Pagination from "components/Pagination";
+import FileLoading from "components/FileUpload/FileLoading";
 import React from "react";
-import Loader from "components/loader/loader";
-import StaffDashboard from "./Dashboard/staffDashboard";
-import { StepBar } from "components/Indicators";
-import NotAvailable from "components/NotAvailable";
+import {
+  Audio,
+  BallTriangle,
+  Bars,
+  Circles,
+  Grid,
+  Hearts,
+  Oval,
+  Puff,
+  Rings,
+  SpinningCircles,
+  TailSpin,
+  ThreeDots,
+} from "react-loading-icons";
 const Test = () => {
-  const analytics = {
-    title: "User analytics",
-    status1: {
-      text: "Total Users",
-      total: 825,
-      color: "rgba(255, 255, 255, 0.4)",
-    },
-    status2: {
-      text: "Registrations",
-      total: 450,
-      color: "#ffffff",
-    },
-  };
-
-  const tableMockData = [
-    {
-      name: "Slideshow Africa",
-      country: "Nigeria",
-      date: "12/12/2022",
-    },
-    {
-      name: "Ayomide Africa",
-      country: "Nigeria",
-      date: "12/12/2022",
-    },
-    {
-      name: "Image Deity Industries",
-      country: "Kenya",
-      date: "12/12/2022",
-    },
-  ];
-
   return (
     <>
-      {/* <Pagination /> */}
-      {/* <BusinessesChartCard staff analytics={analytics} />
-      <BusinessHomeTable data={tableMockData} /> */}
-      <StepBar mobile />
-      <NotAvailable availableText={"No shareholder"} />
+      {/* <Audio stroke="#00A2D4" fill="white" />
+      <br />
+      <BallTriangle stroke="#00A2D4" fill="white" />
+      <br />
+      <Bars stroke="#00A2D4" fill="white" />
+      <br />
+      <Circles stroke="#00A2D4" fill="white" />
+      <br />
+      <Grid stroke="#00A2D4" fill="white" />
+      <br />
+      <Hearts stroke="#00A2D4" fill="white" />
+      <br />
+      <Oval stroke="#00A2D4" fill="white" />
+      <br />
+      <Puff stroke="#00A2D4" fill="white" />
+      <br />
+      <Rings stroke="#00A2D4" fill="white" />
+      <br />
+      <SpinningCircles stroke="#00A2D4" fill="white" />
+      <br />
+      <TailSpin stroke="#00A2D4" fill="white" />
+      <br />
+      <ThreeDots stroke="#00A2D4" fill="white" />
+      <br /> */}
+      <FileLoading />
     </>
   );
 };

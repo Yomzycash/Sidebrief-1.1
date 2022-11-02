@@ -58,41 +58,34 @@ const ShareholderReview = () => {
 
   const handleMerge = async () => {
     let memberInfo = await viewMembers(launchResponse);
-    let newMemberInfo = [...memberInfo.data.businessMembers];
+    let membersUpdatedData = [...memberInfo.data.businessMembers];
 
     let shareholderInfo = await viewShareholders(launchResponse);
-    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
+    let shareholdersUpdatedData = [
+      ...shareholderInfo.data.businessShareholders,
+    ];
 
-    let titlesMembersMerged = [];
-    newShareHolderInfo.forEach((title) => {
-      newMemberInfo.forEach((member) => {
-        shareholderDocumentContainer.forEach((store) => {
-          if (
-            member.memberCode === title.memberCode &&
-            title.memberCode === store.code
-          ) {
-            let merged = { ...title, ...member, ...store };
-            titlesMembersMerged.push(merged);
-          }
-        });
+    let shareholdersMembersMerged = [];
+    shareholdersUpdatedData.forEach((shareholder) => {
+      membersUpdatedData.forEach((member) => {
+        if (member.memberCode === shareholder.memberCode) {
+          let merged = { ...shareholder, ...member };
+          shareholdersMembersMerged.push(merged);
+        }
       });
     });
-
-    // let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
-    setMergedResponse(titlesMembersMerged);
-
-    // return newMerge;
+    setMergedResponse(shareholdersMembersMerged);
   };
 
   useEffect(() => {
     handleMerge();
   }, [shareholderDocumentContainer]);
 
-  let shareholderLocalStorage = JSON.parse(
-    localStorage.getItem("localShareholderInfo")
-  );
+  // let shareholderLocalStorage = JSON.parse(
+  //   localStorage.getItem("localShareholderInfo")
+  // );
 
-  console.log("package from local", shareholderLocalStorage);
+  // console.log("package from local", shareholderLocalStorage);
   return (
     <>
       <Container>
@@ -140,9 +133,6 @@ const ShareholderReview = () => {
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
                 icon
                 memberCode={shareholder?.memberCode}
-                government={shareholder.files.government_id}
-                proof={shareholder.files.proof_of_home_address}
-                passport={shareholder.files.passport_photograph}
               />
             ))}{" "}
           </CardWrapper>
@@ -201,14 +191,15 @@ const ReviweTabWrapper = styled.div`
   }
 `;
 const ContentWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
   width: 100%;
   padding: 40px 40px 0px;
 `;
 const EditWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
   gap: 16px;
+  max-width: max-content;
   cursor: pointer;
 `;
 
