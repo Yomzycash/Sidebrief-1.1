@@ -67,7 +67,7 @@ const KYCFileUpload = ({
 
   useEffect(() => {
     handleBeneficiary();
-  }, []);
+  }, [isChanged, deleted, Object.keys(documentInfo).length == 7]);
 
   const handleRemove = async () => {
     if (beneficiaryCode) {
