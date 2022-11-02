@@ -39,15 +39,16 @@ const ReviewCard = ({
 
   const handleShareHolder = async () => {
     const response = await viewMemberKYC(launchInfo);
+
     const MemberKYCInfo = [...response.data.businessMembersKYC];
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.memberCode === memberCode
     );
+    console.log(fileInfo);
 
     const uploadedDetail = fileInfo.filter(
       (item) => item.documentType === "government id"
     );
-    console.log(uploadedDetail);
 
     let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
     console.log(lastUploadDetail);
@@ -57,11 +58,10 @@ const ReviewCard = ({
     const uploadedProofDetail = fileInfo.filter(
       (item) => item.documentType === "proof of home address"
     );
-    console.log(uploadedDetail);
 
     let lastUploadProofDetail =
       uploadedProofDetail[uploadedProofDetail.length - 1];
-    console.log(lastUploadDetail);
+    console.log(lastUploadProofDetail);
     setProof(lastUploadProofDetail);
 
     // passport
@@ -69,7 +69,6 @@ const ReviewCard = ({
     const uploadedPassportDetail = fileInfo.filter(
       (item) => item.documentType === "passport photograph"
     );
-    console.log(uploadedDetail);
 
     let lastUploadPassportDetail =
       uploadedPassportDetail[uploadedPassportDetail.length - 1];
@@ -119,7 +118,8 @@ const ReviewCard = ({
 
   const handleBeneficiary = async () => {
     const response = await viewBeneficials(launchInfo);
-    const MemberKYCInfo = [...response.data.businessMembersKYC];
+    const MemberKYCInfo = [...response.data.beneficialOwnersKYC];
+    console.log(MemberKYCInfo);
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.beneficialOwnerCode === beneficialOwnerCode
     );
@@ -204,7 +204,7 @@ const ReviewCard = ({
       <PdfContainer>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => governmentId.fileType === fil.type)
+            ?.filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -217,11 +217,11 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{governmentId.fileName}</TextWrapper>
+          <TextWrapper>{governmentId?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => governmentId.fileType === fil.type)
+            .filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -234,11 +234,11 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{proofD.fileName}</TextWrapper>
+          <TextWrapper>{proofD?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage
-            .filter((fil) => governmentId.fileType === fil.type)
+            .filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
               <img
                 src={m.image}
@@ -251,7 +251,7 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{passportD.fileName}</TextWrapper>
+          <TextWrapper>{passportD?.fileName}</TextWrapper>
         </PdfWrapper>
       </PdfContainer>
     </Container>
