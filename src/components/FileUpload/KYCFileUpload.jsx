@@ -7,7 +7,9 @@ import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import {
+  useDeleteBeneficialKYCMutation,
   useDeleteMemberKYCMutation,
+  useViewBeneficialsKYCMutation,
   useViewMembersKYCMutation,
 } from "services/launchService";
 
@@ -19,11 +21,14 @@ const KYCFileUpload = ({
   fileDataName,
   isChanged,
   memberCode,
+  beneficiaryCode,
   documentComponentType,
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
+  const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
   const [documentInfo, setDocumentInfo] = useState({});
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
+  const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
@@ -41,27 +46,65 @@ const KYCFileUpload = ({
       }
     });
   };
+
+  const handleBeneficiary = async () => {
+    const response = await viewBeneficialsKYC(launchInfo);
+    const BeneficialKYCInfo = [...response.data.beneficialOwnersKYC];
+    let fileInfo = BeneficialKYCInfo.filter(
+      (beneficiary) => beneficiary.beneficialOwnerCode === beneficiaryCode
+    );
+
+    fileInfo.forEach((info) => {
+      if (info.documentType === documentComponentType) {
+        setDocumentInfo(info);
+      }
+    });
+  };
+
   useEffect(() => {
     handleView();
   }, [isChanged, deleted, Object.keys(documentInfo).length == 7]);
 
+  useEffect(() => {
+    handleBeneficiary();
+  }, []);
+
   const handleRemove = async () => {
-    const requiredDeleteData = {
-      launchCode: launchInfo.launchCode,
-      memberCode: memberCode,
-      documentCode: documentInfo.documentCode,
-    };
-    console.log("delete data to be", requiredDeleteData);
-    const response = await deleteMemberKYC(requiredDeleteData);
-    console.log("deleeeeeee", response?.data[0].message);
-    if (response.data) {
-      toast.success(response?.data[0].message);
-      setDeleted(true);
-    } else if (response.error) {
-      console.log(response.error?.data.message);
-      toast.error(response.error?.data.message);
+    if (beneficiaryCode) {
+      const requiredDeleteData = {
+        launchCode: launchInfo.launchCode,
+        beneficialOwnerCode: beneficiaryCode,
+        documentCode: documentInfo.documentCode,
+      };
+      console.log("delete data to be", requiredDeleteData);
+      const response = await deleteBeneficialKYC(requiredDeleteData);
+      console.log("deleeeeeee", response?.data[0].message);
+      if (response.data) {
+        toast.success(response?.data[0].message);
+        setDeleted(!deleted);
+        setDocumentInfo({});
+      } else if (response.error) {
+        console.log(response.error?.data.message);
+        toast.error(response.error?.data.message);
+      }
+    } else {
+      const requiredDeleteData = {
+        launchCode: launchInfo.launchCode,
+        memberCode: memberCode,
+        documentCode: documentInfo.documentCode,
+      };
+      console.log("delete data to be", requiredDeleteData);
+      const response = await deleteMemberKYC(requiredDeleteData);
+      console.log("deleeeeeee", response?.data[0].message);
+      if (response.data) {
+        toast.success(response?.data[0].message);
+        setDeleted(!deleted);
+        setDocumentInfo({});
+      } else if (response.error) {
+        console.log(response.error?.data.message);
+        toast.error(response.error?.data.message);
+      }
     }
-    setDeleted(!deleted);
   };
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -81,7 +124,7 @@ const KYCFileUpload = ({
             onClick: (event) => {
               if (Object.keys(documentInfo).length == 7) {
                 event.stopPropagation();
-                toast.error("delete the uploaded file");
+                // toast.custom("delete the uploaded file");
               }
             },
           })}
@@ -166,13 +209,18 @@ const DeleteWrapper = styled.div`
 const NameWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
-  gap: 50px;
+  gap: 20px;
   align-items: center;
   width: 90%;
   background-color: #fafafa;
   padding: 0px 10px;
   /* border: 2px solid red; */
   position: relative;
+  p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 `;
 const Top = styled.div`
   display: flex;
