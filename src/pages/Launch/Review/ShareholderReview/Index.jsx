@@ -1,5 +1,5 @@
 import { CheckoutController, CheckoutSection } from "containers";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
@@ -16,103 +16,105 @@ import {
 	useViewMembersMutation,
 	useViewShareholdersMutation,
 } from "services/launchService";
+import { useEffect } from "react";
 import AppFeedback from "components/AppFeedback";
 import { mergeInfo } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
-
 const ShareholderReview = () => {
-  const ActiveStyles = {
-    color: "#151717",
-    borderBottom: "4px solid #00A2D4",
-    borderRadius: 0,
-  };
-  const [shareholderInfo, setShareholderInfo] = useState([]);
-  const [shareholdersKycInfo, setShareholdersKycInfo] = useState([]);
-  const [members, setMembers] = useState([]);
-  const [mergedResponse, setMergedResponse] = useState([]);
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  //console.log(LaunchApplicationInfo)
-  // getting the shareholder container from store
-  const shareholderDocumentContainer = useSelector(
-    (state) => state.LaunchReducer.shareholderDocs
-  );
-  const navigate = useNavigate();
-  const handleNext = () => {
-    navigate("/launch/review-director");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
-  };
-  const handlePrev = () => {
-    navigate(-1);
-  };
-  const LaunchInfo = useSelector((store) => store.LaunchReducer);
-  const { launchResponse } = LaunchInfo;
-  const [viewShareholders, viewShareholderState] =
-    useViewShareholdersMutation();
-  const [viewShareholdersKyc] = useViewMembersKYCMutation();
-  const [viewMembers, viewMembersState] = useViewMembersMutation();
-  const [viewMemberKYC] = useViewMembersKYCMutation();
+	const ActiveStyles = {
+		color: "#151717",
+		borderBottom: "4px solid #00A2D4",
+		borderRadius: 0,
+	};
+	const [shareholderInfo, setShareholderInfo] = useState([]);
+	const [shareholdersKycInfo, setShareholdersKycInfo] = useState([]);
+	const [members, setMembers] = useState([]);
+	const [mergedResponse, setMergedResponse] = useState([]);
+	const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+	//console.log(LaunchApplicationInfo)
+	// getting the shareholder container from store
+	const shareholderDocumentContainer = useSelector(
+		(state) => state.LaunchReducer.shareholderDocs
+	);
+	const navigate = useNavigate();
+	const handleNext = () => {
+		navigate("/launch/review-director");
+		store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
+	};
+	const handlePrev = () => {
+		navigate(-1);
+	};
+	const LaunchInfo = useSelector((store) => store.LaunchReducer);
+	const { launchResponse } = LaunchInfo;
+	const [viewShareholders, viewShareholderState] =
+		useViewShareholdersMutation();
+	const [viewShareholdersKyc] = useViewMembersKYCMutation();
+	const [viewMembers, viewMembersState] = useViewMembersMutation();
+	const [viewMemberKYC] = useViewMembersKYCMutation();
 
 	const handleNavigate = () => {
 		navigate("/launch/shareholders-info");
 	};
 
-  const handleMerge = async () => {
-    let memberInfo = await viewMembers(launchResponse);
-    let membersUpdatedData = [...memberInfo.data.businessMembers];
+	const handleMerge = async () => {
+		let memberInfo = await viewMembers(launchResponse);
+		let membersUpdatedData = [...memberInfo.data.businessMembers];
 
-    let shareholderInfo = await viewShareholders(launchResponse);
-    let shareholdersUpdatedData = [
-      ...shareholderInfo.data.businessShareholders,
-    ];
+		let shareholderInfo = await viewShareholders(launchResponse);
+		let shareholdersUpdatedData = [
+			...shareholderInfo.data.businessShareholders,
+		];
 
-    let shareholdersMembersMerged = [];
-    shareholdersUpdatedData.forEach((shareholder) => {
-      membersUpdatedData.forEach((member) => {
-        if (member.memberCode === shareholder.memberCode) {
-          let merged = { ...shareholder, ...member };
-          shareholdersMembersMerged.push(merged);
-        }
-      });
-    });
-    setMergedResponse(shareholdersMembersMerged);
-  };
+		let shareholdersMembersMerged = [];
+		shareholdersUpdatedData.forEach((shareholder) => {
+			membersUpdatedData.forEach((member) => {
+				if (member.memberCode === shareholder.memberCode) {
+					let merged = { ...shareholder, ...member };
+					shareholdersMembersMerged.push(merged);
+				}
+			});
+		});
+		setMergedResponse(shareholdersMembersMerged);
+	};
 
 	useEffect(() => {
 		handleMerge();
 	}, [shareholderDocumentContainer]);
 
-  // let shareholderLocalStorage = JSON.parse(
-  //   localStorage.getItem("localShareholderInfo")
-  // );
+	// let shareholderLocalStorage = JSON.parse(
+	//   localStorage.getItem("localShareholderInfo")
+	// );
 
-  // console.log("package from local", shareholderLocalStorage);
-  return (
-    <>
-      <Container>
-        <HeaderCheckout />
-        <Body>
-          <CheckoutSection
-            title={"Review Information"}
-            HeaderParagraph="Please ensure all information provided for this business are correct"
-          />
-          <Nav>
-            {ReviewTab.map((item, index) => (
-              <ReviweTabWrapper to={item.path} key={index}>
-                <NavLink
-                  to={item.path}
-                  style={({ isActive }) => (isActive ? ActiveStyles : {})}
-                >
-                  {item.title}
-                </NavLink>
-              </ReviweTabWrapper>
-            ))}
-          </Nav>
-          <ContentWrapper>
-            <EditWrapper onClick={handleNavigate}>
-              <EditIcon />
-              <EditText>Edit Shareholder Information</EditText>
-            </EditWrapper>
-          </ContentWrapper>
+	// console.log("package from local", shareholderLocalStorage);
+	return (
+		<>
+			<Container>
+				<HeaderCheckout />
+				<Body>
+					<CheckoutSection
+						title={"Review Information"}
+						HeaderParagraph="Please ensure all information provided for this business are correct"
+					/>
+					<Nav>
+						{ReviewTab.map((item, index) => (
+							<ReviweTabWrapper to={item.path} key={index}>
+								<NavLink
+									to={item.path}
+									style={({ isActive }) =>
+										isActive ? ActiveStyles : {}
+									}
+								>
+									{item.title}
+								</NavLink>
+							</ReviweTabWrapper>
+						))}
+					</Nav>
+					<ContentWrapper>
+						<EditWrapper onClick={handleNavigate}>
+							<EditIcon />
+							<EditText>Edit Shareholder Information</EditText>
+						</EditWrapper>
+					</ContentWrapper>
 
 					{viewShareholderState.isLoading ||
 						(viewMembersState.isLoading && (
@@ -121,34 +123,36 @@ const ShareholderReview = () => {
 							</Loading>
 						))}
 
-          <CardWrapper>
-            {mergedResponse.map((shareholder, index) => (
-              <ReviewCard
-                key={index}
-                number={index + 1}
-                name={shareholder?.memberName}
-                shares={shareholder?.shareholderOwnershipType}
-                email={shareholder?.memberEmail}
-                phone={shareholder?.memberPhone}
-                sharesPercentage={shareholder?.shareholderOwnershipPercentage}
-                icon
-                memberCode={shareholder?.memberCode}
-              />
-            ))}{" "}
-          </CardWrapper>
-          <ButtonWrapper>
-            <CheckoutController
-              backText={"Previous"}
-              forwardText={"Proceed"}
-              forwardAction={handleNext}
-              backAction={handlePrev}
-            />
-          </ButtonWrapper>
-        </Body>
-        <AppFeedback subProject="Shareholder review" />
-      </Container>
-    </>
-  );
+					<CardWrapper>
+						{mergedResponse.map((shareholder, index) => (
+							<ReviewCard
+								key={index}
+								number={index + 1}
+								name={shareholder?.memberName}
+								shares={shareholder?.shareholderOwnershipType}
+								email={shareholder?.memberEmail}
+								phone={shareholder?.memberPhone}
+								sharesPercentage={
+									shareholder?.shareholderOwnershipPercentage
+								}
+								icon
+								memberCode={shareholder?.memberCode}
+							/>
+						))}{" "}
+					</CardWrapper>
+					<ButtonWrapper>
+						<CheckoutController
+							backText={"Previous"}
+							forwardText={"Proceed"}
+							forwardAction={handleNext}
+							backAction={handlePrev}
+						/>
+					</ButtonWrapper>
+				</Body>
+				<AppFeedback subProject="Shareholder review" />
+			</Container>
+		</>
+	);
 };
 
 export default ShareholderReview;
@@ -191,16 +195,16 @@ const ReviweTabWrapper = styled.div`
 	}
 `;
 const ContentWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  padding: 40px 40px 0px;
+	display: flex;
+	justify-content: flex-end;
+	width: 100%;
+	padding: 40px 40px 0px;
 `;
 const EditWrapper = styled.div`
-  display: flex;
-  gap: 16px;
-  max-width: max-content;
-  cursor: pointer;
+	display: flex;
+	gap: 16px;
+	max-width: max-content;
+	cursor: pointer;
 `;
 
 const EditText = styled.div`
