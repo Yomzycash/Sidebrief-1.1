@@ -7,266 +7,258 @@ import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
 import { imageTypeImage } from "utils/config";
 
 const PdfCards = ({
-	name = "",
-	title = "",
-	email = "",
-	phone = "",
-	government,
-	proof,
-	passport,
+  name = "",
+  title = "",
+  email = "",
+  phone = "",
+  government,
+  proof,
+  passport,
 }) => {
-	return (
-		<>
-			<Wrapper>
-				<DetailWrapper>
-					<Top>
-						<NameWrapper>{name}</NameWrapper>
-						{title ? (
-							<TitleWrapper>
-								<Title>{title}</Title>
-							</TitleWrapper>
-						) : null}
-					</Top>
-					<EmailWrapper>
-						<IconWrapper>
-							<EmailIcon />
-						</IconWrapper>
-						<Email>{email}</Email>
-					</EmailWrapper>
-					<PhoneWrapper>
-						<IconWrapper>
-							<PhoneIcon />
-						</IconWrapper>
-						<Phone>{phone}</Phone>
-					</PhoneWrapper>
-				</DetailWrapper>
-				<LowerContainer>
-					<PdfWrapper>
-						<PdfLowerWrapper>
-							<IconWrapper>
-								{government.fileType ? (
-									<img
-										src={
-											imageTypeImage.find(
-												(el) =>
-													el.type ===
-													government.fileType
-											).image
-										}
-										alt="icon"
-										style={{
-											margin: 0,
-											height: "25px",
-											width: "25px",
-											marginRight: "8px",
-										}}
-									/>
-								) : (
-									<PdfIcon />
-								)}
-							</IconWrapper>
-							<Details>
-								{government
-									? government.fileName
-									: "upload a file"}
-							</Details>
-						</PdfLowerWrapper>
+  return (
+    <>
+      <Wrapper>
+        <DetailWrapper>
+          <Top>
+            <NameWrapper>{name}</NameWrapper>
+            {title ? (
+              <TitleWrapper>
+                <Title>{title}</Title>
+              </TitleWrapper>
+            ) : null}
+          </Top>
+          <EmailWrapper>
+            <IconWrapper>
+              <EmailIcon />
+            </IconWrapper>
+            <Email>{email}</Email>
+          </EmailWrapper>
+          <PhoneWrapper>
+            <IconWrapper>
+              <PhoneIcon />
+            </IconWrapper>
+            <Phone>{phone}</Phone>
+          </PhoneWrapper>
+        </DetailWrapper>
+        <LowerContainer>
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {government.fileType ? (
+                  <img
+                    src={
+                      imageTypeImage.find(
+                        (el) => el.type === government.fileType
+                      ).image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details>
+                {government ? government.fileName : "upload a file"}
+              </Details>
+            </PdfLowerWrapper>
 
-						<IconWrapper>
-							<DeleteIcon />
-						</IconWrapper>
-					</PdfWrapper>
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
 
-					<PdfWrapper>
-						<PdfLowerWrapper>
-							<IconWrapper>
-								{proof ? (
-									<img
-										src={
-											imageTypeImage.find(
-												(el) =>
-													el.type === proof.fileType
-											).image
-										}
-										alt="icon"
-										style={{
-											margin: 0,
-											height: "25px",
-											width: "25px",
-											marginRight: "8px",
-										}}
-									/>
-								) : (
-									<PdfIcon />
-								)}
-							</IconWrapper>
-							<Details>
-								{proof ? proof.fileName : "upload a file"}
-							</Details>
-						</PdfLowerWrapper>
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {proof ? (
+                  <img
+                    src={
+                      imageTypeImage.find((el) => el.type === proof.fileType)
+                        .image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details>{proof ? proof.fileName : "upload a file"}</Details>
+            </PdfLowerWrapper>
 
-						<IconWrapper>
-							<DeleteIcon />
-						</IconWrapper>
-					</PdfWrapper>
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
 
-					<PdfWrapper>
-						<PdfLowerWrapper>
-							<IconWrapper>
-								{passport ? (
-									<img
-										src={
-											imageTypeImage.find(
-												(el) =>
-													el.type ===
-													passport.fileType
-											).image
-										}
-										alt="icon"
-										style={{
-											margin: 0,
-											height: "25px",
-											width: "25px",
-											marginRight: "8px",
-										}}
-									/>
-								) : (
-									<PdfIcon />
-								)}
-							</IconWrapper>
-							<Details>
-								{passport ? passport.fileName : "upload a file"}
-							</Details>
-						</PdfLowerWrapper>
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {passport ? (
+                  <img
+                    src={
+                      imageTypeImage.find((el) => el.type === passport.fileType)
+                        .image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details>
+                {passport ? passport.fileName : "upload a file"}
+              </Details>
+            </PdfLowerWrapper>
 
-						<IconWrapper>
-							<DeleteIcon />
-						</IconWrapper>
-					</PdfWrapper>
-				</LowerContainer>
-			</Wrapper>
-		</>
-	);
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
+        </LowerContainer>
+      </Wrapper>
+    </>
+  );
 };
 
 export default PdfCards;
 
 const Wrapper = styled.div`
-	/* max-width: 618px; */
-	width: 100%;
-	max-height: 469px;
-	background: #ffffff;
-	border: 1px solid #edf1f7;
-	box-shadow: 4px 4px 8px 4px rgba(185, 190, 196, 0.08);
-	border-radius: 16px;
-	padding: 40px 24px 56px 24px;
+  /* max-width: 618px; */
+  width: 100%;
+  max-height: 469px;
+  background: #ffffff;
+  border: 1px solid #edf1f7;
+  box-shadow: 4px 4px 8px 4px rgba(185, 190, 196, 0.08);
+  border-radius: 16px;
+  padding: 40px 24px 56px 24px;
 `;
 
 const DetailWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
-	align-items: flex-start;
-	justify-content: center;
-	margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 48px;
 `;
 const Top = styled.div`
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const NameWrapper = styled.div`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 600;
-	font-size: clamp(16px, 1.6vw, 18px);
-	line-height: 30px;
-	color: #151717;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 600;
+  font-size: clamp(16px, 1.6vw, 18px);
+  line-height: 30px;
+  color: #151717;
 `;
 const TitleWrapper = styled.div`
-	padding: 4px 16px;
-	background: rgba(0, 162, 212, 0.05);
-	border-radius: 12px;
-	text-align: center;
+  padding: 4px 16px;
+  background: rgba(0, 162, 212, 0.05);
+  border-radius: 12px;
+  text-align: center;
 `;
 const Title = styled.h3`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: 14px;
-	line-height: 18px;
-	letter-spacing: 0.01em;
-	color: #00a2d4;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: #00a2d4;
 `;
 const EmailWrapper = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 `;
 const Email = styled.h4`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: clamp(14px, 1.6vw, 16px);
-	line-height: 27px;
-	text-decoration-line: underline;
-	color: #151717;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 27px;
+  text-decoration-line: underline;
+  color: #151717;
 `;
 const PhoneWrapper = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
 `;
 const Phone = styled.h4`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: clamp(14px, 1.6vw, 16px);
-	line-height: 27px;
-	text-decoration-line: underline;
-	color: #151717;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 27px;
+  text-decoration-line: underline;
+  color: #151717;
 `;
 
 const LowerContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 `;
 const PdfWrapper = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	background: #fafafa;
-	padding: 16px;
-	border: 1px solid #edf1f7;
-	border-radius: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: #fafafa;
+  padding: 16px;
+  border: 1px solid #edf1f7;
+  border-radius: 50px;
 `;
 const PdfLowerWrapper = styled.div`
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 
-	gap: 24px;
+  gap: 10px;
 `;
 const IconWrapper = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 const Details = styled.h3`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: clamp(14px, 1.6vw, 16px);
-	line-height: 27px;
-	text-decoration-line: underline;
-	color: #151717;
-	cursor: pointer;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 27px;
+  text-decoration-line: underline;
+  color: #151717;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
