@@ -46,7 +46,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 	const { data, isLoading, isSuccess, isError } =
 		useGetSingleEntityQuery(registrationType);
 
-	const { symbol, onSelectCurrencyType, formatInput } = useActions({
+	const { symbol, onSelectCurrencyType } = useActions({
 		isUSD,
 		setIsUSD,
 		currency: entityInfo ? entityInfo.entityCurrency : "",
@@ -63,8 +63,13 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 	const config = {
 		reference: new Date().getTime().toString(),
 		email: userEmail,
-		amount: `${entityInfo.entityFee}00`,
-		publicKey: "pk_test_fd6e1523c925ea654377d019c35bd5955c69bdfc",
+		amount: `${numeral(entityInfo.entityFee)
+			.format("0.00")
+			.replace(".", "")}`,
+		publicKey:
+			process.env.NODE_ENV === "development"
+				? process.env.REACT_APP_PAYSTACK_LIVE_KEY
+				: process.env.REACT_APP_PAYSTACK_TEST_KEY,
 	};
 
 	// you can call this function anything
