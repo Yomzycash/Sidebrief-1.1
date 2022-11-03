@@ -50,10 +50,6 @@ export const Header = () => {
 
 	const launchRequest = useViewLaunchRequestQuery(launchResponse);
 
-	if (launchRequest.isSuccess) {
-		console.log(launchRequest.data);
-	}
-
 	const page = pathname.split("/").pop();
 
 	const deleteAction = async () => {
@@ -73,6 +69,10 @@ export const Header = () => {
 			}`
 		);
 	};
+
+	if (launchRequest.isSuccess) {
+		console.log(launchRequest.data);
+	}
 
 	const triggerSearch = (query) => {
 		// perform search filter here
