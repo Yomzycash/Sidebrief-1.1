@@ -169,12 +169,12 @@ const ReviewCard = ({
           {shares && <div>{`${shares} - ${sharesPercentage}%`}</div>}
           {director_role && <div>{`Role - ${director_role}`}</div>}
           {stake && <div>{`Occupation: ${occupation} - Stake: ${stake}%`}</div>}
-          {!icon && (
-            <IconWrapper>
-              <div style={{ cursor: "pointer" }}>
-                <EditIcon onClick={editAction} />
-              </div>
-              {isLoading ? (
+          {/* {!icon && ( */}
+          <IconWrapper>
+            <div style={{ cursor: "pointer" }} onClick={editAction}>
+              <EditIcon /> Edit
+            </div>
+            {/* {isLoading ? (
                 <SpinningCircles
                   stroke="#00A2D4"
                   fill="#00A2D4"
@@ -185,9 +185,9 @@ const ReviewCard = ({
                 <div style={{ cursor: "pointer" }}>
                   <DeleteIcon onClick={deleteAction} />
                 </div>
-              )}
-            </IconWrapper>
-          )}
+              )} */}
+          </IconWrapper>
+          {/* )} */}
         </SharesWrapper>
       </Top>
       <div>{email}</div>
