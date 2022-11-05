@@ -1,54 +1,58 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { ReactComponent as Lendha } from "asset/images/lendha.svg";
-import { ReactComponent as Close } from "asset/images/close.svg";
-import { ReactComponent as Copy } from "asset/images/copy.svg";
-import Button from "components/button/mainButton/index.jsx";
-import { useParams } from "react-router-dom";
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { ReactComponent as Lendha } from 'asset/images/lendha.svg'
+import { ReactComponent as Close } from 'asset/images/close.svg'
+import { ReactComponent as Copy } from 'asset/images/copy.svg'
+import Button from 'components/button/mainButton/index.jsx'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 // import { allRewards } from "utils/config";
 import {
   useClaimRewardMutation,
   useGetAllRewardsQuery,
-} from "services/RewardService";
-import toast from "react-hot-toast";
+} from 'services/RewardService'
+import toast from 'react-hot-toast'
 const RewardModal = ({ handleClose }) => {
-  const [successful, setSuccessful] = useState(false);
+  const [successful, setSuccessful] = useState(false)
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery()
 
-  const [claimReward, claimState] = useClaimRewardMutation();
+  const [claimReward, claimState] = useClaimRewardMutation()
 
-  const { rewardID } = useParams();
+  const { rewardID } = useParams()
 
-  const rewardDetails = data?.find((element) => element.rewardID === rewardID);
+  const rewardDetails = data?.find((element) => element.rewardID === rewardID)
+
+  const navigate = useNavigate()
 
   const handleClaimReward = async () => {
     let required = {
       rewardID: rewardDetails.rewardID,
-    };
-
-    let claimedResponse = await claimReward(required);
-    let claimedData = claimedResponse?.data;
-    let error = claimedResponse?.error;
-
-    if (claimedData) {
-      setSuccessful(true);
-      setTimeout(() => {
-        handleClose();
-      }, 1000);
-    } else if (error) {
-      if (error.status === "FETCH_ERROR")
-        toast.error("Please check your internet connection");
-      else toast.error(error.data.message);
     }
 
-    console.log(claimedResponse);
-  };
+    let claimedResponse = await claimReward(required)
+    let claimedData = claimedResponse?.data
+    let error = claimedResponse?.error
+
+    if (claimedData) {
+      setSuccessful(true)
+      navigate()
+
+      setTimeout(() => {
+        handleClose()
+      }, 1000)
+    } else if (error) {
+      if (error.status === 'FETCH_ERROR')
+        toast.error('Please check your internet connection')
+      else toast.error(error.data.message)
+    }
+
+    console.log(claimedResponse)
+  }
 
   const imagestyle = {
-    borderRadius: "50%",
-    width: "45px",
-  };
+    borderRadius: '50%',
+    width: '45px',
+  }
 
   return (
     <Wrapper>
@@ -59,7 +63,7 @@ const RewardModal = ({ handleClose }) => {
           </ImageWrapper>
           <LogoName>{rewardDetails?.rewardPartner}</LogoName>
         </LogoWrapper>
-        <Close onClick={handleClose} style={{ cursor: "pointer" }} />
+        <Close onClick={handleClose} style={{ cursor: 'pointer' }} />
       </LogoCancelWrapper>
 
       {successful && (
@@ -76,49 +80,49 @@ const RewardModal = ({ handleClose }) => {
           </LowerText>
         </TextContainer>
         <CopyContainer>
-          <CopyDetails>SIDEBRIEFPROMO</CopyDetails>
+          <CopyDetails>{rewardDetails?.rewardCode}</CopyDetails>
           <Copy />
         </CopyContainer>
         {rewardDetails && (
           <Button
             title="Claim Reward"
             onClick={handleClaimReward}
-            style={{ width: "171px", height: "44px" }}
+            style={{ width: '171px', height: '44px' }}
             disabled={successful}
           />
         )}
       </LowerContainer>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default RewardModal;
+export default RewardModal
 
 const Wrapper = styled.div`
   max-width: 448px;
   background: #ffffff;
   border-radius: 16px;
   padding: 40px;
-`;
+`
 const LogoCancelWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-`;
+`
 
 const ImageWrapper = styled.div`
   align-items: center;
   display: flex;
   position: relative;
   height: 50px;
-`;
+`
 const ModalClose = styled.div`
   width: 24px;
   height: 24px;
-`;
+`
 const LogoName = styled.p`
-  font-family: "BR Firma";
+  font-family: 'BR Firma';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -126,13 +130,13 @@ const LogoName = styled.p`
   letter-spacing: -0.02em;
   text-transform: capitalize;
   color: #151717;
-`;
+`
 const LogoWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-`;
+`
 const MiddleContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -142,46 +146,46 @@ const MiddleContainer = styled.div`
   background: rgba(0, 212, 72, 0.1);
   border-radius: 8px;
   margin-bottom: 40px;
-`;
+`
 const Content = styled.h4`
-  font-family: "BR Firma";
+  font-family: 'BR Firma';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #00d448;
-`;
+`
 const LowerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-`;
+`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 40px;
   width: inherit;
-`;
+`
 const UpperText = styled.h3`
-  font-family: "BR Firma";
+  font-family: 'BR Firma';
   font-style: normal;
   font-weight: 600;
   font-size: 24px;
   line-height: 36px;
   letter-spacing: -0.5px;
   color: #151717;
-`;
+`
 const LowerText = styled.p`
-  font-family: "BR Firma";
+  font-family: 'BR Firma';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -0.5px;
   color: #4e5152;
-`;
+`
 const CopyContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -190,9 +194,9 @@ const CopyContainer = styled.div`
   gap: 8px;
   border: 1px dashed #727474;
   border-radius: 8px;
-`;
+`
 const CopyDetails = styled.h4`
-  font-family: "BR Firma";
+  font-family: 'BR Firma';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -200,4 +204,4 @@ const CopyDetails = styled.h4`
   letter-spacing: -0.02em;
   text-transform: capitalize;
   color: #151717;
-`;
+`

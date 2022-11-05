@@ -58,9 +58,7 @@ const PaymentPage = () => {
   // useEffect(() => {
   //
   // }, [nextClicked]);
-  const timeline = JSON.parse(localStorage.getItem('entitySelect'))
-  console.log(timeline)
-
+  
   return (
     <Container>
       <Header>
