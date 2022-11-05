@@ -133,8 +133,7 @@ const AppRouter = () => {
   }, [entityLaunchCode, launchData.launchCode])
 
   const allowLaunch = launchCode && countryISO
-  console.log(launchCode)
-
+  
   useEffect(() => {
     setisLoggedIn(loggedIn)
   }, [loggedIn])
