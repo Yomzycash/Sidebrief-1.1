@@ -1,15 +1,16 @@
-import HeaderCheckout from "components/Header/HeaderCheckout";
-import Success from "containers/Confirmation/Success";
-import React from "react";
-import styled from "styled-components";
-import SuccessImage from "asset/svg/SuccessImage.svg";
-import { useNavigate } from "react-router-dom";
-import AppFeedback from "components/AppFeedback";
+import HeaderCheckout from 'components/Header/HeaderCheckout'
+import Success from 'containers/Confirmation/Success'
+import React from 'react'
+import styled from 'styled-components'
+import SuccessImage from 'asset/svg/SuccessImage.svg'
+import { useNavigate } from 'react-router-dom'
+import AppFeedback from 'components/AppFeedback'
 const ApplicationSuccessPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleNavigate = () => {
-    navigate("/dashboard/businesses/pending-applications");
-  };
+    navigate('/dashboard/businesses/pending-applications')
+  }
+  const timeline = JSON.parse(localStorage.getItem('entitySelect'))
 
   return (
     <>
@@ -18,7 +19,7 @@ const ApplicationSuccessPage = () => {
       <Body>
         <Success
           title="Application Successful"
-          description="Thank you for your patience, your application would take 20-30days"
+          description={`Thank you for your patience, your application would take ${timeline} `}
           image={SuccessImage}
           buttonTitle="View Application"
           onClick={handleNavigate}
@@ -26,10 +27,10 @@ const ApplicationSuccessPage = () => {
       </Body>
       <AppFeedback subProject="Application success page" />
     </>
-  );
-};
+  )
+}
 
-export default ApplicationSuccessPage;
+export default ApplicationSuccessPage
 const Body = styled.div`
   position: fixed;
   bottom: 0px;
@@ -43,4 +44,4 @@ const Body = styled.div`
   @media screen and (min-width: 768px) {
     height: 81.5vh;
   }
-`;
+`
