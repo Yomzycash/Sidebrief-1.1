@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { CheckoutController, CheckoutSection } from 'containers'
+import React, { useEffect, useState } from "react";
+import { CheckoutController, CheckoutSection } from "containers";
 import {
   Body,
   Bottom,
@@ -8,18 +8,18 @@ import {
   EntityCardsWrapper,
   Loading,
   EntityTitle,
-} from '../styled'
-import { EntityCard } from 'components/cards'
-import HeaderCheckout from 'components/Header/HeaderCheckout'
-import { useNavigate } from 'react-router-dom'
+} from "../styled";
+import { EntityCard } from "components/cards";
+import HeaderCheckout from "components/Header/HeaderCheckout";
+import { useNavigate } from "react-router-dom";
 import {
   setCheckoutProgress,
   setGeneratedLaunchCode,
   setSelectedEntity,
   setLaunchResponse,
-} from 'redux/Slices'
-import { store } from 'redux/Store'
-import { useSelector } from 'react-redux'
+} from "redux/Slices";
+import { store } from "redux/Store";
+import { useSelector } from "react-redux";
 import {
   useAddBusinessNamesMutation,
   useAddBusinessObjectivesMutation,
@@ -30,15 +30,15 @@ import {
   useUpdateLaunchMutation,
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
-} from 'services/launchService'
-import { Puff } from 'react-loading-icons'
-import toast from 'react-hot-toast'
-import { Dialog, DialogContent } from '@mui/material'
-import AppFeedback from 'components/AppFeedback'
+} from "services/launchService";
+import { Puff } from "react-loading-icons";
+import toast from "react-hot-toast";
+import { Dialog, DialogContent } from "@mui/material";
+import AppFeedback from "components/AppFeedback";
 
 const EntitySelect = () => {
-  const navigate = useNavigate()
-  const [entities, setEntities] = useState([])
+  const navigate = useNavigate();
+  const [entities, setEntities] = useState([]);
 
   // Get necessary information from store
   // const countryISO = useSelector((store) => store.LaunchReducer.countryISO);
@@ -46,7 +46,7 @@ const EntitySelect = () => {
   //   (store) => store.LaunchReducer.selectedCountry
   // );
 
-  const LaunchInfo = useSelector((store) => store.LaunchReducer)
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const {
     selectedObjectives,
     generatedLaunchCode,
@@ -54,77 +54,80 @@ const EntitySelect = () => {
     countryISO,
     selectedCountry,
     launchResponse,
-  } = LaunchInfo
+  } = LaunchInfo;
 
-  const countryISOView = launchResponse.registrationCountry
-  const launchCodeView = launchResponse.launchCode
-  const registrationTypeView = launchResponse.registrationType
+  const countryISOView = launchResponse.registrationCountry;
+  const launchCodeView = launchResponse.launchCode;
+  const registrationTypeView = launchResponse.registrationType;
 
   const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
-    countryISO ? countryISO : countryISOView,
-  )
+    countryISO ? countryISO : countryISOView
+  );
 
-  console.log(countryISO)
+  console.log(countryISO);
 
-  const [getStarted, launchState] = useGetStartedMutation()
-  const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation()
-  const [addBusinessNames] = useAddBusinessNamesMutation()
-  const [updateBusinessNames] = useUpdateBusinessNamesMutation()
-  const [addBusinessObjectives] = useAddBusinessObjectivesMutation()
-  const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation()
-  const [viewBusinessNames] = useViewBusinessNamesMutation()
-  const [viewBusinessObjectives] = useViewBusinessObjectivesMutation()
+  const [getStarted, launchState] = useGetStartedMutation();
+  const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation();
+  const [addBusinessNames] = useAddBusinessNamesMutation();
+  const [updateBusinessNames] = useUpdateBusinessNamesMutation();
+  const [addBusinessObjectives] = useAddBusinessObjectivesMutation();
+  const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
+  const [viewBusinessNames] = useViewBusinessNamesMutation();
+  const [viewBusinessObjectives] = useViewBusinessObjectivesMutation();
 
   // Set to state all entities of the specified country
   useEffect(() => {
-    setEntities(data)
-    if (error?.status === 'FETCH_ERROR') {
-      toast.error('Please check your internet connection')
+    setEntities(data);
+    if (error?.status === "FETCH_ERROR") {
+      toast.error("Please check your internet connection");
     }
-  }, [data, error?.status])
+  }, [data, error?.status]);
 
   //
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
-    store.dispatch(setSelectedEntity(selectedItem))
+    store.dispatch(setSelectedEntity(selectedItem));
     localStorage.setItem(
-      'entityTimeline',
-      JSON.stringify(selectedItem.entityTimeline),
-    )
+      "entityTimeline",
+      JSON.stringify(selectedItem.entityTimeline)
+    );
 
     // To be sent to the backend to create a launch
     const requiredLaunchData = {
       registrationCountry: selectedItem.entityCountry,
       registrationType: selectedItem.entityCode,
-    }
+    };
 
     // To be sent to the backend to update a launch
     const requiredLaunchUpdateData = {
       launchCode: generatedLaunchCode,
       registrationCountry: selectedItem.entityCountry,
       registrationType: selectedItem.entityCode,
-    }
+    };
 
     // If generatedLaunchCode exists in store, then it runs update endpoint. If otherwise, it runs get started endpoint.
     const launchResponse = generatedLaunchCode
       ? await updateLaunch(requiredLaunchUpdateData)
-      : await getStarted(requiredLaunchData)
+      : await getStarted(requiredLaunchData);
 
-    console.log(launchResponse)
+    console.log(launchResponse);
 
     // Set the launch response to local storage
     if (generatedLaunchCode) {
       // An array is returned, if update response
-      store.dispatch(setLaunchResponse(launchResponse.data[0])) // !important DO NOT DELETE
-      localStorage.setItem('launchInfo', JSON.stringify(launchResponse.data[0]))
+      store.dispatch(setLaunchResponse(launchResponse.data[0])); // !important DO NOT DELETE
+      localStorage.setItem(
+        "launchInfo",
+        JSON.stringify(launchResponse.data[0])
+      );
     } else {
       // An object is returned, if getStarted response
-      store.dispatch(setLaunchResponse(launchResponse.data)) // !important DO NOT DELETE
-      localStorage.setItem('launchInfo', JSON.stringify(launchResponse.data))
+      store.dispatch(setLaunchResponse(launchResponse.data)); // !important DO NOT DELETE
+      localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
     }
 
-    handleResponse(launchResponse, requiredLaunchUpdateData)
-  }
+    handleResponse(launchResponse, requiredLaunchUpdateData);
+  };
 
   //
   // Handle launch response
@@ -133,41 +136,41 @@ const EntitySelect = () => {
       // Get launchCode from the launch response
       const launchCode = generatedLaunchCode
         ? launchResponse.data[0].launchCode
-        : launchResponse.data.launchCode
+        : launchResponse.data.launchCode;
 
       // If launchCode does not exist, store the launch code gotten from the launch response
       if (!generatedLaunchCode) {
-        store.dispatch(setGeneratedLaunchCode(launchCode))
+        store.dispatch(setGeneratedLaunchCode(launchCode));
       }
 
       // Navigate if business names and objectives exist in the store
       if (businessNames.length > 0 && selectedObjectives.length > 0)
-        navigate('/launch/payment')
+        navigate("/launch/payment");
 
-      handleBusinessInfo(requiredLaunchInfo, launchCode)
+      handleBusinessInfo(requiredLaunchInfo, launchCode);
 
-      console.log(launchCode)
+      console.log(launchCode);
     } else {
-      if (launchResponse?.error?.status === 'FETCH_ERROR') {
-        toast.error('Please check your internet connection')
+      if (launchResponse?.error?.status === "FETCH_ERROR") {
+        toast.error("Please check your internet connection");
       } else {
-        toast.error(launchResponse?.error?.error)
+        toast.error(launchResponse?.error?.error);
       }
     }
-  }
+  };
 
   //
   // Send business information to the backend
   const handleBusinessInfo = async (requiredLaunchInfo, launchCode) => {
     // Check if business names or objectives exists
-    let existingNames = await viewBusinessNames(requiredLaunchInfo)
-    let existingObjectives = await viewBusinessObjectives(requiredLaunchInfo)
+    let existingNames = await viewBusinessNames(requiredLaunchInfo);
+    let existingObjectives = await viewBusinessObjectives(requiredLaunchInfo);
 
-    let namesExists = existingNames?.data?.businessNames
-    let objectivesExists = existingObjectives?.data?.businessObjects
+    let namesExists = existingNames?.data?.businessNames;
+    let objectivesExists = existingObjectives?.data?.businessObjects;
 
     // Navigate if business names and objectives exist
-    if (namesExists && objectivesExists) navigate('/launch/payment')
+    if (namesExists && objectivesExists) navigate("/launch/payment");
 
     const requiredBusinessNamesData = {
       launchCode: launchCode,
@@ -177,57 +180,57 @@ const EntitySelect = () => {
         businessName3: businessNames[2],
         businessName4: businessNames[3],
       },
-    }
+    };
 
     const requiredBusinessObjectives = {
       launchCode: launchCode,
       businessObjects: {
         businessObject1: selectedObjectives[0],
-        businessObject2: selectedObjectives[1] || 'null',
-        businessObject3: selectedObjectives[2] || 'null',
-        businessObject4: selectedObjectives[3] || 'null',
+        businessObject2: selectedObjectives[1] || "null",
+        businessObject3: selectedObjectives[2] || "null",
+        businessObject4: selectedObjectives[3] || "null",
       },
-    }
+    };
 
     // Update if business names exist, add if otherwise
     const businessNamesResponse = namesExists
       ? await updateBusinessNames(requiredBusinessNamesData)
-      : await addBusinessNames(requiredBusinessNamesData)
+      : await addBusinessNames(requiredBusinessNamesData);
 
     // Update if business objectives exist, add if otherwise
     const businessObjectivesResponse = objectivesExists
       ? await updateBusinessObjectives(requiredBusinessObjectives)
-      : await addBusinessObjectives(requiredBusinessObjectives)
+      : await addBusinessObjectives(requiredBusinessObjectives);
 
-    let error = businessNamesResponse?.error
-    let error2 = businessObjectivesResponse?.error
+    let error = businessNamesResponse?.error;
+    let error2 = businessObjectivesResponse?.error;
 
     if (error) {
-      console.log(error, error2)
-      toast.error(error.data.message)
-      toast.error(error2.data.message)
+      console.log(error, error2);
+      toast.error(error.data.message);
+      toast.error(error2.data.message);
     }
-  }
+  };
 
   // Navigate to the previous page
   const handlePrev = () => {
-    navigate(-1)
-  }
+    navigate(-1);
+  };
 
   // Launch loading state
-  let loading = launchState.isLoading || launchUpdateState.isLoading
+  let loading = launchState.isLoading || launchUpdateState.isLoading;
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })) // total- total pages and current - current page
-  }, [])
+    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>
       <Header>
         <HeaderCheckout />
       </Header>
-      <Body style={{ maxWidth: '100%' }}>
+      <Body style={{ maxWidth: "100%" }}>
         <CheckoutSection
         // title={`${selectedCountry.toUpperCase()}: Please select a business type to get started`}
         // titleStyles={{
@@ -237,7 +240,7 @@ const EntitySelect = () => {
           {selectedCountry && (
             <EntityTitle>
               {selectedCountry}:
-              <span> Please select a business type to get started</span>{' '}
+              <span> Please select a business type to get started</span>{" "}
             </EntityTitle>
           )}
           {console.log(entities)}
@@ -268,7 +271,7 @@ const EntitySelect = () => {
 
         <Bottom>
           <CheckoutController
-            backText={'Previous'}
+            backText={"Previous"}
             backAction={handlePrev}
             forwardSubmit={true}
             entity
@@ -284,7 +287,7 @@ const EntitySelect = () => {
       )}
       <AppFeedback subProject="Entity select" />
     </Container>
-  )
-}
+  );
+};
 
-export default EntitySelect
+export default EntitySelect;
