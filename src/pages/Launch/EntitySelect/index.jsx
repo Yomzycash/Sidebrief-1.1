@@ -87,6 +87,10 @@ const EntitySelect = () => {
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
+    localStorage.setItem(
+      "entityTimeline",
+      JSON.stringify(selectedItem.entityTimeline)
+    );
 
     // To be sent to the backend to create a launch
     const requiredLaunchData = {

@@ -148,7 +148,7 @@ const BusinessRegistration = (props) => {
                           : "No name"
                       }`}
                       status={getStatus(el.registrationStatus)}
-                      ShortDescription={`launchID - ${el.launchCode}`}
+                      ShortDescription={`${el.launchCode}`}
                     />
                   );
                 })}

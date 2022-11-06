@@ -26,6 +26,7 @@ import {
   usePayLaunchMutation,
 } from "services/launchService";
 import { PaystackButton } from "react-paystack";
+import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
   const [isUSD, setIsUSD] = useState(false);
@@ -34,13 +35,14 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     entityFee: "",
   });
 
+  const [payLaunch, payState] = usePayLaunchMutation();
+
   const navigate = useNavigate();
 
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
   );
 
-  const [payLaunch, payState] = usePayLaunchMutation();
   const { launchCode, registrationType } = launchResponse;
 
   const { data, isLoading, isSuccess, isError } =
@@ -59,53 +61,59 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
   }, [data]);
 
   let userEmail = localStorage.getItem("userEmail");
+  let userInfo = localStorage.getItem("userInfo");
 
+  // Flutterwave config object
   const config = {
-    reference: new Date().getTime().toString(),
-    email: userEmail,
-    amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
-    publicKey:
+    public_key:
       process.env.NODE_ENV === "production"
-        ? process.env.REACT_APP_PAYSTACK_LIVE_KEY
-        : process.env.REACT_APP_PAYSTACK_TEST_KEY,
+        ? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
+        : process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
+    tx_ref: Date.now(),
+    // amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
+    amount: `${entityInfo.entityFee}`,
+    currency: entityInfo?.entityCurrency,
+    payment_options: "card,mobilemoney,ussd",
+    customer: {
+      email: userEmail,
+      phone_number: "070********",
+      name: `${userInfo.first_name + userInfo.last_name}`,
+    },
+    customizations: {
+      title: "Business registration",
+      description: `Payment for business registration in ${entityInfo.entityCountry}`,
+      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+    },
   };
 
-  // you can call this function anything
-  const handlePaystackSuccessAction = async (reference) => {
-    // Implementation for whatever you want to do with reference and after success call.
-    console.log(reference);
+  const fwConfig = {
+    ...config,
+    text: "Pay with Flutterwave",
+    callback: (response) => {
+      sendRefToBackend(response);
+      closePaymentModal(); // this will close the modal programmatically
+    },
+    onClose: () => {},
+  };
 
+  // Send the payment reference information to the backend
+  const sendRefToBackend = async (reference) => {
     const requiredData = {
       launchCode: launchCode,
       paymentDetails: {
         paymentAmount: entityInfo.entityFee,
         paymentCurrency: entityInfo?.entityCurrency,
-        paymentTransactionId: reference.transaction,
-        paymentProvider: "Paystack",
+        paymentTransactionId: reference.transaction_id,
+        paymentProvider: "Flutterwave",
         paymentStatus: reference.status,
       },
     };
-
-    console.log(requiredData);
 
     const payResponse = await payLaunch(requiredData);
 
     console.log(payResponse);
 
     navigate("/launch/address");
-  };
-
-  // you can call this function anything
-  const handlePaystackCloseAction = () => {
-    // implementation for  whatever you want to do when the Paystack dialog closed.
-    console.log("closed");
-  };
-
-  const componentProps = {
-    ...config,
-    text: `Pay in ${isUSD ? "USD" : entityInfo?.entityCurrency}`,
-    onSuccess: (reference) => handlePaystackSuccessAction(reference),
-    onClose: handlePaystackCloseAction,
   };
 
   return (
@@ -144,7 +152,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
         <Text>Total amount for this purchase</Text>
       </TextContainer>
       <Paystack>
-        <PaystackButton className="paystack-button" {...componentProps} />
+        <FlutterWaveButton className="paystack-button" {...fwConfig} />
       </Paystack>
     </Container>
   );
@@ -179,7 +187,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 // } from "services/launchService";
 // import { PaystackButton } from "react-paystack";
 
-// export const PaymentForm = ({ USDprice }) => {
+// export const PaymentForm = ({ USDprice, paymentProvider, currency }) => {
 //   const [isUSD, setIsUSD] = useState(false);
 //   const [entityInfo, setEntityInfo] = useState({
 //     entityCurrency: "",
@@ -198,41 +206,28 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 //   const { data, isLoading, isSuccess, isError } =
 //     useGetSingleEntityQuery(registrationType);
 
-//   const {
-//     handleSubmit,
-//     register,
-//     setValue,
-//     formState: { errors },
-//   } = useForm({
-//     resolver: yupResolver(cardInfoSchema),
-//   });
-
-//   const { symbol, onSelectCurrencyType, formatInput } = useActions({
+//   const { symbol, onSelectCurrencyType } = useActions({
 //     isUSD,
 //     setIsUSD,
 //     currency: entityInfo ? entityInfo.entityCurrency : "",
-//     setValue,
+//     // setValue,
 //   });
-
-//   const completePayment = (data) => {
-//     console.log(data);
-//     navigate("/launch/address");
-//     // api calls can be made here
-//     // depending on api, you might want to trim the card number first
-//     // change data to fit api, thanks
-//     // price and currency can also be gotten from above
-//   };
 
 //   useEffect(() => {
 //     console.log(data);
 //     if (data) setEntityInfo(data);
 //   }, [data]);
 
+//   let userEmail = localStorage.getItem("userEmail");
+
 //   const config = {
 //     reference: new Date().getTime().toString(),
-//     email: "femi@sidebrief.com",
-//     amount: `${entityInfo.entityFee}00`,
-//     publicKey: "pk_test_fd6e1523c925ea654377d019c35bd5955c69bdfc",
+//     email: userEmail,
+//     amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
+//     publicKey:
+//       process.env.NODE_ENV === "production"
+//         ? process.env.REACT_APP_PAYSTACK_LIVE_KEY
+//         : process.env.REACT_APP_PAYSTACK_TEST_KEY,
 //   };
 
 //   // you can call this function anything
@@ -289,17 +284,17 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 //             {entityInfo.entityCurrency}
 //           </RadioLabel>
 //         </Radio>
-//         <Radio>
-//           <RadioInput
-//             id={"USD"}
-//             type="radio"
-//             value="USD"
-//             name="currency"
-//             onChange={onSelectCurrencyType}
-//             checked={isUSD}
-//           />
-//           <RadioLabel htmlFor="USD">USD</RadioLabel>
-//         </Radio>
+//         {/* <Radio>
+// 					<RadioInput
+// 						id={"USD"}
+// 						type="radio"
+// 						value="USD"
+// 						name="currency"
+// 						onChange={onSelectCurrencyType}
+// 						checked={isUSD}
+// 					/>
+// 					<RadioLabel htmlFor="USD">USD</RadioLabel>
+// 				</Radio> */}
 //       </RadioButtons>
 //       <TextContainer>
 //         <Price>
@@ -308,50 +303,9 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 //         </Price>
 //         <Text>Total amount for this purchase</Text>
 //       </TextContainer>
-//       <FormContainer onSubmit={handleSubmit(completePayment)}>
-// 				<InputWithLabel
-// 					label={"Card Number"}
-// 					placeholder={"--"}
-// 					name={"cardNumber"}
-// 					labelStyle={"payment--label"}
-// 					type={"text"}
-// 					register={register}
-// 					onChange={(event) => {
-// 						formatInput(event.target.value, "cardNumber");
-// 					}}
-// 					errorMessage={errors["cardNumber"]?.message}
-// 				/>
-// 				<InputWithLabel
-// 					label={"EXP. DATE"}
-// 					placeholder={"--"}
-// 					labelStyle={"payment--label"}
-// 					name={"expDate"}
-// 					type={"text"}
-// 					register={register}
-// 					onChange={(event) => {
-// 						formatInput(event.target.value, "expDate");
-// 					}}
-// 					errorMessage={errors["expDate"]?.message}
-// 				/>
-// 				<InputWithLabel
-// 					label={"CVV"}
-// 					placeholder={"--"}
-// 					name={"cvv"}
-// 					labelStyle={"payment--label"}
-// 					type={"text"}
-// 					register={register}
-// 					onChange={(event) => {
-// 						formatInput(event.target.value, "cvv");
-// 					}}
-// 					errorMessage={errors["cvv"]?.message}
-// 				/>
-// 			</FormContainer>
 //       <Paystack>
 //         <PaystackButton className="paystack-button" {...componentProps} />
 //       </Paystack>
-//       <PaymentButton type="submit">
-//         Pay In {isUSD ? "USD" : currency}
-//       </PaymentButton>
 //     </Container>
 //   );
 // };

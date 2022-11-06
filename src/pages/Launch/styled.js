@@ -61,12 +61,19 @@ export const Bottom = styled.div`
   padding: 32px clamp(24px, 3.4vw, 40px);
 `;
 export const EntityCardsWrapper = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: stretch;
   width: 100%;
   gap: 24px;
   margin-top: 24px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: auto auto;
+  }
+
+  @media screen and (max-width: 800px) {
+    grid-template-columns: auto;
+  }
 `;
 
 export const CountryItem = styled.span`

@@ -44,11 +44,11 @@ const PdfCards = ({
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
-                {government.fileType ? (
+                {government?.fileType ? (
                   <img
                     src={
-                      imageTypeImage.find(
-                        (el) => el.type === government.fileType
+                      imageTypeImage?.find(
+                        (el) => el?.type === government?.fileType
                       ).image
                     }
                     alt="icon"
@@ -64,7 +64,7 @@ const PdfCards = ({
                 )}
               </IconWrapper>
               <Details>
-                {government ? government.fileName : "upload a file"}
+                {government ? government?.fileName : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 
@@ -79,8 +79,8 @@ const PdfCards = ({
                 {proof ? (
                   <img
                     src={
-                      imageTypeImage.find((el) => el.type === proof.fileType)
-                        .image
+                      imageTypeImage?.find((el) => el?.type === proof?.fileType)
+                        ?.image
                     }
                     alt="icon"
                     style={{
@@ -94,7 +94,7 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details>{proof ? proof.fileName : "upload a file"}</Details>
+              <Details>{proof ? proof?.fileName : "upload a file"}</Details>
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -108,8 +108,9 @@ const PdfCards = ({
                 {passport ? (
                   <img
                     src={
-                      imageTypeImage.find((el) => el.type === passport.fileType)
-                        .image
+                      imageTypeImage?.find(
+                        (el) => el?.type === passport?.fileType
+                      ).image
                     }
                     alt="icon"
                     style={{
@@ -124,7 +125,7 @@ const PdfCards = ({
                 )}
               </IconWrapper>
               <Details>
-                {passport ? passport.fileName : "upload a file"}
+                {passport ? passport?.fileName : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 

@@ -4,7 +4,7 @@ import { ReactComponent as Lendha } from "asset/images/lendha.svg";
 import { ReactComponent as Close } from "asset/images/close.svg";
 import { ReactComponent as Copy } from "asset/images/copy.svg";
 import Button from "components/button/mainButton/index.jsx";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 // import { allRewards } from "utils/config";
 import {
   useClaimRewardMutation,
@@ -22,6 +22,8 @@ const RewardModal = ({ handleClose }) => {
 
   const rewardDetails = data?.find((element) => element.rewardID === rewardID);
 
+  const navigate = useNavigate();
+
   const handleClaimReward = async () => {
     let required = {
       rewardID: rewardDetails.rewardID,
@@ -33,6 +35,11 @@ const RewardModal = ({ handleClose }) => {
 
     if (claimedData) {
       setSuccessful(true);
+
+      let link = claimedData[claimedData.length - 1].rewardLink;
+      console.log(link);
+      window.open(link, "_blank");
+
       setTimeout(() => {
         handleClose();
       }, 1000);
@@ -41,8 +48,6 @@ const RewardModal = ({ handleClose }) => {
         toast.error("Please check your internet connection");
       else toast.error(error.data.message);
     }
-
-    console.log(claimedResponse);
   };
 
   const imagestyle = {
@@ -76,7 +81,7 @@ const RewardModal = ({ handleClose }) => {
           </LowerText>
         </TextContainer>
         <CopyContainer>
-          <CopyDetails>SIDEBRIEFPROMO</CopyDetails>
+          <CopyDetails>{rewardDetails?.rewardCode}</CopyDetails>
           <Copy />
         </CopyContainer>
         {rewardDetails && (
