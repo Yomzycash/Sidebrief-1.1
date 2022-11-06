@@ -1,10 +1,10 @@
 import currencySymbol from "currency-symbol";
 
 export const useActions = ({ isUSD, currency, setIsUSD, setValue }) => {
-	const symbol = currencySymbol.symbol(isUSD ? "USD" : currency)
-		? String.fromCharCode(
-				currencySymbol.symbol(isUSD ? "USD" : currency).slice(2, -1)
-		  )
+	const symbolCharCode = currencySymbol.symbol(isUSD ? "USD" : currency);
+
+	const symbol = symbolCharCode
+		? String.fromCharCode(symbolCharCode.slice(2, -1))
 		: `${currency} `;
 
 	const onSelectCurrencyType = (event) => {
