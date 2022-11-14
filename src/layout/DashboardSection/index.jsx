@@ -1,5 +1,5 @@
-import React from "react";
-import { Section, Header, HeaderTop, Right, HeaderBody, Body } from "./styled";
+import React from 'react'
+import { Section, Header, HeaderTop, Right, HeaderBody, Body } from './styled'
 
 const DashboardSection = ({
   title,
@@ -31,7 +31,7 @@ const DashboardSection = ({
         {children}
       </Body>
     </Section>
-  );
-};
+  )
+}
 
-export default DashboardSection;
+export default DashboardSection

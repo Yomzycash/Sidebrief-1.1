@@ -1,161 +1,140 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { ReactComponent as BgSvg } from "asset/svg/countryCardBg.svg";
-import { ReactComponent as Envelope } from "asset/svg/envelope.svg";
-import {
-  Container,
-  StartButton,
-  Corner,
-  ImageHolder,
-  TextContainer,
-  Title,
-  Body,
-  Frame,
-  Bg,
-  Content,
-  CountryContainer,
-  Top,
-  TopLeft,
-  TopRight,
-  Bottom,
-  Item,
-  Add,
-  Edit,
-  Delete,
-  CardName,
-  ModalWrapper,
-  LogoWrapper,
-} from "./styled";
-import { ReactComponent as EditC } from "asset/svg/editc.svg";
+import { CornerPetal } from 'asset/svg'
+import React from 'react'
+import styled from 'styled-components'
+import { ReactComponent as MoreIcon } from '../../../../src/asset/svg/threeDot.svg'
+import { ReactComponent as MailIcon } from '../../../../src/asset/svg/mailbox.svg'
 
-import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
-import { ReactComponent as AddC } from "asset/svg/addc.svg";
-
-import { ReactComponent as DeleteC } from "asset/svg/deletec.svg";
-
-import image from "../../../asset/images/Nigeria.png";
-import { BsThreeDotsVertical } from "react-icons/bs";
-const CountryCard = () => {
-  const [hover, setHover] = useState(false);
-  const [openModalCard, setModalCard] = useState(false);
-  const handleModal = () => {
-    setModalCard(!openModalCard);
-    console.log("test");
-  };
-
+const CountryCard = ({
+  image,
+  name = 'NIgeria',
+  countryCode = 'NGA',
+  countryNumber = '+234',
+  countryCurrency = 'Naira',
+}) => {
   return (
-    <div style={{ display: "flex", marginBottom: "100px" }}>
-      {/* <CountryContainer
-        hover={hover}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      > */}
-      {/* <Bg>
-          <BgSvg />
-        </Bg>
+    <Container>
+      <Corner>
+        <CornerPetal viewBox="0 0 40 170" />
+      </Corner>
+      <Top>
+        <TopWrapper>
+          <ImageWrapper>
+            <img src={image} alt="icon" />
+          </ImageWrapper>
+          <CountryName>{name}</CountryName>
+        </TopWrapper>
+        <MoreIconWrapper>
+          <MoreIcon />
+        </MoreIconWrapper>
+      </Top>
+      <Low>
+        <LowContainer>
+          <ImageWrapper>
+            <MailIcon />
+          </ImageWrapper>
+          <CountryCodeWrapper>{countryCode}</CountryCodeWrapper>
+        </LowContainer>
+        <LowContainer>
+          <ImageWrapper>
+            <MailIcon />
+          </ImageWrapper>
+          <CountryCodeWrapper>{countryNumber}</CountryCodeWrapper>
+        </LowContainer>
+        <LowContainer>
+          <ImageWrapper>
+            <MailIcon />
+          </ImageWrapper>
+          <CountryCodeWrapper>{countryCurrency}</CountryCodeWrapper>
+        </LowContainer>
+      </Low>
+    </Container>
+  )
+}
 
-        <Content>
-          <Top>
-            <TopLeft>
-              <LogoWrapper>
-                <img src={image} alt="Country" />
-              </LogoWrapper>
-              <CardName>Nigeria</CardName>
-            </TopLeft>
-            <TopRight onClick={handleModal}>
-              <BsThreeDotsVertical />
-            </TopRight>
-          </Top>
-          <Bottom>
-            <Item>
-              <Envelope />
-              <p>NGN</p>
-            </Item>
-            <Item>
-              <Envelope />
-              <p>+234</p>
-            </Item>
-            <Item>
-              <Envelope />
-              <p>Naira</p>
-            </Item>
-          </Bottom>
-        </Content>
+export default CountryCard
+const Container = styled.div`
+  max-width: 342px;
+  width: 100%;
+  min-height: 108px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 17px;
+  transition: all 0.2s;
+  position: relative;
 
-        {openModalCard && (
-          <ModalWrapper>
-            <Edit>
-              <EditC />
-              <p>Edit</p>
-            </Edit>
-            <Add>
-              <AddC />
-              <p>Add Entity</p>
-            </Add>
-            <Delete>
-              <DeleteC />
-              <p>Delete</p>
-            </Delete>
-          </ModalWrapper>
-        )} */}
-      {/* </CountryContainer> */}
-      <Container
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        hover={hover}
-      >
-        <Corner hover={hover}>
-          <BgSvg />
-        </Corner>
-        <Frame>
-          <Content>
-            <Top>
-              <TopLeft>
-                <LogoWrapper>
-                  <img src={image} alt="Country" />
-                </LogoWrapper>
-                <CardName>Nigeria</CardName>
-              </TopLeft>
-              <TopRight onClick={handleModal}>
-                <BsThreeDotsVertical />
-              </TopRight>
-            </Top>
-            <Bottom>
-              <Item>
-                <Envelope />
-                <p>NGN</p>
-              </Item>
-              <Item>
-                <Envelope />
-                <p>+234</p>
-              </Item>
-              <Item>
-                <Envelope />
-                <p>Naira</p>
-              </Item>
-            </Bottom>
-          </Content>
-        </Frame>
+  background: #ffffff;
+  padding: 24px;
 
-        {openModalCard && (
-          <ModalWrapper>
-            <Edit>
-              <EditC />
-              <p>Edit</p>
-            </Edit>
-            <Add>
-              <AddC />
-              <p>Add Entity</p>
-            </Add>
-            <Delete>
-              <DeleteC />
-              <p>Delete</p>
-            </Delete>
-          </ModalWrapper>
-        )}
-      </Container>
-    </div>
-  );
-};
+  border: 1px solid #edf1f7;
+  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  border-radius: 16px;
+  &:hover {
+    background: #00a2d4;
+  }
+`
+const Corner = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: rotateX(0deg);
 
-export default CountryCard;
+  svg {
+    ellipse {
+      fill: rgba(204, 243, 255, 0.48);
+      fill-opacity: 1;
+    }
+  }
+
+  ${Container}:hover & {
+    svg {
+      ellipse {
+        fill: rgba(255, 255, 255, 0.64);
+      }
+    }
+  }
+`
+const Top = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+`
+const TopWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+`
+const ImageWrapper = styled.div``
+const CountryName = styled.h3`
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 21px;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  color: #242627;
+`
+const MoreIconWrapper = styled.div``
+const Low = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+`
+const LowContainer = styled.div`
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  padding: 0px 8px;
+`
+const CountryCodeWrapper = styled.h3`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: #4e5152;
+`

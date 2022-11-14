@@ -19,6 +19,7 @@ import AllBusinesses from 'pages/Dashboard/User/Business/AllBusinesses'
 import Test from 'pages/Test'
 import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications'
 import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications'
+import StaffBusinesses from 'pages/Dashboard/staffDashboard/Businesses'
 const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
   import('pages/Auth/Registration/EmailVerify/success'),
@@ -133,7 +134,7 @@ const AppRouter = () => {
   }, [entityLaunchCode, launchData.launchCode])
 
   const allowLaunch = launchCode && countryISO
-  
+
   useEffect(() => {
     setisLoggedIn(loggedIn)
   }, [loggedIn])
@@ -153,6 +154,9 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<Outlet />}>
             <Route path="test" element={<Test />} />
+            <Route path="/businesses" element={<StaffBusinesses />} />
+
+            <Route path="staff" element={<StaffDashboard />} />
             <Route
               index
               element={
