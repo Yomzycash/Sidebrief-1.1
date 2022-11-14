@@ -17,6 +17,11 @@ const StaffBusinessCard = ({ country, entity }) => {
   const [SearchEntityTerm, setSearchEntitityTerm] = useState('')
 
   //console.log(data)
+  const searchStyle = {
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    width: '100%',
+  }
 
   useEffect(() => {
     if (data) {
@@ -67,6 +72,7 @@ const StaffBusinessCard = ({ country, entity }) => {
       <CountryContainer>
         {country && (
           <Search
+            style={searchStyle}
             placeholder="Search a country"
             onChange={(e) => {
               setSearchTerm(e.target.value)
@@ -99,6 +105,7 @@ const StaffBusinessCard = ({ country, entity }) => {
         )}
         {entity && (
           <Search
+            style={searchStyle}
             placeholder="Search an entity"
             onChange={(e) => {
               setSearchEntitityTerm(e.target.value)
@@ -134,7 +141,7 @@ const StaffBusinessCard = ({ country, entity }) => {
 
 export default StaffBusinessCard
 const CardContainer = styled.div`
-  max-width: 422px;
+  max-width: 100%;
   padding: 46px 28px 28px 28px;
   border-left: 1px solid #edf1f7;
   border-width: 0px 0px 0px 1px;
@@ -189,6 +196,7 @@ const CountryContainer = styled.div`
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
+  width: 100%;
 `
 const LowerContainer = styled.div`
   display: flex;

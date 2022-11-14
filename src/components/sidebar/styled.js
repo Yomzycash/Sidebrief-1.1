@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
+import styled from 'styled-components'
+import { NavLink } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
-export const Top = styled.div``;
+export const Top = styled.div``
 
 export const SidebarWrapper = styled(motion.div)`
   display: flex;
@@ -24,7 +24,7 @@ export const SidebarWrapper = styled(motion.div)`
   @media screen and (max-width: 700px) {
     display: none;
   }
-`;
+`
 export const ListWrapper = styled.div`
   margin: 20px 15px 22px;
   width: max-content;
@@ -34,7 +34,7 @@ export const ListWrapper = styled.div`
   @media screen and (max-width: 1050px) {
     display: none;
   }
-`;
+`
 
 export const SideLinkWrapper = styled.div`
   > a {
@@ -58,20 +58,21 @@ export const SideLinkWrapper = styled.div`
       color: #00a2d4;
     }
   }
-`;
+`
 
 export const SidebarContentItemLink = styled.p`
   color: ${(props) => props.color};
   text-decoration: none;
   white-space: nowrap;
   margin-top: -3px;
-`;
+`
 
 export const SidebarContentItemIcon = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: 0.3s color ease;
-`;
+`
 
 export const Logout = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ export const Logout = styled.div`
   /* height: 100%; */
   flex: 1;
   padding: 12px 16px 100px;
-`;
+`
 
 export const LogoutWrapper = styled.div`
   display: flex;
@@ -88,22 +89,28 @@ export const LogoutWrapper = styled.div`
   :hover {
     cursor: pointer;
   }
-`;
+`
 
 export const LogoutText = styled.div`
   color: #ed4e3a;
   margin-left: 8px;
-`;
+`
 
 export const SidebarLinks = styled.div`
   display: flex;
   flex-flow: column;
   gap: 16px;
   padding-top: 10px;
-`;
+`
 
 export const MobileSidebarWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-flow: column;
-`;
+`
+export const SidebarFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+`
