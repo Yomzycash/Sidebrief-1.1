@@ -27,7 +27,7 @@ const TagInput = ({
   function handlekeydown(e) {
     if (e.key === 'Tab') e.preventDefault()
 
-    if (!(e.key === 'Enter' || e.key === ',' || e.key === 'Tab')) return
+    if (!(e.key === 'Enter' || e.key === 'Tab')) return
 
     const value = currentInput
     if (!value.trim()) return
@@ -54,13 +54,16 @@ const TagInput = ({
     if (lastChar === ',') {
       let value = currentInput
       console.log('femi')
-      if (value.length > 3) {
-        setTags([...tags, value])
-        setCurrentInput('')
-      }
-      else {
+      if (tags.length >= 4) {
         setError('You cannot choose more than 4 business names')
+        return
+      } else if (value.length <= 2) {
+        setError('Business name must be at least 3 characters')
+        return
+      } else {
+        setTags([...tags, value])
 
+        setCurrentInput('')
       }
     }
   }, [inputValue.length])
