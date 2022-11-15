@@ -89,5 +89,5 @@ const CardWrapper = styled.div`
   gap: 24px;
   }
     
-  }
+  
 `
