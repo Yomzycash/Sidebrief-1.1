@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
+  width:100%;
 `;
 export const Top = styled.div``;
 export const Body = styled.div`

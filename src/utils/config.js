@@ -876,6 +876,14 @@ export const staffSidebarLink = [
   },
   {
     id: 3,
+    title: 'Compliance',
+    icon: ComplianceIcon,
+    path: '/staffdashboard/Taxes',
+    dropdownIcon: ArrowDownIcon,
+    dropdown: [],
+  },
+  {
+    id: 4,
     title: 'Taxes',
     icon: TaxesIcon,
     path: '/staffdashboard/Taxes',
@@ -883,7 +891,7 @@ export const staffSidebarLink = [
     dropdown: [],
   },
   {
-    id: 4,
+    id: 5,
     title: 'Hiring & Payroll',
     icon: HiringIcon,
     path: '/staffdashboard/hiring',
@@ -891,7 +899,7 @@ export const staffSidebarLink = [
     dropdown: [],
   },
   {
-    id: 5,
+    id: 6,
     title: 'Intellectual Assets',
     icon: IntellectualIcon,
     path: '/staffdashboard/intellectualAssets',
@@ -899,7 +907,7 @@ export const staffSidebarLink = [
     dropdown: [],
   },
   {
-    id: 6,
+    id: 7,
     title: 'Rewards',
     icon: RewardIcon,
     path: '/staffdashboard/rewards',
@@ -907,7 +915,7 @@ export const staffSidebarLink = [
     dropdown: [],
   },
   {
-    id: 7,
+    id: 8,
     title: 'Payments',
     icon: PaymentIcon,
     path: '/staffdashboard/payments',
@@ -915,7 +923,7 @@ export const staffSidebarLink = [
     dropdown: [],
   },
   {
-    id: 8,
+    id: 9,
     title: 'Resources',
     icon: ResourcesIcon,
     path: '/staffdashboard/resources',
@@ -923,7 +931,7 @@ export const staffSidebarLink = [
     dropdown: [],
   },
   {
-    id: 9,
+    id: 10,
     title: 'Settings',
     icon: SettingsIcon,
     path: '/staffdashboard/settings',
