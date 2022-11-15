@@ -54,8 +54,14 @@ const TagInput = ({
     if (lastChar === ',') {
       let value = currentInput
       console.log('femi')
-      setTags([...tags, value])
-      setCurrentInput('')
+      if (value.length > 3) {
+        setTags([...tags, value])
+        setCurrentInput('')
+      }
+      else {
+        setError('You cannot choose more than 4 business names')
+
+      }
     }
   }, [inputValue.length])
 
