@@ -4,7 +4,7 @@ import Navbar from 'components/navbar'
 import {BusinessHomeTable } from 'components/Staff/Tables'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { RiArrowDropDownLine } from 'react-icons/ri'
 import { ReactComponent as AddIcon } from '../../../../../src/asset/svg/Plus.svg'
@@ -15,8 +15,12 @@ const StaffBusinesses = (props) => {
   const { sidebarWidth } = layoutInfo
 
   const location = useLocation()
+  const navigate = useNavigate()
+  const handleNavigate = () => {
+    navigate('/staff-dashboard/businesses/registration/all')
+   }
 
-  let hideSearch = location.pathname.includes('/dashboard/rewards')
+
 
   return (
     <Dashboard>
@@ -225,6 +229,7 @@ const TextContent = styled.div`
   text-align: center;
   letter-spacing: -0.5px;
   color: #ffffff;
+  cursor: pointer;
 `
 const CardWrapper = styled.div`
   margin-block-end: 40px;
