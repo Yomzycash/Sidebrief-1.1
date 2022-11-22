@@ -14,6 +14,7 @@ const BusinessDetail = () => {
 		(store) => store.LaunchReducer.launchResponse
 	);
 	const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
+	console.log(data)
 	const matches = useMediaQuery("(max-width:700px)");
 	const handleClickOpen = () => {
 		setOpen(true);

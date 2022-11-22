@@ -9,6 +9,7 @@ const StaffHeader = ({
   shown = '12',
   total = '12',
   Description = 'Add Country',
+  placeholder = 'Search a country',
 }) => {
   const searchStyle = {
     borderRadius: '12px',
@@ -36,7 +37,11 @@ const StaffHeader = ({
           </TopContent>
           <BottomContent>
             <SearchWrapper>
-              <Search style={searchStyle} iconStyle={iconStyle} />
+              <Search
+                style={searchStyle}
+                iconStyle={iconStyle}
+                placeholder={placeholder}
+              />
             </SearchWrapper>
             <ButtonWrapper>
               <button>
