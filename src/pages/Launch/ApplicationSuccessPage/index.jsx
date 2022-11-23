@@ -10,7 +10,7 @@ const ApplicationSuccessPage = () => {
   const handleNavigate = () => {
     navigate('/dashboard/businesses/pending-applications')
   }
-  const timeline = JSON.parse(localStorage.getItem('entitySelect'))
+  const timeline = JSON.parse(localStorage.getItem('entityTimeline'))
 
   return (
     <>

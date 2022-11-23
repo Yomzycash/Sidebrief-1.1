@@ -19,6 +19,17 @@ import AllBusinesses from 'pages/Dashboard/User/Business/AllBusinesses'
 import Test from 'pages/Test'
 import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications'
 import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications'
+import StaffBusinesses from 'pages/Dashboard/staffDashboard/Businesses'
+import CountryDetailLayout from 'pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/layout'
+import CountryDetails from 'pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryDetails'
+import CountryEntities from 'pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryEntities'
+import Countries from 'pages/Dashboard/staffDashboard/Businesses/Countries/Countries'
+import Registrationlayout from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/layout'
+import All from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/All'
+import Awaiting from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/AwaitingApproval'
+import InProgress from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/InProgress'
+import Completed from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed'
+import StaffEntities from 'pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities'
 const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
   import('pages/Auth/Registration/EmailVerify/success'),
@@ -133,7 +144,7 @@ const AppRouter = () => {
   }, [entityLaunchCode, launchData.launchCode])
 
   const allowLaunch = launchCode && countryISO
-  
+
   useEffect(() => {
     setisLoggedIn(loggedIn)
   }, [loggedIn])
@@ -153,6 +164,36 @@ const AppRouter = () => {
         <Routes>
           <Route path="/" element={<Outlet />}>
             <Route path="test" element={<Test />} />
+
+            <Route path="staff-dashboard" element={<Outlet />}>
+              <Route index element={<StaffDashboard />} />
+              <Route path="businesses" element={<Outlet />}>
+                <Route index element={<StaffBusinesses />} />
+                <Route path="registration" element={<Outlet />}>
+                  <Route element={<Registrationlayout />}>
+                    <Route path="all" element={<All />} />
+                    <Route path="awating-approval" element={<Awaiting />} />
+                    <Route path="in-progress" element={<InProgress />} />
+                    <Route path="completed" element={<Completed />} />
+                  </Route>
+                </Route>
+                <Route path="entities" element={<Outlet />}>
+                  <Route index element={<StaffEntities />} />
+                </Route>
+
+                <Route path="countries" element={<Outlet />}>
+                  <Route index element={<Countries />} />
+                  <Route element={<CountryDetailLayout />}>
+                    <Route path="countrydetail" element={<CountryDetails />} />
+                    <Route
+                      path="entitydetail"
+                      element={<CountryEntities />}
+                    ></Route>
+                  </Route>
+                </Route>
+              </Route>
+            </Route>
+
             <Route
               index
               element={

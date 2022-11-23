@@ -93,7 +93,7 @@ const Business = () => {
 	}, []);
 
 	return (
-		<Container>
+			<Container>
 			<Header>
 				<MainHeader>
 					<TopContent>
