@@ -6,47 +6,51 @@ import { format } from 'date-fns'
 const Stepbar = ({ mobile, handleClose, applied }) => {
   const [data, setData] = useState([
     {
-      id: '1',
-      title: 'Applied',
-      color: '#00A2D4',
-      background: 'rgba(0, 162, 212, 0.05)',
-      date: '--',
+
+      id: "1",
+      title: "Applied",
+      color: "#00A2D4",
+      background: "rgba(0, 162, 212, 0.05)",
+      date: "--",
     },
     {
-      id: '2',
-      title: 'Submitted',
-      color: '#D400CC',
-      background: 'rgba(212, 0, 204, 0.05)',
-      date: '--',
+      id: "2",
+      title: "Submitted",
+      color: "#D400CC",
+      background: "rgba(212, 0, 204, 0.05)",
+      date: "--",
     },
     {
-      id: '3',
-      title: 'In Progress',
-      color: '#FFBF29',
-      background: 'rgba(255, 191, 41, 0.05)',
-      date: '--',
+      id: "3",
+      title: "In Progress",
+      color: "#FFBF29",
+      background: "rgba(255, 191, 41, 0.05)",
+      date: "--",
     },
     {
-      id: '4',
-      title: 'Completed',
-      color: '#00D448',
-      background: 'rgba(0, 212, 72, 0.05)',
-      date: '--',
+      id: "4",
+      title: "Completed",
+      color: "#00D448",
+      background: "rgba(0, 212, 72, 0.05)",
+      date: "--",
     },
-  ])
+  ]);
+
 
   useEffect(() => {
     if (applied) {
       setData((prev) => {
-        const updated = [...prev]
-        updated[updated.findIndex((el) => el.title === 'Applied')] = {
-          ...updated[updated.findIndex((el) => el.title === 'Applied')],
-          date: format(new Date(applied), 'do MMMM, yyyy'),
-        }
-        return updated
-      })
+
+        const updated = [...prev];
+        updated[updated.findIndex((el) => el.title === "Applied")] = {
+          ...updated[updated.findIndex((el) => el.title === "Applied")],
+          date: format(new Date(applied), "do MMMM, yyyy"),
+        };
+        return updated;
+      });
     }
-  }, [applied])
+  }, [applied]);
+
 
   return (
     <>
@@ -61,7 +65,8 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
                     backgroundColor={item.background}
                   >
                     {item.title}
-                  </ListSpan>{' '}
+                  </ListSpan>{" "}
+
                   <br /> <DateSpan>{item.date}</DateSpan>
                 </ListItem>
               ))}
@@ -73,14 +78,16 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
         <StatusWrapper>
           <TimelineWrapper>
             <Text>Process Timeline</Text>
-            <Close onClick={handleClose} style={{ cursor: 'pointer' }} />
+            <Close onClick={handleClose} style={{ cursor: "pointer" }} />
+
           </TimelineWrapper>
           <StatusContainer>
             {data.map((item, index) => (
               <ListItem color={item.color}>
                 <ListSpan color={item.color} backgroundColor={item.background}>
                   {item.title}
-                </ListSpan>{' '}
+                </ListSpan>{" "}
+
                 <DateSpan>{item.date}</DateSpan>
               </ListItem>
             ))}
@@ -88,8 +95,9 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
         </StatusWrapper>
       )}
     </>
-  )
-}
+  );
+};
+
 
 export default Stepbar
 
@@ -116,7 +124,8 @@ const StepContainer = styled.div`
     transform: translateY(3%);
     position: relative;
   }
-`
+
+`;
 
 const List = styled.ul`
   gap: 48px;
@@ -132,13 +141,14 @@ const List = styled.ul`
     width: 3px;
     z-index: 1px; */
   }
-`
+
+`;
 
 const ListItem = styled.li`
   list-style-type: none;
   margin: -5px auto 0px auto;
   ::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 16px;
     height: 16px;
@@ -146,7 +156,7 @@ const ListItem = styled.li`
     border-radius: 50%;
     left: -8px;
   }
-`
+`;
 
 const ListSpan = styled.span`
   color: ${(props) => props.color};
@@ -154,12 +164,12 @@ const ListSpan = styled.span`
   padding: 4px 16px;
   display: inline;
   border-radius: 12px;
-`
+`;
 const DateSpan = styled.span`
   font-size: 14px;
   line-height: 31px;
   color: #4e5152;
-`
+`;
 const StatusWrapper = styled.div`
   max-width: 380px;
   background: #ffffff;
@@ -170,14 +180,16 @@ const StatusWrapper = styled.div`
   flex-direction: column;
   gap: 46px;
   width: 100%;
-`
+`;
+
 const TimelineWrapper = styled.div`
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
   margin-inline: 24px 24px;
   margin-top: 44px;
-`
+`;
+
 
 const Text = styled.div`
   font-weight: 600;
@@ -186,7 +198,8 @@ const Text = styled.div`
   letter-spacing: -0.02em;
   text-transform: capitalize;
   color: #242627;
-`
+`;
+
 const StatusContainer = styled.div`
   width: 289px;
   margin-inline: 45px 45px;
@@ -208,7 +221,9 @@ const StatusContainer = styled.div`
     transform: translateY(3%);
     position: relative;
   }
-`
+
+`;
+
 const StatusDateWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -216,7 +231,9 @@ const StatusDateWrapper = styled.div`
   align-items: center;
   padding: 0px;
   gap: 24px;
-`
+
+`;
+
 const Status = styled.div`
   display: flex;
   flex-direction: row;
@@ -226,17 +243,23 @@ const Status = styled.div`
   width: 87px;
   background: rgba(0, 162, 212, 0.05);
   border-radius: 12px;
-`
+
+`;
+
 const StatusContent = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: #00a2d4;
-`
+
+`;
+
 const DateContainer = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
-`
+
+`;
+

@@ -71,7 +71,9 @@ const Business = () => {
   useEffect(() => {
     if (location.pathname === "/dashboard/businesses/all-businesses")
       store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
-    if (location.pathname === "/dashboard/businesses/submitted-applications")
+
+    if (location.pathname === "/dashboard/businesses/pending-applications")
+
       store.dispatch(
         setBusinessesShown({
           total: submittedTotal,
@@ -92,70 +94,6 @@ const Business = () => {
     localStorage.removeItem("countryISO");
   }, []);
 
-	return (
-			<Container>
-			<Header>
-				<MainHeader>
-					<TopContent>
-						<div>
-							<PageTitle>Businesses</PageTitle>
-							<RewardSummaryCard
-								shown={businessesShown.shown}
-								total={businessesShown.total}
-							/>
-						</div>
-						<Drop>
-							<select>
-								<option value="Sort">Sort</option>
-								<option value="All">All</option>
-							</select>
-						</Drop>
-					</TopContent>
-					<BottomContent>
-						<SearchWrapper>
-							<Search style={searchStyle} iconStyle={iconStyle} />
-						</SearchWrapper>
-						<ButtonWrapper>
-							<button onClick={handleLaunch}>
-								<NoteIcon />
-								Launch a Business
-							</button>
-						</ButtonWrapper>
-					</BottomContent>
-				</MainHeader>
-				<SubHeader>
-					<ActiveNav
-						text="All"
-						total={
-							submitted.isSuccess && drafts.isSuccess
-								? submitted?.currentData.length +
-								  drafts?.currentData.length
-								: 0
-						}
-						path={"/dashboard/businesses/all-businesses"}
-					/>
-					<ActiveNav
-						text="Submitted"
-						total={
-							submitted.isSuccess
-								? submitted?.currentData.length
-								: 0
-						}
-						path="/dashboard/businesses/pending-applications"
-					/>
-					<ActiveNav
-						text="Draft"
-						total={
-							drafts.isSuccess ? drafts?.currentData.length : 0
-						}
-						path="/dashboard/businesses/draft-applications"
-					/>
-				</SubHeader>
-			</Header>
-			<Outlet />
-			<AppFeedback subProject="Businesses" />
-		</Container>
-	);
   return (
     <Container>
       <Header>
@@ -200,7 +138,8 @@ const Business = () => {
           <ActiveNav
             text="Submitted"
             total={submitted.isSuccess ? submitted?.currentData.length : 0}
-            path="/dashboard/businesses/submitted-applications"
+            path="/dashboard/businesses/pending-applications"
+
           />
           <ActiveNav
             text="Draft"
@@ -214,7 +153,6 @@ const Business = () => {
     </Container>
   );
 };
-
 export default Business;
 
 const SearchWrapper = styled.div`
