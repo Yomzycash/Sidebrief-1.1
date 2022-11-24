@@ -145,13 +145,13 @@ const DirectorsInfo = () => {
       if (directorData) {
         setOpenModal(false);
       } else {
-        console.log(addDirectorResponse.error);
+        // console.log(addDirectorResponse.error);
         toast.error(error.data.message);
       }
     }
     // Runs if failed to add member
     else if (error) {
-      console.log(error);
+      // console.log(error);
       handleError(error);
     }
   };

@@ -79,10 +79,6 @@ const BeneficiariesKYC = () => {
   }, []);
 
   const handleChange = async (files, beneficiary, type) => {
-    console.log("value of the component is", files);
-    console.log("shareholder is", beneficiary);
-    console.log("component name", type);
-
     // const uploadedFile = e.target.files[0];
     // setUploadedFileDetails(uploadedFile);
     // setFileName(uploadedFile.name);
@@ -115,7 +111,6 @@ const BeneficiariesKYC = () => {
     //   toast.success("Valid Document");
 
     const res = await convertToLink(files[0]);
-    console.log("conversion", res.url);
 
     const formatType = type.split("_").join(" ");
     const requiredBeneficialOwnerKYCData = {
@@ -129,19 +124,12 @@ const BeneficiariesKYC = () => {
       },
     };
 
-    console.log("input data to db", requiredBeneficialOwnerKYCData);
     const beneficialResult = await addBeneficialKYC(
       requiredBeneficialOwnerKYCData
     );
-    console.log(beneficialResult);
     if (beneficialResult.data) {
-      console.log(
-        "successssssssssssssss",
-        beneficialResult.data.beneficialOwnersKYC
-      );
       let returnedArray = beneficialResult.data.beneficialOwnersKYC;
       let lastElememt = returnedArray[returnedArray.length - 1];
-      console.log("last member added is", lastElememt);
 
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
@@ -161,48 +149,31 @@ const BeneficiariesKYC = () => {
         return updatedState;
       });
     } else if (beneficialResult.error) {
-      console.log(beneficialResult.error?.data.message);
       toast.error(beneficialResult.error?.data.message);
     }
   };
 
-  console.log("yyyyyyy", documentContainer);
-
   const functionToPrintObject = (componentKey) => {
-    console.log(componentKey);
     documentContainer.forEach((list) => {
       if (Object.keys(list.files).includes(componentKey) === true) {
-        console.log(list.files.proof);
       } else {
         return;
       }
     });
   };
 
-  console.log("favour", functionToPrintObject("government"));
-
   useEffect(() => {
     documentContainer.forEach((item) => {
-      console.log("tee", item.files);
       Object.keys(item.files).forEach((key) => {
-        console.log("mylist", key);
-        // console.log(item.files[index]);
         setStoreType(key);
       });
     });
   }, [documentContainer]);
   store.dispatch(setBeneficiaryDocs(documentContainer));
 
-  console.log(beneficiaryContainer);
-
-  console.log("get type", storeType);
   const handleRemove = (beneficiary, type) => {
-    console.log("beneficiary delete", beneficiary);
-    console.log("type fttt", type);
-    // console.log("get type", storeType);
     // if (type === storeType) {
     //   // let generatedDocumentType
-    //   console.log("freeeeee", documentContainer.files.type.documentCode);
     //   // const requiredDeleteData = {
     //   //   launchCode: generatedLaunchCode,
     //   //   memberCode: shareholder,

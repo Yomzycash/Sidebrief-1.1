@@ -76,15 +76,15 @@ const KYCFileUpload = ({
         beneficialOwnerCode: beneficiaryCode,
         documentCode: documentInfo.documentCode,
       };
-      console.log("delete data to be", requiredDeleteData);
+      // console.log("delete data to be", requiredDeleteData);
       const response = await deleteBeneficialKYC(requiredDeleteData);
-      console.log("deleeeeeee", response?.data[0].message);
+      // console.log("deleeeeeee", response?.data[0].message);
       if (response.data) {
         toast.success(response?.data[0].message);
         setDeleted(!deleted);
         setDocumentInfo({});
       } else if (response.error) {
-        console.log(response.error?.data.message);
+        // console.log(response.error?.data.message);
         toast.error(response.error?.data.message);
       }
     } else {
@@ -93,15 +93,15 @@ const KYCFileUpload = ({
         memberCode: memberCode,
         documentCode: documentInfo.documentCode,
       };
-      console.log("delete data to be", requiredDeleteData);
+      // console.log("delete data to be", requiredDeleteData);
       const response = await deleteMemberKYC(requiredDeleteData);
-      console.log("deleeeeeee", response?.data[0].message);
+      // console.log("deleeeeeee", response?.data[0].message);
       if (response.data) {
         toast.success(response?.data[0].message);
         setDeleted(!deleted);
         setDocumentInfo({});
       } else if (response.error) {
-        console.log(response.error?.data.message);
+        // console.log(response.error?.data.message);
         toast.error(response.error?.data.message);
       }
     }
@@ -110,7 +110,7 @@ const KYCFileUpload = ({
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
-  console.log("files", acceptedFiles);
+  // console.log("files", acceptedFiles);
   return (
     <Container>
       <FileSection className="container">

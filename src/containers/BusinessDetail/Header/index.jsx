@@ -59,7 +59,6 @@ export const Header = () => {
 
   const handleClick = () => {
     setOpenModal(true);
-  };
 
   const deleteAction = async () => {
     // perform delete action here
@@ -86,6 +85,14 @@ export const Header = () => {
 
   if (launchRequest.isSuccess) {
     console.log(launchRequest.data);
+          ? "submitted-applications"
+          : null
+      }`
+    );
+  };
+
+  if (launchRequest.isSuccess) {
+    // console.log(launchRequest.data);
   }
 
   const triggerSearch = (query) => {
@@ -138,6 +145,7 @@ export const Header = () => {
               ? `draft-applications`
               : launchRequest.data.registrationStatus === "submitted"
               ? "pending-applications"
+              ? "submitted-applications"
               : null
           }`}
         >
@@ -187,6 +195,7 @@ export const Header = () => {
           </LHS>
           <RHS>
             <DeleteButton onClick={handleClick}>
+            <DeleteButton onClick={deleteAction}>
               <p>Delete</p>
               <RedTrash />
             </DeleteButton>

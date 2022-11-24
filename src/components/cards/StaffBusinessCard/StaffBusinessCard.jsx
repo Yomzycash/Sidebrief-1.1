@@ -1,49 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { AiOutlineArrowRight } from 'react-icons/ai'
-import Search from 'components/navbar/Search'
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import Search from "components/navbar/Search";
 import {
   useGetAllCountriesQuery,
   useGetAllTheEntitiesQuery,
-} from 'services/launchService'
+} from "services/launchService";
 
 const StaffBusinessCard = ({ country, entity }) => {
-  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery()
-  const allEntities = useGetAllTheEntitiesQuery()
+  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const allEntities = useGetAllTheEntitiesQuery();
   //console.log(allEntities)
-  const [countries, setCountries] = useState([])
-  const [entities, setEntities] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [SearchEntityTerm, setSearchEntitityTerm] = useState('')
+  const [countries, setCountries] = useState([]);
+  const [entities, setEntities] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [SearchEntityTerm, setSearchEntitityTerm] = useState("");
 
   //console.log(data)
   const searchStyle = {
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    width: '100%',
-  }
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    width: "100%",
+  };
 
   useEffect(() => {
     if (data) {
-      setCountries(data)
+      setCountries(data);
     }
-  }, [data])
+  }, [data]);
   useEffect(() => {
     if (allEntities.data) {
-      setEntities(allEntities.data)
+      setEntities(allEntities.data);
     }
-  }, [allEntities.data])
+  }, [allEntities.data]);
   //   console.log(countries)
 
   //removing duplicates from allEntities
-  const filteredEntities = []
+  const filteredEntities = [];
   const unique = entities.filter((element) => {
-    const isDuplicate = filteredEntities.includes(element.entityName)
+    const isDuplicate = filteredEntities.includes(element.entityName);
     if (!isDuplicate) {
-      filteredEntities.push(element.entityName)
+      filteredEntities.push(element.entityName);
     }
-  })
-  console.log(filteredEntities)
+  });
+  // console.log(filteredEntities)
   return (
     <CardContainer>
       <Top>
@@ -75,7 +75,7 @@ const StaffBusinessCard = ({ country, entity }) => {
             style={searchStyle}
             placeholder="Search a country"
             onChange={(e) => {
-              setSearchTerm(e.target.value)
+              setSearchTerm(e.target.value);
             }}
           />
         )}
@@ -84,14 +84,14 @@ const StaffBusinessCard = ({ country, entity }) => {
           <LowerContainer>
             {countries
               .filter((country) => {
-                if (searchTerm == '') {
-                  return country.countryName
+                if (searchTerm == "") {
+                  return country.countryName;
                 } else if (
                   country.countryName
                     .toLowerCase()
                     .includes(searchTerm.toLowerCase())
                 ) {
-                  return country.countryName
+                  return country.countryName;
                 }
               })
               .map((country) => {
@@ -99,7 +99,7 @@ const StaffBusinessCard = ({ country, entity }) => {
                   <CountryWrapper key={country.countryISO}>
                     <TextWrapper>{country.countryName}</TextWrapper>
                   </CountryWrapper>
-                )
+                );
               })}
           </LowerContainer>
         )}
@@ -108,21 +108,21 @@ const StaffBusinessCard = ({ country, entity }) => {
             style={searchStyle}
             placeholder="Search an entity"
             onChange={(e) => {
-              setSearchEntitityTerm(e.target.value)
+              setSearchEntitityTerm(e.target.value);
             }}
           />
         )}
         {entity && (
           <LowerContainer>
-            {' '}
+            {" "}
             {filteredEntities
               .filter((entity) => {
-                if (SearchEntityTerm == '') {
-                  return entity
+                if (SearchEntityTerm == "") {
+                  return entity;
                 } else if (
                   entity.toLowerCase().includes(SearchEntityTerm.toLowerCase())
                 ) {
-                  return entity
+                  return entity;
                 }
               })
               .map((entity, index) => {
@@ -130,16 +130,16 @@ const StaffBusinessCard = ({ country, entity }) => {
                   <CountryWrapper key={index}>
                     <TextWrapper>{entity}</TextWrapper>
                   </CountryWrapper>
-                )
+                );
               })}
           </LowerContainer>
         )}
       </CountryContainer>
     </CardContainer>
-  )
-}
+  );
+};
 
-export default StaffBusinessCard
+export default StaffBusinessCard;
 const CardContainer = styled.div`
   max-width: 100%;
   padding: 46px 28px 28px 28px;
@@ -147,14 +147,14 @@ const CardContainer = styled.div`
   border-width: 0px 0px 0px 1px;
   border-style: solid;
   border-color: #edf1f7;
-`
+`;
 const Top = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
-`
+`;
 
 const Title = styled.h2`
   font-weight: 600;
@@ -162,7 +162,7 @@ const Title = styled.h2`
   line-height: 30px;
   letter-spacing: 0.01em;
   color: #242627;
-`
+`;
 const ViewWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -171,7 +171,7 @@ const ViewWrapper = styled.div`
   padding: 10px 24px;
   gap: 8px;
   cursor: pointer;
-`
+`;
 const Text = styled.h3`
   font-weight: 500;
   font-size: 14px;
@@ -181,7 +181,7 @@ const Text = styled.h3`
   text-align: center;
   letter-spacing: -0.5px;
   color: #00a2d4;
-`
+`;
 const BottomText = styled.h3`
   font-weight: 400;
   font-size: 14px;
@@ -189,7 +189,7 @@ const BottomText = styled.h3`
   letter-spacing: -0.02em;
   color: #959697;
   margin-bottom: 24px;
-`
+`;
 const CountryContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -197,7 +197,7 @@ const CountryContainer = styled.div`
   padding: 0px;
   gap: 24px;
   width: 100%;
-`
+`;
 const LowerContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -205,7 +205,7 @@ const LowerContainer = styled.div`
   padding: 0px;
   gap: 4px;
   width: 100%;
-`
+`;
 const CountryWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -215,10 +215,10 @@ const CountryWrapper = styled.div`
   background: #ffffff;
   border: 1px solid #edf1f7;
   border-radius: 20px;
-`
+`;
 const TextWrapper = styled.h3`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #242627;
-`
+`;
