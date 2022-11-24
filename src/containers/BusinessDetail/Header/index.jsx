@@ -59,7 +59,7 @@ export const Header = () => {
 
   const handleClick = () => {
     setOpenModal(true);
-
+  };
   const deleteAction = async () => {
     // perform delete action here
     await deleteLaunch({
@@ -72,7 +72,7 @@ export const Header = () => {
           : launchRequest.data.registrationStatus === "pending"
           ? `draft-applications`
           : launchRequest.data.registrationStatus === "submitted"
-          ? "pending-applications"
+          ? "submitted-applications"
           : null
       }`
     );
@@ -85,11 +85,7 @@ export const Header = () => {
 
   if (launchRequest.isSuccess) {
     console.log(launchRequest.data);
-          ? "submitted-applications"
-          : null
-      }`
-    );
-  };
+  }
 
   if (launchRequest.isSuccess) {
     // console.log(launchRequest.data);
@@ -98,7 +94,6 @@ export const Header = () => {
   const triggerSearch = (query) => {
     // perform search filter here
   };
-
 
   const getStatus = (stat) => {
     switch (stat) {
@@ -145,7 +140,6 @@ export const Header = () => {
               : launchRequest.data.registrationStatus === "pending"
               ? `draft-applications`
               : launchRequest.data.registrationStatus === "submitted"
-              ? "pending-applications"
               ? "submitted-applications"
               : null
           }`}
@@ -196,7 +190,6 @@ export const Header = () => {
           </LHS>
           <RHS>
             <DeleteButton onClick={handleClick}>
-            <DeleteButton onClick={deleteAction}>
               <p>Delete</p>
               <RedTrash />
             </DeleteButton>
@@ -279,10 +272,12 @@ const ModalWrapper = styled.div`
   padding: 40px 0px;
   flex-flow: column;
 `;
-export const ModalButton = styled.div`
+
+const ModalButton = styled.div`
   display: flex;
   width: 80%;
 `;
+
 const Question = styled.p`
   font-size: clamp(16px, 1.5vw, 20px);
   margin-bottom: 20px;
