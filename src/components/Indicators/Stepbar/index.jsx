@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { ReactComponent as Close } from "asset/images/close.svg";
-import { format } from "date-fns";
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { ReactComponent as Close } from 'asset/images/close.svg'
+import { format } from 'date-fns'
 
 const Stepbar = ({ mobile, handleClose, applied }) => {
   const [data, setData] = useState([
     {
+
       id: "1",
       title: "Applied",
       color: "#00A2D4",
@@ -35,9 +36,11 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
     },
   ]);
 
+
   useEffect(() => {
     if (applied) {
       setData((prev) => {
+
         const updated = [...prev];
         updated[updated.findIndex((el) => el.title === "Applied")] = {
           ...updated[updated.findIndex((el) => el.title === "Applied")],
@@ -47,6 +50,7 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
       });
     }
   }, [applied]);
+
 
   return (
     <>
@@ -62,6 +66,7 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
                   >
                     {item.title}
                   </ListSpan>{" "}
+
                   <br /> <DateSpan>{item.date}</DateSpan>
                 </ListItem>
               ))}
@@ -74,6 +79,7 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
           <TimelineWrapper>
             <Text>Process Timeline</Text>
             <Close onClick={handleClose} style={{ cursor: "pointer" }} />
+
           </TimelineWrapper>
           <StatusContainer>
             {data.map((item, index) => (
@@ -81,6 +87,7 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
                 <ListSpan color={item.color} backgroundColor={item.background}>
                   {item.title}
                 </ListSpan>{" "}
+
                 <DateSpan>{item.date}</DateSpan>
               </ListItem>
             ))}
@@ -91,7 +98,8 @@ const Stepbar = ({ mobile, handleClose, applied }) => {
   );
 };
 
-export default Stepbar;
+
+export default Stepbar
 
 const StepContainer = styled.div`
   border: 1px solid #edf1f7;
@@ -116,6 +124,7 @@ const StepContainer = styled.div`
     transform: translateY(3%);
     position: relative;
   }
+
 `;
 
 const List = styled.ul`
@@ -132,6 +141,7 @@ const List = styled.ul`
     width: 3px;
     z-index: 1px; */
   }
+
 `;
 
 const ListItem = styled.li`
@@ -171,6 +181,7 @@ const StatusWrapper = styled.div`
   gap: 46px;
   width: 100%;
 `;
+
 const TimelineWrapper = styled.div`
   display: inline-flex;
   justify-content: space-between;
@@ -178,6 +189,7 @@ const TimelineWrapper = styled.div`
   margin-inline: 24px 24px;
   margin-top: 44px;
 `;
+
 
 const Text = styled.div`
   font-weight: 600;
@@ -187,6 +199,7 @@ const Text = styled.div`
   text-transform: capitalize;
   color: #242627;
 `;
+
 const StatusContainer = styled.div`
   width: 289px;
   margin-inline: 45px 45px;
@@ -208,7 +221,9 @@ const StatusContainer = styled.div`
     transform: translateY(3%);
     position: relative;
   }
+
 `;
+
 const StatusDateWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -216,7 +231,9 @@ const StatusDateWrapper = styled.div`
   align-items: center;
   padding: 0px;
   gap: 24px;
+
 `;
+
 const Status = styled.div`
   display: flex;
   flex-direction: row;
@@ -226,17 +243,23 @@ const Status = styled.div`
   width: 87px;
   background: rgba(0, 162, 212, 0.05);
   border-radius: 12px;
+
 `;
+
 const StatusContent = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: #00a2d4;
+
 `;
+
 const DateContainer = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
+
 `;
+

@@ -71,7 +71,9 @@ const Business = () => {
   useEffect(() => {
     if (location.pathname === "/dashboard/businesses/all-businesses")
       store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
+
     if (location.pathname === "/dashboard/businesses/pending-applications")
+
       store.dispatch(
         setBusinessesShown({
           total: submittedTotal,
@@ -137,6 +139,7 @@ const Business = () => {
             text="Submitted"
             total={submitted.isSuccess ? submitted?.currentData.length : 0}
             path="/dashboard/businesses/pending-applications"
+
           />
           <ActiveNav
             text="Draft"

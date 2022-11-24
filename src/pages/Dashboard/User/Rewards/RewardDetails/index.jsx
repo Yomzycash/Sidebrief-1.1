@@ -63,7 +63,7 @@ const RewardDetails = (props) => {
       (reward) => reward.rewardID === rewardID
     );
     setSelectedReward(rewardDetails);
-    console.log(rewardDetails);
+    // console.log(rewardDetails);
   }, [data]);
 
   const handleClickOpen = () => {
@@ -76,7 +76,7 @@ const RewardDetails = (props) => {
 
   const handleRewardClick = (reward) => {
     setSelectedReward(reward);
-    console.log(reward);
+    // console.log(reward);
   };
 
   return (

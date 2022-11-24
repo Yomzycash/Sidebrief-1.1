@@ -65,16 +65,16 @@ const ResellerRegister = () => {
 
   const submitForm = async (formData) => {
     let response = await registerNewReseller(JSON.stringify(formData));
-    console.log(response);
+    // console.log(response);
     let data = response?.data;
     let error = response?.error;
     if (data) {
       store.dispatch(saveResellerInfo(data));
-      console.log(data.message);
+      // console.log(data.message);
       toast.success(data.message);
       navigate(`${location.pathnamgite}/verifyotp`);
     } else if (error) {
-      console.log(error.data.message);
+      // console.log(error.data.message);
       toast.error(error.data.message);
     }
   };

@@ -71,7 +71,6 @@ const ShareHolderKYC = () => {
 
     let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
     setShareholder(newMerge);
-    console.log("merge dataaaaaa", newMerge);
 
     return newMerge;
   };
@@ -89,10 +88,6 @@ const ShareHolderKYC = () => {
   };
 
   const handleChange = async (files, shareholder, type) => {
-    console.log("value of the component is", files);
-    console.log("shareholder is", shareholder);
-    console.log("component name", type);
-
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
 
@@ -110,8 +105,6 @@ const ShareHolderKYC = () => {
     });
 
     const res = await convertToLink(files[0]);
-    console.log("conversion", res.url);
-
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: generatedLaunchCode,
@@ -123,20 +116,15 @@ const ShareHolderKYC = () => {
         fileType: files[0].type,
       },
     };
-    console.log("data to db", requiredAddMemberData);
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log("document respsonse", response.data);
     if (response.data) {
-      console.log("returned data", response.data);
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
     } else if (response.error) {
-      console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
   };
 
-  console.log(documentContainer);
   store.dispatch(setShareholderDocs(documentContainer));
   localStorage.setItem(
     "localShareholderInfo",
@@ -150,8 +138,6 @@ const ShareHolderKYC = () => {
   };
 
   const handleRemove = async (documentName) => {
-    console.log("document name is", documentName);
-
     // console.log("shareholder deleteeeeeeeeeeee", shareholder);
     // const requiredDeleteData = {
     //   launchCode: generatedLaunchCode,
