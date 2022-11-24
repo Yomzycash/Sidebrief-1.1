@@ -65,13 +65,13 @@ const ForgotPassword = () => {
   }, []);
 
   const submitForm = async (data) => {
-    console.log(data);
+    // console.log(data);
     const response = await sendResetPasswordCode(data);
     const resData = response?.data;
     const error = response?.error;
 
     if (resData) {
-      console.log(resData);
+      // console.log(resData);
       toast.success(resData.message);
       navigate(`${location.pathname}/verifyotp`, { state: data.email });
     } else {
@@ -80,7 +80,7 @@ const ForgotPassword = () => {
       } else {
         toast.error(error.data?.message);
       }
-      console.log(error);
+      // console.log(error);
     }
   };
   return (

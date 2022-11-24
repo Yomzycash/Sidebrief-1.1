@@ -67,7 +67,7 @@ const Navbar = ({
     }
   }, []);
 
-  console.log(msgObj);
+  // console.log(msgObj);
 
   const handleCheck = (e, item) => {
     const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item);

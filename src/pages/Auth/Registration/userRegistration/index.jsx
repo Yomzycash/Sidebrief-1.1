@@ -64,7 +64,7 @@ const UserRegistration = () => {
     let correctedData = correctFormDate(formData);
     let response = await registerNewUser(JSON.stringify(correctedData));
     let data = response?.data;
-    console.log(data);
+    // console.log(data);
     let error = response?.error;
     if (data) {
       store.dispatch(saveUserInfo(data));
@@ -73,11 +73,11 @@ const UserRegistration = () => {
         JSON.stringify({ ...data, newUser: true })
       );
       localStorage.setItem("userEmail", formData.email);
-      console.log(data.message);
+      // console.log(data.message);
       toast.success(data.message);
       navigate(`${location.pathname}/success`);
     } else if (error) {
-      console.log(error.data.message);
+      // console.log(error.data.message);
       toast.error(error.data.message);
     }
   };
@@ -96,7 +96,7 @@ const UserRegistration = () => {
   const handleGenderChange = (value) => {
     var string = Object.values(value)[0];
     setValue("gender", string, { shouldValidate: true });
-    console.log(string);
+    // console.log(string);
   };
   const handleDateChange = (value) => {
     setValue("date", value, { shouldValidate: true });

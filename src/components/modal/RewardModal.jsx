@@ -37,7 +37,7 @@ const RewardModal = ({ handleClose }) => {
       setSuccessful(true);
 
       let link = claimedData[claimedData.length - 1].rewardLink;
-      console.log(link);
+      // console.log(link);
       window.open(link, "_blank");
 
       setTimeout(() => {

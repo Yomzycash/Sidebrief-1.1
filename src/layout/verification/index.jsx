@@ -23,7 +23,7 @@ const Verify = ({ title, paragraph }) => {
   };
 
   const { state } = useLocation();
-  console.log("state is", state);
+  // console.log("state is", state);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -32,20 +32,20 @@ const Verify = ({ title, paragraph }) => {
       email: state,
       code: otpcode,
     };
-    console.log(requiredData);
+    // console.log(requiredData);
     const response = await validateResetCode(requiredData);
     const resData = response?.data;
     const error = response?.error;
 
-    console.log(response);
+    // console.log(response);
     if (resData) {
-      console.log(resData);
+      // console.log(resData);
       toast.success(resData.message);
       navigate(`${location.pathname}/resetpassword`, {
         state: requiredData.email,
       });
     } else {
-      console.log(error);
+      // console.log(error);
       toast.error(error.data.message);
     }
   };
@@ -57,18 +57,18 @@ const Verify = ({ title, paragraph }) => {
   }, [otpcode]);
 
   const resendVerification = async () => {
-    console.log("sent");
+    // console.log("sent");
     const data = {
       email: state,
     };
 
-    console.log(data);
+    // console.log(data);
     const response = await sendVerification(data);
     const resData = response?.data;
     const error = response?.error;
 
     if (resData) {
-      console.log(resData);
+      // console.log(resData);
       toast.success(resData?.message);
       // navigate(`${location.pathname}/verifyotp`, { email: data.email });
     } else {
@@ -77,7 +77,7 @@ const Verify = ({ title, paragraph }) => {
       } else {
         toast.error(error.data?.message);
       }
-      console.log(error);
+      // console.log(error);
     }
   };
   return (

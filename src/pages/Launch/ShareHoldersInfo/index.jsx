@@ -207,7 +207,6 @@ const ShareHoldersInfo = () => {
     let exists = directorsData.findIndex(
       (e) => e.memberCode === selectedDirector.memberCode
     );
-    console.log(exists);
     if (exists >= 0) {
       const res = await directorDelete(
         // LaunchApplicationInfo,
@@ -216,7 +215,6 @@ const ShareHoldersInfo = () => {
         deleteDirector
         // deleteMember
       );
-      console.log(res);
     }
   };
 
@@ -299,7 +297,6 @@ const ShareHoldersInfo = () => {
         } else {
           handleDirectorUpdate(formData, selectedDirector);
         }
-        console.log(selectedShareholder);
         handleModalClose();
       }
 
@@ -309,7 +306,6 @@ const ShareHoldersInfo = () => {
         handleModalClose();
       }
     } else {
-      console.log(error);
       handleError(error);
     }
   };

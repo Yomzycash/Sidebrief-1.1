@@ -69,11 +69,11 @@ const PartnerRegistration = () => {
     let error = response?.error;
     if (data) {
       store.dispatch(savePartnerInfo(data));
-      console.log(data.message);
+      // console.log(data.message);
       toast.success(data.message);
       navigate(`${location.pathname}/verifyotp`);
     } else if (error) {
-      console.log(error.data.message);
+      // console.log(error.data.message);
       toast.error(error.data.message);
     }
   };

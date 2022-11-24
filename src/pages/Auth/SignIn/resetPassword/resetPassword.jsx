@@ -25,7 +25,7 @@ const ResetPassword = () => {
   const [changePassword, { isLoading, isSuccess }] =
     useChangePasswordMutation();
   const { state } = useLocation();
-  console.log(state);
+  // console.log(state);
   const {
     handleSubmit,
     register,
