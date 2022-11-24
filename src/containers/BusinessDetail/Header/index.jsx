@@ -101,7 +101,7 @@ export const Header = () => {
         };
       case "submitted":
         return {
-          text: "pending",
+          text: "submitted",
           color: "#D400CC",
         };
       default:
