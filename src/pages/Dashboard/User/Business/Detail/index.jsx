@@ -1,4 +1,9 @@
-import { DetailContainer, DetailWrapper, Loader } from "./styles";
+import {
+  DetailContainer,
+  DetailWrapper,
+  Loader,
+  ContinueButton,
+} from "./styles";
 import { StepBar } from "components/Indicators";
 import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
 import { useSelector } from "react-redux";
@@ -71,6 +76,9 @@ const BusinessDetail = () => {
     boxShadow:
       "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
   };
+
+  const isPending = isLoading ? false : data.registrationStatus === "pending";
+
   return (
     <>
       {isLoading ? (
@@ -78,38 +86,42 @@ const BusinessDetail = () => {
           <Puff stroke="#00A2D4" fill="white" />
         </Loader>
       ) : (
-        <DetailWrapper>
-          {matches && (
-            <StatusWrapper>
-              <Status> Status</Status>
-              <LowerContainer>
-                <StatusContent>In Progress</StatusContent>
-                <TimeLine onClick={handleClickOpen}>View timeline</TimeLine>
-                <Dialog onClose={handleClose} open={open}>
-                  <DialogContent style={StepbarStyle}>
-                    <StepBar
-                      applied={data.createdAt}
-                      mobile
-                      handleClose={handleClose}
-                    />
-                  </DialogContent>
-                </Dialog>
-              </LowerContainer>
-            </StatusWrapper>
-          )}
-          <DetailContainer>
-            <StaffBusinessInfoCard
-              businessNames={data.businessNames}
-              businessObjectives={data.businessObjects}
-              address={data.businessAddress}
-              type={data.registrationType}
-            />
-            <StepBar applied={data.createdAt} />+
-          </DetailContainer>
-          <button onClick={handleContinueNavigation}>
-            Continue Application
-          </button>
-        </DetailWrapper>
+        <>
+          <DetailWrapper>
+            {matches && (
+              <StatusWrapper>
+                <Status> Status</Status>
+                <LowerContainer>
+                  <StatusContent>In Progress</StatusContent>
+                  <TimeLine onClick={handleClickOpen}>View timeline</TimeLine>
+                  <Dialog onClose={handleClose} open={open}>
+                    <DialogContent style={StepbarStyle}>
+                      <StepBar
+                        applied={data.createdAt}
+                        mobile
+                        handleClose={handleClose}
+                      />
+                    </DialogContent>
+                  </Dialog>
+                </LowerContainer>
+              </StatusWrapper>
+            )}
+            <DetailContainer>
+              <StaffBusinessInfoCard
+                businessNames={data.businessNames}
+                businessObjectives={data.businessObjects}
+                address={data.businessAddress}
+                type={data.registrationType}
+              />
+              <StepBar applied={data.createdAt} />
+            </DetailContainer>
+          </DetailWrapper>
+          {isPending ? (
+            <ContinueButton onClick={handleContinueNavigation}>
+              Continue Application
+            </ContinueButton>
+          ) : null}
+        </>
       )}
     </>
   );
