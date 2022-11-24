@@ -99,25 +99,25 @@ export const Header = () => {
     // perform search filter here
   };
 
-  const getStatus = (stat) => {
-    switch (stat) {
-      case "pending":
-        return {
-          text: "draft",
-          color: "#00A2D4",
-        };
-      case "submitted":
-        return {
-          text: "pending",
-          color: "#D400CC",
-        };
-      default:
-        return {
-          text: stat,
-          color: "black",
-        };
-    }
-  };
+	const getStatus = (stat) => {
+		switch (stat) {
+			case "pending":
+				return {
+					text: "draft",
+					color: "#00A2D4",
+				};
+			case "submitted":
+				return {
+					text: "submitted",
+					color: "#D400CC",
+				};
+			default:
+				return {
+					text: stat,
+					color: "black",
+				};
+		}
+	};
 
   const subHeader = useRef();
 
