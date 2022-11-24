@@ -135,7 +135,7 @@ const Business = () => {
 						path={"/dashboard/businesses/all-businesses"}
 					/>
 					<ActiveNav
-						text="Pending"
+						text="Submitted"
 						total={
 							submitted.isSuccess
 								? submitted?.currentData.length
