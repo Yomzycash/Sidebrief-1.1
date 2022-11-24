@@ -110,13 +110,13 @@ const BusinessAddress = () => {
     const response = address.currentData.businessAddress
       ? await updateBusinessAddress(requiredAddressData)
       : await addBusinessAddress(requiredAddressData);
-    console.log(response);
+    // console.log(response);
 
     if (response.data) {
       store.dispatch(setBusinessAddress(requiredAddressData));
       handleNext();
     } else if (response.error) {
-      console.log(response.error?.data.message);
+      // console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
   };
@@ -149,7 +149,7 @@ const BusinessAddress = () => {
     if (address.isSuccess) {
       Loading.remove();
       const addressData = address.currentData.businessAddress;
-      console.log(addressData);
+      // console.log(addressData);
       const theCountry = addressData
         ? countries.current.find(
             (country) => country.name === addressData.addressCountry

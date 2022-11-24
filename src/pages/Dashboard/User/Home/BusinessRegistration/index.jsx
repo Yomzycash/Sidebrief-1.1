@@ -46,7 +46,7 @@ const BusinessRegistration = (props) => {
     allLaunch.sort((launch1, launch2) =>
       compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
     );
-    console.log(allLaunch);
+    // console.log(allLaunch);
   }
 
   const analytics = {

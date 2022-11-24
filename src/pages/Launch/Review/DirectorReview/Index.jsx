@@ -61,7 +61,6 @@ const DirectorReview = () => {
         }
       });
     });
-    console.log(directorsMembersMerged);
     setMergedResponse(directorsMembersMerged);
   };
 

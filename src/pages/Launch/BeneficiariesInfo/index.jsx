@@ -84,7 +84,7 @@ const DirectorsInfo = () => {
   };
 
   const handleError = (error) => {
-    console.log(error);
+    // console.log(error);
     if (error?.status === "FETCH_ERROR") {
       toast.error("Please check your internet connection");
     } else {
@@ -103,7 +103,7 @@ const DirectorsInfo = () => {
       beneficiariesLaunchInfo,
       deleteBeneficiary
     );
-    console.log(deleteResponse);
+    // console.log(deleteResponse);
 
     let error = deleteResponse.error;
 
@@ -144,7 +144,7 @@ const DirectorsInfo = () => {
       selectedBeneficiary,
       updateBeneficiary
     );
-    console.log(beneficiaryUpdateResponse);
+    // console.log(beneficiaryUpdateResponse);
 
     // The data from the response got from the backend
     let beneficiariesUpdatedData = beneficiaryUpdateResponse?.data;
@@ -172,7 +172,7 @@ const DirectorsInfo = () => {
     let beneficiariesData = [...beneficiaries.data.businessBeneficialOwners];
 
     setBeneficiariesInfo(beneficiariesData);
-    console.log(beneficiariesData);
+    // console.log(beneficiariesData);
   };
 
   useEffect(() => {

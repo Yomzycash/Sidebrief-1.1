@@ -114,7 +114,7 @@ const ReviewCard = ({
   const handleBeneficiary = async () => {
     const response = await viewBeneficials(launchInfo);
     const MemberKYCInfo = [...response.data.beneficialOwnersKYC];
-    console.log(MemberKYCInfo);
+    // console.log(MemberKYCInfo);
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.beneficialOwnerCode === beneficialOwnerCode
     );
@@ -122,21 +122,21 @@ const ReviewCard = ({
     const uploadedDetail = fileInfo.filter(
       (item) => item.documentType === "government id"
     );
-    console.log(uploadedDetail);
+    // console.log(uploadedDetail);
 
     let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
-    console.log(lastUploadDetail);
+    // console.log(lastUploadDetail);
     setGovernmentId(lastUploadDetail);
 
     //proof
     const uploadedProofDetail = fileInfo.filter(
       (item) => item.documentType === "proof of home address"
     );
-    console.log(uploadedDetail);
+    // console.log(uploadedDetail);
 
     let lastUploadProofDetail =
       uploadedProofDetail[uploadedProofDetail.length - 1];
-    console.log(lastUploadDetail);
+    // console.log(lastUploadDetail);
     setProof(lastUploadProofDetail);
 
     // passport
@@ -144,11 +144,11 @@ const ReviewCard = ({
     const uploadedPassportDetail = fileInfo.filter(
       (item) => item.documentType === "passport photograph"
     );
-    console.log(uploadedDetail);
+    // console.log(uploadedDetail);
 
     let lastUploadPassportDetail =
       uploadedPassportDetail[uploadedPassportDetail.length - 1];
-    console.log(lastUploadPassportDetail);
+    // console.log(lastUploadPassportDetail);
     setPassport(lastUploadPassportDetail);
   };
 
