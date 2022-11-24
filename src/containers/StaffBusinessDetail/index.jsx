@@ -64,7 +64,7 @@ export const Header = () => {
           : launchRequest.data.registrationStatus === "pending"
           ? `draft-applications`
           : launchRequest.data.registrationStatus === "submitted"
-          ? "pending-applications"
+          ? "submitted-applications"
           : null
       }`
     );
@@ -123,7 +123,7 @@ export const Header = () => {
               : launchRequest.data.registrationStatus === "pending"
               ? `draft-applications`
               : launchRequest.data.registrationStatus === "submitted"
-              ? "pending-applications"
+              ? "submitted-applications"
               : null
           }`}
         >

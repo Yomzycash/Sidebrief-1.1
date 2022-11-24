@@ -40,13 +40,13 @@ const BusinessDetail = () => {
     };
 
     let viewResponse = await viewPayLaunch(requiredInfo);
-    return viewResponse;
     // console.log(viewResponse);
+    return viewResponse;
   };
 
-  const handleContinueNavigation = () => {
-    let status = checkPaymentStatus();
-    // console.log(status);
+  const handleContinueNavigation = async () => {
+    let status = await checkPaymentStatus();
+    console.log(status);
 
     let data = status?.data?.businessPayment;
     let error = status?.error;
@@ -104,7 +104,7 @@ const BusinessDetail = () => {
               address={data.businessAddress}
               type={data.registrationType}
             />
-            <StepBar applied={data.createdAt} />
+            <StepBar applied={data.createdAt} />+
           </DetailContainer>
           <button onClick={handleContinueNavigation}>
             Continue Application

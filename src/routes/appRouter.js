@@ -253,7 +253,7 @@ const AppRouter = () => {
                   element={<AllBusinesses />}
                 ></Route>
                 <Route
-                  path="pending-applications"
+                  path="submitted-applications"
                   element={<PendingApplications />}
                 ></Route>
                 <Route
