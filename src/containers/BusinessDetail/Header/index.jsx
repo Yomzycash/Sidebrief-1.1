@@ -23,7 +23,9 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 import { Search } from "./Search";
 import { SortDropdown } from "./SortDropdown";
+import { Dialog } from "@mui/material";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { HiX } from "react-icons/hi";
 import {
   useViewLaunchRequestQuery,
   useDeleteLaunchRequestMutation,
@@ -31,10 +33,13 @@ import {
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
+import styled from "styled-components";
+import { CheckoutController } from "containers/Checkout";
 
 export const Header = () => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const [deleteLaunch] = useDeleteLaunchRequestMutation();
+  const [openModal, setOpenModal] = useState(false);
 
   const { code } = useParams();
   const { pathname } = useLocation();
@@ -52,6 +57,9 @@ export const Header = () => {
 
   const page = pathname.split("/").pop();
 
+  const handleClick = () => {
+    setOpenModal(true);
+
   const deleteAction = async () => {
     // perform delete action here
     await deleteLaunch({
@@ -64,6 +72,19 @@ export const Header = () => {
           : launchRequest.data.registrationStatus === "pending"
           ? `draft-applications`
           : launchRequest.data.registrationStatus === "submitted"
+          ? "pending-applications"
+          : null
+      }`
+    );
+    setOpenModal(false);
+  };
+
+  const handleNo = () => {
+    setOpenModal(false);
+  };
+
+  if (launchRequest.isSuccess) {
+    console.log(launchRequest.data);
           ? "submitted-applications"
           : null
       }`
@@ -123,6 +144,7 @@ export const Header = () => {
               : launchRequest.data.registrationStatus === "pending"
               ? `draft-applications`
               : launchRequest.data.registrationStatus === "submitted"
+              ? "pending-applications"
               ? "submitted-applications"
               : null
           }`}
@@ -172,6 +194,7 @@ export const Header = () => {
             </BottomInfo>
           </LHS>
           <RHS>
+            <DeleteButton onClick={handleClick}>
             <DeleteButton onClick={deleteAction}>
               <p>Delete</p>
               <RedTrash />
@@ -226,6 +249,57 @@ export const Header = () => {
           <SortDropdown />
         </SearchAndSort>
       ) : null}
+      <Dialog open={openModal} fullWidth maxWidth="sm">
+        <ModalWrapper>
+          <TopContent>
+            <CloseWrapper onClick={() => setOpenModal(false)}>
+              <HiX size={20} />
+            </CloseWrapper>
+          </TopContent>
+
+          <Question>Do you want to Delete this Application ?</Question>
+          <ModalButton>
+            <CheckoutController
+              backAction={handleNo}
+              backText={"No"}
+              forwardAction={deleteAction}
+              forwardText={"Yes"}
+            />
+          </ModalButton>
+        </ModalWrapper>
+      </Dialog>
     </Container>
   );
 };
+
+const ModalWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 40px 0px;
+  flex-flow: column;
+`;
+export const ModalButton = styled.div`
+  display: flex;
+  width: 80%;
+`;
+const Question = styled.p`
+  font-size: clamp(16px, 1.5vw, 20px);
+  margin-bottom: 20px;
+`;
+const TopContent = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 80%;
+`;
+
+const CloseWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  padding: 10px;
+  border-radius: 100%;
+  background-color: #d7d7d7;
+  margin-bottom: 20px;
+`;
