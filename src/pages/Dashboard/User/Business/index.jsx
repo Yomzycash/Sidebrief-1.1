@@ -150,7 +150,6 @@ const Business = () => {
     </Container>
   );
 };
-
 export default Business;
 
 const SearchWrapper = styled.div`
