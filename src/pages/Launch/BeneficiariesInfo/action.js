@@ -73,7 +73,7 @@ export const beneficiaryDelete = async (
   };
 
   let deleteResponse = await deleteBeneficiary(requiredDeleteData);
-  console.log(deleteResponse);
+  // console.log(deleteResponse);
 
   if (deleteResponse.data) {
     // This filters all beneficiaries info

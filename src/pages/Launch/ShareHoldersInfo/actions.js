@@ -27,7 +27,6 @@ export const shareHolderAdd = async (
     const shareholderInfo = allShareholders[allShareholders.length - 1][1];
     // Merge the member information and the shareholder information of the just added shareholder
     let shareholderAllInfo = { ...memberInfo, ...shareholderInfo };
-    console.log(shareholderAllInfo);
     return { data: shareholderAllInfo };
   } else {
     return { error: addShareHolderResponse.error.data.message };
@@ -86,7 +85,6 @@ export const shareholderDelete = async (
     // if the shareholder is not a director, membership is deleted.
     if (!isDirector) {
       let memberDeleteResponse = await memberDelete(shareholder, deleteMember);
-      console.log(memberDeleteResponse);
     }
 
     return { data: "Deleted" };

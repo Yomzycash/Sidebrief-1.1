@@ -70,12 +70,12 @@ export const CheckoutFormInfo = ({
 
   // This submits the form data to both backend and store
   const submitForm = async (formData) => {
-    console.log(formData);
+    // console.log(formData);
     if (beneficiary) {
       if (cardAction === "add") {
         handleAdd(formData, generatedLaunchCode);
       } else if (cardAction === "edit") {
-        console.log(formData);
+        // console.log(formData);
         handleUpdate(formData, generatedLaunchCode, selectedToEdit);
       }
       return;

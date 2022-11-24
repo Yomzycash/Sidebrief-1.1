@@ -6,7 +6,6 @@ export const RewardApi = createApi({
     baseUrl: "https://api.sidebrief.com/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
-      console.log(token);
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);

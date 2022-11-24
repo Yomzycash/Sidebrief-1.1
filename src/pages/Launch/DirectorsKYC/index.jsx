@@ -29,9 +29,7 @@ const DirectorKYC = () => {
   //geting the information from the store
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const { directorsLaunchInfo } = LaunchApplicationInfo;
-  console.log(directorsLaunchInfo[0]?.memberCode);
   let requiredMemberCode = directorsLaunchInfo[0]?.memberCode;
-  console.log(requiredMemberCode);
 
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
@@ -88,7 +86,6 @@ const DirectorKYC = () => {
     let newDirectorInfo = [...directorInfo.data.businessDirectors];
 
     let newMerge = mergeInfo(newDirectorInfo, newMemberInfo);
-    console.log("test", newMerge);
     setDirectorContainer(newMerge);
 
     return newMerge;
@@ -99,10 +96,6 @@ const DirectorKYC = () => {
   }, []);
 
   const handleChange = async (files, director, type) => {
-    console.log("value of the component is", files);
-    console.log("director is", director);
-    console.log("component name", type);
-
     // const uploadedFile = e.target.files[0];
     // setUploadedFileDetails(uploadedFile);
     // setFileName(uploadedFile.name);
@@ -135,7 +128,6 @@ const DirectorKYC = () => {
     // } else {
     //   toast.success("Valid Document");
     const res = await convertToLink(files[0]);
-    console.log("conversion", res.url);
 
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
@@ -148,23 +140,18 @@ const DirectorKYC = () => {
         fileType: files[0].type,
       },
     };
-    console.log(requiredAddMemberData);
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log(response);
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
     } else if (response.error) {
-      console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
   };
 
-  console.log(documentContainer);
   store.dispatch(setDirectorDocs(documentContainer));
 
   const handleRemove = (director) => {
-    console.log("director delete", director);
     // const requiredDeleteData = {
     //   launchCode: generatedLaunchCode,
     //   memberCode: shareholder,

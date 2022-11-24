@@ -19,7 +19,7 @@ export const BusinessTable = ({ data }) => {
     },
     onRowSelectionChange: setRowSelection,
   });
-  console.log(rowSelection);
+  // console.log(rowSelection);
 
   // returns SelectedRows
   const getSelectedRows = () => {

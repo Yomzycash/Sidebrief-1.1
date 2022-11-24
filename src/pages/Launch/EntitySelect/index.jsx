@@ -64,8 +64,6 @@ const EntitySelect = () => {
     countryISO ? countryISO : countryISOView
   );
 
-  console.log(countryISO);
-
   const [getStarted, launchState] = useGetStartedMutation();
   const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation();
   const [addBusinessNames] = useAddBusinessNamesMutation();
@@ -110,8 +108,6 @@ const EntitySelect = () => {
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
 
-    console.log(launchResponse);
-
     // Set the launch response to local storage
     if (generatedLaunchCode) {
       // An array is returned, if update response
@@ -148,8 +144,6 @@ const EntitySelect = () => {
         navigate("/launch/payment");
 
       handleBusinessInfo(requiredLaunchInfo, launchCode);
-
-      console.log(launchCode);
     } else {
       if (launchResponse?.error?.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
@@ -206,7 +200,6 @@ const EntitySelect = () => {
     let error2 = businessObjectivesResponse?.error;
 
     if (error) {
-      console.log(error, error2);
       toast.error(error.data.message);
       toast.error(error2.data.message);
     }
@@ -243,7 +236,6 @@ const EntitySelect = () => {
               <span> Please select a business type to get started</span>{" "}
             </EntityTitle>
           )}
-          {console.log(entities)}
           {isLoading && (
             <Loading height="300px">
               <Puff stroke="#00A2D4" fill="white" />
