@@ -71,7 +71,13 @@ const DirectorKYC = () => {
   );
 
   const handleNext = () => {
-    navigate("/launch/beneficiaries-kyc");
+    let beneficiaries = localStorage.getItem("beneficiaries");
+
+    if (beneficiaries === "false") {
+      navigate("/launch/review");
+    } else {
+      navigate("/launch/beneficiaries-kyc");
+    }
   };
 
   const handlePrev = () => {

@@ -2,7 +2,7 @@ import React from "react";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useViewBusinessAddressQuery } from "services/launchService";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -13,7 +13,10 @@ const BusinessAddressCard = () => {
   // const { businessAddress } = LaunchApplicationInfo.businessAddress
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
+
   let navigate = useNavigate();
+  let location = useLocation();
+
   const address = useViewBusinessAddressQuery(launchResponse, {
     refetchOnMountOrArgChange: true,
   });
@@ -24,8 +27,10 @@ const BusinessAddressCard = () => {
       // console.log(viewAddress)
     }
   }, [address]);
+
   const handleNavigate = () => {
     navigate("/launch/address");
+    localStorage.setItem("navigatedFrom", location.pathname);
   };
 
   return (

@@ -132,7 +132,14 @@ const BusinessAddress = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate("/launch/shareholders-info");
+    let navigatedFrom = localStorage.getItem("navigatedFrom");
+
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
+    } else {
+      navigate("/launch/shareholders-info");
+    }
   };
 
   const handlePrev = () => {
