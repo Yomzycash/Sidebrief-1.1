@@ -5,25 +5,27 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 const BusinessDetailLayout = () => {
-  const navigate = useNavigate();
-  const { code } = useParams();
-  const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
+	const navigate = useNavigate();
+	const { code } = useParams();
+	const launchData = useSelector(
+		(store) => store.LaunchReducer.launchResponse
+	);
 
-  // might need some more work
-  useEffect(() => {
-    if (code !== launchData.launchCode) {
-      navigate(-1);
-    }
-  }, [code, launchData, navigate]);
+	// might need some more work
+	useEffect(() => {
+		if (code !== launchData.launchCode) {
+			navigate(-1);
+		}
+	}, [code, launchData, navigate]);
 
-  return (
-    <Container>
-      <Header />
-      <Body>
-        <Outlet />
-      </Body>
-    </Container>
-  );
+	return (
+		<Container>
+			<Header />
+			<Body>
+				<Outlet />
+			</Body>
+		</Container>
+	);
 };
 
 export default BusinessDetailLayout;
