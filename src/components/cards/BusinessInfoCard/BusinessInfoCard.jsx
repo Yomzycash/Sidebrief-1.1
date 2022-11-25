@@ -2,7 +2,7 @@ import React from "react";
 import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
@@ -18,9 +18,13 @@ const BusinessInfoCard = () => {
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   // console.log(LaunchApplicationInfo)
   let navigate = useNavigate();
+  let location = useLocation();
+
   const handleNavigate = () => {
     navigate("/launch/business-info");
+    localStorage.setItem("navigatedFrom", location.pathname);
   };
+
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
   const [viewBusinessNames] = useViewBusinessNamesMutation();
@@ -49,6 +53,7 @@ const BusinessInfoCard = () => {
     handleViewBusinessObject();
   }, []);
   //console.log(businessArray)
+
   return (
     <>
       <Wrapper>

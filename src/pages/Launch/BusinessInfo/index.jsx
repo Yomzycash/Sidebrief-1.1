@@ -68,7 +68,14 @@ const BusinessInfo = () => {
       return;
     }
 
-    navigate("/launch/entity");
+    let navigatedFrom = localStorage.getItem("navigatedFrom");
+
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
+    } else {
+      navigate("/launch/entity");
+    }
   };
 
   const handlePrev = () => {

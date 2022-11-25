@@ -50,11 +50,19 @@ const DirectorsInfo = () => {
   const { beneficiariesLaunchInfo, generatedLaunchCode, launchResponse } =
     LaunchApplicationInfo;
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (beneficiariesInfo.length > 0) {
+      localStorage.setItem("beneficiaries", true);
+    } else {
+      localStorage.setItem("beneficiaries", false);
+    }
+
     let useSidebriefShareholders = localStorage.getItem(
       "useSidebriefShareholders"
     );
     let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+
+    // let navigatedFrom = localStorage.getItem("navigatedFrom");
 
     let navigateTo = "";
 
@@ -62,6 +70,15 @@ const DirectorsInfo = () => {
     if (useSidebriefShareholders) navigateTo = "/launch/directors-kyc";
     if (useSidebriefDirectors && useSidebriefShareholders)
       navigateTo = "/launch/beneficiaries-kyc";
+    if (beneficiariesInfo.length === 0 && useSidebriefShareholders)
+      navigateTo = "/launch/review";
+
+    // if (navigatedFrom) {
+    //   navigate(navigatedFrom);
+    //   localStorage.removeItem("navigatedFrom");
+    // } else {
+    //   navigate(navigateTo);
+    // }
 
     navigate(navigateTo ? navigateTo : "/launch/sharehholders-kyc");
   };
@@ -159,8 +176,8 @@ const DirectorsInfo = () => {
     }
   };
 
-  // Get the data from backend and set to state
-  const viewDraft = async () => {
+  // Get beneficiaries data from the backend
+  const getBeneficiaries = async () => {
     let requiredData = {
       launchCode: launchResponse.launchCode,
       registrationCountry: launchResponse.registrationCountry,
@@ -169,10 +186,17 @@ const DirectorsInfo = () => {
 
     // Get data from view endpoints
     let beneficiaries = await viewBeneficiaries(requiredData);
-    let beneficiariesData = [...beneficiaries.data.businessBeneficialOwners];
+    let beneficiariesData = beneficiaries?.data && [
+      ...beneficiaries.data.businessBeneficialOwners,
+    ];
 
-    setBeneficiariesInfo(beneficiariesData);
-    // console.log(beneficiariesData);
+    return { data: beneficiariesData };
+  };
+
+  // Get the data from backend and set to state
+  const viewDraft = async () => {
+    let beneficiariesData = await getBeneficiaries();
+    setBeneficiariesInfo(beneficiariesData.data);
   };
 
   useEffect(() => {

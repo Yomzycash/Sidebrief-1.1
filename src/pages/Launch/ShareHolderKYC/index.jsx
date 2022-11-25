@@ -133,8 +133,14 @@ const ShareHolderKYC = () => {
 
   const handleNext = () => {
     let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-    if (useSidebriefDirectors) navigate("/launch/beneficiaries-kyc");
-    else navigate("/launch/directors-kyc");
+    let beneficiaries = localStorage.getItem("beneficiaries");
+
+    let navigateTo = "/launch/directors-kyc";
+    if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+    if (useSidebriefDirectors && beneficiaries === "false")
+      navigateTo = "/launch/review";
+
+    navigate(navigateTo);
   };
 
   const handleRemove = async (documentName) => {
