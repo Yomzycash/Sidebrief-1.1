@@ -38,7 +38,7 @@ import { CheckoutController } from "containers/Checkout";
 
 export const Header = () => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
-  const [deleteLaunch] = useDeleteLaunchRequestMutation();
+  const [deleteLaunch, deleteState] = useDeleteLaunchRequestMutation();
   const [openModal, setOpenModal] = useState(false);
 
   const { code } = useParams();
@@ -258,6 +258,7 @@ export const Header = () => {
               backText={"No"}
               forwardAction={deleteAction}
               forwardText={"Yes"}
+              forwardLoading={deleteState.isLoading}
             />
           </ModalButton>
         </ModalWrapper>
