@@ -1,54 +1,59 @@
-import React from 'react'
-import { ReactComponent as EditIcon } from 'asset/Launch/Edit.svg'
-import styled from 'styled-components'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
-} from 'services/launchService'
+} from "services/launchService";
 
-import { useEffect } from 'react'
-import { useState } from 'react'
-import { isElement } from 'react-dom/test-utils'
+import { useEffect } from "react";
+import { useState } from "react";
+import { isElement } from "react-dom/test-utils";
 
 const BusinessInfoCard = () => {
-  const [businessArray, setBusinessArray] = useState([])
-  const [objectiveArray, setObjectiveArray] = useState([])
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer)
+  const [businessArray, setBusinessArray] = useState([]);
+  const [objectiveArray, setObjectiveArray] = useState([]);
+  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   // console.log(LaunchApplicationInfo)
-  let navigate = useNavigate()
+  let navigate = useNavigate();
+  let location = useLocation();
+
   const handleNavigate = () => {
-    navigate('/launch/business-info')
-  }
-  const LaunchInfo = useSelector((store) => store.LaunchReducer)
-  const { launchResponse } = LaunchInfo
-  const [viewBusinessNames] = useViewBusinessNamesMutation()
-  const [viewBusinessObjects] = useViewBusinessObjectivesMutation()
+    navigate("/launch/business-info");
+    localStorage.setItem("navigatedFrom", location.pathname);
+  };
+
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
+  const { launchResponse } = LaunchInfo;
+  const [viewBusinessNames] = useViewBusinessNamesMutation();
+  const [viewBusinessObjects] = useViewBusinessObjectivesMutation();
   const handleViewBusinessNames = async () => {
-    let responseData = await viewBusinessNames(launchResponse)
+    let responseData = await viewBusinessNames(launchResponse);
     // console.log(responseData)
-    let responseArr = Object.values(responseData.data.businessNames)
-    setBusinessArray(responseArr)
-  }
+    let responseArr = Object.values(responseData.data.businessNames);
+    setBusinessArray(responseArr);
+  };
 
   const handleViewBusinessObject = async () => {
-    let responseData = await viewBusinessObjects(launchResponse)
-    console.log(responseData.data.businessObjects)
-    let responseArr = Object.values(responseData.data.businessObjects)
-    console.log(responseArr)
+    let responseData = await viewBusinessObjects(launchResponse);
+    // console.log(responseData.data.businessObjects)
+    let responseArr = Object.values(responseData.data.businessObjects);
+    // console.log(responseArr)
     let filteredResponseArr = responseArr.filter(
-      (element) => element !== 'null',
-    )
+      (element) => element !== "null"
+    );
 
-    console.log(filteredResponseArr)
-    setObjectiveArray(filteredResponseArr)
-  }
+    // console.log(filteredResponseArr)
+    setObjectiveArray(filteredResponseArr);
+  };
   useEffect(() => {
-    handleViewBusinessNames()
-    handleViewBusinessObject()
-  }, [])
+    handleViewBusinessNames();
+    handleViewBusinessObject();
+  }, []);
   //console.log(businessArray)
+
   return (
     <>
       <Wrapper>
@@ -87,10 +92,10 @@ const BusinessInfoCard = () => {
         </LowerContainer>
       </Wrapper>
     </>
-  )
-}
+  );
+};
 
-export default BusinessInfoCard
+export default BusinessInfoCard;
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -98,34 +103,34 @@ const Wrapper = styled.div`
   border-radius: 16px;
   padding: 40px;
   width: 100%;
-`
+`;
 const TitleWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-`
+`;
 const Title = styled.h3`
   font-weight: 600;
   font-size: 18px;
   line-height: 27px;
   color: #151717;
-`
+`;
 const EditWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   cursor: pointer;
-`
+`;
 
 const EditText = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 27px;
   color: #00a2d4;
-`
+`;
 
 const LowerContainer = styled.div`
   display: flex;
@@ -133,7 +138,7 @@ const LowerContainer = styled.div`
   align-items: flex-start;
   padding: 0px;
   gap: 40px;
-`
+`;
 const SubContainer = styled.div`
   display: flex;
   flex-flow: column wrap;
@@ -142,20 +147,20 @@ const SubContainer = styled.div`
   gap: 8px;
   column-gap: 4px;
   width: 100%;
-`
+`;
 const Heading = styled.h3`
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
   color: #959697;
-`
+`;
 const TagContainer = styled.div`
   display: flex;
   align-items: center;
   flex-flow: row wrap;
   row-gap: 4px;
   column-gap: 16px;
-`
+`;
 const TagWrapper = styled.div`
   display: inline-flex;
   flex-direction: row;
@@ -165,10 +170,10 @@ const TagWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   color: #fafafa;
-`
+`;
 
 const Tag = styled.span`
   font-weight: 400;
   font-size: 14px;
   color: #fafafa;
-`
+`;

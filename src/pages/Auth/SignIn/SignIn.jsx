@@ -69,7 +69,7 @@ const SignIn = () => {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
       localStorage.setItem("userEmail", formData.email);
-      console.log(data);
+      // console.log(data);
       toast.success(data.message);
       navigate("/dashboard");
     } else if (error) {
@@ -78,7 +78,7 @@ const SignIn = () => {
       } else {
         toast.error(error.data?.message);
       }
-      console.log(error);
+      // console.log(error);
     }
   };
 

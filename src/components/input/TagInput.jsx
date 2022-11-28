@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { MdClear } from 'react-icons/md'
+import React, { useEffect, useState } from "react";
+import { MdClear } from "react-icons/md";
 import {
   TagLabel,
   AllWrapper,
@@ -11,77 +11,78 @@ import {
   TagInputField,
   BottomText,
   TagTop,
-} from './styled.js'
+} from "./styled.js";
 
 const TagInput = ({
-  label = 'Business Name',
-  bottomText = 'Please provide sidebrief with four names you want for your business, in order of preferences',
+  label = "Business Name",
+  bottomText = "Please provide sidebrief with four names you want for your business, in order of preferences",
   getSelectedValues,
   initialValues,
 }) => {
-  const [tags, setTags] = useState([])
-  const [error, setError] = useState('')
-  const [currentInput, setCurrentInput] = useState('')
-  const [inputValue, setInputValue] = useState('')
+  const [tags, setTags] = useState([]);
+  const [error, setError] = useState("");
+  const [currentInput, setCurrentInput] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   function handlekeydown(e) {
-    if (e.key === 'Tab') e.preventDefault()
+    if (e.key === "Tab") e.preventDefault();
 
-    if (!(e.key === 'Enter' || e.key === 'Tab')) return
+    if (!(e.key === "Enter" || e.key === "Tab")) return;
 
-    const value = currentInput
-    if (!value.trim()) return
+    const value = currentInput;
+    if (!value.trim()) return;
     if (tags.length >= 4) {
-      setError('You cannot choose more than 4 business names')
-      return
+      setError("You cannot choose more than 4 business names");
+      return;
     }
     if (value.length <= 2) {
-      setError('Business name must be at least 3 characters')
-      return
+      setError("Business name must be at least 3 characters");
+      return;
     }
-    setTags([...tags, value])
-    setCurrentInput('')
+    setTags([...tags, value]);
+    setCurrentInput("");
   }
 
   const handleChange = (e) => {
-    const value = e.target.value
-    const noTrailingComma = value.slice(-1) === ',' ? value.slice(0, -1) : value
-    setCurrentInput(noTrailingComma)
-    setInputValue(value)
-  }
+    const value = e.target.value;
+    const noTrailingComma =
+      value.slice(-1) === "," ? value.slice(0, -1) : value;
+    setCurrentInput(noTrailingComma);
+    setInputValue(value);
+  };
   useEffect(() => {
-    let lastChar = inputValue.charAt(inputValue.length - 1)
-    if (lastChar === ',') {
-      let value = currentInput
-      console.log('femi')
+    let lastChar = inputValue.charAt(inputValue.length - 1);
+    if (lastChar === ",") {
+      let value = currentInput;
+      // console.log('femi')
       if (tags.length >= 4) {
-        setError('You cannot choose more than 4 business names')
-        return
+        setError("You cannot choose more than 4 business names");
+        return;
       } else if (value.length <= 2) {
-        setError('Business name must be at least 3 characters')
-        return
+        setError("Business name must be at least 3 characters");
+        return;
       } else {
-        setTags([...tags, value])
+        setTags([...tags, value]);
 
-        setCurrentInput('')
+        setCurrentInput("");
       }
     }
-  }, [inputValue.length])
+  }, [inputValue.length]);
 
   function removeTags(index) {
-    setTags(tags.filter((el, i) => i !== index))
-    setError('')
+    setTags(tags.filter((el, i) => i !== index));
+    setError("");
   }
 
   // Return the tags array
   useEffect(() => {
-    if (getSelectedValues) getSelectedValues(tags)
-  }, [tags])
+    if (getSelectedValues) getSelectedValues(tags);
+  }, [tags]);
 
   // This sets the values of the tags when the component mounts
   useEffect(() => {
-    setTags([...initialValues])
-  }, [initialValues.length])
+    setTags([...initialValues]);
+  }, [initialValues.length]);
 
   return (
     <>
@@ -112,7 +113,7 @@ const TagInput = ({
         <BottomText>{bottomText}</BottomText>
       </AllWrapper>
     </>
-  )
-}
+  );
+};
 
-export default TagInput
+export default TagInput;

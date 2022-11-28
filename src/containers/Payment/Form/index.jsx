@@ -56,7 +56,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
   });
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
     if (data) setEntityInfo(data);
   }, [data]);
 
@@ -111,7 +111,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 
     const payResponse = await payLaunch(requiredData);
 
-    console.log(payResponse);
+    // console.log(payResponse);
 
     navigate("/launch/address");
   };

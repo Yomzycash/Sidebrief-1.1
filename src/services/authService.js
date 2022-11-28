@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: "authsApi", // a unique key that defines where the redux store will store the cache.
   baseQuery: fetchBaseQuery({
     // the base query used by each endpoint to request data.
-    baseUrl: "https://api.sidebrief.com/",
+    baseUrl: process.env.REACT_APP_DEV_BASE_URL,
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
