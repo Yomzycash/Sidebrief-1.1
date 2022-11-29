@@ -121,6 +121,9 @@ const DetailBeneficiaries = lazy(() =>
 const SettingLayout = lazy(() =>
 	import("pages/Dashboard/User/Settings/layout")
 );
+const NotificationSettings = lazy(() =>
+	import("pages/Dashboard/User/Settings/notification")
+);
 
 const AppRouter = () => {
 	const userData = useSelector((store) => store.UserDataReducer);
@@ -294,7 +297,7 @@ const AppRouter = () => {
 								<Route path="security" element={<Settings />} />
 								<Route
 									path="notification"
-									element={<Settings />}
+									element={<NotificationSettings />}
 								/>
 								<Route path="others" element={<Settings />} />
 							</Route>
