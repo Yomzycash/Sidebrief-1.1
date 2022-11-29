@@ -10,7 +10,10 @@ export const SettingHeader = () => {
 				<Search triggerSearch={() => {}} />
 			</Top>
 			<SubHeader>
-				<ActiveNav text={"General"} path={`/dashboard/settings`} />
+				<ActiveNav
+					text={"General"}
+					path={`/dashboard/settings/general`}
+				/>
 				<ActiveNav
 					text={"Account"}
 					path={`/dashboard/settings/account`}

@@ -288,10 +288,16 @@ const AppRouter = () => {
 								path="bank-account"
 								element={<BankAccount />}
 							></Route>
-							<Route
-								path="settings"
-								element={<SettingLayout />}
-							></Route>
+							<Route path="settings" element={<SettingLayout />}>
+								<Route path="general" element={<Settings />} />
+								<Route path="account" element={<Settings />} />
+								<Route path="security" element={<Settings />} />
+								<Route
+									path="notification"
+									element={<Settings />}
+								/>
+								<Route path="others" element={<Settings />} />
+							</Route>
 							<Route
 								path="resources"
 								element={<Resources />}
