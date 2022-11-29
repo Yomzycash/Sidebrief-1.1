@@ -156,3 +156,17 @@ export const CheckboxWrapper = styled.div`
     width: calc(50% - 10px);
   }
 `;
+
+export const buttonStyles = {
+  maxWidth: "197px",
+  width: "20%",
+  height: "clamp(45px, 6vw, 56px)",
+  padding: "0",
+  minWidth: "100px",
+};
+
+export const buttonContainerStyles = {
+  justifyContent: "flex-end",
+  gap: "24px",
+  margin: "clamp(20px, 5%, 30px) 0 clamp(20px, 5%, 40px) 0",
+};
