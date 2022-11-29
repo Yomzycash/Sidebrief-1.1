@@ -23,8 +23,10 @@ import Countries from './Dashboard/staffDashboard/Businesses/Countries/Countries
 import StaffEntities from './Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities'
 import HeaderDetail from 'components/Header/HeaderDetail'
 import Registrationlayout from './Dashboard/staffDashboard/Businesses/BusinessRegistration/layout'
+import StaffRewardHeader from 'components/Header/StaffRewardHeader'
+import RewardHeaderDetail from 'components/Header/RewardHeaderDetail'
 const Test = () => {
-  return <Registrationlayout/>
+  return <  RewardHeaderDetail/>
 }
 
 export default Test
