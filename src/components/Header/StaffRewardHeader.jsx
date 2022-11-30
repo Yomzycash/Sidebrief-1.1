@@ -4,11 +4,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { ReactComponent as AddIcon } from '../../../src/asset/svg/Plus.svg'
 
-const StaffHeader = ({
-  title = 'Countries',
-  shown = '12',
-  total = '12',
-  Description = 'Add Country',
+const StaffRewardHeader = ({
+  title = 'Rewards',
+  shown = '9',
+  total = '328',
+  Description = 'Add New Reward',
+  placeholder = 'Search for a reward',
 }) => {
   const searchStyle = {
     borderRadius: '12px',
@@ -27,16 +28,15 @@ const StaffHeader = ({
               <PageTitle>{title}</PageTitle>
               <RewardSummaryCard shown={shown} total={total} />
             </div>
-            <Drop>
-              <select>
-                <option value="Sort">Sort</option>
-                <option value="All">All</option>
-              </select>
-            </Drop>
+            
           </TopContent>
           <BottomContent>
             <SearchWrapper>
-              <Search style={searchStyle} iconStyle={iconStyle} />
+              <Search
+                style={searchStyle}
+                iconStyle={iconStyle}
+                placeholder={placeholder}
+              />
             </SearchWrapper>
             <ButtonWrapper>
               <button>
@@ -50,7 +50,7 @@ const StaffHeader = ({
     </Container>
   )
 }
-export default StaffHeader
+export default StaffRewardHeader
 const Container = styled.div`
   display: flex;
   flex-flow: column;
@@ -106,20 +106,6 @@ const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
-`
-const Drop = styled.div`
-  display: flex;
-  border: 1px solid #f1f1f1;
-  border-radius: 12px;
-  background-color: #fafafa;
-  padding: 8px 16px;
-
-  select {
-    border: none;
-    outline: none;
-    width: 60px;
-    background: none;
-  }
 `
 const ButtonWrapper = styled.div`
   width: 200px;

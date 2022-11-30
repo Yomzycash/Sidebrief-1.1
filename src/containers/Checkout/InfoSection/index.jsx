@@ -6,6 +6,8 @@ import {
   Form,
   CheckInputWrapper,
   CheckboxWrapper,
+  buttonContainerStyles,
+  buttonStyles,
 } from "./style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -136,19 +138,6 @@ export const CheckoutFormInfo = ({
   // This sets the phone number value - attached to the onChange event
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
-  };
-
-  const buttonStyles = {
-    maxWidth: "197px",
-    width: "20%",
-    height: "clamp(45px, 6vw, 56px)",
-    padding: "0",
-    minWidth: "100px",
-  };
-  const buttonContainerStyles = {
-    justifyContent: "flex-end",
-    gap: "24px",
-    margin: "clamp(20px, 5%, 30px) 0 clamp(20px, 5%, 40px) 0",
   };
 
   return (
