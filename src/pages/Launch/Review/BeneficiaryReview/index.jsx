@@ -78,15 +78,7 @@ const BeneficiaryReview = () => {
     let beneficialInfo = await viewBeneficials(launchResponse);
     // setBeneficialArray(beneficialInfo.data.businessBeneficialOwners);
     let newBeneficiaryInfo = [...beneficialInfo.data.businessBeneficialOwners];
-    newBeneficiaryInfo.forEach((title) => {
-      beneficiaryDocumentContainer.forEach((member) => {
-        if (member.code === title.beneficialOwnerCode) {
-          let merged = { ...title, ...member };
-          titlesMembersMerged.push(merged);
-        }
-      });
-    });
-    setBeneficialArray(titlesMembersMerged);
+    setBeneficialArray(newBeneficiaryInfo);
   };
 
   // useEffect(() => {
@@ -155,9 +147,6 @@ const BeneficiaryReview = () => {
                 phone={beneficiary?.beneficialOwnerPhone}
                 occupation={beneficiary?.beneficialOwnerOccupation}
                 stake={beneficiary?.beneficialOwnershipStake}
-                government={beneficiary.files.government_id}
-                proof={beneficiary.files.proof_of_home_address}
-                passport={beneficiary.files.passport_photograph}
                 beneficialOwnerCode={beneficiary?.beneficialOwnerCode}
                 editAction={handleNavigate}
               />

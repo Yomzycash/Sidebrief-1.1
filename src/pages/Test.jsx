@@ -18,10 +18,19 @@ import {
   SpinningCircles,
   TailSpin,
   ThreeDots,
-} from "react-loading-icons";
 
+} from 'react-loading-icons'
+import StaffDashboard from './Dashboard/staffDashboard'
+import StaffBusinesses from './Dashboard/staffDashboard/Businesses'
+import Countries from './Dashboard/staffDashboard/Businesses/Countries/Countries'
+import StaffEntities from './Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities'
+import HeaderDetail from 'components/Header/HeaderDetail'
+import Registrationlayout from './Dashboard/staffDashboard/Businesses/BusinessRegistration/layout'
+import StaffRewardHeader from 'components/Header/StaffRewardHeader'
+import RewardHeaderDetail from 'components/Header/RewardHeaderDetail'
 const Test = () => {
-  return <StaffRewardModal />;
-};
+  return <  RewardHeaderDetail/>
+}
+
 
 export default Test;
