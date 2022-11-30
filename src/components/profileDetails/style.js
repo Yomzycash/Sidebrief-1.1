@@ -4,6 +4,7 @@ export const ProfileContainer = styled.div`
   display: flex;
   flex-flow: column;
   gap: 40px;
+  width: 70vw;
 `;
 
 export const ProfileLeftContainer = styled.div`
@@ -17,8 +18,7 @@ export const ProfileRightContainer = styled.div`
   flex-flow: column;
 `;
 export const TextContainer = styled.div`
-  /* max-width: 239px; */
-  border: solid red;
+  width: 40%;
 `;
 
 export const TextTitle = styled.div`
@@ -26,7 +26,6 @@ export const TextTitle = styled.div`
   font-size: 14px;
   line-height: 21px;
   color: #242627;
-  border: solid green;
 `;
 export const TextParagraph = styled.div`
   font-weight: 400;
@@ -34,26 +33,24 @@ export const TextParagraph = styled.div`
   line-height: 20px;
   letter-spacing: -0.02em;
   color: #727474;
-  border: solid green;
 `;
 
 export const PhotoDetails = styled.div`
   display: flex;
-  gap: 75px;
+  width: 100%;
+  align-items: center;
 `;
 
 export const EmailDetails = styled.div`
   display: flex;
-  gap: 75px;
-  border: solid blue;
+  align-items: center;
+  width: 100%;
 `;
-export const PhotoImage = styled.div`
-  border: solid red;
-`;
+export const PhotoImage = styled.div``;
 export const EmailWrapper = styled.div`
   padding: 16px 24px;
   gap: 16px;
-  width: 448px;
+  width: 60%;
   height: 48px;
   background: #fafafa;
   border: 1px solid #edf1f7;
@@ -61,11 +58,13 @@ export const EmailWrapper = styled.div`
 `;
 export const AlternateEmailDetails = styled.div`
   display: flex;
-  gap: 75px;
-  border: solid blue;
+  width: 100%;
+  align-items: center;
 `;
 export const PasswordDetails = styled.div`
   display: flex;
-  gap: 75px;
-  border: solid blue;
+  width: 100%;
+`;
+export const InputWrapper = styled.div`
+  width: 60%;
 `;

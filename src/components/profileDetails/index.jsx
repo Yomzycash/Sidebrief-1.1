@@ -1,20 +1,21 @@
-import { TextContainer } from "components/cards/RewardCard/styles";
 import { InputWithLabel } from "components/input";
 import React from "react";
 import {
   AlternateEmailDetails,
   EmailDetails,
   EmailWrapper,
+  InputWrapper,
   PasswordDetails,
   PhotoDetails,
   PhotoImage,
   ProfileContainer,
   ProfileLeftContainer,
   ProfileRightContainer,
+  TextContainer,
   TextParagraph,
   TextTitle,
 } from "./style";
-
+import { ReactComponent as User } from "../../asset/svg/profileUser.svg";
 const ProfileDetails = () => {
   return (
     <ProfileContainer>
@@ -23,7 +24,10 @@ const ProfileDetails = () => {
           <TextTitle>Your Photo</TextTitle>
           <TextParagraph>This will be displayed on your profile</TextParagraph>
         </TextContainer>
-        <PhotoImage></PhotoImage>
+
+        <PhotoImage>
+          <User />
+        </PhotoImage>
       </PhotoDetails>
 
       <EmailDetails>
@@ -35,22 +39,25 @@ const ProfileDetails = () => {
           <p>akinyemibamidele2@gmail.com</p>
         </EmailWrapper>
       </EmailDetails>
-
       <AlternateEmailDetails>
         <TextContainer>
-          <TextTitle>Alternate email address</TextTitle>
+          <TextTitle>Alternative email address</TextTitle>
           <TextParagraph>
             This will be used to contact you as an alternate means
           </TextParagraph>
         </TextContainer>
-        <InputWithLabel placeholder={"akinyemibamidele2@gmail.com"} />
+        <InputWrapper>
+          <InputWithLabel placeholder={"akinyemibamidele2@gmail.com"} />
+        </InputWrapper>
       </AlternateEmailDetails>
 
       <PasswordDetails>
         <TextContainer>
           <TextTitle>Password</TextTitle>
         </TextContainer>
-        <InputWithLabel password placeholder={"123456"} />
+        <InputWrapper>
+          <InputWithLabel password placeholder={"123456"} />
+        </InputWrapper>
       </PasswordDetails>
     </ProfileContainer>
   );

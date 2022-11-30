@@ -325,6 +325,51 @@ export const analyticsData = [
   },
 ];
 
+export const staffAnalyticsData = [
+  {
+    name: "Tues.",
+    views: 2,
+    clicks: 2.4,
+    claims: 6,
+  },
+  {
+    name: "Wed.",
+    views: 3,
+    clicks: 1,
+    claims: 5,
+  },
+  {
+    name: "Thur.",
+    views: 2,
+    clicks: 6.7,
+    claims: 3,
+  },
+  {
+    name: "Fri.",
+    views: 7,
+    clicks: 3,
+    claims: 5.5,
+  },
+  {
+    name: "Sat.",
+    views: 3,
+    clicks: 4,
+    claims: 4,
+  },
+  {
+    name: "Sun.",
+    views: 1.5,
+    clicks: 3.8,
+    claims: 6,
+  },
+  {
+    name: "Mon.",
+    views: 5,
+    clicks: 4,
+    claims: 3,
+  },
+];
+
 export const NavbarLink = [
   {
     id: 1,
