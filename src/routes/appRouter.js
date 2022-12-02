@@ -136,6 +136,9 @@ const NotificationSettings = lazy(() =>
 const StaffNotificationSettings = lazy(() =>
 	import("pages/Dashboard/staffDashboard/Settings/notification")
 );
+const StaffGeneralSettings = lazy(() =>
+	import("pages/Dashboard/staffDashboard/Settings/general")
+);
 
 const AppRouter = () => {
 	const userData = useSelector((store) => store.UserDataReducer);
@@ -244,7 +247,10 @@ const AppRouter = () => {
 								path="settings"
 								element={<StaffSettingLayout />}
 							>
-								<Route path="general" element={<Settings />} />
+								<Route
+									path="general"
+									element={<StaffGeneralSettings />}
+								/>
 								<Route
 									path="notification"
 									element={<StaffNotificationSettings />}
