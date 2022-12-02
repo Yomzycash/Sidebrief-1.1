@@ -1,15 +1,16 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-	width: calc(100% - 40px);
+	width: calc(100% - 80px);
 	align-self: flex-end;
 	/* margin-left: auto; */
-	border-left: 1px solid #edf1f7;
+	margin-right: 40px;
+	border-inline: 1px solid #edf1f7;
 	border-bottom: 1px solid #edf1f7;
 `;
 
 export const Top = styled.div`
-	padding-inline: 24px 64px;
+	padding-inline: 24px;
 	padding-block: 40px;
 	display: flex;
 	justify-content: space-between;
