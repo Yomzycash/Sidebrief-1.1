@@ -164,6 +164,19 @@ export const StaffCountrySchema = yup.object().shape({
   flag: yup.string().required("Upload a flag image"),
 });
 
+export const StaffEntitySchema = yup.object().shape({
+  entity_name: yup.string().required("Entity name is a required field"),
+  description: yup.string().required("Entity description is a required field"),
+  short_name: yup.string().required("Entity short name is a required field"),
+  type: yup.string().required("Entity type is a required field"),
+  code: yup.string().required("Entity code is a required field"),
+  requirement: yup.string().required("Entity requirement is a required field"),
+  country: yup.string().required("Entity country is a required field"),
+  currency: yup.string().required("Entity currency is a required field"),
+  timeline: yup.string().required("Entity timeline is a required field"),
+  shares: yup.string().required("Entity shares is a required field"),
+});
+
 export const sidebarLink = [
   {
     id: 1,
