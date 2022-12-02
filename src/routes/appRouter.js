@@ -313,7 +313,7 @@ const AppRouter = () => {
               </Route>
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>
-            <Route path="dashboard-staff" element={<StaffDashboard />}></Route>
+            {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
             <Route
               path="launch"
               element={
