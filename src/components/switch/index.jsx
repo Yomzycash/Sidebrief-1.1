@@ -1,8 +1,8 @@
-import { Container, Text } from "./styles";
+import { Container, Text, TextContainer, SubText } from "./styles";
 import { styled } from "@mui/material/styles";
 import { Switch as MuiSwitch } from "@mui/material";
 
-export const Switch = ({ text, id, action }) => {
+export const Switch = ({ text, id, subText, action }) => {
 	const handleChange = (event) => {
 		// perform change action or call change function
 		console.log(id, event.target.checked);
@@ -10,7 +10,10 @@ export const Switch = ({ text, id, action }) => {
 
 	return (
 		<Container>
-			<Text>{text}</Text>
+			<TextContainer>
+				<Text>{text}</Text>
+				<SubText>{subText}</SubText>
+			</TextContainer>
 			<IOSSwitch onChange={handleChange} />
 		</Container>
 	);
