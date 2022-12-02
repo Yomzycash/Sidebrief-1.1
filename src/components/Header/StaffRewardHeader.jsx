@@ -1,24 +1,24 @@
-import { RewardSummaryCard } from 'components/cards'
-import Search from 'components/navbar/Search'
-import React from 'react'
-import styled from 'styled-components'
-import { ReactComponent as AddIcon } from '../../../src/asset/svg/Plus.svg'
+import { RewardSummaryCard } from "components/cards";
+import Search from "components/navbar/Search";
+import React from "react";
+import styled from "styled-components";
+import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 
 const StaffRewardHeader = ({
-  title = 'Rewards',
-  shown = '9',
-  total = '328',
-  Description = 'Add New Reward',
-  placeholder = 'Search for a reward',
+  title = "Rewards",
+  shown = "9",
+  total = "328",
+  Description = "Add New Reward",
+  placeholder = "Search for a reward",
 }) => {
   const searchStyle = {
-    borderRadius: '12px',
-    backgroundColor: 'white',
-    width: '100%',
-    height: '100%',
-  }
+    borderRadius: "12px",
+    backgroundColor: "white",
+    width: "100%",
+    height: "100%",
+  };
 
-  const iconStyle = { width: '17px', height: '17px' }
+  const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
       <Header>
@@ -28,7 +28,6 @@ const StaffRewardHeader = ({
               <PageTitle>{title}</PageTitle>
               <RewardSummaryCard shown={shown} total={total} />
             </div>
-            
           </TopContent>
           <BottomContent>
             <SearchWrapper>
@@ -48,14 +47,14 @@ const StaffRewardHeader = ({
         </MainHeader>
       </Header>
     </Container>
-  )
-}
-export default StaffRewardHeader
+  );
+};
+export default StaffRewardHeader;
 const Container = styled.div`
   display: flex;
   flex-flow: column;
-  margin: 0 40px;
-`
+  width: 100%;
+`;
 const Header = styled.div`
   position: sticky;
   top: 57.1px;
@@ -63,7 +62,7 @@ const Header = styled.div`
   flex-flow: column;
   background-color: white;
   z-index: 2;
-`
+`;
 const MainHeader = styled.div`
   display: flex;
   flex-flow: column;
@@ -74,7 +73,7 @@ const MainHeader = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
   transition: 0.2s all ease;
-`
+`;
 
 //TODO: maybe hide scroll bar
 
@@ -91,14 +90,14 @@ const TopContent = styled.div`
     gap: 48px;
     justify-content: space-between;
   }
-`
+`;
 const PageTitle = styled.div`
   display: flex;
   align-items: center;
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   color: #151717;
-`
+`;
 const BottomContent = styled.div`
   display: flex;
   align-items: center;
@@ -106,7 +105,7 @@ const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
-`
+`;
 const ButtonWrapper = styled.div`
   width: 200px;
 
@@ -126,7 +125,7 @@ const ButtonWrapper = styled.div`
     gap: 8px;
     align-items: center;
   }
-`
+`;
 
 const SearchWrapper = styled.div`
   max-width: 384px;
@@ -136,4 +135,4 @@ const SearchWrapper = styled.div`
     max-width: 100%;
     width: 100%;
   }
-`
+`;

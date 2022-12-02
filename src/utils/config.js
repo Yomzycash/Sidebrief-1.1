@@ -258,7 +258,7 @@ export const StaffSidebarLinks = [
     id: 6,
     title: "Rewards",
     icon: RewardIcon,
-    path: "/dashboard/business-registration",
+    path: "/staff-dashboard/all-rewards",
   },
   {
     id: 7,

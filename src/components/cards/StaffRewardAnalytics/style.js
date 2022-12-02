@@ -6,23 +6,19 @@ export const Container = styled.div`
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
   padding: 24px;
+  width: 100%;
 `;
 
 export const ChartContainer = styled.div`
-  /* display: flex;
-  gap: 40px; */
   background: #ffffff;
-  /* border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04); */
   border-radius: 16px;
   padding-top: 24px;
-  padding-right: 24px;
-  padding-bottom: 24px;
   display: flex;
   justify-content: space-between;
   width: 100%;
   height: 320px;
   min-height: 271px;
+  gap: 100px;
 
   @media screen and (max-width: 600px) {
     width: 100%;
