@@ -1,37 +1,8 @@
-import { RewardCard } from "components/cards";
-import CountryCard from "components/cards/CountryCard";
-import StaffEntityCard from "components/cards/StaffEntityCard";
-import FileLoading from "components/FileUpload/FileLoading";
 import StaffEntityModal from "components/modal/StaffEntityModal";
 import StaffRewardModal from "components/modal/StaffRewardModal";
 import StaffSidebar from "components/sidebar/StaffSidebar";
-import Modal1 from "layout/modal1";
 import React from "react";
-import {
-  Audio,
-  BallTriangle,
-  Bars,
-  Circles,
-  Grid,
-  Hearts,
-  Oval,
-  Puff,
-  Rings,
-  SpinningCircles,
-  TailSpin,
-  ThreeDots,
-} from "react-loading-icons";
-import StaffDashboard from "./Dashboard/staffDashboard";
-import StaffBusinesses from "./Dashboard/staffDashboard/Businesses";
-import Countries from "./Dashboard/staffDashboard/Businesses/Countries/Countries";
-import StaffEntities from "./Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities";
-import HeaderDetail from "components/Header/HeaderDetail";
-import Registrationlayout from "./Dashboard/staffDashboard/Businesses/BusinessRegistration/layout";
-import StaffRewardHeader from "components/Header/StaffRewardHeader";
-import RewardHeaderDetail from "components/Header/RewardHeaderDetail";
-import ProfileDetails from "components/profileDetails";
-import StaffRewardDetails from "components/staffRewardDetails";
-import StaffRewardAnalytics from "components/cards/StaffRewardAnalytics";
+
 const Test = () => {
   return (
     <div>
