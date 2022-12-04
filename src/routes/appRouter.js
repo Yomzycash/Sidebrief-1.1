@@ -140,6 +140,10 @@ const StaffGeneralSettings = lazy(() =>
 	import("pages/Dashboard/staffDashboard/Settings/general")
 );
 
+const SidebriefTeam = lazy(() =>
+	import("pages/Dashboard/staffDashboard/Settings/team")
+);
+
 const AppRouter = () => {
 	const userData = useSelector((store) => store.UserDataReducer);
 	const launchData = useSelector(
@@ -259,7 +263,10 @@ const AppRouter = () => {
 									path="user-permissions"
 									element={<Settings />}
 								/>
-								<Route path="team" element={<Settings />} />
+								<Route
+									path="team"
+									element={<SidebriefTeam />}
+								/>
 							</Route>
 						</Route>
 
