@@ -9,6 +9,7 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   padding: 40px 24px;
+  width: 100%;
 `;
 
 export const FullContentWrapper = styled.div`

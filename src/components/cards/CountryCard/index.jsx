@@ -1,18 +1,19 @@
-import { CornerPetal } from 'asset/svg'
-import React from 'react'
-import styled from 'styled-components'
-import { ReactComponent as MoreIcon } from '../../../../src/asset/svg/threeDot.svg'
-import { ReactComponent as MailIcon } from '../../../../src/asset/svg/mailbox.svg'
+import { CornerPetal } from "asset/svg";
+import React from "react";
+import styled from "styled-components";
+import { ReactComponent as MoreIcon } from "../../../../src/asset/svg/threeDot.svg";
+import { ReactComponent as MailIcon } from "../../../../src/asset/svg/mailbox.svg";
 
 const CountryCard = ({
   image,
-  name = 'NIgeria',
-  countryCode = 'NGA',
-  countryNumber = '+234',
-  countryCurrency = 'Naira',
+  name = "NIgeria",
+  countryCode = "NGA",
+  countryNumber = "+234",
+  countryCurrency = "Naira",
+  action,
 }) => {
   return (
-    <Container>
+    <Container onClick={action}>
       <Corner>
         <CornerPetal viewBox="0 0 40 170" />
       </Corner>
@@ -48,10 +49,10 @@ const CountryCard = ({
         </LowContainer>
       </Low>
     </Container>
-  )
-}
+  );
+};
 
-export default CountryCard
+export default CountryCard;
 const Container = styled.div`
   max-width: 342px;
   width: 100%;
@@ -74,7 +75,7 @@ const Container = styled.div`
   &:hover {
     background: #00a2d4;
   }
-`
+`;
 const Corner = styled.div`
   position: absolute;
   top: 0;
@@ -95,20 +96,20 @@ const Corner = styled.div`
       }
     }
   }
-`
+`;
 const Top = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 16px;
-`
+`;
 const TopWrapper = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 16px;
-`
-const ImageWrapper = styled.div``
+`;
+const ImageWrapper = styled.div``;
 const CountryName = styled.h3`
   font-weight: 600;
   font-size: 20px;
@@ -116,25 +117,25 @@ const CountryName = styled.h3`
   letter-spacing: -0.02em;
   text-transform: capitalize;
   color: #242627;
-`
-const MoreIconWrapper = styled.div``
+`;
+const MoreIconWrapper = styled.div``;
 const Low = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   gap: 8px;
-`
+`;
 const LowContainer = styled.div`
   display: inline-flex;
   align-items: center;
   width: 100%;
   gap: 8px;
   padding: 0px 8px;
-`
+`;
 const CountryCodeWrapper = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #4e5152;
-`
+`;

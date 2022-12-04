@@ -30,6 +30,12 @@ import Awaiting from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistra
 import InProgress from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/InProgress";
 import Completed from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed";
 import StaffEntities from "pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities";
+import StaffReward from "pages/Dashboard/staffDashboard/Reward";
+import StaffRewardDetails from "pages/Dashboard/staffDashboard/Reward/Details";
+import StaffRewardAnalytics from "pages/Dashboard/staffDashboard/Reward/Analytics";
+import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Analytics";
+import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
+import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
 	import("pages/Auth/Registration/EmailVerify/success")
@@ -121,8 +127,17 @@ const DetailBeneficiaries = lazy(() =>
 const SettingLayout = lazy(() =>
 	import("pages/Dashboard/User/Settings/layout")
 );
+const StaffSettingLayout = lazy(() =>
+	import("pages/Dashboard/staffDashboard/Settings/layout")
+);
 const NotificationSettings = lazy(() =>
 	import("pages/Dashboard/User/Settings/notification")
+);
+const StaffNotificationSettings = lazy(() =>
+	import("pages/Dashboard/staffDashboard/Settings/notification")
+);
+const StaffGeneralSettings = lazy(() =>
+	import("pages/Dashboard/staffDashboard/Settings/general")
 );
 
 const AppRouter = () => {
@@ -214,6 +229,37 @@ const AppRouter = () => {
 										></Route>
 									</Route>
 								</Route>
+							</Route>
+							<Route path="all-rewards" element={<Outlet />}>
+								<Route index element={<StaffAllRewards />} />
+								<Route path="reward" element={<StaffReward />}>
+									<Route
+										path="details"
+										element={<StaffRewardDetailsPage />}
+									/>
+									<Route
+										path="analytics"
+										element={<StaffRewardAnalyticsPage />}
+									/>
+								</Route>
+							</Route>
+							<Route
+								path="settings"
+								element={<StaffSettingLayout />}
+							>
+								<Route
+									path="general"
+									element={<StaffGeneralSettings />}
+								/>
+								<Route
+									path="notification"
+									element={<StaffNotificationSettings />}
+								/>
+								<Route
+									path="user-permissions"
+									element={<Settings />}
+								/>
+								<Route path="team" element={<Settings />} />
 							</Route>
 						</Route>
 
@@ -374,10 +420,7 @@ const AppRouter = () => {
 								element={<RewardDetails />}
 							/>
 						</Route>
-						<Route
-							path="dashboard-staff"
-							element={<StaffDashboard />}
-						></Route>
+						{/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
 						<Route
 							path="launch"
 							element={

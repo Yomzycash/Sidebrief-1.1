@@ -1,35 +1,37 @@
-import React from 'react'
-import { useState } from 'react'
-import styled from 'styled-components'
-import NigeriaFlag from '../../asset/images/NigeriaFlag.png'
-import { FiArrowLeft } from 'react-icons/fi'
-import { RedTrash } from 'asset/svg'
-import ActiveNav from 'components/navbar/ActiveNav'
-import { Link } from 'react-router-dom'
-import Search from 'components/navbar/Search'
-import { SortDropdown } from 'containers/BusinessDetail/Header/SortDropdown'
-import { useLocation } from 'react-router-dom'
-import { ReactComponent as AddIcon } from '../../../src/asset/svg/Plus.svg'
+import React from "react";
+import { useState } from "react";
+import styled from "styled-components";
+import NigeriaFlag from "../../asset/images/NigeriaFlag.png";
+import { FiArrowLeft } from "react-icons/fi";
+import { RedTrash } from "asset/svg";
+import ActiveNav from "components/navbar/ActiveNav";
+import { Link, useNavigate } from "react-router-dom";
+import Search from "components/navbar/Search";
+import { SortDropdown } from "containers/BusinessDetail/Header/SortDropdown";
+import { useLocation } from "react-router-dom";
+import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 
 const HeaderDetail = ({
-  countryName = 'Nigeria',
-  numberCode = '234',
-  countryCode = 'NGA',
-  countryCurrency = 'Naira',
-  Description = 'Add Entity',
+  countryName = "Nigeria",
+  numberCode = "234",
+  countryCode = "NGA",
+  countryCurrency = "Naira",
+  Description = "Add Entity",
 }) => {
-  const [subHeaderHovered, setSubHeaderHovered] = useState(false)
-  const { pathname } = useLocation()
-
-  const page = pathname.split('/').pop()
+  const [subHeaderHovered, setSubHeaderHovered] = useState(false);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const page = pathname.split("/").pop();
   const triggerSearch = () => {
     // perform search filter here
-  }
+  };
 
   return (
     <Container>
       <Top>
-        <BackContainer>
+        <BackContainer
+          onClick={() => navigate("/staff-dashboard/businesses/countries")}
+        >
           <FiArrowLeft color="#151717" size={24} />
           <Text>Back to Countries</Text>
         </BackContainer>
@@ -67,16 +69,16 @@ const HeaderDetail = ({
         $hovered={subHeaderHovered}
       >
         <ActiveNav
-          text={'Country Details'}
+          text={"Country Details"}
           path={`/staff-dashboard/businesses/countries/countrydetail`}
         />
         <ActiveNav
-          text={'Entities'}
+          text={"Entities"}
           total={24}
           path={`/staff-dashboard/businesses/countries/entitydetail`}
         />
       </SubHeader>
-      {page !== 'countrydetail' ? (
+      {page !== "countrydetail" ? (
         <SearchAndSort>
           {/* placeholder changes based on the page it's on */}
           {/* not implemented yet */}
@@ -88,10 +90,10 @@ const HeaderDetail = ({
         </SearchAndSort>
       ) : null}
     </Container>
-  )
-}
+  );
+};
 
-export default HeaderDetail
+export default HeaderDetail;
 
 const Container = styled.header`
   width: 100%;
@@ -101,7 +103,7 @@ const Container = styled.header`
   @media screen and (max-width: 700px) {
     border: 0;
   }
-`
+`;
 
 const Top = styled.div`
   padding-inline: 40px;
@@ -113,7 +115,7 @@ const Top = styled.div`
     padding-block: 0;
     padding-inline: 0px;
   }
-`
+`;
 
 const BackContainer = styled.div`
   display: flex;
@@ -125,16 +127,16 @@ const BackContainer = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 
 const Text = styled.p`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
   color: #151717;
-`
+`;
 
 const TitleContainer = styled.div`
   padding-block: 28px;
@@ -143,17 +145,17 @@ const TitleContainer = styled.div`
   justify-content: space-between;
   gap: 24px;
   width: 100%;
-`
+`;
 
 const TopInfo = styled.div`
   display: flex;
   gap: 24px;
   align-items: center;
-`
+`;
 
-const ImageWrapper = styled.div``
+const ImageWrapper = styled.div``;
 const CountryName = styled.h2`
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -163,7 +165,7 @@ const CountryName = styled.h2`
   /* Grey 3 */
 
   color: #4e5152;
-`
+`;
 
 const LHS = styled.div`
   display: flex;
@@ -173,13 +175,13 @@ const LHS = styled.div`
     gap: 16px;
     padding-inline: 24px;
   }
-`
+`;
 
 const RHS = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 
 const BottomInfo = styled.div`
   display: flex;
@@ -189,7 +191,7 @@ const BottomInfo = styled.div`
     gap: 16px;
     font-size: 14px;
   }
-`
+`;
 
 const CountryDetails = styled.p`
   font-style: normal;
@@ -197,7 +199,7 @@ const CountryDetails = styled.p`
   font-size: 16px;
   line-height: 24px;
   color: #4e5152;
-`
+`;
 
 const DeleteButton = styled.button`
   border: none;
@@ -209,7 +211,7 @@ const DeleteButton = styled.button`
   cursor: pointer;
 
   p {
-    font-family: 'BR Firma';
+    font-family: "BR Firma";
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -217,7 +219,7 @@ const DeleteButton = styled.button`
     letter-spacing: 0.02em;
     color: #ed4e3a;
   }
-`
+`;
 
 const SubHeader = styled.div`
   border-top: 1px solid #edf1f7;
@@ -231,10 +233,10 @@ const SubHeader = styled.div`
 
   &::-webkit-scrollbar {
     height: 5px;
-    background: ${({ $hovered }) => ($hovered ? '#aaaaaa33' : '#fff')};
+    background: ${({ $hovered }) => ($hovered ? "#aaaaaa33" : "#fff")};
   }
   &::-webkit-scrollbar-thumb {
-    background: ${({ $hovered }) => ($hovered ? '#aaaaaa' : '#fff')};
+    background: ${({ $hovered }) => ($hovered ? "#aaaaaa" : "#fff")};
     border-radius: 15px;
   }
 
@@ -244,13 +246,13 @@ const SubHeader = styled.div`
     border-bottom: 1px solid #edf1f7;
     /* border-color: #edf1f7; */
   }
-`
+`;
 const BottomContainer = styled.div`
   display: inline-flex;
   align-items: center;
 
   gap: 16px;
-`
+`;
 const BottomWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -258,20 +260,20 @@ const BottomWrapper = styled.div`
   padding: 0px 8px 0px 0px;
   gap: 8px;
   border-right: 1px solid #edf1f7;
-`
+`;
 const TextWrapper = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #4e5152;
-`
+`;
 const SearchAndSort = styled.div`
   padding: clamp(20px, 2vw, 40px) 24px;
   border-top: 1px solid #edf1f7;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -283,7 +285,7 @@ const ButtonWrapper = styled.div`
   height: 40px;
   background: #00a2d4;
   border-radius: 8px;
-`
+`;
 const TextContent = styled.div`
   font-weight: 500;
   font-size: 14px;
@@ -293,4 +295,4 @@ const TextContent = styled.div`
   text-align: center;
   letter-spacing: -0.5px;
   color: #ffffff;
-`
+`;
