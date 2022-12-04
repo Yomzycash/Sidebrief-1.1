@@ -6,7 +6,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { StaffEntitySchema } from "utils/config";
 
-const StaffEntityModal = ({ cardAction, selectedToEdit }) => {
+const StaffEntityModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
   const {
     handleSubmit,
     register,
@@ -69,6 +69,8 @@ const StaffEntityModal = ({ cardAction, selectedToEdit }) => {
       submitAction={submitAction}
       cardAction={cardAction}
       title="Add New Entity"
+      open={open}
+      setOpen={setOpen}
     >
       <InputWithLabel
         label="Entity Name"

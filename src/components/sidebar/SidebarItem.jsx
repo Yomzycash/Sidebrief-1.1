@@ -4,7 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 
-const SidebarItem = ({ item, expanded }) => {
+const SidebarItem = ({ item, expanded, homePath }) => {
   const [iconHovered, setIconHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -18,21 +18,25 @@ const SidebarItem = ({ item, expanded }) => {
     color: "#00a2d4",
   };
 
+  let homePathActive = homePath && item.id === 1;
+
   return (
     <SidebarItemContainer>
       <Item>
         <div
-          style={isActive ? ActiveStyle : {}}
+          style={isActive || homePathActive ? ActiveStyle : {}}
           onClick={() => setCollapsed(!collapsed)}
         >
           <NavLink
             to={item.path}
             onMouseEnter={() => setIconHovered(item.id)}
             onMouseLeave={() => setIconHovered(0)}
-            style={({ isActive }) => (isActive ? { color: "#00a2d4" } : {})}
+            style={({ isActive }) =>
+              isActive || homePathActive ? { color: "#00a2d4" } : {}
+            }
           >
             <item.icon
-              filled={locationPath?.includes(item.path)}
+              filled={locationPath?.includes(item.path) || homePathActive}
               hover={iconHovered === item.id}
             />
             {expanded && item.title}
@@ -55,9 +59,12 @@ const SidebarItem = ({ item, expanded }) => {
                 to={each.path}
                 onMouseEnter={() => setIconHovered(item.id + each.id)}
                 onMouseLeave={() => setIconHovered(0)}
+                style={({ isActive }) =>
+                  isActive || homePathActive ? { color: "#00a2d4" } : {}
+                }
               >
                 <each.icon
-                  filled={locationPath?.includes(each.path)}
+                  filled={locationPath?.includes(each.path) || homePathActive}
                   hover={iconHovered === item.id + each.id}
                 />
                 <span>{each.title}</span>

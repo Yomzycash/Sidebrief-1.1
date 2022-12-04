@@ -1,23 +1,27 @@
-import { RewardSummaryCard } from 'components/cards'
-import Search from 'components/navbar/Search'
-import React from 'react'
-import styled from 'styled-components'
-import { ReactComponent as AddIcon } from '../../../src/asset/svg/Plus.svg'
+import { RewardSummaryCard } from "components/cards";
+import StaffEntityModal from "components/modal/StaffEntityModal";
+import Search from "components/navbar/Search";
+import React from "react";
+import { useState } from "react";
+import styled from "styled-components";
+import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 
 const StaffHeader = ({
-  title = 'Countries',
-  shown = '12',
-  total = '12',
-  Description = 'Add Country',
+  title = "Countries",
+  shown = "12",
+  total = "12",
+  Description = "Add Country",
 }) => {
-  const searchStyle = {
-    borderRadius: '12px',
-    backgroundColor: 'white',
-    width: '100%',
-    height: '100%',
-  }
+  const [open, setOpen] = useState(false);
 
-  const iconStyle = { width: '17px', height: '17px' }
+  const searchStyle = {
+    borderRadius: "12px",
+    backgroundColor: "white",
+    width: "100%",
+    height: "100%",
+  };
+
+  const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
       <Header>
@@ -38,24 +42,25 @@ const StaffHeader = ({
             <SearchWrapper>
               <Search style={searchStyle} iconStyle={iconStyle} />
             </SearchWrapper>
-            <ButtonWrapper>
+            <ButtonWrapper onClick={() => setOpen(true)}>
               <button>
                 <AddIcon />
                 {Description}
               </button>
             </ButtonWrapper>
+            <StaffEntityModal open={open} setOpen={setOpen} />
           </BottomContent>
         </MainHeader>
       </Header>
     </Container>
-  )
-}
-export default StaffHeader
+  );
+};
+export default StaffHeader;
 const Container = styled.div`
   display: flex;
   flex-flow: column;
   margin: 0 40px;
-`
+`;
 const Header = styled.div`
   position: sticky;
   top: 57.1px;
@@ -63,7 +68,7 @@ const Header = styled.div`
   flex-flow: column;
   background-color: white;
   z-index: 2;
-`
+`;
 const MainHeader = styled.div`
   display: flex;
   flex-flow: column;
@@ -74,7 +79,7 @@ const MainHeader = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
   transition: 0.2s all ease;
-`
+`;
 
 //TODO: maybe hide scroll bar
 
@@ -91,14 +96,14 @@ const TopContent = styled.div`
     gap: 48px;
     justify-content: space-between;
   }
-`
+`;
 const PageTitle = styled.div`
   display: flex;
   align-items: center;
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   color: #151717;
-`
+`;
 const BottomContent = styled.div`
   display: flex;
   align-items: center;
@@ -106,7 +111,7 @@ const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
-`
+`;
 const Drop = styled.div`
   display: flex;
   border: 1px solid #f1f1f1;
@@ -120,7 +125,7 @@ const Drop = styled.div`
     width: 60px;
     background: none;
   }
-`
+`;
 const ButtonWrapper = styled.div`
   width: 200px;
 
@@ -140,7 +145,7 @@ const ButtonWrapper = styled.div`
     gap: 8px;
     align-items: center;
   }
-`
+`;
 
 const SearchWrapper = styled.div`
   max-width: 384px;
@@ -150,4 +155,4 @@ const SearchWrapper = styled.div`
     max-width: 100%;
     width: 100%;
   }
-`
+`;

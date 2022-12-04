@@ -1,5 +1,5 @@
-import React from 'react'
-import { Section, Header, HeaderTop, Right, HeaderBody, Body } from './styled'
+import React from "react";
+import { Section, Header, HeaderTop, Right, HeaderBody, Body } from "./styled";
 
 const DashboardSection = ({
   title,
@@ -10,6 +10,7 @@ const DashboardSection = ({
   nowrap,
   column,
   carousel,
+  bodyStyle,
 }) => {
   return (
     <Section MarginRight={MarginRight} carousel={carousel}>
@@ -27,11 +28,11 @@ const DashboardSection = ({
           <p>{body}</p>
         </HeaderBody>
       </Header>
-      <Body nowrap={nowrap} carousel={carousel}>
+      <Body nowrap={nowrap} carousel={carousel} style={{ ...bodyStyle }}>
         {children}
       </Body>
     </Section>
-  )
-}
+  );
+};
 
-export default DashboardSection
+export default DashboardSection;
