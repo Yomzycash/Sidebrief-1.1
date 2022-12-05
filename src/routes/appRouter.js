@@ -194,13 +194,14 @@ const AppRouter = () => {
               <Route path="home" element={<StaffDashboard />} />
               <Route path="businesses" element={<Outlet />}>
                 <Route index element={<StaffBusinesses />} />
-                <Route path="registration" element={<Outlet />}>
-                  <Route element={<Registrationlayout />}>
-                    <Route path="all" element={<All />} />
-                    <Route path="awating-approval" element={<Awaiting />} />
-                    <Route path="in-progress" element={<InProgress />} />
-                    <Route path="completed" element={<Completed />} />
-                  </Route>
+                <Route path="registration" element={<Registrationlayout />}>
+                  <Route index element={<All />} />
+                  {/* <Route element={<Registrationlayout />}> */}
+                  <Route path="all" element={<All />} />
+                  <Route path="awating-approval" element={<Awaiting />} />
+                  <Route path="in-progress" element={<InProgress />} />
+                  <Route path="completed" element={<Completed />} />
+                  {/* </Route> */}
                 </Route>
                 <Route path="entities" element={<Outlet />}>
                   <Route index element={<StaffEntities />} />
