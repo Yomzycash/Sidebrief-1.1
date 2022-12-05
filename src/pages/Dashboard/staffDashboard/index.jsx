@@ -8,92 +8,115 @@ import StaffSidebar from "components/sidebar/StaffSidebar";
 import { ApplicationTable } from "components/Staff/Tables";
 import { MockData } from "components/Staff/Tables/ApplicationTable/constants";
 import DashboardSection from "layout/DashboardSection";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useGetUserSubmittedQuery } from "services/launchService";
 import styled from "styled-components";
 import { StaffContainer, StatusCardContainer } from "./styled";
 
 const StaffDashboard = (props) => {
-	const layoutInfo = useSelector((store) => store.LayoutInfo);
-	const { sidebarWidth } = layoutInfo;
+  const { data, isLoading, isSuccess } = useGetUserSubmittedQuery();
 
-	const location = useLocation();
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
 
-	let hideSearch = location.pathname.includes("/dashboard/rewards");
+  const location = useLocation();
 
-	let hideMobileNav =
-		location.pathname.includes("/dashboard/rewards") &&
-		location.pathname.length > 31;
-	const analytics = {
-		title: "User Analytics",
-		options: ["All time", 1, 2, 3, 4, 5, 6, 7],
-		status1: {
-			text: "Total Users",
-			total: 825,
-			color: "rgba(255, 255, 255, 0.4)",
-		},
-		status2: {
-			text: "Registrations",
-			total: 450,
-			color: "#ffffff",
-		},
-	};
+  let hideSearch = location.pathname.includes("/dashboard/rewards");
 
-	return (
-		<Dashboard>
-			<Navbar
-				dashboard
-				imgStyles={{ maxWidth: "100px" }}
-				style={{ padding: "12px 24px" }}
-			/>
-			<MobileNavbar hideNav={hideMobileNav} />
-			<Body>
-				<BodyLeft>
-					<StaffSidebar />
-				</BodyLeft>
-				<BodyRight SidebarWidth={sidebarWidth}>
-					<StaffContainer>
-						<h3>Welcome back, Bamidele</h3>
-						<StatusCardContainer>
-							<StatusCard />
-						</StatusCardContainer>
-						<DashboardSection>
-							<BusinessesChartCard analytics={analytics} staff />
-							<AnalyticsChart />
-						</DashboardSection>
-						<DashboardSection>
-							<ApplicationTable data={MockData} />
-						</DashboardSection>
-					</StaffContainer>
-				</BodyRight>
-			</Body>
-		</Dashboard>
-	);
+  let hideMobileNav =
+    location.pathname.includes("/dashboard/rewards") &&
+    location.pathname.length > 31;
+  const analytics = {
+    title: "User Analytics",
+    options: ["All time", 1, 2, 3, 4, 5, 6, 7],
+    status1: {
+      text: "Total Users",
+      total: 825,
+      color: "rgba(255, 255, 255, 0.4)",
+    },
+    status2: {
+      text: "Registrations",
+      total: 450,
+      color: "#ffffff",
+    },
+  };
+
+  // Get user data information
+  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  let firstName_raw = userInfo?.first_name;
+  let firstName =
+    firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
+  let newUser = userInfo?.newUser;
+
+  // Get all users submitted launch requests
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  return (
+    <Dashboard>
+      <Navbar
+        dashboard
+        imgStyles={{ maxWidth: "100px" }}
+        style={{ padding: "12px 24px" }}
+      />
+      <MobileNavbar hideNav={hideMobileNav} />
+      <Body>
+        <BodyLeft>
+          <StaffSidebar />
+        </BodyLeft>
+        <BodyRight SidebarWidth={sidebarWidth}>
+          <StaffContainer>
+            <DashboardSection
+              title={
+                newUser
+                  ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
+                  : `Welcome back${firstName ? ", " + firstName : ""}`
+              }
+              nowrap
+            >
+              <StatusCardContainer>
+                <StatusCard />
+              </StatusCardContainer>
+            </DashboardSection>
+            <DashboardSection>
+              <BusinessesChartCard analytics={analytics} staff />
+              <AnalyticsChart />
+            </DashboardSection>
+            <DashboardSection>
+              <ApplicationTable data={MockData} />
+            </DashboardSection>
+          </StaffContainer>
+        </BodyRight>
+      </Body>
+    </Dashboard>
+  );
 };
 
 export default StaffDashboard;
 
 export const Dashboard = styled.div`
-	display: flex;
-	flex-flow: column;
-	width: 100%;
-	flex: 1;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  flex: 1;
 `;
 
 export const Body = styled.div`
-	display: flex;
-	flex-flow: row nowrap;
+  display: flex;
+  flex-flow: row nowrap;
 `;
 
 export const BodyLeft = styled.div``;
 
 export const BodyRight = styled.div`
-	display: flex;
-	flex-flow: column;
-	width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
+  display: flex;
+  flex-flow: column;
+  width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
 
-	@media screen and (max-width: 700px) {
-		width: 100%;
-	}
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
 `;
