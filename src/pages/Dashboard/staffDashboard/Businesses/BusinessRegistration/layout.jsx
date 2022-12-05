@@ -1,33 +1,40 @@
-import { RewardSummaryCard } from 'components/cards'
-import ActiveNav from 'components/navbar/ActiveNav'
-import Search from 'components/navbar/Search'
-import React from 'react'
-import styled from 'styled-components'
-import { ReactComponent as ExportIcon } from '../../../../../asset/svg/ExportIcon.svg'
-import { ReactComponent as NoteIcon } from '../../../../../asset/images/note.svg'
+import { RewardSummaryCard } from "components/cards";
+import ActiveNav from "components/navbar/ActiveNav";
+import Search from "components/navbar/Search";
+import React from "react";
+import styled from "styled-components";
+import { ReactComponent as ExportIcon } from "../../../../../asset/svg/ExportIcon.svg";
+import { ReactComponent as NoteIcon } from "../../../../../asset/images/note.svg";
 
-import { Outlet } from 'react-router-dom'
-import Navbar from 'components/navbar'
-import { useSelector } from 'react-redux'
-import StaffSidebar from 'components/sidebar/StaffSidebar'
+import { Outlet, useLocation } from "react-router-dom";
+import Navbar from "components/navbar";
+import { useSelector } from "react-redux";
+import StaffSidebar from "components/sidebar/StaffSidebar";
 
 const Registrationlayout = () => {
-  const layoutInfo = useSelector((store) => store.LayoutInfo)
-  const { sidebarWidth } = layoutInfo
-  const searchStyle = {
-    borderRadius: '12px',
-    backgroundColor: 'white',
-    width: '100%',
-    height: '100%',
-  }
+  const location = useLocation();
 
-  const iconStyle = { width: '17px', height: '17px' }
+  let home =
+    location.pathname === "/staff-dashboard/businesses/registration"
+      ? true
+      : false;
+
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
+  const searchStyle = {
+    borderRadius: "12px",
+    backgroundColor: "white",
+    width: "100%",
+    height: "100%",
+  };
+
+  const iconStyle = { width: "17px", height: "17px" };
   return (
     <Dashboard>
       <Navbar
         dashboard
-        imgStyles={{ maxWidth: '100px' }}
-        style={{ padding: '12px 24px' }}
+        imgStyles={{ maxWidth: "100px" }}
+        style={{ padding: "12px 24px" }}
         hideSearch
       />
       <Body>
@@ -72,7 +79,8 @@ const Registrationlayout = () => {
                 <ActiveNav
                   text="All"
                   total={329}
-                  path={'/staff-dashboard/businesses/registration/all'}
+                  path={"/staff-dashboard/businesses/registration/all"}
+                  customActive={home}
                 />
                 <ActiveNav
                   text="Awaiting Approval"
@@ -96,28 +104,28 @@ const Registrationlayout = () => {
         </BodyRight>
       </Body>
     </Dashboard>
-  )
-}
+  );
+};
 
-export default Registrationlayout
+export default Registrationlayout;
 const Dashboard = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
   flex: 1;
-`
+`;
 const Body = styled.div`
   display: flex;
   flex-flow: row nowrap;
-`
-const BodyLeft = styled.div``
+`;
+const BodyLeft = styled.div``;
 
 const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
   padding-bottom: 40px;
-`
+`;
 
 const Container = styled.div`
   display: flex;
@@ -128,7 +136,7 @@ const Container = styled.div`
   @media screen and (max-width: 1050px) {
     margin: 0;
   }
-`
+`;
 
 const Header = styled.div`
   position: sticky;
@@ -141,7 +149,7 @@ const Header = styled.div`
   @media screen and (max-width: 700px) {
     flex-flow: column-reverse;
   }
-`
+`;
 
 const MainHeader = styled.div`
   display: flex;
@@ -156,7 +164,7 @@ const MainHeader = styled.div`
   @media screen and (max-width: 700px) {
     padding: 16px 24px 32px 24px !important;
   }
-`
+`;
 
 const SubHeader = styled.div`
   display: flex;
@@ -169,7 +177,7 @@ const SubHeader = styled.div`
   overflow-y: hidden;
 
   //TODO: maybe hide scroll bar
-`
+`;
 const SearchWrapper = styled.div`
   max-width: 384px;
   height: 40px;
@@ -178,7 +186,7 @@ const SearchWrapper = styled.div`
     max-width: 100%;
     width: 100%;
   }
-`
+`;
 
 const TopContent = styled.div`
   display: flex;
@@ -196,7 +204,7 @@ const TopContent = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 const PageTitle = styled.div`
   display: flex;
   align-items: center;
@@ -206,7 +214,7 @@ const PageTitle = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
-`
+`;
 
 const BottomContent = styled.div`
   display: flex;
@@ -215,7 +223,7 @@ const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
-`
+`;
 
 const Drop = styled.div`
   display: flex;
@@ -230,12 +238,12 @@ const Drop = styled.div`
     width: 60px;
     background: none;
   }
-`
+`;
 const Flex = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-`
+`;
 const ExportWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -250,7 +258,7 @@ const ExportWrapper = styled.div`
   border: 1px solid #00a2d4;
   border-radius: 8px;
   cursor: pointer;
-`
+`;
 const TitleWrapper = styled.h3`
   font-weight: 500;
   font-size: 14px;
@@ -260,7 +268,7 @@ const TitleWrapper = styled.h3`
   text-align: center;
   letter-spacing: -0.5px;
   color: #00a2d4;
-`
+`;
 const ButtonWrapper = styled.div`
   width: 255px;
   height: 44px;
@@ -293,13 +301,13 @@ const ButtonWrapper = styled.div`
       justify-content: center !important;
     }
   }
-`
+`;
 const searchStyle = styled.div`
   border-radius: 12px;
-  background-color: 'white';
+  background-color: "white";
   max-width: 384px;
   height: 40px;
   @media screen and (max-width: 700px) {
     width: 100%;
   }
-`
+`;

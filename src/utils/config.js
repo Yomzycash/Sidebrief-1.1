@@ -231,9 +231,9 @@ export const StaffSidebarLinks = [
     dropDownList: [
       {
         id: 1,
-        title: "Registration",
+        title: "Registrations",
         icon: ResourcesIcon,
-        path: "/staff-dashboard/businesses/registration/all",
+        path: "/staff-dashboard/businesses/registration",
       },
       {
         id: 2,
