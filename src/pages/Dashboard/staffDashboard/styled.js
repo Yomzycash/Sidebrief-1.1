@@ -13,9 +13,9 @@ export const StaffContainer = styled.div`
 `;
 
 export const StatusCardContainer = styled.div`
-  /* margin-top: 40px;
-	margin-bottom: 40px;
-	padding: 0px 40px; */
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 100%;
 `;
 export const Top = styled.div``;
 export const Body = styled.div`
