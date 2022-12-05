@@ -37,6 +37,7 @@ import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Anal
 import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
 import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
 import StaffSettings from "pages/Dashboard/staffDashboard/Settings";
+import StaffGeneral from "pages/Dashboard/staffDashboard/Settings/general";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -134,6 +135,12 @@ const StaffSettingLayout = lazy(() =>
 const NotificationSettings = lazy(() =>
   import("pages/Dashboard/User/Settings/notification")
 );
+const StaffNotificationSettings = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Settings/notification")
+);
+const StaffGeneralSettings = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Settings/general")
+);
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -186,6 +193,7 @@ const AppRouter = () => {
 
             <Route path="staff-dashboard" element={<Outlet />}>
               <Route index element={<StaffDashboard />} />
+              <Route path="home" element={<StaffDashboard />} />
               <Route path="businesses" element={<Outlet />}>
                 <Route index element={<StaffBusinesses />} />
                 <Route path="registration" element={<Outlet />}>
@@ -222,8 +230,13 @@ const AppRouter = () => {
                 </Route>
               </Route>
               <Route path="settings" element={<StaffSettingLayout />}>
-                <Route path="general" element={<StaffSettings />} />
+                <Route path="general" element={<StaffGeneral />} />
                 <Route path="notification" element={<NotificationSettings />} />
+                <Route path="general" element={<StaffGeneralSettings />} />
+                <Route
+                  path="notification"
+                  element={<StaffNotificationSettings />}
+                />
                 <Route path="user-permissions" element={<Settings />} />
                 <Route path="team" element={<Settings />} />
               </Route>

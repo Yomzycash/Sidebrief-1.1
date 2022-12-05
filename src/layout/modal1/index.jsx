@@ -19,9 +19,9 @@ const Modal1 = ({
   title,
   cardAction,
   children,
+  open,
+  setOpen,
 }) => {
-  const [open, setOpen] = useState(true);
-
   const handleClose = () => {
     setOpen(false);
   };

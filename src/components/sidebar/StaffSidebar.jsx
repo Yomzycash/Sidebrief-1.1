@@ -18,12 +18,16 @@ import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
 
 const StaffSidebar = () => {
-  const navigate = useNavigate();
   const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let homePath = location.pathname === "/staff-dashboard" ? true : false;
 
   const sidebarVariants = {
     true: {
@@ -58,7 +62,12 @@ const StaffSidebar = () => {
         </ListWrapper>
         <SidebarLinks>
           {StaffSidebarLinks.map((item, index) => (
-            <SidebarItem key={index} item={item} expanded={expanded} />
+            <SidebarItem
+              key={index}
+              item={item}
+              expanded={expanded}
+              homePath={homePath}
+            />
           ))}
         </SidebarLinks>
       </Top>
