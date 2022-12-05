@@ -23,7 +23,7 @@ export const StaffSettingHeader = () => {
 					path={`/staff-dashboard/settings/user-permissions`}
 				/>
 				<ActiveNav
-					text={"Sidebrief Teams"}
+					text={"Sidebrief Team"}
 					path={`/staff-dashboard/settings/team`}
 				/>
 			</SubHeader>

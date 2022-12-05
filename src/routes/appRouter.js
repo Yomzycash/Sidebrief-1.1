@@ -140,6 +140,10 @@ const StaffGeneralSettings = lazy(() =>
   import("pages/Dashboard/staffDashboard/Settings/general")
 );
 
+const SidebriefTeam = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Settings/team")
+);
+
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
   const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
@@ -189,45 +193,23 @@ const AppRouter = () => {
           <Route path="/" element={<Outlet />}>
             <Route path="test" element={<Test />} />
 
-            <Route path="staff-dashboard" element={<Outlet />}>
-              <Route index element={<StaffDashboard />} />
-              <Route path="home" element={<StaffDashboard />} />
-              <Route path="businesses" element={<Outlet />}>
-                <Route index element={<StaffBusinesses />} />
-                <Route path="registration" element={<Registrationlayout />}>
-                  <Route index element={<All />} />
-                  {/* <Route element={<Registrationlayout />}> */}
-                  <Route path="all" element={<All />} />
-                  <Route path="awating-approval" element={<Awaiting />} />
-                  <Route path="in-progress" element={<InProgress />} />
-                  <Route path="completed" element={<Completed />} />
-                  {/* </Route> */}
-                </Route>
-                <Route path="entities" element={<Outlet />}>
-                  <Route index element={<StaffEntities />} />
-                </Route>
+            <Route index element={<StaffDashboard />} />
+            <Route path="home" element={<StaffDashboard />} />
+            <Route path="businesses" element={<Outlet />}>
+              <Route index element={<StaffBusinesses />} />
+              <Route path="registration" element={<Registrationlayout />}>
+                <Route index element={<All />} />
+                {/* <Route element={<Registrationlayout />}> */}
+                <Route path="all" element={<All />} />
+                <Route path="awating-approval" element={<Awaiting />} />
+                <Route path="in-progress" element={<InProgress />} />
+                <Route path="completed" element={<Completed />} />
+                {/* </Route> */}
+              </Route>
+              <Route path="entities" element={<Outlet />}>
+                <Route index element={<StaffEntities />} />
+              </Route>
 
-                <Route path="countries" element={<Outlet />}>
-                  <Route index element={<Countries />} />
-                  <Route element={<CountryDetailLayout />}>
-                    <Route path="countrydetail" element={<CountryDetails />} />
-                    <Route
-                      path="entitydetail"
-                      element={<CountryEntities />}
-                    ></Route>
-                  </Route>
-                </Route>
-              </Route>
-              <Route path="all-rewards" element={<Outlet />}>
-                <Route index element={<StaffAllRewards />} />
-                <Route path="reward" element={<StaffReward />}>
-                  <Route path="details" element={<StaffRewardDetailsPage />} />
-                  <Route
-                    path="analytics"
-                    element={<StaffRewardAnalyticsPage />}
-                  />
-                </Route>
-              </Route>
               <Route path="settings" element={<StaffSettingLayout />}>
                 <Route path="general" element={<StaffGeneralSettings />} />
                 <Route
@@ -235,7 +217,7 @@ const AppRouter = () => {
                   element={<StaffNotificationSettings />}
                 />
                 <Route path="user-permissions" element={<Settings />} />
-                <Route path="team" element={<Settings />} />
+                <Route path="team" element={<SidebriefTeam />} />
               </Route>
             </Route>
 
