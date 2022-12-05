@@ -3,6 +3,7 @@ import {
 	useReactTable,
 	flexRender,
 	getCoreRowModel,
+	getSortedRowModel,
 } from "@tanstack/react-table";
 import { columns } from "./constants";
 
@@ -11,6 +12,7 @@ export const TeamTable = ({ data }) => {
 		columns,
 		data,
 		getCoreRowModel: getCoreRowModel(),
+		getSortedRowModel: getSortedRowModel(),
 	});
 
 	return (
