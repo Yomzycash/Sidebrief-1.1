@@ -16,6 +16,8 @@ export const StatusCardContainer = styled.div`
   margin-top: 40px;
   margin-bottom: 40px;
   padding: 0px 40px;
+  width: 100%;
+  border: 1px solid red;
 `
 export const Top = styled.div``
 export const Body = styled.div`

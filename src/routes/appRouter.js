@@ -142,6 +142,10 @@ const StaffGeneralSettings = lazy(() =>
   import("pages/Dashboard/staffDashboard/Settings/general")
 );
 
+const SidebriefTeam = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Settings/team")
+);
+
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
   const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
@@ -230,15 +234,13 @@ const AppRouter = () => {
                 </Route>
               </Route>
               <Route path="settings" element={<StaffSettingLayout />}>
-                <Route path="general" element={<StaffGeneral />} />
-                <Route path="notification" element={<NotificationSettings />} />
                 <Route path="general" element={<StaffGeneralSettings />} />
                 <Route
                   path="notification"
                   element={<StaffNotificationSettings />}
                 />
                 <Route path="user-permissions" element={<Settings />} />
-                <Route path="team" element={<Settings />} />
+                <Route path="team" element={<SidebriefTeam />} />
               </Route>
             </Route>
 
