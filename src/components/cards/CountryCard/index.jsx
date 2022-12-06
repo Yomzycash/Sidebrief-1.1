@@ -24,7 +24,7 @@ const CountryCard = ({
 							src={`https://countryflagsapi.com/png/${
 								countryCode.toLowerCase().split("-")[0]
 							}`}
-							alt="icon"
+							alt="flag"
 						/>
 					</CountryImageWrapper>
 					<CountryName>{name}</CountryName>

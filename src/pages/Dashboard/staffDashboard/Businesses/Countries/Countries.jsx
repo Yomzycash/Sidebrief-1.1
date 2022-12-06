@@ -47,7 +47,7 @@ const Countries = () => {
 							) : (
 								data.map((country, index) => (
 									<CountryCard
-										key={country.id}
+										key={index}
 										image={country.flag}
 										name={country.countryName}
 										countryCode={country.countryISO}
@@ -57,7 +57,7 @@ const Countries = () => {
 										}
 										action={() => {
 											navigate(
-												"/staff-dashboard/businesses/countries/countrydetail"
+												`/staff-dashboard/businesses/countries/${country.countryISO}/detail`
 											);
 										}}
 									/>

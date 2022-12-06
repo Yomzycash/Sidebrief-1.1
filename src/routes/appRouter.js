@@ -223,15 +223,18 @@ const AppRouter = () => {
 
 								<Route path="countries" element={<Outlet />}>
 									<Route index element={<Countries />} />
-									<Route element={<CountryDetailLayout />}>
+									<Route
+										path=":ISO"
+										element={<CountryDetailLayout />}
+									>
 										<Route
-											path="countrydetail"
+											path="detail"
 											element={<CountryDetails />}
 										/>
 										<Route
-											path="entitydetail"
+											path="entities"
 											element={<CountryEntities />}
-										></Route>
+										/>
 									</Route>
 								</Route>
 							</Route>

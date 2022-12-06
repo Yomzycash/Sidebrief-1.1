@@ -22,7 +22,11 @@ export const staffApi = createApi({
 		getAllCountries: builder.query({
 			query: () => "/countries",
 		}),
+
+		getSingleCountry: builder.query({
+			query: (ISO) => `/countries/${ISO}`,
+		}),
 	}),
 });
 
-export const { useGetAllCountriesQuery } = staffApi;
+export const { useGetAllCountriesQuery, useGetSingleCountryQuery } = staffApi;
