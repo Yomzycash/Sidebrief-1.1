@@ -26,7 +26,15 @@ export const staffApi = createApi({
 		getSingleCountry: builder.query({
 			query: (ISO) => `/countries/${ISO}`,
 		}),
+
+		getCountryEntities: builder.query({
+			query: (ISO) => `/entities/country/${ISO}`,
+		}),
 	}),
 });
 
-export const { useGetAllCountriesQuery, useGetSingleCountryQuery } = staffApi;
+export const {
+	useGetAllCountriesQuery,
+	useGetSingleCountryQuery,
+	useGetCountryEntitiesQuery,
+} = staffApi;

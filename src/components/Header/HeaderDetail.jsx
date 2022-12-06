@@ -10,7 +10,10 @@ import Search from "components/navbar/Search";
 import { SortDropdown } from "containers/BusinessDetail/Header/SortDropdown";
 import { useLocation, useParams } from "react-router-dom";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
-import { useGetSingleCountryQuery } from "services/staffService";
+import {
+	useGetSingleCountryQuery,
+	useGetCountryEntitiesQuery,
+} from "services/staffService";
 
 const HeaderDetail = ({
 	countryName = "--",
@@ -26,6 +29,7 @@ const HeaderDetail = ({
 	const page = pathname.split("/").pop();
 
 	const { data, isLoading } = useGetSingleCountryQuery(ISO);
+	const entities = useGetCountryEntitiesQuery(ISO);
 
 	const triggerSearch = () => {
 		// perform search filter here
@@ -93,21 +97,6 @@ const HeaderDetail = ({
 					</RHS>
 				</TitleContainer>
 			</Top>
-			<SubHeader
-				onMouseEnter={() => setSubHeaderHovered(true)}
-				onMouseLeave={() => setSubHeaderHovered(false)}
-				$hovered={subHeaderHovered}
-			>
-				<ActiveNav
-					text={"Country Details"}
-					path={`/staff-dashboard/businesses/countries/${ISO}/detail`}
-				/>
-				<ActiveNav
-					text={"Entities"}
-					total={24}
-					path={`/staff-dashboard/businesses/countries/${ISO}/entities`}
-				/>
-			</SubHeader>
 			{page !== "detail" ? (
 				<SearchAndSort>
 					{/* placeholder changes based on the page it's on */}
@@ -119,6 +108,25 @@ const HeaderDetail = ({
 					</ButtonWrapper>
 				</SearchAndSort>
 			) : null}
+			<SubHeader
+				onMouseEnter={() => setSubHeaderHovered(true)}
+				onMouseLeave={() => setSubHeaderHovered(false)}
+				$hovered={subHeaderHovered}
+			>
+				<ActiveNav
+					text={"Country Details"}
+					path={`/staff-dashboard/businesses/countries/${ISO}/detail`}
+				/>
+				<ActiveNav
+					text={"Entities"}
+					total={
+						entities.isLoading || !entities.data?.length
+							? 0
+							: entities.data.length
+					}
+					path={`/staff-dashboard/businesses/countries/${ISO}/entities`}
+				/>
+			</SubHeader>
 		</Container>
 	);
 };
@@ -128,8 +136,8 @@ export default HeaderDetail;
 const Container = styled.header`
 	width: 100%;
 	border: 1px solid #edf1f7;
-
 	border-top: none;
+
 	@media screen and (max-width: 700px) {
 		border: 0;
 	}

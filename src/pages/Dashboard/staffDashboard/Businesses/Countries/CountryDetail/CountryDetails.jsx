@@ -5,19 +5,15 @@ import { useParams } from "react-router-dom";
 import { Puff } from "react-loading-icons";
 
 const CountryDetails = ({
-	countryName = "Ghana",
-	countryCode = "+234",
-	countryCurrency = "Naira",
-	countryISO = "NGA",
 	date = "12th August, 2022",
 	name = " Oluwole Sayo",
 }) => {
 	const { ISO } = useParams();
 	const { data, isLoading } = useGetSingleCountryQuery(ISO);
 
-	if (!isLoading) {
-		console.log(data);
-	}
+	// if (!isLoading) {
+	// 	console.log(data);
+	// }
 
 	return (
 		<Container>
@@ -88,10 +84,11 @@ const CountryDetails = ({
 export default CountryDetails;
 const Container = styled.div`
 	display: flex;
-	justify-content: center;
+	/* justify-content: center; */
 	flex-flow: column;
 	gap: 40px;
 	height: 100%;
+	margin-top: 40px;
 `;
 
 const Wrapper = styled.div`
