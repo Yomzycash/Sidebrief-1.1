@@ -194,94 +194,7 @@ const AppRouter = () => {
           <Route path="/" element={<Outlet />}>
             <Route path="test" element={<Test />} />
 
-            <Route path="staff-dashboard" element={<Outlet />}>
-              <Route index element={<StaffDashboard />} />
-              <Route path="home" element={<StaffDashboard />} />
-              <Route path="businesses" element={<Outlet />}>
-                <Route index element={<StaffBusinesses />} />
-                <Route path="registration" element={<Registrationlayout />}>
-                  <Route index element={<All />} />
-                  {/* <Route element={<Registrationlayout />}> */}
-                  <Route path="all" element={<All />} />
-                  <Route path="awating-approval" element={<Awaiting />} />
-                  <Route path="in-progress" element={<InProgress />} />
-                  <Route path="completed" element={<Completed />} />
-                  {/* </Route> */}
-                </Route>
-                <Route path="entities" element={<Outlet />}>
-                  <Route index element={<StaffEntities />} />
-                </Route>
-
-                <Route path="countries" element={<Outlet />}>
-                  <Route index element={<Countries />} />
-                  <Route path="countrydetail" element={<CountryDetailLayout />}>
-                    <Route index element={<CountryDetails />} />
-                  </Route>
-                  <Route path="entitydetail" element={<CountryDetailLayout />}>
-                    <Route index element={<CountryEntities />} />
-                  </Route>
-                </Route>
-              </Route>
-              <Route path="all-rewards" element={<Outlet />}>
-                <Route index element={<StaffAllRewards />} />
-                <Route path="reward" element={<StaffReward />}>
-                  <Route path="details" element={<StaffRewardDetailsPage />} />
-                  <Route
-                    path="analytics"
-                    element={<StaffRewardAnalyticsPage />}
-                  />
-                </Route>
-              </Route>
-              <Route path="settings" element={<StaffSettingLayout />}>
-                <Route path="general" element={<StaffGeneral />} />
-                <Route path="notification" element={<NotificationSettings />} />
-                <Route path="general" element={<StaffGeneralSettings />} />
-                <Route
-                  path="notification"
-                  element={<StaffNotificationSettings />}
-                />
-                <Route path="user-permissions" element={<Settings />} />
-                <Route path="team" element={<Settings />} />
-              </Route>
-            </Route>
-
-            {/* <Route path="staff-dashboard">
-              <Route index element={<StaffDashboard />} />
-              <Route path="home" element={<StaffDashboard />} />
-              <Route path="businesses" element={<Outlet />}>
-                <Route index element={<StaffBusinesses />} />
-                <Route path="registration" element={<Registrationlayout />}>
-                  <Route index element={<All />} />
-                  <Route path="all" element={<All />} />
-                  <Route path="awating-approval" element={<Awaiting />} />
-                  <Route path="in-progress" element={<InProgress />} />
-                  <Route path="completed" element={<Completed />} />
-                </Route>
-                <Route path="entities" element={<Outlet />}>
-                  <Route index element={<StaffEntities />} />
-                </Route>
-
-                <Route path="countries" element={<Outlet />}>
-                  <Route index element={<Countries />} />
-                  <Route path="countrydetail" element={<CountryDetailLayout />}>
-                    <Route index element={<CountryDetails />} />
-                  </Route>
-                  <Route path="entitydetail" element={<CountryDetailLayout />}>
-                    <Route index element={<CountryEntities />} />
-                  </Route>
-                </Route>
-              </Route>
-              <Route path="settings" element={<StaffSettingLayout />}>
-                <Route path="general" element={<StaffGeneralSettings />} />
-                <Route
-                  path="notification"
-                  element={<StaffNotificationSettings />}
-                />
-                <Route path="user-permissions" element={<Settings />} />
-                <Route path="team" element={<SidebriefTeam />} />
-              </Route>
-            </Route> */}
-
+            {/* Protected home route */}
             <Route
               index
               element={
@@ -290,6 +203,8 @@ const AppRouter = () => {
                 </Protected>
               }
             />
+
+            {/* Autentication pages */}
             <Route path="register" element={<Outlet />}>
               <Route index element={<AccountType />} />
               <Route path="user" element={<Outlet />}>
@@ -314,6 +229,8 @@ const AppRouter = () => {
                 </Route>
               </Route>
             </Route>
+
+            {/* User dashboard routes */}
             <Route
               path="dashboard"
               element={
@@ -329,13 +246,7 @@ const AppRouter = () => {
               />
               <Route path="application" element={<Application />}></Route>
               <Route path="bank-account" element={<BankAccount />}></Route>
-              <Route path="settings" element={<SettingLayout />}>
-                <Route path="general" element={<Settings />} />
-                <Route path="account" element={<Settings />} />
-                <Route path="security" element={<Settings />} />
-                <Route path="notification" element={<NotificationSettings />} />
-                <Route path="others" element={<Settings />} />
-              </Route>
+              <Route path="settings" element={<Settings />}></Route>
               <Route path="resources" element={<Resources />}></Route>
               <Route path="businesses" element={<Business />}>
                 <Route index element={<AllBusinesses />} />
@@ -376,124 +287,173 @@ const AppRouter = () => {
               </Route>
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>
-            {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
+
+            {/* Staff dashboard routes */}
+            <Route path="staff-dashboard" element={<Outlet />}>
+              <Route index element={<StaffDashboard />} />
+              <Route path="home" element={<StaffDashboard />} />
+              <Route path="businesses" element={<Outlet />}>
+                <Route index element={<StaffBusinesses />} />
+                <Route path="registration" element={<Registrationlayout />}>
+                  <Route index element={<All />} />
+                  <Route path="all" element={<All />} />
+                  <Route path="awating-approval" element={<Awaiting />} />
+                  <Route path="in-progress" element={<InProgress />} />
+                  <Route path="completed" element={<Completed />} />
+                </Route>
+                <Route path="entities" element={<Outlet />}>
+                  <Route index element={<StaffEntities />} />
+                </Route>
+
+                <Route path="countries" element={<Outlet />}>
+                  <Route index element={<Countries />} />
+                  <Route path=":ISO" element={<CountryDetailLayout />}>
+                    <Route path="detail" element={<CountryDetails />} />
+                    <Route path="entities" element={<CountryEntities />} />
+                  </Route>
+                </Route>
+              </Route>
+              <Route path="all-rewards" element={<Outlet />}>
+                <Route index element={<StaffAllRewards />} />
+                <Route path="reward" element={<StaffReward />}>
+                  <Route path="details" element={<StaffRewardDetailsPage />} />
+                  <Route
+                    path="analytics"
+                    element={<StaffRewardAnalyticsPage />}
+                  />
+                </Route>
+              </Route>
+              <Route path="settings" element={<StaffSettingLayout />}>
+                <Route path="general" element={<StaffGeneralSettings />} />
+                <Route
+                  path="notification"
+                  element={<StaffNotificationSettings />}
+                />
+                <Route path="user-permissions" element={<Settings />} />
+                <Route path="team" element={<SidebriefTeam />} />
+              </Route>
+            </Route>
+          </Route>
+
+          {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
+
+          {/* Launch pages routes */}
+          <Route
+            path="launch"
+            element={
+              <Protected isVerified={isLoggedIn}>
+                <Outlet />
+              </Protected>
+            }
+          >
+            <Route index element={<BusinessInfo />} />
+            <Route path="business-info" element={<BusinessInfo />} />
+            <Route path="entity" element={<EntitySelect />} />
             <Route
-              path="launch"
+              path="payment"
               element={
-                <Protected isVerified={isLoggedIn}>
-                  <Outlet />
+                <Protected isVerified={launchCode} path="/launch">
+                  <PaymentPage />
                 </Protected>
               }
-            >
-              <Route index element={<BusinessInfo />} />
-              <Route path="business-info" element={<BusinessInfo />} />
-              <Route path="entity" element={<EntitySelect />} />
-              <Route
-                path="payment"
-                element={
-                  <Protected isVerified={launchCode} path="/launch">
-                    <PaymentPage />
-                  </Protected>
-                }
-              />
-              <Route
-                path="address"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <BusinessAddress />
-                  </Protected>
-                }
-              />
-              <Route
-                path="shareholders-info"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <ShareHoldersInfo />
-                  </Protected>
-                }
-              />
-              <Route
-                path="directors-info"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <DirectorsInfo />
-                  </Protected>
-                }
-              />
-              <Route
-                path="beneficiaries-info"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <BeneficiariesInfo />
-                  </Protected>
-                }
-              />
-              <Route
-                path="beneficiaries-kyc"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <BeneficiariesKYC />
-                  </Protected>
-                }
-              />
-              <Route
-                path="sharehholders-kyc"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <ShareHolderKYC />
-                  </Protected>
-                }
-              />
-              <Route
-                path="directors-kyc"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <DirectorKYC />
-                  </Protected>
-                }
-              />
+            />
+            <Route
+              path="address"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <BusinessAddress />
+                </Protected>
+              }
+            />
+            <Route
+              path="shareholders-info"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <ShareHoldersInfo />
+                </Protected>
+              }
+            />
+            <Route
+              path="directors-info"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <DirectorsInfo />
+                </Protected>
+              }
+            />
+            <Route
+              path="beneficiaries-info"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <BeneficiariesInfo />
+                </Protected>
+              }
+            />
+            <Route
+              path="beneficiaries-kyc"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <BeneficiariesKYC />
+                </Protected>
+              }
+            />
+            <Route
+              path="sharehholders-kyc"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <ShareHolderKYC />
+                </Protected>
+              }
+            />
+            <Route
+              path="directors-kyc"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <DirectorKYC />
+                </Protected>
+              }
+            />
 
-              <Route
-                path="/launch/review-beneficiary"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <BeneficiaryReview />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/launch/review"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <BusinessInformationReview />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/launch/review-director"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <DirectorReview />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/launch/review-shareholder"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <ShareholderReview />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/launch/review-success"
-                element={
-                  <Protected isVerified={allowLaunch} path="/launch">
-                    <ApplicationSuccessPage />
-                  </Protected>
-                }
-              />
-            </Route>
+            <Route
+              path="/launch/review-beneficiary"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <BeneficiaryReview />
+                </Protected>
+              }
+            />
+            <Route
+              path="/launch/review"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <BusinessInformationReview />
+                </Protected>
+              }
+            />
+            <Route
+              path="/launch/review-director"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <DirectorReview />
+                </Protected>
+              }
+            />
+            <Route
+              path="/launch/review-shareholder"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <ShareholderReview />
+                </Protected>
+              }
+            />
+            <Route
+              path="/launch/review-success"
+              element={
+                <Protected isVerified={allowLaunch} path="/launch">
+                  <ApplicationSuccessPage />
+                </Protected>
+              }
+            />
           </Route>
         </Routes>
         <Toaster

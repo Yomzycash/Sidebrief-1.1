@@ -16,7 +16,7 @@ import { Dialog, DialogContent, useMediaQuery } from "@mui/material";
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleErrorHook } from "utils/hooks/errors";
+import { handleErrorHook } from "utils/hooks/staff";
 
 const BusinessDetail = () => {
   const [open, setOpen] = useState(false);

@@ -17,6 +17,7 @@ import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
 import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
 import AppFeedback from "components/AppFeedback";
+import { checkStaffEmail, handleError } from "utils/globalFunctions";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -61,6 +62,7 @@ const SignIn = () => {
     };
   }, []);
 
+  // Login function block
   const submitForm = async (formData) => {
     let response = await loginNewUser(JSON.stringify(formData));
     let data = response?.data;
@@ -69,16 +71,18 @@ const SignIn = () => {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
       localStorage.setItem("userEmail", formData.email);
-      // console.log(data);
-      toast.success(data.message);
-      navigate("/dashboard");
-    } else if (error) {
-      if (error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
+      let staffCheck = checkStaffEmail(formData.email);
+
+      if (staffCheck) {
+        navigate("/staff-dashboard");
+        console.log("Navigated to the staff dashboard");
       } else {
-        toast.error(error.data?.message);
+        navigate("/dashboard");
+        console.log("Navigated to the user dashboard");
       }
-      // console.log(error);
+      toast.success(data.message);
+    } else if (error) {
+      handleError(error);
     }
   };
 

@@ -1,54 +1,59 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
+import { useGetSingleCountryQuery } from "services/staffService";
+import { useParams } from "react-router-dom";
+import { Puff } from "react-loading-icons";
 
 const CountryDetails = ({
-  countryName = 'Ghana',
-  countryCode = '+234',
-  countryCurrency = 'Naira',
-  countryISO = 'NGA',
-  date = '12th August, 2022',
-  name = ' Oluwole Sayo',
+  date = "12th August, 2022",
+  name = " Oluwole Sayo",
 }) => {
+  const { ISO } = useParams();
+  const { data, isLoading } = useGetSingleCountryQuery(ISO);
+
+  // if (!isLoading) {
+  // 	console.log(data);
+  // }
+
   return (
     <Container>
       <Wrapper>
         <LeftContainer>
-          <ContentContainer>
-            <ContentWrapper>
-              <Label>Country Name</Label>
-              <TextContainer>
-                <TextWrapper>{countryName}</TextWrapper>
-              </TextContainer>
-            </ContentWrapper>
-            <Flex>
+          {isLoading ? (
+            <Loader>
+              <Puff stroke="#00A2D4" fill="white" />
+            </Loader>
+          ) : (
+            <ContentContainer>
               <ContentWrapper>
-                <Label>Country Code</Label>
+                <Label>Country Name</Label>
                 <TextContainer>
-                  <TextWrapper>{countryCode}</TextWrapper>
+                  <TextWrapper>{data.countryName}</TextWrapper>
                 </TextContainer>
               </ContentWrapper>
-              <ContentWrapper>
-                <Label>Country ISO</Label>
-                <TextContainer>
-                  <TextWrapper>{countryISO}</TextWrapper>
-                </TextContainer>
-              </ContentWrapper>
-            </Flex>
-            <Flex>
-              <ContentWrapper>
-                <Label>Country Currency</Label>
-                <TextContainer>
-                  <TextWrapper>{countryCurrency}</TextWrapper>
-                </TextContainer>
-              </ContentWrapper>
-              <ContentWrapper>
-                <Label>Country ISO</Label>
-                <TextContainer>
-                  <TextWrapper>{countryISO}</TextWrapper>
-                </TextContainer>
-              </ContentWrapper>
-            </Flex>
-          </ContentContainer>
+              <Grid>
+                <ContentWrapper>
+                  <Label>Country Code</Label>
+                  <TextContainer>
+                    <TextWrapper>{`+${data.countryCode}`}</TextWrapper>
+                  </TextContainer>
+                </ContentWrapper>
+                <ContentWrapper>
+                  <Label>Country ISO</Label>
+                  <TextContainer>
+                    <TextWrapper>{data.countryISO}</TextWrapper>
+                  </TextContainer>
+                </ContentWrapper>
+
+                <ContentWrapper>
+                  <Label>Country Currency</Label>
+                  <TextContainer>
+                    <TextWrapper>{data.countryCurrency}</TextWrapper>
+                  </TextContainer>
+                </ContentWrapper>
+              </Grid>
+            </ContentContainer>
+          )}
         </LeftContainer>
         <RightContainer>
           <InnerWrapper>
@@ -67,17 +72,18 @@ const CountryDetails = ({
         <TitleWrapper>Update Changes</TitleWrapper>
       </BottomWrapper>
     </Container>
-  )
-}
+  );
+};
 
-export default CountryDetails
+export default CountryDetails;
 const Container = styled.div`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-flow: column;
   gap: 40px;
   height: 100%;
-`
+  margin-top: 40px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -85,26 +91,28 @@ const Wrapper = styled.div`
   justify-content: space-between;
   gap: 24px;
   width: 100%;
-`
+`;
 const LeftContainer = styled.div`
   max-width: 825px;
   padding-block: 40px;
-  padding-inline: 24px 267px;
+  padding-inline: 24px;
+  flex: 1;
 
   background: #ffffff;
 
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-`
+`;
 const ContentContainer = styled.div`
-  width: 100%;
+  /* width: 100%; */
+  max-width: 544px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
   gap: 24px;
-`
+`;
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -112,14 +120,14 @@ const ContentWrapper = styled.div`
   padding: 0px;
   gap: 8px;
 
-  width: 544px;
-`
+  width: 100%;
+`;
 const Label = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
-`
+`;
 const TextContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -129,7 +137,7 @@ const TextContainer = styled.div`
   background: #fafafa;
   border: 1px solid #edf1f7;
   border-radius: 8px;
-`
+`;
 const TextWrapper = styled.div`
   font-weight: 400;
   font-size: 14px;
@@ -137,16 +145,18 @@ const TextWrapper = styled.div`
   display: flex;
   align-items: center;
   color: #242627;
-`
-const Flex = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+`;
+const Grid = styled.div`
+  display: grid;
+  /* flex-direction: row; */
+  /* align-items: flex-start; */
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 0px;
   gap: 24px;
 
   width: 100%;
-`
+`;
 const RightContainer = styled.div`
   max-width: 275px;
   width: 100%;
@@ -156,26 +166,26 @@ const RightContainer = styled.div`
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-`
+`;
 const InnerWrapper = styled.div`
   display: flex;
 
   gap: 16px;
-`
+`;
 
 const Circle = styled.div`
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background: #00a2d4;
-`
+`;
 const LastWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
-`
+`;
 const StatusWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -187,7 +197,7 @@ const StatusWrapper = styled.div`
 
   background: rgba(0, 162, 212, 0.05);
   border-radius: 12px;
-`
+`;
 const Text = styled.h4`
   font-style: normal;
   font-weight: 500;
@@ -196,14 +206,14 @@ const Text = styled.h4`
   letter-spacing: 0.01em;
 
   color: #00a2d4;
-`
+`;
 const LightText = styled.h4`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
-`
+`;
 const BottomWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -217,7 +227,7 @@ const BottomWrapper = styled.div`
   border-radius: 8px;
   margin-left: 24px;
   cursor: pointer;
-`
+`;
 const TitleWrapper = styled.h4`
   font-weight: 500;
   font-size: 14px;
@@ -230,4 +240,11 @@ const TitleWrapper = styled.h4`
   letter-spacing: -0.5px;
 
   color: rgba(255, 255, 255, 0.64);
-`
+`;
+
+const Loader = styled.div`
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100px;
+`;
