@@ -36,6 +36,7 @@ import StaffRewardAnalytics from "pages/Dashboard/staffDashboard/Reward/Analytic
 import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Analytics";
 import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
 import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
+import StaffGeneral from "pages/Dashboard/staffDashboard/Settings/general";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -193,23 +194,83 @@ const AppRouter = () => {
           <Route path="/" element={<Outlet />}>
             <Route path="test" element={<Test />} />
 
-            <Route index element={<StaffDashboard />} />
-            <Route path="home" element={<StaffDashboard />} />
-            <Route path="businesses" element={<Outlet />}>
-              <Route index element={<StaffBusinesses />} />
-              <Route path="registration" element={<Registrationlayout />}>
-                <Route index element={<All />} />
-                {/* <Route element={<Registrationlayout />}> */}
-                <Route path="all" element={<All />} />
-                <Route path="awating-approval" element={<Awaiting />} />
-                <Route path="in-progress" element={<InProgress />} />
-                <Route path="completed" element={<Completed />} />
-                {/* </Route> */}
-              </Route>
-              <Route path="entities" element={<Outlet />}>
-                <Route index element={<StaffEntities />} />
-              </Route>
+            <Route path="staff-dashboard" element={<Outlet />}>
+              <Route index element={<StaffDashboard />} />
+              <Route path="home" element={<StaffDashboard />} />
+              <Route path="businesses" element={<Outlet />}>
+                <Route index element={<StaffBusinesses />} />
+                <Route path="registration" element={<Registrationlayout />}>
+                  <Route index element={<All />} />
+                  {/* <Route element={<Registrationlayout />}> */}
+                  <Route path="all" element={<All />} />
+                  <Route path="awating-approval" element={<Awaiting />} />
+                  <Route path="in-progress" element={<InProgress />} />
+                  <Route path="completed" element={<Completed />} />
+                  {/* </Route> */}
+                </Route>
+                <Route path="entities" element={<Outlet />}>
+                  <Route index element={<StaffEntities />} />
+                </Route>
 
+                <Route path="countries" element={<Outlet />}>
+                  <Route index element={<Countries />} />
+                  <Route path="countrydetail" element={<CountryDetailLayout />}>
+                    <Route index element={<CountryDetails />} />
+                  </Route>
+                  <Route path="entitydetail" element={<CountryDetailLayout />}>
+                    <Route index element={<CountryEntities />} />
+                  </Route>
+                </Route>
+              </Route>
+              <Route path="all-rewards" element={<Outlet />}>
+                <Route index element={<StaffAllRewards />} />
+                <Route path="reward" element={<StaffReward />}>
+                  <Route path="details" element={<StaffRewardDetailsPage />} />
+                  <Route
+                    path="analytics"
+                    element={<StaffRewardAnalyticsPage />}
+                  />
+                </Route>
+              </Route>
+              <Route path="settings" element={<StaffSettingLayout />}>
+                <Route path="general" element={<StaffGeneral />} />
+                <Route path="notification" element={<NotificationSettings />} />
+                <Route path="general" element={<StaffGeneralSettings />} />
+                <Route
+                  path="notification"
+                  element={<StaffNotificationSettings />}
+                />
+                <Route path="user-permissions" element={<Settings />} />
+                <Route path="team" element={<Settings />} />
+              </Route>
+            </Route>
+
+            {/* <Route path="staff-dashboard">
+              <Route index element={<StaffDashboard />} />
+              <Route path="home" element={<StaffDashboard />} />
+              <Route path="businesses" element={<Outlet />}>
+                <Route index element={<StaffBusinesses />} />
+                <Route path="registration" element={<Registrationlayout />}>
+                  <Route index element={<All />} />
+                  <Route path="all" element={<All />} />
+                  <Route path="awating-approval" element={<Awaiting />} />
+                  <Route path="in-progress" element={<InProgress />} />
+                  <Route path="completed" element={<Completed />} />
+                </Route>
+                <Route path="entities" element={<Outlet />}>
+                  <Route index element={<StaffEntities />} />
+                </Route>
+
+                <Route path="countries" element={<Outlet />}>
+                  <Route index element={<Countries />} />
+                  <Route path="countrydetail" element={<CountryDetailLayout />}>
+                    <Route index element={<CountryDetails />} />
+                  </Route>
+                  <Route path="entitydetail" element={<CountryDetailLayout />}>
+                    <Route index element={<CountryEntities />} />
+                  </Route>
+                </Route>
+              </Route>
               <Route path="settings" element={<StaffSettingLayout />}>
                 <Route path="general" element={<StaffGeneralSettings />} />
                 <Route
@@ -219,7 +280,7 @@ const AppRouter = () => {
                 <Route path="user-permissions" element={<Settings />} />
                 <Route path="team" element={<SidebriefTeam />} />
               </Route>
-            </Route>
+            </Route> */}
 
             <Route
               index
