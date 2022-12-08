@@ -97,9 +97,7 @@ const LeftContainer = styled.div`
   padding-block: 40px;
   padding-inline: 24px;
   flex: 1;
-
   background: #ffffff;
-
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
@@ -119,7 +117,6 @@ const ContentWrapper = styled.div`
   align-items: flex-start;
   padding: 0px;
   gap: 8px;
-
   width: 100%;
 `;
 const Label = styled.div`
@@ -154,7 +151,6 @@ const Grid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   padding: 0px;
   gap: 24px;
-
   width: 100%;
 `;
 const RightContainer = styled.div`
@@ -169,7 +165,6 @@ const RightContainer = styled.div`
 `;
 const InnerWrapper = styled.div`
   display: flex;
-
   gap: 16px;
 `;
 
@@ -192,9 +187,7 @@ const StatusWrapper = styled.div`
   align-items: flex-start;
   padding: 4px 16px;
   gap: 10px;
-
   width: 90px;
-
   background: rgba(0, 162, 212, 0.05);
   border-radius: 12px;
 `;
@@ -204,7 +197,6 @@ const Text = styled.h4`
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0.01em;
-
   color: #00a2d4;
 `;
 const LightText = styled.h4`
@@ -233,12 +225,10 @@ const TitleWrapper = styled.h4`
   font-size: 14px;
   line-height: 27px;
   /* identical to box height, or 193% */
-
   display: flex;
   align-items: center;
   text-align: center;
   letter-spacing: -0.5px;
-
   color: rgba(255, 255, 255, 0.64);
 `;
 
