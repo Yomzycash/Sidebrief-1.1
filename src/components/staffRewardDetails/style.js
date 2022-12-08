@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   background: #ffffff;
@@ -70,7 +71,7 @@ export const Text = styled.div`
 
   color: #242627;
 `;
-export const LinkText = styled.div`
+export const LinkText = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
@@ -78,4 +79,8 @@ export const LinkText = styled.div`
   align-items: center;
   text-decoration-line: underline;
   color: #00a2d4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
 `;

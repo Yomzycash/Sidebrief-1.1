@@ -25,6 +25,7 @@ export const BodyRight = styled.div`
 export const RewardContainer = styled.div`
   display: grid;
   padding-right: 24px;
+  padding-bottom: 24px;
   grid-template-columns: auto auto auto auto;
   gap: clamp(16px, 1.6vw, 24px);
   width: 100%;
@@ -52,7 +53,7 @@ export const ListItemsContainer = styled.ul`
 
 export const ListItems = styled.ul`
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   gap: 16px;
 `;
 
@@ -62,4 +63,14 @@ export const ListItem = styled.li`
   font-size: 16px;
   line-height: 21px;
   color: #4e5152;
+  cursor: pointer;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;

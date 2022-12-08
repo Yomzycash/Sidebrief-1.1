@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FiArrowLeft } from "react-icons/fi";
 import { ReactComponent as Hide } from "asset/svg/Hide.svg";
@@ -10,12 +10,30 @@ import Navbar from "components/navbar";
 import StaffSidebar from "components/sidebar/StaffSidebar";
 import { useSelector } from "react-redux";
 import Button from "components/button";
+import { useGetAllRewardsQuery } from "services/RewardService";
+import { Image, ImageContainer } from "./style";
 
 const StaffReward = () => {
   const navigate = useNavigate();
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
+
+  const [selectedReward, setSelectedReward] = useState([]);
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
+    refetchOnMountOrArgChange: true,
+  });
+
+  useEffect(() => {
+    let localRewardID = localStorage.getItem("rewardId");
+    let rewardID = JSON.parse(localRewardID);
+    const rewardData = data === undefined ? [] : [...data];
+    const rewardDatails = rewardData.filter(
+      (data) => data.rewardID === rewardID
+    );
+    setSelectedReward(rewardDatails);
+  }, [data]);
+
   return (
     <RewardContainer>
       <Navbar
@@ -36,30 +54,36 @@ const StaffReward = () => {
               <Text>Back to Rewards</Text>
             </BackContainer>
             <TopContainer>
-              <TitleContainer>
-                <LHS>
-                  <GladeIcon />
-                  <DetailWrappper>
-                    <LittleWrapper>
-                      {" "}
-                      <TopText>
-                        Get 25% off your first year of using Glade Finance
-                      </TopText>
-                      <MiddleText>Glade Finance</MiddleText>
-                    </LittleWrapper>
-                    <BottomText>
-                      Created 12th August, 2022 by Esther Ashimolowo
-                    </BottomText>
-                  </DetailWrappper>
-                </LHS>
-                <RHS>
-                  {" "}
-                  <RightWrapper>
-                    <Hide />
-                    <BlockText>Make Public</BlockText>
-                  </RightWrapper>
-                </RHS>
-              </TitleContainer>
+              {selectedReward?.map((selected) => (
+                <TitleContainer>
+                  <LHS>
+                    <ImageContainer>
+                      <Image src={selected?.rewardImage} />
+                    </ImageContainer>
+
+                    <DetailWrappper>
+                      <LittleWrapper>
+                        {" "}
+                        <TopText>
+                          Get {selected?.rewardName} off your first year with{" "}
+                          {selected?.rewardPartner}
+                        </TopText>
+                        <MiddleText>{selected?.rewardPartner}</MiddleText>
+                      </LittleWrapper>
+                      <BottomText>
+                        Created 12th August, 2022 by Esther Ashimolowo
+                      </BottomText>
+                    </DetailWrappper>
+                  </LHS>
+                  <RHS>
+                    {" "}
+                    <RightWrapper>
+                      <Hide />
+                      <BlockText>Make Public</BlockText>
+                    </RightWrapper>
+                  </RHS>
+                </TitleContainer>
+              ))}
 
               <SubHeader
               // onMouseEnter={() => setSubHeaderHovered(true)}

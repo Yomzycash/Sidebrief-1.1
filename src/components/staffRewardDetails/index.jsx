@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import {
   Container,
   ContentWrapper,
@@ -10,63 +11,66 @@ import {
   TextWrapper,
 } from "./style";
 
-const StaffRewardDetails = () => {
+const StaffRewardDetails = ({ selectedReward }) => {
   return (
     <Container>
-      <ContentWrapper>
-        <TextWithLabel>
-          <Label>name</Label>
-          <TextWrapper>
-            <Text>Get 25% off your first year with Glade Finance</Text>
-          </TextWrapper>
-        </TextWithLabel>
-        <TextWithLabel>
-          <Label>Partner</Label>
-          <TextWrapper>
-            <Text>Glade Fiance</Text>
-          </TextWrapper>
-        </TextWithLabel>
-      </ContentWrapper>
-      <FullContentWrapper>
-        <TextWithLabel>
-          <Label>Description</Label>
-          <TextWrapper>
-            <Text>Get 25% off your first year with Glade Finance</Text>
-          </TextWrapper>
-        </TextWithLabel>
-      </FullContentWrapper>
-      <ContentWrapper>
-        <TextWithLabel>
-          <Label>Category</Label>
-          <TextWrapper>
-            <Text>Get 25% off your first year with Glade Finance</Text>
-          </TextWrapper>
-        </TextWithLabel>
-        <TextWithLabel>
-          <Label>Code</Label>
-          <TextWrapper>
-            <Text>KLMAIRS56</Text>
-          </TextWrapper>
-        </TextWithLabel>
-      </ContentWrapper>
-      <ContentWrapper>
-        <TextWithLabel>
-          <Label>Link</Label>
-          <TextWrapper>
-            <LinkText>
-              https://www.gladefinance.com/sidebriefXgladereward
-            </LinkText>
-          </TextWrapper>
-        </TextWithLabel>
-        <TextWithLabel>
-          <Label>Image</Label>
-          <TextWrapper>
-            <LinkText>
-              https://www.gladefinance.com/sidebriefXgladereward
-            </LinkText>
-          </TextWrapper>
-        </TextWithLabel>
-      </ContentWrapper>
+      {selectedReward?.map((selected, idex) => (
+        <>
+          <ContentWrapper>
+            <TextWithLabel>
+              <Label>name</Label>
+              <TextWrapper>
+                <Text>
+                  Get {selected?.rewardName} off your first year with{" "}
+                  {selected?.rewardPartner}
+                </Text>
+              </TextWrapper>
+            </TextWithLabel>
+            <TextWithLabel>
+              <Label>Partner</Label>
+              <TextWrapper>
+                <Text>{selected?.rewardPartner}</Text>
+              </TextWrapper>
+            </TextWithLabel>
+          </ContentWrapper>
+          <FullContentWrapper>
+            <TextWithLabel>
+              <Label>Description</Label>
+              <TextWrapper>
+                <Text>{selected.rewardDescription}</Text>
+              </TextWrapper>
+            </TextWithLabel>
+          </FullContentWrapper>
+          <ContentWrapper>
+            <TextWithLabel>
+              <Label>Category</Label>
+              <TextWrapper>
+                <Text>{selected.rewardCategory}</Text>
+              </TextWrapper>
+            </TextWithLabel>
+            <TextWithLabel>
+              <Label>Code</Label>
+              <TextWrapper>
+                <Text>{selected.rewardID}</Text>
+              </TextWrapper>
+            </TextWithLabel>
+          </ContentWrapper>
+          <ContentWrapper>
+            <TextWithLabel>
+              <Label>Link</Label>
+              <TextWrapper>
+                <LinkText>{selected.rewardLink}</LinkText>
+              </TextWrapper>
+            </TextWithLabel>
+            <TextWithLabel>
+              <Label>Image</Label>
+              <TextWrapper>
+                <LinkText>{selected.rewardImage}</LinkText>
+              </TextWrapper>
+            </TextWithLabel>
+          </ContentWrapper>
+        </>
+      ))}
     </Container>
   );
 };
