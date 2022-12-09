@@ -83,6 +83,26 @@ const StaffBusinesses = (props) => {
     // console.log(entities);
   }, [allSubmittedLaunches?.data, allApprovedLaunches?.data]);
 
+  const allMonths = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const date = new Date();
+  const month = date.getMonth();
+  const monthName = allMonths[month];
+  allMonths.splice(month, 1, `This month (${monthName.slice(0, 3)})`);
+
   return (
     <Dashboard>
       <Navbar
@@ -101,11 +121,15 @@ const StaffBusinesses = (props) => {
                 <Heading>Businesses</Heading>
                 <LowerText>Jump right back in today</LowerText>
               </SideWrapper>
-              <MonthWrapper>
-                <TextDropdown>
-                  <Text> This Month</Text>
-                  <RiArrowDropDownLine />
-                </TextDropdown>
+              <MonthWrapper defaultValue={allMonths[month]}>
+                {allMonths.map((month, index) => (
+                  <TextDropdown key={index}>
+                    <Text>
+                      {month}
+                      {/* <RiArrowDropDownLine /> */}
+                    </Text>
+                  </TextDropdown>
+                ))}
               </MonthWrapper>
             </TopContainer>
             <MiddleContainer>
@@ -127,11 +151,13 @@ const StaffBusinesses = (props) => {
               title="Countries"
               subText="Countries we are currently available in"
               list={countries}
+              link="/staff-dashboard/businesses/countries"
             />
             <StaffBusinessCard
               title="Entities"
               subText="Entities we currently provide our services in"
               list={entities}
+              link="/staff-dashboard/businesses/entities"
             />
           </RightContainer>
         </BodyRight>
@@ -157,7 +183,7 @@ const BodyRight = styled.div`
   display: flex;
   flex-flow: row;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
-  padding: 0px 0px 0px 40px;
+  padding: 0px 0px 40px 40px;
   gap: 40px;
   min-width: 1050px;
 
@@ -166,7 +192,7 @@ const BodyRight = styled.div`
   }
 `;
 const LeftContainer = styled.div`
-  max-height: calc(100vh - 96.96px);
+  max-height: calc(100vh - 136.96px);
   overflow-y: auto;
   margin-top: 40px;
   width: 100%;
@@ -180,7 +206,7 @@ const RightContainer = styled.div`
   flex-direction: column;
   width: 40%;
   max-width: max-content;
-  max-height: calc(100vh - 96.96px);
+  max-height: calc(100vh - 106.96px);
   overflow-y: auto;
 
   ::-webkit-scrollbar {
@@ -215,7 +241,8 @@ const LowerText = styled.h4`
 
   color: #4e5152;
 `;
-const MonthWrapper = styled.div`
+
+const MonthWrapper = styled.select`
   background: #f8f8f8;
   border-radius: 12px;
   width: 151px;
@@ -224,8 +251,11 @@ const MonthWrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  border: none;
+  padding-inline: 14px;
 `;
-const TextDropdown = styled.div`
+
+const TextDropdown = styled.option`
   display: flex;
   flex-direction: row;
   justify-content: center;

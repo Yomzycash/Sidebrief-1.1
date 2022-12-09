@@ -22,7 +22,12 @@ const AllBusinessesSummary = () => {
     );
   }, [data]);
 
-  return <BusinessHomeTable data={submitted} />;
+  return (
+    <BusinessHomeTable
+      data={submitted}
+      link="/staff-dashboard/businesses/registration"
+    />
+  );
 };
 
 export default AllBusinessesSummary;

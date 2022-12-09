@@ -40,6 +40,7 @@ import StaffGeneral from "pages/Dashboard/staffDashboard/Settings/general";
 import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All";
 import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
+import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -309,7 +310,7 @@ const AppRouter = () => {
                   />
                   <Route
                     path="completed"
-                    element={<InProgressBusinessesSummary />}
+                    element={<CompletedBusinessesSummary />}
                   />
                 </Route>
                 <Route path="registration" element={<Registrationlayout />}>

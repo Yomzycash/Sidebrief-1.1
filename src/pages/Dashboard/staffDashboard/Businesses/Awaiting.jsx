@@ -20,7 +20,12 @@ const AwaitingBusinessesSummary = () => {
     );
   }, [data]);
 
-  return <BusinessHomeTable data={submitted} />;
+  return (
+    <BusinessHomeTable
+      data={submitted}
+      link="/staff-dashboard/businesses/registration/awating-approval"
+    />
+  );
 };
 
 export default AwaitingBusinessesSummary;
