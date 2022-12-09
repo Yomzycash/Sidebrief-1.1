@@ -22,11 +22,10 @@ import {
 import { columns, businessesHeader } from "./constants";
 import { useState } from "react";
 import ActiveNav from "components/navbar/ActiveNav";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export const BusinessHomeTable = ({ data }) => {
+export const BusinessHomeTable = ({ data, link }) => {
   const [activeFilter, setActiveFilter] = useState("all");
-  const onClickViewAll = () => {};
 
   const table = useReactTable({
     columns,
@@ -35,15 +34,20 @@ export const BusinessHomeTable = ({ data }) => {
   });
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   let home = location.pathname === "/staff-dashboard/businesses" ? true : false;
+
+  const handleNavigate = () => {
+    navigate(link ? link : "");
+  };
 
   return (
     <Container>
       <Heading>
         <div>
           <Title>Business Registrations</Title>
-          <ViewAllButton onClick={onClickViewAll}>
+          <ViewAllButton onClick={handleNavigate}>
             <TextWithArrow blue>View All</TextWithArrow>
           </ViewAllButton>
         </div>

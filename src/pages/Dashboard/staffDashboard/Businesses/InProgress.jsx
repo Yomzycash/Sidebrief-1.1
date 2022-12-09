@@ -22,7 +22,12 @@ const InProgressBusinessesSummary = () => {
     );
   }, [data]);
 
-  return <BusinessHomeTable data={approved} />;
+  return (
+    <BusinessHomeTable
+      data={approved}
+      link="/staff-dashboard/businesses/registration/in-progress"
+    />
+  );
 };
 
 export default InProgressBusinessesSummary;

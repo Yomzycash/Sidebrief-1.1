@@ -5,7 +5,7 @@ import Search from "components/navbar/Search";
 import { Link } from "react-router-dom";
 import ScrollableDiv from "layout/scrollableDiv";
 
-const StaffBusinessCard = ({ title, subText, list }) => {
+const StaffBusinessCard = ({ title, subText, list, link }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -15,7 +15,7 @@ const StaffBusinessCard = ({ title, subText, list }) => {
           <Title>
             {title} <span>({list?.length})</span>
           </Title>
-          <ViewWrapper>
+          <ViewWrapper to={link ? link : ""}>
             <Text>View all</Text>
             <AiOutlineArrowRight color="#00A2D4" size={22} />
           </ViewWrapper>
@@ -78,7 +78,7 @@ const Title = styled.h2`
   white-space: nowrap;
 `;
 
-const ViewWrapper = styled.div`
+const ViewWrapper = styled(Link)`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -86,6 +86,7 @@ const ViewWrapper = styled.div`
   gap: 8px;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
 `;
 
 const Text = styled.h3`
