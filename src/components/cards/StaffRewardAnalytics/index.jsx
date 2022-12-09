@@ -65,7 +65,7 @@ const StaffRewardAnalytics = () => {
         </select>
       </TopContent>
       <ChartContainer>
-        <ResponsiveContainer width="70%" height="75%">
+        <ResponsiveContainer width="68%" height="75%">
           <AreaChart
             data={staffAnalyticsData}
             margin={{

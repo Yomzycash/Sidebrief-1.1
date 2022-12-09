@@ -283,7 +283,7 @@ const AppRouter = () => {
                 <Route index element={<AllRewards />} />
                 <Route path="all-rewards" element={<AllRewards />}></Route>
                 <Route path="my-rewards" element={<MyRewards />}></Route>
-                <Route path=":rewardID" element={<RewardDetails />} />
+                <Route path="details" element={<RewardDetails />} />
               </Route>
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>
@@ -316,7 +316,10 @@ const AppRouter = () => {
               <Route path="all-rewards" element={<Outlet />}>
                 <Route index element={<StaffAllRewards />} />
                 <Route path="reward" element={<StaffReward />}>
-                  <Route path="details" element={<StaffRewardDetailsPage />} />
+                  <Route
+                    path=":rewardID"
+                    element={<StaffRewardDetailsPage />}
+                  />
                   <Route
                     path="analytics"
                     element={<StaffRewardAnalyticsPage />}

@@ -6,7 +6,7 @@ import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 
 const StaffRewardHeader = ({
   title = "Rewards",
-  shown = "9",
+  shown = "12",
   total = "328",
   Description = "Add New Reward",
   placeholder = "Search for a reward",
@@ -18,6 +18,8 @@ const StaffRewardHeader = ({
     height: "100%",
   };
 
+  const localTotal = localStorage.getItem("totalStaffRewards");
+
   const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
@@ -26,7 +28,7 @@ const StaffRewardHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <RewardSummaryCard shown={shown} total={total} />
+              <RewardSummaryCard shown={localTotal} total={localTotal} />
             </div>
           </TopContent>
           <BottomContent>

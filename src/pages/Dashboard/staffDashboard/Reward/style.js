@@ -33,3 +33,14 @@ export const Container = styled.div`
     margin: 0;
   }
 `;
+
+export const ImageContainer = styled.div`
+  height: 64px;
+  width: 64px;
+`;
+
+export const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+`;
