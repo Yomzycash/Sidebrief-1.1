@@ -54,9 +54,10 @@ const SidebarItem = ({ item, expanded, homePath }) => {
       {expanded && item.dropDownList && (
         <ListContainer collapsed={collapsed} items={item.dropDownList.length}>
           <List>
-            {item?.dropDownList?.map((each) => (
+            {item?.dropDownList?.map((each, index) => (
               <NavLink
                 to={each.path}
+                key={index}
                 onMouseEnter={() => setIconHovered(item.id + each.id)}
                 onMouseLeave={() => setIconHovered(0)}
                 style={({ isActive }) =>

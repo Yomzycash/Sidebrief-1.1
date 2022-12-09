@@ -80,7 +80,7 @@ const Registrationlayout = () => {
                   text="All"
                   total={329}
                   path={"/staff-dashboard/businesses/registration/all"}
-                  customActive={home}
+                  defaultActive={home}
                 />
                 <ActiveNav
                   text="Awaiting Approval"

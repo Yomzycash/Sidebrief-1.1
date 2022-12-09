@@ -31,9 +31,6 @@ import {
   CountryIcon,
 } from "asset/Icons";
 import ArrowDownIcon from "../asset/Icons/ArrowDownIcon.svg";
-import awaiting from "../asset/staff/Awaiting.svg";
-import inProgress from "../asset/staff/InProgress.svg";
-import completed from "../asset/staff/Completed.svg";
 
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("First name is a required field"),
@@ -955,30 +952,6 @@ export const StaffBusinessObjectives = [
   {
     id: "4",
     objective: "Marketing",
-  },
-];
-
-export const StaffBusinessStatus = [
-  {
-    id: "1",
-    image: awaiting,
-    number: "58",
-    title: "Businesses",
-    status: "Awaiting Approval",
-  },
-  {
-    id: "2",
-    image: inProgress,
-    number: "58",
-    title: "Businesses",
-    status: "In Progress",
-  },
-  {
-    id: "3",
-    image: completed,
-    number: "58",
-    title: "Businesses",
-    status: "Completed",
   },
 ];
 

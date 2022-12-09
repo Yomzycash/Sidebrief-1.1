@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import styled from 'styled-components'
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export const NavWrapper = styled(motion.div)`
   position: sticky;
@@ -14,35 +14,35 @@ export const NavWrapper = styled(motion.div)`
   background-color: white;
   z-index: 4;
   box-shadow: ${(props) =>
-    props.boxshadow === 'true' ? '0px 10px 15px -5px #9596971a' : ''};
+    props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
   @media screen and (max-width: 701px) {
-    display: ${({ $displayMobile }) => ($displayMobile ? '' : 'none')};
+    display: ${({ $displayMobile }) => ($displayMobile ? "" : "none")};
   }
-`
+`;
 
 export const Image = styled.img`
   max-width: 134px;
   width: 11vw;
   min-width: 84px;
-`
+`;
 export const BellIcon = styled.img`
   width: 15px;
   height: 15px;
-`
+`;
 export const UserIcon = styled.img`
   width: 20px;
   height: 20px;
-`
+`;
 export const DownIcon = styled.img`
   width: 13px;
   /* height: 7px; */
   cursor: pointer;
-`
+`;
 export const SearchIcon = styled.img`
   width: clamp(12px, 1.2vw, 18px);
   height: clamp(12px, 1.2vw, 18px);
-`
+`;
 export const SearchBar = styled.input`
   background: transparent;
   outline: none;
@@ -58,15 +58,16 @@ export const SearchBar = styled.input`
     font-size: clamp(12px, 1.2vw, 14px);
     line-height: clamp(18px, 1.8vw, 21px);
     font-weight: 400;
+    color: ${({ style }) => style?.placeholder?.color};
   }
-`
+`;
 export const SearchIconWrapper = styled.div`
   width: 5%;
   justify-content: center;
   align-items: center;
   display: flex;
   border-radius: 10px;
-`
+`;
 
 export const SearchBarWrapper = styled.div`
   max-width: 563px;
@@ -81,11 +82,11 @@ export const SearchBarWrapper = styled.div`
   font-size: 12px;
   line-height: 18px;
   font-weight: 400;
-`
+`;
 export const RightIcons = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 export const BellContainer = styled.div`
   position: relative;
   border: 1px solid #edf1f7;
@@ -95,7 +96,7 @@ export const BellContainer = styled.div`
   align-items: center;
   display: flex;
   cursor: pointer;
-`
+`;
 
 export const UserContainer = styled.div`
   background: #f1f1f1;
@@ -108,7 +109,7 @@ export const UserContainer = styled.div`
   display: flex;
   cursor: pointer;
   margin-left: 24px;
-`
+`;
 export const NotificationWrapper = styled.div`
   width: 32%;
   position: fixed;
@@ -118,7 +119,7 @@ export const NotificationWrapper = styled.div`
   border-radius: 10px;
   top: 72px;
   background-color: white;
-`
+`;
 
 export const NotificationHeader = styled.div`
   display: flex;
@@ -136,9 +137,9 @@ export const NotificationHeader = styled.div`
     color: #4e5152;
     font-size: 12px;
   }
-`
+`;
 
-export const NotificationMessages = styled.div``
+export const NotificationMessages = styled.div``;
 
 export const Message = styled.div`
   padding: 16px;
@@ -164,7 +165,7 @@ export const Message = styled.div`
     color: #959697;
     font-size: 12px;
   }
-`
+`;
 
 export const NoMessage = styled.div`
   display: flex;
@@ -177,7 +178,7 @@ export const NoMessage = styled.div`
     color: #151717;
     text-align: center;
   }
-`
+`;
 
 export const NotificationBadge = styled.div`
   border-radius: 100%;
@@ -192,4 +193,4 @@ export const NotificationBadge = styled.div`
     font-size: 12px;
     font-weight: bold;
   }
-`
+`;

@@ -3,7 +3,7 @@ import { AiTwotoneAlert } from "react-icons/ai";
 import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-const ActiveNav = ({ text, total, path, handleShown, customActive }) => {
+const ActiveNav = ({ text, total, path, defaultActive }) => {
   const ActiveStyles = {
     color: "#151717",
     borderBottom: "4px solid #00A2D4",
@@ -14,7 +14,9 @@ const ActiveNav = ({ text, total, path, handleShown, customActive }) => {
     <Container>
       <NavLink
         to={path}
-        style={({ isActive }) => (isActive || customActive ? ActiveStyles : {})}
+        style={({ isActive }) =>
+          isActive || defaultActive ? ActiveStyles : {}
+        }
       >
         <p>{text}</p> {typeof total === "number" ? <span>{total}</span> : null}
       </NavLink>
@@ -26,7 +28,7 @@ export default ActiveNav;
 
 export const Container = styled.div`
   display: flex;
-  p {
+  a > p {
     display: flex;
     align-items: center;
     text-align: center;
