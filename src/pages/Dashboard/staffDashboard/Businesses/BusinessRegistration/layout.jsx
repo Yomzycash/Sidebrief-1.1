@@ -93,9 +93,9 @@ const Registrationlayout = () => {
                   path="/staff-dashboard/businesses/registration/in-progress"
                 />
                 <ActiveNav
-                  text="Completed"
+                  text="Rejected"
                   total={305}
-                  path="/staff-dashboard/businesses/registration/completed"
+                  path="/staff-dashboard/businesses/registration/rejected"
                 />
               </SubHeader>
             </Header>

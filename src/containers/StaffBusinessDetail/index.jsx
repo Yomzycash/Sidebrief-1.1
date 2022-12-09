@@ -58,7 +58,7 @@ export const Header = () => {
       launchCode: launchResponse.launchCode,
     });
     navigate(
-      `/dashboard/businesses/${
+      `/staff-dashboard/businesses/${
         launchRequest.isLoading
           ? `all-businesses`
           : launchRequest.data.registrationStatus === "pending"
@@ -117,7 +117,7 @@ export const Header = () => {
     <Container>
       <Top>
         <BackContainer
-          to={`/dashboard/businesses/${
+          to={`/staff-dashboard/businesses/${
             launchRequest.isLoading
               ? `all-businesses`
               : launchRequest.data.registrationStatus === "pending"
@@ -188,7 +188,7 @@ export const Header = () => {
         <ActiveNav
           text={"Business Information"}
           // total={0}
-          path={`/dashboard/business/${code}/detail`}
+          path={`/staff-dashboard/business/${code}/detail`}
         />
         <ActiveNav
           text={"Shareholders"}
@@ -197,7 +197,7 @@ export const Header = () => {
               ? 0
               : launchRequest.data.businessShareholders.length
           }
-          path={`/dashboard/business/${code}/shareholders`}
+          path={`/staff-dashboard/business/${code}/shareholders`}
         />
         <ActiveNav
           text={"Directors"}
@@ -206,7 +206,7 @@ export const Header = () => {
               ? 0
               : launchRequest.data.businessDirectors.length
           }
-          path={`/dashboard/business/${code}/directors`}
+          path={`/staff-dashboard/business/${code}/directors`}
         />
         <ActiveNav
           text={"Beneficiaries"}
@@ -215,7 +215,7 @@ export const Header = () => {
               ? 0
               : launchRequest.data.businessBeneficialOwners.length
           }
-          path={`/dashboard/business/${code}/beneficiaries`}
+          path={`/staff-dashboard/business/${code}/beneficiaries`}
         />
       </SubHeader>
       {page !== "detail" ? (
