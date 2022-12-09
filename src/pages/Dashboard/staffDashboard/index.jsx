@@ -8,15 +8,23 @@ import StaffSidebar from "components/sidebar/StaffSidebar";
 import { ApplicationTable } from "components/Staff/Tables";
 import { MockData } from "components/Staff/Tables/ApplicationTable/constants";
 import DashboardSection from "layout/DashboardSection";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { useGetUserSubmittedQuery } from "services/launchService";
+import {
+  useGetAllApprovedLaunchesQuery,
+  useGetAllSubmittedLaunchesQuery,
+  useGetUserSubmittedQuery,
+} from "services/launchService";
 import styled from "styled-components";
 import { StaffContainer, StatusCardContainer } from "./styled";
 
 const StaffDashboard = (props) => {
+  const [allApplications, setAllApplications] = useState([]);
+
   const { data, isLoading, isSuccess } = useGetUserSubmittedQuery();
+  const allSubmittedLaunches = useGetAllSubmittedLaunchesQuery();
+  const allApprovedLaunches = useGetAllApprovedLaunchesQuery();
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
@@ -28,20 +36,6 @@ const StaffDashboard = (props) => {
   let hideMobileNav =
     location.pathname.includes("/dashboard/rewards") &&
     location.pathname.length > 31;
-  const analytics = {
-    title: "User Analytics",
-    options: ["All time", 1, 2, 3, 4, 5, 6, 7],
-    status1: {
-      text: "Total Users",
-      total: 825,
-      color: "rgba(255, 255, 255, 0.4)",
-    },
-    status2: {
-      text: "Registrations",
-      total: 450,
-      color: "#ffffff",
-    },
-  };
 
   // Get user data information
   const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
@@ -52,8 +46,21 @@ const StaffDashboard = (props) => {
 
   // Get all users submitted launch requests
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    console.log(allSubmittedLaunches?.data);
+    setAllApplications(
+      allSubmittedLaunches &&
+        allSubmittedLaunches?.data?.map((application, index) => {
+          return {
+            id: index + 1,
+            name: "Ismael Hassan",
+            type: application.registrationType,
+            country: application.registrationCountry,
+            status: application.registrationStatus,
+            date: application?.createdAt.slice(0, 10),
+          };
+        })
+    );
+  }, [allSubmittedLaunches?.data]);
 
   return (
     <Dashboard>
@@ -86,7 +93,7 @@ const StaffDashboard = (props) => {
               <AnalyticsChart />
             </DashboardSection>
             <DashboardSection>
-              <ApplicationTable data={MockData} />
+              <ApplicationTable data={allApplications} />
             </DashboardSection>
           </StaffContainer>
         </BodyRight>
@@ -120,3 +127,17 @@ export const BodyRight = styled.div`
     width: 100%;
   }
 `;
+const analytics = {
+  title: "User Analytics",
+  options: ["All time", 1, 2, 3, 4, 5, 6, 7],
+  status1: {
+    text: "Total Users",
+    total: 825,
+    color: "rgba(255, 255, 255, 0.4)",
+  },
+  status2: {
+    text: "Registrations",
+    total: 450,
+    color: "#ffffff",
+  },
+};
