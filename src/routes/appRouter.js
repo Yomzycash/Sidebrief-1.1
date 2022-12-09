@@ -37,6 +37,9 @@ import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Anal
 import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
 import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
 import StaffGeneral from "pages/Dashboard/staffDashboard/Settings/general";
+import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All";
+import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
+import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -293,7 +296,22 @@ const AppRouter = () => {
               <Route index element={<StaffDashboard />} />
               <Route path="home" element={<StaffDashboard />} />
               <Route path="businesses" element={<Outlet />}>
-                <Route index element={<StaffBusinesses />} />
+                <Route element={<StaffBusinesses />}>
+                  <Route index element={<AllBusinessesSummary />} />
+                  <Route path="all" element={<AllBusinessesSummary />} />
+                  <Route
+                    path="awaiting-approval"
+                    element={<AwaitingBusinessesSummary />}
+                  />
+                  <Route
+                    path="in-progress"
+                    element={<InProgressBusinessesSummary />}
+                  />
+                  <Route
+                    path="completed"
+                    element={<InProgressBusinessesSummary />}
+                  />
+                </Route>
                 <Route path="registration" element={<Registrationlayout />}>
                   <Route index element={<All />} />
                   <Route path="all" element={<All />} />

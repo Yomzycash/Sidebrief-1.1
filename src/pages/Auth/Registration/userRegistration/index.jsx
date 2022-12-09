@@ -15,11 +15,15 @@ import { genderOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
 import { ThreeDots } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
+import { checkStaffEmail } from "utils/globalFunctions";
+import { useRegisterNewStaffMutation } from "services/staffService";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
   const [registerNewUser, { isLoading, isSuccess }] =
     useRegisterNewUserMutation();
+  const [registerNewStaff, staffState] = useRegisterNewStaffMutation();
+
   const {
     handleSubmit,
     register,
@@ -60,11 +64,15 @@ const UserRegistration = () => {
     };
   }, []);
 
+  // Sign up function block
   const submitForm = async (formData) => {
     let correctedData = correctFormDate(formData);
-    let response = await registerNewUser(JSON.stringify(correctedData));
+    let staffCheck = checkStaffEmail(formData.email);
+    let response = staffCheck
+      ? await registerNewStaff(JSON.stringify(correctedData))
+      : await registerNewUser(JSON.stringify(correctedData));
+
     let data = response?.data;
-    // console.log(data);
     let error = response?.error;
     if (data) {
       store.dispatch(saveUserInfo(data));
@@ -73,7 +81,6 @@ const UserRegistration = () => {
         JSON.stringify({ ...data, newUser: true })
       );
       localStorage.setItem("userEmail", formData.email);
-      // console.log(data.message);
       toast.success(data.message);
       navigate(`${location.pathname}/success`);
     } else if (error) {
@@ -190,8 +197,8 @@ const UserRegistration = () => {
             <MainButton
               title="Sign Up"
               type="submit"
-              loading={isLoading}
-              disabled={isLoading}
+              loading={isLoading || staffState.isLoading}
+              disabled={isLoading || staffState.isLoading}
             />
           </Body>
           <Bottom>

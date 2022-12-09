@@ -18,6 +18,7 @@ import { store } from "redux/Store";
 import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
 import AppFeedback from "components/AppFeedback";
 import { checkStaffEmail, handleError } from "utils/globalFunctions";
+import { useLoginStaffMutation } from "services/staffService";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -29,6 +30,7 @@ const SignIn = () => {
     resolver: yupResolver(loginSchema),
   });
   const [loginNewUser, { isLoading, isSuccess }] = useLoginNewUserMutation();
+  const [loginStaff, staffState] = useLoginStaffMutation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,22 +66,20 @@ const SignIn = () => {
 
   // Login function block
   const submitForm = async (formData) => {
-    let response = await loginNewUser(JSON.stringify(formData));
+    let staffCheck = checkStaffEmail(formData.email);
+
+    let response = staffCheck
+      ? await loginStaff(JSON.stringify(formData))
+      : await loginNewUser(JSON.stringify(formData));
+
     let data = response?.data;
     let error = response?.error;
+
     if (data) {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
       localStorage.setItem("userEmail", formData.email);
-      let staffCheck = checkStaffEmail(formData.email);
-
-      if (staffCheck) {
-        navigate("/staff-dashboard");
-        console.log("Navigated to the staff dashboard");
-      } else {
-        navigate("/dashboard");
-        console.log("Navigated to the user dashboard");
-      }
+      navigate(staffCheck ? "/staff-dashboard" : "/dashboard");
       toast.success(data.message);
     } else if (error) {
       handleError(error);
@@ -140,8 +140,8 @@ const SignIn = () => {
             <MainButton
               title="Sign In"
               type="submit"
-              loading={isLoading}
-              disabled={isLoading}
+              loading={isLoading || staffState.isLoading}
+              disabled={isLoading || staffState.isLoading}
             />
           </Body>
           <Bottom>

@@ -1,16 +1,17 @@
-import React from 'react'
+import React from "react";
 import {
   SearchBar,
   SearchBarWrapper,
   SearchIcon,
   SearchIconWrapper,
-} from './styled'
-import search from '../../asset/images/search.png'
+} from "./styled";
+import search from "../../asset/images/search.png";
 
 const Search = ({
   style,
   iconStyle,
-  placeholder = 'Search something...',
+  inputStyle,
+  placeholder = "Search something...",
   onChange,
 }) => {
   return (
@@ -18,9 +19,13 @@ const Search = ({
       <SearchIconWrapper>
         <SearchIcon src={search} alt="logo" style={iconStyle} />
       </SearchIconWrapper>
-      <SearchBar placeholder={placeholder} onChange={onChange} />
+      <SearchBar
+        placeholder={placeholder}
+        onChange={onChange}
+        style={inputStyle}
+      />
     </SearchBarWrapper>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;
