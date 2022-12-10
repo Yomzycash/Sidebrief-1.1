@@ -41,6 +41,7 @@ import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All"
 import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
 import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
+import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -319,6 +320,7 @@ const AppRouter = () => {
                   <Route path="awating-approval" element={<Awaiting />} />
                   <Route path="in-progress" element={<InProgress />} />
                   <Route path="rejected" element={<Completed />} />
+                  <Route path="pending" element={<Draft />} />
                 </Route>
                 <Route path="entities" element={<Outlet />}>
                   <Route index element={<StaffEntities />} />

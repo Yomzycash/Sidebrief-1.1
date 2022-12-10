@@ -48,7 +48,7 @@ const Registrationlayout = () => {
                 <TopContent>
                   <div>
                     <PageTitle>Business Registrations</PageTitle>
-                    <RewardSummaryCard shown={8} total={329} />
+                    <RewardSummaryCard shown={23} total={503} />
                   </div>
                   <Drop>
                     <select>
@@ -78,23 +78,28 @@ const Registrationlayout = () => {
               <SubHeader>
                 <ActiveNav
                   text="All"
-                  total={329}
+                  total={503}
                   path={"/staff-dashboard/businesses/registration/all"}
                   defaultActive={home}
                 />
                 <ActiveNav
-                  text="Awaiting Approval"
-                  total={24}
+                  text="Pending"
+                  total={0}
+                  path="/staff-dashboard/businesses/registration/pending"
+                />
+                <ActiveNav
+                  text="Submitted"
+                  total={23}
                   path="/staff-dashboard/businesses/registration/awating-approval"
                 />
                 <ActiveNav
-                  text="In Progress"
-                  total={305}
+                  text="Approved"
+                  total={0}
                   path="/staff-dashboard/businesses/registration/in-progress"
                 />
                 <ActiveNav
                   text="Rejected"
-                  total={305}
+                  total={0}
                   path="/staff-dashboard/businesses/registration/rejected"
                 />
               </SubHeader>

@@ -50,6 +50,12 @@ export const staffApi = createApi({
     getRejectedLaunch: builder.query({
       query: () => "/launch/rejected",
     }),
+
+    //rejected launches
+    getDraftLaunch: builder.query({
+      query: () => "/launch/pending",
+    }),
+
     //Staff registration
     registerNewStaff: builder.mutation({
       query: (data) => ({
@@ -102,4 +108,5 @@ export const {
   useGetApprovedLaunchQuery,
   useGetSubmittedLaunchQuery,
   useGetRejectedLaunchQuery,
+  useGetDraftLaunchQuery,
 } = staffApi;
