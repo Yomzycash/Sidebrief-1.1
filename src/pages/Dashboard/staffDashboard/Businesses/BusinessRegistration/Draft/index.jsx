@@ -8,22 +8,22 @@ import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 const Draft = () => {
   const [tableArr, setTableArr] = useState([]);
-  const allLaunch = useGetDraftLaunchQuery({
+  const pendingLaunch = useGetDraftLaunchQuery({
     refetchOnMountOrArgChange: true,
   });
 
   const countries = useGetAllCountriesQuery();
 
   useEffect(() => {
-    if (allLaunch.isSuccess && countries.isSuccess) {
-      setTableArr(allLaunch.data);
+    if (pendingLaunch.isSuccess && countries.isSuccess) {
+      setTableArr(pendingLaunch.data);
     }
-  }, [allLaunch, countries.isSuccess]);
+  }, [pendingLaunch, countries.isSuccess]);
 
   console.log(tableArr);
   console.log(countries.data);
 
-  const loadingData = allLaunch.isLoading;
+  const loadingData = pendingLaunch.isLoading;
 
   return (
     <Container>
