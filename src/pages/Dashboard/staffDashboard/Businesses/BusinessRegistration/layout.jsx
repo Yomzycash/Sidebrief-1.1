@@ -10,8 +10,40 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "components/navbar";
 import { useSelector } from "react-redux";
 import StaffSidebar from "components/sidebar/StaffSidebar";
+import {
+  useGetAllLaunchQuery,
+  useGetApprovedLaunchQuery,
+  useGetDraftLaunchQuery,
+  useGetRejectedLaunchQuery,
+  useGetSubmittedLaunchQuery,
+} from "services/staffService";
 
 const Registrationlayout = () => {
+  const allLaunch = useGetAllLaunchQuery({
+    refetchOnMountOrArgChange: true,
+  });
+
+  const awaitingLaunch = useGetSubmittedLaunchQuery({
+    refetchOnMountOrArgChange: true,
+  });
+
+  const rejectedLaunch = useGetRejectedLaunchQuery({
+    refetchOnMountOrArgChange: true,
+  });
+
+  const pendingLaunch = useGetDraftLaunchQuery({
+    refetchOnMountOrArgChange: true,
+  });
+
+  const approvedLaunch = useGetApprovedLaunchQuery({
+    refetchOnMountOrArgChange: true,
+  });
+  let all = allLaunch?.currentData?.length;
+  let awaiting = awaitingLaunch?.currentData?.length;
+  let rejected = rejectedLaunch?.currentData?.length;
+  let pending = pendingLaunch?.currentData?.length;
+  let approved = approvedLaunch?.currentData?.length;
+
   const location = useLocation();
 
   let home =
@@ -48,7 +80,7 @@ const Registrationlayout = () => {
                 <TopContent>
                   <div>
                     <PageTitle>Business Registrations</PageTitle>
-                    <RewardSummaryCard shown={8} total={329} />
+                    <RewardSummaryCard shown={23} total={503} />
                   </div>
                   <Drop>
                     <select>
@@ -78,24 +110,29 @@ const Registrationlayout = () => {
               <SubHeader>
                 <ActiveNav
                   text="All"
-                  total={329}
+                  total={all}
                   path={"/staff-dashboard/businesses/registration/all"}
                   defaultActive={home}
                 />
                 <ActiveNav
-                  text="Awaiting Approval"
-                  total={24}
+                  text="Pending"
+                  total={pending}
+                  path="/staff-dashboard/businesses/registration/pending"
+                />
+                <ActiveNav
+                  text="Awaiting"
+                  total={awaiting}
                   path="/staff-dashboard/businesses/registration/awating-approval"
                 />
                 <ActiveNav
-                  text="In Progress"
-                  total={305}
+                  text="Approved"
+                  total={approved}
                   path="/staff-dashboard/businesses/registration/in-progress"
                 />
                 <ActiveNav
-                  text="Completed"
-                  total={305}
-                  path="/staff-dashboard/businesses/registration/completed"
+                  text="Rejected"
+                  total={rejected}
+                  path="/staff-dashboard/businesses/registration/rejected"
                 />
               </SubHeader>
             </Header>

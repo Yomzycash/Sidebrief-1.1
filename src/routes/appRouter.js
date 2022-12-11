@@ -41,6 +41,7 @@ import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All"
 import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
 import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
+import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -318,7 +319,8 @@ const AppRouter = () => {
                   <Route path="all" element={<All />} />
                   <Route path="awating-approval" element={<Awaiting />} />
                   <Route path="in-progress" element={<InProgress />} />
-                  <Route path="completed" element={<Completed />} />
+                  <Route path="rejected" element={<Completed />} />
+                  <Route path="pending" element={<Draft />} />
                 </Route>
                 <Route path="entities" element={<Outlet />}>
                   <Route index element={<StaffEntities />} />
@@ -331,6 +333,12 @@ const AppRouter = () => {
                     <Route path="entities" element={<CountryEntities />} />
                   </Route>
                 </Route>
+              </Route>
+              <Route path="business/:code" element={<BusinessDetailLayout />}>
+                <Route path="detail" element={<BusinessDetail />} />
+                <Route path="shareholders" element={<DetailShareholders />} />
+                <Route path="directors" element={<DetailDirectors />} />
+                <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
               <Route path="all-rewards" element={<Outlet />}>
                 <Route index element={<StaffAllRewards />} />

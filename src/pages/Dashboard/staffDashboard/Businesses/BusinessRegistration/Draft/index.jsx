@@ -1,29 +1,29 @@
 import { MockData } from "components/Staff/Tables/ApplicationTable/constants";
 import { BusinessTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
-import { useGetApprovedLaunchQuery } from "services/staffService";
+import { useGetDraftLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
 import { format, compareDesc } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
-const InProgress = () => {
+const Draft = () => {
   const [tableArr, setTableArr] = useState([]);
-  const approvedLaunch = useGetApprovedLaunchQuery({
+  const pendingLaunch = useGetDraftLaunchQuery({
     refetchOnMountOrArgChange: true,
   });
 
   const countries = useGetAllCountriesQuery();
 
   useEffect(() => {
-    if (approvedLaunch.isSuccess && countries.isSuccess) {
-      setTableArr(approvedLaunch.data);
+    if (pendingLaunch.isSuccess && countries.isSuccess) {
+      setTableArr(pendingLaunch.data);
     }
-  }, [approvedLaunch, countries.isSuccess]);
+  }, [pendingLaunch, countries.isSuccess]);
 
   console.log(tableArr);
   console.log(countries.data);
 
-  const loadingData = approvedLaunch.isLoading;
+  const loadingData = pendingLaunch.isLoading;
 
   return (
     <Container>
@@ -55,4 +55,4 @@ const InProgress = () => {
   );
 };
 
-export default InProgress;
+export default Draft;

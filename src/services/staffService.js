@@ -31,6 +31,31 @@ export const staffApi = createApi({
       query: (ISO) => `/entities/country/${ISO}`,
     }),
 
+    //all launches
+    getAllLaunch: builder.query({
+      query: () => "/launch/all",
+    }),
+
+    //submitted launches
+    getSubmittedLaunch: builder.query({
+      query: () => "/launch/submitted",
+    }),
+
+    //in progress launches
+    getApprovedLaunch: builder.query({
+      query: () => "/launch/approved",
+    }),
+
+    //rejected launches
+    getRejectedLaunch: builder.query({
+      query: () => "/launch/rejected",
+    }),
+
+    //rejected launches
+    getDraftLaunch: builder.query({
+      query: () => "/launch/pending",
+    }),
+
     //Staff registration
     registerNewStaff: builder.mutation({
       query: (data) => ({
@@ -79,4 +104,9 @@ export const {
   useRegisterNewStaffMutation,
   useLoginStaffMutation,
   useActivateStaffMutation,
+  useGetAllLaunchQuery,
+  useGetApprovedLaunchQuery,
+  useGetSubmittedLaunchQuery,
+  useGetRejectedLaunchQuery,
+  useGetDraftLaunchQuery,
 } = staffApi;
