@@ -2,12 +2,12 @@ import { BusinessHomeTable } from "components/Staff/Tables";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useGetAllSubmittedLaunchesQuery } from "services/launchService";
+import { useGetSubmittedLaunchQuery } from "services/staffService";
 
 const AllBusinessesSummary = () => {
   const [submitted, setSubmitted] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetAllSubmittedLaunchesQuery();
+  const { data, isLoading, isSuccess } = useGetSubmittedLaunchQuery();
 
   useEffect(() => {
     setSubmitted(

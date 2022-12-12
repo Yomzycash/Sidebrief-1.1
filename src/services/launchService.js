@@ -68,26 +68,6 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
-    // Get all users' launch requests
-    getAllLaunches: builder.query({
-      query: () => "/launch/all",
-    }),
-
-    // Get all users' submitted launch requests
-    getAllSubmittedLaunches: builder.query({
-      query: () => "/launch/submitted",
-    }),
-
-    // Get all users' approved launch requests
-    getAllApprovedLaunches: builder.query({
-      query: () => "/launch/approved",
-    }),
-
-    // Get all users' rejected launch requests
-    getAllRejectedLaunches: builder.query({
-      query: () => "/launch/rejected",
-    }),
-
     // Send payment response
     payLaunch: builder.mutation({
       query: (values) => ({
@@ -463,11 +443,6 @@ export const {
 
   useGetStartedMutation,
   useUpdateLaunchMutation,
-
-  useGetAllLaunchesQuery,
-  useGetAllSubmittedLaunchesQuery,
-  useGetAllApprovedLaunchesQuery,
-  useGetAllRejectedLaunchesQuery,
 
   usePayLaunchMutation,
   useViewPayLaunchMutation,

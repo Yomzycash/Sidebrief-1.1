@@ -9,14 +9,14 @@ import styled from "styled-components";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { ReactComponent as AddIcon } from "../../../../../src/asset/svg/Plus.svg";
 import StaffSidebar from "components/sidebar/StaffSidebar";
-import {
-  useGetAllApprovedLaunchesQuery,
-  useGetAllCountriesQuery,
-  useGetAllSubmittedLaunchesQuery,
-  useGetAllTheEntitiesQuery,
-} from "services/launchService";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useGetAllTheEntitiesQuery } from "services/launchService";
+import {
+  useGetAllCountriesQuery,
+  useGetApprovedLaunchQuery,
+  useGetSubmittedLaunchQuery,
+} from "services/staffService";
 
 const StaffBusinesses = (props) => {
   const [countries, setCountries] = useState([]);
@@ -28,8 +28,8 @@ const StaffBusinesses = (props) => {
 
   const allCountries = useGetAllCountriesQuery();
   const allEntities = useGetAllTheEntitiesQuery();
-  const allSubmittedLaunches = useGetAllSubmittedLaunchesQuery();
-  const allApprovedLaunches = useGetAllApprovedLaunchesQuery();
+  const allSubmittedLaunches = useGetSubmittedLaunchQuery();
+  const allApprovedLaunches = useGetApprovedLaunchQuery();
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;

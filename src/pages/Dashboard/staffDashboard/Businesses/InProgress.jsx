@@ -2,12 +2,12 @@ import { BusinessHomeTable } from "components/Staff/Tables";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useGetAllApprovedLaunchesQuery } from "services/launchService";
+import { useGetApprovedLaunchQuery } from "services/staffService";
 
 const InProgressBusinessesSummary = () => {
   const [approved, setApproved] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetAllApprovedLaunchesQuery();
+  const { data, isLoading, isSuccess } = useGetApprovedLaunchQuery();
 
   useEffect(() => {
     setApproved(

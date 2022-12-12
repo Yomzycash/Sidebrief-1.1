@@ -408,7 +408,7 @@ export const NavbarLink = [
   },
 ];
 
-export const CardContainer = [
+export const StaffStatusCardInfo = [
   {
     id: 1,
     title: " Total Applications",

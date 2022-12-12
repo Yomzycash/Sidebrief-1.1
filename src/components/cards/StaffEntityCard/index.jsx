@@ -1,19 +1,20 @@
-import { CornerPetal } from 'asset/svg'
-import { EntityTitle } from 'pages/Launch/styled'
-import React from 'react'
-import styled from 'styled-components'
-import { ReactComponent as MoreIcon } from '../../../../src/asset/svg/threeDot.svg'
+import { CornerPetal } from "asset/svg";
+import { EntityTitle } from "pages/Launch/styled";
+import React from "react";
+import styled from "styled-components";
+import { ReactComponent as MoreIcon } from "../../../../src/asset/svg/threeDot.svg";
 
 const StaffEntityCard = ({
-  entityName = 'Public Limited Company  (P.L.C)',
-  shareholderType = 'Local and Foreign Shareholders',
-  entityTimeline = '30 days',
-  entityType = 'Public Limited',
-  countryCode = 'NGA',
-  entityPackage = 'Standard',
+  entityName = "Public Limited Company  (P.L.C)",
+  shareholderType = "Local and Foreign Shareholders",
+  entityTimeline = "30 days",
+  entityType = "Public Limited",
+  countryCode = "NGA",
+  entityPackage = "Standard",
+  clickAction,
 }) => {
   return (
-    <Container>
+    <Container onClick={clickAction ? clickAction : () => {}}>
       <Corner>
         <CornerPetal viewBox="0 0 70 140" />
       </Corner>
@@ -39,10 +40,10 @@ const StaffEntityCard = ({
         <TextWrapper>{entityPackage}</TextWrapper>
       </BottomContainer>
     </Container>
-  )
-}
+  );
+};
 
-export default StaffEntityCard
+export default StaffEntityCard;
 const Container = styled.div`
   max-width: 526px;
   width: 100%;
@@ -65,7 +66,7 @@ const Container = styled.div`
   &:hover {
     background: #00a2d4;
   }
-`
+`;
 const Corner = styled.div`
   position: absolute;
   bottom: 0;
@@ -86,25 +87,25 @@ const Corner = styled.div`
       }
     }
   }
-`
+`;
 const TopMidContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: center;
   gap: 8px;
-`
+`;
 const Top = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-`
+`;
 const SideContainer = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-`
+`;
 const EntityTimeline = styled.h5`
   font-weight: 500;
   font-size: 14px;
@@ -113,7 +114,7 @@ const EntityTimeline = styled.h5`
   text-align: right;
 
   color: #4e5152;
-`
+`;
 const TopHeading = styled.h3`
   font-weight: 600;
   font-size: 20px;
@@ -121,21 +122,21 @@ const TopHeading = styled.h3`
   letter-spacing: -0.02em;
   text-transform: capitalize;
   color: #242627;
-`
-const MoreIconWrapper = styled.div``
+`;
+const MoreIconWrapper = styled.div``;
 
 const ShareholderType = styled.h4`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #4e5152;
-`
+`;
 const BottomContainer = styled.div`
   display: inline-flex;
   align-items: center;
 
   gap: 16px;
-`
+`;
 const BottomWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -143,10 +144,10 @@ const BottomWrapper = styled.div`
   padding: 0px 8px 0px 0px;
   gap: 8px;
   border-right: 1px solid #edf1f7;
-`
+`;
 const TextWrapper = styled.h3`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #4e5152;
-`
+`;

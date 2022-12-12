@@ -32,6 +32,7 @@ const InputWithLabel = ({
   topStyles,
   inputClass,
   bottomTextClass,
+  disable,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -73,6 +74,7 @@ const InputWithLabel = ({
         ref={inputRef}
         onFocus={() => handleBorder(true)}
         onBlur={() => handleBorder(false)}
+        disable={disable}
       >
         {leftIcon && <Iconwrapper>{leftIcon}</Iconwrapper>}
         {register ? (
@@ -82,6 +84,7 @@ const InputWithLabel = ({
             edit={edit}
             type={!show ? type || "password" : "text"}
             name={name}
+            disabled={disable}
             {...register(name)}
             {...rest}
           />

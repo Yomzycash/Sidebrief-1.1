@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { CardContainer } from "utils/config";
+import { StaffStatusCardInfo } from "utils/config";
 
-const StatusCard = ({ icon, total }) => {
+const StatusCard = ({ total, draft, awaiting, approved, rejected }) => {
   return (
     <Wrapper>
-      {CardContainer.map((item, index) => (
+      {/* {StaffStatusCardInfo.map((item, index) => (
         <Container key={index} border={item.id === 1 && "16px 0px 0px 16px"}>
           <Top>{item.title}</Top>
           <Middle>{item.number}</Middle>
@@ -16,29 +16,50 @@ const StatusCard = ({ icon, total }) => {
             <div>{item.description}</div>
           </BottomWrapper>
         </Container>
-      ))}
-      {/* <Container>
-        <Top>Total Applications</Top>
-        <Middle>{total}</Middle>
+      ))} */}
+      <Container border="none">
+        <Top>Total</Top>
+        <Middle>{total >= 0 ? total : "--"}</Middle>
         <BottomWrapper>
-          <IconWrapper
-          ></IconWrapper>
+          <IconWrapper />
           <div>20% this month</div>
         </BottomWrapper>
-      </Container>{" "}
-      <Container border={"16px 0px 0px 16px"}>
-        <Top>Completed</Top>
-        <Middle>{item.number}</Middle>
+      </Container>
+      <Container>
+        <Top>Drafts</Top>
+        <Middle>{draft >= 0 ? draft : "--"}</Middle>
         <BottomWrapper>
-          <IconWrapper
-            color={(item.id === 2 || item.id === 5) && "#ED4E3A"}
-          ></IconWrapper>
-          <div>{item.description}</div>
+          <IconWrapper />
+          <div>20% this month</div>
         </BottomWrapper>
-      </Container> */}
+      </Container>
+      <Container>
+        <Top>Pending</Top>
+        <Middle>{awaiting >= 0 ? awaiting : "--"}</Middle>
+        <BottomWrapper>
+          <IconWrapper />
+          <div>20% this month</div>
+        </BottomWrapper>
+      </Container>
+      <Container>
+        <Top>Approved</Top>
+        <Middle>{approved >= 0 ? approved : "--"}</Middle>
+        <BottomWrapper>
+          <IconWrapper />
+          <div>20% this month</div>
+        </BottomWrapper>
+      </Container>
+      <Container>
+        <Top>Rejected</Top>
+        <Middle>{rejected >= 0 ? rejected : "--"}</Middle>
+        <BottomWrapper>
+          <IconWrapper color="#ED4E3A" />
+          <p>20% this month</p>
+        </BottomWrapper>
+      </Container>
       <LastContainer>
         <p>This month</p>
-        <DropdownWrapper>{icon}</DropdownWrapper>
+        <DropdownWrapper>{}</DropdownWrapper>
       </LastContainer>
     </Wrapper>
   );
@@ -51,46 +72,42 @@ const Wrapper = styled.div`
   align-items: flex-start;
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: -4px 10px 16px 8px rgba(149, 150, 151, 0.08),
+  box-shadow: -4px 10px 16px 8px #95969714,
     0px 10px 10px -5px rgba(149, 150, 151, 0.04);
-  border-radius: 16px;
+  border-radius: 32px;
   width: 100%;
+  min-width: max-content;
 `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-inline-start: 30px;
-  padding-block: 30px;
+  justify-content: center;
+  padding-inline: clamp(20px, 2vw, 36px);
   gap: 8px;
   width: 100%;
-
   height: 150px;
-  background: #ffffff;
-  border-width: 0px 1px;
-  border-style: solid;
-  border-color: #edf1f7;
-  border-radius: ${(props) => (props.border ? props.border : "0px")};
+  border-left: ${({ border }) => border || "1px solid #edf1f7"};
+  /* border-radius: ${(props) => (props.border ? props.border : "0px")}; */
 `;
 const Top = styled.h5`
   font-weight: 500;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   line-height: 21px;
-
   letter-spacing: -0.01em;
-
   color: #4e5152;
 `;
-const Middle = styled.h3`
+const Middle = styled.p`
   font-weight: 700;
-  font-size: 18px;
+  font-size: clamp(16px, 1.6vw, 18px);
   line-height: 24px;
   margin-left: 0px !important;
   display: flex;
   align-items: center;
-
   color: #242627;
 `;
+
 const BottomWrapper = styled.div`
   display: inline-flex;
   flex-direction: row;
@@ -99,9 +116,10 @@ const BottomWrapper = styled.div`
   gap: 4px;
   font-style: italic;
   font-weight: 500;
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   line-height: 21px;
   color: #242627;
+  white-space: nowrap;
 `;
 const IconWrapper = styled.div`
   width: 8px;
@@ -112,13 +130,13 @@ const IconWrapper = styled.div`
 const LastContainer = styled.div`
   max-width: 134px;
   width: 100%;
+  border-left: 1px solid #edf1f7;
+  padding-inline: clamp(20px, 2vw, 36px);
 
   height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "BR Firma";
-  font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 21px;

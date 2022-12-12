@@ -51,7 +51,7 @@ export const staffApi = createApi({
       query: () => "/launch/rejected",
     }),
 
-    //rejected launches
+    //draft launches
     getDraftLaunch: builder.query({
       query: () => "/launch/pending",
     }),

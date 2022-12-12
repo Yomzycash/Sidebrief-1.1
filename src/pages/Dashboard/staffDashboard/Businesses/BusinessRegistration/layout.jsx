@@ -17,8 +17,13 @@ import {
   useGetRejectedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Registrationlayout = () => {
+  const [allReg, setAllReg] = useState([]);
+  const [awaitingReg, setAwaiting] = useState([]);
+
   const allLaunch = useGetAllLaunchQuery({
     refetchOnMountOrArgChange: true,
   });
@@ -44,6 +49,11 @@ const Registrationlayout = () => {
   let pending = pendingLaunch?.currentData?.length;
   let approved = approvedLaunch?.currentData?.length;
 
+  useEffect(() => {
+    setAllReg(all ? all : []);
+    setAwaiting(awaiting ? awaiting : []);
+  }, [all, awaiting, pending, approved]);
+
   const location = useLocation();
 
   let home =
@@ -53,6 +63,7 @@ const Registrationlayout = () => {
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
+
   const searchStyle = {
     borderRadius: "12px",
     backgroundColor: "white",
@@ -110,18 +121,18 @@ const Registrationlayout = () => {
               <SubHeader>
                 <ActiveNav
                   text="All"
-                  total={all}
+                  total={allReg}
                   path={"/staff-dashboard/businesses/registration/all"}
                   defaultActive={home}
                 />
                 <ActiveNav
-                  text="Pending"
+                  text="Drafts"
                   total={pending}
                   path="/staff-dashboard/businesses/registration/pending"
                 />
                 <ActiveNav
-                  text="Awaiting"
-                  total={awaiting}
+                  text="Submitted"
+                  total={awaitingReg}
                   path="/staff-dashboard/businesses/registration/awating-approval"
                 />
                 <ActiveNav

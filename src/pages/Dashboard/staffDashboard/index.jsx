@@ -12,19 +12,23 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
-  useGetAllApprovedLaunchesQuery,
-  useGetAllSubmittedLaunchesQuery,
-  useGetUserSubmittedQuery,
-} from "services/launchService";
+  useGetAllLaunchQuery,
+  useGetApprovedLaunchQuery,
+  useGetDraftLaunchQuery,
+  useGetRejectedLaunchQuery,
+  useGetSubmittedLaunchQuery,
+} from "services/staffService";
 import styled from "styled-components";
 import { StaffContainer, StatusCardContainer } from "./styled";
 
 const StaffDashboard = (props) => {
   const [allApplications, setAllApplications] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetUserSubmittedQuery();
-  const allSubmittedLaunches = useGetAllSubmittedLaunchesQuery();
-  const allApprovedLaunches = useGetAllApprovedLaunchesQuery();
+  const allLaunches = useGetAllLaunchQuery();
+  const allSubmittedLaunches = useGetSubmittedLaunchQuery();
+  const allApprovedLaunches = useGetApprovedLaunchQuery();
+  const allRejectedLaunches = useGetRejectedLaunchQuery();
+  const allDraftLaunches = useGetDraftLaunchQuery();
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
@@ -85,7 +89,13 @@ const StaffDashboard = (props) => {
               nowrap
             >
               <StatusCardContainer>
-                <StatusCard />
+                <StatusCard
+                  total={allLaunches?.data?.length}
+                  draft={allDraftLaunches?.data?.length}
+                  approved={allApprovedLaunches?.data?.length}
+                  awaiting={allSubmittedLaunches?.data?.length}
+                  rejected={allRejectedLaunches?.data?.length}
+                />
               </StatusCardContainer>
             </DashboardSection>
             <DashboardSection>
