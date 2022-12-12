@@ -22,6 +22,7 @@ const DropDown = ({
   launch,
   height,
   fontSize,
+  disable,
   ...rest
 }) => {
   const selectStyle = {
@@ -89,6 +90,7 @@ const DropDown = ({
           value: cardAction === "edit" && defaultValue && defaultValue,
           label: cardAction === "edit" && defaultValue && defaultValue,
         }}
+        isDisabled={disable}
       />
     </Wrapper>
   );

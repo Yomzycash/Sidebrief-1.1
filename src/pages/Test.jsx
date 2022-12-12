@@ -1,4 +1,4 @@
-import StaffEntityModal from "components/modal/StaffEntityAddModal";
+import StaffEntityModal from "components/modal/StaffEntityModal";
 import StaffRewardModal from "components/modal/StaffRewardModal";
 import StaffSidebar from "components/sidebar/StaffSidebar";
 import React from "react";

@@ -21,6 +21,7 @@ const Modal1 = ({
   children,
   open,
   setOpen,
+  disable,
 }) => {
   const handleClose = () => {
     setOpen(false);
@@ -47,7 +48,7 @@ const Modal1 = ({
             forwardSubmit
             forwardLoading={""}
             forwardText={cardAction === "edit" ? "Update" : "Save"}
-            forwardDisable={""}
+            forwardDisable={disable}
             $modal
           />
         </Form>

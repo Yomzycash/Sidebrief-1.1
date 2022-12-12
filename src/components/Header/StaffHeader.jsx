@@ -1,5 +1,5 @@
 import { RewardSummaryCard } from "components/cards";
-import StaffEntityAddModal from "components/modal/StaffEntityAddModal";
+import StaffEntityModal from "components/modal/StaffEntityModal";
 import Search from "components/navbar/Search";
 import React from "react";
 import { useState } from "react";
@@ -48,7 +48,7 @@ const StaffHeader = ({
                 {Description}
               </button>
             </ButtonWrapper>
-            <StaffEntityAddModal open={open} setOpen={setOpen} />
+            <StaffEntityModal open={open} setOpen={setOpen} />
           </BottomContent>
         </MainHeader>
       </Header>

@@ -3,10 +3,19 @@ import { DropDown, InputWithLabel } from "components/input";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import Modal1 from "layout/modal1";
 import React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { StaffEntitySchema } from "utils/config";
 
-const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
+const StaffEntityModal = ({
+  cardAction,
+  selectedToEdit,
+  open,
+  setOpen,
+  disableAll,
+  title,
+  entityInfo,
+}) => {
   const {
     handleSubmit,
     register,
@@ -60,6 +69,29 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
     setValue("currency", string, { shouldValidate: true });
   };
 
+  useEffect(() => {
+    if (entityInfo) {
+      setValue("entity_name", entityInfo.entityName, { shouldValidate: true });
+      setValue("description", entityInfo.entityDescription, {
+        shouldValidate: true,
+      });
+      setValue("short_name", entityInfo.entityShortName, {
+        shouldValidate: true,
+      });
+      setValue("code", entityInfo.entityCode, { shouldValidate: true });
+      setValue("shares", entityInfo.entityShares, { shouldValidate: true });
+      setValue("timeline", entityInfo.entityTimeline, { shouldValidate: true });
+      setValue("country", entityInfo.entityCountry, { shouldValidate: true });
+      setValue("currency", entityInfo.entityCurrency, { shouldValidate: true });
+      setValue("requirement", entityInfo.entityRequirements, {
+        shouldValidate: true,
+      });
+      setValue("type", entityInfo.entityType, { shouldValidate: true });
+    }
+  }, [entityInfo]);
+
+  console.log(entityInfo);
+
   // This runs when the form gets submitted
   const submitAction = () => {};
 
@@ -68,9 +100,10 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
       handleSubmit={handleSubmit}
       submitAction={submitAction}
       cardAction={cardAction}
-      title="Add New Entity"
+      title={title || "Add New Entity"}
       open={open}
       setOpen={setOpen}
+      disable={disableAll}
     >
       <InputWithLabel
         label="Entity Name"
@@ -82,6 +115,7 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
         containerStyle="input-container-class"
         register={register}
         errorMessage={errors.entity_name?.message}
+        disable={disableAll}
       />
       <InputWithLabel
         label="Entity Description"
@@ -93,6 +127,7 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
         containerStyle="input-container-class"
         register={register}
         errorMessage={errors.description?.message}
+        disable={disableAll}
       />
       <DetailedSection>
         <InputWithLabel
@@ -105,6 +140,7 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           inputClass="input-class"
           register={register}
           errorMessage={errors.short_name?.message}
+          disable={disableAll}
         />
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
@@ -115,9 +151,10 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           onChange={handleEntityTypeChange}
           errorMessage={errors.type?.message}
           cardAction={cardAction}
-          defaultValue={selectedToEdit?.entityType}
+          defaultValue={entityInfo?.entityType}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
+          disable={disableAll}
         />
       </DetailedSection>
       <DetailedSection>
@@ -131,6 +168,7 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           containerStyle="input-container-class"
           register={register}
           errorMessage={errors.code?.message}
+          disable={disableAll}
         />
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
@@ -141,23 +179,25 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           onChange={handleEntityReqChange}
           errorMessage={errors.requirements?.message}
           cardAction={cardAction}
-          defaultValue={selectedToEdit?.entityRequirements}
+          defaultValue={entityInfo?.entityRequirements}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
+          disable={disableAll}
         />
       </DetailedSection>
       <DetailedSection>
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
-          label="Entity Contry"
+          label="Entity Country"
           labelStyle="input-label"
           options={entityCountries}
           onChange={handleCountryChange}
           errorMessage={errors.country?.message}
           cardAction={cardAction}
-          defaultValue={selectedToEdit?.country}
+          defaultValue={entityInfo?.entityCountry}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
+          disable={disableAll}
         />
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
@@ -167,9 +207,10 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           onChange={handleCurrencyChange}
           errorMessage={errors.currency?.message}
           cardAction={cardAction}
-          defaultValue={selectedToEdit?.entityCurrency}
+          defaultValue={entityInfo?.entityCurrency}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
+          disable={disableAll}
         />
       </DetailedSection>
       <DetailedSection>
@@ -183,6 +224,7 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           inputClass="input-class"
           register={register}
           errorMessage={errors.timeline?.message}
+          disable={disableAll}
         />
         <InputWithLabel
           label="Entity Shares"
@@ -194,10 +236,11 @@ const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
           inputClass="input-class"
           register={register}
           errorMessage={errors.shares?.message}
+          disable={disableAll}
         />
       </DetailedSection>
     </Modal1>
   );
 };
 
-export default StaffEntityAddModal;
+export default StaffEntityModal;

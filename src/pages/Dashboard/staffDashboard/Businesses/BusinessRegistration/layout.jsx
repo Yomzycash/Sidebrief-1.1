@@ -23,7 +23,6 @@ import { useState } from "react";
 const Registrationlayout = () => {
   const [allReg, setAllReg] = useState([]);
   const [awaitingReg, setAwaiting] = useState([]);
-  const [rejectedReg, setRejected] = useState([]);
 
   const allLaunch = useGetAllLaunchQuery({
     refetchOnMountOrArgChange: true,
@@ -53,8 +52,7 @@ const Registrationlayout = () => {
   useEffect(() => {
     setAllReg(all ? all : []);
     setAwaiting(awaiting ? awaiting : []);
-    setRejected(rejected ? rejected : []);
-  }, [all, awaiting, rejected, pending, approved]);
+  }, [all, awaiting, pending, approved]);
 
   const location = useLocation();
 
@@ -65,6 +63,7 @@ const Registrationlayout = () => {
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
+
   const searchStyle = {
     borderRadius: "12px",
     backgroundColor: "white",
@@ -143,7 +142,7 @@ const Registrationlayout = () => {
                 />
                 <ActiveNav
                   text="Rejected"
-                  total={rejectedReg}
+                  total={rejected}
                   path="/staff-dashboard/businesses/registration/rejected"
                 />
               </SubHeader>
