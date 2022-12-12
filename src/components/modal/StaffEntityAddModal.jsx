@@ -6,7 +6,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { StaffEntitySchema } from "utils/config";
 
-const StaffEntityModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
+const StaffEntityAddModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
   const {
     handleSubmit,
     register,
@@ -87,7 +87,7 @@ const StaffEntityModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
         label="Entity Description"
         labelStyle="input-label"
         placeholder="Enter entity description"
-        type="number"
+        type="text"
         name="description"
         inputClass="input-class"
         containerStyle="input-container-class"
@@ -200,4 +200,4 @@ const StaffEntityModal = ({ cardAction, selectedToEdit, open, setOpen }) => {
   );
 };
 
-export default StaffEntityModal;
+export default StaffEntityAddModal;

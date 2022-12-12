@@ -17,8 +17,14 @@ import {
   useGetRejectedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Registrationlayout = () => {
+  const [allReg, setAllReg] = useState([]);
+  const [awaitingReg, setAwaiting] = useState([]);
+  const [rejectedReg, setRejected] = useState([]);
+
   const allLaunch = useGetAllLaunchQuery({
     refetchOnMountOrArgChange: true,
   });
@@ -43,6 +49,12 @@ const Registrationlayout = () => {
   let rejected = rejectedLaunch?.currentData?.length;
   let pending = pendingLaunch?.currentData?.length;
   let approved = approvedLaunch?.currentData?.length;
+
+  useEffect(() => {
+    setAllReg(all ? all : []);
+    setAwaiting(awaiting ? awaiting : []);
+    setRejected(rejected ? rejected : []);
+  }, [all, awaiting, rejected, pending, approved]);
 
   const location = useLocation();
 
@@ -110,18 +122,18 @@ const Registrationlayout = () => {
               <SubHeader>
                 <ActiveNav
                   text="All"
-                  total={all}
+                  total={allReg}
                   path={"/staff-dashboard/businesses/registration/all"}
                   defaultActive={home}
                 />
                 <ActiveNav
-                  text="Pending"
+                  text="Drafts"
                   total={pending}
                   path="/staff-dashboard/businesses/registration/pending"
                 />
                 <ActiveNav
-                  text="Awaiting"
-                  total={awaiting}
+                  text="Submitted"
+                  total={awaitingReg}
                   path="/staff-dashboard/businesses/registration/awating-approval"
                 />
                 <ActiveNav
@@ -131,7 +143,7 @@ const Registrationlayout = () => {
                 />
                 <ActiveNav
                   text="Rejected"
-                  total={rejected}
+                  total={rejectedReg}
                   path="/staff-dashboard/businesses/registration/rejected"
                 />
               </SubHeader>
