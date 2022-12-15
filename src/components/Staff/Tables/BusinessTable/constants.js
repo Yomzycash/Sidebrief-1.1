@@ -143,19 +143,19 @@ export const columns = [
 	}),
 ];
 
-const IndeterminateCheckbox = ({
-	indeterminate,
-	className = "",
-	checked,
-	...rest
-}) => {
-	const ref = React.useRef(null);
+// const IndeterminateCheckbox = ({
+// 	indeterminate,
+// 	className = "",
+// 	checked,
+// 	...rest
+// }) => {
+// 	const ref = React.useRef(null);
 
-	React.useEffect(() => {
-		if (typeof indeterminate === "boolean") {
-			ref.current.indeterminate = !checked && indeterminate;
-		}
-	}, [ref, indeterminate, checked]);
+// 	React.useEffect(() => {
+// 		if (typeof indeterminate === "boolean") {
+// 			ref.current.indeterminate = !checked && indeterminate;
+// 		}
+// 	}, [ref, indeterminate, checked]);
 
-	return <Checkbox type="checkbox" ref={ref} checked={checked} {...rest} />;
-};
+// 	return <Checkbox type="checkbox" ref={ref} checked={checked} {...rest} />;
+// };
