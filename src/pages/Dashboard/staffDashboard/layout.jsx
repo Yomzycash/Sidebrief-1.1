@@ -15,6 +15,8 @@ const StaffLayout = () => {
 		location.pathname.includes("/dashboard/rewards") &&
 		location.pathname.length > 31;
 
+	// let hideSearch = location.pathname.includes("/dashboard/rewards");
+
 	return (
 		<Dashboard>
 			<Navbar

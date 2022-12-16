@@ -27,8 +27,6 @@ const StaffDashboard = (props) => {
 
 	const location = useLocation();
 
-	let hideSearch = location.pathname.includes("/dashboard/rewards");
-
 	// Get user data information
 	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
 	let firstName_raw = userInfo?.first_name;
