@@ -8,11 +8,10 @@ import {
 	Image,
 	Main,
 	ParagraphText,
-} from "./styled";
-import image from "../../../../asset/images/coming.png";
+} from "./Settings/styled";
+import image from "asset/images/coming.png";
 import { useNavigate } from "react-router-dom";
-
-const ComingSoon = () => {
+const Settings = () => {
 	const navigate = useNavigate();
 	return (
 		<Container>
@@ -28,7 +27,7 @@ const ComingSoon = () => {
 					</ParagraphText>
 					<ComingBtn
 						onClick={() =>
-							navigate("/dashboard/business-registration")
+							navigate("/staff-dashboard/business-registration")
 						}
 					>
 						Back to Dashboard
@@ -39,4 +38,4 @@ const ComingSoon = () => {
 	);
 };
 
-export default ComingSoon;
+export default Settings;
