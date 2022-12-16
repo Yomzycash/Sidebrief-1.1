@@ -94,6 +94,45 @@ export const staffApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+
+    // Add an entity
+    addEntity: builder.mutation({
+      query: (data) => ({
+        url: "/entities",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Modify an entity
+    updateEntity: builder.mutation({
+      query: (data) => ({
+        url: "/entities",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Delete an entity
+    deleteEntity: builder.mutation({
+      query: (data) => ({
+        url: "/entities",
+        method: "DEL",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -101,12 +140,18 @@ export const {
   useGetAllCountriesQuery,
   useGetSingleCountryQuery,
   useGetCountryEntitiesQuery,
+
   useRegisterNewStaffMutation,
   useLoginStaffMutation,
   useActivateStaffMutation,
+
   useGetAllLaunchQuery,
   useGetApprovedLaunchQuery,
   useGetSubmittedLaunchQuery,
   useGetRejectedLaunchQuery,
   useGetDraftLaunchQuery,
+
+  useAddEntityMutation,
+  useUpdateEntityMutation,
+  useDeleteEntityMutation,
 } = staffApi;

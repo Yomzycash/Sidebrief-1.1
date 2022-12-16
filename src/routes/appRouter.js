@@ -42,6 +42,7 @@ import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Business
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
 import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
 import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
+import { checkStaffEmail } from "utils/globalFunctions";
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -192,6 +193,9 @@ const AppRouter = () => {
     setCountryISO(selectedCountryISO);
   }, [selectedCountryISO, launchData.registrationCountry]);
 
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
   return (
     <Suspense fallback={<Loader />}>
       <Router>
@@ -204,7 +208,7 @@ const AppRouter = () => {
               index
               element={
                 <Protected isVerified={isLoggedIn}>
-                  <Home />
+                  {staffEmail ? <StaffDashboard /> : <Home />}
                 </Protected>
               }
             />

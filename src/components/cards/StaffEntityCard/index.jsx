@@ -1,6 +1,7 @@
 import { CornerPetal } from "asset/svg";
 import { EntityTitle } from "pages/Launch/styled";
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as MoreIcon } from "../../../../src/asset/svg/threeDot.svg";
 
@@ -13,6 +14,8 @@ const StaffEntityCard = ({
   entityPackage = "Standard",
   clickAction,
 }) => {
+  // const [open, setOpen] = useState(false);
+
   return (
     <Container onClick={clickAction ? clickAction : () => {}}>
       <Corner>
@@ -24,7 +27,14 @@ const StaffEntityCard = ({
           <SideContainer>
             <EntityTimeline>{entityTimeline}</EntityTimeline>
             <MoreIconWrapper>
-              <MoreIcon />
+              <MoreIcon
+              // onClick={() => setOpen(true)}
+              />
+              {/* {open && (
+                <Options>
+                  <p>Delete</p>
+                </Options>
+              )} */}
             </MoreIconWrapper>
           </SideContainer>
         </Top>
@@ -45,6 +55,7 @@ const StaffEntityCard = ({
 
 export default StaffEntityCard;
 const Container = styled.div`
+  cursor: pointer;
   max-width: 526px;
   width: 100%;
   min-height: 159px;
@@ -100,12 +111,14 @@ const Top = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
+
 const SideContainer = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 `;
+
 const EntityTimeline = styled.h5`
   font-weight: 500;
   font-size: 14px;
@@ -123,7 +136,36 @@ const TopHeading = styled.h3`
   text-transform: capitalize;
   color: #242627;
 `;
-const MoreIconWrapper = styled.div``;
+
+const MoreIconWrapper = styled.div`
+  position: relative;
+`;
+
+const Options = styled.div`
+  position: absolute;
+  right: 25px;
+  top: -7px;
+  background-color: #e0feff;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+
+  p {
+    :nth-of-type(1) {
+      color: red;
+    }
+  }
+
+  ::before {
+    position: absolute;
+    top: 10px;
+    left: 100%;
+    content: "";
+    border-width: 8px;
+    border-color: transparent transparent transparent #e0feff;
+    border-style: solid;
+  }
+`;
 
 const ShareholderType = styled.h4`
   font-weight: 500;

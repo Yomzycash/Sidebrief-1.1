@@ -2,20 +2,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DropDown, InputWithLabel } from "components/input";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import Modal1 from "layout/modal1";
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { StaffEntitySchema } from "utils/config";
 
 const StaffEntityModal = ({
   cardAction,
-  selectedToEdit,
   open,
   setOpen,
   disableAll,
   title,
   entityInfo,
+  submitAction,
+  loading,
 }) => {
+  const [disable, setDisable] = useState(disableAll);
+
   const {
     handleSubmit,
     register,
@@ -56,7 +59,7 @@ const StaffEntityModal = ({
 
   const handleEntityReqChange = (value) => {
     var string = Object.values(value)[0];
-    setValue("requirement", string, { shouldValidate: true });
+    setValue("requirements", string, { shouldValidate: true });
   };
 
   const handleCountryChange = (value) => {
@@ -83,18 +86,29 @@ const StaffEntityModal = ({
       setValue("timeline", entityInfo.entityTimeline, { shouldValidate: true });
       setValue("country", entityInfo.entityCountry, { shouldValidate: true });
       setValue("currency", entityInfo.entityCurrency, { shouldValidate: true });
-      setValue("requirement", entityInfo.entityRequirements, {
+      setValue("fee", entityInfo.entityFee, { shouldValidate: true });
+      setValue("requirements", entityInfo.entityRequirements, {
         shouldValidate: true,
       });
       setValue("type", entityInfo.entityType, { shouldValidate: true });
+    } else {
+      setValue("entity_name", "");
+      setValue("description", "");
+      setValue("short_name", "");
+      setValue("code", "");
+      setValue("shares", "");
+      setValue("timeline", "");
+      setValue("country", "");
+      setValue("currency", "");
+      setValue("fee", "");
+      setValue("requirements", "");
+      setValue("type", "");
     }
+    setDisable(disableAll);
   }, [entityInfo]);
 
-  console.log(entityInfo);
-
   // This runs when the form gets submitted
-  const submitAction = () => {};
-
+  // const submitAction = () => {};
   return (
     <Modal1
       handleSubmit={handleSubmit}
@@ -103,7 +117,10 @@ const StaffEntityModal = ({
       title={title || "Add New Entity"}
       open={open}
       setOpen={setOpen}
-      disable={disableAll}
+      disable={disable}
+      setDisable={setDisable}
+      loading={loading}
+      entityInfo={entityInfo}
     >
       <InputWithLabel
         label="Entity Name"
@@ -115,21 +132,22 @@ const StaffEntityModal = ({
         containerStyle="input-container-class"
         register={register}
         errorMessage={errors.entity_name?.message}
-        disable={disableAll}
+        disable={disable}
       />
-      <InputWithLabel
-        label="Entity Description"
-        labelStyle="input-label"
-        placeholder="Enter entity description"
-        type="text"
-        name="description"
-        inputClass="input-class"
-        containerStyle="input-container-class"
-        register={register}
-        errorMessage={errors.description?.message}
-        disable={disableAll}
-      />
+
       <DetailedSection>
+        <InputWithLabel
+          label="Entity Description"
+          labelStyle="input-label"
+          placeholder="Enter entity description"
+          type="text"
+          name="description"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.description?.message}
+          disable={disable}
+        />
         <InputWithLabel
           label="Entity Short Name"
           labelStyle="input-label"
@@ -140,7 +158,22 @@ const StaffEntityModal = ({
           inputClass="input-class"
           register={register}
           errorMessage={errors.short_name?.message}
-          disable={disableAll}
+          disable={disable}
+        />
+      </DetailedSection>
+
+      <DetailedSection>
+        <InputWithLabel
+          label="Entity Code"
+          placeholder="Enter unique code"
+          labelStyle="input-label"
+          type="text"
+          name="code"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.code?.message}
+          disable={disable}
         />
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
@@ -154,22 +187,11 @@ const StaffEntityModal = ({
           defaultValue={entityInfo?.entityType}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disableAll}
+          disable={disable}
         />
       </DetailedSection>
+
       <DetailedSection>
-        <InputWithLabel
-          label="Entity Code"
-          placeholder="Enter unique code"
-          labelStyle="input-label"
-          type="text"
-          name="code"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.code?.message}
-          disable={disableAll}
-        />
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Requirement"
@@ -182,10 +204,8 @@ const StaffEntityModal = ({
           defaultValue={entityInfo?.entityRequirements}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disableAll}
+          disable={disable}
         />
-      </DetailedSection>
-      <DetailedSection>
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Country"
@@ -197,8 +217,11 @@ const StaffEntityModal = ({
           defaultValue={entityInfo?.entityCountry}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disableAll}
+          disable={disable}
         />
+      </DetailedSection>
+
+      <DetailedSection>
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Currency"
@@ -210,9 +233,22 @@ const StaffEntityModal = ({
           defaultValue={entityInfo?.entityCurrency}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disableAll}
+          disable={disable}
+        />
+        <InputWithLabel
+          label="Entity Fee"
+          labelStyle="input-label"
+          containerStyle="input-container-class"
+          type="text"
+          placeholder="30000"
+          name="fee"
+          inputClass="input-class"
+          register={register}
+          errorMessage={errors.timeline?.message}
+          disable={disable}
         />
       </DetailedSection>
+
       <DetailedSection>
         <InputWithLabel
           label="Entity Timeline"
@@ -224,7 +260,7 @@ const StaffEntityModal = ({
           inputClass="input-class"
           register={register}
           errorMessage={errors.timeline?.message}
-          disable={disableAll}
+          disable={disable}
         />
         <InputWithLabel
           label="Entity Shares"
@@ -236,7 +272,7 @@ const StaffEntityModal = ({
           inputClass="input-class"
           register={register}
           errorMessage={errors.shares?.message}
-          disable={disableAll}
+          disable={disable}
         />
       </DetailedSection>
     </Modal1>

@@ -11,6 +11,11 @@ import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import StaffEntityModal from "components/modal/StaffEntityModal";
+import {
+  useAddEntityMutation,
+  useUpdateEntityMutation,
+} from "services/staffService";
+import { handleError } from "utils/globalFunctions";
 
 const StaffEntities = () => {
   const [entities, setEntities] = useState([]);
@@ -19,7 +24,10 @@ const StaffEntities = () => {
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
+
   const { data, isLoading, isSuccess, isError } = useGetAllTheEntitiesQuery();
+  const [updateEntity, updateState] = useUpdateEntityMutation();
+  const [addEntity, addState] = useAddEntityMutation();
 
   useEffect(() => {
     if (data) {
@@ -30,6 +38,64 @@ const StaffEntities = () => {
   const handleCardClick = (entity) => {
     setOpen(true);
     setClickedEntity(entity);
+  };
+
+  // // This updates an existing entity
+  // const handleEntity = async (formData) => {
+  //   let requiredData = {
+  //     entityName: formData?.entity_name,
+  //     entityShortName: formData?.short_name,
+  //     entityType: formData?.type,
+  //     entityCode: formData?.code,
+  //     entityCountry: formData?.country,
+  //     entityFee: formData?.fee,
+  //     entityCurrency: formData?.currency,
+  //     entityDescription: formData?.description,
+  //     entityTimeline: formData?.timeline,
+  //     entityRequirements: formData?.requirement,
+  //     entityShares: formData?.shares,
+  //   };
+  //   let response = await updateEntity(requiredData);
+  //   if (response.error) {
+  //     handleError(response.error);
+  //   }
+  //   console.log(response);
+  // };
+
+  const getRequired = (formData) => {
+    return {
+      entityName: formData?.entity_name,
+      entityShortName: formData?.short_name,
+      entityType: formData?.type,
+      entityCode: formData?.code,
+      entityCountry: formData?.country,
+      entityFee: formData?.fee,
+      entityCurrency: formData?.currency,
+      entityDescription: formData?.description,
+      entityTimeline: formData?.timeline,
+      entityRequirements: formData?.requirement,
+      entityShares: formData?.shares,
+    };
+  };
+
+  // This updates an existing entity
+  const handleEntityAdd = async (formData) => {
+    let requiredData = getRequired(formData);
+    let response = await addEntity(requiredData);
+    if (response.error) {
+      handleError(response.error);
+    }
+    console.log(response);
+  };
+
+  // This updates an existing entity
+  const handleEntityUpdate = async (formData) => {
+    let requiredData = getRequired(formData);
+    let response = await updateEntity(requiredData);
+    if (response.error) {
+      handleError(response.error);
+    }
+    console.log(response);
   };
 
   return (
@@ -51,6 +117,8 @@ const StaffEntities = () => {
             total={entities.length}
             Description="Add Entity"
             placeholder="Search an entity"
+            handleEntityAdd={handleEntityAdd}
+            loading={addState.isLoading}
           />
           {isLoading && (
             <Loading height="300px">
@@ -61,7 +129,7 @@ const StaffEntities = () => {
             <CardWrapper>
               {entities.map((entity, index) => (
                 <StaffEntityCard
-                  key={entity.id}
+                  key={index}
                   entityName={entity?.entityName}
                   entityCode={entity?.entityShortName}
                   shareholderType={entity?.entityDescription}
@@ -79,6 +147,8 @@ const StaffEntities = () => {
                 cardAction="edit"
                 title="Entity Information"
                 entityInfo={clickedEntity}
+                submitAction={handleEntityUpdate}
+                loading={updateState.isLoading}
               />
             </CardWrapper>
           </CardContainer>
