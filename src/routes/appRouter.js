@@ -119,6 +119,11 @@ const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
 const BusinessDetailLayout = lazy(() =>
   import("pages/Dashboard/User/Business/Detail/layout")
 );
+const StaffBusinessDetailLayout = lazy(() =>
+  import(
+    "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout"
+  )
+);
 const BusinessDetail = lazy(() =>
   import("pages/Dashboard/User/Business/Detail")
 );
@@ -338,7 +343,10 @@ const AppRouter = () => {
                   </Route>
                 </Route>
               </Route>
-              <Route path="business/:code" element={<BusinessDetailLayout />}>
+              <Route
+                path="business/:code"
+                element={<StaffBusinessDetailLayout />}
+              >
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
