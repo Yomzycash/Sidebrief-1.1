@@ -42,7 +42,9 @@ import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Business
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
 import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
 import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
+import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
+
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
 	import("pages/Auth/Registration/EmailVerify/success")
@@ -472,6 +474,23 @@ const AppRouter = () => {
 									/>
 								</Route>
 							</Route>
+							<Route path="taxes" element={<StaffComingSoon />} />
+							<Route
+								path="hiring-and-payroll"
+								element={<StaffComingSoon />}
+							/>
+							<Route
+								path="assets"
+								element={<StaffComingSoon />}
+							/>
+							<Route
+								path="payments"
+								element={<StaffComingSoon />}
+							/>
+							<Route
+								path="resources"
+								element={<StaffComingSoon />}
+							/>
 							<Route
 								path="settings"
 								element={<StaffSettingLayout />}
@@ -486,7 +505,7 @@ const AppRouter = () => {
 								/>
 								<Route
 									path="user-permissions"
-									element={<Settings />}
+									element={<StaffComingSoon />}
 								/>
 								<Route
 									path="team"
