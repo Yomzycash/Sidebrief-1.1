@@ -95,6 +95,7 @@ const InputWithLabel = ({
             edit={edit}
             type={!show ? type || "password" : "text"}
             name={name}
+            disabled={disable}
             {...rest}
           />
         )}

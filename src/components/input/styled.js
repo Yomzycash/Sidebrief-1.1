@@ -61,6 +61,7 @@ export const Input = styled.input`
   outline: none;
   font-weight: 400;
   font-size: 14px;
+  color: ${({ disabled }) => (disabled ? "#aca09f" : "")};
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

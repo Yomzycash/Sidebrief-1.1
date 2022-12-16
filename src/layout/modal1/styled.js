@@ -68,6 +68,11 @@ export const Title = styled.div`
   border-bottom: 1px solid #edf1f7;
 `;
 
+export const TopIcons = styled.div`
+  display: flex;
+  gap: clamp(16px, 6vw, 60px);
+`;
+
 export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;

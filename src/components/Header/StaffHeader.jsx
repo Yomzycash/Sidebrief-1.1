@@ -3,6 +3,7 @@ import StaffEntityModal from "components/modal/StaffEntityModal";
 import Search from "components/navbar/Search";
 import React from "react";
 import { useState } from "react";
+import { useAddEntityMutation } from "services/staffService";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 
@@ -10,18 +11,12 @@ const StaffHeader = ({
   title = "Countries",
   shown = "12",
   total = "12",
+  handleEntityAdd,
   Description = "Add Country",
+  loading,
 }) => {
   const [open, setOpen] = useState(false);
 
-  const searchStyle = {
-    borderRadius: "12px",
-    backgroundColor: "white",
-    width: "100%",
-    height: "100%",
-  };
-
-  const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
       <Header>
@@ -48,7 +43,12 @@ const StaffHeader = ({
                 {Description}
               </button>
             </ButtonWrapper>
-            <StaffEntityModal open={open} setOpen={setOpen} />
+            <StaffEntityModal
+              open={open}
+              setOpen={setOpen}
+              submitAction={handleEntityAdd}
+              loading={loading}
+            />
           </BottomContent>
         </MainHeader>
       </Header>
@@ -156,3 +156,12 @@ const SearchWrapper = styled.div`
     width: 100%;
   }
 `;
+
+const searchStyle = {
+  borderRadius: "12px",
+  backgroundColor: "white",
+  width: "100%",
+  height: "100%",
+};
+
+const iconStyle = { width: "17px", height: "17px" };
