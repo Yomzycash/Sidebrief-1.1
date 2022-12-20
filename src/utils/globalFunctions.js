@@ -2,12 +2,12 @@ import toast from "react-hot-toast";
 
 // handle error encountered in endpoints call
 export const handleError = (error) => {
-  console.log(error);
-  if (error?.status === "FETCH_ERROR") {
-    toast.error("Please check your internet connection");
-  } else {
-    toast.error(error?.data.message);
-  }
+	console.log(error);
+	if (error?.status === "FETCH_ERROR") {
+		toast.error("Please check your internet connection");
+	} else {
+		toast.error(error?.data.message);
+	}
 };
 
 // Check if an email is a staff email
