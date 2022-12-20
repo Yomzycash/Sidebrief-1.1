@@ -310,7 +310,7 @@ const AppRouter = () => {
               path="staff-dashboard"
               element={
                 <Protected isVerified={isLoggedIn}>
-                  <Outlet />
+                  <Stafflayout />
                 </Protected>
               }
             >
