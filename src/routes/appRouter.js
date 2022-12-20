@@ -44,6 +44,7 @@ import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesse
 import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
 import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
+import StaffLayout from "pages/Dashboard/staffDashboard/layout";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -216,7 +217,8 @@ const AppRouter = () => {
               index
               element={
                 <Protected isVerified={isLoggedIn}>
-                  {staffEmail ? <StaffDashboard /> : <Home />}
+                  {/* {staffEmail ? <StaffDashboard /> : <Home />} */}
+                  <Home/>
                 </Protected>
               }
             />
