@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export const IntellectualIcon = ({ filled, hover }) => {
   return (
@@ -12,8 +12,8 @@ export const IntellectualIcon = ({ filled, hover }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M6.7832 15.1354C6.4382 15.1354 6.1582 14.8554 6.1582 14.5104V8.7937C6.1582 8.4487 6.4382 8.1687 6.7832 8.1687C7.1282 8.1687 7.4082 8.4487 7.4082 8.7937V14.5104C7.4082 14.8554 7.1282 15.1354 6.7832 15.1354Z"
             fill="#00A2D4"
           />
@@ -27,25 +27,25 @@ export const IntellectualIcon = ({ filled, hover }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M10.6719 15.1344C10.3269 15.1344 10.0469 14.8544 10.0469 14.5094V6.05688C10.0469 5.71188 10.3269 5.43188 10.6719 5.43188C11.0169 5.43188 11.2969 5.71188 11.2969 6.05688V14.5094C11.2969 14.8544 11.0169 15.1344 10.6719 15.1344Z"
-            fill={hover ? '#00A2D4' : '#242627'}
+            fill={hover ? "#00A2D4" : "#242627"}
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M14.4961 15.1345C14.1511 15.1345 13.8711 14.8545 13.8711 14.5095V11.8145C13.8711 11.4695 14.1511 11.1895 14.4961 11.1895C14.8411 11.1895 15.1211 11.4695 15.1211 11.8145V14.5095C15.1211 14.8545 14.8411 15.1345 14.4961 15.1345Z"
-            fill={hover ? '#00A2D4' : '#242627'}
+            fill={hover ? "#00A2D4" : "#242627"}
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M6.73497 2.58325C4.42497 2.58325 2.93164 4.16409 2.93164 6.61242V13.9708C2.93164 16.4191 4.42497 17.9999 6.73497 17.9999H14.545C16.8558 17.9999 18.3483 16.4191 18.3483 13.9708V6.61242C18.3483 4.16409 16.8558 2.58325 14.545 2.58325H6.73497ZM14.545 19.2499H6.73497C3.71247 19.2499 1.68164 17.1283 1.68164 13.9708V6.61242C1.68164 3.45492 3.71247 1.33325 6.73497 1.33325H14.545C17.5675 1.33325 19.5983 3.45492 19.5983 6.61242V13.9708C19.5983 17.1283 17.5675 19.2499 14.545 19.2499Z"
-            fill={hover ? '#00A2D4' : '#242627'}
+            fill={hover ? "#00A2D4" : "#242627"}
           />
         </svg>
       )}
     </div>
-  )
-}
+  );
+};

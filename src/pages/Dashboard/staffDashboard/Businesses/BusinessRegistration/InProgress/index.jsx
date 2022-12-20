@@ -1,16 +1,61 @@
-import { MockData } from 'components/Staff/Tables/ApplicationTable/constants'
-import { BusinessTable } from 'components/Tables'
-import React from 'react'
-import { Body, Container } from './styled'
-
+import { MockData } from "components/Staff/Tables/ApplicationTable/constants";
+import { StaffBusinessTable } from "components/Staff/Tables";
+import React, { useEffect, useState } from "react";
+import { useGetApprovedLaunchQuery } from "services/staffService";
+import { Body, Container, Loading } from "./styled";
+import { format, compareDesc } from "date-fns";
+import { useGetAllCountriesQuery } from "services/launchService";
+import { Puff } from "react-loading-icons";
 const InProgress = () => {
-  return (
-    <Container>
-      <Body>
-        <BusinessTable data={MockData} />
-      </Body>
-    </Container>
-  )
-}
+	const [tableArr, setTableArr] = useState([]);
+	const approvedLaunch = useGetApprovedLaunchQuery({
+		refetchOnMountOrArgChange: true,
+	});
 
-export default InProgress
+	const countries = useGetAllCountriesQuery();
+
+	useEffect(() => {
+		if (approvedLaunch.isSuccess && countries.isSuccess) {
+			setTableArr(approvedLaunch.data);
+		}
+	}, [approvedLaunch, countries.isSuccess]);
+
+	console.log(tableArr);
+	console.log(countries.data);
+
+	const loadingData = approvedLaunch.isLoading;
+
+	return (
+		<Container>
+			<Body>
+				{loadingData && (
+					<Loading>
+						<Puff stroke="#00A2D4" />
+					</Loading>
+				)}
+
+				{tableArr.length > 0 && (
+					<StaffBusinessTable
+						data={tableArr.map((element) => {
+							return {
+								name: element.businessNames
+									? element.businessNames.businessName1
+									: "No name ",
+								type: element?.registrationType,
+								country: element.registrationCountry,
+								date: format(
+									new Date(element.createdAt),
+									"dd/MM/yyyy"
+								),
+								code: element.launchCode,
+								countryISO: element.registrationCountry,
+							};
+						})}
+					/>
+				)}
+			</Body>
+		</Container>
+	);
+};
+
+export default InProgress;

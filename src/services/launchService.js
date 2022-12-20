@@ -442,7 +442,6 @@ export const {
   useGetSingleEntityQuery,
 
   useGetStartedMutation,
-
   useUpdateLaunchMutation,
 
   usePayLaunchMutation,

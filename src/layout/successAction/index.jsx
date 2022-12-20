@@ -4,10 +4,13 @@ import { SuccessWrapper, Image } from "./styled";
 import success from "asset/svg/SuccessImage.svg";
 import { HeadText } from "components/texts";
 import { useNavigate } from "react-router-dom";
+import { checkStaffEmail } from "utils/globalFunctions";
 
 const Success = ({ title, paragraph }) => {
-  const navigate = useNavigate();
   const [count, setCount] = useState(5);
+  const navigate = useNavigate();
+
+  let userEmail = localStorage.getItem("userEmail");
 
   useEffect(() => {
     const timer =
@@ -15,9 +18,22 @@ const Success = ({ title, paragraph }) => {
         ? setInterval(() => {
             setCount(count - 1);
           }, 1000)
-        : navigate("/dashboard");
+        : handleNavigate();
+    // : navigate("/dashboard");
     return () => clearInterval(timer);
   }, [count]);
+
+  let staffCheck = checkStaffEmail(userEmail);
+
+  const handleNavigate = () => {
+    if (staffCheck) {
+      navigate("/staff-dashboard");
+      console.log("Navigated to the staff dashboard");
+    } else {
+      navigate("/dashboard");
+      console.log("Navigated to the user dashboard");
+    }
+  };
 
   return (
     <>

@@ -10,6 +10,7 @@ export const InputWrapper = styled.div`
   padding: 8px 24px;
   height: 48px;
   transition: 0.3s all ease;
+  background-color: ${({ disable }) => (disable ? "#f2f2f2" : "")};
 
   &:focus {
     outline: none;
@@ -60,6 +61,7 @@ export const Input = styled.input`
   outline: none;
   font-weight: 400;
   font-size: 14px;
+  color: ${({ disabled }) => (disabled ? "#aca09f" : "")};
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

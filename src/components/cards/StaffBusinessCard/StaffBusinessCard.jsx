@@ -2,152 +2,65 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Search from "components/navbar/Search";
-import {
-  useGetAllCountriesQuery,
-  useGetAllTheEntitiesQuery,
-} from "services/launchService";
+import { Link } from "react-router-dom";
+import ScrollableDiv from "layout/scrollableDiv";
 
-const StaffBusinessCard = ({ country, entity }) => {
-  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
-  const allEntities = useGetAllTheEntitiesQuery();
-  //console.log(allEntities)
-  const [countries, setCountries] = useState([]);
-  const [entities, setEntities] = useState([]);
+const StaffBusinessCard = ({ title, subText, list, link }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [SearchEntityTerm, setSearchEntitityTerm] = useState("");
 
-  //console.log(data)
-  const searchStyle = {
-    paddingTop: "10px",
-    paddingBottom: "10px",
-    width: "100%",
-  };
-
-  useEffect(() => {
-    if (data) {
-      setCountries(data);
-    }
-  }, [data]);
-  useEffect(() => {
-    if (allEntities.data) {
-      setEntities(allEntities.data);
-    }
-  }, [allEntities.data]);
-  //   console.log(countries)
-
-  //removing duplicates from allEntities
-  const filteredEntities = [];
-  const unique = entities.filter((element) => {
-    const isDuplicate = filteredEntities.includes(element.entityName);
-    if (!isDuplicate) {
-      filteredEntities.push(element.entityName);
-    }
-  });
-  // console.log(filteredEntities)
   return (
     <CardContainer>
-      <Top>
-        {country && (
+      <ScrollableDiv maxHeight="460px">
+        <Top>
           <Title>
-            Countries <span>({countries.length})</span>
+            {title} <span>({list?.length})</span>
           </Title>
-        )}
-        {entity && (
-          <Title>
-            Business Entities <span>({filteredEntities.length})</span>
-          </Title>
-        )}
-        <ViewWrapper>
-          <Text>View all</Text>
-          <AiOutlineArrowRight color="#00A2D4" size={24} />
-        </ViewWrapper>
-      </Top>
-      {country && (
-        <BottomText>Countries we are currently available in</BottomText>
-      )}
-      {entity && (
-        <BottomText>Entities we currently provide our services in</BottomText>
-      )}
-
-      <CountryContainer>
-        {country && (
+          <ViewWrapper to={link ? link : ""}>
+            <Text>View all</Text>
+            <AiOutlineArrowRight color="#00A2D4" size={22} />
+          </ViewWrapper>
+        </Top>
+        <BottomText>{subText}</BottomText>
+        <ListContainer>
           <Search
             style={searchStyle}
+            inputStyle={searchInputStyle}
+            iconStyle={{ width: "15px", height: "15px" }}
             placeholder="Search a country"
             onChange={(e) => {
               setSearchTerm(e.target.value);
             }}
           />
-        )}
 
-        {country && (
           <LowerContainer>
-            {countries
-              .filter((country) => {
-                if (searchTerm == "") {
-                  return country.countryName;
-                } else if (
-                  country.countryName
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
-                ) {
-                  return country.countryName;
-                }
-              })
-              .map((country) => {
-                return (
-                  <CountryWrapper key={country.countryISO}>
-                    <TextWrapper>{country.countryName}</TextWrapper>
-                  </CountryWrapper>
-                );
-              })}
+            {list
+              ?.filter((each) =>
+                each?.text?.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              ?.map((each, index) => (
+                <ListWrapper key={index}>
+                  {each.image && <img src={each.image} alt="" />}
+                  <TextWrapper to={each.link ? each.link : ""}>
+                    {each?.text}
+                  </TextWrapper>
+                </ListWrapper>
+              ))}
           </LowerContainer>
-        )}
-        {entity && (
-          <Search
-            style={searchStyle}
-            placeholder="Search an entity"
-            onChange={(e) => {
-              setSearchEntitityTerm(e.target.value);
-            }}
-          />
-        )}
-        {entity && (
-          <LowerContainer>
-            {" "}
-            {filteredEntities
-              .filter((entity) => {
-                if (SearchEntityTerm == "") {
-                  return entity;
-                } else if (
-                  entity.toLowerCase().includes(SearchEntityTerm.toLowerCase())
-                ) {
-                  return entity;
-                }
-              })
-              .map((entity, index) => {
-                return (
-                  <CountryWrapper key={index}>
-                    <TextWrapper>{entity}</TextWrapper>
-                  </CountryWrapper>
-                );
-              })}
-          </LowerContainer>
-        )}
-      </CountryContainer>
+        </ListContainer>
+      </ScrollableDiv>
     </CardContainer>
   );
 };
 
 export default StaffBusinessCard;
+
 const CardContainer = styled.div`
-  max-width: 100%;
-  padding: 46px 28px 28px 28px;
+  width: 100%;
+  max-width: 422px;
+  padding: 23px 14px;
   border-left: 1px solid #edf1f7;
-  border-width: 0px 0px 0px 1px;
-  border-style: solid;
-  border-color: #edf1f7;
 `;
+
 const Top = styled.div`
   display: flex;
   flex-direction: row;
@@ -162,16 +75,20 @@ const Title = styled.h2`
   line-height: 30px;
   letter-spacing: 0.01em;
   color: #242627;
+  white-space: nowrap;
 `;
-const ViewWrapper = styled.div`
+
+const ViewWrapper = styled(Link)`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 10px 24px;
   gap: 8px;
   cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
 `;
+
 const Text = styled.h3`
   font-weight: 500;
   font-size: 14px;
@@ -182,6 +99,7 @@ const Text = styled.h3`
   letter-spacing: -0.5px;
   color: #00a2d4;
 `;
+
 const BottomText = styled.h3`
   font-weight: 400;
   font-size: 14px;
@@ -190,7 +108,8 @@ const BottomText = styled.h3`
   color: #959697;
   margin-bottom: 24px;
 `;
-const CountryContainer = styled.div`
+
+const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -198,6 +117,7 @@ const CountryContainer = styled.div`
   gap: 24px;
   width: 100%;
 `;
+
 const LowerContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -206,19 +126,40 @@ const LowerContainer = styled.div`
   gap: 4px;
   width: 100%;
 `;
-const CountryWrapper = styled.div`
+
+const ListWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  gap: clamp(12px, 1.2vw, 16px);
   align-items: center;
   padding: 12px 24px;
   width: 100%;
   background: #ffffff;
   border: 1px solid #edf1f7;
   border-radius: 20px;
+
+  img {
+    width: 20px;
+  }
 `;
-const TextWrapper = styled.h3`
+
+const TextWrapper = styled(Link)`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #242627;
+  text-decoration: none;
+  white-space: nowrap;
 `;
+
+const searchStyle = {
+  paddingTop: "10px",
+  paddingBottom: "10px",
+  width: "100%",
+  borderRadius: "12px",
+};
+const searchInputStyle = {
+  placeholder: {
+    color: "#959697",
+  },
+};

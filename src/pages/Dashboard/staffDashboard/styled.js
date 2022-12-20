@@ -4,7 +4,7 @@ export const StaffContainer = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
-  padding-top: 40px;
+  /* padding-top: 40px; */
 
   h3 {
     font-size: 24px;
@@ -13,9 +13,8 @@ export const StaffContainer = styled.div`
 `;
 
 export const StatusCardContainer = styled.div`
-  margin-top: 40px;
-  margin-bottom: 40px;
-  padding: 0px 40px;
+  margin-block: 8px;
+  width: 100%;
 `;
 export const Top = styled.div``;
 export const Body = styled.div`

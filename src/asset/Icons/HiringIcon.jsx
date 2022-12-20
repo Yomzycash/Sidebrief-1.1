@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export const HiringIcon = ({ filled, hover }) => {
   return (
@@ -12,8 +12,8 @@ export const HiringIcon = ({ filled, hover }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M4.18164 12.5801H17.3816V18.7251H4.18164V12.5801Z"
             fill="#00A2D4"
           />
@@ -27,34 +27,34 @@ export const HiringIcon = ({ filled, hover }) => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M4.18164 12.5801H17.3816V18.7251H4.18164V12.5801Z"
             fill="white"
           />
 
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M10.7825 13.8301C7.23164 13.8301 5.43164 14.4401 5.43164 15.6442C5.43164 16.8592 7.23164 17.4751 10.7825 17.4751C14.3325 17.4751 16.1316 16.8651 16.1316 15.6609C16.1316 14.4459 14.3325 13.8301 10.7825 13.8301ZM10.7825 18.7251C9.14997 18.7251 4.18164 18.7251 4.18164 15.6442C4.18164 12.8976 7.94914 12.5801 10.7825 12.5801C12.415 12.5801 17.3816 12.5801 17.3816 15.6609C17.3816 18.4076 13.615 18.7251 10.7825 18.7251Z"
-            fill={hover ? '#00A2D4' : '#242627'}
+            fill={hover ? "#00A2D4" : "#242627"}
           />
 
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M6.35742 2.16675H15.2074V11.0156H6.35742V2.16675Z"
             fill="white"
           />
 
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M10.7833 3.3565C8.99911 3.3565 7.54745 4.80734 7.54745 6.5915C7.54161 8.36984 8.98245 9.81984 10.7591 9.8265L10.7833 10.4215V9.8265C12.5666 9.8265 14.0174 8.37484 14.0174 6.5915C14.0174 4.80734 12.5666 3.3565 10.7833 3.3565ZM10.7833 11.0157H10.7566C8.32161 11.0082 6.34911 9.02234 6.35745 6.589C6.35745 4.1515 8.34245 2.1665 10.7833 2.1665C13.2233 2.1665 15.2074 4.1515 15.2074 6.5915C15.2074 9.0315 13.2233 11.0157 10.7833 11.0157Z"
-            fill={hover ? '#00A2D4' : '#242627'}
+            fill={hover ? "#00A2D4" : "#242627"}
           />
         </svg>
       )}
     </div>
-  )
-}
+  );
+};

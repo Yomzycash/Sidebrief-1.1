@@ -23,6 +23,7 @@ const KYCFileUpload = ({
   memberCode,
   beneficiaryCode,
   documentComponentType,
+  style,
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
@@ -112,7 +113,7 @@ const KYCFileUpload = ({
   });
   // console.log("files", acceptedFiles);
   return (
-    <Container>
+    <Container style={{ ...style }}>
       <FileSection className="container">
         <Top htmlFor="file">
           <DocTitle>{TopText}</DocTitle>
@@ -122,14 +123,14 @@ const KYCFileUpload = ({
           {...getRootProps({
             className: "dropzone",
             onClick: (event) => {
-              if (Object.keys(documentInfo).length == 7) {
+              if (Object.keys(documentInfo).length === 7) {
                 event.stopPropagation();
                 // toast.custom("delete the uploaded file");
               }
             },
           })}
           backgroundColor={
-            Object.keys(documentInfo).length == 7 ? "#FAFAFA" : "ffffff"
+            Object.keys(documentInfo).length === 7 ? "#FAFAFA" : "ffffff"
           }
         >
           <input {...getInputProps()} />

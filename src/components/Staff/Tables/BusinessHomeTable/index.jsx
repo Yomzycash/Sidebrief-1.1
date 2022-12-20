@@ -1,4 +1,4 @@
-import { TextWithArrow } from 'components/texts'
+import { TextWithArrow } from "components/texts";
 import {
   Container,
   Heading,
@@ -11,50 +11,59 @@ import {
   RowData,
   TableContainer,
   BottomText,
-  Filter,
+  TableHeader,
   FilterButton,
-} from './styles'
+} from "./styles";
 import {
   useReactTable,
   flexRender,
   getCoreRowModel,
-} from '@tanstack/react-table'
-import { columns, filterButtons } from './constants'
-import { useState } from 'react'
+} from "@tanstack/react-table";
+import { columns, businessesHeader } from "./constants";
+import { useState } from "react";
+import ActiveNav from "components/navbar/ActiveNav";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export const BusinessHomeTable = ({ data }) => {
-  const [activeFilter, setActiveFilter] = useState('all')
-  const onClickViewAll = () => {}
+export const BusinessHomeTable = ({ data, link }) => {
+  const [activeFilter, setActiveFilter] = useState("all");
 
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let home = location.pathname === "/staff-dashboard/businesses" ? true : false;
+
+  const handleNavigate = () => {
+    navigate(link ? link : "");
+  };
 
   return (
     <Container>
       <Heading>
         <div>
           <Title>Business Registrations</Title>
-          <ViewAllButton onClick={onClickViewAll}>
+          <ViewAllButton onClick={handleNavigate}>
             <TextWithArrow blue>View All</TextWithArrow>
           </ViewAllButton>
         </div>
         <BottomText>Keep up and track business registrations</BottomText>
       </Heading>
       <TableContainer>
-        <Filter>
-          {filterButtons.map((el) => (
-            <FilterButton
-              active={activeFilter === el.id}
-              key={el.id}
-              onClick={() => setActiveFilter(el.id)}
-            >
-              <p>{el.text}</p>
-            </FilterButton>
+        <TableHeader>
+          {businessesHeader.map((header, index) => (
+            <ActiveNav
+              key={index}
+              text={header.text}
+              path={header.path}
+              defaultActive={index === 0 && home}
+            />
           ))}
-        </Filter>
+        </TableHeader>
         <Table>
           <Head>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -65,7 +74,7 @@ export const BusinessHomeTable = ({ data }) => {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </HeadData>
                 ))}
@@ -86,5 +95,5 @@ export const BusinessHomeTable = ({ data }) => {
         </Table>
       </TableContainer>
     </Container>
-  )
-}
+  );
+};
