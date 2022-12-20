@@ -42,7 +42,9 @@ import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Business
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
 import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
 import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
+import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
+
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
   import("pages/Auth/Registration/EmailVerify/success")
@@ -136,6 +138,7 @@ const DetailDirectors = lazy(() =>
 const DetailBeneficiaries = lazy(() =>
   import("pages/Dashboard/User/Business/Detail/beneficiaries")
 );
+const Stafflayout = lazy(() => import("pages/Dashboard/staffDashboard/layout"));
 const SettingLayout = lazy(() =>
   import("pages/Dashboard/User/Settings/layout")
 );
@@ -372,13 +375,18 @@ const AppRouter = () => {
                   />
                 </Route>
               </Route>
+              <Route path="taxes" element={<StaffComingSoon />} />
+              <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
+              <Route path="assets" element={<StaffComingSoon />} />
+              <Route path="payments" element={<StaffComingSoon />} />
+              <Route path="resources" element={<StaffComingSoon />} />
               <Route path="settings" element={<StaffSettingLayout />}>
                 <Route path="general" element={<StaffGeneralSettings />} />
                 <Route
                   path="notification"
                   element={<StaffNotificationSettings />}
                 />
-                <Route path="user-permissions" element={<Settings />} />
+                <Route path="user-permissions" element={<StaffComingSoon />} />
                 <Route path="team" element={<SidebriefTeam />} />
               </Route>
             </Route>
