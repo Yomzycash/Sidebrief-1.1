@@ -5,28 +5,42 @@ import { useSelector } from "react-redux";
 import BusinessRegistration from "./Dashboard/User/Home/BusinessRegistration";
 import Sidebar from "components/sidebar";
 import MobileNavbar from "components/navbar/MobileNavbar";
+import { checkStaffEmail } from "utils/globalFunctions";
+import StaffLayout from "./Dashboard/staffDashboard/layout";
+import StaffDashboard from "./Dashboard/staffDashboard";
 
 const Home = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
   return (
-    <Dashboard>
-      <MobileNavbar />
-      <Navbar
-        dashboard
-        imgStyles={{ maxWidth: "100px" }}
-        style={{ padding: "12px 24px" }}
-      />
-      <Body>
-        <BodyLeft>
-          <Sidebar />
-        </BodyLeft>
-        <BodyRight SidebarWidth={sidebarWidth}>
-          <BusinessRegistration />
-        </BodyRight>
-      </Body>
-    </Dashboard>
+    <div>
+      {staffEmail ? (
+        <StaffLayout>
+          <StaffDashboard />
+        </StaffLayout>
+      ) : (
+        <Dashboard>
+          <MobileNavbar />
+          <Navbar
+            dashboard
+            imgStyles={{ maxWidth: "100px" }}
+            style={{ padding: "12px 24px" }}
+          />
+          <Body>
+            <BodyLeft>
+              <Sidebar />
+            </BodyLeft>
+            <BodyRight SidebarWidth={sidebarWidth}>
+              <BusinessRegistration />
+            </BodyRight>
+          </Body>
+        </Dashboard>
+      )}
+    </div>
   );
 };
 export default Home;
