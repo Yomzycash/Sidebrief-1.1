@@ -303,7 +303,14 @@ const AppRouter = () => {
             </Route>
 
             {/* Staff dashboard routes */}
-            <Route path="staff-dashboard" element={<Outlet />}>
+            <Route
+              path="staff-dashboard"
+              element={
+                <Protected isVerified={isLoggedIn}>
+                  <Outlet />
+                </Protected>
+              }
+            >
               <Route index element={<StaffDashboard />} />
               <Route path="home" element={<StaffDashboard />} />
               <Route path="businesses" element={<Outlet />}>
