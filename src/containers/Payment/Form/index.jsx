@@ -11,6 +11,7 @@ import {
   FormContainer,
   PaymentButton,
   Paystack,
+  ButtonContainer,
 } from "./styles";
 import numeral from "numeral";
 import { useForm } from "react-hook-form";
@@ -27,6 +28,7 @@ import {
 } from "services/launchService";
 import { PaystackButton } from "react-paystack";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
+import Button from "components/button";
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
   const [isUSD, setIsUSD] = useState(false);
@@ -151,9 +153,16 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
-      <Paystack>
-        <FlutterWaveButton className="paystack-button" {...fwConfig} />
-      </Paystack>
+      {paymentProvider === "flutterwave" && (
+        <Paystack>
+          <FlutterWaveButton className="paystack-button" {...fwConfig} />
+        </Paystack>
+      )}
+      {paymentProvider === "stripe" && (
+        <ButtonContainer>
+          <Button title="Pay with Stripe" />
+        </ButtonContainer>
+      )}
     </Container>
   );
 };
