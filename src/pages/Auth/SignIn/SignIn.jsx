@@ -151,7 +151,7 @@ const SignIn = () => {
               text={[
                 {
                   text: "Don't have an account? ",
-                  link: { text: "Sign Up", to: "/register" },
+                  link: { text: "Sign Up", to: "/register/user" },
                 },
               ]}
               // $mobileResponsive
