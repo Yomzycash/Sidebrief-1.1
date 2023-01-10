@@ -91,10 +91,13 @@ const ResellerRegister = () => {
   };
 
   return (
-    <AuthLayout register={true}>
+    <AuthLayout
+      register={true}
+      linkText="Sign In"
+      link="/login"
+      question="Already have an account?"
+    >
       <Registration>
-        <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
@@ -104,30 +107,32 @@ const ResellerRegister = () => {
           />
           <Body>
             <div>
-              <InputWithLabel
-                placeholder="First Name"
-                label="First name"
-                type="text"
-                name="first_name"
-                register={register}
-                errorMessage={errors.first_name?.message}
-              />
-              <InputWithLabel
-                placeholder="Last Name"
-                label="Last name"
-                type="text"
-                name="last_name"
-                register={register}
-                errorMessage={errors.last_name?.message}
-              />
-              <InputWithLabel
+              <DoubleGridWrapper>
+                <InputWithLabel
+                  placeholder="Enter your first name"
+                  label="First name"
+                  type="text"
+                  name="first_name"
+                  register={register}
+                  errorMessage={errors.first_name?.message}
+                />
+                <InputWithLabel
+                  placeholder="Enter your last name"
+                  label="Last name"
+                  type="text"
+                  name="last_name"
+                  register={register}
+                  errorMessage={errors.last_name?.message}
+                />
+              </DoubleGridWrapper>
+              {/* <InputWithLabel
                 placeholder="Corporate Name"
                 label="Corporate name"
                 type="text"
                 name="corporate_name"
                 register={register}
                 errorMessage={errors.corporate_name?.message}
-              />
+              /> */}
               <CountryInput
                 label="Operational country"
                 name="operational_country"
@@ -181,20 +186,35 @@ const ResellerRegister = () => {
               disabled={isLoading}
             />
           </Body>
-          <Bottom>
-            <TextsWithLink
-              text={[
-                {
-                  text: "Already have an account? ",
-                  link: { text: "Sign In", to: "/login" },
-                },
-              ]}
-              $mobileResponsive
-            />
-          </Bottom>
         </Form>
         <AppFeedback subProject="Reseller register" />
       </Registration>
+
+      <OrWrapper>
+        <hr />
+        <OrText> OR </OrText>
+        <hr />
+      </OrWrapper>
+      <Bottom>
+        <TextsWithLink
+          text={[
+            {
+              text: "Become a ",
+              link: { text: "Service Partner", to: "/register/reseller" },
+            },
+          ]}
+          $mobileResponsive
+        />
+        <TextsWithLink
+          text={[
+            {
+              text: "Create a  ",
+              link: { text: "User Business Account", to: "/login" },
+            },
+          ]}
+          $mobileResponsive
+        />
+      </Bottom>
     </AuthLayout>
   );
 };
@@ -206,6 +226,11 @@ const Registration = styled.div`
   flex-flow: column;
   height: max-content;
   gap: 12px;
+  padding: 59px;
+  border: 1px solid #edf1f7;
+  box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
+    10px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  border-radius: 12px;
 `;
 const TestBlock = styled.div`
   height: 1px;
@@ -229,4 +254,36 @@ const Body = styled.div`
 
 const Bottom = styled.div`
   display: flex;
+  flex-flow: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const DoubleGridWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(45%, 1fr));
+  row-gap: 24px;
+  column-gap: 24px;
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+const OrWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  hr {
+    width: 50%;
+    height: 0.3px;
+    color: #edeff0;
+    margin-top: 6px;
+  }
+`;
+const OrText = styled.p`
+  font-weight: 400;
+  font-size: 14px;
+  color: #959697;
 `;

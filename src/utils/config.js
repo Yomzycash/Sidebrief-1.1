@@ -38,14 +38,14 @@ export const userRegistrationSchema = yup.object().shape({
   email: yup.string().email("Enter a valid email address").required(),
   phone: yup.string().required("Phone number is a required field"),
   password: yup.string().min(8).max(15).required(),
-  gender: yup.string().required(),
-  date: yup
-    .string()
-    .matches(
-      "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
-      "Not a valid date" // error message
-    )
-    .required(),
+  // gender: yup.string().required(),
+  // date: yup
+  //   .string()
+  //   .matches(
+  //     "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
+  //     "Not a valid date" // error message
+  //   )
+  //   .required(),
 });
 
 export const loginSchema = yup.object().shape({
