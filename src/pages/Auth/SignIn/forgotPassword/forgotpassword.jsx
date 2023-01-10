@@ -84,10 +84,12 @@ const ForgotPassword = () => {
     }
   };
   return (
-    <AuthLayout register={true}>
+    <AuthLayout
+      linkText="Sign In"
+      link="/login"
+      question="Remember your password?"
+    >
       <Registration>
-        <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Forgot your password?"
@@ -107,7 +109,7 @@ const ForgotPassword = () => {
                 errorMessage={errors.email?.message}
               />
             </div>
-            <TextsWithLink
+            {/* <TextsWithLink
               text={[
                 {
                   text: "By creating an account , you agree to Sidebrief's",
@@ -118,7 +120,7 @@ const ForgotPassword = () => {
                   link: { text: "Terms of Use", to: "" },
                 },
               ]}
-            />
+            /> */}
             <MainButton
               title="Reset Password"
               type="submit"
@@ -126,7 +128,7 @@ const ForgotPassword = () => {
               disabled={isLoading}
             />
           </Body>
-          <Bottom>
+          {/* <Bottom>
             <TextsWithLink
               text={[
                 {
@@ -136,7 +138,7 @@ const ForgotPassword = () => {
               ]}
               $mobileResponsive
             />
-          </Bottom>
+          </Bottom> */}
         </Form>
       </Registration>
     </AuthLayout>
@@ -150,7 +152,11 @@ const Registration = styled.div`
   flex-flow: column;
   height: max-content;
   gap: 8px;
-
+  padding: 59px;
+  border: 1px solid #edf1f7;
+  box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
+    10px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  border-radius: 12px;
   @media screen and (max-width: 1000px) {
     gap: 32px;
   }
