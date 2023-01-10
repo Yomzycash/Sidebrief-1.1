@@ -1,5 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Body, Bottom, Form, Registration, TestBlock } from "./styles";
+import {
+  Body,
+  Bottom,
+  DoubleGridWrapper,
+  Form,
+  OrText,
+  OrWrapper,
+  Registration,
+  TestBlock,
+} from "./styles";
 import MainButton from "components/button";
 import { DateInput, DropDown, InputWithLabel } from "components/input";
 import LogoNav from "components/navbar/LogoNav";
@@ -66,11 +75,11 @@ const UserRegistration = () => {
 
   // Sign up function block
   const submitForm = async (formData) => {
-    let correctedData = correctFormDate(formData);
+    // let correctedData = correctFormDate(formData);
     let staffCheck = checkStaffEmail(formData.email);
     let response = staffCheck
-      ? await registerNewStaff(JSON.stringify(correctedData))
-      : await registerNewUser(JSON.stringify(correctedData));
+      ? await registerNewStaff(JSON.stringify(formData))
+      : await registerNewUser(JSON.stringify(formData));
 
     let data = response?.data;
     let error = response?.error;
@@ -89,16 +98,16 @@ const UserRegistration = () => {
     }
   };
 
-  const correctFormDate = (formData) => {
-    let data = formData;
-    let dateArray = [...data.date];
-    let bDay = dateArray[0].toString() + dateArray[1].toString();
-    let bMonth = dateArray[3].toString() + dateArray[4].toString();
-    let bYear = dateArray[6].toString() + dateArray[9].toString();
-    let newData = { ...data, bDay, bMonth, bYear };
-    delete newData["date"];
-    return newData;
-  };
+  // const correctFormDate = (formData) => {
+  //   let data = formData;
+  //   let dateArray = [...data.date];
+  //   let bDay = dateArray[0].toString() + dateArray[1].toString();
+  //   let bMonth = dateArray[3].toString() + dateArray[4].toString();
+  //   let bYear = dateArray[6].toString() + dateArray[9].toString();
+  //   let newData = { ...data, bDay, bMonth, bYear };
+  //   delete newData["date"];
+  //   return newData;
+  // };
 
   const handleGenderChange = (value) => {
     var string = Object.values(value)[0];
@@ -110,10 +119,13 @@ const UserRegistration = () => {
   };
 
   return (
-    <AuthLayout register={true}>
+    <AuthLayout
+      register={true}
+      linkText="Sign In"
+      link="/login"
+      question="Already have an account?"
+    >
       <Registration>
-        <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} nav_sticked={navSticked} />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Get started with Sidebrief"
@@ -125,22 +137,25 @@ const UserRegistration = () => {
           />
           <Body>
             <div>
-              <InputWithLabel
-                placeholder="Enter your first name"
-                label="First name"
-                type="text"
-                name="first_name"
-                register={register}
-                errorMessage={errors.first_name?.message}
-              />
-              <InputWithLabel
-                placeholder="Enter your last name"
-                label="Last name"
-                type="text"
-                name="last_name"
-                register={register}
-                errorMessage={errors.last_name?.message}
-              />
+              <DoubleGridWrapper>
+                <InputWithLabel
+                  placeholder="Enter your first name"
+                  label="First name"
+                  type="text"
+                  name="first_name"
+                  register={register}
+                  errorMessage={errors.first_name?.message}
+                />
+                <InputWithLabel
+                  placeholder="Enter your last name"
+                  label="Last name"
+                  type="text"
+                  name="last_name"
+                  register={register}
+                  errorMessage={errors.last_name?.message}
+                />
+              </DoubleGridWrapper>
+
               <InputWithLabel
                 placeholder="Enter your email address"
                 label="Email"
@@ -158,21 +173,21 @@ const UserRegistration = () => {
                 register={register}
                 errorMessage={errors.password?.message}
               />
-              <DateInput
+              {/* <DateInput
                 label={"Date of birth"}
                 name="date"
                 register={register}
                 selectDate={handleDateChange}
                 errorMessage={errors.date?.message}
-              />
-              <DropDown
+              /> */}
+              {/* <DropDown
                 label="Gender"
                 options={genderOptions}
                 name="gender"
                 register={register}
                 onChange={handleGenderChange}
                 errorMessage={errors.gender?.message}
-              />
+              /> */}
               <InputWithLabel
                 placeholder="Phone number"
                 label="Phone Number"
@@ -194,6 +209,7 @@ const UserRegistration = () => {
                 },
               ]}
             />
+
             <MainButton
               title="Sign Up"
               type="submit"
@@ -201,20 +217,43 @@ const UserRegistration = () => {
               disabled={isLoading || staffState.isLoading}
             />
           </Body>
-          <Bottom>
-            <TextsWithLink
-              text={[
-                {
-                  text: "Already have an account? ",
-                  link: { text: "Sign In", to: "/login" },
-                },
-              ]}
-              $mobileResponsive
-            />
-          </Bottom>
         </Form>
         <AppFeedback subProject="User registration" />
       </Registration>
+
+      <OrWrapper>
+        <hr
+          style={{
+            borderColor: "#f4f4f4",
+          }}
+        />
+        <OrText> OR </OrText>
+        <hr
+          style={{
+            borderColor: "#f4f4f4",
+          }}
+        />
+      </OrWrapper>
+      <Bottom>
+        <TextsWithLink
+          text={[
+            {
+              text: "Ceate a ",
+              link: { text: "Reseller Account", to: "/register/reseller" },
+            },
+          ]}
+          // $mobileResponsive
+        />
+        <TextsWithLink
+          text={[
+            {
+              text: "Create a  ",
+              link: { text: "User Business Account", to: "/login" },
+            },
+          ]}
+          // $mobileResponsive
+        />
+      </Bottom>
     </AuthLayout>
   );
 };

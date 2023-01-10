@@ -32,7 +32,7 @@ const TabNavBar = ({ icon }) => {
             </NavLink>
           </NavLinkWrapper>
         ))}
-        <More>
+        {/* <More>
           More
           <IoChevronDown size={15} />
           <MoreContent>
@@ -47,7 +47,7 @@ const TabNavBar = ({ icon }) => {
               </NavLinkWrapper>
             ))}
           </MoreContent>
-        </More>
+        </More> */}
       </ContentWrapper>
     </NavWrapper>
   );

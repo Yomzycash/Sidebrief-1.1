@@ -87,10 +87,12 @@ const SignIn = () => {
   };
 
   return (
-    <AuthLayout>
+    <AuthLayout
+      linkText="Sign Up"
+      link="/register/user"
+      question="Don't have an account?"
+    >
       <Registration>
-        <TestBlock ref={TestRef} id="testdiv" />
-        <LogoNav stick={0} nav_sticked={navSticked} $loginPage />
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Welcome Back"
@@ -152,7 +154,7 @@ const SignIn = () => {
                   link: { text: "Sign Up", to: "/register" },
                 },
               ]}
-              $mobileResponsive
+              // $mobileResponsive
             />
           </Bottom>
         </Form>
@@ -169,7 +171,11 @@ const Registration = styled.div`
   flex-flow: column;
   height: max-content;
   gap: 8px;
-
+  padding: 59px;
+  border: 1px solid #edf1f7;
+  box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
+    10px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  border-radius: 12px;
   @media screen and (max-width: 1000px) {
     gap: 32px;
   }
