@@ -89,7 +89,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <AuthLayout register={true}>
+    <AuthLayout
+      linkText="Sign In"
+      link="/login"
+      question="Remember your password?"
+    >
       <Registration>
         <TestBlock ref={TestRef} id="testdiv" />
         <LogoNav stick={0} nav_sticked={navSticked} />
@@ -128,7 +132,7 @@ const ResetPassword = () => {
               disabled={isLoading}
             />
           </Body>
-          <Bottom>
+          {/* <Bottom>
             <TextsWithLink
               text={[
                 {
@@ -138,7 +142,7 @@ const ResetPassword = () => {
               ]}
               $mobileResponsive
             />
-          </Bottom>
+          </Bottom> */}
         </Form>
       </Registration>
     </AuthLayout>
@@ -153,6 +157,11 @@ const Registration = styled.div`
   height: max-content;
   gap: 8px;
 
+  padding: 59px;
+  border: 1px solid #edf1f7;
+  box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
+    10px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  border-radius: 12px;
   @media screen and (max-width: 1000px) {
     gap: 32px;
   }

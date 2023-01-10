@@ -3,6 +3,7 @@ import FlutterwaveImg from "asset/payment/flutterwave.png";
 import PaypalImg from "asset/payment/paypal.png";
 import InterSwitchImg from "asset/payment/interswitch.png";
 import Paystack from "asset/payment/Paystack.png";
+import Stripe from "asset/payment/stripe.png";
 
 export const paymentProviders = [
   // {
@@ -17,10 +18,10 @@ export const paymentProviders = [
   // 	name: "interswitch",
   // 	image: InterSwitchImg,
   // },
-  // {
-  // 	name: "paypal",
-  // 	image: PaypalImg,
-  // },
+  {
+    name: "stripe",
+    image: Stripe,
+  },
   {
     name: "flutterwave",
     image: FlutterwaveImg,

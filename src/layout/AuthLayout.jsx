@@ -1,20 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 import Illustration from "../asset/images/Register_illustration.png";
+import { ReactComponent as SmallLogo } from "asset/svg/smallLogo.svg";
+import { Link } from "react-router-dom";
 
-const AuthLayout = ({ children, hideLeftAt }) => {
+const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
   return (
     <Layout>
       <LayoutLeft>
         <LayoutLeftContent hideLeftAt={hideLeftAt}>
-          <img src={Illustration} alt="" />
-          <div>
-            <p>Register and scale your business</p>
-            <p>
-              The fastest way for anyone to launch and manage a business from
-              anywhere.
-            </p>
-          </div>
+          <LeftDetails>
+            <SmallLogo />
+            <CreateText>
+              Create an account to start, manage or scale your business
+            </CreateText>
+            <LinkText>
+              <Question>{question}</Question>
+              <Link
+                to={link}
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <SpanText>{linkText}</SpanText>
+              </Link>
+            </LinkText>
+          </LeftDetails>
         </LayoutLeftContent>
       </LayoutLeft>
       <LayoutRight hideLeftAt={hideLeftAt}>
@@ -39,8 +50,8 @@ const LayoutLeft = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--SecondaryBlue);
-  width: 40%;
+
+  width: 50%;
   height: 100vh;
   @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
     display: none;
@@ -54,45 +65,49 @@ const LayoutLeftContent = styled.div`
   align-items: flex-start;
   width: 80%;
   height: 90%;
-  padding-bottom: 4rem;
-
-  img {
-    max-width: 80%;
-    margin-inline: 4% 0;
-    max-height: 284px;
-  }
-
-  div {
-    display: flex;
-    margin-top: 100px;
-    flex-flow: column nowrap;
-    gap: 24px;
-
-    p:nth-of-type(1) {
-      font-size: 28px;
-      color: white;
-      font-weight: 700;
-    }
-
-    p:nth-of-type(2) {
-      font-size: 18px;
-      color: var(--TextGrey);
-      font-weight: 400;
-    }
-  }
 `;
 
 const LayoutRight = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   flex: 1;
-  width: 60%;
+  width: 50%;
   /* margin: 0 1.3rem; */
   > div {
-    width: clamp(400px, 52%, 100%);
+    width: clamp(570px, 52%, 100%);
     margin: 2rem auto 63px;
     @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
       width: 90%;
     }
   }
+`;
+
+const LeftDetails = styled.p`
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 48px;
+`;
+
+const LinkText = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 8px;
+`;
+
+const CreateText = styled.p`
+  font-size: 18px;
+  color: #4e5152;
+  font-weight: 400;
+  width: 80%;
+`;
+const Question = styled.p`
+  font-size: 16px;
+  color: #4e5152;
+  font-weight: 400;
+`;
+const SpanText = styled.p`
+  font-size: 16px;
+  font-weight: 400;
+  color: #00a2d4;
 `;
