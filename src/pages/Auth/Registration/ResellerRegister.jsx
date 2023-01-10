@@ -200,10 +200,10 @@ const ResellerRegister = () => {
           text={[
             {
               text: "Become a ",
-              link: { text: "Service Partner", to: "/register/reseller" },
+              link: { text: "Service Partner", to: "/register/partner" },
             },
           ]}
-          $mobileResponsive
+          // $mobileResponsive
         />
         <TextsWithLink
           text={[
@@ -212,7 +212,7 @@ const ResellerRegister = () => {
               link: { text: "User Business Account", to: "/login" },
             },
           ]}
-          $mobileResponsive
+          // $mobileResponsive
         />
       </Bottom>
     </AuthLayout>

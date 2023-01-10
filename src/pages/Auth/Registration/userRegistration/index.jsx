@@ -222,9 +222,17 @@ const UserRegistration = () => {
       </Registration>
 
       <OrWrapper>
-        <hr />
+        <hr
+          style={{
+            borderColor: "#f4f4f4",
+          }}
+        />
         <OrText> OR </OrText>
-        <hr />
+        <hr
+          style={{
+            borderColor: "#f4f4f4",
+          }}
+        />
       </OrWrapper>
       <Bottom>
         <TextsWithLink
@@ -234,7 +242,7 @@ const UserRegistration = () => {
               link: { text: "Reseller Account", to: "/register/reseller" },
             },
           ]}
-          $mobileResponsive
+          // $mobileResponsive
         />
         <TextsWithLink
           text={[
@@ -243,7 +251,7 @@ const UserRegistration = () => {
               link: { text: "User Business Account", to: "/login" },
             },
           ]}
-          $mobileResponsive
+          // $mobileResponsive
         />
       </Bottom>
     </AuthLayout>

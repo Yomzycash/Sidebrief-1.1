@@ -154,7 +154,7 @@ const SignIn = () => {
                   link: { text: "Sign Up", to: "/register" },
                 },
               ]}
-              $mobileResponsive
+              // $mobileResponsive
             />
           </Bottom>
         </Form>

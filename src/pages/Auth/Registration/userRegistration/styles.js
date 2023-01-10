@@ -54,9 +54,8 @@ export const OrWrapper = styled.div`
   gap: 24px;
   padding: 24px;
   hr {
-    width: 50%;
-    height: 0.3px;
-    color: #edeff0;
+    width: 45%;
+    height: 0.1px;
     margin-top: 6px;
   }
 `;
