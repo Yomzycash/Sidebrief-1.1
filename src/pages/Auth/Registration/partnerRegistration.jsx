@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
-import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
@@ -15,7 +14,6 @@ import CountryInput from "components/input/countryInput";
 import { partnerRegistrationSchema } from "utils/config";
 import { savePartnerInfo } from "redux/Slices";
 import { store } from "redux/Store";
-import { ThreeDots } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
 
 const PartnerRegistration = () => {

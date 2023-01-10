@@ -31,12 +31,9 @@ import InProgress from "pages/Dashboard/staffDashboard/Businesses/BusinessRegist
 import Completed from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed";
 import StaffEntities from "pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities";
 import StaffReward from "pages/Dashboard/staffDashboard/Reward";
-import StaffRewardDetails from "pages/Dashboard/staffDashboard/Reward/Details";
-import StaffRewardAnalytics from "pages/Dashboard/staffDashboard/Reward/Analytics";
 import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Analytics";
 import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
 import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
-import StaffGeneral from "pages/Dashboard/staffDashboard/Settings/general";
 import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All";
 import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
 import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
@@ -44,7 +41,6 @@ import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesse
 import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
 import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
-import StaffLayout from "pages/Dashboard/staffDashboard/layout";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -218,14 +214,14 @@ const AppRouter = () => {
               element={
                 <Protected isVerified={isLoggedIn}>
                   {/* {staffEmail ? <StaffDashboard /> : <Home />} */}
-                  <Home/>
+                  <Home />
                 </Protected>
               }
             />
 
             {/* Autentication pages */}
             <Route path="register" element={<Outlet />}>
-              <Route index element={<AccountType />} />
+              <Route index element={<SignIn />} />
               <Route path="user" element={<Outlet />}>
                 <Route index element={<UserRegistration />} />
                 <Route path="success" element={<EmailSuccess />} />
