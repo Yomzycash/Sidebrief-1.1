@@ -151,7 +151,7 @@ const SignIn = () => {
               text={[
                 {
                   text: "Don't have an account? ",
-                  link: { text: "Sign Up", to: "/register/user" },
+                  link: { text: "Sign Up", to: "/register" },
                 },
               ]}
               // $mobileResponsive
@@ -172,6 +172,7 @@ const Registration = styled.div`
   height: max-content;
   gap: 8px;
   padding: 59px;
+  background-color: white;
   border: 1px solid #edf1f7;
   box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
     10px 10px 10px -5px rgba(149, 150, 151, 0.04);
