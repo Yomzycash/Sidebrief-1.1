@@ -40,7 +40,7 @@ export default AuthLayout;
 const Layout = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  background-color: white;
+  background-color: #fcfcfc;
   height: 100%;
 `;
 
