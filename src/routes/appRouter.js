@@ -221,14 +221,15 @@ const AppRouter = () => {
 
             {/* Autentication pages */}
             <Route path="register" element={<Outlet />}>
-              <Route index element={<SignIn />} />
-              <Route path="user" element={<Outlet />}>
-                <Route index element={<UserRegistration />} />
-                <Route path="success" element={<EmailSuccess />} />
-              </Route>
+              <Route index element={<UserRegistration />} />
+              {/* <Route path="user" element={<Outlet />}> */}
+              {/* <Route index element={<UserRegistration />} /> */}
+              <Route path="success" element={<EmailSuccess />} />
+              {/* </Route> */}
               <Route path="reseller" element={<ResellerRegistration />} />
               <Route path="partner" element={<PartnerRegistration />} />
             </Route>
+
             <Route path="login" element={<Outlet />}>
               <Route index element={<SignIn />} />
               <Route path="verifyaccount" element={<EmailVerify />} />

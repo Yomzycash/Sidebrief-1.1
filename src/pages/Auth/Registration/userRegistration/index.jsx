@@ -238,8 +238,8 @@ const UserRegistration = () => {
         <TextsWithLink
           text={[
             {
-              text: "Ceate a ",
-              link: { text: "Reseller Account", to: "/register/reseller" },
+              text: "Create a ",
+              link: { text: "Service Partner", to: "/register/partner" },
             },
           ]}
           // $mobileResponsive
@@ -248,7 +248,7 @@ const UserRegistration = () => {
           text={[
             {
               text: "Create a  ",
-              link: { text: "User Business Account", to: "/login" },
+              link: { text: "Reseller Account", to: "/register/reseller" },
             },
           ]}
           // $mobileResponsive
