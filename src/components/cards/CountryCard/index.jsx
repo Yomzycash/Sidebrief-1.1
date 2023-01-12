@@ -21,6 +21,7 @@ const CountryCard = ({
         <TopWrapper>
           <CountryImageWrapper>
             <img
+              crossOrigin="anonymous"
               src={`https://countryflagsapi.com/png/${
                 countryCode.toLowerCase().split("-")[0]
               }`}
@@ -59,6 +60,7 @@ const CountryCard = ({
 
 export default CountryCard;
 const Container = styled.div`
+  cursor: pointer;
   max-width: 342px;
   width: 100%;
   min-height: 108px;

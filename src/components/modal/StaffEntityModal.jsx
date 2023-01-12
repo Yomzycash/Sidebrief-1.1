@@ -5,7 +5,10 @@ import Modal1 from "layout/modal1";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useGetAllCountriesQuery } from "services/launchService";
+import { useDeleteEntityMutation } from "services/staffService";
 import { StaffEntitySchema } from "utils/config";
+import { handleError } from "utils/globalFunctions";
 
 const StaffEntityModal = ({
   cardAction,
@@ -18,6 +21,18 @@ const StaffEntityModal = ({
   loading,
 }) => {
   const [disable, setDisable] = useState(disableAll);
+  const [entityCountries, setEntityCountries] = useState([
+    { value: "", label: "" },
+  ]);
+  const [entityCurrencies, setEntityCurrencies] = useState([
+    { value: "", label: "" },
+  ]);
+
+  const [deleteEntity, deleteState] = useDeleteEntityMutation();
+  const countries = useGetAllCountriesQuery();
+
+  console.log(disableAll);
+  console.log(cardAction);
 
   const {
     handleSubmit,
@@ -41,16 +56,16 @@ const StaffEntityModal = ({
   ];
 
   // Entity country options
-  const entityCountries = [
-    { value: "NGA", label: "NGA" },
-    { value: "KEN", label: "KEN" },
-  ];
+  // const entityCountries = [
+  //   { value: "NGA", label: "NGA" },
+  //   { value: "KEN", label: "KEN" },
+  // ];
 
   // Entity currency options
-  const entityCurrencies = [
-    { value: "NGN", label: "NGN" },
-    { value: "USD", label: "USD" },
-  ];
+  // const entityCurrencies = [
+  //   { value: "NGN", label: "NGN" },
+  //   { value: "USD", label: "USD" },
+  // ];
 
   const handleEntityTypeChange = (value) => {
     var string = Object.values(value)[0];
@@ -63,8 +78,14 @@ const StaffEntityModal = ({
   };
 
   const handleCountryChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("country", string, { shouldValidate: true });
+    let selectedCountry = Object.values(value)[0];
+    let currency = entityCountries?.filter(
+      (country) => country.value === selectedCountry
+    )[0].value;
+
+    setEntityCurrencies([{ value: selectedCountry, label: selectedCountry }]);
+    setValue("country", selectedCountry, { shouldValidate: true });
+    setValue("currency", currency, { shouldValidate: true });
   };
 
   const handleCurrencyChange = (value) => {
@@ -72,8 +93,20 @@ const StaffEntityModal = ({
     setValue("currency", string, { shouldValidate: true });
   };
 
+  // Update entity countries
   useEffect(() => {
-    if (entityInfo) {
+    let allCountries = countries.data;
+    setEntityCountries(
+      allCountries &&
+        allCountries.map((country) => ({
+          value: country.countryCurrency,
+          label: country.countryCurrency,
+        }))
+    );
+  }, [countries.data]);
+
+  useEffect(() => {
+    if (entityInfo && cardAction === "edit") {
       setValue("entity_name", entityInfo.entityName, { shouldValidate: true });
       setValue("description", entityInfo.entityDescription, {
         shouldValidate: true,
@@ -105,10 +138,19 @@ const StaffEntityModal = ({
       setValue("type", "");
     }
     setDisable(disableAll);
-  }, [entityInfo]);
+  }, [entityInfo, cardAction]);
 
   // This runs when the form gets submitted
   // const submitAction = () => {};
+
+  const handleEntityDelete = async (formData) => {
+    let response = await deleteEntity(entityInfo);
+    console.log(response);
+    if (response.error) {
+      handleError(response.error);
+    }
+  };
+
   return (
     <Modal1
       handleSubmit={handleSubmit}
@@ -121,6 +163,8 @@ const StaffEntityModal = ({
       setDisable={setDisable}
       loading={loading}
       entityInfo={entityInfo}
+      handleDelete={handleEntityDelete}
+      deleteState={deleteState}
     >
       <InputWithLabel
         label="Entity Name"
@@ -239,7 +283,7 @@ const StaffEntityModal = ({
           label="Entity Fee"
           labelStyle="input-label"
           containerStyle="input-container-class"
-          type="text"
+          type="number"
           placeholder="30000"
           name="fee"
           inputClass="input-class"
@@ -266,7 +310,7 @@ const StaffEntityModal = ({
           label="Entity Shares"
           labelStyle="input-label"
           containerStyle="input-container-class"
-          type="text"
+          type="number"
           placeholder="100000"
           name="shares"
           inputClass="input-class"
