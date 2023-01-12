@@ -16,6 +16,7 @@ import {
   useUpdateEntityMutation,
 } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
 const StaffEntities = () => {
   const [entities, setEntities] = useState([]);
@@ -75,23 +76,27 @@ const StaffEntities = () => {
       entityCurrency: formData?.currency,
       entityDescription: formData?.description,
       entityTimeline: formData?.timeline,
-      entityRequirements: formData?.requirement,
+      entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
     };
   };
 
   const handleAddButton = () => {
     setOpen(true);
-    console.log();
     setCardAction("add");
   };
 
   // This updates an existing entity
   const handleEntityAdd = async (formData) => {
     let requiredData = getRequired(formData);
+    console.log(requiredData);
     let response = await addEntity(requiredData);
-    if (response.error) {
-      handleError(response.error);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity added successfully");
+    } else {
+      handleError(error);
     }
     console.log(response);
   };
@@ -99,9 +104,14 @@ const StaffEntities = () => {
   // This updates an existing entity
   const handleEntityUpdate = async (formData) => {
     let requiredData = getRequired(formData);
+    console.log(requiredData);
     let response = await updateEntity(requiredData);
-    if (response.error) {
-      handleError(response.error);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity added successfully");
+    } else {
+      handleError(error);
     }
     console.log(response);
   };

@@ -76,16 +76,15 @@ const StaffEntityModal = ({
     var string = Object.values(value)[0];
     setValue("requirements", string, { shouldValidate: true });
   };
-
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
-    let currency = entityCountries?.filter(
-      (country) => country.value === selectedCountry
-    )[0].value;
-
-    setEntityCurrencies([{ value: selectedCountry, label: selectedCountry }]);
+    let currency = countries?.data?.filter(
+      (country) => country.countryISO === selectedCountry
+    )[0].countryCurrency;
+    console.log(currency);
+    setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
-    setValue("currency", currency, { shouldValidate: true });
+    setValue("currency", "", { shouldValidate: true });
   };
 
   const handleCurrencyChange = (value) => {
@@ -99,8 +98,8 @@ const StaffEntityModal = ({
     setEntityCountries(
       allCountries &&
         allCountries.map((country) => ({
-          value: country.countryCurrency,
-          label: country.countryCurrency,
+          value: country.countryISO,
+          label: country.countryISO,
         }))
     );
   }, [countries.data]);
@@ -283,7 +282,7 @@ const StaffEntityModal = ({
           label="Entity Fee"
           labelStyle="input-label"
           containerStyle="input-container-class"
-          type="number"
+          type="text"
           placeholder="30000"
           name="fee"
           inputClass="input-class"
