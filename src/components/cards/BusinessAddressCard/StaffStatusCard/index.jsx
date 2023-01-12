@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import awaitingImg from "asset/staff/Awaiting.svg";
-import completedImg from "asset/staff/Awaiting.svg";
+import completedImg from "asset/staff/Completed.svg";
 import inProgressImg from "asset/staff/InProgress.svg";
 
 const StaffStatusCard = ({ status }) => {
@@ -23,7 +23,7 @@ const StaffStatusCard = ({ status }) => {
         </IconWrapper>
         <Number>{status?.inProgress}</Number>
         <TextWrapper>
-          <StatusWrapper>Businesses Awaiting Approval</StatusWrapper>
+          <StatusWrapper>Businesses In Progress</StatusWrapper>
         </TextWrapper>
       </Container>
 
@@ -33,7 +33,7 @@ const StaffStatusCard = ({ status }) => {
         </IconWrapper>
         <Number>{status?.completed}</Number>
         <TextWrapper>
-          <StatusWrapper>Businesses Awaiting Approval</StatusWrapper>
+          <StatusWrapper>Businesses Completed</StatusWrapper>
         </TextWrapper>
       </Container>
       {/* {StaffBusinessStatus.map((card, index) => {
