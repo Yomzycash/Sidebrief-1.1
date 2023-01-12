@@ -46,7 +46,7 @@ const DetailShareholder = () => {
                 name={member.memberName}
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
-                title={`${shareholder.shareholderOwnershipType} - ${shareholder.shareholderOwnershipPercentage}%`}
+                title={`${shareholder.shareholderOwnershipType} - ${shareholder.shareholderOwnershipPercentage}`}
                 government={governmentFile}
                 proof={proofFile}
                 passport={passportFile}

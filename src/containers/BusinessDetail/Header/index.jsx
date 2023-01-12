@@ -65,15 +65,25 @@ export const Header = ({ isStaff }) => {
       launchCode: launchResponse.launchCode,
     });
     navigate(
-      `/dashboard/businesses/${
-        launchRequest.isLoading
-          ? `all-businesses`
-          : launchRequest.data.registrationStatus === "pending"
-          ? `draft-applications`
-          : launchRequest.data.registrationStatus === "submitted"
-          ? "submitted-applications"
-          : null
-      }`
+      isStaff
+        ? `/${"staff-dashboard"}/businesses/registration/${
+            launchRequest.isLoading
+              ? `all`
+              : launchRequest.data.registrationStatus === "pending"
+              ? `pending`
+              : launchRequest.data.registrationStatus === "submitted"
+              ? "awaiting-approval"
+              : "all"
+          }`
+        : `/${"dashboard"}/businesses/${
+            launchRequest.isLoading
+              ? `all-businesses`
+              : launchRequest.data.registrationStatus === "pending"
+              ? `draft-applications`
+              : launchRequest.data.registrationStatus === "submitted"
+              ? "submitted-applications"
+              : null
+          }`
     );
     setOpenModal(false);
   };
