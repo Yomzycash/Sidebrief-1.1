@@ -1,12 +1,7 @@
-import Navbar from "components/navbar";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import StaffHeader from "components/Header/StaffHeader";
-import { CountryCardDetails, EntityCardDetails } from "utils/config";
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
@@ -27,7 +22,8 @@ const StaffEntities = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  const { data, isLoading, isSuccess, isError } = useGetAllTheEntitiesQuery();
+  const { data, isLoading, isSuccess, isError, refetch } =
+    useGetAllTheEntitiesQuery();
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
 
@@ -95,10 +91,11 @@ const StaffEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity added successfully");
+      setOpen(false);
     } else {
       handleError(error);
     }
-    console.log(response);
+    refetch();
   };
 
   // This updates an existing entity
@@ -109,11 +106,12 @@ const StaffEntities = () => {
     let data = response?.data;
     let error = response?.error;
     if (data) {
-      toast.success("Entity added successfully");
+      toast.success("Entity updated successfully");
+      setOpen(false);
     } else {
       handleError(error);
     }
-    console.log(response);
+    refetch();
   };
 
   return (
@@ -157,8 +155,11 @@ const StaffEntities = () => {
               cardAction === "edit" ? "Entity Information" : "Add New Entity"
             }
             entityInfo={clickedEntity}
-            submitAction={handleEntityUpdate}
+            submitAction={
+              cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
+            }
             loading={updateState.isLoading}
+            refetch={refetch}
           />
         </CardWrapper>
       </CardContainer>

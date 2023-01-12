@@ -17,10 +17,11 @@ const StaffCountryModal = ({
   disableAll,
   title,
   countryInfo,
+  submitAction,
+  loading,
+  $hideIcons,
 }) => {
   const [disable, setDisable] = useState(disableAll);
-
-  const [addCountry, addState] = useAddCountryMutation();
 
   console.log(countryInfo);
 
@@ -63,25 +64,26 @@ const StaffCountryModal = ({
   }, [countryInfo]);
 
   // This runs when the form gets submitted
-  const submitAction = async (formData) => {
-    let requiredData = {
-      countryName: formData.country_name,
-      countryCode: formData.country_code,
-      countryCurrency: formData.currency,
-      countryISO: formData.country_iso,
-      countryFlag: formData.flag,
-    };
-    let response = await addCountry(requiredData);
+  // const submitAction = async (formData) => {
+  //   let requiredData = {
+  //     countryName: formData.country_name,
+  //     countryCode: formData.country_code,
+  //     countryCurrency: formData.currency,
+  //     countryISO: formData.country_iso,
+  //     countryFlag: formData.flag,
+  //   };
+  //   console.log(requiredData);
+  //   let response = await addCountry(requiredData);
 
-    let data = response?.data;
-    let error = response?.error;
+  //   let data = response?.data;
+  //   let error = response?.error;
 
-    if (data) {
-      toast.success("Country added successfully");
-    } else {
-      handleError(error);
-    }
-  };
+  //   if (data) {
+  //     toast.success("Country added successfully");
+  //   } else {
+  //     handleError(error);
+  //   }
+  // };
 
   return (
     <Modal1
@@ -93,8 +95,9 @@ const StaffCountryModal = ({
       setOpen={setOpen}
       disable={disable}
       setDisable={setDisable}
-      loading={addState.isLoading}
+      loading={loading}
       countryInfo={countryInfo}
+      $hideIcons
     >
       <InputWithLabel
         label="Country Name"

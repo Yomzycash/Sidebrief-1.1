@@ -5,6 +5,7 @@ import Modal1 from "layout/modal1";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { useDeleteEntityMutation } from "services/staffService";
 import { StaffEntitySchema } from "utils/config";
@@ -19,6 +20,7 @@ const StaffEntityModal = ({
   entityInfo,
   submitAction,
   loading,
+  refetch,
 }) => {
   const [disable, setDisable] = useState(disableAll);
   const [entityCountries, setEntityCountries] = useState([
@@ -30,9 +32,6 @@ const StaffEntityModal = ({
 
   const [deleteEntity, deleteState] = useDeleteEntityMutation();
   const countries = useGetAllCountriesQuery();
-
-  console.log(disableAll);
-  console.log(cardAction);
 
   const {
     handleSubmit,
@@ -142,12 +141,19 @@ const StaffEntityModal = ({
   // This runs when the form gets submitted
   // const submitAction = () => {};
 
+  // This runs when the delete icon is pressed
   const handleEntityDelete = async (formData) => {
+    console.log(entityInfo);
     let response = await deleteEntity(entityInfo);
     console.log(response);
-    if (response.error) {
-      handleError(response.error);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity deleted successfully");
+    } else {
+      handleError(error);
     }
+    refetch();
   };
 
   return (

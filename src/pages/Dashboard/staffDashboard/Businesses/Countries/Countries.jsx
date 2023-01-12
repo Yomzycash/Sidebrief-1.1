@@ -11,12 +11,14 @@ import CountryCard from "components/cards/CountryCard";
 import {
   useAddCountryMutation,
   useGetAllCountriesQuery,
+  useUpdateCountryMutation,
 } from "services/staffService";
 import { Puff } from "react-loading-icons";
 import StaffEntityModal from "components/modal/StaffEntityModal";
 import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
+import { toast } from "react-hot-toast";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
@@ -25,6 +27,7 @@ const Countries = () => {
   // Exchange information with the backend
   const { data, isLoading, isSuccess, isError, error, refetch } =
     useGetAllCountriesQuery();
+  const [addCountry, addState] = useAddCountryMutation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,6 +51,31 @@ const Countries = () => {
       errorRef.current = false;
     }
   }, []);
+
+  const getRequired = (formData) => {
+    return {
+      countryName: formData.country_name,
+      countryCode: formData.country_code,
+      countryCurrency: formData.currency,
+      countryISO: formData.country_iso,
+      countryFlag: formData.flag,
+    };
+  };
+
+  // This updates an existing country
+  const handleCountryAdd = async (formData) => {
+    let requiredData = getRequired(formData);
+    console.log(requiredData);
+    let response = await addCountry(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Country added successfully");
+    } else {
+      handleError(error);
+    }
+    refetch();
+  };
 
   return (
     <Container SidebarWidth={sidebarWidth}>
@@ -83,8 +111,9 @@ const Countries = () => {
           <StaffCountryModal
             open={open}
             setOpen={setOpen}
-            loading={isLoading}
             cardAction={cardAction}
+            submitAction={handleCountryAdd}
+            loading={addState.isLoading}
           />
         </CardWrapper>
       </CardContainer>
