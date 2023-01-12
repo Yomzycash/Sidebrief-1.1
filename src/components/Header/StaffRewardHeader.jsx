@@ -10,6 +10,8 @@ const StaffRewardHeader = ({
   total = "328",
   Description = "Add New Reward",
   placeholder = "Search for a reward",
+  open,
+  setOpen,
 }) => {
   const searchStyle = {
     borderRadius: "12px",
@@ -39,7 +41,7 @@ const StaffRewardHeader = ({
                 placeholder={placeholder}
               />
             </SearchWrapper>
-            <ButtonWrapper>
+            <ButtonWrapper onClick={() => setOpen(true)}>
               <button>
                 <AddIcon />
                 {Description}

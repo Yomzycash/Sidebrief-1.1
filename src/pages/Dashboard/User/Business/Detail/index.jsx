@@ -108,10 +108,10 @@ const BusinessDetail = () => {
             )}
             <DetailContainer>
               <StaffBusinessInfoCard
-                businessNames={data.businessNames}
-                businessObjectives={data.businessObjects}
-                address={data.businessAddress}
-                type={data.registrationType}
+                businessNames={data?.businessNames}
+                businessObjectives={data?.businessObjects}
+                address={data?.businessAddress}
+                type={data?.registrationType}
               />
               <StepBar applied={data.createdAt} />
             </DetailContainer>
