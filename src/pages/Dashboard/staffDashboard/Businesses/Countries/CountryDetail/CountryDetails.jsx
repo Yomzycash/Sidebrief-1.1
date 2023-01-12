@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useGetSingleCountryQuery } from "services/staffService";
 import { useParams } from "react-router-dom";
 import { Puff } from "react-loading-icons";
+import StaffCountryModal from "components/modal/StaffCountryModal";
 
 const CountryDetails = ({
   date = "12th August, 2022",
   name = " Oluwole Sayo",
 }) => {
+  const [open, setOpen] = useState(false);
+
   const { ISO } = useParams();
   const { data, isLoading } = useGetSingleCountryQuery(ISO);
 
@@ -28,27 +31,34 @@ const CountryDetails = ({
               <ContentWrapper>
                 <Label>Country Name</Label>
                 <TextContainer>
-                  <TextWrapper>{data.countryName}</TextWrapper>
+                  <TextWrapper>{data?.countryName}</TextWrapper>
                 </TextContainer>
               </ContentWrapper>
               <Grid>
                 <ContentWrapper>
                   <Label>Country Code</Label>
                   <TextContainer>
-                    <TextWrapper>{`+${data.countryCode}`}</TextWrapper>
+                    <TextWrapper>{`+${data?.countryCode}`}</TextWrapper>
                   </TextContainer>
                 </ContentWrapper>
                 <ContentWrapper>
                   <Label>Country ISO</Label>
                   <TextContainer>
-                    <TextWrapper>{data.countryISO}</TextWrapper>
+                    <TextWrapper>{data?.countryISO}</TextWrapper>
                   </TextContainer>
                 </ContentWrapper>
 
                 <ContentWrapper>
                   <Label>Country Currency</Label>
                   <TextContainer>
-                    <TextWrapper>{data.countryCurrency}</TextWrapper>
+                    <TextWrapper>{data?.countryCurrency}</TextWrapper>
+                  </TextContainer>
+                </ContentWrapper>
+
+                <ContentWrapper>
+                  <Label>Country Flag</Label>
+                  <TextContainer>
+                    <TextWrapper>{`https://countryflagsapi.com/png/${data?.countryISO.toLowerCase()}`}</TextWrapper>
                   </TextContainer>
                 </ContentWrapper>
               </Grid>
@@ -68,9 +78,18 @@ const CountryDetails = ({
           </InnerWrapper>
         </RightContainer>
       </Wrapper>
-      <BottomWrapper>
+      <BottomWrapper onClick={() => setOpen(true)}>
         <TitleWrapper>Update Changes</TitleWrapper>
       </BottomWrapper>
+      <StaffCountryModal
+        open={open}
+        setOpen={setOpen}
+        // loading={isLoading}
+        cardAction="edit"
+        countryInfo={data}
+        disableAll={false}
+        title="Update Country Information"
+      />
     </Container>
   );
 };
@@ -135,13 +154,16 @@ const TextContainer = styled.div`
   border: 1px solid #edf1f7;
   border-radius: 8px;
 `;
-const TextWrapper = styled.div`
+const TextWrapper = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
   display: flex;
   align-items: center;
   color: #242627;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const Grid = styled.div`
   display: grid;
@@ -215,10 +237,15 @@ const BottomWrapper = styled.div`
   gap: 10px;
   width: fit-content;
   min-height: 27px;
-  background: rgba(0, 162, 212, 0.72);
+  background: #00a2d4;
   border-radius: 8px;
   margin-left: 24px;
   cursor: pointer;
+  transition: 0.3s all ease;
+
+  :hover {
+    background-color: #0082aa;
+  }
 `;
 const TitleWrapper = styled.h4`
   font-weight: 500;
@@ -229,7 +256,8 @@ const TitleWrapper = styled.h4`
   align-items: center;
   text-align: center;
   letter-spacing: -0.5px;
-  color: rgba(255, 255, 255, 0.64);
+  color: white;
+  /* color: rgba(255, 255, 255, 0.64); */
 `;
 
 const Loader = styled.div`

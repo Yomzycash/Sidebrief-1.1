@@ -133,6 +133,45 @@ export const staffApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+
+    // Add a Country
+    addCountry: builder.mutation({
+      query: (data) => ({
+        url: "/countries",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Modify a Country
+    updateCountry: builder.mutation({
+      query: (data) => ({
+        url: "/countries",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Delete a Country
+    deleteCountry: builder.mutation({
+      query: (data) => ({
+        url: "/countries",
+        method: "DEL",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -154,4 +193,8 @@ export const {
   useAddEntityMutation,
   useUpdateEntityMutation,
   useDeleteEntityMutation,
+
+  useAddCountryMutation,
+  useUpdateCountryMutation,
+  useDeleteCountryMutation,
 } = staffApi;

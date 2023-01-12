@@ -28,6 +28,7 @@ import { useMemo } from "react";
 import { store } from "redux/Store";
 import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
+import Profile from "components/Profile";
 
 const Navbar = ({
   dashboard,
@@ -39,6 +40,7 @@ const Navbar = ({
 }) => {
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const [msgObj, setMsgObj] = useState([]);
 
   useEffect(() => {
@@ -68,7 +70,9 @@ const Navbar = ({
   }, []);
 
   // console.log(msgObj);
-
+  const handleProfile = () => {
+    setShowProfile(!showProfile);
+  };
   const handleCheck = (e, item) => {
     const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item);
     const updatedMsg = [...msgObj]; // creates a copy of the array
@@ -80,6 +84,7 @@ const Navbar = ({
     const handleClickOutside = (event) => {
       if (!menuRef.current?.contains(event.target)) {
         setShowNotification(false);
+        setShowProfile(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -115,7 +120,7 @@ const Navbar = ({
               </NotificationBadge>
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
-            <UserContainer>
+            <UserContainer onClick={handleProfile}>
               <UserIcon src={user} alt="logo" />
             </UserContainer>
 
@@ -165,6 +170,8 @@ const Navbar = ({
           )}
         </NotificationWrapper>
       )}
+
+      {showProfile && <Profile />}
     </>
   );
 };

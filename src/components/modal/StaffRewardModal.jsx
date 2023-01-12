@@ -8,7 +8,8 @@ import NumberInput from "components/input/phoneNumberInput";
 import { useState } from "react";
 import { StaffCountrySchema } from "utils/config";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-const StaffRewardModal = ({ cardAction }) => {
+
+const StaffRewardModal = ({ cardAction, open, setOpen }) => {
   //  This populates the phone number when edit is clicked
   const [defaultPhone] = useState(cardAction === "edit" ? "" : "");
 
@@ -30,6 +31,8 @@ const StaffRewardModal = ({ cardAction }) => {
       submitAction={submitAction}
       cardAction={cardAction}
       title="Add New Country"
+      open={open}
+      setOpen={setOpen}
     >
       <InputWithLabel
         label="Country Name"

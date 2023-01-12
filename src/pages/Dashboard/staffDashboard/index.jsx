@@ -1,12 +1,11 @@
 import { BusinessesChartCard } from "components/cards";
 import AnalyticsChart from "components/cards/businessesChart/analyticsChart";
-import StatusCard from "components/cards/StatusCard/StaffStatusCard";
+import StatusCard from "components/cards/StaffStatusCard/StaffStatusCard";
 import { ApplicationTable } from "components/Staff/Tables";
-import { MockData } from "components/Staff/Tables/ApplicationTable/constants";
 import DashboardSection from "layout/DashboardSection";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import {
 	useGetAllLaunchQuery,
 	useGetApprovedLaunchQuery,
@@ -14,6 +13,8 @@ import {
 	useGetRejectedLaunchQuery,
 	useGetSubmittedLaunchQuery,
 } from "services/staffService";
+import { subMonths, isWithinInterval } from "date-fns";
+import numeral from "numeral";
 import { StaffContainer, StatusCardContainer } from "./styled";
 
 const StaffDashboard = (props) => {
@@ -25,7 +26,7 @@ const StaffDashboard = (props) => {
 	const allRejectedLaunches = useGetRejectedLaunchQuery();
 	const allDraftLaunches = useGetDraftLaunchQuery();
 
-	const location = useLocation();
+	// const location = useLocation();
 
 	// Get user data information
 	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
@@ -36,13 +37,14 @@ const StaffDashboard = (props) => {
 
 	// Get all users submitted launch requests
 	useEffect(() => {
-		console.log(allSubmittedLaunches?.data);
+		// console.log(allSubmittedLaunches?.data);
 		setAllApplications(
 			allSubmittedLaunches &&
 				allSubmittedLaunches?.data?.map((application, index) => {
 					return {
 						id: index + 1,
 						name: "Ismael Hassan",
+						//TODO: we are not getting the registerers name from the backend
 						type: application.registrationType,
 						country: application.registrationCountry,
 						status: application.registrationStatus,
@@ -50,7 +52,41 @@ const StaffDashboard = (props) => {
 					};
 				})
 		);
-	}, [allSubmittedLaunches?.data]);
+	}, [allSubmittedLaunches?.data, allSubmittedLaunches]);
+
+	// I am filtering last month data on the frontend, can slow things down as data increases, would advice backend
+	const getLastMonthDataLength = (array) => {
+		const today = new Date();
+		const priorMonth = subMonths(today, 1);
+
+		array = array ? array : [];
+
+		return array.filter((item) =>
+			isWithinInterval(new Date(item.createdAt), {
+				start: priorMonth,
+				end: today,
+			})
+		);
+	};
+
+	const calculatePercentageIncrease = (total, number) => {
+		return (number / total) * 100;
+	};
+
+	const getPercentage = (array) => {
+		// console.log(array);
+
+		return numeral(
+			calculatePercentageIncrease(
+				array?.length,
+				getLastMonthDataLength(array).length
+			)
+		).format("0[.]0");
+	};
+
+	// if (!allLaunches.isLoading) {
+	// 	console.log(getLastMonthDataLength(allLaunches?.data));
+	// }
 
 	return (
 		<StaffContainer>
@@ -71,6 +107,21 @@ const StaffDashboard = (props) => {
 						approved={allApprovedLaunches?.data?.length}
 						awaiting={allSubmittedLaunches?.data?.length}
 						rejected={allRejectedLaunches?.data?.length}
+						totalPercentageIncrease={getPercentage(
+							allLaunches?.data
+						)}
+						draftPercentageIncrease={getPercentage(
+							allDraftLaunches?.data
+						)}
+						approvedPercentageIncrease={getPercentage(
+							allApprovedLaunches?.data
+						)}
+						awaitingPercentageIncrease={getPercentage(
+							allSubmittedLaunches?.data
+						)}
+						rejectedPercentageIncrease={getPercentage(
+							allRejectedLaunches?.data
+						)}
 					/>
 				</StatusCardContainer>
 			</DashboardSection>

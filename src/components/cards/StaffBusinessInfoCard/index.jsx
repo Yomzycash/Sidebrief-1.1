@@ -13,26 +13,28 @@ const StaffBusinessInfoCard = ({
         <AllWrapper>
           <Wrapper>
             <TitleWrapper>Business Names</TitleWrapper>
-            {Object.keys(businessNames).map((id) => {
-              return (
-                <SingleContainer key={id}>
-                  <TitleWrapper>{businessNames[id]}</TitleWrapper>
-                </SingleContainer>
-              );
-            })}
+            {businessNames &&
+              Object.keys(businessNames).map((id) => {
+                return (
+                  <SingleContainer key={id}>
+                    <TitleWrapper>{businessNames[id]}</TitleWrapper>
+                  </SingleContainer>
+                );
+              })}
           </Wrapper>
           <Wrapper>
             <TitleWrapper>Business Objectives</TitleWrapper>
-            {Object.keys(businessObjectives).map((id) => {
-              if (businessObjectives[id] === "null") {
-                return ``;
-              }
-              return (
-                <SingleContainer key={id}>
-                  <TitleWrapper>{businessObjectives[id]}</TitleWrapper>
-                </SingleContainer>
-              );
-            })}
+            {businessObjectives &&
+              Object.keys(businessObjectives).map((id) => {
+                if (businessObjectives[id] === "null") {
+                  return ``;
+                }
+                return (
+                  <SingleContainer key={id}>
+                    <TitleWrapper>{businessObjectives[id]}</TitleWrapper>
+                  </SingleContainer>
+                );
+              })}
           </Wrapper>
           {address ? (
             <Wrapper>
