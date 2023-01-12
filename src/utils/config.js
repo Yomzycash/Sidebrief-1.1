@@ -172,7 +172,9 @@ export const StaffEntitySchema = yup.object().shape({
   currency: yup.string().required("Entity currency is a required field"),
   fee: yup.string().required("Entity fee is a required field"),
   timeline: yup.string().required("Entity timeline is a required field"),
-  shares: yup.string().required("Entity shares is a required field"),
+  shares: yup
+    .number("Value must be a number")
+    .required("Entity shares is a required field"),
 });
 
 export const sidebarLink = [

@@ -14,8 +14,10 @@ const StaffHeader = ({
   handleEntityAdd,
   Description = "Add Country",
   loading,
+  setOpen,
+  handleButton,
 }) => {
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   return (
     <Container>
@@ -37,18 +39,18 @@ const StaffHeader = ({
             <SearchWrapper>
               <Search style={searchStyle} iconStyle={iconStyle} />
             </SearchWrapper>
-            <ButtonWrapper onClick={() => setOpen(true)}>
+            <ButtonWrapper onClick={handleButton}>
               <button>
                 <AddIcon />
                 {Description}
               </button>
             </ButtonWrapper>
-            <StaffEntityModal
+            {/* <StaffEntityModal
               open={open}
               setOpen={setOpen}
               submitAction={handleEntityAdd}
               loading={loading}
-            />
+            /> */}
           </BottomContent>
         </MainHeader>
       </Header>

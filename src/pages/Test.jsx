@@ -7,8 +7,8 @@ const Test = () => {
   return (
     <div>
       <StaffRewardModal />;
-      <StaffSidebar />
-      <StaffEntityModal />
+      {/* <StaffSidebar />
+      <StaffEntityModal /> */}
     </div>
   );
 };
