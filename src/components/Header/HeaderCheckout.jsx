@@ -128,6 +128,7 @@ export const ModalButton = styled.div`
   width: 80%;
 `;
 const Question = styled.p`
+  margin-bottom: 30px;
   font-size: clamp(16px, 1.5vw, 20px);
 `;
 const Top = styled.div`

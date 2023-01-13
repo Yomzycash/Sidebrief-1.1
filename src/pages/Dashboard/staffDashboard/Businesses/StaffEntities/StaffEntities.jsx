@@ -1,7 +1,12 @@
+import Navbar from "components/navbar";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+
+import StaffSidebar from "components/sidebar/StaffSidebar";
 import StaffHeader from "components/Header/StaffHeader";
+import { CountryCardDetails, EntityCardDetails } from "utils/config";
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
@@ -132,19 +137,25 @@ const StaffEntities = () => {
       )}
       <CardContainer>
         <CardWrapper>
-          {entities.map((entity, index) => (
-            <StaffEntityCard
-              key={index}
-              entityName={entity?.entityName}
-              entityCode={entity?.entityShortName}
-              shareholderType={entity?.entityDescription}
-              entityTimeline={entity?.entityTimeline}
-              entityType={entity?.entityType}
-              countryCode={entity?.entityCountry}
-              entityPackage={entity?.entityRequirements}
-              clickAction={() => handleCardClick(entity)}
-            />
-          ))}
+          {entities &&
+            [...entities]
+              .sort(
+                (a, b) =>
+                  a.entityCountry.charCodeAt(0) - b.entityCountry.charCodeAt(0)
+              )
+              .map((entity, index) => (
+                <StaffEntityCard
+                  key={index}
+                  entityName={entity?.entityName}
+                  entityCode={entity?.entityShortName}
+                  shareholderType={entity?.entityDescription}
+                  entityTimeline={entity?.entityTimeline}
+                  entityType={entity?.entityType}
+                  countryCode={entity?.entityCountry}
+                  entityPackage={entity?.entityRequirements}
+                  clickAction={() => handleCardClick(entity)}
+                />
+              ))}
           <StaffEntityModal
             disableAll={cardAction === "edit" ? true : false}
             open={open}
