@@ -1,47 +1,47 @@
-import Navbar from "components/navbar";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import Navbar from 'components/navbar'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 
-import StaffSidebar from "components/sidebar/StaffSidebar";
-import StaffHeader from "components/Header/StaffHeader";
-import { CountryCardDetails, EntityCardDetails } from "utils/config";
-import StaffEntityCard from "components/cards/StaffEntityCard";
-import { useGetAllTheEntitiesQuery } from "services/launchService";
-import { Puff } from "react-loading-icons";
-import StaffEntityModal from "components/modal/StaffEntityModal";
+import StaffSidebar from 'components/sidebar/StaffSidebar'
+import StaffHeader from 'components/Header/StaffHeader'
+import { CountryCardDetails, EntityCardDetails } from 'utils/config'
+import StaffEntityCard from 'components/cards/StaffEntityCard'
+import { useGetAllTheEntitiesQuery } from 'services/launchService'
+import { Puff } from 'react-loading-icons'
+import StaffEntityModal from 'components/modal/StaffEntityModal'
 import {
   useAddEntityMutation,
   useUpdateEntityMutation,
-} from "services/staffService";
-import { handleError } from "utils/globalFunctions";
-import { toast } from "react-hot-toast";
+} from 'services/staffService'
+import { handleError } from 'utils/globalFunctions'
+import { toast } from 'react-hot-toast'
 
 const StaffEntities = () => {
-  const [entities, setEntities] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [clickedEntity, setClickedEntity] = useState({});
-  const [cardAction, setCardAction] = useState("");
+  const [entities, setEntities] = useState([])
+  const [open, setOpen] = useState(false)
+  const [clickedEntity, setClickedEntity] = useState({})
+  const [cardAction, setCardAction] = useState('')
 
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
+  const layoutInfo = useSelector((store) => store.LayoutInfo)
+  const { sidebarWidth } = layoutInfo
 
-  const { data, isLoading, isSuccess, isError } = useGetAllTheEntitiesQuery();
-  const [updateEntity, updateState] = useUpdateEntityMutation();
-  const [addEntity, addState] = useAddEntityMutation();
+  const { data, isLoading, isSuccess, isError } = useGetAllTheEntitiesQuery()
+  const [updateEntity, updateState] = useUpdateEntityMutation()
+  const [addEntity, addState] = useAddEntityMutation()
 
   useEffect(() => {
     if (data) {
-      setEntities(data);
+      setEntities(data)
     }
-  }, [data]);
+  }, [data])
 
   const handleCardClick = (entity) => {
-    setCardAction("edit");
-    setOpen(true);
-    setClickedEntity(entity);
-  };
+    setCardAction('edit')
+    setOpen(true)
+    setClickedEntity(entity)
+  }
 
   // // This updates an existing entity
   // const handleEntity = async (formData) => {
@@ -78,43 +78,43 @@ const StaffEntities = () => {
       entityTimeline: formData?.timeline,
       entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
-    };
-  };
+    }
+  }
 
   const handleAddButton = () => {
-    setOpen(true);
-    setCardAction("add");
-  };
+    setOpen(true)
+    setCardAction('add')
+  }
 
   // This updates an existing entity
   const handleEntityAdd = async (formData) => {
-    let requiredData = getRequired(formData);
-    console.log(requiredData);
-    let response = await addEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
+    let requiredData = getRequired(formData)
+    console.log(requiredData)
+    let response = await addEntity(requiredData)
+    let data = response?.data
+    let error = response?.error
     if (data) {
-      toast.success("Entity added successfully");
+      toast.success('Entity added successfully')
     } else {
-      handleError(error);
+      handleError(error)
     }
-    console.log(response);
-  };
+    console.log(response)
+  }
 
   // This updates an existing entity
   const handleEntityUpdate = async (formData) => {
-    let requiredData = getRequired(formData);
-    console.log(requiredData);
-    let response = await updateEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
+    let requiredData = getRequired(formData)
+    console.log(requiredData)
+    let response = await updateEntity(requiredData)
+    let data = response?.data
+    let error = response?.error
     if (data) {
-      toast.success("Entity added successfully");
+      toast.success('Entity added successfully')
     } else {
-      handleError(error);
+      handleError(error)
     }
-    console.log(response);
-  };
+    console.log(response)
+  }
 
   return (
     <Container>
@@ -135,26 +135,32 @@ const StaffEntities = () => {
       )}
       <CardContainer>
         <CardWrapper>
-          {entities.map((entity, index) => (
-            <StaffEntityCard
-              key={index}
-              entityName={entity?.entityName}
-              entityCode={entity?.entityShortName}
-              shareholderType={entity?.entityDescription}
-              entityTimeline={entity?.entityTimeline}
-              entityType={entity?.entityType}
-              countryCode={entity?.entityCountry}
-              entityPackage={entity?.entityRequirements}
-              clickAction={() => handleCardClick(entity)}
-            />
-          ))}
+          {entities &&
+            [...entities]
+              .sort(
+                (a, b) =>
+                  a.entityCountry.charCodeAt(0) - b.entityCountry.charCodeAt(0),
+              )
+              .map((entity, index) => (
+                <StaffEntityCard
+                  key={index}
+                  entityName={entity?.entityName}
+                  entityCode={entity?.entityShortName}
+                  shareholderType={entity?.entityDescription}
+                  entityTimeline={entity?.entityTimeline}
+                  entityType={entity?.entityType}
+                  countryCode={entity?.entityCountry}
+                  entityPackage={entity?.entityRequirements}
+                  clickAction={() => handleCardClick(entity)}
+                />
+              ))}
           <StaffEntityModal
-            disableAll={cardAction === "edit" ? true : false}
+            disableAll={cardAction === 'edit' ? true : false}
             open={open}
             setOpen={setOpen}
             cardAction={cardAction}
             title={
-              cardAction === "edit" ? "Entity Information" : "Add New Entity"
+              cardAction === 'edit' ? 'Entity Information' : 'Add New Entity'
             }
             entityInfo={clickedEntity}
             submitAction={handleEntityUpdate}
@@ -163,17 +169,17 @@ const StaffEntities = () => {
         </CardWrapper>
       </CardContainer>
     </Container>
-  );
-};
+  )
+}
 
-export default StaffEntities;
+export default StaffEntities
 
 const Container = styled.div`
   display: flex;
   flex-flow: column;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
   padding-bottom: 40px;
-`;
+`
 const CardContainer = styled.div`
   border: 1px solid #edf1f7;
   border-top: 0;
@@ -182,7 +188,7 @@ const CardContainer = styled.div`
   height: 100%;
   padding-inline: 24px;
   padding-block: 40px;
-`;
+`
 const CardWrapper = styled.div`
   width: 100%;
   display: grid;
@@ -192,7 +198,7 @@ const CardWrapper = styled.div`
     grid-template-columns: auto auto auto;
     gap: 24px;
   }
-`;
+`
 const Loading = styled.div`
   display: flex;
   justify-content: center;
@@ -200,4 +206,4 @@ const Loading = styled.div`
   width: 100%;
   padding: 40px;
   height: ${({ height }) => height && height};
-`;
+`
