@@ -10,3 +10,7 @@ export { ReactComponent as RedTrash } from "./red-trash.svg";
 export { ReactComponent as MagGlass } from "./magGlass.svg";
 export { ReactComponent as DropDownArrow } from "./dropdownArrow.svg";
 export { CornerPetal } from "./CornerPetal";
+export { ReactComponent as ViewSvg } from "./view.svg";
+export { ReactComponent as EditGreySvg } from "./editGrey.svg";
+export { ReactComponent as DeleteRedSvg } from "./deleteRed.svg";
+export { ReactComponent as Close } from "./close.svg";
