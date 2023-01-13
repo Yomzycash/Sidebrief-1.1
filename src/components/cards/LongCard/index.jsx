@@ -12,13 +12,25 @@ import {
 import { ReactComponent as Case } from "asset/svg/briefCase.svg";
 import { ReactComponent as ArrowWhiteRight } from "asset/svg/arrow-white-right.svg";
 import { TextWithArrow } from "components/texts";
+import { useNavigate } from "react-router-dom";
 
 export const LongCard = ({
   title,
   body,
   notready, // used to determine if button should be disabled or not (value should be 'true' or 'false')
-  action, // function for action that should be performed on button click
+  action,
+  type,
+  code,
+  countryISO
+   // function for action that should be performed on button click
 }) => {
+  const navigate = useNavigate();
+	const launchInfo = {
+		launchCode: code,
+		registrationCountry: countryISO,
+		registrationType: type,
+	};
+
   const [buttonDisplayValue, setButtonDisplayValue] = useState("");
 
   const buttonRef = useRef();

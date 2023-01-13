@@ -64,7 +64,7 @@ const BusinessDetail = () => {
         navigate('/launch')
       }
     } else {
-      console.log('This block ran')
+      // console.log('This block ran')
       navigate('/launch')
       handleErrorHook(error)
     }
