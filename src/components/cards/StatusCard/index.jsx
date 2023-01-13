@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
 	Container,
 	TextContainer,
@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
 import { useViewPayLaunchMutation } from "services/launchService";
 import { Puff } from "react-loading-icons";
+import { navigateToDetailPage } from 'components/Tables/BusinessTable/constants';
 
 export const StatusCard = ({
 	name, // string
@@ -56,6 +57,7 @@ export const StatusCard = ({
 				onMouseEnter={() => setHover(true)}
 				onMouseLeave={() => setHover(false)}
 				hover={hover}
+				onClick={() => navigateToDetailPage(navigate, launchInfo)}
 			>
 				<TextContainer>
 					<Top>

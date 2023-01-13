@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Container, Body, Main, Recently } from "./styled";
-import TabNavBar from "components/TabNavBar/TabNavBar";
+import React, { useEffect } from 'react'
+import { Container, Body, Main, Recently } from './styled'
+import TabNavBar from 'components/TabNavBar/TabNavBar'
 import {
 	BusinessesChartCard,
 	LongCard,
@@ -156,7 +156,11 @@ const BusinessRegistration = (props) => {
 													? el.businessNames
 															.businessName1
 													: "No name"
-											}`}
+                        }`
+                      }
+                      type={el?.registrationType}
+                      code={el?.launchCode}
+                      countryISO={el?.registrationCountry}
 											status={getStatus(
 												el.registrationStatus
 											)}
@@ -207,4 +211,4 @@ const BusinessRegistration = (props) => {
 	);
 };
 
-export default BusinessRegistration;
+export default BusinessRegistration
