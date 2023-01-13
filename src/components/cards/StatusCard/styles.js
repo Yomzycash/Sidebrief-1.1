@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.div`
+	position: relative;
+`;
+
 export const Container = styled.div`
 	min-height: 74px;
 	background: #ffffff;
@@ -64,6 +68,10 @@ export const ThreeDotContainer = styled.button`
 	background: transparent;
 	border: none;
 	cursor: pointer;
+
+	position: absolute;
+	top: 24.5px;
+	right: 24px;
 `;
 
 export const Name = styled.h4`
@@ -99,7 +107,8 @@ export const ContextMenu = styled.div`
 `;
 
 export const ContextButton = styled.button`
-	flex: 1;
+	/* flex: 1; */
+	height: 50px;
 	border: none;
 	display: flex;
 	align-items: center;

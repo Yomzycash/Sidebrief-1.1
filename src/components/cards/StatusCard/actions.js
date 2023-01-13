@@ -1,7 +1,14 @@
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
+import { handleErrorHook } from "utils/hooks/staff";
 
-export const useActions = ({ setShowContext, navigate, setShowDelete }) => {
+export const useActions = ({
+	setShowContext,
+	navigate,
+	setShowDelete,
+	launchInfo,
+	viewPayLaunch,
+}) => {
 	const hideContext = () => {
 		setShowContext(false);
 	};
@@ -18,12 +25,13 @@ export const useActions = ({ setShowContext, navigate, setShowDelete }) => {
 		setShowContext((prev) => !prev);
 	};
 
-	const viewAction = (launchInfo) => {
+	const viewAction = () => {
 		hideContext();
-		navigateToDetailPage(launchInfo);
+		navigateToDetailPage();
 	};
 
-	const editAction = () => {
+	const editAction = async () => {
+		await handleEditNavigation();
 		hideContext();
 	};
 
@@ -32,12 +40,37 @@ export const useActions = ({ setShowContext, navigate, setShowDelete }) => {
 		showDeleteModal();
 	};
 
-	const navigateToDetailPage = (launchInfo) => {
+	const navigateToDetailPage = () => {
 		// set the launchInfo to store and localstorage
 		store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
 		localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
 		// navigate
 		navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
+	};
+
+	const checkPaymentStatus = async () => {
+		let viewResponse = await viewPayLaunch(launchInfo);
+		// console.log(viewResponse);
+		return viewResponse;
+	};
+
+	const handleEditNavigation = async () => {
+		let status = await checkPaymentStatus();
+		console.log(status);
+
+		let data = status?.data?.businessPayment;
+		let error = status?.error;
+
+		if (data) {
+			if (data.length === 0) {
+				navigate("/launch");
+			} else {
+				navigate("/launch/address");
+			}
+		} else {
+			// console.log("This block ran");
+			console.log(error);
+		}
 	};
 
 	return {
