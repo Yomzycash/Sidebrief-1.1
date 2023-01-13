@@ -1,6 +1,6 @@
-import React from "react";
-import { Oval } from "react-loading-icons";
-import { Container } from "./styles";
+import React from 'react'
+import { Oval } from 'react-loading-icons'
+import { Container } from './styles'
 
 export const CheckoutButton = ({
   text,
@@ -27,5 +27,5 @@ export const CheckoutButton = ({
         <span>{text}</span>
       )}
     </Container>
-  );
-};
+  )
+}
