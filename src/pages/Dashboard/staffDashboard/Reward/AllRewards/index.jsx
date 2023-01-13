@@ -23,6 +23,7 @@ import StaffRewardModal from "components/modal/StaffRewardModal";
 import { useAddRewardMutation } from "services/staffService";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
+import { useRef } from "react";
 
 const StaffAllRewards = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -33,10 +34,11 @@ const StaffAllRewards = () => {
   const [filteredReward, setFilteredReward] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const { data, isLoading, isError, isSuccess, refetch } =
-    useGetAllRewardsQuery();
+  const { data, isLoading, isError, error, refetch } = useGetAllRewardsQuery();
   const [category, setCategory] = useSearchParams();
   const [addReward, addState] = useAddRewardMutation();
+
+  let errorRef = useRef(true);
 
   useEffect(() => {
     setAllRewards(data);
@@ -49,6 +51,11 @@ const StaffAllRewards = () => {
     });
     const total = data?.length;
     localStorage.setItem("totalStaffRewards", JSON.stringify(total));
+
+    // if (isError && errorRef.current === true) {
+    //   handleError(error);
+    //   errorRef.current = false;
+    // }
   }, [data]);
 
   useEffect(() => {

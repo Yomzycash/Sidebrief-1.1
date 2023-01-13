@@ -53,14 +53,15 @@ const StaffReward = () => {
                   <LittleWrapper>
                     {" "}
                     <TopText>
-                      Get {selected?.rewardName} off your first year with{" "}
+                      {selected?.rewardName}
                       {selected?.rewardPartner}
                     </TopText>
                     <MiddleText>{selected?.rewardPartner}</MiddleText>
                   </LittleWrapper>
-                  <BottomText>
+                  {/* Do not remove, it will be needed later */}
+                  {/* <BottomText>
                     Created 12th August, 2022 by Esther Ashimolowo
-                  </BottomText>
+                  </BottomText> */}
                 </DetailWrappper>
               </LHS>
               <RHS>
@@ -88,9 +89,7 @@ const StaffReward = () => {
             />
           </SubHeader>
         </TopContainer>
-        {/* <BottomContainer> */}
         <Outlet />
-        {/* </BottomContainer> */}
         <ButtonContainer>
           <Button title="Update Changes" />
         </ButtonContainer>
