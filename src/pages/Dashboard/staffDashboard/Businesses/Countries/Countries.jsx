@@ -45,13 +45,16 @@ const Countries = () => {
   };
 
   let errorRef = useRef(true);
+
   useEffect(() => {
+    refetch();
     if (isError && errorRef.current === true) {
       handleError(error);
       errorRef.current = false;
     }
   }, []);
 
+  // Returns the data to be sent to the backend
   const getRequired = (formData) => {
     return {
       countryName: formData.country_name,
@@ -62,7 +65,7 @@ const Countries = () => {
     };
   };
 
-  // This updates an existing country
+  // This adds a new country
   const handleCountryAdd = async (formData) => {
     let requiredData = getRequired(formData);
     console.log(requiredData);
@@ -71,6 +74,7 @@ const Countries = () => {
     let error = response?.error;
     if (data) {
       toast.success("Country added successfully");
+      setOpen(false);
     } else {
       handleError(error);
     }
@@ -143,9 +147,15 @@ const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: auto auto auto;
   gap: 24px;
-  @media screen and (min-width: 1600px) {
+
+  @media screen and (min-width: 1400px) {
     grid-template-columns: auto auto auto auto;
-    gap: 24px;
+  }
+  @media screen and (max-width: 1120px) {
+    grid-template-columns: auto auto;
+  }
+  @media screen and (max-width: 800px) {
+    grid-template-columns: auto;
   }
 `;
 

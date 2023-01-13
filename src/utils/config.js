@@ -158,7 +158,7 @@ export const StaffCountrySchema = yup.object().shape({
   country_code: yup.string().required("Country code is a required field"),
   country_iso: yup.string().required("Country ISO is a required field"),
   currency: yup.string().required("Currency is a required field"),
-  flag: yup.string().required("Upload a flag image"),
+  flag: yup.string().required("Country flag is a requlired field "),
 });
 
 export const StaffEntitySchema = yup.object().shape({
@@ -175,6 +175,16 @@ export const StaffEntitySchema = yup.object().shape({
   shares: yup
     .number("Value must be a number")
     .required("Entity shares is a required field"),
+});
+
+export const StaffRewardSchema = yup.object().shape({
+  reward_name: yup.string().required("Reward name is a required field"),
+  partner: yup.string().required("Partner name is a required field"),
+  description: yup.string().required("Description is a required field"),
+  category: yup.string().required("Category is a required field"),
+  code: yup.string().required("Code is a required field"),
+  link: yup.string().required("Enter link to reward"),
+  image: yup.string().required("Enter link to reward image"),
 });
 
 export const sidebarLink = [
@@ -1268,4 +1278,16 @@ export const EntityCardDetails = [
     countryCode: "NGA",
     entityPackage: "Standard",
   },
+];
+
+// Entity type options
+export const entityTypes = [
+  { value: "Private", label: "Private" },
+  { value: "Public", label: "Public" },
+];
+
+// Entity requirement options
+export const entityRequirements = [
+  { value: "Standard", label: "Standard" },
+  { value: "Non-Standard", label: "Non-Standard" },
 ];

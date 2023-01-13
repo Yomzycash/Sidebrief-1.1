@@ -8,7 +8,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { useDeleteEntityMutation } from "services/staffService";
-import { StaffEntitySchema } from "utils/config";
+import {
+  entityRequirements,
+  entityTypes,
+  StaffEntitySchema,
+} from "utils/config";
 import { handleError } from "utils/globalFunctions";
 
 const StaffEntityModal = ({
@@ -20,7 +24,8 @@ const StaffEntityModal = ({
   entityInfo,
   submitAction,
   loading,
-  refetch,
+  handleEntityDelete,
+  deleteState,
 }) => {
   const [disable, setDisable] = useState(disableAll);
   const [entityCountries, setEntityCountries] = useState([
@@ -30,7 +35,6 @@ const StaffEntityModal = ({
     { value: "", label: "" },
   ]);
 
-  const [deleteEntity, deleteState] = useDeleteEntityMutation();
   const countries = useGetAllCountriesQuery();
 
   const {
@@ -42,39 +46,19 @@ const StaffEntityModal = ({
     resolver: yupResolver(StaffEntitySchema),
   });
 
-  // Entity type options
-  const entityTypes = [
-    { value: "Private", label: "Private" },
-    { value: "Public", label: "Public" },
-  ];
-
-  // Entity requirement options
-  const entityRequirements = [
-    { value: "Standard", label: "Standard" },
-    { value: "Non-Standard", label: "Non-Standard" },
-  ];
-
-  // Entity country options
-  // const entityCountries = [
-  //   { value: "NGA", label: "NGA" },
-  //   { value: "KEN", label: "KEN" },
-  // ];
-
-  // Entity currency options
-  // const entityCurrencies = [
-  //   { value: "NGN", label: "NGN" },
-  //   { value: "USD", label: "USD" },
-  // ];
-
+  // This is attached to entity type dropdown onChange
   const handleEntityTypeChange = (value) => {
     var string = Object.values(value)[0];
     setValue("type", string, { shouldValidate: true });
   };
 
+  // This is attached to entity requirements dropdown onChange
   const handleEntityReqChange = (value) => {
     var string = Object.values(value)[0];
     setValue("requirements", string, { shouldValidate: true });
   };
+
+  // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
     let currency = countries?.data?.filter(
@@ -86,6 +70,7 @@ const StaffEntityModal = ({
     setValue("currency", "", { shouldValidate: true });
   };
 
+  // This is attached to currency dropdown onChange
   const handleCurrencyChange = (value) => {
     var string = Object.values(value)[0];
     setValue("currency", string, { shouldValidate: true });
@@ -103,6 +88,7 @@ const StaffEntityModal = ({
     );
   }, [countries.data]);
 
+  // This populates the entity fields when an entity is clicked
   useEffect(() => {
     if (entityInfo && cardAction === "edit") {
       setValue("entity_name", entityInfo.entityName, { shouldValidate: true });
@@ -138,24 +124,6 @@ const StaffEntityModal = ({
     setDisable(disableAll);
   }, [entityInfo, cardAction]);
 
-  // This runs when the form gets submitted
-  // const submitAction = () => {};
-
-  // This runs when the delete icon is pressed
-  const handleEntityDelete = async (formData) => {
-    console.log(entityInfo);
-    let response = await deleteEntity(entityInfo);
-    console.log(response);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Entity deleted successfully");
-    } else {
-      handleError(error);
-    }
-    refetch();
-  };
-
   return (
     <Modal1
       handleSubmit={handleSubmit}
@@ -167,8 +135,8 @@ const StaffEntityModal = ({
       disable={disable}
       setDisable={setDisable}
       loading={loading}
-      entityInfo={entityInfo}
-      handleDelete={handleEntityDelete}
+      // entityInfo={entityInfo}
+      handleDelete={() => handleEntityDelete(entityInfo)}
       deleteState={deleteState}
     >
       <InputWithLabel
