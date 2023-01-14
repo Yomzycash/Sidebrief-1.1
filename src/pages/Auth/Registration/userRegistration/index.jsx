@@ -222,23 +222,15 @@ const UserRegistration = () => {
       </Registration>
 
       <OrWrapper>
-        <hr
-          style={{
-            borderColor: "#f4f4f4",
-          }}
-        />
+        <hr />
         <OrText> OR </OrText>
-        <hr
-          style={{
-            borderColor: "#f4f4f4",
-          }}
-        />
+        <hr />
       </OrWrapper>
       <Bottom>
         <TextsWithLink
           text={[
             {
-              text: "Create a ",
+              text: "Become a ",
               link: { text: "Service Partner", to: "/register/partner" },
             },
           ]}
