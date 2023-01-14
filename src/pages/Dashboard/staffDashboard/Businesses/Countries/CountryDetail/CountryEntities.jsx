@@ -14,6 +14,7 @@ import StaffEntityModal from "components/modal/StaffEntityModal";
 import { useState } from "react";
 import { useEffect } from "react";
 import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
 const CountryEntities = () => {
   const [entities, setEntities] = useState([]);
@@ -22,7 +23,7 @@ const CountryEntities = () => {
   const [cardAction, setCardAction] = useState("");
 
   const { ISO } = useParams();
-  const { data, isLoading } = useGetCountryEntitiesQuery(ISO);
+  const { data, isLoading, refetch } = useGetCountryEntitiesQuery(ISO);
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
 
@@ -63,9 +64,15 @@ const CountryEntities = () => {
   const handleEntityUpdate = async (formData) => {
     let requiredData = getRequired(formData);
     let response = await updateEntity(requiredData);
-    if (response.error) {
-      handleError(response.error);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
     }
+    refetch();
     console.log(response);
   };
 
@@ -78,7 +85,7 @@ const CountryEntities = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loader>
           ) : (
-            data.map((entity, index) => (
+            data?.map((entity, index) => (
               <StaffEntityCard
                 key={index}
                 entityName={entity?.entityName}
@@ -134,6 +141,7 @@ const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: auto auto;
   gap: 24px;
+
   @media screen and (min-width: 1900px) {
     grid-template-columns: auto auto auto;
     gap: 24px;
@@ -141,6 +149,7 @@ const CardWrapper = styled.div`
 `;
 
 const Loader = styled.div`
+  grid-column: 1/3;
   display: grid;
   place-items: center;
   width: 100%;

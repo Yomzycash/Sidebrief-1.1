@@ -1,8 +1,9 @@
 import HeaderDetail from "components/Header/HeaderDetail";
 import React, { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  useDeleteEntityMutation,
+  useDeleteCountryMutation,
   useGetSingleCountryQuery,
 } from "services/staffService";
 import styled from "styled-components";
@@ -11,21 +12,27 @@ import { handleError } from "utils/globalFunctions";
 const CountryDetailLayout = (pages) => {
   const [open, setOpen] = useState(false);
 
-  const [deleteEntity, deleteState] = useDeleteEntityMutation();
+  const [deleteCountry, deleteState] = useDeleteCountryMutation();
 
   const location = useLocation();
+  const navigate = useNavigate();
 
+  // Get country ISO from the current location path
   let pathArray = location.pathname.split("/");
-  let ISO = pathArray[pathArray.length - 2];
+  const ISO = pathArray[pathArray.length - 2];
 
-  const { data, isError, isSuccess } = useGetSingleCountryQuery(ISO);
+  const { data, isSuccess } = useGetSingleCountryQuery(ISO);
 
+  // This deletes an entity
   const handleEntityDel = async () => {
     if (isSuccess) {
-      let delResponse = await deleteEntity(data);
+      console.log(data);
+      let delResponse = await deleteCountry(data);
       let resData = delResponse?.data;
       let error = delResponse?.error;
-      if (data) {
+      if (resData) {
+        toast.success("Country deleted successfully");
+        navigate("/staff-dashboard/businesses/countries");
       } else {
         handleError(error);
       }

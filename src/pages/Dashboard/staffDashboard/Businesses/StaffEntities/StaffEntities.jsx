@@ -13,6 +13,7 @@ import { Puff } from "react-loading-icons";
 import StaffEntityModal from "components/modal/StaffEntityModal";
 import {
   useAddEntityMutation,
+  useDeleteEntityMutation,
   useUpdateEntityMutation,
 } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
@@ -27,9 +28,12 @@ const StaffEntities = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  const { data, isLoading, isSuccess, isError } = useGetAllTheEntitiesQuery();
+  // These communicate with the backend
+  const { data, isLoading, isSuccess, isError, refetch } =
+    useGetAllTheEntitiesQuery();
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
+  const [deleteEntity, deleteState] = useDeleteEntityMutation();
 
   useEffect(() => {
     if (data) {
@@ -43,28 +47,7 @@ const StaffEntities = () => {
     setClickedEntity(entity);
   };
 
-  // // This updates an existing entity
-  // const handleEntity = async (formData) => {
-  //   let requiredData = {
-  //     entityName: formData?.entity_name,
-  //     entityShortName: formData?.short_name,
-  //     entityType: formData?.type,
-  //     entityCode: formData?.code,
-  //     entityCountry: formData?.country,
-  //     entityFee: formData?.fee,
-  //     entityCurrency: formData?.currency,
-  //     entityDescription: formData?.description,
-  //     entityTimeline: formData?.timeline,
-  //     entityRequirements: formData?.requirement,
-  //     entityShares: formData?.shares,
-  //   };
-  //   let response = await updateEntity(requiredData);
-  //   if (response.error) {
-  //     handleError(response.error);
-  //   }
-  //   console.log(response);
-  // };
-
+  // Returns the data to be sent to the backend
   const getRequired = (formData) => {
     return {
       entityName: formData?.entity_name,
@@ -81,12 +64,13 @@ const StaffEntities = () => {
     };
   };
 
+  // This runs when add entity button is clicked
   const handleAddButton = () => {
     setOpen(true);
     setCardAction("add");
   };
 
-  // This updates an existing entity
+  // This adds a new entity
   const handleEntityAdd = async (formData) => {
     let requiredData = getRequired(formData);
     console.log(requiredData);
@@ -95,10 +79,11 @@ const StaffEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity added successfully");
+      setOpen(false);
     } else {
       handleError(error);
     }
-    console.log(response);
+    refetch();
   };
 
   // This updates an existing entity
@@ -109,11 +94,28 @@ const StaffEntities = () => {
     let data = response?.data;
     let error = response?.error;
     if (data) {
-      toast.success("Entity added successfully");
+      toast.success("Entity updated successfully");
+      setOpen(false);
     } else {
       handleError(error);
     }
+    refetch();
+  };
+
+  // This runs when the delete icon is pressed
+  const handleEntityDelete = async (entityInfo) => {
+    console.log(entityInfo);
+    let response = await deleteEntity(entityInfo);
     console.log(response);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity deleted successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
   };
 
   return (
@@ -135,19 +137,25 @@ const StaffEntities = () => {
       )}
       <CardContainer>
         <CardWrapper>
-          {entities.map((entity, index) => (
-            <StaffEntityCard
-              key={index}
-              entityName={entity?.entityName}
-              entityCode={entity?.entityShortName}
-              shareholderType={entity?.entityDescription}
-              entityTimeline={entity?.entityTimeline}
-              entityType={entity?.entityType}
-              countryCode={entity?.entityCountry}
-              entityPackage={entity?.entityRequirements}
-              clickAction={() => handleCardClick(entity)}
-            />
-          ))}
+          {entities &&
+            [...entities]
+              .sort(
+                (a, b) =>
+                  a.entityCountry.charCodeAt(0) - b.entityCountry.charCodeAt(0)
+              )
+              .map((entity, index) => (
+                <StaffEntityCard
+                  key={index}
+                  entityName={entity?.entityName}
+                  entityCode={entity?.entityShortName}
+                  shareholderType={entity?.entityDescription}
+                  entityTimeline={entity?.entityTimeline}
+                  entityType={entity?.entityType}
+                  countryCode={entity?.entityCountry}
+                  entityPackage={entity?.entityRequirements}
+                  clickAction={() => handleCardClick(entity)}
+                />
+              ))}
           <StaffEntityModal
             disableAll={cardAction === "edit" ? true : false}
             open={open}
@@ -157,8 +165,12 @@ const StaffEntities = () => {
               cardAction === "edit" ? "Entity Information" : "Add New Entity"
             }
             entityInfo={clickedEntity}
-            submitAction={handleEntityUpdate}
-            loading={updateState.isLoading}
+            submitAction={
+              cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
+            }
+            loading={updateState.isLoading || addState.isLoading}
+            deleteState={deleteState}
+            handleEntityDelete={handleEntityDelete}
           />
         </CardWrapper>
       </CardContainer>

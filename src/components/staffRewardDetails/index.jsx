@@ -21,7 +21,7 @@ const StaffRewardDetails = ({ selectedReward }) => {
               <Label>name</Label>
               <TextWrapper>
                 <Text>
-                  Get {selected?.rewardName} off your first year with{" "}
+                  {selected?.rewardName}
                   {selected?.rewardPartner}
                 </Text>
               </TextWrapper>
