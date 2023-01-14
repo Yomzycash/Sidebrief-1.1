@@ -55,9 +55,11 @@ export const OrWrapper = styled.div`
   gap: 24px;
   padding: 24px;
   hr {
-    width: 45%;
+    width: 40%;
     height: 0.1px;
     margin-top: 6px;
+    color: #f4f4f4;
+    opacity: 0.2;
   }
 `;
 export const OrText = styled.p`

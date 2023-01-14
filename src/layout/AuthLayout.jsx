@@ -3,6 +3,9 @@ import styled from "styled-components";
 import Illustration from "../asset/images/Register_illustration.png";
 import { ReactComponent as SmallLogo } from "asset/svg/smallLogo.svg";
 import { Link } from "react-router-dom";
+import { LogoNav } from "components/navbar";
+
+import SidebriefLogo1 from "../asset/images/SidebriefLogo.png";
 
 const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
   return (
@@ -29,6 +32,16 @@ const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
         </LayoutLeftContent>
       </LayoutLeft>
       <LayoutRight hideLeftAt={hideLeftAt}>
+        <LogoContainer>
+          <img
+            src={SidebriefLogo1}
+            alt="Sidebrief logo"
+            style={{ justifyContent: "center", alignItems: "center" }}
+            // img_maxwidth={img_maxwidth}
+            // img_minwidth={img_minwidth}
+            // imgwidth={imgwidth}
+          />
+        </LogoContainer>
         <div>{children}</div>
       </LayoutRight>
     </Layout>
@@ -40,7 +53,7 @@ export default AuthLayout;
 const Layout = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  background-color: #fcfcfc;
+  background-color: #f9fafb;
   height: 100%;
 `;
 
@@ -53,6 +66,7 @@ const LayoutLeft = styled.div`
 
   width: 50%;
   height: 100vh;
+  display: none;
   @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
     display: none;
   }
@@ -69,14 +83,15 @@ const LayoutLeftContent = styled.div`
 
 const LayoutRight = styled.div`
   display: flex;
+  flex-flow: column;
   align-items: center;
   justify-content: center;
   flex: 1;
-  width: 50%;
+  width: 100%;
   /* margin: 0 1.3rem; */
   > div {
-    width: clamp(570px, 52%, 100%);
-    margin: 2rem auto 63px;
+    width: clamp(566px, 40%, 100%);
+    margin: 1rem auto 63px;
     @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
       width: 90%;
     }
@@ -110,4 +125,11 @@ const SpanText = styled.p`
   font-size: 16px;
   font-weight: 400;
   color: #00a2d4;
+`;
+
+const LogoContainer = styled.div`
+  justify-content: center;
+  align-items: center;
+  padding: 0 auto;
+  display: flex;
 `;
