@@ -5,10 +5,7 @@ import Modal1 from "layout/modal1";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { useAddCountryMutation } from "services/staffService";
 import { StaffCountrySchema } from "utils/config";
-import { handleError } from "utils/globalFunctions";
 
 const StaffCountryModal = ({
   cardAction,
@@ -17,10 +14,11 @@ const StaffCountryModal = ({
   disableAll,
   title,
   countryInfo,
+  submitAction,
+  loading,
+  $hideIcons,
 }) => {
   const [disable, setDisable] = useState(disableAll);
-
-  const [addCountry, addState] = useAddCountryMutation();
 
   console.log(countryInfo);
 
@@ -62,27 +60,6 @@ const StaffCountryModal = ({
     setDisable(disableAll);
   }, [countryInfo]);
 
-  // This runs when the form gets submitted
-  const submitAction = async (formData) => {
-    let requiredData = {
-      countryName: formData.country_name,
-      countryCode: formData.country_code,
-      countryCurrency: formData.currency,
-      countryISO: formData.country_iso,
-      countryFlag: formData.flag,
-    };
-    let response = await addCountry(requiredData);
-
-    let data = response?.data;
-    let error = response?.error;
-
-    if (data) {
-      toast.success("Country added successfully");
-    } else {
-      handleError(error);
-    }
-  };
-
   return (
     <Modal1
       handleSubmit={handleSubmit}
@@ -93,8 +70,9 @@ const StaffCountryModal = ({
       setOpen={setOpen}
       disable={disable}
       setDisable={setDisable}
-      loading={addState.isLoading}
+      loading={loading}
       countryInfo={countryInfo}
+      $hideIcons={$hideIcons}
     >
       <InputWithLabel
         label="Country Name"

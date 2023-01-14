@@ -125,7 +125,7 @@ export const staffApi = createApi({
     deleteEntity: builder.mutation({
       query: (data) => ({
         url: "/entities",
-        method: "DEL",
+        method: "DELETE",
         body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -164,7 +164,46 @@ export const staffApi = createApi({
     deleteCountry: builder.mutation({
       query: (data) => ({
         url: "/countries",
-        method: "DEL",
+        method: "DELETE",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Add a reward
+    addReward: builder.mutation({
+      query: (data) => ({
+        url: "/reward/create",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Modify a reward
+    updateReward: builder.mutation({
+      query: (data) => ({
+        url: "/reward/update",
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // Delete a reward
+    deleteReward: builder.mutation({
+      query: (data) => ({
+        url: "/reward/remove",
+        method: "DELETE",
         body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -197,4 +236,8 @@ export const {
   useAddCountryMutation,
   useUpdateCountryMutation,
   useDeleteCountryMutation,
+
+  useAddRewardMutation,
+  useUpdateRewardMutation,
+  useDeleteRewardMutation,
 } = staffApi;

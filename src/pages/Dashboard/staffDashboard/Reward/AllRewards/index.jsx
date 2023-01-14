@@ -20,6 +20,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { Puff } from "react-loading-icons";
 import StaffRewardModal from "components/modal/StaffRewardModal";
+import { useAddRewardMutation } from "services/staffService";
+import { toast } from "react-hot-toast";
+import { handleError } from "utils/globalFunctions";
+import { useRef } from "react";
 
 const StaffAllRewards = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -30,8 +34,11 @@ const StaffAllRewards = () => {
   const [filteredReward, setFilteredReward] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+  const { data, isLoading, isError, error, refetch } = useGetAllRewardsQuery();
   const [category, setCategory] = useSearchParams();
+  const [addReward, addState] = useAddRewardMutation();
+
+  let errorRef = useRef(true);
 
   useEffect(() => {
     setAllRewards(data);
@@ -44,6 +51,11 @@ const StaffAllRewards = () => {
     });
     const total = data?.length;
     localStorage.setItem("totalStaffRewards", JSON.stringify(total));
+
+    // if (isError && errorRef.current === true) {
+    //   handleError(error);
+    //   errorRef.current = false;
+    // }
   }, [data]);
 
   useEffect(() => {
@@ -69,6 +81,35 @@ const StaffAllRewards = () => {
 
   const handleCategory = (category) => {
     setCategory({ category });
+  };
+
+  // Returns the data to be sent to the backend
+  const getRequired = (formData) => {
+    return {
+      rewardName: formData.reward_name,
+      rewardDescription: formData.description,
+      rewardPartner: formData.partner,
+      rewardCode: formData.code,
+      rewardCategory: formData.category,
+      rewardImage: formData.image,
+      rewardLink: formData.link,
+    };
+  };
+
+  // This runs when the form gets submitted
+  const submitAction = async (formData) => {
+    let requiredData = getRequired(formData);
+    let response = await addReward(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Reward added successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
   };
 
   return (
@@ -110,7 +151,12 @@ const StaffAllRewards = () => {
             ))}
         </RewardContainer>
       )}
-      <StaffRewardModal setOpen={setOpen} open={open} />
+      <StaffRewardModal
+        setOpen={setOpen}
+        open={open}
+        submitAction={submitAction}
+        loading={addState.isLoading}
+      />
     </BodyRight>
   );
 };

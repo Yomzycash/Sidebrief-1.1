@@ -28,6 +28,7 @@ const Modal1 = ({
   loading,
   handleDelete,
   deleteState,
+  $hideIcons,
 }) => {
   // Called when closed button is clicked
   const handleClose = () => {
@@ -46,10 +47,11 @@ const Modal1 = ({
           <Title>
             <p>{title}</p>
             <TopIcons>
-              {cardAction === "edit" && (
+              {!$hideIcons && cardAction === "edit" && (
                 <EditIcon width={20} onClick={handleDisable} />
               )}
-              {cardAction === "edit" &&
+              {!$hideIcons &&
+                cardAction === "edit" &&
                 (deleteState?.isLoading ? (
                   <SpinningCircles
                     stroke="#00A2D4"

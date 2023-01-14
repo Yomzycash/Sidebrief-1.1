@@ -11,12 +11,14 @@ import CountryCard from "components/cards/CountryCard";
 import {
   useAddCountryMutation,
   useGetAllCountriesQuery,
+  useUpdateCountryMutation,
 } from "services/staffService";
 import { Puff } from "react-loading-icons";
 import StaffEntityModal from "components/modal/StaffEntityModal";
 import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
+import { toast } from "react-hot-toast";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
@@ -25,6 +27,7 @@ const Countries = () => {
   // Exchange information with the backend
   const { data, isLoading, isSuccess, isError, error, refetch } =
     useGetAllCountriesQuery();
+  const [addCountry, addState] = useAddCountryMutation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,12 +45,41 @@ const Countries = () => {
   };
 
   let errorRef = useRef(true);
+
   useEffect(() => {
+    refetch();
     if (isError && errorRef.current === true) {
       handleError(error);
       errorRef.current = false;
     }
   }, []);
+
+  // Returns the data to be sent to the backend
+  const getRequired = (formData) => {
+    return {
+      countryName: formData.country_name,
+      countryCode: formData.country_code,
+      countryCurrency: formData.currency,
+      countryISO: formData.country_iso,
+      countryFlag: formData.flag,
+    };
+  };
+
+  // This adds a new country
+  const handleCountryAdd = async (formData) => {
+    let requiredData = getRequired(formData);
+    console.log(requiredData);
+    let response = await addCountry(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Country added successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
+  };
 
   return (
     <Container SidebarWidth={sidebarWidth}>
@@ -83,8 +115,9 @@ const Countries = () => {
           <StaffCountryModal
             open={open}
             setOpen={setOpen}
-            loading={isLoading}
             cardAction={cardAction}
+            submitAction={handleCountryAdd}
+            loading={addState.isLoading}
           />
         </CardWrapper>
       </CardContainer>
@@ -114,9 +147,15 @@ const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: auto auto auto;
   gap: 24px;
-  @media screen and (min-width: 1600px) {
+
+  @media screen and (min-width: 1400px) {
     grid-template-columns: auto auto auto auto;
-    gap: 24px;
+  }
+  @media screen and (max-width: 1120px) {
+    grid-template-columns: auto auto;
+  }
+  @media screen and (max-width: 800px) {
+    grid-template-columns: auto;
   }
 `;
 
