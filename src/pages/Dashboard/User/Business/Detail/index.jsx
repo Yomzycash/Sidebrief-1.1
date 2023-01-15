@@ -17,6 +17,8 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { handleErrorHook } from 'utils/hooks/staff'
+import { setLaunchResponse } from 'redux/Slices'
+import { store } from 'redux/Store'
 
 const BusinessDetail = () => {
   const [open, setOpen] = useState(false)
@@ -37,13 +39,12 @@ const BusinessDetail = () => {
     setOpen(false)
   }
 
+  let requiredInfo = {
+    launchCode: data?.launchCode,
+    registrationCountry: data?.registrationCountry,
+    registrationType: data?.registrationType,
+  }
   const checkPaymentStatus = async () => {
-    let requiredInfo = {
-      launchCode: data?.launchCode,
-      registrationCountry: data.registrationCountry,
-      registrationType: data.registrationType,
-    }
-
     let viewResponse = await viewPayLaunch(requiredInfo)
     console.log(viewResponse)
     return viewResponse
@@ -57,6 +58,7 @@ const BusinessDetail = () => {
     let error = status?.error
     console.log('femi')
     console.log(data?.paymentStatus === 'successful')
+    store.dispatch(setLaunchResponse(requiredInfo))
     if (data) {
       if (data?.paymentStatus === 'successful') {
         navigate('/launch/address')
