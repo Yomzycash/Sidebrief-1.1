@@ -117,7 +117,8 @@ const TopWrapper = styled.div`
   gap: 16px;
 `;
 const CountryImageWrapper = styled.div`
-  width: 24px;
+  min-width: 24px;
+  max-width: 24px;
   height: 24px;
 
   background: #ffffff;

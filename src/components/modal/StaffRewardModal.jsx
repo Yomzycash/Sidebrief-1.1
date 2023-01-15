@@ -1,4 +1,4 @@
-import { InputWithLabel } from "components/input";
+import { DropDown, InputWithLabel } from "components/input";
 import Modal1 from "layout/modal1";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -6,12 +6,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import NumberInput from "components/input/phoneNumberInput";
 import { useState } from "react";
-import { StaffCountrySchema } from "utils/config";
+import { StaffCountrySchema, StaffRewardSchema } from "utils/config";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
+import { useGetAllRewardsQuery } from "services/RewardService";
+import { useEffect } from "react";
+import { useAddRewardMutation } from "services/staffService";
 
-const StaffRewardModal = ({ cardAction, open, setOpen }) => {
-  //  This populates the phone number when edit is clicked
-  const [defaultPhone] = useState(cardAction === "edit" ? "" : "");
+const StaffRewardModal = ({
+  cardAction,
+  open,
+  setOpen,
+  loading,
+  submitAction,
+}) => {
+  const [categories, setCategories] = useState([{ value: "", label: "" }]);
+
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
 
   const {
     handleSubmit,
@@ -19,11 +29,26 @@ const StaffRewardModal = ({ cardAction, open, setOpen }) => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(StaffCountrySchema),
+    resolver: yupResolver(StaffRewardSchema),
   });
 
-  // This runs when the form gets submitted
-  const submitAction = () => {};
+  useEffect(() => {
+    const categories = data
+      ? data.map((element) => element.rewardCategory)
+      : [];
+
+    setCategories(
+      categories
+        ? [...new Set(categories)].map((cat) => ({ value: cat, label: cat }))
+        : []
+    );
+  }, [data]);
+
+  const handleCategoryChange = (value) => {
+    let category = Object.values(value)[0];
+    console.log(category);
+    setValue("category", category, { shouldValidate: true });
+  };
 
   return (
     <Modal1
@@ -33,68 +58,96 @@ const StaffRewardModal = ({ cardAction, open, setOpen }) => {
       title="Add New Country"
       open={open}
       setOpen={setOpen}
+      loading={loading}
     >
+      <DetailedSection>
+        <InputWithLabel
+          label="Name"
+          labelStyle="input-label"
+          placeholder="Enter reward name"
+          type="text"
+          name="reward_name"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.reward_name?.message}
+        />
+        <InputWithLabel
+          label="Partner"
+          labelStyle="input-label"
+          placeholder="Enter partner name"
+          type="text"
+          name="partner"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.partner?.message}
+        />
+      </DetailedSection>
+
       <InputWithLabel
-        label="Country Name"
+        label="Description"
         labelStyle="input-label"
-        placeholder="Enter country name"
+        placeholder="Enter reward description"
         type="text"
-        name="country_name"
+        name="description"
         inputClass="input-class"
         containerStyle="input-container-class"
         register={register}
-        errorMessage={errors.country_name?.message}
+        errorMessage={errors.description?.message}
       />
-      <DetailedSection>
-        <InputWithLabel
-          label="Country Code"
-          labelStyle="input-label"
-          placeholder="+234"
-          type="number"
-          name="country_code"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.country_code?.message}
-        />
 
-        <InputWithLabel
-          label="Country ISO"
+      <DetailedSection>
+        <DropDown
+          containerStyle={{ margin: 0, marginBottom: "24px" }}
+          label="Category"
           labelStyle="input-label"
-          containerStyle="input-container-class"
+          placeholder="Select Category"
+          options={categories}
+          onChange={handleCategoryChange}
+          errorMessage={errors.category?.message}
+          cardAction={cardAction}
+          // defaultValue={}
+          fontSize="clamp(12px, 1.2vw, 14px)"
+          height="40px"
+          // disable={disable}
+        />
+        <InputWithLabel
+          label="Code"
+          placeholder="Enter reward code"
+          labelStyle="input-label"
           type="text"
-          placeholder="NGA"
-          name="country_iso"
+          name="code"
           inputClass="input-class"
+          containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.email?.message}
+          errorMessage={errors.code?.message}
         />
       </DetailedSection>
+
       <DetailedSection>
         <InputWithLabel
-          label="Currency"
-          placeholder="Naira"
+          label="Link"
+          placeholder="Enter link to reward"
           labelStyle="input-label"
           type="text"
-          name="currency"
+          name="link"
           inputClass="input-class"
           containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.currency?.message}
+          errorMessage={errors.link?.message}
         />
-
-        {/* <InputWithLabel
-          label="Country Flag"
+        <InputWithLabel
+          label="Image"
+          placeholder="Enter link to reward image"
           labelStyle="input-label"
-          containerStyle="input-container-class"
           type="text"
-          placeholder="NGA"
-          name="country_iso"
+          name="image"
           inputClass="input-class"
+          containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.email?.message}
-        /> */}
-        <KYCFileUpload TopText="Country Flag" style={{ width: "100%" }} />
+          errorMessage={errors.image?.message}
+        />
       </DetailedSection>
     </Modal1>
   );

@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useGetSingleCountryQuery } from "services/staffService";
+import {
+  useGetSingleCountryQuery,
+  useUpdateCountryMutation,
+} from "services/staffService";
 import { useParams } from "react-router-dom";
 import { Puff } from "react-loading-icons";
 import StaffCountryModal from "components/modal/StaffCountryModal";
+import { toast } from "react-hot-toast";
+import { handleError } from "utils/globalFunctions";
 
 const CountryDetails = ({
   date = "12th August, 2022",
@@ -12,11 +17,34 @@ const CountryDetails = ({
   const [open, setOpen] = useState(false);
 
   const { ISO } = useParams();
-  const { data, isLoading } = useGetSingleCountryQuery(ISO);
+  const { data, isLoading, refetch } = useGetSingleCountryQuery(ISO);
+  const [updateCountry, updateState] = useUpdateCountryMutation();
 
-  // if (!isLoading) {
-  // 	console.log(data);
-  // }
+  const getRequired = (formData) => {
+    return {
+      countryName: formData.country_name,
+      countryCode: formData.country_code,
+      countryCurrency: formData.currency,
+      countryISO: formData.country_iso,
+      countryFlag: formData.flag,
+    };
+  };
+
+  // This updates an existing country
+  const handleCountryUpdate = async (formData) => {
+    let requiredData = getRequired(formData);
+    console.log(requiredData);
+    let response = await updateCountry(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Country updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
+  };
 
   return (
     <Container>
@@ -84,11 +112,13 @@ const CountryDetails = ({
       <StaffCountryModal
         open={open}
         setOpen={setOpen}
-        // loading={isLoading}
         cardAction="edit"
         countryInfo={data}
         disableAll={false}
         title="Update Country Information"
+        submitAction={handleCountryUpdate}
+        loading={updateState.isLoading}
+        $hideIcons
       />
     </Container>
   );
