@@ -38,7 +38,7 @@ const BusinessAddress = () => {
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse,
   )
-  console.log(launchResponse)
+  
 
   const address = useViewBusinessAddressQuery(launchResponse, {
     refetchOnMountOrArgChange: true,
@@ -109,7 +109,7 @@ const BusinessAddress = () => {
         addressEmail: data.email,
       },
     }
-    console.log(address)
+ 
     console.log(requiredAddressData)
 
     const response = address.currentData.businessAddress
