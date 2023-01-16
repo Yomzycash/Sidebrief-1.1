@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: BR Firma;
+  /* max-width: 1600px; */
   /* font-family: BR Firma; */
 }
 

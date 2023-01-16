@@ -54,7 +54,7 @@ const Layout = styled.div`
   display: flex;
   flex-flow: row nowrap;
   background-color: #f9fafb;
-  height: 100%;
+  /* height: 110vh; */
 `;
 
 const LayoutLeft = styled.div`
@@ -63,7 +63,6 @@ const LayoutLeft = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 50%;
   height: 100vh;
   display: none;
@@ -88,10 +87,13 @@ const LayoutRight = styled.div`
   justify-content: center;
   flex: 1;
   width: 100%;
+  height: 100%;
   /* margin: 0 1.3rem; */
   > div {
-    width: clamp(566px, 40%, 100%);
+    width: clamp(566px, 30%, 100%);
+    /* max-width: 566px; */
     margin: 1rem auto 63px;
+    padding: 10px;
     @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
       width: 90%;
     }

@@ -146,20 +146,25 @@ const SignIn = () => {
               disabled={isLoading || staffState.isLoading}
             />
           </Body>
-          <Bottom>
-            <TextsWithLink
-              text={[
-                {
-                  text: "Don't have an account? ",
-                  link: { text: "Sign Up", to: "/register" },
-                },
-              ]}
-              // $mobileResponsive
-            />
-          </Bottom>
         </Form>
         <AppFeedback subProject="Sign In" />
       </Registration>
+      <OrWrapper>
+        <hr />
+        <OrText> OR </OrText>
+        <hr />
+      </OrWrapper>
+      <Bottom>
+        <TextsWithLink
+          text={[
+            {
+              text: "Don't have an account? ",
+              link: { text: "Sign Up", to: "/register" },
+            },
+          ]}
+          // $mobileResponsive
+        />
+      </Bottom>
     </AuthLayout>
   );
 };
@@ -198,4 +203,26 @@ const Body = styled.div`
 `;
 const Bottom = styled.div`
   display: flex;
+  flex-flow: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 150px;
+`;
+const OrWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  hr {
+    width: 40%;
+    height: 0.1px;
+    margin-top: 6px;
+    color: #f4f4f4;
+    opacity: 0.2;
+  }
+`;
+const OrText = styled.p`
+  font-weight: 400;
+  font-size: 14px;
+  color: #959697;
 `;

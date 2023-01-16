@@ -6,6 +6,7 @@ import {
   Form,
   OrText,
   OrWrapper,
+  QuestionWrap,
   Registration,
   TestBlock,
 } from "./styles";
@@ -216,6 +217,17 @@ const UserRegistration = () => {
               loading={isLoading || staffState.isLoading}
               disabled={isLoading || staffState.isLoading}
             />
+            <QuestionWrap>
+              <TextsWithLink
+                text={[
+                  {
+                    text: "Have an account? ",
+                    link: { text: "Sign In", to: "/login" },
+                  },
+                ]}
+                // $mobileResponsive
+              />
+            </QuestionWrap>
           </Body>
         </Form>
         <AppFeedback subProject="User registration" />
