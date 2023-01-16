@@ -14,9 +14,9 @@ import {
 	useGetSubmittedLaunchQuery,
 	useGetAllUsersQuery,
 } from "services/staffService";
-import { subMonths, isWithinInterval, compareAsc } from "date-fns";
-import numeral from "numeral";
 import { StaffContainer, StatusCardContainer } from "./styled";
+import { compareAsc } from "date-fns";
+import { ParseUsers, getPercentage } from "utils/staffHelper";
 
 const StaffDashboard = (props) => {
 	const [allApplications, setAllApplications] = useState([]);
@@ -48,7 +48,6 @@ const StaffDashboard = (props) => {
 					)
 					.slice(0, 30)
 					.map((application, index) => {
-						console.log(application.registrationStatus);
 						return {
 							id: index + 1,
 							name:
@@ -67,56 +66,6 @@ const StaffDashboard = (props) => {
 	useEffect(() => {
 		setLaunchToUser(ParseUsers(allUsers?.data?.users || []));
 	}, [allUsers?.data?.users]);
-
-	// I am filtering last month data on the frontend, can slow things down as data increases, would advice backend
-	const getLastMonthDataLength = (array) => {
-		const today = new Date();
-		const priorMonth = subMonths(today, 1);
-
-		array = array ? array : [];
-
-		return array.filter((item) =>
-			isWithinInterval(new Date(item.createdAt), {
-				start: priorMonth,
-				end: today,
-			})
-		);
-	};
-
-	const calculatePercentageIncrease = (total, number) => {
-		return (number / total) * 100;
-	};
-
-	const getPercentage = (array) => {
-		// console.log(array);
-
-		return numeral(
-			calculatePercentageIncrease(
-				array?.length,
-				getLastMonthDataLength(array).length
-			)
-		).format("0[.]0");
-	};
-
-	const ParseUsers = (usersArray) => {
-		let launchToOwner = new Map();
-
-		for (const user of usersArray) {
-			const launches = [
-				...user.draft_launch_requests,
-				...user.completed_launch_requests,
-				...user.submitted_launch_requests,
-			];
-			for (const launch of launches) {
-				launchToOwner.set(
-					launch,
-					`${user.first_name} ${user.last_name}`
-				);
-			}
-		}
-
-		return launchToOwner;
-	};
 
 	// if (!allLaunches.isLoading && !allUsers.isLoading) {
 	// 	console.log(allLaunches?.data);
@@ -177,7 +126,7 @@ const StaffDashboard = (props) => {
 			</DashboardSection>
 			<DashboardSection>
 				<BusinessesChartCard analytics={analytics} staff />
-				<AnalyticsChart />
+				<AnalyticsChart data={allLaunches?.data || []} />
 			</DashboardSection>
 			<DashboardSection>
 				<ApplicationTable data={allApplications} />
