@@ -156,7 +156,7 @@ const Registration = styled.div`
   flex-flow: column;
   height: max-content;
   gap: 8px;
-
+  margin-bottom: 150px;
   background-color: white;
   padding: 59px;
   border: 1px solid #edf1f7;
