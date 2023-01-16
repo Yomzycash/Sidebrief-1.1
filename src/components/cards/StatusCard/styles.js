@@ -116,9 +116,12 @@ export const ContextButton = styled.button`
 	padding: 16px;
 	background-color: #ffffff;
 
-	&:nth-child(even) {
+	&:not(:last-child) {
+		border-bottom: 1px solid #edf1f7;
+	}
+
+	&:hover {
 		background-color: #fafafa;
-		border-inline: 1px solid #edf1f7;
 	}
 
 	font-family: "BR Firma";
