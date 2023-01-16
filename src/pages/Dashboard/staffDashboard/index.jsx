@@ -12,19 +12,22 @@ import {
 	useGetDraftLaunchQuery,
 	useGetRejectedLaunchQuery,
 	useGetSubmittedLaunchQuery,
+	useGetAllUsersQuery,
 } from "services/staffService";
-import { subMonths, isWithinInterval } from "date-fns";
+import { subMonths, isWithinInterval, compareAsc } from "date-fns";
 import numeral from "numeral";
 import { StaffContainer, StatusCardContainer } from "./styled";
 
 const StaffDashboard = (props) => {
 	const [allApplications, setAllApplications] = useState([]);
+	const [launchToUser, setLaunchToUser] = useState();
 
 	const allLaunches = useGetAllLaunchQuery();
 	const allSubmittedLaunches = useGetSubmittedLaunchQuery();
 	const allApprovedLaunches = useGetApprovedLaunchQuery();
 	const allRejectedLaunches = useGetRejectedLaunchQuery();
 	const allDraftLaunches = useGetDraftLaunchQuery();
+	const allUsers = useGetAllUsersQuery();
 
 	// const location = useLocation();
 
@@ -37,22 +40,33 @@ const StaffDashboard = (props) => {
 
 	// Get all users submitted launch requests
 	useEffect(() => {
-		// console.log(allSubmittedLaunches?.data);
 		setAllApplications(
-			allSubmittedLaunches &&
-				allSubmittedLaunches?.data?.map((application, index) => {
-					return {
-						id: index + 1,
-						name: "Ismael Hassan",
-						//TODO: we are not getting the registerers name from the backend
-						type: application.registrationType,
-						country: application.registrationCountry,
-						status: application.registrationStatus,
-						date: application?.createdAt.slice(0, 10),
-					};
-				})
+			allLaunches.data &&
+				[...allLaunches?.data]
+					.sort((a, b) =>
+						compareAsc(new Date(a.createdAt), new Date(b.createdAt))
+					)
+					.slice(0, 30)
+					.map((application, index) => {
+						console.log(application.registrationStatus);
+						return {
+							id: index + 1,
+							name:
+								launchToUser.get(`${application.launchCode}`) ||
+								"Tunde Ednot",
+							//TODO: we are not getting the registerers name from the backend
+							type: application.registrationType,
+							country: application.registrationCountry,
+							status: application.registrationStatus,
+							date: application?.createdAt.slice(0, 10),
+						};
+					})
 		);
-	}, [allSubmittedLaunches?.data, allSubmittedLaunches]);
+	}, [allLaunches, launchToUser]);
+
+	useEffect(() => {
+		setLaunchToUser(ParseUsers(allUsers?.data?.users || []));
+	}, [allUsers?.data?.users]);
 
 	// I am filtering last month data on the frontend, can slow things down as data increases, would advice backend
 	const getLastMonthDataLength = (array) => {
@@ -84,9 +98,45 @@ const StaffDashboard = (props) => {
 		).format("0[.]0");
 	};
 
-	// if (!allLaunches.isLoading) {
-	// 	console.log(getLastMonthDataLength(allLaunches?.data));
+	const ParseUsers = (usersArray) => {
+		let launchToOwner = new Map();
+
+		for (const user of usersArray) {
+			const launches = [
+				...user.draft_launch_requests,
+				...user.completed_launch_requests,
+				...user.submitted_launch_requests,
+			];
+			for (const launch of launches) {
+				launchToOwner.set(
+					launch,
+					`${user.first_name} ${user.last_name}`
+				);
+			}
+		}
+
+		return launchToOwner;
+	};
+
+	// if (!allLaunches.isLoading && !allUsers.isLoading) {
+	// 	console.log(allLaunches?.data);
+	// 	console.log(ParseUsers(allUsers?.data?.users || []));
 	// }
+
+	const analytics = {
+		title: "User Analytics",
+		options: ["All time", 1, 2, 3, 4, 5, 6, 7],
+		status1: {
+			text: "Total Users",
+			total: allUsers?.data?.users.length || 0,
+			color: "rgba(255, 255, 255, 0.4)",
+		},
+		status2: {
+			text: "Registrations",
+			total: allLaunches?.data?.length || 0,
+			color: "#ffffff",
+		},
+	};
 
 	return (
 		<StaffContainer>
@@ -137,18 +187,3 @@ const StaffDashboard = (props) => {
 };
 
 export default StaffDashboard;
-
-const analytics = {
-	title: "User Analytics",
-	options: ["All time", 1, 2, 3, 4, 5, 6, 7],
-	status1: {
-		text: "Total Users",
-		total: 825,
-		color: "rgba(255, 255, 255, 0.4)",
-	},
-	status2: {
-		text: "Registrations",
-		total: 450,
-		color: "#ffffff",
-	},
-};
