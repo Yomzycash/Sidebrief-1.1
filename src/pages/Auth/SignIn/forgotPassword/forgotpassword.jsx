@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import * as yup from "yup";
 import { useSendResetPasswordCodeMutation } from "services/authService";
+import AppFeedback from "components/AppFeedback";
 
 const schema = yup.object().shape({
   email: yup
@@ -141,6 +142,23 @@ const ForgotPassword = () => {
           </Bottom> */}
         </Form>
       </Registration>
+      <OrWrapper>
+        <hr />
+        <OrText> OR </OrText>
+        <hr />
+      </OrWrapper>
+      <Bottom>
+        <TextsWithLink
+          text={[
+            {
+              text: "Remember your password? ",
+              link: { text: "Sign Up", to: "/login" },
+            },
+          ]}
+          // $mobileResponsive
+        />
+      </Bottom>
+      <AppFeedback subProject="Forgot Password" />
     </AuthLayout>
   );
 };
@@ -183,4 +201,26 @@ const Body = styled.div`
 
 const Bottom = styled.div`
   display: flex;
+  flex-flow: column;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 230px;
+`;
+const OrWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  hr {
+    width: 40%;
+    height: 0.1px;
+    margin-top: 6px;
+    color: #f4f4f4;
+    opacity: 0.2;
+  }
+`;
+const OrText = styled.p`
+  font-weight: 400;
+  font-size: 14px;
+  color: #959697;
 `;

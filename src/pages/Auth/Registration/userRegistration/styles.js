@@ -67,3 +67,9 @@ export const OrText = styled.p`
   font-size: 14px;
   color: #959697;
 `;
+export const QuestionWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+`;

@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const SuccessWrapper = styled.div`
   align-items: center;
   justify-content: center;
+  height: 70vh;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 67px;
 
   @media screen and (max-width: 600px) {
     padding: 0px 24px;

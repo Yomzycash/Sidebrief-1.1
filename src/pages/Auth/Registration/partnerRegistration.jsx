@@ -182,6 +182,18 @@ const PartnerRegistration = () => {
               loading={isLoading}
               disabled={isLoading}
             />
+
+            <QuestionWrap>
+              <TextsWithLink
+                text={[
+                  {
+                    text: "Have an account? ",
+                    link: { text: "Sign In", to: "/login" },
+                  },
+                ]}
+                // $mobileResponsive
+              />
+            </QuestionWrap>
           </Body>
         </Form>
         <AppFeedback subProject="Partner registration" />
@@ -276,14 +288,21 @@ const OrWrapper = styled.div`
   gap: 24px;
   padding: 24px;
   hr {
-    width: 50%;
-    height: 0.3px;
-    color: #edeff0;
+    width: 40%;
+    height: 0.1px;
     margin-top: 6px;
+    color: #f4f4f4;
+    opacity: 0.2;
   }
 `;
 const OrText = styled.p`
   font-weight: 400;
   font-size: 14px;
   color: #959697;
+`;
+const QuestionWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
 `;
