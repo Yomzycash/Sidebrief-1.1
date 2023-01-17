@@ -18,6 +18,7 @@ const StaffRewardModal = ({
   setOpen,
   loading,
   submitAction,
+  rewardInfo,
 }) => {
   const [categories, setCategories] = useState([{ value: "", label: "" }]);
 
@@ -50,6 +51,20 @@ const StaffRewardModal = ({
     setValue("category", category, { shouldValidate: true });
   };
 
+  useEffect(() => {
+    if (cardAction === "edit" && rewardInfo) {
+      setValue("reward_name", rewardInfo.rewardName, { shouldValidate: true });
+      setValue("partner", rewardInfo.rewardPartner, { shouldValidate: true });
+      setValue("description", rewardInfo.rewardDescription, {
+        shouldValidate: true,
+      });
+      setValue("category", rewardInfo.rewardCategory, { shouldValidate: true });
+      setValue("code", rewardInfo.rewardCode, { shouldValidate: true });
+      setValue("link", rewardInfo.rewardLink, { shouldValidate: true });
+      setValue("image", rewardInfo.rewardImage, { shouldValidate: true });
+    }
+  }, [rewardInfo]);
+
   return (
     <Modal1
       handleSubmit={handleSubmit}
@@ -59,6 +74,7 @@ const StaffRewardModal = ({
       open={open}
       setOpen={setOpen}
       loading={loading}
+      $hideIcons
     >
       <DetailedSection>
         <InputWithLabel
@@ -101,13 +117,14 @@ const StaffRewardModal = ({
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Category"
+          name="category"
           labelStyle="input-label"
           placeholder="Select Category"
           options={categories}
           onChange={handleCategoryChange}
           errorMessage={errors.category?.message}
           cardAction={cardAction}
-          // defaultValue={}
+          defaultValue={rewardInfo ? rewardInfo.rewardCategory : ""}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           // disable={disable}

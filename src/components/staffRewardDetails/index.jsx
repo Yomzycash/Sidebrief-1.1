@@ -14,8 +14,8 @@ import {
 const StaffRewardDetails = ({ selectedReward }) => {
   return (
     <Container>
-      {selectedReward?.map((selected, idex) => (
-        <>
+      {selectedReward?.map((selected, index) => (
+        <div key={index}>
           <ContentWrapper>
             <TextWithLabel>
               <Label>name</Label>
@@ -69,7 +69,7 @@ const StaffRewardDetails = ({ selectedReward }) => {
               </TextWrapper>
             </TextWithLabel>
           </ContentWrapper>
-        </>
+        </div>
       ))}
     </Container>
   );

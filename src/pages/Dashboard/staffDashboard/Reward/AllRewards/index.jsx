@@ -51,7 +51,7 @@ const StaffAllRewards = () => {
     });
     const total = data?.length;
     localStorage.setItem("totalStaffRewards", JSON.stringify(total));
-
+    refetch();
     // if (isError && errorRef.current === true) {
     //   handleError(error);
     //   errorRef.current = false;
@@ -96,7 +96,7 @@ const StaffAllRewards = () => {
     };
   };
 
-  // This runs when the form gets submitted
+  // This functtion is used to add a reward. It runs when the form gets submitted.
   const submitAction = async (formData) => {
     let requiredData = getRequired(formData);
     let response = await addReward(requiredData);
