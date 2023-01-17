@@ -14,24 +14,27 @@ export const Container = styled.button`
   display: ${({ $hide }) => ($hide ? "none" : "")};
 
   :hover {
-    background-color: ${(props) =>
+    /* background-color: ${(props) =>
       props.hover_bg_color ? props.hover_bg_color : "#0082AA"};
-    color: ${(props) => (props.hv_color ? props.hv_color : "#fff")};
+    color: ${(props) => (props.hv_color ? props.hv_color : "#fff")}; */
+    opacity: 0.8;
   }
 
   :active {
-    transform: scale(0.98);
+    transform: scale(0.95);
   }
 
   :focus {
-    background-color: ${(props) =>
+    /* background-color: ${(props) =>
       props.focus_bg_color ? props.focus_bg_color : "#5bc3e3"};
-    color: ${(props) => (props.fc_color ? props.fc_color : "")};
+    color: ${(props) => (props.fc_color ? props.fc_color : "")}; */
+    opacity: 0.7;
   }
 
   :disabled {
-    background-color: #79c7df;
-    color: #fff;
+    /* background-color: #79c7df;
+    color: #fff; */
+    opacity: 0.7;
     transform: scale(1);
   }
 

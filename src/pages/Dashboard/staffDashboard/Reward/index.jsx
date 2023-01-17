@@ -12,17 +12,29 @@ import { useSelector } from "react-redux";
 import Button from "components/button";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { Image, ImageContainer } from "./style";
+import StaffRewardModal from "components/modal/StaffRewardModal";
+import {
+  useDeleteRewardMutation,
+  useUpdateRewardMutation,
+} from "services/staffService";
+import { toast } from "react-hot-toast";
+import { handleError } from "utils/globalFunctions";
+import ConfirmDelete from "components/modal/ConfirmDelete";
 
 const StaffReward = () => {
+  const [selectedReward, setSelectedReward] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [deleteConfirm, setdeleteConfirm] = useState(false);
+
   const navigate = useNavigate();
-  const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  const [selectedReward, setSelectedReward] = useState([]);
   const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
     refetchOnMountOrArgChange: true,
   });
+  const [updateReward, updateState] = useUpdateRewardMutation();
+  const [deleteReward, deleteState] = useDeleteRewardMutation();
 
   useEffect(() => {
     let localRewardID = localStorage.getItem("rewardId");
@@ -33,6 +45,52 @@ const StaffReward = () => {
     );
     setSelectedReward(rewardDatails);
   }, [data]);
+
+  const getRequiredData = (info) => ({
+    rewardID: selectedReward[0].rewardID,
+    rewardCategory: info.category,
+    rewardCode: info.code,
+    rewardDescription: info.description,
+    rewardImage: info.image,
+    rewardLink: info.link,
+    rewardName: info.reward_name,
+    rewardPartner: info.partner,
+  });
+
+  // This updates a reward information
+  const handleUpdate = async (formData) => {
+    let requiredData = getRequiredData(formData);
+    let response = await updateReward(requiredData);
+
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Reward updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+  };
+
+  // This deletes a reward information
+  const handleDelete = async () => {
+    let requiredData = { rewardID: selectedReward[0].rewardID };
+    console.log(requiredData);
+    let response = await deleteReward(requiredData);
+
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Reward deleted successfully");
+      console.log(data);
+      setdeleteConfirm(false);
+      navigate("/staff-dashboard/all-rewards");
+    } else {
+      handleError(error);
+    }
+  };
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
@@ -64,13 +122,16 @@ const StaffReward = () => {
                   </BottomText> */}
                 </DetailWrappper>
               </LHS>
-              <RHS>
-                {" "}
+
+              <ButtonContainer>
+                <Button title="Update Changes" onClick={() => setOpen(true)} />
+              </ButtonContainer>
+              {/* <RHS>
                 <RightWrapper>
                   <Hide />
                   <BlockText>Make Public</BlockText>
                 </RightWrapper>
-              </RHS>
+              </RHS> */}
             </TitleContainer>
           ))}
 
@@ -90,9 +151,24 @@ const StaffReward = () => {
           </SubHeader>
         </TopContainer>
         <Outlet />
-        <ButtonContainer>
-          <Button title="Update Changes" />
-        </ButtonContainer>
+        <StaffRewardModal
+          cardAction="edit"
+          open={open}
+          setOpen={setOpen}
+          rewardInfo={selectedReward[0]}
+          submitAction={handleUpdate}
+          loading={updateState.isLoading}
+        />
+        {isSuccess && (
+          <Delete onClick={() => setdeleteConfirm(true)}>Delete</Delete>
+        )}
+        <ConfirmDelete
+          toDelete="Reward"
+          open={deleteConfirm}
+          setOpen={setdeleteConfirm}
+          handleDelete={handleDelete}
+          loading={deleteState.isLoading}
+        />
       </Container>
     </BodyRight>
   );
@@ -125,6 +201,7 @@ const BodyRight = styled.div`
 const Container = styled.header`
   width: 100%;
   padding: 40px;
+  padding-left: 0;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -140,7 +217,8 @@ const TopContainer = styled.div`
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  width: 14%;
+  flex: 1;
+  max-width: 180px;
   align-items: flex-start;
 `;
 
@@ -158,6 +236,7 @@ const BackContainer = styled.div`
   gap: 8px;
   text-decoration: none;
   align-self: flex-start;
+  cursor: pointer;
 
   @media screen and (max-width: 700px) {
     display: none;
@@ -236,6 +315,7 @@ const LHS = styled.div`
   align-items: center;
   padding: 0px;
   gap: 24px;
+  max-width: 70%;
 `;
 
 const RHS = styled.div`
@@ -295,5 +375,26 @@ const SubHeader = styled.div`
       border-style: solid; */
     border-bottom: 1px solid #edf1f7;
     /* border-color: #edf1f7; */
+  }
+`;
+
+export const Delete = styled.button`
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: clamp(14px, 1.4vw, 16px);
+  padding: 15px;
+  background-color: #ffdbdb;
+  color: red;
+  border: none;
+  outline: none;
+  max-width: 150px;
+  border-radius: 8px;
+  transition: 0.3s all ease;
+
+  :hover {
+    background-color: #ffb5b5;
+  }
+  :active {
+    transform: scale(0.9);
   }
 `;
