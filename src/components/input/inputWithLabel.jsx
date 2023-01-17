@@ -33,6 +33,7 @@ const InputWithLabel = ({
   inputClass,
   bottomTextClass,
   disable,
+  onChange,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -96,6 +97,7 @@ const InputWithLabel = ({
             type={!show ? type || "password" : "text"}
             name={name}
             disabled={disable}
+            onChange={onChange}
             {...rest}
           />
         )}
