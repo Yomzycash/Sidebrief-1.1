@@ -38,14 +38,13 @@ const BusinessAddress = () => {
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse,
   )
-  
 
   const address = useViewBusinessAddressQuery(launchResponse, {
     refetchOnMountOrArgChange: true,
   })
 
   const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode,
+    (store) => store.LaunchReducer.launchResponse.launchCode,
   )
 
   // const loading = addAddressState.isLoading || updateAddressState.isLoading;
@@ -109,12 +108,13 @@ const BusinessAddress = () => {
         addressEmail: data.email,
       },
     }
- 
+
     console.log(requiredAddressData)
 
-    const response = address.currentData.businessAddress
+    const response = (await address.currentData.businessAddress)
       ? await updateBusinessAddress(requiredAddressData)
       : await addBusinessAddress(requiredAddressData)
+    // console.log(address.currentData.businessAddress ? 'true' : 'false')
     console.log(response)
 
     if (response.data) {
