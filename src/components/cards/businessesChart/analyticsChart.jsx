@@ -1,6 +1,4 @@
-import { PrimaryText, SecondaryText } from "components/text/text";
-import React from "react";
-import Select from "react-select";
+import React, { useState, useCallback } from "react";
 import {
 	AreaChart,
 	Area,
@@ -10,33 +8,99 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 } from "recharts";
-import { analyticsData } from "utils/config";
 import { ChartContainer, TopContent } from "./styled";
+import { getLastWeekData, getLastMonthData } from "utils/staffHelper";
+import { useEffect } from "react";
+import {
+	eachDayOfInterval,
+	subWeeks,
+	subMonths,
+	format,
+	isSameDay,
+	isSameWeek,
+	parseJSON,
+	eachWeekOfInterval,
+} from "date-fns";
 
-const AnalyticsChart = () => {
+const AnalyticsChart = ({ data }) => {
+	const [filterBy, setFilter] = useState("week");
+	const [graphdata, setGraphData] = useState([]);
+
 	const options = [
-		"Last Week",
-		"Last Day",
-		"Last Hour",
-		"Last Minute",
-		"Last Second",
+		{
+			value: "week",
+			name: "Last Week",
+		},
+		{
+			value: "month",
+			name: "Last Month",
+		},
 	];
+
+	const getWeekData = useCallback(() => {
+		const today = new Date();
+		const lastWeek = subWeeks(today, 1);
+		const lastWeekData = getLastWeekData(data);
+		const everyday = eachDayOfInterval({ start: lastWeek, end: today });
+		return everyday.map((date) => {
+			return {
+				name: format(date, "E"),
+				registrations: lastWeekData.filter((data) =>
+					isSameDay(parseJSON(data.createdAt), date)
+				).length,
+			};
+		});
+	}, [data]);
+
+	const getMonthData = useCallback(() => {
+		const today = new Date();
+		const lastMonth = subMonths(today, 1);
+		const lastMonthData = getLastMonthData(data);
+		const everyweek = eachWeekOfInterval({ start: lastMonth, end: today });
+		return everyweek.map((date) => {
+			return {
+				name: format(date, "MMM d"),
+				registrations: lastMonthData.filter((data) =>
+					isSameWeek(parseJSON(data.createdAt), date)
+				).length,
+			};
+		});
+	}, [data]);
+
+	console.log(graphdata);
+
+	useEffect(() => {
+		switch (filterBy) {
+			case "week":
+				setGraphData(getWeekData);
+				break;
+			case "month":
+				setGraphData(getMonthData);
+				break;
+			default:
+				break;
+		}
+	}, [filterBy, getWeekData, getMonthData]);
 
 	return (
 		<ChartContainer>
 			<TopContent>
 				<h3>Registration Analytics</h3>
-				<select name="time">
+				<select
+					name="time"
+					onChange={(event) => setFilter(event.target.value)}
+					value={filterBy}
+				>
 					{options.map((option, index) => (
-						<option value={option} key={index}>
-							{option}
+						<option value={option.value} key={index}>
+							{option.name}
 						</option>
 					))}
 				</select>
 			</TopContent>
 			<ResponsiveContainer width="100%" height="75%">
 				<AreaChart
-					data={analyticsData}
+					data={graphdata}
 					margin={{
 						top: 10,
 						right: 0,
@@ -71,6 +135,7 @@ const AnalyticsChart = () => {
 						axisLine={{ stroke: "white" }}
 						dy={10}
 						dx={15}
+						interval={"preserveStartEnd"}
 					/>
 					<YAxis
 						domain={[0, 8]}
@@ -83,7 +148,7 @@ const AnalyticsChart = () => {
 					<Tooltip />
 					<Area
 						type="monotone"
-						dataKey="uv"
+						dataKey="registrations"
 						stroke="#00a2d4"
 						fill="url(#colorUv)"
 						fillOpacity={1}

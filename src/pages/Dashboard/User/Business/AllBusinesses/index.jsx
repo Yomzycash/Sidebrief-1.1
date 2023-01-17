@@ -61,7 +61,7 @@ const AllBusinesses = () => {
 									(country) =>
 										country.countryISO ===
 										element.registrationCountry
-								).countryName,
+								)?.countryName,
 								date: format(
 									new Date(element.createdAt),
 									"dd/MM/yyyy"
@@ -104,6 +104,5 @@ const MobileContainer = styled.div`
 	width: 100%;
 	align-items: center;
 	justify-content: center;
-
 	gap: 8px;
 `;
