@@ -19,10 +19,12 @@ import {
 } from "services/staffService";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
+import ConfirmDelete from "components/modal/ConfirmDelete";
 
 const StaffReward = () => {
   const [selectedReward, setSelectedReward] = useState([]);
   const [open, setOpen] = useState(false);
+  const [deleteConfirm, setdeleteConfirm] = useState(false);
 
   const navigate = useNavigate();
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -65,14 +67,16 @@ const StaffReward = () => {
 
     if (data) {
       toast.success("Reward updated successfully");
+      setOpen(false);
     } else {
       handleError(error);
     }
   };
 
   // This deletes a reward information
-  const handleDelete = async (formData) => {
-    let requiredData = getRequiredData(formData);
+  const handleDelete = async () => {
+    let requiredData = { rewardID: selectedReward[0].rewardID };
+    console.log(requiredData);
     let response = await deleteReward(requiredData);
 
     let data = response?.data;
@@ -80,6 +84,9 @@ const StaffReward = () => {
 
     if (data) {
       toast.success("Reward deleted successfully");
+      console.log(data);
+      setdeleteConfirm(false);
+      navigate("/staff-dashboard/all-rewards");
     } else {
       handleError(error);
     }
@@ -152,7 +159,16 @@ const StaffReward = () => {
           submitAction={handleUpdate}
           loading={updateState.isLoading}
         />
-        <Delete>Delete</Delete>
+        {isSuccess && (
+          <Delete onClick={() => setdeleteConfirm(true)}>Delete</Delete>
+        )}
+        <ConfirmDelete
+          toDelete="Reward"
+          open={deleteConfirm}
+          setOpen={setdeleteConfirm}
+          handleDelete={handleDelete}
+          loading={deleteState.isLoading}
+        />
       </Container>
     </BodyRight>
   );
@@ -185,6 +201,7 @@ const BodyRight = styled.div`
 const Container = styled.header`
   width: 100%;
   padding: 40px;
+  padding-left: 0;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -298,6 +315,7 @@ const LHS = styled.div`
   align-items: center;
   padding: 0px;
   gap: 24px;
+  max-width: 70%;
 `;
 
 const RHS = styled.div`
@@ -362,8 +380,9 @@ const SubHeader = styled.div`
 
 export const Delete = styled.button`
   text-transform: capitalize;
-  font-weight: 700;
-  padding: 10px;
+  font-weight: 600;
+  font-size: clamp(14px, 1.4vw, 16px);
+  padding: 15px;
   background-color: #ffdbdb;
   color: red;
   border: none;
