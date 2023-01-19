@@ -13,6 +13,7 @@ import {
 } from "redux/Slices";
 import { store } from "redux/Store";
 import { Country } from "country-state-city";
+import { LiveChatLoaderProvider } from "react-live-chat-loader";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
@@ -51,10 +52,12 @@ function App() {
 
   return (
     <>
+      {/* <LiveChatLoaderProvider providerKey="78933" provider="chatwoot"> */}
       <AnimatePresence exitBeforeEnter>
         <GlobalStyle />
         <AppRouter />
       </AnimatePresence>
+      {/* </LiveChatLoaderProvider> */}
     </>
   );
 }

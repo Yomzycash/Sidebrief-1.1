@@ -300,7 +300,9 @@ const AppRouter = () => {
                 <Route path="all-rewards" element={<AllRewards />}></Route>
                 <Route path="my-rewards" element={<MyRewards />}></Route>
                 <Route path="details" element={<RewardDetails />} />
+                <Route path=":rewardID" element={<RewardDetails />} />
               </Route>
+
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>
 
