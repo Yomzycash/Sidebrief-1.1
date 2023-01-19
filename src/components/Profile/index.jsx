@@ -12,9 +12,11 @@ import { ReactComponent as DeleteI } from "../../asset/svg/de.svg";
 import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
+    console.log("User logged out");
   };
 
   return (
@@ -29,7 +31,7 @@ const Profile = () => {
       </ProfileListss>
       <ProfileLists onClick={handleLogout}>
         <DeleteI />
-        <Delete>Logout</Delete>
+        <Delete onClick={handleLogout}>Logout</Delete>
       </ProfileLists>
     </ProfileContainer>
   );

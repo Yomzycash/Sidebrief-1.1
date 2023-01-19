@@ -158,7 +158,7 @@ const KYCFileUpload = ({
             </FileTitle>
           )}
         </FileZone>
-        {Object.keys(documentInfo).length == 7 && (
+        {Object.keys(documentInfo).length === 7 && (
           <DeleteWrapper onClick={handleRemove}>
             <DeleteIcon />
           </DeleteWrapper>
