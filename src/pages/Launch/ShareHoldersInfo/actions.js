@@ -12,7 +12,7 @@ export const shareHolderAdd = async (
     launchCode: launchCode,
     memberCode: memberInfo.memberCode,
     shareholderOwnershipPercentage: formData.share_percentage,
-    shareholderOwnershipType: formData.share_type,
+    shareholderOwnershipType: formData.nin,
   };
 
   // Send the required payload to the backend
@@ -44,7 +44,7 @@ export const shareholderUpdate = async (
     launchCode: selectedShareholder.launchCode,
     memberCode: selectedShareholder.memberCode,
     shareholderOwnershipPercentage: formData.share_percentage,
-    shareholderOwnershipType: formData.share_type,
+    shareholderOwnershipType: formData.nin,
     shareholdingCode: selectedShareholder.shareholdingCode,
   };
   // Responses from the backend
