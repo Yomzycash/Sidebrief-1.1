@@ -1,3 +1,8 @@
+// import FileSaver from "file-saver";
+import axios from "axios";
+import { saveAs } from "file-saver";
+import fileDownload from "js-file-download";
+
 export const convertToLink = async (image) => {
   const data = new FormData();
   data.append("file", image);
@@ -18,6 +23,18 @@ export const convertToLink = async (image) => {
       console.error(error);
     });
   return await res;
+};
+
+export const handleDownloadFile = (cloudinaryLink, fileName) => {
+  const result = axios
+    .get(cloudinaryLink, {
+      responseType: "blob",
+    })
+    .then((res) => {
+      fileDownload(res.data, fileName);
+    });
+
+  return result;
 };
 
 export const isValidFileUploaded = (file) => {

@@ -337,7 +337,7 @@ const AppRouter = () => {
                 <Route path="registration" element={<Registrationlayout />}>
                   <Route index element={<All />} />
                   <Route path="all" element={<All />} />
-                  <Route path="awating-approval" element={<Awaiting />} />
+                  <Route path="awaiting-approval" element={<Awaiting />} />
                   <Route path="in-progress" element={<InProgress />} />
                   <Route path="rejected" element={<Completed />} />
                   <Route path="pending" element={<Draft />} />
