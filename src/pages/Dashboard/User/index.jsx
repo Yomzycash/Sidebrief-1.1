@@ -5,7 +5,6 @@ import Sidebar from "../../../components/sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MobileNavbar from "components/navbar/MobileNavbar";
-import { Chatwoot } from "react-live-chat-loader";
 
 const UserDashboard = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -34,7 +33,6 @@ const UserDashboard = () => {
         </BodyLeft>
         <BodyRight SidebarWidth={sidebarWidth}>
           <Outlet />
-          {/* <Chatwoot /> */}
         </BodyRight>
       </Body>
     </Dashboard>
