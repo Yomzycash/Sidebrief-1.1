@@ -33,6 +33,7 @@ import {
 import ArrowDownIcon from "../asset/Icons/ArrowDownIcon.svg";
 
 export const userRegistrationSchema = yup.object().shape({
+
 	first_name: yup.string().required("First name is a required field"),
 	last_name: yup.string().required("Last name is a required field"),
 	email: yup.string().email("Enter a valid email address").required(),
@@ -106,6 +107,7 @@ export const directorRoleOptions = [
 ];
 
 export const partnerRegistrationSchema = yup.object().shape({
+
 	first_name: yup.string().required("First name is a required field"),
 	last_name: yup.string().required("Last name is a required field"),
 	email: yup.string().email("Enter a valid email address").required(),
@@ -165,6 +167,7 @@ export const resellerRegistrationSchema = yup.object().shape({
 	),
 	operational_country: yup.string().required(),
 	corporate_name: yup.string().required("Corporate name is a required field"),
+
 });
 
 export const fileFormSchema = yup.object().shape({

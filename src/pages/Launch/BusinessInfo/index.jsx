@@ -19,13 +19,13 @@ import {
   useGetAllCountriesQuery,
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
-} from 'services/launchService'
-import LaunchFormContainer from 'containers/Checkout/CheckoutFormContainer/LaunchFormContainer'
-import LaunchPrimaryContainer from 'containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer'
-import toast from 'react-hot-toast'
-import { useSelector } from 'react-redux'
-import AppFeedback from 'components/AppFeedback'
-import { set } from 'date-fns'
+} from "services/launchService";
+import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
+import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import AppFeedback from "components/AppFeedback";
+import { set } from "date-fns";
 
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer)
@@ -49,25 +49,25 @@ const BusinessInfo = () => {
 
   // This runs when next button is clicked
   const handleNext = () => {
-    store.dispatch(setCountry(selectedCountry))
-    store.dispatch(setCountryISO(selectedCountryISO))
-    localStorage.setItem('countryISO', selectedCountryISO)
-    store.dispatch(setCountryISO(selectedCountryISO))
-    let resultToReturn = false
+    store.dispatch(setCountry(selectedCountry));
+    store.dispatch(setCountryISO(selectedCountryISO));
+    localStorage.setItem("countryISO", selectedCountryISO);
+    store.dispatch(setCountryISO(selectedCountryISO));
+    let resultToReturn = false;
     // call some function with callback function as argument
     resultToReturn = businessNames.some((element, index) => {
-      return businessNames.indexOf(element) !== index
-    })
+      return businessNames.indexOf(element) !== index;
+    });
     if (businessNames.length === 4 && !resultToReturn) {
-      store.dispatch(setSelectedBusinessNames(businessNames))
+      store.dispatch(setSelectedBusinessNames(businessNames));
     } else if (businessNames.length !== 4) {
-      toast.error('Please add exactly 4 business names')
-      return
+      toast.error("Please add exactly 4 business names");
+      return;
     } else if (resultToReturn) {
-      toast.error('Please input unique business names')
-      return
+      toast.error("Please input unique business names");
+      return;
     }
-    console.log(businessNames)
+    console.log(businessNames);
 
     if (selectedObjectives.length >= 1) {
       store.dispatch(setBusinessObjectives(selectedObjectives))
@@ -151,7 +151,6 @@ const BusinessInfo = () => {
 
   // This calls the view endpoint and set the recieved data to the respective states
   const viewDraft = async () => {
-
     // const namesData = await viewBusinessNames(launchResponse)
     // const objectivesData = await viewBusinessObjectives(launchResponse)
 

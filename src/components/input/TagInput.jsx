@@ -14,8 +14,8 @@ import {
 } from './styled.js'
 
 const TagInput = ({
-  label = "Business Name",
-  bottomText = "Please provide sidebrief with 4 names you want for your business, in order of preferences",
+  label = 'Business Name',
+  bottomText = 'Please provide sidebrief with four names you want for your business, in order of preferences',
   getSelectedValues,
   initialValues,
 }) => {

@@ -77,9 +77,22 @@ const UserRegistration = () => {
   // Sign up function block
   const submitForm = async (formData) => {
     // let correctedData = correctFormDate(formData);
+
+    let newData = {
+      ...formData,
+      date: "1990",
+      gender: "female",
+      bYear: "1990",
+      bMonth: "05",
+      bDay: "20",
+    };
+
+    console.log("newData", newData);
+
+
     let staffCheck = checkStaffEmail(formData.email);
     let response = staffCheck
-      ? await registerNewStaff(JSON.stringify(formData))
+      ? await registerNewStaff(JSON.stringify(newData))
       : await registerNewUser(JSON.stringify(formData));
 
     let data = response?.data;
