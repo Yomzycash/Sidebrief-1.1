@@ -20,6 +20,7 @@ export const CheckoutController = ({
   forwardLoading,
   backLoading,
   $modal,
+  loadingIconColor,
 }) => {
   return (
     <Container style={containerStyle} $modal={$modal}>
@@ -32,6 +33,7 @@ export const CheckoutController = ({
         style={backBottonStyle}
         disable={backDisable}
         loading={backLoading}
+        loadingIconColor={loadingIconColor}
       />
       {!entity && (
         <CheckoutButton
@@ -44,6 +46,7 @@ export const CheckoutController = ({
           disable={forwardDisable}
           hide={hideForward}
           loading={forwardLoading}
+          loadingIconColor={loadingIconColor}
         />
       )}
     </Container>

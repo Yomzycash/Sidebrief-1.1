@@ -5,6 +5,7 @@ import { CheckoutController } from "containers";
 import {
   buttonContainerStyles,
   buttonStyles,
+  DeleteWrapper,
   Form,
   InputsWrapper,
   modalStyle,
@@ -12,8 +13,8 @@ import {
   TopIcons,
 } from "./styled";
 import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
-import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { SpinningCircles } from "react-loading-icons";
+import DeleteIcon from "asset/Icons/DeleteIcon";
 
 const Modal1 = ({
   handleSubmit,
@@ -60,13 +61,13 @@ const Modal1 = ({
                     height={20}
                   />
                 ) : (
-                  <div style={{ cursor: "pointer" }}>
+                  <DeleteWrapper>
                     <DeleteIcon
                       onClick={handleDelete}
                       width={20}
-                      color="#fff"
+                      color="#cb1b1b"
                     />
-                  </div>
+                  </DeleteWrapper>
                 ))}
               <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
             </TopIcons>

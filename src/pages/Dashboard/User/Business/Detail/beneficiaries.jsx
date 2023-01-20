@@ -40,6 +40,7 @@ const DetailBeneficiaries = () => {
               .filter((el) => el.documentType.includes("proof"))
               .slice(-1)[0];
 
+            console.log("checking", currentmemberKYC);
             return (
               <PdfCard
                 name={beneficiary.beneficialOwnerName}
