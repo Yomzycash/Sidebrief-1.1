@@ -25,10 +25,6 @@ const Profile = () => {
         <User />
         <ProfileList>Profile</ProfileList>
       </ProfileLists>
-      <ProfileListss>
-        <Shield />
-        <ProfileList>Change Password</ProfileList>
-      </ProfileListss>
       <ProfileLists onClick={handleLogout}>
         <DeleteI />
         <Delete onClick={handleLogout}>Logout</Delete>
