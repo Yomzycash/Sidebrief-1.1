@@ -147,7 +147,7 @@ const PartnerRegistration = () => {
                 error={errors}
               />
               <InputWithLabel
-                placeholder="Min. of 8  characters"
+                placeholder="Min. of 6 characters"
                 label="Password"
                 type="password"
                 rightText
