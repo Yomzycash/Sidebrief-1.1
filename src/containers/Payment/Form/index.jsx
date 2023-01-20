@@ -29,7 +29,6 @@ import {
 import { PaystackButton } from 'react-paystack'
 import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3'
 import Button from 'components/button'
-import { checkIsString } from 'components/Indicators/status/actions'
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
   const [isUSD, setIsUSD] = useState(false)
@@ -58,7 +57,6 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     currency: entityInfo ? entityInfo.entityCurrency : '',
     // setValue,
   })
-  console.log(checkIsString(entityInfo.entityFee) ? 'true' : 'false')
 
   useEffect(() => {
     // console.log(data);
@@ -77,6 +75,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     tx_ref: Date.now(),
     // amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
     amount: `${entityInfo.entityFee}`,
+   
     currency: entityInfo?.entityCurrency,
     payment_options: 'card,mobilemoney,ussd',
     customer: {

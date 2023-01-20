@@ -53,7 +53,6 @@ const BusinessInfo = () => {
     store.dispatch(setCountryISO(selectedCountryISO))
     localStorage.setItem('countryISO', selectedCountryISO)
     store.dispatch(setCountryISO(selectedCountryISO))
-    const uniqueArray = Array.from(new Set(businessNames))
     let resultToReturn = false
     // call some function with callback function as argument
     resultToReturn = businessNames.some((element, index) => {
@@ -68,7 +67,6 @@ const BusinessInfo = () => {
       toast.error('Please input unique business names')
       return
     }
-    console.log(uniqueArray)
     console.log(businessNames)
 
     if (selectedObjectives.length >= 1) {

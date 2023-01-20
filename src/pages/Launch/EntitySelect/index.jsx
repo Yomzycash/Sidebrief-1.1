@@ -87,9 +87,7 @@ const EntitySelect = () => {
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem))
-    const a = '122233'
-    const b = `${a}`
-    console.log(checkIsString(b) ? 'true' : 'false')
+    // console.log(checkIsString(entities.entityFee) ? 'true' : 'false')
     console.log(selectedItem)
 
     localStorage.setItem(
