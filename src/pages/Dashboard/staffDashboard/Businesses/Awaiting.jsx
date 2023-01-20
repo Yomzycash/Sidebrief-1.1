@@ -23,7 +23,7 @@ const AwaitingBusinessesSummary = () => {
   return (
     <BusinessHomeTable
       data={submitted}
-      link="/staff-dashboard/businesses/registration/awating-approval"
+      link="/staff-dashboard/businesses/registration/awaiting-approval"
     />
   );
 };

@@ -78,3 +78,9 @@ export const InputsWrapper = styled.div`
   flex-direction: column;
   padding: clamp(20px, 5%, 40px) 0;
 `;
+
+export const DeleteWrapper = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;

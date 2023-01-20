@@ -25,6 +25,7 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import AppFeedback from "components/AppFeedback";
+import { set } from "date-fns";
 
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
@@ -50,13 +51,22 @@ const BusinessInfo = () => {
     store.dispatch(setCountryISO(selectedCountryISO));
     localStorage.setItem("countryISO", selectedCountryISO);
     store.dispatch(setCountryISO(selectedCountryISO));
-
-    if (businessNames.length === 4) {
+    let resultToReturn = false;
+    // call some function with callback function as argument
+    resultToReturn = businessNames.some((element, index) => {
+      return businessNames.indexOf(element) !== index;
+    });
+    if (businessNames.length === 4 && !resultToReturn) {
       store.dispatch(setSelectedBusinessNames(businessNames));
-    } else {
+    } else if (businessNames.length !== 4) {
       toast.error("Please add exactly 4 business names");
       return;
+    } else if (resultToReturn) {
+      toast.error("Please input unique business names");
+      return;
     }
+    console.log(businessNames);
+
     if (selectedObjectives.length >= 1) {
       store.dispatch(setBusinessObjectives(selectedObjectives));
     } else {
@@ -139,6 +149,10 @@ const BusinessInfo = () => {
 
   // This calls the view endpoint and set the recieved data to the respective states
   const viewDraft = async () => {
+    // const namesData = await viewBusinessNames(launchResponse)
+    // const objectivesData = await viewBusinessObjectives(launchResponse)
+
+    if (Object.keys(launchResponse).length === 0) return;
     const namesData = await viewBusinessNames(launchResponse);
     const objectivesData = await viewBusinessObjectives(launchResponse);
     if (namesData.data)
@@ -188,6 +202,7 @@ const BusinessInfo = () => {
                   list={countries}
                   getValue={handleCountry}
                   initialValue={selectedCountry}
+                  suggestionLoading={isLoading}
                 />
               </div>
             </LaunchFormContainer>
