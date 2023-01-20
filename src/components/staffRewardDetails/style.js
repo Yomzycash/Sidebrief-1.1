@@ -28,12 +28,13 @@ export const FullContentWrapper = styled.div`
 export const ContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(350px, 1fr));
+  grid-template-columns: repeat(2, minmax(50px, 1fr));
   row-gap: 24px;
   column-gap: 24px;
 
   @media screen and (max-width: 900px) {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-flow: column;
   }
 `;
 export const TextWithLabel = styled.div`
@@ -57,6 +58,7 @@ export const TextWrapper = styled.div`
   background: #fafafa;
   border: 1px solid #edf1f7;
   border-radius: 8px;
+  max-width: 100%;
 `;
 export const Text = styled.div`
   font-weight: 400;
@@ -75,12 +77,11 @@ export const LinkText = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
-  display: flex;
-  align-items: center;
   text-decoration-line: underline;
   color: #00a2d4;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
+  max-width: 100%;
 `;

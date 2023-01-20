@@ -151,8 +151,13 @@ const BusinessInfo = () => {
 
   // This calls the view endpoint and set the recieved data to the respective states
   const viewDraft = async () => {
+
     const namesData = await viewBusinessNames(launchResponse)
     const objectivesData = await viewBusinessObjectives(launchResponse)
+
+    if (Object.keys(launchResponse).length === 0) return;
+    const namesData = await viewBusinessNames(launchResponse);
+    const objectivesData = await viewBusinessObjectives(launchResponse);
     if (namesData.data)
       setBusinessNames(Object.values(namesData.data.businessNames))
     if (objectivesData.data) {
@@ -200,6 +205,7 @@ const BusinessInfo = () => {
                   list={countries}
                   getValue={handleCountry}
                   initialValue={selectedCountry}
+                  suggestionLoading={isLoading}
                 />
               </div>
             </LaunchFormContainer>

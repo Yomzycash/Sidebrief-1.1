@@ -5,166 +5,161 @@ import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
 import { imageTypeImage } from "utils/config";
 import {
-	DetailWrapper,
-	Details,
-	Email,
-	EmailWrapper,
-	IconWrapper,
-	LowerContainer,
-	NameWrapper,
-	PdfLowerWrapper,
-	PdfWrapper,
-	Phone,
-	PhoneWrapper,
-	Title,
-	TitleWrapper,
-	Top,
-	Wrapper,
+  DetailWrapper,
+  Details,
+  Email,
+  EmailWrapper,
+  IconWrapper,
+  LowerContainer,
+  NameWrapper,
+  PdfLowerWrapper,
+  PdfWrapper,
+  Phone,
+  PhoneWrapper,
+  Title,
+  TitleWrapper,
+  Top,
+  Wrapper,
 } from "./styles";
-
+import { saveAs } from "file-saver";
 const PdfCards = ({
-	name = "",
-	title = "",
-	email = "",
-	phone = "",
-	government,
-	proof,
-	passport,
+  name = "",
+  title = "",
+  email = "",
+  phone = "",
+  government,
+  proof,
+  passport,
 }) => {
-	return (
-		<>
-			<Wrapper>
-				<DetailWrapper>
-					<Top>
-						<NameWrapper>{name}</NameWrapper>
-						{title ? (
-							<TitleWrapper>
-								<Title>{title}</Title>
-							</TitleWrapper>
-						) : null}
-					</Top>
-					<EmailWrapper>
-						<IconWrapper>
-							<EmailIcon />
-						</IconWrapper>
-						<Email>{email}</Email>
-					</EmailWrapper>
-					<PhoneWrapper>
-						<IconWrapper>
-							<PhoneIcon />
-						</IconWrapper>
-						<Phone>{phone}</Phone>
-					</PhoneWrapper>
-				</DetailWrapper>
-				<LowerContainer>
-					<PdfWrapper>
-						<PdfLowerWrapper>
-							<IconWrapper>
-								{government?.fileType ? (
-									<img
-										src={
-											imageTypeImage?.find(
-												(el) =>
-													el?.type ===
-													government?.fileType
-											).image
-										}
-										alt="icon"
-										style={{
-											margin: 0,
-											height: "25px",
-											width: "25px",
-											marginRight: "8px",
-										}}
-									/>
-								) : (
-									<PdfIcon />
-								)}
-							</IconWrapper>
-							<Details>
-								{government
-									? government?.fileName
-									: "upload a file"}
-							</Details>
-						</PdfLowerWrapper>
+  const magic = (link) => {
+    console.log(link);
+    saveAs(link);
+  };
 
-						<IconWrapper>
-							<DeleteIcon />
-						</IconWrapper>
-					</PdfWrapper>
+  return (
+    <>
+      <Wrapper>
+        <DetailWrapper>
+          <Top>
+            <NameWrapper>{name}</NameWrapper>
+            {title ? (
+              <TitleWrapper>
+                <Title>{title}</Title>
+              </TitleWrapper>
+            ) : null}
+          </Top>
+          <EmailWrapper>
+            <IconWrapper>
+              <EmailIcon />
+            </IconWrapper>
+            <Email>{email}</Email>
+          </EmailWrapper>
+          <PhoneWrapper>
+            <IconWrapper>
+              <PhoneIcon />
+            </IconWrapper>
+            <Phone>{phone}</Phone>
+          </PhoneWrapper>
+        </DetailWrapper>
+        <LowerContainer>
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {government?.fileType ? (
+                  <img
+                    src={
+                      imageTypeImage?.find(
+                        (el) => el?.type === government?.fileType
+                      ).image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details onClick={() => magic(government.documentLink)}>
+                {government ? government.documentLink : "upload a file"}
+              </Details>
+            </PdfLowerWrapper>
 
-					<PdfWrapper>
-						<PdfLowerWrapper>
-							<IconWrapper>
-								{proof ? (
-									<img
-										src={
-											imageTypeImage?.find(
-												(el) =>
-													el?.type === proof?.fileType
-											)?.image
-										}
-										alt="icon"
-										style={{
-											margin: 0,
-											height: "25px",
-											width: "25px",
-											marginRight: "8px",
-										}}
-									/>
-								) : (
-									<PdfIcon />
-								)}
-							</IconWrapper>
-							<Details>
-								{proof ? proof?.fileName : "upload a file"}
-							</Details>
-						</PdfLowerWrapper>
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
 
-						<IconWrapper>
-							<DeleteIcon />
-						</IconWrapper>
-					</PdfWrapper>
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {proof ? (
+                  <img
+                    src={
+                      imageTypeImage?.find((el) => el?.type === proof?.fileType)
+                        ?.image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details onClick={() => magic(proof.documentLink)}>
+                {proof ? proof.documentLink : "upload a file"}
+              </Details>
+            </PdfLowerWrapper>
 
-					<PdfWrapper>
-						<PdfLowerWrapper>
-							<IconWrapper>
-								{passport ? (
-									<img
-										src={
-											imageTypeImage?.find(
-												(el) =>
-													el?.type ===
-													passport?.fileType
-											).image
-										}
-										alt="icon"
-										style={{
-											margin: 0,
-											height: "25px",
-											width: "25px",
-											marginRight: "8px",
-										}}
-									/>
-								) : (
-									<PdfIcon />
-								)}
-							</IconWrapper>
-							<Details>
-								{passport
-									? passport?.fileName
-									: "upload a file"}
-							</Details>
-						</PdfLowerWrapper>
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
 
-						<IconWrapper>
-							<DeleteIcon />
-						</IconWrapper>
-					</PdfWrapper>
-				</LowerContainer>
-			</Wrapper>
-		</>
-	);
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {passport ? (
+                  <img
+                    src={
+                      imageTypeImage?.find(
+                        (el) => el?.type === passport?.fileType
+                      )?.image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details onClick={() => magic(passport.documentLink)}>
+                {passport ? passport?.documentLink : "upload a file"}
+              </Details>
+            </PdfLowerWrapper>
+
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
+        </LowerContainer>
+      </Wrapper>
+    </>
+  );
 };
 
 export default PdfCards;

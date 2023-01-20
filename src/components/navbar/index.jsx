@@ -84,7 +84,7 @@ const Navbar = ({
     const handleClickOutside = (event) => {
       if (!menuRef.current?.contains(event.target)) {
         setShowNotification(false);
-        setShowProfile(false);
+        // setShowProfile(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
