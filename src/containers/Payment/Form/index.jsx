@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 import {
   Container,
   RadioButtons,
@@ -12,91 +12,95 @@ import {
   PaymentButton,
   Paystack,
   ButtonContainer,
-} from "./styles";
-import numeral from "numeral";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { cardInfoSchema } from "./constants";
+} from './styles'
+import numeral from 'numeral'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { cardInfoSchema } from './constants'
 
-import { InputWithLabel } from "components/input";
-import { useActions } from "./actions";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { InputWithLabel } from 'components/input'
+import { useActions } from './actions'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import {
   useGetSingleEntityQuery,
   usePayLaunchMutation,
-} from "services/launchService";
-import { PaystackButton } from "react-paystack";
-import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
-import Button from "components/button";
+} from 'services/launchService'
+import { PaystackButton } from 'react-paystack'
+import { FlutterWaveButton, closePaymentModal } from 'flutterwave-react-v3'
+import Button from 'components/button'
+import { checkIsString } from 'components/Indicators/status/actions'
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
-  const [isUSD, setIsUSD] = useState(false);
+  const [isUSD, setIsUSD] = useState(false)
   const [entityInfo, setEntityInfo] = useState({
-    entityCurrency: "",
-    entityFee: "",
-  });
+    entityCurrency: '',
+    entityFee: '',
+  })
 
-  const [payLaunch, payState] = usePayLaunchMutation();
+  const [payLaunch, payState] = usePayLaunchMutation()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const launchResponse = useSelector(
-    (store) => store.LaunchReducer.launchResponse
-  );
+    (store) => store.LaunchReducer.launchResponse,
+  )
 
-  const { launchCode, registrationType } = launchResponse;
+  const { launchCode, registrationType } = launchResponse
 
-  const { data, isLoading, isSuccess, isError } =
-    useGetSingleEntityQuery(registrationType);
+  const { data, isLoading, isSuccess, isError } = useGetSingleEntityQuery(
+    registrationType,
+  )
 
   const { symbol, onSelectCurrencyType } = useActions({
     isUSD,
     setIsUSD,
-    currency: entityInfo ? entityInfo.entityCurrency : "",
+    currency: entityInfo ? entityInfo.entityCurrency : '',
     // setValue,
-  });
+  })
+  console.log(checkIsString(entityInfo.entityFee) ? 'true' : 'false')
 
   useEffect(() => {
     // console.log(data);
-    if (data) setEntityInfo(data);
-  }, [data]);
+    if (data) setEntityInfo(data)
+  }, [data])
 
-  let userEmail = localStorage.getItem("userEmail");
-  let userInfo = localStorage.getItem("userInfo");
+  let userEmail = localStorage.getItem('userEmail')
+  let userInfo = localStorage.getItem('userInfo')
 
   // Flutterwave config object
   const config = {
     public_key:
-      process.env.NODE_ENV === "production"
+      process.env.NODE_ENV === 'production'
         ? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
         : process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
     tx_ref: Date.now(),
     // amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
     amount: `${entityInfo.entityFee}`,
     currency: entityInfo?.entityCurrency,
-    payment_options: "card,mobilemoney,ussd",
+    payment_options: 'card,mobilemoney,ussd',
     customer: {
       email: userEmail,
-      phone_number: "070********",
+      phone_number: '070********',
       name: `${userInfo.first_name + userInfo.last_name}`,
     },
     customizations: {
-      title: "Business registration",
+      title: 'Business registration',
       description: `Payment for business registration in ${entityInfo.entityCountry}`,
-      logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
+      logo:
+        'https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg',
     },
-  };
+  }
 
   const fwConfig = {
     ...config,
-    text: "Pay with Flutterwave",
+    text: 'Pay with Flutterwave',
     callback: (response) => {
-      sendRefToBackend(response);
-      closePaymentModal(); // this will close the modal programmatically
+      sendRefToBackend(response)
+      closePaymentModal() // this will close the modal programmatically
     },
     onClose: () => {},
-  };
+  }
 
   // Send the payment reference information to the backend
   const sendRefToBackend = async (reference) => {
@@ -106,17 +110,17 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
         paymentAmount: entityInfo.entityFee,
         paymentCurrency: entityInfo?.entityCurrency,
         paymentTransactionId: reference.transaction_id,
-        paymentProvider: "Flutterwave",
+        paymentProvider: 'Flutterwave',
         paymentStatus: reference.status,
       },
-    };
+    }
 
-    const payResponse = await payLaunch(requiredData);
+    const payResponse = await payLaunch(requiredData)
 
     // console.log(payResponse);
 
-    navigate("/launch/address");
-  };
+    navigate('/launch/address')
+  }
 
   return (
     <Container>
@@ -148,24 +152,24 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
       </RadioButtons>
       <TextContainer>
         <Price>
-          {symbol ? symbol : "??"}
-          {numeral(isUSD ? USDprice : entityInfo.entityFee).format("0,0.00")}
+          {symbol ? symbol : '??'}
+          {numeral(isUSD ? USDprice : entityInfo.entityFee).format('0,0.00')}
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
-      {paymentProvider === "flutterwave" && (
+      {paymentProvider === 'flutterwave' && (
         <Paystack>
           <FlutterWaveButton className="paystack-button" {...fwConfig} />
         </Paystack>
       )}
-      {paymentProvider === "stripe" && (
+      {paymentProvider === 'stripe' && (
         <ButtonContainer>
           <Button title="Pay with Stripe" />
         </ButtonContainer>
       )}
     </Container>
-  );
-};
+  )
+}
 
 // import { useEffect, useState } from "react";
 // import {

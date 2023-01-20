@@ -35,6 +35,7 @@ import { Puff } from 'react-loading-icons'
 import toast from 'react-hot-toast'
 import { Dialog, DialogContent } from '@mui/material'
 import AppFeedback from 'components/AppFeedback'
+import { checkIsString } from 'components/Indicators/status/actions'
 
 const EntitySelect = () => {
   const navigate = useNavigate()
@@ -86,7 +87,11 @@ const EntitySelect = () => {
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem))
-    console.log(selectedItem.entityFee)
+    const a = '122233'
+    const b = `${a}`
+    console.log(checkIsString(b) ? 'true' : 'false')
+    console.log(selectedItem)
+
     localStorage.setItem(
       'entityTimeline',
       JSON.stringify(selectedItem.entityTimeline),
@@ -250,7 +255,9 @@ const EntitySelect = () => {
                   <EntityCard
                     key={index}
                     name={item?.entityName}
-                    shares={item?.entityShares}
+                    shares={parseInt(item?.entityShares).toLocaleString(
+                      'en-US',
+                    )}
                     type={item?.entityType}
                     timeline={item?.entityTimeline}
                     requirement={item?.entityRequirements}
