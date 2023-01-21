@@ -11,6 +11,6 @@ export const addressSchema = yup.object().shape({
   city: yup.string().required(),
   street: yup.string().required(),
   number: yup.number("Please enter a valid number").required(""),
-  zipcode: yup.string().required(),
+  zipcode: yup.string(),
   email: yup.string().email().required(),
 });
