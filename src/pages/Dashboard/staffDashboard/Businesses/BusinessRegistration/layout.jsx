@@ -122,7 +122,7 @@ const Registrationlayout = () => {
           <ActiveNav
             text="Submitted"
             total={awaitingReg}
-            path="/staff-dashboard/businesses/registration/awating-approval"
+            path="/staff-dashboard/businesses/registration/awaiting-approval"
           />
           <ActiveNav
             text="Approved"
