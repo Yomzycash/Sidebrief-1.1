@@ -89,7 +89,6 @@ const UserRegistration = () => {
 
     console.log("newData", newData);
 
-
     let staffCheck = checkStaffEmail(formData.email);
     let response = staffCheck
       ? await registerNewStaff(JSON.stringify(newData))
