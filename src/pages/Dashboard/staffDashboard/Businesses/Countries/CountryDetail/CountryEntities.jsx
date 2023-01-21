@@ -55,7 +55,7 @@ const CountryEntities = () => {
       entityCurrency: formData?.currency,
       entityDescription: formData?.description,
       entityTimeline: formData?.timeline,
-      entityRequirements: formData?.requirement,
+      entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
     };
   };
@@ -75,6 +75,23 @@ const CountryEntities = () => {
     refetch();
     console.log(response);
   };
+
+  // This adds a new entity
+  const handleEntityAdd = async (formData) => {
+    let requiredData = getRequired(formData);
+    let response = await addEntity(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity added successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
+  };
+
+  console.log("card action", cardAction);
 
   return (
     <Wrapper>
@@ -108,7 +125,9 @@ const CountryEntities = () => {
               cardAction === "edit" ? "Entity Information" : "Add New Entity"
             }
             entityInfo={clickedEntity}
-            submitAction={handleEntityUpdate}
+            submitAction={
+              cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
+            }
             loading={updateState.isLoading}
           />
         </CardWrapper>
