@@ -162,7 +162,7 @@ const BeneficiaryReview = () => {
             />
           </ButtonWrapper>
         </Body>
-        <AppFeedback subProject="Beneficiary review" />
+        {/* <AppFeedback subProject="Beneficiary review" /> */}
       </Container>
     </>
   );

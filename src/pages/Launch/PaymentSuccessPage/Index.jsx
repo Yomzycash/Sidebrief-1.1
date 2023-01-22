@@ -22,7 +22,7 @@ const SuccessPage = () => {
           onClick={handleNavigate}
         />
       </Body>
-      <AppFeedback subProject="Payment success" />
+      {/* <AppFeedback subProject="Payment success" /> */}
     </>
   );
 };

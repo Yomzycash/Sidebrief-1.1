@@ -16,7 +16,6 @@ const DropDown = ({
   options,
   name,
   value,
-  cardAction,
   defaultValue,
   register,
   launch,
@@ -87,8 +86,8 @@ const DropDown = ({
         options={options}
         styles={selectStyle}
         defaultValue={{
-          value: cardAction === "edit" && defaultValue && defaultValue,
-          label: cardAction === "edit" && defaultValue && defaultValue,
+          value: defaultValue && defaultValue,
+          label: defaultValue && defaultValue,
         }}
         isDisabled={disable}
       />

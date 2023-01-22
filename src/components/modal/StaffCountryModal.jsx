@@ -20,8 +20,6 @@ const StaffCountryModal = ({
 }) => {
   const [disable, setDisable] = useState(disableAll);
 
-  console.log(countryInfo);
-
   const {
     handleSubmit,
     register,

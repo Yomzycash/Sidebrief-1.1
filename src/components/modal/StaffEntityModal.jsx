@@ -17,11 +17,13 @@ import { handleError } from "utils/globalFunctions";
 
 const StaffEntityModal = ({
   cardAction,
+  setCardAction,
   open,
   setOpen,
   disableAll,
   title,
   entityInfo,
+  countryInfo,
   submitAction,
   loading,
   handleEntityDelete,
@@ -109,26 +111,29 @@ const StaffEntityModal = ({
       });
       setValue("type", entityInfo.entityType, { shouldValidate: true });
     } else {
+      let countryEntity = countryInfo && Object.keys(countryInfo)?.length > 0;
+
       setValue("entity_name", "");
       setValue("description", "");
       setValue("short_name", "");
       setValue("code", "");
       setValue("shares", "");
       setValue("timeline", "");
-      setValue("country", "");
-      setValue("currency", "");
+      setValue("country", `${countryEntity && countryInfo?.countryISO}`);
+      setValue("currency", `${countryEntity && countryInfo?.currency}`);
       setValue("fee", "");
       setValue("requirements", "");
       setValue("type", "");
     }
     setDisable(disableAll);
-  }, [entityInfo, cardAction]);
+  }, [entityInfo, cardAction, countryInfo]);
 
   return (
     <Modal1
       handleSubmit={handleSubmit}
       submitAction={submitAction}
       cardAction={cardAction}
+      setCardAction={setCardAction}
       title={title || "Add New Entity"}
       open={open}
       setOpen={setOpen}
@@ -200,7 +205,6 @@ const StaffEntityModal = ({
           options={entityTypes}
           onChange={handleEntityTypeChange}
           errorMessage={errors.type?.message}
-          cardAction={cardAction}
           defaultValue={entityInfo?.entityType}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
@@ -217,7 +221,6 @@ const StaffEntityModal = ({
           options={entityRequirements}
           onChange={handleEntityReqChange}
           errorMessage={errors.requirements?.message}
-          cardAction={cardAction}
           defaultValue={entityInfo?.entityRequirements}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
@@ -230,11 +233,10 @@ const StaffEntityModal = ({
           options={entityCountries}
           onChange={handleCountryChange}
           errorMessage={errors.country?.message}
-          cardAction={cardAction}
-          defaultValue={entityInfo?.entityCountry}
+          defaultValue={entityInfo?.entityCountry || countryInfo?.countryISO}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disable}
+          disable={disable || countryInfo?.countryISO}
         />
       </DetailedSection>
 
@@ -246,11 +248,12 @@ const StaffEntityModal = ({
           options={entityCurrencies}
           onChange={handleCurrencyChange}
           errorMessage={errors.currency?.message}
-          cardAction={cardAction}
-          defaultValue={entityInfo?.entityCurrency}
+          defaultValue={
+            entityInfo?.entityCurrency || countryInfo?.countryCurrency
+          }
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disable}
+          disable={disable || countryInfo?.countryCurrency}
         />
         <InputWithLabel
           label="Entity Fee"

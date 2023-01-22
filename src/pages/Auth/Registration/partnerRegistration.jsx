@@ -196,7 +196,7 @@ const PartnerRegistration = () => {
             </QuestionWrap>
           </Body>
         </Form>
-        <AppFeedback subProject="Partner registration" />
+        {/* <AppFeedback subProject="Partner registration" /> */}
       </Registration>
       <OrWrapper>
         <hr />

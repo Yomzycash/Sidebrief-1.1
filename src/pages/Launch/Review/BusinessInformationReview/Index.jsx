@@ -64,7 +64,7 @@ const BusinessInformationReview = () => {
             />
           </ButtonWrapper>
         </Body>
-        <AppFeedback subProject="Business info review" />
+        {/* <AppFeedback subProject="Business info review" /> */}
       </Container>
     </>
   );

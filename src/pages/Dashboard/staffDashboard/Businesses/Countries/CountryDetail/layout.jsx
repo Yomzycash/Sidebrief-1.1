@@ -1,4 +1,5 @@
 import HeaderDetail from "components/Header/HeaderDetail";
+import ConfirmDelete from "components/modal/ConfirmDelete";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -11,6 +12,7 @@ import { handleError } from "utils/globalFunctions";
 
 const CountryDetailLayout = (pages) => {
   const [open, setOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const [deleteCountry, deleteState] = useDeleteCountryMutation();
 
@@ -31,6 +33,7 @@ const CountryDetailLayout = (pages) => {
       let resData = delResponse?.data;
       let error = delResponse?.error;
       if (resData) {
+        setDeleteConfirm(false);
         toast.success("Country deleted successfully");
         navigate("/staff-dashboard/businesses/countries");
       } else {
@@ -44,8 +47,15 @@ const CountryDetailLayout = (pages) => {
     <Container>
       <HeaderDetail
         setOpen={setOpen}
-        handleDelete={handleEntityDel}
         delLoading={deleteState.isLoading}
+        setDeleteConfirm={setDeleteConfirm}
+      />
+      <ConfirmDelete
+        toDelete="Country"
+        open={deleteConfirm}
+        setOpen={setDeleteConfirm}
+        handleDelete={handleEntityDel}
+        loading={deleteState.isLoading}
       />
       <DetailBody>
         <Outlet context={[open, setOpen]} />
