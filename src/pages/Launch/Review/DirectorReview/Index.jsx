@@ -139,7 +139,7 @@ const DirectorReview = () => {
             />
           </ButtonWrapper>
         </Body>
-        <AppFeedback subProject="Director review" />
+        {/* <AppFeedback subProject="Director review" /> */}
       </Container>
     </>
   );

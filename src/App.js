@@ -13,7 +13,7 @@ import {
 } from "redux/Slices";
 import { store } from "redux/Store";
 import { Country } from "country-state-city";
-import { LiveChatLoaderProvider } from "react-live-chat-loader";
+import { CustomerlyProvider } from "react-live-chat-customerly";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
@@ -52,12 +52,13 @@ function App() {
 
   return (
     <>
-      {/* <LiveChatLoaderProvider providerKey="78933" provider="chatwoot"> */}
-      <AnimatePresence exitBeforeEnter>
-        <GlobalStyle />
-        <AppRouter />
-      </AnimatePresence>
-      {/* </LiveChatLoaderProvider> */}
+      <CustomerlyProvider appId={"YOUR_APP_ID"}>
+        ,
+        <AnimatePresence exitBeforeEnter>
+          <GlobalStyle />
+          <AppRouter />
+        </AnimatePresence>
+      </CustomerlyProvider>
     </>
   );
 }

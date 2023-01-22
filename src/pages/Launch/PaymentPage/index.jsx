@@ -96,7 +96,7 @@ const PaymentPage = () => {
           />
         </Bottom>
       </Body>
-      <AppFeedback subProject="Payment page" />
+      {/* <AppFeedback subProject="Payment page" /> */}
     </Container>
   );
 };

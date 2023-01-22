@@ -105,6 +105,7 @@ const StaffEntities = () => {
   // This runs when the delete icon is pressed
   const handleEntityDelete = async (entityInfo) => {
     console.log(entityInfo);
+    console.log("deleted");
     let response = await deleteEntity(entityInfo);
     console.log(response);
     let data = response?.data;

@@ -146,7 +146,7 @@ const Business = () => {
         </SubHeader>
       </Header>
       <Outlet />
-      <AppFeedback subProject="Businesses" />
+      {/* <AppFeedback subProject="Businesses" /> */}
     </Container>
   );
 };

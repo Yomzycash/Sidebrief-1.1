@@ -75,8 +75,8 @@ const SignIn = () => {
     let data = response?.data;
     let error = response?.error;
 
-    console.log("response data", data)
-    console.log("response error", error)
+    console.log("response data", data);
+    console.log("response error", error);
     if (data) {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
@@ -149,7 +149,7 @@ const SignIn = () => {
             />
           </Body>
         </Form>
-        <AppFeedback subProject="Sign In" />
+        {/* <AppFeedback subProject="Sign In" /> */}
       </Registration>
       <OrWrapper>
         <hr />

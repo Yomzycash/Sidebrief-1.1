@@ -294,7 +294,7 @@ const DirectorKYC = () => {
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
-      <AppFeedback subProject="Directors KYC" />
+      {/* <AppFeedback subProject="Directors KYC" /> */}
     </Container>
   );
 };

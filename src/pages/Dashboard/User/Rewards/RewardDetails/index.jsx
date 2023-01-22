@@ -145,7 +145,7 @@ const RewardDetails = (props) => {
           </ScrollBox>
         </DashboardSection>
       </RewardsScroll>
-      <AppFeedback subProject="Rewards details" />
+      {/* <AppFeedback subProject="Rewards details" /> */}
     </StaffContainer>
   );
 };

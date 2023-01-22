@@ -5,7 +5,9 @@ import styled from "styled-components";
 import { EntityCardDetails } from "utils/config";
 import {
   useAddEntityMutation,
+  useDeleteEntityMutation,
   useGetCountryEntitiesQuery,
+  useGetSingleCountryQuery,
   useUpdateEntityMutation,
 } from "services/staffService";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -17,32 +19,26 @@ import { handleError } from "utils/globalFunctions";
 import { toast } from "react-hot-toast";
 
 const CountryEntities = () => {
-  const [entities, setEntities] = useState([]);
   const [open, setOpen] = useOutletContext();
   const [clickedEntity, setClickedEntity] = useState({});
   const [cardAction, setCardAction] = useState("");
 
   const { ISO } = useParams();
   const { data, isLoading, refetch } = useGetCountryEntitiesQuery(ISO);
+  const countryInfo = useGetSingleCountryQuery(ISO);
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
-
-  if (!isLoading) {
-    console.log(data);
-  }
-  console.log(open);
-
-  useEffect(() => {
-    if (data) {
-      setEntities(data);
-    }
-  }, [data]);
+  const [deleteEntity, deleteState] = useDeleteEntityMutation();
 
   const handleCardClick = (entity) => {
     setCardAction("edit");
     setOpen(true);
     setClickedEntity(entity);
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const getRequired = (formData) => {
     return {
@@ -73,7 +69,6 @@ const CountryEntities = () => {
       handleError(error);
     }
     refetch();
-    console.log(response);
   };
 
   // This adds a new entity
@@ -91,7 +86,22 @@ const CountryEntities = () => {
     refetch();
   };
 
-  console.log("card action", cardAction);
+  // This runs when the delete icon is pressed
+  const handleEntityDelete = async (entityInfo) => {
+    console.log(entityInfo);
+    console.log("deleted");
+    let response = await deleteEntity(entityInfo);
+    console.log(response);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity deleted successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
+  };
 
   return (
     <Wrapper>
@@ -121,14 +131,18 @@ const CountryEntities = () => {
             open={open}
             setOpen={setOpen}
             cardAction={cardAction}
+            setCardAction={setCardAction}
             title={
               cardAction === "edit" ? "Entity Information" : "Add New Entity"
             }
             entityInfo={clickedEntity}
+            countryInfo={countryInfo?.data}
             submitAction={
               cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
             }
-            loading={updateState.isLoading}
+            loading={updateState.isLoading || addState.isLoading}
+            deleteState={deleteState}
+            handleEntityDelete={handleEntityDelete}
           />
         </CardWrapper>
       </CardContainer>

@@ -118,7 +118,7 @@ const MyRewards = () => {
           )
         )}
       </Body>
-      <AppFeedback subProject="My rewards" />
+      {/* <AppFeedback subProject="My rewards" /> */}
       <Footer></Footer>
     </Container>
   );

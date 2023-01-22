@@ -117,7 +117,7 @@ const AccountType = () => {
           />
         </AccountFooter>
       </AccountTypeCont>
-      <AppFeedback subProject="Account type" />
+      {/* <AppFeedback subProject="Account type" /> */}
     </AccountTypeMain>
   );
 };

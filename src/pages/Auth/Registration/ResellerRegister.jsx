@@ -199,7 +199,7 @@ const ResellerRegister = () => {
             </QuestionWrap>
           </Body>
         </Form>
-        <AppFeedback subProject="Reseller register" />
+        {/* <AppFeedback subProject="Reseller register" /> */}
       </Registration>
 
       <OrWrapper>
