@@ -83,6 +83,7 @@ const EntitySelect = () => {
     }
   }, [data, error?.status]);
 
+  console.log("checking entities", data);
   //
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
@@ -259,6 +260,7 @@ const EntitySelect = () => {
                     shares={parseInt(item?.entityShares).toLocaleString(
                       "en-US"
                     )}
+                    description={item?.entityDescription}
                     type={item?.entityType}
                     timeline={item?.entityTimeline}
                     requirement={item?.entityRequirements}
