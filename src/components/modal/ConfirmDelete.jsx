@@ -22,6 +22,11 @@ const ConfirmDelete = ({
     setInputValue("");
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleDelete();
+  };
+
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContent style={modalStyle}>
@@ -33,30 +38,33 @@ const ConfirmDelete = ({
 
           <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
         </Title>
-        <InputsWrapper>
-          <InputWithLabel
-            label=""
-            labelStyle="input-label"
-            placeholder={`Enter "delete" to delete`}
-            type="text"
-            inputClass="input-class"
-            containerStyle="input-container-class"
-            onChange={(e) => setInputValue(e.target.value)}
+        <form action="" onSubmit={handleSubmit}>
+          <InputsWrapper>
+            <InputWithLabel
+              label=""
+              labelStyle="input-label"
+              placeholder={`Enter "delete" to delete`}
+              type="text"
+              inputClass="input-class"
+              containerStyle="input-container-class"
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+          </InputsWrapper>
+          <CheckoutController
+            backAction={handleClose}
+            forwardAction={() => {}}
+            forwardSubmit
+            backText={"Cancel"}
+            containerStyle={buttonContainerStyles}
+            backBottonStyle={buttonStyles}
+            forwardButtonStyle={deleteButtonStyles}
+            forwardLoading={loading}
+            forwardText={deleteButtonText || "Delete"}
+            forwardDisable={inputValue?.toLowerCase() !== "delete"}
+            loadingIconColor="red"
+            $modal
           />
-        </InputsWrapper>
-        <CheckoutController
-          backAction={handleClose}
-          forwardAction={handleDelete}
-          backText={"Cancel"}
-          containerStyle={buttonContainerStyles}
-          backBottonStyle={buttonStyles}
-          forwardButtonStyle={deleteButtonStyles}
-          forwardLoading={loading}
-          forwardText={deleteButtonText || "Delete"}
-          forwardDisable={inputValue?.toLowerCase() !== "delete"}
-          loadingIconColor="red"
-          $modal
-        />
+        </form>
       </DialogContent>
     </Dialog>
   );
@@ -69,11 +77,10 @@ export const Title = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  font-size: clamp(15px, 1.5vw, 18px);
+  font-size: clamp(15px, 1.5vw, 17px);
   font-weight: 400;
   color: #151717;
-  padding: clamp(20px, 3vw, 40px) 0;
-  border-bottom: 1px solid #edf1f7;
+  padding: clamp(10px, 3vw, 30px) 0;
 `;
 
 export const InputsWrapper = styled.div`

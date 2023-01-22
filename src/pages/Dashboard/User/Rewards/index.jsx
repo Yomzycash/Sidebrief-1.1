@@ -120,7 +120,7 @@ const Rewards = () => {
               </select>
             </Drop>
           </MobileHeader>
-          <AppFeedback subProject="Rewards" />
+          {/* <AppFeedback subProject="Rewards" /> */}
         </Header>
       )}
       <Outlet />

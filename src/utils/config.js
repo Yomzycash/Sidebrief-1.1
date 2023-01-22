@@ -33,19 +33,50 @@ import {
 import ArrowDownIcon from "../asset/Icons/ArrowDownIcon.svg";
 
 export const userRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
-  password: yup.string().min(8).max(15).required(),
-  // gender: yup.string().required(),
-  // date: yup
-  //   .string()
-  //   .matches(
-  //     "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
-  //     "Not a valid date" // error message
-  //   )
-  //   .required(),
+
+	first_name: yup.string().required("First name is a required field"),
+	last_name: yup.string().required("Last name is a required field"),
+	email: yup.string().email("Enter a valid email address").required(),
+	phone: yup.string().required("Phone number is a required field"),
+	password: yup
+		.string().
+		min(6)
+		.max(15)
+		.required("Password is a required field")
+		.matches(
+			/^(?=.*[A-Z])/,
+			" Must Contain One Uppercase Character"
+		)
+		.matches(
+		/^(?=.*[a-z])/,
+		" Must Contain One Lowercase Character"
+		)
+		
+		.matches(
+		/^(?=.*[0-9])/,
+		"  Must Contain One Number"
+		)
+		.matches(
+		/^(?=.*[!@#\$%\^&\*])/,
+		"  Must Contain  One Special Case Character"
+	),
+	// password: yup.
+	// 	string()
+	// 	.required("Password is a required field")
+	// 	.matches(
+	// 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,17})/,
+	// 	"Must contain alphanumeric symbols"
+    // ),
+	// password: yup.string().min(7).max(10).required("Password is a required field"),
+
+	// gender: yup.string().required(),
+	// date: yup
+	//   .string()
+	//   .matches(
+	//     "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
+	//     "Not a valid date" // error message
+	//   )
+	//   .required(),
 });
 
 export const loginSchema = yup.object().shape({
@@ -76,23 +107,67 @@ export const directorRoleOptions = [
 ];
 
 export const partnerRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
-  password: yup.string().min(8).max(15).required(),
-  operational_country: yup.string().required(),
-  corporate_name: yup.string().required("Corporate name is a required field"),
+
+	first_name: yup.string().required("First name is a required field"),
+	last_name: yup.string().required("Last name is a required field"),
+	email: yup.string().email("Enter a valid email address").required(),
+	phone: yup.string().required("Phone number is a required field"),
+	password: yup
+		.string().
+		min(6)
+		.max(15)
+		.required("Password is a required field")
+		.matches(
+			/^(?=.*[A-Z])/,
+			"Must contain an uppercase character"
+		)
+		.matches(
+		/^(?=.*[a-z])/,
+		" Must contain a lowercase character"
+		)
+		
+		.matches(
+		/^(?=.*[0-9])/,
+		"  Must contain a number"
+		)
+		.matches(
+		/^(?=.*[!@#\$%\^&\*])/,
+		"  Must contain a special case character"
+	),
+	operational_country: yup.string().required(),
+	corporate_name: yup.string().required("Corporate name is a required field"),
 });
 
 export const resellerRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
-  password: yup.string().min(8).max(15).required(),
-  operational_country: yup.string().required(),
-  corporate_name: yup.string().required("Corporate name is a required field"),
+	first_name: yup.string().required("First name is a required field"),
+	last_name: yup.string().required("Last name is a required field"),
+	email: yup.string().email("Enter a valid email address").required(),
+	phone: yup.string().required("Phone number is a required field"),
+	password: yup
+		.string().
+		min(6)
+		.max(15)
+		.required("Password is a required field")
+		.matches(
+			/^(?=.*[A-Z])/,
+			" Must contain an uppercase character"
+		)
+		.matches(
+		/^(?=.*[a-z])/,
+		" Must contain a lowercase character"
+		)
+		
+		.matches(
+		/^(?=.*[0-9])/,
+		"  Must contain a number"
+		)
+		.matches(
+		/^(?=.*[!@#\$%\^&\*])/,
+		"  Must contain a special case character"
+	),
+	operational_country: yup.string().required(),
+	corporate_name: yup.string().required("Corporate name is a required field"),
+
 });
 
 export const fileFormSchema = yup.object().shape({

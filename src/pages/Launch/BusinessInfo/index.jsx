@@ -220,7 +220,7 @@ const BusinessInfo = () => {
           </LaunchPrimaryContainer>
         </Body>
       </Container>
-      <AppFeedback subProject="Business information" />
+      {/* <AppFeedback subProject="Business information" /> */}
     </>
   );
 };

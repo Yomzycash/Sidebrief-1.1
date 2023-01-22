@@ -147,7 +147,7 @@ const PartnerRegistration = () => {
                 error={errors}
               />
               <InputWithLabel
-                placeholder="Min. of 8  characters"
+                placeholder="Min. of 6 characters"
                 label="Password"
                 type="password"
                 rightText
@@ -196,7 +196,7 @@ const PartnerRegistration = () => {
             </QuestionWrap>
           </Body>
         </Form>
-        <AppFeedback subProject="Partner registration" />
+        {/* <AppFeedback subProject="Partner registration" /> */}
       </Registration>
       <OrWrapper>
         <hr />

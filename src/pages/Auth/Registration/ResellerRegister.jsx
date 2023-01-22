@@ -150,7 +150,7 @@ const ResellerRegister = () => {
                 error={errors}
               />
               <InputWithLabel
-                placeholder="Min. of 8  characters"
+                placeholder="Min. of 6  characters"
                 label="Password"
                 type="password"
                 rightText
@@ -199,7 +199,7 @@ const ResellerRegister = () => {
             </QuestionWrap>
           </Body>
         </Form>
-        <AppFeedback subProject="Reseller register" />
+        {/* <AppFeedback subProject="Reseller register" /> */}
       </Registration>
 
       <OrWrapper>
