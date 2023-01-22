@@ -56,6 +56,17 @@ export const Top = styled.div`
   justify-content: space-between;
 `;
 
+export const Description = styled.div`
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(12px, 1.2vw, 15px);
+  color: #4e5152;
+
+  ${Container}:hover & {
+    color: #ffffff;
+  }
+`;
 export const Title = styled.h4`
   font-family: "BR Firma";
   font-weight: 600;
