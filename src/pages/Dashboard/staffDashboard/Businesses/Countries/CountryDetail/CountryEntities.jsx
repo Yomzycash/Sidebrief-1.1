@@ -41,6 +41,7 @@ const CountryEntities = () => {
   }, []);
 
   const getRequired = (formData) => {
+    console.log("required", formData);
     return {
       entityName: formData?.entity_name,
       entityShortName: formData?.short_name,

@@ -120,7 +120,7 @@ const StaffEntityModal = ({
       setValue("shares", "");
       setValue("timeline", "");
       setValue("country", `${countryEntity && countryInfo?.countryISO}`);
-      setValue("currency", `${countryEntity && countryInfo?.currency}`);
+      setValue("currency", `${countryEntity && countryInfo?.countryCurrency}`);
       setValue("fee", "");
       setValue("requirements", "");
       setValue("type", "");
