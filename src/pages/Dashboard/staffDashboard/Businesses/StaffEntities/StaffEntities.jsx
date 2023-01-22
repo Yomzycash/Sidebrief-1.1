@@ -73,7 +73,6 @@ const StaffEntities = () => {
   // This adds a new entity
   const handleEntityAdd = async (formData) => {
     let requiredData = getRequired(formData);
-    console.log(requiredData);
     let response = await addEntity(requiredData);
     let data = response?.data;
     let error = response?.error;
