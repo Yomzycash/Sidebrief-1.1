@@ -103,7 +103,7 @@ const BusinessRegistration = (props) => {
 	};
 
 	const handleManage = () => {
-		console.log("Clicked Manage");
+		navigate("/manage");
 	};
 
 	return (
