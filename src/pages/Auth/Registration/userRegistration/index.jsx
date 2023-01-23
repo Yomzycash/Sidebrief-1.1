@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from "react";
 import {
   Body,
   Bottom,
@@ -9,32 +9,30 @@ import {
   QuestionWrap,
   Registration,
   TestBlock,
-} from './styles'
-import MainButton from 'components/button'
-import { DateInput, DropDown, InputWithLabel } from 'components/input'
-import LogoNav from 'components/navbar/LogoNav'
-import { HeadText, TextsWithLink } from 'components/texts'
-import { AuthLayout } from 'layout'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useRegisterNewUserMutation } from 'services/authService'
-import { store } from 'redux/Store'
-import { saveUserInfo, saveUserToken } from 'redux/Slices'
-import { genderOptions, userRegistrationSchema } from 'utils/config'
-import toast from 'react-hot-toast'
-import { ThreeDots } from 'react-loading-icons'
-import AppFeedback from 'components/AppFeedback'
-import { checkStaffEmail } from 'utils/globalFunctions'
-import { useRegisterNewStaffMutation } from 'services/staffService'
+} from "./styles";
+import MainButton from "components/button";
+import { DateInput, DropDown, InputWithLabel } from "components/input";
+import LogoNav from "components/navbar/LogoNav";
+import { HeadText, TextsWithLink } from "components/texts";
+import { AuthLayout } from "layout";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useRegisterNewUserMutation } from "services/authService";
+import { store } from "redux/Store";
+import { saveUserInfo, saveUserToken } from "redux/Slices";
+import { genderOptions, userRegistrationSchema } from "utils/config";
+import toast from "react-hot-toast";
+import { ThreeDots } from "react-loading-icons";
+import AppFeedback from "components/AppFeedback";
+import { checkStaffEmail } from "utils/globalFunctions";
+import { useRegisterNewStaffMutation } from "services/staffService";
 
 const UserRegistration = () => {
-  const [navSticked, setNavSticked] = useState('')
-  const [
-    registerNewUser,
-    { isLoading, isSuccess },
-  ] = useRegisterNewUserMutation()
-  const [registerNewStaff, staffState] = useRegisterNewStaffMutation()
+  const [navSticked, setNavSticked] = useState("");
+  const [registerNewUser, { isLoading, isSuccess }] =
+    useRegisterNewUserMutation();
+  const [registerNewStaff, staffState] = useRegisterNewStaffMutation();
 
   const {
     handleSubmit,
@@ -43,48 +41,42 @@ const UserRegistration = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(userRegistrationSchema),
-  })
-  const TestRef = useRef()
+  });
+  const TestRef = useRef();
 
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     var observer = new IntersectionObserver((e) => {
       if (e[0].intersectionRatio === 0) {
-        setNavSticked('true')
+        setNavSticked("true");
       } else if (e[0].intersectionRatio === 1) {
-        setNavSticked('')
+        setNavSticked("");
       }
-    })
+    });
     if (TestRef.current) {
-      observer.observe(TestRef.current)
+      observer.observe(TestRef.current);
     } else {
       const mutationObserver = new MutationObserver(() => {
         if (TestRef.current) {
-          mutationObserver.disconnect()
-          observer.observe(TestRef.current)
+          mutationObserver.disconnect();
+          observer.observe(TestRef.current);
         }
         mutationObserver.observe(document, {
           subtree: true,
           childList: true,
-        })
-      })
+        });
+      });
     }
     return () => {
-      observer.disconnect()
-    }
-  }, [])
+      observer.disconnect();
+    };
+  }, []);
 
   // Sign up function block
   const submitForm = async (formData) => {
     // let correctedData = correctFormDate(formData);
-
-    let staffCheck = checkStaffEmail(formData.email)
-    let response = staffCheck
-      ? await registerNewStaff(JSON.stringify(formData))
-      : await registerNewUser(JSON.stringify(formData))
-
 
     let newData = {
       ...formData,
@@ -102,23 +94,22 @@ const UserRegistration = () => {
       ? await registerNewStaff(JSON.stringify(newData))
       : await registerNewUser(JSON.stringify(formData));
 
-
-    let data = response?.data
-    let error = response?.error
+    let data = response?.data;
+    let error = response?.error;
     if (data) {
-      store.dispatch(saveUserInfo(data))
+      store.dispatch(saveUserInfo(data));
       localStorage.setItem(
-        'userInfo',
-        JSON.stringify({ ...data, newUser: true }),
-      )
-      localStorage.setItem('userEmail', formData.email)
-      toast.success(data.message)
-      navigate(`${location.pathname}/success`)
+        "userInfo",
+        JSON.stringify({ ...data, newUser: true })
+      );
+      localStorage.setItem("userEmail", formData.email);
+      toast.success(data.message);
+      navigate(`${location.pathname}/success`);
     } else if (error) {
       // console.log(error.data.message);
-      toast.error(error.data.message)
+      toast.error(error.data.message);
     }
-  }
+  };
 
   // const correctFormDate = (formData) => {
   //   let data = formData;
@@ -132,13 +123,13 @@ const UserRegistration = () => {
   // };
 
   const handleGenderChange = (value) => {
-    var string = Object.values(value)[0]
-    setValue('gender', string, { shouldValidate: true })
+    var string = Object.values(value)[0];
+    setValue("gender", string, { shouldValidate: true });
     // console.log(string);
-  }
+  };
   const handleDateChange = (value) => {
-    setValue('date', value, { shouldValidate: true })
-  }
+    setValue("date", value, { shouldValidate: true });
+  };
 
   return (
     <AuthLayout
@@ -224,23 +215,23 @@ const UserRegistration = () => {
                 {
                   text: "By creating an account , you agree to Sidebrief's",
                   link: {
-                    text: 'Privacy Policy',
-                    to: '',
+                    text: "Privacy Policy",
+                    to: "",
                   },
                   action: () =>
                     window.open(
-                      'https://policy.sidebrief.com/privacy',
-                      '_blank',
+                      "https://policy.sidebrief.com/privacy",
+                      "_blank"
                     ),
                 },
                 {
-                  text: '&',
+                  text: "&",
                   link: {
-                    text: 'Terms of Use.',
-                    to: '',
+                    text: "Terms of Use.",
+                    to: "",
                   },
                   action: () =>
-                    window.open('https://policy.sidebrief.com/terms', '_blank'),
+                    window.open("https://policy.sidebrief.com/terms", "_blank"),
                 },
               ]}
             />
@@ -255,8 +246,8 @@ const UserRegistration = () => {
               <TextsWithLink
                 text={[
                   {
-                    text: 'Have an account? ',
-                    link: { text: 'Sign In', to: '/login' },
+                    text: "Have an account? ",
+                    link: { text: "Sign In", to: "/login" },
                   },
                 ]}
                 // $mobileResponsive
@@ -276,8 +267,8 @@ const UserRegistration = () => {
         <TextsWithLink
           text={[
             {
-              text: 'Become a ',
-              link: { text: 'Service Partner', to: '/register/partner' },
+              text: "Become a ",
+              link: { text: "Service Partner", to: "/register/partner" },
             },
           ]}
           // $mobileResponsive
@@ -285,15 +276,15 @@ const UserRegistration = () => {
         <TextsWithLink
           text={[
             {
-              text: 'Create a  ',
-              link: { text: 'Reseller Account', to: '/register/reseller' },
+              text: "Create a  ",
+              link: { text: "Reseller Account", to: "/register/reseller" },
             },
           ]}
           // $mobileResponsive
         />
       </Bottom>
     </AuthLayout>
-  )
-}
+  );
+};
 
-export default UserRegistration
+export default UserRegistration;
