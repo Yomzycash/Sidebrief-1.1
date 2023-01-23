@@ -146,7 +146,7 @@ const ShareholderReview = () => {
             />
           </ButtonWrapper>
         </Body>
-        <AppFeedback subProject="Shareholder review" />
+        {/* <AppFeedback subProject="Shareholder review" /> */}
       </Container>
     </>
   );

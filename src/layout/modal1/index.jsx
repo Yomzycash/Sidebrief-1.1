@@ -5,6 +5,7 @@ import { CheckoutController } from "containers";
 import {
   buttonContainerStyles,
   buttonStyles,
+  DeleteWrapper,
   Form,
   InputsWrapper,
   modalStyle,
@@ -12,14 +13,15 @@ import {
   TopIcons,
 } from "./styled";
 import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
-import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { SpinningCircles } from "react-loading-icons";
+import DeleteIcon from "asset/Icons/DeleteIcon";
 
 const Modal1 = ({
   handleSubmit,
   submitAction,
   title,
   cardAction,
+  setCardAction,
   children,
   open,
   setOpen,
@@ -33,6 +35,7 @@ const Modal1 = ({
   // Called when closed button is clicked
   const handleClose = () => {
     setOpen(false);
+    setCardAction && setCardAction("");
   };
 
   // This enables the inputs. Called when the edit (pen) icon is clicked.
@@ -54,19 +57,15 @@ const Modal1 = ({
                 cardAction === "edit" &&
                 (deleteState?.isLoading ? (
                   <SpinningCircles
-                    stroke="#00A2D4"
-                    fill="#00A2D4"
+                    stroke="#cb1b1b"
+                    fill="#cb1b1b"
                     width={20}
                     height={20}
                   />
                 ) : (
-                  <div style={{ cursor: "pointer" }}>
-                    <DeleteIcon
-                      onClick={handleDelete}
-                      width={20}
-                      color="#fff"
-                    />
-                  </div>
+                  <DeleteWrapper onClick={handleDelete}>
+                    <DeleteIcon width={20} color="#cb1b1b" />
+                  </DeleteWrapper>
                 ))}
               <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
             </TopIcons>

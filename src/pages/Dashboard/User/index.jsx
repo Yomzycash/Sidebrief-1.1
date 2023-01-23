@@ -1,29 +1,29 @@
-import React from 'react'
-import styled from 'styled-components'
-import Navbar from 'components/navbar'
-import Sidebar from '../../../components/sidebar'
-import { Outlet, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import MobileNavbar from 'components/navbar/MobileNavbar'
+import React from "react";
+import styled from "styled-components";
+import Navbar from "components/navbar";
+import Sidebar from "../../../components/sidebar";
+import { Outlet, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import MobileNavbar from "components/navbar/MobileNavbar";
 
 const UserDashboard = () => {
-  const layoutInfo = useSelector((store) => store.LayoutInfo)
-  const { sidebarWidth } = layoutInfo
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
 
-  const location = useLocation()
+  const location = useLocation();
 
-  let hideSearch = location.pathname.includes('/dashboard/rewards')
+  let hideSearch = location.pathname.includes("/dashboard/rewards");
 
   let hideMobileNav =
-    location.pathname.includes('/dashboard/rewards') &&
-    location.pathname.length > 31
+    location.pathname.includes("/dashboard/rewards") &&
+    location.pathname.length > 31;
 
   return (
     <Dashboard>
       <Navbar
         dashboard
-        imgStyles={{ maxWidth: '100px' }}
-        style={{ padding: '12px 24px' }}
+        imgStyles={{ maxWidth: "100px" }}
+        style={{ padding: "12px 24px" }}
         hideSearch={hideSearch}
       />
       <MobileNavbar hideNav={hideMobileNav} />
@@ -36,22 +36,22 @@ const UserDashboard = () => {
         </BodyRight>
       </Body>
     </Dashboard>
-  )
-}
+  );
+};
 
-export default UserDashboard
+export default UserDashboard;
 
 const Dashboard = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
   flex: 1;
-`
+`;
 const Body = styled.div`
   display: flex;
   flex-flow: row nowrap;
-`
-const BodyLeft = styled.div``
+`;
+const BodyLeft = styled.div``;
 
 const BodyRight = styled.div`
   display: flex;
@@ -60,6 +60,5 @@ const BodyRight = styled.div`
 
   @media screen and (max-width: 700px) {
     width: 100%;
-    
   }
-`
+`;

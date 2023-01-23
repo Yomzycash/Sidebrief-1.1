@@ -158,7 +158,7 @@ const ForgotPassword = () => {
           // $mobileResponsive
         />
       </Bottom>
-      <AppFeedback subProject="Forgot Password" />
+      {/* <AppFeedback subProject="Forgot Password" /> */}
     </AuthLayout>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { NavLink, useLocation } from "react-router-dom";
@@ -11,7 +11,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
   const location = useLocation();
   const locationPath = location?.pathname;
 
-  const [isActive] = useState(locationPath?.includes(item.path));
+  let isActive = locationPath?.includes(item.path);
 
   const ActiveStyle = {
     background: "rgba(0, 162, 212, 0.1)",

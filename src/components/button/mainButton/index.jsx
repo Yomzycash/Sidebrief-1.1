@@ -57,6 +57,7 @@ const ButtonWrapper = styled(motion.button)`
   outline: ${(props) => (props.outline ? props.outline : "none")};
   cursor: pointer;
   transition: 0.3s all ease;
+  padding-inline: 10px;
 
   :hover {
     background-color: ${(props) =>

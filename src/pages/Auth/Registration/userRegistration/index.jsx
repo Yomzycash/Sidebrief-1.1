@@ -79,10 +79,29 @@ const UserRegistration = () => {
   // Sign up function block
   const submitForm = async (formData) => {
     // let correctedData = correctFormDate(formData);
+
     let staffCheck = checkStaffEmail(formData.email)
     let response = staffCheck
       ? await registerNewStaff(JSON.stringify(formData))
       : await registerNewUser(JSON.stringify(formData))
+
+
+    let newData = {
+      ...formData,
+      date: "1990",
+      gender: "female",
+      bYear: "1990",
+      bMonth: "05",
+      bDay: "20",
+    };
+
+    console.log("newData", newData);
+
+    let staffCheck = checkStaffEmail(formData.email);
+    let response = staffCheck
+      ? await registerNewStaff(JSON.stringify(newData))
+      : await registerNewUser(JSON.stringify(formData));
+
 
     let data = response?.data
     let error = response?.error
@@ -168,7 +187,7 @@ const UserRegistration = () => {
                 errorMessage={errors.email?.message}
               />
               <InputWithLabel
-                placeholder="Min. of 8  characters"
+                placeholder="Min. of 6 characters"
                 label="Password"
                 type="password"
                 rightText
@@ -245,7 +264,7 @@ const UserRegistration = () => {
             </QuestionWrap>
           </Body>
         </Form>
-        <AppFeedback subProject="User registration" />
+        {/* <AppFeedback subProject="User registration" /> */}
       </Registration>
 
       <OrWrapper>

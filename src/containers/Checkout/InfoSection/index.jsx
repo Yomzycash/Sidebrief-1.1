@@ -99,15 +99,24 @@ export const CheckoutFormInfo = ({
         selectedToEdit?.shareholderOwnershipPercentage
       );
       setValue("isDirector", isDirector);
-
+      setValue("nin", selectedToEdit.shareholderOwnershipType, {
+        shouldValidate: true,
+      });
+      setValue("reg_number", selectedToEdit.directorRole, {
+        shouldValidate: true,
+      });
       handleNumberChange(selectedToEdit?.memberPhone);
-      handleShareTypeChange({
-        share_type: selectedToEdit?.shareholderOwnershipType,
-      });
+      // setValue("director_role", selectedToEdit.directorRole, {
+      //   shouldValidate: true,
+      // });
 
-      handleDirectorRoleChange({
-        director_role: selectedToEdit?.directorRole,
-      });
+      // handleShareTypeChange({
+      //   share_type: selectedToEdit?.shareholderOwnershipType,
+      // });
+
+      // handleDirectorRoleChange({
+      //   director_role: selectedToEdit?.directorRole,
+      // });
 
       if (beneficiary) {
         setValue("full_name", selectedToEdit?.beneficialOwnerName);
@@ -206,7 +215,17 @@ export const CheckoutFormInfo = ({
               register={register}
               errorMessage={errors.share_percentage?.message}
             />
-            <DropDown
+            <InputWithLabel
+              label="NIN (National Identification Number)"
+              labelStyle="input-label"
+              containerStyle="input-container-class"
+              type="number"
+              name="nin"
+              inputClass="input-class"
+              register={register}
+              errorMessage={errors.nin?.message}
+            />
+            {/* <DropDown
               containerStyle={{ margin: 0, marginBottom: "24px" }}
               label="Share Type"
               labelStyle="input-label"
@@ -218,23 +237,33 @@ export const CheckoutFormInfo = ({
               fontSize="clamp(12px, 1.2vw, 14px)"
               height="40px"
               launch
-            />
+            /> */}
           </DetailedSection>
         )}
         {(isDirector || director) && (
-          <DropDown
-            containerStyle={{ margin: 0, marginBottom: "24px" }}
-            label="Director Role"
+          <InputWithLabel
+            label="Registration Number"
             labelStyle="input-label"
-            options={directorRoleOptions}
-            onChange={handleDirectorRoleChange}
-            errorMessage={errors.director_role?.message}
-            cardAction={cardAction}
-            defaultValue={directorInitialRole}
-            fontSize="clamp(12px, 1.2vw, 14px)"
-            height="40px"
-            launch
+            containerStyle="input-container-class"
+            type="number"
+            name="reg_number"
+            inputClass="input-class"
+            register={register}
+            errorMessage={errors.reg_number?.message}
           />
+          // <DropDown
+          //   containerStyle={{ margin: 0, marginBottom: "24px" }}
+          //   label="Director Role"
+          //   labelStyle="input-label"
+          //   options={directorRoleOptions}
+          //   onChange={handleDirectorRoleChange}
+          //   errorMessage={errors.director_role?.message}
+          //   cardAction={cardAction}
+          //   defaultValue={directorInitialRole}
+          //   fontSize="clamp(12px, 1.2vw, 14px)"
+          //   height="40px"
+          //   launch
+          // />
         )}
         {beneficiary && (
           <DetailedSection>

@@ -15,6 +15,7 @@ const TagInputWithSearch = ({
   getValue, // (function): returns the selected tags as an argument
   initialValue,
   initialValues,
+  suggestionLoading,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -163,6 +164,12 @@ const TagInputWithSearch = ({
     setTags(filteredTags);
   };
 
+  const handleNotExistAdd = () => {
+    let res = setSelected(value);
+    if (res === "error") return;
+    setTags([...tags, value]);
+  };
+
   // This sends back the input data
   useEffect(() => {
     if (getValue) {
@@ -204,12 +211,16 @@ const TagInputWithSearch = ({
         </Input>
         {showSuggestions && (
           <Suggestions ref={suggestionContainer}>
-            {filteredList.length === 0 ? (
-              <div style={{ display: "flex", justifyContent: "center" }}>
+            {suggestionLoading && (
+              <NoSuggestion>
                 <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} />
-              </div>
-            ) : (
-              ""
+              </NoSuggestion>
+            )}
+            {filteredList.length === 0 && (
+              <NoSuggestion>
+                <span>Objective doesn't exist</span>
+                <button onMouseDown={handleNotExistAdd}>Add</button>
+              </NoSuggestion>
             )}
             {filteredList.map((element, index) => (
               <li
@@ -329,5 +340,27 @@ const Suggestions = styled.div`
   }
   &::-webkit-scrollbar-thumb {
     background-color: #edf1f7;
+  }
+`;
+
+export const NoSuggestion = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-block: 10px;
+  font-size: 14px;
+
+  button {
+    padding: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    background-color: #00c3ff;
+    transition: 0.3s ease all;
+
+    :hover {
+      opacity: 0.8;
+    }
   }
 `;

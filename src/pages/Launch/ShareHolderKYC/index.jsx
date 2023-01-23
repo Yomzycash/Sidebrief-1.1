@@ -287,7 +287,7 @@ const ShareHolderKYC = () => {
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
-      <AppFeedback subProject="Shareholder KYC" />
+      {/* <AppFeedback subProject="Shareholder KYC" /> */}
     </Container>
   );
 };

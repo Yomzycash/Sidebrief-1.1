@@ -464,7 +464,7 @@ const ShareHoldersInfo = () => {
           </Bottom>
         </LaunchPrimaryContainer>
       </Body>
-      <AppFeedback subProject="Shareholders Info" />
+      {/* <AppFeedback subProject="Shareholders Info" /> */}
     </Container>
   );
 };

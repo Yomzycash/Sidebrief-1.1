@@ -10,6 +10,7 @@ import {
   Price,
   Bullet,
   Content,
+  Description,
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
@@ -24,6 +25,7 @@ export const EntityCard = ({
   shares,
   type,
   currency,
+  description,
 }) => {
   return (
     <Container onClick={action}>
@@ -34,9 +36,10 @@ export const EntityCard = ({
         <Title>{name}</Title>
         <TimeLine>{timeline}</TimeLine>
       </Top>
+      <Description>{description}</Description>
       <Mid>
         <Price>
-          {price} {currency}
+          {numeral(price).format("0,0")} {currency}
         </Price>
       </Mid>
 

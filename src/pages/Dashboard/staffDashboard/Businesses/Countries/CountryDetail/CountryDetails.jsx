@@ -188,8 +188,6 @@ const TextWrapper = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
-  display: flex;
-  align-items: center;
   color: #242627;
   white-space: nowrap;
   overflow: hidden;

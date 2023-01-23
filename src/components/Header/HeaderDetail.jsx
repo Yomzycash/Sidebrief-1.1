@@ -22,8 +22,8 @@ const HeaderDetail = ({
   countryCurrency = "--",
   Description = "Add Entity",
   setOpen,
-  handleDelete,
   delLoading,
+  setDeleteConfirm,
 }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const { pathname } = useLocation();
@@ -88,7 +88,7 @@ const HeaderDetail = ({
               (delLoading ? (
                 <p>Deleting...</p>
               ) : (
-                <DeleteButton onClick={handleDelete}>
+                <DeleteButton onClick={() => setDeleteConfirm(true)}>
                   <p>Delete</p>
                   <RedTrash />
                 </DeleteButton>
@@ -263,6 +263,12 @@ const DeleteButton = styled.button`
   gap: 16px;
   padding: 8px;
   cursor: pointer;
+  transition: 0.3s ease all;
+  border-radius: 10px;
+
+  :hover {
+    background-color: #ffb5b5;
+  }
 `;
 
 const SubHeader = styled.div`

@@ -25,7 +25,7 @@ const ApplicationSuccessPage = () => {
           onClick={handleNavigate}
         />
       </Body>
-      <AppFeedback subProject="Application success page" />
+      {/* <AppFeedback subProject="Application success page" /> */}
     </>
   );
 };

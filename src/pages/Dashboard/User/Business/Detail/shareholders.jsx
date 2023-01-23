@@ -14,6 +14,7 @@ const DetailShareholder = () => {
   const members = isSuccess ? data.businessMembers : [];
   const memberKYC = isSuccess ? data.businessMembersKYC : [];
 
+  console.log("dataaa", data);
   return (
     <>
       {isLoading ? (
@@ -38,8 +39,6 @@ const DetailShareholder = () => {
             const proofFile = currentmemberKYC
               .filter((el) => el.documentType.includes("proof"))
               .slice(-1)[0];
-
-            // console.log(member.memberName, proofFile);
 
             return (
               <PdfCard

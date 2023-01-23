@@ -16,7 +16,7 @@ export const directorAdd = async (
   const requiredDirectorData = {
     launchCode: launchCode,
     memberCode: memberInfo.memberCode,
-    directorRole: formData.director_role,
+    directorRole: formData.reg_number,
   };
 
   // Send the required payload to the backend
@@ -47,7 +47,7 @@ export const directorUpdate = async (
   const requiredDirectorUpdateData = {
     launchCode: selectedDirector.launchCode,
     memberCode: selectedDirector.memberCode,
-    directorRole: formData.director_role,
+    directorRole: formData.reg_number,
     directorCode: selectedDirector.directorCode,
   };
   // Responses from the backend
