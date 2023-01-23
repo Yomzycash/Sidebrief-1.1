@@ -19,9 +19,10 @@ const TextsWithLink = ({ text, textStyle, linkStyle, $mobileResponsive }) => {
             {" "}
             {element.text}{" "}
             <Link
-              to={element.link.to}
+              to={element.link.to} 
               style={{ ...linkStyle }}
               onClick={element.action && element.action}
+             
             >
               <motion.span
                 key="TextWithLinkSpan"
