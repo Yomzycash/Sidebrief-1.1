@@ -207,10 +207,12 @@ const UserRegistration = () => {
                   link: {
                     text: 'Privacy Policy',
                     to: '',
-                    
                   },
                   action: () =>
-                      window.open('https://policy.sidebrief.com/', '_blank'),
+                    window.open(
+                      'https://policy.sidebrief.com/privacy',
+                      '_blank',
+                    ),
                 },
                 {
                   text: '&',
@@ -219,7 +221,7 @@ const UserRegistration = () => {
                     to: '',
                   },
                   action: () =>
-                    window.open('https://policy.sidebrief.com/', '_blank'),
+                    window.open('https://policy.sidebrief.com/terms', '_blank'),
                 },
               ]}
             />
