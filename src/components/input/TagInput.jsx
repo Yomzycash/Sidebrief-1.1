@@ -44,7 +44,7 @@ const TagInput = ({
     }
 
     for (let i = 0; i < tags.length; i++) {
-      if (value.trim() === tags[i]) {
+      if (value.toLowerCase().trim() === tags[i].toLowerCase()) {
         resultToReturn = true
       }
     }
@@ -69,7 +69,7 @@ const TagInput = ({
       let value = currentInput
       // console.log('femi')
       for (let i = 0; i < tags.length; i++) {
-        if (value.trim() === tags[i]) {
+        if (value.toLowerCase().trim() === tags[i].toLowerCase()) {
           resultToReturn = true
         }
       }
