@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const modalStyle = {
   padding: 0,
   backgroundColor: "white",
-  width: "100%",
+  width: "100% ",
   maxWidth: "962px",
   borderRadius: "16px",
   boxShadow:

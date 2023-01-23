@@ -13,7 +13,6 @@ import {
 } from "redux/Slices";
 import { store } from "redux/Store";
 import { Country } from "country-state-city";
-import { CustomerlyProvider } from "react-live-chat-customerly";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`
@@ -52,13 +51,10 @@ function App() {
 
   return (
     <>
-      <CustomerlyProvider appId={"YOUR_APP_ID"}>
-        ,
-        <AnimatePresence exitBeforeEnter>
-          <GlobalStyle />
-          <AppRouter />
-        </AnimatePresence>
-      </CustomerlyProvider>
+      <AnimatePresence exitBeforeEnter>
+        <GlobalStyle />
+        <AppRouter />
+      </AnimatePresence>
     </>
   );
 }

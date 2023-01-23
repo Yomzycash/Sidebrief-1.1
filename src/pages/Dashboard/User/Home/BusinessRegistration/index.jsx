@@ -95,7 +95,7 @@ const BusinessRegistration = (props) => {
     store.dispatch(setLaunchResponse({}));
     localStorage.removeItem("launchInfo");
     localStorage.removeItem("countryISO");
-    navigate("/launch");
+    window.open("/launch", "_blank");
   };
 
   return (

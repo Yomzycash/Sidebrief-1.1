@@ -93,6 +93,7 @@ const StaffEntityModal = ({
   // This populates the entity fields when an entity is clicked
   useEffect(() => {
     if (entityInfo && cardAction === "edit") {
+      console.log(entityInfo);
       setValue("entity_name", entityInfo.entityName, { shouldValidate: true });
       setValue("description", entityInfo.entityDescription, {
         shouldValidate: true,
