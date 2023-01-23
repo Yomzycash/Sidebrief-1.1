@@ -33,50 +33,40 @@ import {
 import ArrowDownIcon from "../asset/Icons/ArrowDownIcon.svg";
 
 export const userRegistrationSchema = yup.object().shape({
+  first_name: yup.string().required("First name is a required field"),
+  last_name: yup.string().required("Last name is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  phone: yup.string().required("Phone number is a required field"),
+  password: yup
+    .string()
+    .min(6)
+    .max(15)
+    .required("Password is a required field")
+    .matches(/^(?=.*[A-Z])/, " Must Contain One Uppercase Character")
+    .matches(/^(?=.*[a-z])/, " Must Contain One Lowercase Character")
 
-	first_name: yup.string().required("First name is a required field"),
-	last_name: yup.string().required("Last name is a required field"),
-	email: yup.string().email("Enter a valid email address").required(),
-	phone: yup.string().required("Phone number is a required field"),
-	password: yup
-		.string().
-		min(6)
-		.max(15)
-		.required("Password is a required field")
-		.matches(
-			/^(?=.*[A-Z])/,
-			" Must Contain One Uppercase Character"
-		)
-		.matches(
-		/^(?=.*[a-z])/,
-		" Must Contain One Lowercase Character"
-		)
-		
-		.matches(
-		/^(?=.*[0-9])/,
-		"  Must Contain One Number"
-		)
-		.matches(
-		/^(?=.*[!@#\$%\^&\*])/,
-		"  Must Contain  One Special Case Character"
-	),
-	// password: yup.
-	// 	string()
-	// 	.required("Password is a required field")
-	// 	.matches(
-	// 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,17})/,
-	// 	"Must contain alphanumeric symbols"
-    // ),
-	// password: yup.string().min(7).max(10).required("Password is a required field"),
+    .matches(/^(?=.*[0-9])/, "  Must Contain One Number")
+    .matches(
+      /^(?=.*[!@#\$%\^&\*])/,
+      "  Must Contain  One Special Case Character"
+    ),
+  // password: yup.
+  // 	string()
+  // 	.required("Password is a required field")
+  // 	.matches(
+  // 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,17})/,
+  // 	"Must contain alphanumeric symbols"
+  // ),
+  // password: yup.string().min(7).max(10).required("Password is a required field"),
 
-	// gender: yup.string().required(),
-	// date: yup
-	//   .string()
-	//   .matches(
-	//     "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
-	//     "Not a valid date" // error message
-	//   )
-	//   .required(),
+  // gender: yup.string().required(),
+  // date: yup
+  //   .string()
+  //   .matches(
+  //     "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
+  //     "Not a valid date" // error message
+  //   )
+  //   .required(),
 });
 
 export const loginSchema = yup.object().shape({
@@ -107,67 +97,41 @@ export const directorRoleOptions = [
 ];
 
 export const partnerRegistrationSchema = yup.object().shape({
+  first_name: yup.string().required("First name is a required field"),
+  last_name: yup.string().required("Last name is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  phone: yup.string().required("Phone number is a required field"),
+  password: yup
+    .string()
+    .min(6)
+    .max(15)
+    .required("Password is a required field")
+    .matches(/^(?=.*[A-Z])/, "Must contain an uppercase character")
+    .matches(/^(?=.*[a-z])/, " Must contain a lowercase character")
 
-	first_name: yup.string().required("First name is a required field"),
-	last_name: yup.string().required("Last name is a required field"),
-	email: yup.string().email("Enter a valid email address").required(),
-	phone: yup.string().required("Phone number is a required field"),
-	password: yup
-		.string().
-		min(6)
-		.max(15)
-		.required("Password is a required field")
-		.matches(
-			/^(?=.*[A-Z])/,
-			"Must contain an uppercase character"
-		)
-		.matches(
-		/^(?=.*[a-z])/,
-		" Must contain a lowercase character"
-		)
-		
-		.matches(
-		/^(?=.*[0-9])/,
-		"  Must contain a number"
-		)
-		.matches(
-		/^(?=.*[!@#\$%\^&\*])/,
-		"  Must contain a special case character"
-	),
-	operational_country: yup.string().required(),
-	corporate_name: yup.string().required("Corporate name is a required field"),
+    .matches(/^(?=.*[0-9])/, "  Must contain a number")
+    .matches(/^(?=.*[!@#\$%\^&\*])/, "  Must contain a special case character"),
+  operational_country: yup.string().required(),
+  corporate_name: yup.string().required("Corporate name is a required field"),
 });
 
 export const resellerRegistrationSchema = yup.object().shape({
-	first_name: yup.string().required("First name is a required field"),
-	last_name: yup.string().required("Last name is a required field"),
-	email: yup.string().email("Enter a valid email address").required(),
-	phone: yup.string().required("Phone number is a required field"),
-	password: yup
-		.string().
-		min(6)
-		.max(15)
-		.required("Password is a required field")
-		.matches(
-			/^(?=.*[A-Z])/,
-			" Must contain an uppercase character"
-		)
-		.matches(
-		/^(?=.*[a-z])/,
-		" Must contain a lowercase character"
-		)
-		
-		.matches(
-		/^(?=.*[0-9])/,
-		"  Must contain a number"
-		)
-		.matches(
-		/^(?=.*[!@#\$%\^&\*])/,
-		"  Must contain a special case character"
-	),
-	operational_country: yup.string().required(),
-	corporate_name: yup.string().required("Corporate name is a required field"),
+  first_name: yup.string().required("First name is a required field"),
+  last_name: yup.string().required("Last name is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  phone: yup.string().required("Phone number is a required field"),
+  password: yup
+    .string()
+    .min(6)
+    .max(15)
+    .required("Password is a required field")
+    .matches(/^(?=.*[A-Z])/, " Must contain an uppercase character")
+    .matches(/^(?=.*[a-z])/, " Must contain a lowercase character")
 
+    .matches(/^(?=.*[0-9])/, "  Must contain a number")
+    .matches(/^(?=.*[!@#\$%\^&\*])/, "  Must contain a special case character"),
+  operational_country: yup.string().required(),
+  corporate_name: yup.string().required("Corporate name is a required field"),
 });
 
 export const fileFormSchema = yup.object().shape({
@@ -626,6 +590,222 @@ export const Messages = [
   },
 ];
 
+export const resources = [
+  {
+    id: 1,
+    country: "Nigeria",
+    resource: "Change of Directors (removal and/or addition) - Nigeria",
+  },
+  {
+    id: 2,
+    country: "Nigeria",
+    resource: "Change of Shareholders (removal and/or addition) - Nigeria",
+  },
+  {
+    id: 3,
+    country: "South Africa",
+    resource: "Change of Directors (removal and/or addition) - South Africa",
+  },
+  {
+    id: 4,
+    country: "Nigeria",
+    resource: "Change of Registered Address",
+  },
+  {
+    id: 5,
+    country: "Nigeria",
+    resource: "Increase of Share Capital",
+  },
+  {
+    id: 6,
+    country: "Nigeria",
+    resource: "Reduction of Sahre Capital",
+  },
+
+  {
+    id: 7,
+    country: "Nigeria",
+    resource: "Change of Registered Address",
+  },
+  {
+    id: 8,
+    country: "Nigeria",
+    resource: "Change of Details of Directors and Shareholders",
+  },
+  {
+    id: 9,
+    country: "Nigeria",
+    resource: "Change of Persons with Significant Control",
+  },
+  {
+    id: 10,
+    country: "Nigeria",
+    resource: "Alteration of MEMART",
+  },
+  {
+    id: 11,
+    country: "Nigeria",
+    resource: "Change of Company Secretary",
+  },
+  {
+    id: 12,
+    country: "Nigeria",
+    resource: "Obtaining Letter of Good Standing",
+  },
+  {
+    id: 13,
+    country: "Delaware",
+    resource: "Obtaining Letter of Good Standing",
+  },
+  {
+    id: 14,
+    country: "Nigeria",
+    resource: "Conversion of Business Name to Limited Liability Company",
+  },
+  {
+    id: 15,
+    country: "Kenya",
+    resource: "Change of Business Name",
+  },
+  {
+    id: 16,
+    country: "Delaware",
+    resource: "Change of Business Name",
+  },
+  {
+    id: 17,
+    country: "Nigeria",
+    resource: "Change of Business Name",
+  },
+  {
+    id: 18,
+    country: "South Africa",
+    resource: "Change of Business Name",
+  },
+  {
+    id: 19,
+    country: "Nigeria",
+    resource: "Obtain CTC of Company Documents",
+  },
+  {
+    id: 20,
+    country: "Kenya",
+    resource: "Obtain CTC of Company Documents",
+  },
+  {
+    id: 21,
+    country: "South Africa",
+    resource: "Obtain CTC of Company Documents",
+  },
+  {
+    id: 22,
+    country: "Nigeria",
+    resource: "Members Voluntary Winding up",
+  },
+  {
+    id: 23,
+    country: "Nigeria",
+    resource: "Change of details of Persons with Significant Control",
+  },
+  {
+    id: 24,
+    country: "Nigeria",
+    resource: "Company Search (Due Diligence)",
+  },
+  {
+    id: 25,
+    country: "Nigeria",
+    resource: "Change of Business Objectives",
+  },
+
+  {
+    id: 26,
+    country: "Delaware",
+    resource: "Obtain CTC of Corporate documents",
+  },
+  {
+    id: 27,
+    country: "Delaware",
+    resource: "Change of Company Name",
+  },
+  {
+    id: 28,
+    country: "Delaware",
+    resource: "Stock Amendment (Reduction)",
+  },
+  {
+    id: 29,
+    country: "Delaware",
+    resource: "Stock Amendment (Increase)",
+  },
+
+  {
+    id: 30,
+    country: "Delaware",
+    resource: "Convert LLC to Corporation",
+  },
+  {
+    id: 31,
+    country: "Delaware",
+    resource: "Change of Registered Agent",
+  },
+  {
+    id: 32,
+    country: "Delaware",
+    resource: "Convert Delaware LLC to C-Corp",
+  },
+  {
+    id: 33,
+    country: "South Africa",
+    resource: "Change of Company Name - South Africa",
+  },
+  {
+    id: 34,
+    country: "South Africa",
+    resource: "Obtain Share Certificate - South Africa",
+  },
+  {
+    id: 35,
+    country: "South Africa",
+    resource: "Change of registered address - South Africa",
+  },
+  {
+    id: 36,
+    country: "South Africa",
+    resource: "Increase/Authorised shares - South Africa",
+  },
+  {
+    id: 37,
+    country: "South Africa",
+    resource: "Change of year end - South Africa",
+  },
+  {
+    id: 38,
+    country: "South Africa",
+    resource: "Change of Auditors - South Africa",
+  },
+  {
+    id: 39,
+    country: "South Africa",
+    resource: "Deregistration of Company - South Africa",
+  },
+  {
+    id: 40,
+    country: "South Africa",
+    resource: "B-BBEE Certificate - South Africa",
+  },
+  {
+    id: 41,
+    country: "South Africa",
+    resource: "B-BBEE Sworn Affidavit - South Africa",
+  },
+  {
+    id: 42,
+    country: "Kenya",
+    resource: "Striking off proceedings - Kenya",
+  },
+];
+
 export const BusinessObjectives = [
   "Accommodation, hotels and hospitality",
   "Accounting and tax advisory services",
@@ -674,7 +854,7 @@ export const BusinessObjectives = [
   "Manufacture of wood and of products of wood and cork, except furniture",
   "Manufacture of basic metals",
   "Manufacture of chemicals and chemical products",
- "Manufacture of furniture",
+  "Manufacture of furniture",
   "Manufacture of fabric and textiles",
   "Manufacture of machinery and equipment",
   "Manufacture of rubber and plastics products",
@@ -725,7 +905,7 @@ export const BusinessObjectives = [
   "Air transport",
   "Warehousing and support activities for transportation",
   "Printing and reproduction of recorded media",
- "Publishing activities including books",
+  "Publishing activities including books",
   "Real estate, rental and leasing activities",
   "Food and beverage service activities",
   "Real estate technology activities",
@@ -741,7 +921,7 @@ export const BusinessObjectives = [
   "Real estate activities",
   "Legal and accounting activities",
   "Activities of head offices; management consultancy activities",
-  "technical testing and analysis",
+  "Technical testing and analysis",
   "Scientific research and development",
   "Advertising and market research",
   "Other professional, scientific and technical activities",
