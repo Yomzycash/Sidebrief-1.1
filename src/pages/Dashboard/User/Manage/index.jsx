@@ -6,13 +6,14 @@ import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { useGetAllCountriesQuery } from "services/launchService";
+import { resources } from "utils/config";
 
 const ManageProduct = () => {
 	const [selectedResource, setselectedResource] = useState("");
 	const [countries, setCountries] = useState([]);
 	const [selectedCountry, setSelectedCountry] = useState("");
 
-	const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
+	const { data, isLoading } = useGetAllCountriesQuery();
 
 	// Handle supported countries fetch
 	const handleCountry = useCallback(
@@ -44,8 +45,6 @@ const ManageProduct = () => {
 		console.log(selectedResource, selectedCountry);
 	};
 
-	const resources = ["red", "orange", "green"];
-
 	const handleResourceSelect = (valuesSelected) => {
 		setselectedResource(valuesSelected);
 	};
@@ -53,7 +52,7 @@ const ManageProduct = () => {
 	return (
 		<>
 			<Container>
-				<HeaderCheckout getStarted />
+				<HeaderCheckout getStarted noProgress backToDashBoard />
 
 				<Body onSubmit={handleSubmit}>
 					<CheckoutSection
@@ -62,14 +61,6 @@ const ManageProduct = () => {
 					/>
 					<LaunchPrimaryContainer>
 						<LaunchFormContainer>
-							<TagInputWithSearch
-								label="Resource"
-								list={resources.sort()}
-								getValue={handleResourceSelect}
-								initialValue={selectedResource}
-								MatchError="Please select resource from the list"
-								EmptyError="Please select at least one objective"
-							/>
 							<div style={{ maxWidth: "450px" }}>
 								<TagInputWithSearch
 									label="Operational Country"
@@ -79,6 +70,21 @@ const ManageProduct = () => {
 									suggestionLoading={isLoading}
 								/>
 							</div>
+							<TagInputWithSearch
+								label="Resource"
+								list={resources
+									.filter(
+										(el) =>
+											el.country?.toLowerCase() ===
+											selectedCountry?.toLowerCase()
+									)
+									.map((el) => el.resource)
+									.sort()}
+								getValue={handleResourceSelect}
+								initialValue={selectedResource}
+								MatchError="Please select resource from the list"
+								EmptyError="Please select at least one resources"
+							/>
 						</LaunchFormContainer>
 						<Bottom>
 							<CheckoutController
