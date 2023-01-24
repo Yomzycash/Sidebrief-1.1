@@ -14,7 +14,13 @@ import {
 import { store } from "redux/Store";
 import { Country } from "country-state-city";
 import { CustomerlyProvider } from "react-live-chat-customerly";
-
+import {
+  Elements,
+  CardElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 // Added style reset
 const GlobalStyle = createGlobalStyle`
 body{
@@ -50,15 +56,27 @@ function App() {
     }
   }, [country]);
 
+  const stripePromise = loadStripe(
+    "pk_test_51MH8TfAWcsFJb6bwNtmV01wJKYUHmWALSRJUFBc68Eqjxyz4Jr5E0UEdfRKfJShRxsS9kIGq3vHSlHYoI7g8Gq1H00RNGhaPIE"
+  );
+
+  // const options = {
+  //   // passing the client secret obtained from the server
+  //   clientSecret:
+  //     "sk_test_51MH8TfAWcsFJb6bwfYHbfDYyZWKiYumx349QFY6w0QR1DdgMhSJ0jCuR2YNavWblfdxWb6gNKgNkApuIsm94QPog00vWA7ULGf",
+  // };
+
   return (
     <>
-      <CustomerlyProvider appId={"YOUR_APP_ID"}>
-        ,
-        <AnimatePresence exitBeforeEnter>
-          <GlobalStyle />
-          <AppRouter />
-        </AnimatePresence>
-      </CustomerlyProvider>
+      <Elements stripe={stripePromise}>
+        <CustomerlyProvider appId={"YOUR_APP_ID"}>
+          ,
+          <AnimatePresence exitBeforeEnter>
+            <GlobalStyle />
+            <AppRouter />
+          </AnimatePresence>
+        </CustomerlyProvider>
+      </Elements>
     </>
   );
 }
