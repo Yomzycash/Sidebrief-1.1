@@ -221,12 +221,12 @@ const BeneficiariesKYC = () => {
                     isChanged={isChanged}
                     documentComponentType={"registration document"}
                     TopText={"Registration Document"}
-                    memberCode={beneficiary.code}
+                    beneficiaryCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
                         beneficiary.code,
-                        "registation_document"
+                        "registration_document"
                       )
                     }
                     handleRemove={() => handleRemove("registration document")}
@@ -237,7 +237,7 @@ const BeneficiariesKYC = () => {
                     isChanged={isChanged}
                     documentComponentType={"representative nin"}
                     TopText={"Representative NIN"}
-                    memberCode={beneficiary.code}
+                    beneficiaryCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
@@ -251,13 +251,17 @@ const BeneficiariesKYC = () => {
 
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"signature"}
+                    documentComponentType={"beneficiary signature"}
                     TopText={"Signature"}
-                    memberCode={beneficiary.code}
+                    beneficiaryCode={beneficiary.code}
                     onDrop={(files) =>
-                      handleChange(files, beneficiary.code, "signature")
+                      handleChange(
+                        files,
+                        beneficiary.code,
+                        "beneficiary_signature"
+                      )
                     }
-                    handleRemove={() => handleRemove("signature")}
+                    handleRemove={() => handleRemove("beneficiary signature")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
 

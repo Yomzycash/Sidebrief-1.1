@@ -31,13 +31,13 @@ const DetailShareholder = () => {
               (el) => el.memberCode === shareholder.memberCode
             );
             const governmentFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("government"))
+              .filter((el) => el.documentType.includes("registration document"))
               .slice(-1)[0];
             const passportFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("passport"))
+              .filter((el) => el.documentType.includes("representative nin"))
               .slice(-1)[0];
             const proofFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("proof"))
+              .filter((el) => el.documentType.includes("signature document"))
               .slice(-1)[0];
 
             return (

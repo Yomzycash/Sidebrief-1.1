@@ -88,6 +88,7 @@ const ShareHolderKYC = () => {
   };
 
   const handleChange = async (files, shareholder, type) => {
+    console.log("sending file", files);
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
 
@@ -198,7 +199,7 @@ const ShareHolderKYC = () => {
                       handleChange(
                         files,
                         shareholder.code,
-                        "registation_document"
+                        "registration_document"
                       )
                     }
                     handleRemove={() => handleRemove("registration document")}
@@ -223,13 +224,17 @@ const ShareHolderKYC = () => {
 
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"signature"}
+                    documentComponentType={"signature document"}
                     TopText={"Signature"}
                     memberCode={shareholder.code}
                     onDrop={(files) =>
-                      handleChange(files, shareholder.code, "signature")
+                      handleChange(
+                        files,
+                        shareholder.code,
+                        "signature_document"
+                      )
                     }
-                    handleRemove={() => handleRemove("signature")}
+                    handleRemove={() => handleRemove("signature document")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
 

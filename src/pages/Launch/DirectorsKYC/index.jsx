@@ -208,7 +208,11 @@ const DirectorKYC = () => {
                     TopText={"Registration Document"}
                     memberCode={director.code}
                     onDrop={(files) =>
-                      handleChange(files, director.code, "registation_document")
+                      handleChange(
+                        files,
+                        director.code,
+                        "registration_document"
+                      )
                     }
                     handleRemove={() => handleRemove("registration document")}
                     BottomText={"Please provide your Registration Document"}
@@ -228,13 +232,13 @@ const DirectorKYC = () => {
 
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"signature"}
+                    documentComponentType={"signature document"}
                     TopText={"Signature"}
                     memberCode={director.code}
                     onDrop={(files) =>
-                      handleChange(files, director.code, "signature")
+                      handleChange(files, director.code, "signature_document")
                     }
-                    handleRemove={() => handleRemove("signature")}
+                    handleRemove={() => handleRemove("signature document")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
                   {/* <FileUpload
