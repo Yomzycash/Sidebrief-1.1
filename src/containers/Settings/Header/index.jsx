@@ -1,6 +1,6 @@
 import { Container, Heading, Top, SubHeader } from "./styles";
-import { Search } from "./search";
 import ActiveNav from "components/navbar/ActiveNav";
+// import { Search } from "./search";
 
 export const SettingHeader = () => {
 	return (
