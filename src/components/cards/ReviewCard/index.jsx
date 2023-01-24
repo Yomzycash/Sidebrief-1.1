@@ -157,6 +157,10 @@ const ReviewCard = ({
 } */}
       <PdfContainer>
         <PdfWrapper>
+          {imageTypeImage?.filter((fil) => governmentId?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded>Government ID not uploaded yet</NotUploaded>
+          )}
           {imageTypeImage
             ?.filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
@@ -174,6 +178,10 @@ const ReviewCard = ({
           <TextWrapper>{governmentId?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
+          {imageTypeImage.filter((fil) => proofD?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded>Proof of address not uploaded yet</NotUploaded>
+          )}
           {imageTypeImage
             .filter((fil) => proofD?.fileType === fil.type)
             .map((m) => (
@@ -191,6 +199,10 @@ const ReviewCard = ({
           <TextWrapper>{proofD?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
+          {imageTypeImage.filter((fil) => passportD?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded>Passport photograph not uploaded yet</NotUploaded>
+          )}
           {imageTypeImage
             .filter((fil) => passportD?.fileType === fil.type)
             .map((m) => (
@@ -251,4 +263,9 @@ const Document = styled.div`
   p {
     text-decoration: underline;
   }
+`;
+
+const NotUploaded = styled.p`
+  font-size: 14px;
+  color: #4e5152;
 `;

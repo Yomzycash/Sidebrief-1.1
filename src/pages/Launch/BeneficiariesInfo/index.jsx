@@ -122,11 +122,11 @@ const DirectorsInfo = () => {
     );
     // console.log(deleteResponse);
 
+    let data = deleteResponse.data;
     let error = deleteResponse.error;
 
-    if (error) {
-      handleError(error);
-    }
+    if (data) toast.success("Beneficiary deleted successfully");
+    else handleError(error);
   };
 
   //
@@ -142,6 +142,7 @@ const DirectorsInfo = () => {
     let error = addBeneficiaryResponse?.error;
 
     if (beneficiaryData) {
+      toast.success("Beneficiary added successfully");
       setOpenModal(false);
     } else {
       handleError(error);
@@ -170,6 +171,7 @@ const DirectorsInfo = () => {
 
     // Executes if data is returned from the backend
     if (beneficiariesUpdatedData) {
+      toast.success("Beneficiary updated successfully");
       handleModalClose();
     } else {
       handleError(error);

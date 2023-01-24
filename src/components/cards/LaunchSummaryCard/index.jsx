@@ -51,8 +51,8 @@ const LaunchSummaryCard = ({
               </div>
               {isLoading ? (
                 <SpinningCircles
-                  stroke="#00A2D4"
-                  fill="#00A2D4"
+                  stroke="#BD1C1C"
+                  fill="#BD1C1C"
                   width={24}
                   height={24}
                 />

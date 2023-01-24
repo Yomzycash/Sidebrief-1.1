@@ -16,6 +16,9 @@ const TagInputWithSearch = ({
   initialValue,
   initialValues,
   suggestionLoading,
+  noSuggestionText,
+  fetchingText,
+  fetchFailedText,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -80,7 +83,7 @@ const TagInputWithSearch = ({
       return "error";
     }
     let tagAlreadyExists = tags.filter(
-      (element) => element.toLowerCase() === value.toLowerCase()
+      (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
     );
     if (tagAlreadyExists.length > 0) {
       setError(ExistsError);
@@ -119,7 +122,8 @@ const TagInputWithSearch = ({
         let res = setSelected(value);
         if (res === "error") return;
         let valueCheck = list.filter(
-          (element) => element.toLowerCase() === value.toLowerCase()
+          (element) =>
+            element.trim().toLowerCase() === value.trim().toLowerCase()
         );
         if (valueCheck.length !== 0) {
           setTags([...tags, ...valueCheck]);
@@ -167,6 +171,7 @@ const TagInputWithSearch = ({
   const handleNotExistAdd = () => {
     let res = setSelected(value);
     if (res === "error") return;
+    setValue("");
     setTags([...tags, value]);
   };
 
@@ -212,13 +217,19 @@ const TagInputWithSearch = ({
         {showSuggestions && (
           <Suggestions ref={suggestionContainer}>
             {suggestionLoading && (
-              <NoSuggestion>
-                <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} />
+              <NoSuggestion $loading={suggestionLoading}>
+                {/* <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} /> */}
+                <span>{fetchingText}</span>
               </NoSuggestion>
             )}
-            {filteredList.length === 0 && (
+            {!suggestionLoading && list?.length === 0 && (
               <NoSuggestion>
-                <span>Objective doesn't exist</span>
+                <span>{fetchFailedText || "Could not fetch suggestions"}</span>
+              </NoSuggestion>
+            )}
+            {MultiSelect && filteredList.length === 0 && list?.length > 0 && (
+              <NoSuggestion>
+                <span>{noSuggestionText}</span>
                 <button onMouseDown={handleNotExistAdd}>Add</button>
               </NoSuggestion>
             )}
@@ -274,6 +285,7 @@ const Tag = styled.p`
   background-color: #0082aa;
   border-radius: 8px;
   padding: clamp(4px, 1vw, 7px) clamp(7px, 1vw, 11px);
+  text-transform: capitalize;
 `;
 const InputWrapper = styled.div`
   position: relative;
@@ -345,6 +357,9 @@ export const NoSuggestion = styled.div`
   gap: 10px;
   padding-block: 10px;
   font-size: 14px;
+  color: #717171;
+  animation: ${({ $loading }) => $loading && "suggession"} 1s ease infinite;
+
   button {
     padding: 5px;
     border: none;
@@ -354,6 +369,18 @@ export const NoSuggestion = styled.div`
     transition: 0.3s ease all;
     :hover {
       opacity: 0.8;
+    }
+  }
+
+  @keyframes suggession {
+    0% {
+      color: #717171;
+    }
+    50% {
+      color: #aeaeae;
+    }
+    100% {
+      color: #717171;
     }
   }
 `;
