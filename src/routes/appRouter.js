@@ -10,7 +10,7 @@ import Loader from "../components/loader/loader";
 import { useSelector } from "react-redux";
 import Protected from "./Protected";
 import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
-import Settings from "pages/Dashboard/User/Settings";
+import ComingSoon from "pages/Dashboard/User/Settings/comingsoon";
 import Resources from "pages/Dashboard/User/Resources";
 import Business from "pages/Dashboard/User/Business";
 import BankAccount from "pages/Dashboard/User/BankAccount";
@@ -135,6 +135,15 @@ const DetailDirectors = lazy(() =>
 );
 const DetailBeneficiaries = lazy(() =>
 	import("pages/Dashboard/User/Business/Detail/beneficiaries")
+);
+const UserSettingsLayout = lazy(() =>
+	import("pages/Dashboard/User/Settings/layout")
+);
+const PersonalSettings = lazy(() =>
+	import("pages/Dashboard/User/Settings/personal")
+);
+const PaymentSetting = lazy(() =>
+	import("pages/Dashboard/User/Settings/payment")
 );
 const Stafflayout = lazy(() => import("pages/Dashboard/staffDashboard/layout"));
 const SettingLayout = lazy(() =>
@@ -291,8 +300,18 @@ const AppRouter = () => {
 							></Route>
 							<Route
 								path="settings"
-								element={<Settings />}
-							></Route>
+								element={<UserSettingsLayout />}
+							>
+								<Route index element={<PersonalSettings />} />
+								<Route
+									path="personal"
+									element={<PersonalSettings />}
+								/>
+								<Route
+									path="payment"
+									element={<PaymentSetting />}
+								/>
+							</Route>
 							<Route
 								path="resources"
 								element={<Resources />}
