@@ -37,10 +37,11 @@ const KYCFileUpload = ({
   const handleView = async () => {
     const response = await viewMemberKYC(launchInfo);
     const MemberKYCInfo = [...response.data.businessMembersKYC];
+    console.log("memberKYCInfo", MemberKYCInfo);
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.memberCode === memberCode
     );
-
+    console.log("fileInfo", fileInfo);
     fileInfo.forEach((info) => {
       if (info.documentType === documentComponentType) {
         setDocumentInfo(info);
@@ -51,6 +52,7 @@ const KYCFileUpload = ({
   const handleBeneficiary = async () => {
     const response = await viewBeneficialsKYC(launchInfo);
     const BeneficialKYCInfo = [...response.data.beneficialOwnersKYC];
+    console.log("BeneficialKYCInfo", beneficiaryCode);
     let fileInfo = BeneficialKYCInfo.filter(
       (beneficiary) => beneficiary.beneficialOwnerCode === beneficiaryCode
     );
@@ -111,7 +113,6 @@ const KYCFileUpload = ({
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
-  // console.log("files", acceptedFiles);
   return (
     <Container style={{ ...style }}>
       <FileSection className="container">
