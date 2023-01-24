@@ -214,11 +214,24 @@ const UserRegistration = () => {
               text={[
                 {
                   text: "By creating an account , you agree to Sidebrief's",
-                  link: { text: "Privacy Policy", to: "/" },
+                  link: {
+                    text: "Privacy Policy",
+                    to: "",
+                  },
+                  action: () =>
+                    window.open(
+                      "https://policy.sidebrief.com/privacy",
+                      "_blank"
+                    ),
                 },
                 {
                   text: "&",
-                  link: { text: "Terms of Use.", to: "/" },
+                  link: {
+                    text: "Terms of Use.",
+                    to: "",
+                  },
+                  action: () =>
+                    window.open("https://policy.sidebrief.com/terms", "_blank"),
                 },
               ]}
             />

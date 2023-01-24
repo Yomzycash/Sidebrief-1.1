@@ -69,11 +69,9 @@ const BusinessInfoCard = () => {
             <Heading>Business Names in order of preference</Heading>
             <TagContainer>
               {businessArray.map((businessName, index) => (
-                <>
-                  <TagWrapper key={index}>
-                    <Tag> {businessName}</Tag>
-                  </TagWrapper>
-                </>
+                <TagWrapper key={index}>
+                  <Tag> {businessName}</Tag>
+                </TagWrapper>
               ))}
             </TagContainer>
           </SubContainer>

@@ -14,3 +14,5 @@ export { ReactComponent as ViewSvg } from "./view.svg";
 export { ReactComponent as EditGreySvg } from "./editGrey.svg";
 export { ReactComponent as DeleteRedSvg } from "./deleteRed.svg";
 export { ReactComponent as Close } from "./close.svg";
+export { ReactComponent as LaunchRocket } from "./launch-rocket-blue.svg";
+export { ReactComponent as ManageSpanner } from "./manage-spanner-blue.svg";

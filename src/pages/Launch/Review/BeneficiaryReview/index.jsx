@@ -1,6 +1,6 @@
 import { CheckoutController, CheckoutSection } from "containers";
 import React from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, Link } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
 import { imageTypeImage, ReviewTab } from "utils/config";
@@ -138,6 +138,12 @@ const BeneficiaryReview = () => {
           )}
 
           <CardWrapper>
+            {beneficialArray?.length === 0 && (
+              <NotAdded>
+                <span>No beneficiary added</span>
+                <Link to="/launch/beneficiaries-info">Add</Link>
+              </NotAdded>
+            )}
             {beneficialArray.map((beneficiary, index) => (
               <ReviewCard
                 key={index}
@@ -259,4 +265,39 @@ export const Loading = styled.div`
   width: 100%;
   padding: 40px;
   height: ${({ height }) => height && height};
+`;
+
+const NotAdded = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  font-size: 14px;
+  text-transform: capitalize;
+
+  span {
+    color: #4e5152;
+    background-color: #cacaca2e;
+    padding: 16px 24px;
+    border-radius: 8px;
+  }
+  a {
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    outline: none;
+    background-color: #00a2d4;
+    color: white;
+    text-decoration: none;
+    margin-block: auto;
+    transition: 0.3s ease all;
+
+    :hover {
+      opacity: 0.8;
+    }
+    :active {
+      opacity: 0.7;
+      transform: scale(0.9);
+    }
+  }
 `;

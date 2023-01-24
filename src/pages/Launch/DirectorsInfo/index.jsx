@@ -115,11 +115,10 @@ const DirectorsInfo = () => {
 
     let deleteResponse = await directorDelete(director, deleteDirector);
 
+    let data = deleteResponse?.data;
     let error = deleteResponse?.error;
-
-    if (error) {
-      handleError(error);
-    }
+    if (data) toast.success("Director deleted successfully");
+    else handleError(error);
   };
 
   // This adds a new director
@@ -143,10 +142,10 @@ const DirectorsInfo = () => {
       let error = addDirectorResponse?.error;
 
       if (directorData) {
+        toast.success("Director added successfully");
         setOpenModal(false);
       } else {
-        // console.log(addDirectorResponse.error);
-        toast.error(error.data.message);
+        handleError(error);
       }
     }
     // Runs if failed to add member
@@ -177,6 +176,7 @@ const DirectorsInfo = () => {
 
     // Executes if data is returned from the backend
     if (directorsUpdatedData) {
+      toast.success("Director updated successfully");
       // const directorsMembersMerged = mergeInfo(
       //   directorsUpdatedData,
       //   membersUpdatedData

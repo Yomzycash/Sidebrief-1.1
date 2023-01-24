@@ -236,9 +236,12 @@ const ShareHoldersInfo = () => {
         addShareHolder
       );
 
+      let data = addShareHolderResponse?.data;
       let error = addShareHolderResponse?.error;
 
-      if (error) {
+      if (data) {
+        toast.success("Shareholder added successfully");
+      } else {
         toast.error(error.data.message);
       }
 
@@ -286,6 +289,7 @@ const ShareHoldersInfo = () => {
     let isDirector = await directorExists(selectedDirector);
     // Executes if data is returned from the backend
     if (shareholdersUpdatedData && memberUpdatedData) {
+      toast.success("Shareholder updated successfully");
       // Update or add director's role if role exists or does not respectively
       if (formData.isDirector) {
         if (!isDirector) {
@@ -331,12 +335,12 @@ const ShareHoldersInfo = () => {
       deleteMember
     );
 
+    let data = deleteResponse.data;
     let error = deleteResponse.error;
 
     // This runs if an error is recieved
-    if (error) {
-      handleError(error);
-    }
+    if (data) toast.success("Shareholder deleted successfully");
+    else handleError(error);
   };
 
   // Get the data from backend and set to state
@@ -367,6 +371,7 @@ const ShareHoldersInfo = () => {
       setUseSidebriefShareholders(false);
       localStorage.removeItem("useSidebriefShareholders");
     }
+    if (shareholders.error) handleError(shareholders.error);
 
     return mergedInfo;
   };
