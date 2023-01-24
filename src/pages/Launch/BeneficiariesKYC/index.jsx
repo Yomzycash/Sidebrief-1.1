@@ -219,57 +219,45 @@ const BeneficiariesKYC = () => {
                 <ContentWrapper>
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"government id"}
-                    TopText={"Government Issued ID"}
-                    beneficiaryCode={beneficiary.code}
-                    onDrop={(files) =>
-                      handleChange(files, beneficiary.code, "government_id")
-                    }
-                    handleRemove={(files) =>
-                      handleRemove(beneficiary.code, "government_id")
-                    }
-                    BottomText={
-                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
-                    }
-                  />
-
-                  <KYCFileUpload
-                    isChanged={isChanged}
-                    documentComponentType={"proof of home address"}
-                    TopText={"Proof of Home Address"}
-                    beneficiaryCode={beneficiary.code}
+                    documentComponentType={"registration document"}
+                    TopText={"Registration Document"}
+                    memberCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
                         beneficiary.code,
-                        "proof_of_home_address"
+                        "registation_document"
                       )
                     }
-                    handleRemove={handleRemove(
-                      beneficiary.code,
-                      "proof_of_home_address"
-                    )}
-                    BottomText={
-                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
-                    }
+                    handleRemove={() => handleRemove("registration document")}
+                    BottomText={"Please provide your Registration Document"}
                   />
 
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"passport photograph"}
-                    TopText={"Passport Photograph"}
-                    beneficiaryCode={beneficiary.code}
+                    documentComponentType={"representative nin"}
+                    TopText={"Representative NIN"}
+                    memberCode={beneficiary.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
                         beneficiary.code,
-                        "passport_photograph"
+                        "representative_nin"
                       )
                     }
-                    handleRemove={handleRemove(
-                      beneficiary.code,
-                      "passport_photograph"
-                    )}
+                    handleRemove={() => handleRemove("representative nin")}
+                    BottomText={"National Identification Number"}
+                  />
+
+                  <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"signature"}
+                    TopText={"Signature"}
+                    memberCode={beneficiary.code}
+                    onDrop={(files) =>
+                      handleChange(files, beneficiary.code, "signature")
+                    }
+                    handleRemove={() => handleRemove("signature")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
 

@@ -111,7 +111,7 @@ const KYCFileUpload = ({
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
-  // console.log("files", acceptedFiles);
+  console.log("files", documentInfo);
   return (
     <Container style={{ ...style }}>
       <FileSection className="container">
