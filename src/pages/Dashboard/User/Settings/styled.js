@@ -8,7 +8,7 @@ export const LayoutContainer = styled.div`
 `;
 
 export const LayoutBody = styled.div`
-	/* padding-inline: 64px; */
+	padding-inline: 40px;
 `;
 
 export const Container = styled.div`
