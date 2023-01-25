@@ -76,7 +76,7 @@ const UserDashboard = lazy(() => import("pages/Dashboard/User"));
 const BusinessRegistration = lazy(() =>
   import("pages/Dashboard/User/Home/BusinessRegistration")
 );
-const Manage = lazy(() => import("pages/Dashboard/User/Manage"));
+// const Manage = lazy(() => import("pages/Dashboard/User/Manage"));
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
 const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
@@ -395,7 +395,7 @@ const AppRouter = () => {
           </Route>
 
           {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
-          <Route path="manage" element={<Manage />} />
+          {/* <Route path="manage" element={<Manage />} /> */}
 
           {/* Launch pages routes */}
           <Route
