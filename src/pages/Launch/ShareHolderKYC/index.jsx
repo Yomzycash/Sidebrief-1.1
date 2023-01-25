@@ -88,6 +88,7 @@ const ShareHolderKYC = () => {
   };
 
   const handleChange = async (files, shareholder, type) => {
+    console.log("sending file", files);
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
 
@@ -117,6 +118,7 @@ const ShareHolderKYC = () => {
       },
     };
     const response = await addMemberKYC(requiredAddMemberData);
+    console.log("checing", response);
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
@@ -190,49 +192,49 @@ const ShareHolderKYC = () => {
                 <ContentWrapper key={index}>
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"government id"}
-                    TopText={"Government Issued ID"}
-                    memberCode={shareholder.code}
-                    onDrop={(files) =>
-                      handleChange(files, shareholder.code, "government_id")
-                    }
-                    handleRemove={() => handleRemove("government id")}
-                    BottomText={
-                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
-                    }
-                  />
-
-                  <KYCFileUpload
-                    isChanged={isChanged}
-                    documentComponentType={"proof of home address"}
-                    TopText={"Proof of Home Address"}
+                    documentComponentType={"registration document"}
+                    TopText={"Registration Document"}
                     memberCode={shareholder.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
                         shareholder.code,
-                        "proof_of_home_address"
+                        "registration_document"
                       )
                     }
-                    handleRemove={() => handleRemove("proof of home address")}
-                    BottomText={
-                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
-                    }
+                    handleRemove={() => handleRemove("registration document")}
+                    BottomText={"Please provide your Registration Document"}
                   />
 
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"passport photograph"}
-                    TopText={"Passport Photograph"}
+                    documentComponentType={"representative nin"}
+                    TopText={"Representative NIN"}
                     memberCode={shareholder.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
                         shareholder.code,
-                        "passport_photograph"
+                        "representative_nin"
                       )
                     }
-                    handleRemove={() => handleRemove("passport photograph")}
+                    handleRemove={() => handleRemove("representative nin")}
+                    BottomText={"National Identification Number"}
+                  />
+
+                  <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"signature document"}
+                    TopText={"Signature"}
+                    memberCode={shareholder.code}
+                    onDrop={(files) =>
+                      handleChange(
+                        files,
+                        shareholder.code,
+                        "signature_document"
+                      )
+                    }
+                    handleRemove={() => handleRemove("signature document")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
                   />
 

@@ -16,6 +16,9 @@ const TagInputWithSearch = ({
   initialValue,
   initialValues,
   suggestionLoading,
+  noSuggestionText,
+  fetchingText,
+  fetchFailedText,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -80,7 +83,7 @@ const TagInputWithSearch = ({
       return "error";
     }
     let tagAlreadyExists = tags.filter(
-      (element) => element.toLowerCase() === value.toLowerCase()
+      (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
     );
     if (tagAlreadyExists.length > 0) {
       setError(ExistsError);
@@ -119,7 +122,8 @@ const TagInputWithSearch = ({
         let res = setSelected(value);
         if (res === "error") return;
         let valueCheck = list.filter(
-          (element) => element.toLowerCase() === value.toLowerCase()
+          (element) =>
+            element.trim().toLowerCase() === value.trim().toLowerCase()
         );
         if (valueCheck.length !== 0) {
           setTags([...tags, ...valueCheck]);
@@ -167,6 +171,7 @@ const TagInputWithSearch = ({
   const handleNotExistAdd = () => {
     let res = setSelected(value);
     if (res === "error") return;
+    setValue("");
     setTags([...tags, value]);
   };
 
@@ -212,13 +217,19 @@ const TagInputWithSearch = ({
         {showSuggestions && (
           <Suggestions ref={suggestionContainer}>
             {suggestionLoading && (
-              <NoSuggestion>
-                <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} />
+              <NoSuggestion $loading={suggestionLoading}>
+                {/* <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} /> */}
+                <span>{fetchingText}</span>
               </NoSuggestion>
             )}
-            {filteredList.length === 0 && (
+            {!suggestionLoading && list?.length === 0 && (
               <NoSuggestion>
-                <span>Objective doesn't exist</span>
+                <span>{fetchFailedText || "Could not fetch suggestions"}</span>
+              </NoSuggestion>
+            )}
+            {MultiSelect && filteredList.length === 0 && list?.length > 0 && (
+              <NoSuggestion>
+                <span>{noSuggestionText}</span>
                 <button onMouseDown={handleNotExistAdd}>Add</button>
               </NoSuggestion>
             )}
@@ -274,6 +285,7 @@ const Tag = styled.p`
   background-color: #0082aa;
   border-radius: 8px;
   padding: clamp(4px, 1vw, 7px) clamp(7px, 1vw, 11px);
+  text-transform: capitalize;
 `;
 const InputWrapper = styled.div`
   position: relative;
@@ -283,7 +295,6 @@ const InputWrapper = styled.div`
 const Input = styled.div`
   position: relative;
   display: flex;
-
   > input {
     border: 1px solid #edf1f6;
     padding: 24px;
@@ -292,13 +303,11 @@ const Input = styled.div`
     width: 100%;
     outline: 0;
     transition: 0.3s all ease;
-
     &:focus {
       border: 1px solid #00c3ff;
       /* box-shadow: -2px -2px 4px 2px #00c3ff28, 2px 2px 4px 2px #00c3ff28; */
     }
   }
-
   > div {
     position: absolute;
     top: 19px;
@@ -319,7 +328,6 @@ const Suggestions = styled.div`
   border-radius: 8px;
   box-shadow: 0 10px 15px #9d9d9d44;
   z-index: 1;
-
   > li {
     display: flex;
     align-items: center;
@@ -328,7 +336,6 @@ const Suggestions = styled.div`
     list-style-type: none;
     transition: 0.3s all ease;
     font-size: clamp(13px, 1.5vw, 14px);
-
     &:hover {
       background-color: #edf1f7;
     }
@@ -350,6 +357,8 @@ export const NoSuggestion = styled.div`
   gap: 10px;
   padding-block: 10px;
   font-size: 14px;
+  color: #717171;
+  animation: ${({ $loading }) => $loading && "suggession"} 1s ease infinite;
 
   button {
     padding: 5px;
@@ -358,9 +367,20 @@ export const NoSuggestion = styled.div`
     border-radius: 5px;
     background-color: #00c3ff;
     transition: 0.3s ease all;
-
     :hover {
       opacity: 0.8;
+    }
+  }
+
+  @keyframes suggession {
+    0% {
+      color: #717171;
+    }
+    50% {
+      color: #aeaeae;
+    }
+    100% {
+      color: #717171;
     }
   }
 `;

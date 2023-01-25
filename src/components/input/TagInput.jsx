@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { MdClear } from 'react-icons/md'
+import React, { useEffect, useState } from "react";
+import { MdClear } from "react-icons/md";
 import {
   TagLabel,
   AllWrapper,
@@ -11,101 +11,102 @@ import {
   TagInputField,
   BottomText,
   TagTop,
-} from './styled.js'
+} from "./styled.js";
 
 const TagInput = ({
-  label = 'Business Name',
-  bottomText = 'Please provide sidebrief with 4 names you want for your business, in order of preferences',
+  label = "Business Name",
+  bottomText = 'Please provide exactly 4 names you want for your business, in order of preferences (seperated with ",")',
   getSelectedValues,
   initialValues,
 }) => {
-  const [tags, setTags] = useState([])
-  const [error, setError] = useState('')
-  const [currentInput, setCurrentInput] = useState('')
-  const [inputValue, setInputValue] = useState('')
-  let resultToReturn = false
+  const [tags, setTags] = useState([]);
+  const [error, setError] = useState("");
+  const [currentInput, setCurrentInput] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  let resultToReturn = false;
 
   function handlekeydown(e) {
-    if (e.key === 'Tab') e.preventDefault()
+    if (e.key === "Tab") e.preventDefault();
 
-    if (!(e.key === 'Enter' || e.key === 'Tab')) return
+    if (!(e.key === "Enter" || e.key === "Tab")) return;
 
-    const value = currentInput
-    if (!value.trim()) return
+    const value = currentInput;
+    if (!value.trim()) return;
 
     if (tags.length >= 4) {
-      setError('You cannot choose more than 4 business names')
-      return
+      setError("You cannot choose more than 4 business names");
+      return;
     }
 
     if (value.length <= 2) {
-      setError('Business name must be at least 3 characters')
-      return
+      setError("Business name must be at least 3 characters");
+      return;
     }
 
     for (let i = 0; i < tags.length; i++) {
-      if (value.trim() === tags[i]) {
-        resultToReturn = true
+      if (value.toLowerCase().trim() === tags[i].toLowerCase()) {
+        resultToReturn = true;
       }
     }
     if (resultToReturn) {
-      setError('Please input unique business names')
-      return
+      setError("Please input unique business names");
+      return;
     }
-    setTags([...tags, value.trim()])
+    setTags([...tags, value.trim()]);
 
-    setCurrentInput('')
+    setCurrentInput("");
   }
 
   const handleChange = (e) => {
-    const value = e.target.value
-    const noTrailingComma = value.slice(-1) === ',' ? value.slice(0, -1) : value
-    setCurrentInput(noTrailingComma)
-    setInputValue(value.trim())
-  }
+    const value = e.target.value;
+    const noTrailingComma =
+      value.slice(-1) === "," ? value.slice(0, -1) : value;
+    setCurrentInput(noTrailingComma);
+    setInputValue(value.trim());
+  };
   useEffect(() => {
-    let lastChar = inputValue.charAt(inputValue.length - 1)
-    if (lastChar === ',') {
-      let value = currentInput
+    let lastChar = inputValue.charAt(inputValue.length - 1);
+    if (lastChar === ",") {
+      let value = currentInput;
       // console.log('femi')
       for (let i = 0; i < tags.length; i++) {
-        if (value.trim() === tags[i]) {
-          resultToReturn = true
+        if (value.toLowerCase().trim() === tags[i].toLowerCase()) {
+          resultToReturn = true;
         }
       }
       if (resultToReturn) {
-        setError('Please input unique business names')
-        return
+        setError("Please input unique business names");
+        return;
       }
-     
-      if (tags.length >= 4) {
-        setError('You cannot choose more than 4 business names')
-        return
-      } else if (value.length <= 2) {
-        setError('Business name must be at least 3 characters')
-        return
-      } else {
-        setTags([...tags, value.trim()])
 
-        setCurrentInput('')
+      if (tags.length >= 4) {
+        setError("You cannot choose more than 4 business names");
+        return;
+      } else if (value.length <= 2) {
+        setError("Business name must be at least 3 characters");
+        return;
+      } else {
+        setTags([...tags, value.trim()]);
+
+        setCurrentInput("");
       }
     }
-  }, [inputValue.length])
+  }, [inputValue.length]);
 
   function removeTags(index) {
-    setTags(tags.filter((el, i) => i !== index))
-    setError('')
+    setTags(tags.filter((el, i) => i !== index));
+    setError("");
   }
 
   // Return the tags array
   useEffect(() => {
-    if (getSelectedValues) getSelectedValues(tags)
-  }, [tags])
+    if (getSelectedValues) getSelectedValues(tags);
+  }, [tags]);
 
   // This sets the values of the tags when the component mounts
   useEffect(() => {
-    setTags([...initialValues])
-  }, [initialValues.length])
+    setTags([...initialValues]);
+  }, [initialValues.length]);
 
   return (
     <>
@@ -136,7 +137,7 @@ const TagInput = ({
         <BottomText>{bottomText}</BottomText>
       </AllWrapper>
     </>
-  )
-}
+  );
+};
 
-export default TagInput
+export default TagInput;

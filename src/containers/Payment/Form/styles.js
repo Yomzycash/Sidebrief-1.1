@@ -148,6 +148,6 @@ export const Paystack = styled.div`
   }
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainer = styled.form`
   width: 80%;
 `;

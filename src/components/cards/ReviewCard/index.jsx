@@ -45,25 +45,25 @@ const ReviewCard = ({
     );
 
     const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "government id"
+      (item) => item.documentType === "registration document"
     );
 
     let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
     setGovernmentId(lastUploadDetail);
 
-    //proof
+    //nin
     const uploadedProofDetail = fileInfo.filter(
-      (item) => item.documentType === "proof of home address"
+      (item) => item.documentType === "representative nin"
     );
 
     let lastUploadProofDetail =
       uploadedProofDetail[uploadedProofDetail.length - 1];
     setProof(lastUploadProofDetail);
 
-    // passport
+    // signature
 
     const uploadedPassportDetail = fileInfo.filter(
-      (item) => item.documentType === "passport photograph"
+      (item) => item.documentType === "signature document"
     );
 
     let lastUploadPassportDetail =
@@ -80,7 +80,7 @@ const ReviewCard = ({
     );
 
     const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "government id"
+      (item) => item.documentType === "registration document"
     );
     // console.log(uploadedDetail);
 
@@ -88,9 +88,9 @@ const ReviewCard = ({
     // console.log(lastUploadDetail);
     setGovernmentId(lastUploadDetail);
 
-    //proof
+    //nin
     const uploadedProofDetail = fileInfo.filter(
-      (item) => item.documentType === "proof of home address"
+      (item) => item.documentType === "representative nin"
     );
     // console.log(uploadedDetail);
 
@@ -99,10 +99,10 @@ const ReviewCard = ({
     // console.log(lastUploadDetail);
     setProof(lastUploadProofDetail);
 
-    // passport
+    // signature
 
     const uploadedPassportDetail = fileInfo.filter(
-      (item) => item.documentType === "passport photograph"
+      (item) => item.documentType === "beneficiary signature"
     );
     // console.log(uploadedDetail);
 
@@ -157,6 +157,10 @@ const ReviewCard = ({
 } */}
       <PdfContainer>
         <PdfWrapper>
+          {imageTypeImage?.filter((fil) => governmentId?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded>Government ID not uploaded yet</NotUploaded>
+          )}
           {imageTypeImage
             ?.filter((fil) => governmentId?.fileType === fil.type)
             .map((m) => (
@@ -174,6 +178,10 @@ const ReviewCard = ({
           <TextWrapper>{governmentId?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
+          {imageTypeImage.filter((fil) => proofD?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded>Proof of address not uploaded yet</NotUploaded>
+          )}
           {imageTypeImage
             .filter((fil) => proofD?.fileType === fil.type)
             .map((m) => (
@@ -191,6 +199,10 @@ const ReviewCard = ({
           <TextWrapper>{proofD?.fileName}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
+          {imageTypeImage.filter((fil) => passportD?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded>Passport photograph not uploaded yet</NotUploaded>
+          )}
           {imageTypeImage
             .filter((fil) => passportD?.fileType === fil.type)
             .map((m) => (
@@ -251,4 +263,9 @@ const Document = styled.div`
   p {
     text-decoration: underline;
   }
+`;
+
+const NotUploaded = styled.p`
+  font-size: 14px;
+  color: #4e5152;
 `;

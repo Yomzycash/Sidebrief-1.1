@@ -38,7 +38,8 @@ const BusinessInfo = () => {
   const [countriesData, setCountriesData] = useState([]);
   const [selectedCountryISO, setselectedCountryISO] = useState("");
 
-  const { data, error, isLoading, isSuccess } = useGetAllCountriesQuery();
+  const { data, error, isError, isSuccess, isLoading, refetch } =
+    useGetAllCountriesQuery();
   const [viewBusinessNames, viewNamesState] = useViewBusinessNamesMutation();
   const [viewBusinessObjectives, viewObjectivesState] =
     useViewBusinessObjectivesMutation();
@@ -109,6 +110,18 @@ const BusinessInfo = () => {
         setCountries([...countries]);
         setselectedCountry(value);
       }
+      // else if (isError) {
+      //   let count = 0;
+      //   var intervalId = setInterval(() => {
+      //     if (isSuccess) {
+      //       clearInterval(intervalId);
+      //       return;
+      //     } else if (count <= 10) {
+      //       refetch();
+      //       count++;
+      //     }
+      //   }, 10000);
+      // }
     },
     [data]
   );
@@ -128,27 +141,8 @@ const BusinessInfo = () => {
     }
   }, [data, handleCountry, launchResponse]);
 
-  // Set the selected country's ISO
-  useEffect(() => {
-    viewDraft();
-    const countryData = countriesData.filter(
-      (data) => data.countryName === selectedCountry
-    );
-    let selectedCountryObj = { ...countryData[0] };
-    setselectedCountryISO(selectedCountryObj.countryISO);
-  }, [selectedCountry]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  };
-
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
-  }, []);
-
   // This calls the view endpoint and set the recieved data to the respective states
-  const viewDraft = async () => {
+  const viewDraft = useCallback(async () => {
     if (Object.keys(launchResponse).length === 0) return;
     const namesData = await viewBusinessNames(launchResponse);
     const objectivesData = await viewBusinessObjectives(launchResponse);
@@ -159,11 +153,30 @@ const BusinessInfo = () => {
       let filtered = objectives.filter((objective) => objective !== "null");
       setselectedObjectives(filtered);
     }
+  }, [launchResponse, viewBusinessNames, viewBusinessObjectives]);
+
+  // Set the selected country's ISO
+  useEffect(() => {
+    viewDraft();
+    const countryData = countriesData.filter(
+      (data) => data.countryName === selectedCountry
+    );
+    let selectedCountryObj = { ...countryData[0] };
+    setselectedCountryISO(selectedCountryObj.countryISO);
+  }, [selectedCountry, countriesData, viewDraft]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
+  }, []);
 
   useEffect(() => {
     viewDraft();
-  }, []);
+  }, [viewDraft]);
 
   return (
     <>
@@ -191,7 +204,8 @@ const BusinessInfo = () => {
                 ExistsError="Objective has already been selected"
                 MatchError="Please select objectives from the list"
                 EmptyError="Please select at least one objective"
-                MaxError="You cannot select more than 4"
+                MaxError="You cannot select more than 4 objectives"
+                noSuggestionText="Objective doesn't exist"
               />
               <div style={{ maxWidth: "430px" }}>
                 <TagInputWithSearch
@@ -200,6 +214,8 @@ const BusinessInfo = () => {
                   getValue={handleCountry}
                   initialValue={selectedCountry}
                   suggestionLoading={isLoading}
+                  fetchingText="Fetching Countries..."
+                  fetchFailedText="Could not fetch Countries"
                 />
               </div>
             </LaunchFormContainer>
@@ -209,11 +225,6 @@ const BusinessInfo = () => {
                 backAction={handlePrev}
                 backText={"Previous"}
                 forwardText={"Next"}
-                // forwardDisable={
-                // 	businessNames.length !== 4 ||
-                // 	selectedObjectives.length < 1 ||
-                // 	!selectedCountry
-                // }
                 hidePrev
               />
             </Bottom>

@@ -21,7 +21,8 @@ import {
 import { store } from "redux/Store";
 import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { compareDesc } from "date-fns";
-import AppFeedback from "components/AppFeedback";
+// import AppFeedback from "components/AppFeedback";
+import { LaunchRocket, ManageSpanner } from "asset/svg";
 
 const BusinessRegistration = (props) => {
   // Get user data information
@@ -98,6 +99,10 @@ const BusinessRegistration = (props) => {
     window.open("/launch", "_blank");
   };
 
+  const handleManage = () => {
+    navigate("/manage");
+  };
+
   return (
     <Container>
       <TabNavBar />
@@ -112,14 +117,18 @@ const BusinessRegistration = (props) => {
             nowrap
           >
             <LongCard
+              Icon={LaunchRocket}
               title="Launch"
               body="Start your business registration process with no paperwork"
               action={handleLaunch}
             />
             <LongCard
-              title="Shelf"
-              body="Get pre-registered company in local markets"
-              notready="true"
+              Icon={ManageSpanner}
+              title="Manage"
+              body="Make changes to already registered companies"
+              // notready="false"
+              buttonText="Manage product"
+              action={handleManage}
             />
           </DashboardSection>
           {allLaunch.length > 0 ? (

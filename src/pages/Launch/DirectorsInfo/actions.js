@@ -110,6 +110,7 @@ export const directorDelete = async (
     //   console.log(memberDeleteResponse);
     // }
     // return { data: filteredDirectors };
+    return { data: deleteResponse.data };
   } else {
     if (deleteResponse.error) {
       return { error: deleteResponse.error };

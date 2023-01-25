@@ -17,10 +17,10 @@ export const columns = [
 			<BodyText>{numeral(info.getValue()).format("00")}</BodyText>
 		),
 	}),
-	ColumnHelper.accessor("name", {
-		header: () => <HeadText>Registered By</HeadText>,
-		cell: (info) => <BodyText>{info.getValue()}</BodyText>,
-	}),
+	// ColumnHelper.accessor("name", {
+	// 	header: () => <HeadText>Registered By</HeadText>,
+	// 	cell: (info) => <BodyText>{info.getValue()}</BodyText>,
+	// }),
 	ColumnHelper.accessor("type", {
 		header: () => <HeadText>Type</HeadText>,
 		cell: (info) => <BodyText>{info.getValue()}</BodyText>,
