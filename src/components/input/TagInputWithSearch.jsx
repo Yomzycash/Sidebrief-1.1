@@ -218,7 +218,6 @@ const TagInputWithSearch = ({
           <Suggestions ref={suggestionContainer}>
             {suggestionLoading && (
               <NoSuggestion $loading={suggestionLoading}>
-                {/* <ThreeDots stroke="#98ff98" fill="#00A2D4" width={60} /> */}
                 <span>{fetchingText}</span>
               </NoSuggestion>
             )}
@@ -367,6 +366,8 @@ export const NoSuggestion = styled.div`
     border-radius: 5px;
     background-color: #00c3ff;
     transition: 0.3s ease all;
+    cursor: pointer;
+
     :hover {
       opacity: 0.8;
     }
