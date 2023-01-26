@@ -20,7 +20,7 @@ const mockData = [
 	{
 		invoiceName: "payment registrations 2",
 		status: "completed",
-		amount: 36000,
+		amount: 25000,
 		date: "11/12/22",
 		downloadLink: "#",
 	},

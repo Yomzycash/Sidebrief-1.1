@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	BodyText,
 	Checkbox,
@@ -90,7 +90,7 @@ export const invoiceColumns = [
 		id: "actions",
 		cell: ({ row }) => {
 			return (
-				<ThreeDotContainer onClick={() => console.log(row.index)}>
+				<ThreeDotContainer onClick={() => console.log(row)}>
 					<ThreeDot />
 				</ThreeDotContainer>
 			);

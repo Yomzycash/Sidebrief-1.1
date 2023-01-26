@@ -130,4 +130,5 @@ export const ThreeDotContainer = styled.button`
 	border: none;
 	width: 24px;
 	height: 24px;
+	cursor: pointer;
 `;

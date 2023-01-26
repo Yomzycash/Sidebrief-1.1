@@ -38,7 +38,7 @@ export const HeadData = styled.th`
 `;
 
 export const Row = styled.tr`
-	// height: 56px;
+	height: 56px;
 	// padding-inline: 24px;
 	padding-left: 24px;
 	background: grey;

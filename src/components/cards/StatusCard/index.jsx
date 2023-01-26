@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
 	Container,
 	TextContainer,
@@ -20,7 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
 import { useViewPayLaunchMutation } from "services/launchService";
 import { Puff } from "react-loading-icons";
-import { navigateToDetailPage } from 'components/Tables/BusinessTable/constants';
+import { navigateToDetailPage } from "components/Tables/BusinessTable/constants";
+import { ThreeDotMenu } from "components/Menu";
 
 export const StatusCard = ({
 	name, // string
@@ -51,6 +52,24 @@ export const StatusCard = ({
 		viewPayLaunch,
 	});
 
+	const contextContent = [
+		{
+			text: "View",
+			Icon: ViewSvg,
+			action: viewAction,
+		},
+		{
+			text: "Edit",
+			Icon: EditGreySvg,
+			action: editAction,
+		},
+		{
+			text: "Delete",
+			Icon: DeleteRedSvg,
+			action: deleteAction,
+		},
+	];
+
 	return (
 		<Wrapper>
 			<Container
@@ -67,29 +86,7 @@ export const StatusCard = ({
 				</TextContainer>
 				<Description hover={hover}>{ShortDescription}</Description>
 			</Container>
-			<ThreeDotContainer onClick={toggleContext}>
-				<ThreeDot />
-			</ThreeDotContainer>
-			{showContext ? (
-				<>
-					<InvisibleBackDrop onClick={hideContext} />
-					<ContextMenu>
-						<ContextButton onClick={viewAction}>
-							<ViewSvg /> View
-						</ContextButton>
-						<ContextButton onClick={editAction}>
-							<EditGreySvg /> Edit{" "}
-							{viewPayState.isLoading ? (
-								<Puff stroke={"#00a2d4"} />
-							) : null}
-						</ContextButton>
-						<DeleteButton onClick={deleteAction}>
-							<DeleteRedSvg />
-							Delete
-						</DeleteButton>
-					</ContextMenu>
-				</>
-			) : null}
+			<ThreeDotMenu contextContent={contextContent} />
 			{showDelete ? (
 				<>
 					<InvisibleBackDrop onClick={hideDeleteModal} />
