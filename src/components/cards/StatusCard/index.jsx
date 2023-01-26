@@ -2,24 +2,18 @@ import React, { useState } from "react";
 import {
 	Container,
 	TextContainer,
-	ThreeDotContainer,
 	Name,
 	Top,
 	Description,
-	ContextMenu,
-	ContextButton,
-	DeleteButton,
 	InvisibleBackDrop,
 	Wrapper,
 } from "./styles";
-import { ReactComponent as ThreeDot } from "asset/svg/threeDot.svg";
 import { StatusIndicator } from "components/Indicators";
 import { ViewSvg, EditGreySvg, DeleteRedSvg } from "asset/svg";
 import { useActions } from "./actions";
 import { useNavigate } from "react-router-dom";
 import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
 import { useViewPayLaunchMutation } from "services/launchService";
-import { Puff } from "react-loading-icons";
 import { navigateToDetailPage } from "components/Tables/BusinessTable/constants";
 import { ThreeDotMenu } from "components/Menu";
 
@@ -30,27 +24,19 @@ export const StatusCard = ({
 	launchInfo,
 }) => {
 	const [hover, setHover] = useState(false);
-	const [showContext, setShowContext] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
 
 	const navigate = useNavigate();
 
-	const [viewPayLaunch, viewPayState] = useViewPayLaunchMutation();
+	const [viewPayLaunch] = useViewPayLaunchMutation();
 
-	const {
-		toggleContext,
-		deleteAction,
-		editAction,
-		hideContext,
-		viewAction,
-		hideDeleteModal,
-	} = useActions({
-		setShowContext,
-		navigate,
-		setShowDelete,
-		launchInfo,
-		viewPayLaunch,
-	});
+	const { deleteAction, editAction, viewAction, hideDeleteModal } =
+		useActions({
+			navigate,
+			setShowDelete,
+			launchInfo,
+			viewPayLaunch,
+		});
 
 	const contextContent = [
 		{

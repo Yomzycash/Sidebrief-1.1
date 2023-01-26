@@ -30,7 +30,10 @@ export const ThreeDotMenu = ({ contextContent }) => {
 						{contextContent.map((el, index) => (
 							<ContextButton
 								key={index}
-								onClick={el.action}
+								onClick={() => {
+									hideContext();
+									el.action();
+								}}
 								look={el.style}
 							>
 								<el.Icon /> el.text
