@@ -1,15 +1,17 @@
 // import FileSaver from "file-saver";
 import axios from "axios";
-import { saveAs } from "file-saver";
 import fileDownload from "js-file-download";
 
 export const convertToLink = async (image) => {
   const data = new FormData();
   data.append("file", image);
-  data.append("upload_preset", "cloudinary");
+  data.append(
+    "upload_preset",
+    `${process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET}`
+  );
 
   const res = await fetch(
-    "https://api.cloudinary.com/v1_1/dgqbdxvnr/image/upload",
+    `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_NAME}/image/upload`,
     {
       method: "post",
       body: data,

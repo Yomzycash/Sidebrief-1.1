@@ -1,4 +1,3 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
 import React from "react";
 import {
 	Body,
