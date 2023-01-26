@@ -1,10 +1,15 @@
 import { Container, Heading, Top, SubHeader } from "./styles";
 import ActiveNav from "components/navbar/ActiveNav";
 // import { Search } from "./search";
+import { useLocation } from "react-router-dom";
 
 export const SettingHeader = () => {
+	const location = useLocation();
+
+	const isPayment = location.pathname === "/dashboard/settings/payment";
+
 	return (
-		<Container>
+		<Container curveBottom={isPayment}>
 			<Top>
 				<Heading>Profile</Heading>
 				{/* <Search triggerSearch={() => {}} /> */}
