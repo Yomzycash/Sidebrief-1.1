@@ -4,11 +4,11 @@ export const LayoutContainer = styled.div`
 	display: flex;
 	flex-flow: column;
 	flex: 1;
-	gap: 40px;
+	/* gap: 40px; */
 `;
 
 export const LayoutBody = styled.div`
-	padding-inline: 64px;
+	padding-inline: 40px;
 `;
 
 export const Container = styled.div`

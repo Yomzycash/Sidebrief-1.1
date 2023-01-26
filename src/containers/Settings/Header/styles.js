@@ -7,6 +7,12 @@ export const Container = styled.div`
 	margin-right: 40px;
 	border-inline: 1px solid #edf1f7;
 	border-bottom: 1px solid #edf1f7;
+
+	${({ curveBottom }) =>
+		curveBottom &&
+		`border-bottom-left-radius: 16px;
+		border-bottom-right-radius: 16px;
+	`}
 `;
 
 export const Top = styled.div`

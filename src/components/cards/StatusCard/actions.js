@@ -3,16 +3,11 @@ import { setLaunchResponse } from "redux/Slices";
 // import { handleErrorHook } from "utils/hooks/staff";
 
 export const useActions = ({
-	setShowContext,
 	navigate,
 	setShowDelete,
 	launchInfo,
 	viewPayLaunch,
 }) => {
-	const hideContext = () => {
-		setShowContext(false);
-	};
-
 	const showDeleteModal = () => {
 		setShowDelete(true);
 	};
@@ -21,22 +16,15 @@ export const useActions = ({
 		setShowDelete(false);
 	};
 
-	const toggleContext = () => {
-		setShowContext((prev) => !prev);
-	};
-
 	const viewAction = () => {
-		hideContext();
 		navigateToDetailPage();
 	};
 
 	const editAction = async () => {
 		await handleEditNavigation();
-		hideContext();
 	};
 
 	const deleteAction = () => {
-		hideContext();
 		showDeleteModal();
 	};
 
@@ -74,8 +62,6 @@ export const useActions = ({
 	};
 
 	return {
-		toggleContext,
-		hideContext,
 		viewAction,
 		editAction,
 		deleteAction,
