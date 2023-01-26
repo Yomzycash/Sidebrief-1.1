@@ -1,1 +1,1 @@
-export { ThreeDotMenu } from "./ContextMenu";
+export { ThreeDotMenu } from "./ThreeDotMenu";

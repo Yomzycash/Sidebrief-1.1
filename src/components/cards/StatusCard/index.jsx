@@ -57,16 +57,19 @@ export const StatusCard = ({
 			text: "View",
 			Icon: ViewSvg,
 			action: viewAction,
+			style: "normal",
 		},
 		{
 			text: "Edit",
 			Icon: EditGreySvg,
 			action: editAction,
+			style: "normal",
 		},
 		{
 			text: "Delete",
 			Icon: DeleteRedSvg,
 			action: deleteAction,
+			style: "danger",
 		},
 	];
 

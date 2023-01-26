@@ -3,7 +3,6 @@ import {
 	ThreeDotContainer,
 	ContextMenu,
 	ContextButton,
-	DeleteButton,
 	InvisibleBackDrop,
 } from "./styles";
 import { ThreeDot } from "asset/svg";
@@ -29,7 +28,11 @@ export const ThreeDotMenu = ({ contextContent }) => {
 					<InvisibleBackDrop onClick={hideContext} />
 					<ContextMenu>
 						{contextContent.map((el, index) => (
-							<ContextButton key={index} onClick={el.action}>
+							<ContextButton
+								key={index}
+								onClick={el.action}
+								look={el.style}
+							>
 								<el.Icon /> el.text
 							</ContextButton>
 						))}
