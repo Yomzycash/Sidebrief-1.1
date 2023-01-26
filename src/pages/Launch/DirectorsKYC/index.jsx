@@ -147,8 +147,10 @@ const DirectorKYC = () => {
       },
     };
     const response = await addMemberKYC(requiredAddMemberData);
+    console.log("check", response);
     if (response.data) {
       toast.success("Document uploaded successfully");
+      console.log("adora", response.data);
       setIsChanged(!isChanged);
     } else if (response.error) {
       toast.error(response.error?.data.message);
@@ -202,48 +204,43 @@ const DirectorKYC = () => {
                 <ContentWrapper>
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"government id"}
-                    TopText={"Government Issued ID"}
-                    memberCode={director.code}
-                    onDrop={(files) =>
-                      handleChange(files, director.code, "government_id")
-                    }
-                    handleRemove={() => handleRemove("government id")}
-                    BottomText={
-                      "Utility Bill, Water Corporation Bill or a Rent Invoice"
-                    }
-                  />
-
-                  <KYCFileUpload
-                    isChanged={isChanged}
-                    documentComponentType={"proof of home address"}
-                    TopText={"Proof of Home Address"}
+                    documentComponentType={"registration document"}
+                    TopText={"Registration Document"}
                     memberCode={director.code}
                     onDrop={(files) =>
                       handleChange(
                         files,
                         director.code,
-                        "proof_of_home_address"
+                        "registration_document"
                       )
                     }
-                    handleRemove={() => handleRemove("proof of home address")}
-                    BottomText={
-                      "Driver’s Licence, National ID Card, Voters Card or International Passport"
-                    }
+                    handleRemove={() => handleRemove("registration document")}
+                    BottomText={"Please provide your Registration Document"}
                   />
 
                   <KYCFileUpload
                     isChanged={isChanged}
-                    documentComponentType={"passport photograph"}
-                    TopText={"Passport Photograph"}
+                    documentComponentType={"representative nin"}
+                    TopText={"Representative NIN"}
                     memberCode={director.code}
                     onDrop={(files) =>
-                      handleChange(files, director.code, "passport_photograph")
+                      handleChange(files, director.code, "representative_nin")
                     }
-                    handleRemove={() => handleRemove("passport photograph")}
-                    BottomText={"Kindly ensure image is not larger than 3MB"}
+                    handleRemove={() => handleRemove("representative nin")}
+                    BottomText={"National Identification Number"}
                   />
 
+                  <KYCFileUpload
+                    isChanged={isChanged}
+                    documentComponentType={"signature document"}
+                    TopText={"Signature"}
+                    memberCode={director.code}
+                    onDrop={(files) =>
+                      handleChange(files, director.code, "signature_document")
+                    }
+                    handleRemove={() => handleRemove("signature document")}
+                    BottomText={"Kindly ensure image is not larger than 3MB"}
+                  />
                   {/* <FileUpload
                     TopText={"Government Issued ID"}
                     name="government"
