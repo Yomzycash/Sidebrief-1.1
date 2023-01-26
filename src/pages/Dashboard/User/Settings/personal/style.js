@@ -102,6 +102,10 @@ export const GridLayout = styled.div`
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
 	gap: 24px;
+
+	@media screen and (max-width: 800px) {
+		grid-template-columns: 1fr;
+	}
 `;
 
 export const SubmitOrCancel = styled.div`
