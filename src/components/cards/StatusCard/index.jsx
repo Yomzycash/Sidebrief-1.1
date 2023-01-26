@@ -75,7 +75,10 @@ export const StatusCard = ({
 				</TextContainer>
 				<Description hover={hover}>{ShortDescription}</Description>
 			</Container>
-			<ThreeDotMenu contextContent={contextContent} />
+			<ThreeDotMenu
+				contextContent={contextContent}
+				classname={"threedot"}
+			/>
 			{showDelete ? (
 				<>
 					<InvisibleBackDrop onClick={hideDeleteModal} />

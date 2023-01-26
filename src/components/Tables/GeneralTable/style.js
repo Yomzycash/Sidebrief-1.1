@@ -6,8 +6,8 @@ export const Container = styled.div`
 	border-radius: 0px 0px 16px 16px;
 	/* overflow: hidden; */
 
-	overflow-x: auto;
-	overflow-y: hidden;
+	/* overflow-x: auto;
+	overflow-y: hidden; */
 `;
 
 export const Table = styled.table`

@@ -4,10 +4,11 @@ import {
 	ContextMenu,
 	ContextButton,
 	InvisibleBackDrop,
-} from "./styles";
+	Container,
+} from "./style";
 import { ThreeDot } from "asset/svg";
 
-export const ThreeDotMenu = ({ contextContent }) => {
+export const ThreeDotMenu = ({ contextContent, classname }) => {
 	const [showContext, setShowContext] = useState(false);
 
 	const hideContext = () => {
@@ -19,8 +20,8 @@ export const ThreeDotMenu = ({ contextContent }) => {
 	};
 
 	return (
-		<>
-			<ThreeDotContainer onClick={toggleContext}>
+		<Container>
+			<ThreeDotContainer onClick={toggleContext} className={classname}>
 				<ThreeDot />
 			</ThreeDotContainer>
 			{showContext ? (
@@ -36,12 +37,13 @@ export const ThreeDotMenu = ({ contextContent }) => {
 								}}
 								look={el.style}
 							>
-								<el.Icon /> el.text
+								<el.Icon />
+								{el.text}
 							</ContextButton>
 						))}
 					</ContextMenu>
 				</>
 			) : null}
-		</>
+		</Container>
 	);
 };

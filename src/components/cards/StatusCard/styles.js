@@ -2,6 +2,12 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
 	position: relative;
+
+	.threedot {
+		position: absolute;
+		top: 24.5px;
+		right: 24px;
+	}
 `;
 
 export const Container = styled.div`
@@ -71,4 +77,14 @@ export const Name = styled.h4`
 	line-height: 21px;
 	letter-spacing: -0.02em;
 	color: #151717;
+`;
+
+export const InvisibleBackDrop = styled.div`
+	background-color: transparent;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 3;
 `;

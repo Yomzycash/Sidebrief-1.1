@@ -1,15 +1,9 @@
 import { useEffect, useRef } from "react";
-import {
-	BodyText,
-	Checkbox,
-	HeadText,
-	DownloadTag,
-	ThreeDotContainer,
-} from "./style";
+import { BodyText, Checkbox, HeadText, DownloadTag } from "./style";
 import { createColumnHelper } from "@tanstack/react-table";
 import { TypeIndicator } from "components/Indicators";
-import { Download as DownloadSvg } from "asset/svg";
-import { ThreeDot } from "asset/svg";
+import { Download as DownloadSvg, DeleteRedSvg, ViewSvg } from "asset/svg";
+import { ThreeDotMenu } from "components/Menu";
 
 const ColumnHelper = createColumnHelper();
 
@@ -81,7 +75,7 @@ export const invoiceColumns = [
 			return (
 				<DownloadTag href={info.getValue()} download>
 					<DownloadSvg />
-					Download{" "}
+					Download
 				</DownloadTag>
 			);
 		},
@@ -89,11 +83,28 @@ export const invoiceColumns = [
 	ColumnHelper.display({
 		id: "actions",
 		cell: ({ row }) => {
-			return (
-				<ThreeDotContainer onClick={() => console.log(row)}>
-					<ThreeDot />
-				</ThreeDotContainer>
-			);
+			const contextContent = [
+				{
+					text: "View",
+					Icon: ViewSvg,
+					action: () => console.log("view", row.id),
+					style: "normal",
+				},
+				{
+					text: "Download",
+					Icon: DownloadSvg,
+					action: () => console.log("download", row.id),
+					style: "normal",
+				},
+				{
+					text: "Delete",
+					Icon: DeleteRedSvg,
+					action: () => console.log("delete", row.id),
+					style: "danger",
+				},
+			];
+
+			return <ThreeDotMenu contextContent={contextContent} />;
 		},
 	}),
 ];

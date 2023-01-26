@@ -7,7 +7,7 @@ export const Container = styled.div`
 export const InvoiceContainer = styled.div`
 	border: 1px solid #edf1f7;
 	border-radius: 16px;
-	overflow: hidden;
+	/* overflow: hidden; */
 `;
 
 export const InvoiceHeader = styled.div`
