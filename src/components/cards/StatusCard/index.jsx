@@ -1,26 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
 	Container,
 	TextContainer,
-	ThreeDotContainer,
 	Name,
 	Top,
 	Description,
-	ContextMenu,
-	ContextButton,
-	DeleteButton,
 	InvisibleBackDrop,
 	Wrapper,
 } from "./styles";
-import { ReactComponent as ThreeDot } from "asset/svg/threeDot.svg";
 import { StatusIndicator } from "components/Indicators";
 import { ViewSvg, EditGreySvg, DeleteRedSvg } from "asset/svg";
 import { useActions } from "./actions";
 import { useNavigate } from "react-router-dom";
 import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
 import { useViewPayLaunchMutation } from "services/launchService";
-import { Puff } from "react-loading-icons";
-import { navigateToDetailPage } from 'components/Tables/BusinessTable/constants';
+import { navigateToDetailPage } from "components/Tables/BusinessTable/constants";
+import { ThreeDotMenu } from "components/Menu";
 
 export const StatusCard = ({
 	name, // string
@@ -29,27 +24,40 @@ export const StatusCard = ({
 	launchInfo,
 }) => {
 	const [hover, setHover] = useState(false);
-	const [showContext, setShowContext] = useState(false);
 	const [showDelete, setShowDelete] = useState(false);
 
 	const navigate = useNavigate();
 
-	const [viewPayLaunch, viewPayState] = useViewPayLaunchMutation();
+	const [viewPayLaunch] = useViewPayLaunchMutation();
 
-	const {
-		toggleContext,
-		deleteAction,
-		editAction,
-		hideContext,
-		viewAction,
-		hideDeleteModal,
-	} = useActions({
-		setShowContext,
-		navigate,
-		setShowDelete,
-		launchInfo,
-		viewPayLaunch,
-	});
+	const { deleteAction, editAction, viewAction, hideDeleteModal } =
+		useActions({
+			navigate,
+			setShowDelete,
+			launchInfo,
+			viewPayLaunch,
+		});
+
+	const contextContent = [
+		{
+			text: "View",
+			Icon: ViewSvg,
+			action: viewAction,
+			style: "normal",
+		},
+		{
+			text: "Edit",
+			Icon: EditGreySvg,
+			action: editAction,
+			style: "normal",
+		},
+		{
+			text: "Delete",
+			Icon: DeleteRedSvg,
+			action: deleteAction,
+			style: "danger",
+		},
+	];
 
 	return (
 		<Wrapper>
@@ -67,29 +75,10 @@ export const StatusCard = ({
 				</TextContainer>
 				<Description hover={hover}>{ShortDescription}</Description>
 			</Container>
-			<ThreeDotContainer onClick={toggleContext}>
-				<ThreeDot />
-			</ThreeDotContainer>
-			{showContext ? (
-				<>
-					<InvisibleBackDrop onClick={hideContext} />
-					<ContextMenu>
-						<ContextButton onClick={viewAction}>
-							<ViewSvg /> View
-						</ContextButton>
-						<ContextButton onClick={editAction}>
-							<EditGreySvg /> Edit{" "}
-							{viewPayState.isLoading ? (
-								<Puff stroke={"#00a2d4"} />
-							) : null}
-						</ContextButton>
-						<DeleteButton onClick={deleteAction}>
-							<DeleteRedSvg />
-							Delete
-						</DeleteButton>
-					</ContextMenu>
-				</>
-			) : null}
+			<ThreeDotMenu
+				contextContent={contextContent}
+				classname={"threedot"}
+			/>
 			{showDelete ? (
 				<>
 					<InvisibleBackDrop onClick={hideDeleteModal} />
