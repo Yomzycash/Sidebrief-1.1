@@ -1,4 +1,4 @@
-import { RewardSummaryCard } from "components/cards";
+import { SummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React from "react";
@@ -80,7 +80,7 @@ const Registrationlayout = () => {
           <TopContent>
             <div>
               <PageTitle>Business Registrations</PageTitle>
-              <RewardSummaryCard shown={23} total={503} />
+              <SummaryCard shown={23} total={503} />
             </div>
             <Drop>
               <select>

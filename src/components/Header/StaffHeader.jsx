@@ -1,4 +1,4 @@
-import { RewardSummaryCard } from "components/cards";
+import { SummaryCard } from "components/cards";
 import StaffEntityModal from "components/modal/StaffEntityModal";
 import Search from "components/navbar/Search";
 import React from "react";
@@ -26,7 +26,7 @@ const StaffHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <RewardSummaryCard shown={shown} total={total} />
+              <SummaryCard shown={shown} total={total} />
             </div>
             <Drop>
               <select>
