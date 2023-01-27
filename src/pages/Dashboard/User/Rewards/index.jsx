@@ -1,4 +1,4 @@
-import { RewardSummaryCard } from "components/cards";
+import { SummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
@@ -85,7 +85,7 @@ const Rewards = () => {
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
             <div>
-              <RewardSummaryCard
+              <SummaryCard
                 shown={rewardsShown.shown}
                 total={rewardsShown.total}
               />

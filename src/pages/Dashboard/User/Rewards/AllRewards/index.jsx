@@ -1,4 +1,4 @@
-import { RewardCard, RewardSummaryCard } from "components/cards";
+import { RewardCard, SummaryCard } from "components/cards";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Body,

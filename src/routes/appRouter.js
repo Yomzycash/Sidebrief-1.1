@@ -41,6 +41,7 @@ import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesse
 import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
 import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
+import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -223,8 +224,8 @@ const AppRouter = () => {
               index
               element={
                 <Protected isVerified={isLoggedIn}>
-                  {/* {staffEmail ? <StaffDashboard /> : <Home />} */}
-                  <Home />
+                  {staffEmail ? <StaffDashboard /> : <Home />}
+                  {/* <Home /> */}
                 </Protected>
               }
             />
@@ -256,6 +257,9 @@ const AppRouter = () => {
               </Route>
             </Route>
 
+
+             
+
 						{/* User dashboard routes */}
 						<Route
 							path="dashboard"
@@ -278,6 +282,10 @@ const AppRouter = () => {
 								path="bank-account"
 								element={<BankAccount />}
 							></Route>
+              <Route
+                path="business-registration"
+                element={<BusinessRegistration />}
+              />
 							<Route
 								path="settings"
 								element={<UserSettingsLayout />}
@@ -364,6 +372,7 @@ const AppRouter = () => {
 									element={<RewardDetails />}
 								/>
 							</Route>
+
 
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>

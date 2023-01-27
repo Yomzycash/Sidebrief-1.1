@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "./styled";
 
-export const RewardSummaryCard = ({ shown, total }) => {
+export const SummaryCard = ({ shown, total }) => {
   console.log(typeof shown);
   return (
     <Container>
