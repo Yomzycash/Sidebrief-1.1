@@ -138,13 +138,13 @@ const DetailBeneficiaries = lazy(() =>
   import("pages/Dashboard/User/Business/Detail/beneficiaries")
 );
 const UserSettingsLayout = lazy(() =>
-	import("pages/Dashboard/User/Settings/layout")
+  import("pages/Dashboard/User/Settings/layout")
 );
 const PersonalSettings = lazy(() =>
-	import("pages/Dashboard/User/Settings/personal")
+  import("pages/Dashboard/User/Settings/personal")
 );
 const PaymentSetting = lazy(() =>
-	import("pages/Dashboard/User/Settings/payment")
+  import("pages/Dashboard/User/Settings/payment")
 );
 const Stafflayout = lazy(() => import("pages/Dashboard/staffDashboard/layout"));
 const SettingLayout = lazy(() =>
@@ -257,122 +257,73 @@ const AppRouter = () => {
               </Route>
             </Route>
 
-
-             
-
-						{/* User dashboard routes */}
-						<Route
-							path="dashboard"
-							element={
-								<Protected isVerified={isLoggedIn}>
-									<UserDashboard />
-								</Protected>
-							}
-						>
-							<Route index element={<BusinessRegistration />} />
-							<Route
-								path="business-registration"
-								element={<BusinessRegistration />}
-							/>
-							<Route
-								path="application"
-								element={<Application />}
-							></Route>
-							<Route
-								path="bank-account"
-								element={<BankAccount />}
-							></Route>
+            {/* User dashboard routes */}
+            <Route
+              path="dashboard"
+              element={
+                <Protected isVerified={isLoggedIn}>
+                  <UserDashboard />
+                </Protected>
+              }
+            >
+              <Route index element={<BusinessRegistration />} />
               <Route
                 path="business-registration"
                 element={<BusinessRegistration />}
               />
-							<Route
-								path="settings"
-								element={<UserSettingsLayout />}
-							>
-								<Route index element={<PersonalSettings />} />
-								<Route
-									path="personal"
-									element={<PersonalSettings />}
-								/>
-								<Route
-									path="payment"
-									element={<PaymentSetting />}
-								/>
-							</Route>
-							<Route
-								path="resources"
-								element={<Resources />}
-							></Route>
-							<Route path="businesses" element={<Business />}>
-								<Route index element={<AllBusinesses />} />
-								<Route
-									path="all-businesses"
-									element={<AllBusinesses />}
-								></Route>
-								<Route
-									path="submitted-applications"
-									element={<PendingApplications />}
-								></Route>
-								<Route
-									path="draft-applications"
-									element={<DraftApplications />}
-								></Route>
-							</Route>
-							<Route
-								path="business/:code"
-								element={<BusinessDetailLayout />}
-							>
-								<Route
-									path="detail"
-									element={<BusinessDetail />}
-								/>
-								<Route
-									path="shareholders"
-									element={<DetailShareholders />}
-								/>
-								<Route
-									path="directors"
-									element={<DetailDirectors />}
-								/>
-								<Route
-									path="beneficiaries"
-									element={<DetailBeneficiaries />}
-								/>
-							</Route>
-							<Route
-								path="compliance"
-								element={<Compliance />}
-							></Route>
-							<Route
-								path="hiring-and-payroll"
-								element={<HiringAndPayroll />}
-							></Route>
-							<Route
-								path="intellectualAssets"
-								element={<InetellectualAssets />}
-							></Route>
-							<Route path="taxes" element={<Taxes />}></Route>
-							<Route path="rewards" element={<Rewards />}>
-								<Route index element={<AllRewards />} />
-								<Route
-									path="all-rewards"
-									element={<AllRewards />}
-								></Route>
-								<Route
-									path="my-rewards"
-									element={<MyRewards />}
-								></Route>
-								<Route
-									path="details"
-									element={<RewardDetails />}
-								/>
-								<Route
-									path=":rewardID"
-									element={<RewardDetails />}
-								/>
-							</Route>
-
+              <Route path="application" element={<Application />}></Route>
+              <Route path="bank-account" element={<Outlet />}>
+                <Route index element={<BankAccount />} />
+                <Route path=":bankCode" element={<BankAccountDetails />} />
+              </Route>
+              <Route
+                path="business-registration"
+                element={<BusinessRegistration />}
+              />
+              <Route path="settings" element={<UserSettingsLayout />}>
+                <Route index element={<PersonalSettings />} />
+                <Route path="personal" element={<PersonalSettings />} />
+                <Route path="payment" element={<PaymentSetting />} />
+              </Route>
+              <Route path="resources" element={<Resources />}></Route>
+              <Route path="businesses" element={<Business />}>
+                <Route index element={<AllBusinesses />} />
+                <Route
+                  path="all-businesses"
+                  element={<AllBusinesses />}
+                ></Route>
+                <Route
+                  path="submitted-applications"
+                  element={<PendingApplications />}
+                ></Route>
+                <Route
+                  path="draft-applications"
+                  element={<DraftApplications />}
+                ></Route>
+              </Route>
+              <Route path="business/:code" element={<BusinessDetailLayout />}>
+                <Route path="detail" element={<BusinessDetail />} />
+                <Route path="shareholders" element={<DetailShareholders />} />
+                <Route path="directors" element={<DetailDirectors />} />
+                <Route path="beneficiaries" element={<DetailBeneficiaries />} />
+              </Route>
+              <Route path="compliance" element={<Compliance />}></Route>
+              <Route
+                path="hiring-and-payroll"
+                element={<HiringAndPayroll />}
+              ></Route>
+              <Route
+                path="intellectualAssets"
+                element={<InetellectualAssets />}
+              ></Route>
+              <Route path="taxes" element={<Taxes />}></Route>
+              <Route path="rewards" element={<Rewards />}>
+                <Route index element={<AllRewards />} />
+                <Route path="all-rewards" element={<AllRewards />}></Route>
+                <Route path="my-rewards" element={<MyRewards />}></Route>
+                <Route path="details" element={<RewardDetails />} />
+                <Route path=":rewardID" element={<RewardDetails />} />
+              </Route>
 
               <Route path="reward-details" element={<RewardDetails />} />
             </Route>

@@ -11,6 +11,7 @@ const BankAccountDetails = () => {
   const params = useParams();
 
   const { data } = useGetSingleBankQuery(params.bankCode);
+  console.log("check", data?.bankUrl);
   const allBanks = useGetAllBanksQuery();
 
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const BankAccountDetails = () => {
       detailText={data?.bankDescription}
       btnText="Create an account"
       btnIcon={FiArrowUpRight}
-      btnAction={() => window.open(data?.bankUrl, "_blank")}
+      btnAction={() => window.open(`https://${data?.bankUrl}`, "_blank")}
       pageTitle="Bank Accounts"
       title2="Check out similar banks"
       viewAllLink="/dashboard/bank-account"
