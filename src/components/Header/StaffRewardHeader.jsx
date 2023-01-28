@@ -1,4 +1,4 @@
-import { RewardSummaryCard } from "components/cards";
+import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import React from "react";
 import styled from "styled-components";
@@ -30,7 +30,7 @@ const StaffRewardHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <RewardSummaryCard shown={localTotal} total={localTotal} />
+              <SummaryCard shown={localTotal} total={localTotal} />
             </div>
           </TopContent>
           <BottomContent>

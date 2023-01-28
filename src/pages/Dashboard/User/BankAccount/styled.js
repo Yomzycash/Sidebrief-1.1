@@ -6,62 +6,43 @@ export const Container = styled.div`
   flex: 1;
 `;
 export const Top = styled.div``;
+
 export const Body = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  padding-top: 150px;
+  padding-top: 40px;
   margin-inline: 25px;
 `;
-export const Main = styled.div`
+
+export const BodyMain = styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: clamp(16px, 1.6vw, 24px);
+  width: 100%;
+
+  @media screen and (max-width: 430px) {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: auto auto;
+  }
+
+  @media screen and (min-width: 1550px) {
+    grid-template-columns: auto auto auto auto;
+  }
+`;
+
+export const Loading = styled.div`
   display: flex;
-  flex-flow: column;
-  gap: 20px;
   justify-content: center;
   align-items: center;
-  margin: auto 0;
-  max-width: 628px;
-`;
-export const Image = styled.img`
-  margin-bottom: 24px;
-`;
-export const BoldText = styled.h3`
-  color: #151717;
-  font-size: clamp(20px, 1.5vw, 28px);
-  font-weight: 700;
-  text-align: ${(props) => props.align};
-  margin-top: ${(props) => props.top};
-  margin-bottom: ${(props) => props.bottom};
-  margin-right: ${(props) => props.right};
-  margin-left: ${(props) => props.left};
-`;
-
-export const ParagraphText = styled.p`
-  color: ${(props) => (props.clickColor ? "#00a2d4" : "#4E5152")};
-  font-size: clamp(14px, 1.5vw, 16px);
-  font-weight: 400;
-  text-align: ${(props) => props.align};
-  margin-top: ${(props) => props.top};
-  margin-bottom: ${(props) => props.bottom};
-  margin-right: ${(props) => props.right};
-  margin-left: ${(props) => props.left};
-  width: ${(props) => props.width};
-  cursor: ${(props) => props.cursor && "pointer"};
-`;
-
-export const ComingBtn = styled.button`
-  border: 1px solid #00a2d4;
-  padding: 16px 7px;
   width: 100%;
-  color: #00a2d4;
-  background: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 40px;
-
-  :hover {
-    background-color: #00a2d4;
-    color: white;
-  }
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;

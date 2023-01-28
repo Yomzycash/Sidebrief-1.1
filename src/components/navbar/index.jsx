@@ -171,7 +171,7 @@ const Navbar = ({
         </NotificationWrapper>
       )}
 
-      {showProfile && <Profile />}
+      {showProfile && <Profile setShowProfile={setShowProfile} />}
     </>
   );
 };

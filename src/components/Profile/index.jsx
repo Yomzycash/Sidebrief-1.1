@@ -10,7 +10,7 @@ import { ReactComponent as User } from "../../asset/svg/user.svg";
 import { ReactComponent as Shield } from "../../asset/svg/sh.svg";
 import { ReactComponent as DeleteI } from "../../asset/svg/de.svg";
 import { useNavigate } from "react-router-dom";
-const Profile = () => {
+const Profile = ({ setShowProfile }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,11 +19,16 @@ const Profile = () => {
     console.log("User logged out");
   };
 
+  const handleProfile = () => {
+    navigate("/dashboard/settings/personal");
+    setShowProfile(false);
+  };
+
   return (
     <ProfileContainer>
-      <ProfileLists>
+      <ProfileLists onClick={handleProfile}>
         <User />
-        <ProfileList>Profile</ProfileList>
+        <ProfileList onClick={handleProfile}>Profile</ProfileList>
       </ProfileLists>
       <ProfileLists onClick={handleLogout}>
         <DeleteI />

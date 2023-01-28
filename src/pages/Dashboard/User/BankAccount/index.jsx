@@ -1,38 +1,113 @@
-import TabNavBar from 'components/TabNavBar/TabNavBar'
-import React from 'react'
-import {
-  Body,
-  BoldText,
-  ComingBtn,
-  Container,
-  Image,
-  Main,
-  ParagraphText,
-} from './styled'
-import image from '../../../../asset/images/coming.png'
-import { useNavigate } from 'react-router-dom'
+import TabNavBar from "components/TabNavBar/TabNavBar";
+import React, { useState, useEffect } from "react";
+import { Body, BodyMain, Container, Loading } from "./styled";
+import image from "../../../../asset/images/coming.png";
+import { useNavigate } from "react-router-dom";
+import { SummaryCard } from "components/cards";
+import Search from "components/navbar/Search";
+import styled from "styled-components";
+import { Puff } from "react-loading-icons";
+import PetalsCard from "components/cards/RewardCard/PetalsCard";
+import { useGetAllBanksQuery } from "services/staffService";
+
 const BankAccount = () => {
-  const navigate = useNavigate()
+  const [filteredBank, setFilteredBank] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+
+  const { data, isLoading } = useGetAllBanksQuery();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setFilteredBank(data);
+    // setFilteredBank(
+    //   data?.map((bank) => {
+    //     let includes =
+    //       bank?.bankName?.includes(searchValue) ||
+    //       bank?.bankCountry?.includes(searchValue);
+    //     if (includes) return bank;
+    //     return {};
+    //   })
+    // );
+  }, [data, searchValue]);
+
+  const handleBankClick = (bankCode) => {
+    navigate(`/dashboard/bank-account/${bankCode}`);
+  };
+  console.log(data);
+
   return (
     <Container>
-      <TabNavBar />
+      <MainHeader>
+        <p>Bank Accounts</p>
+        <div>
+          <SummaryCard shown={data?.length} total={data?.length} />
+          <Search
+            style={searchStyle}
+            placeholder={"Search for a bank"}
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+        </div>
+      </MainHeader>
       <Body>
-        <Main>
-          <Image src={image} alt="" />
-          <BoldText>Coming Soon...</BoldText>
-          <ParagraphText align="center">
-            Uh oh, our apologies. The page you’re looking for is unavailable at
-            the moment. However once it’s live, you’ll be the first to know.
-          </ParagraphText>
-          <ComingBtn
-            onClick={() => navigate('/dashboard/business-registration')}
-          >
-            Back to Dashboard
-          </ComingBtn>
-        </Main>
+        {isLoading ? (
+          <Loading height="300px">
+            <Puff stroke="#00A2D4" fill="white" width={60} />
+          </Loading>
+        ) : (
+          <BodyMain>
+            {filteredBank?.map((bank, index) => (
+              <PetalsCard
+                key={index}
+                title={bank?.bankCountry}
+                subText={bank?.bankName}
+                image={bank?.bankLogo}
+                action={() => handleBankClick(bank.bankCode)}
+                rewardspage
+              />
+            ))}
+          </BodyMain>
+        )}
       </Body>
     </Container>
-  )
-}
+  );
+};
 
-export default BankAccount
+export default BankAccount;
+
+const searchStyle = {
+  borderRadius: "12px",
+  backgroundColor: "white",
+  maxWidth: "384px",
+};
+
+export const MainHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  height: clamp(80px, 10vw, 120px);
+  padding-inline: 24px;
+  border: 1px solid #edf1f7;
+  border-top: none;
+  transition: 0.2s all ease;
+
+  > p {
+    display: flex;
+    align-items: center;
+    font-size: clamp(20px, 1.5vw, 24px);
+    font-weight: 700;
+    color: #151717;
+  }
+
+  > div {
+    display: flex;
+    gap: 48px;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+`;

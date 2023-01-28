@@ -13,7 +13,7 @@ import {
   Drop,
 } from "./styled";
 import image from "../../../../asset/images/coming.png";
-import { RewardSummaryCard } from "components/cards";
+import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -99,7 +99,7 @@ const Business = () => {
           <TopContent>
             <div>
               <PageTitle>Businesses</PageTitle>
-              <RewardSummaryCard
+              <SummaryCard
                 shown={businessesShown.shown}
                 total={businessesShown.total}
               />
