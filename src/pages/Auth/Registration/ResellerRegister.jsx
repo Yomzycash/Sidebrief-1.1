@@ -244,6 +244,10 @@ const Registration = styled.div`
   box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
     10px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 12px;
+
+  @media screen and (max-width: 700px) {
+    padding-inline: 24px;
+  }
 `;
 const TestBlock = styled.div`
   height: 1px;

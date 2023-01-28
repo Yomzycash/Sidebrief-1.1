@@ -187,6 +187,9 @@ const Registration = styled.div`
   @media screen and (max-width: 1000px) {
     gap: 32px;
   }
+  @media screen and (max-width: 700px) {
+    padding-inline: 24px;
+  }
 `;
 const TestBlock = styled.div`
   height: 1px;
