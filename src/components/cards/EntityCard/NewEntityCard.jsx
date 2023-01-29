@@ -10,26 +10,26 @@ import {
   Price,
   Bullet,
   Content,
+  Description,
   TopText,
   Wrap,
   TopTextWrapper,
-  Description,
+  FeatureList,
   FeatureListItem,
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import numeral from "numeral";
 
-export const EntityCard = ({
+const NewEntityCard = ({
   action,
   name,
   price,
   timeline,
   requirement,
   shares,
-  type,
-  country,
   features,
+  type,
   currency,
   description,
 }) => {
@@ -41,16 +41,10 @@ export const EntityCard = ({
         </TopTextWrapper>
       )}
 
-      <Container
-        onClick={action}
-        gap={country === "NGA" && "24px"}
-        content={country === "NGA" ? "" : "space-between"}
-        height={country === "NGA" && "clamp(400px, 30vw, 450px)"}
-      >
+      <Container onClick={action}>
         <Corner>
           <CornerPetal />
         </Corner>
-
         <Top>
           <Title>{name}</Title>
           <TimeLine>{timeline}</TimeLine>
@@ -62,37 +56,34 @@ export const EntityCard = ({
             {name === "Basic" ? "" : currency}
           </Price>
         </Mid>
+
         <Bottom>
-          {/* <Bullet>
-          <Mark /> <Content>{company}</Content>
-        </Bullet> */}
-          {country === "NGA" ? (
-            <Bullet flow="column">
-              <>
-                {features?.map((item) => (
-                  <FeatureListItem>
-                    <Mark /> <Content>{item}</Content>
-                  </FeatureListItem>
-                ))}
-              </>
-            </Bullet>
-          ) : (
+          <Bullet flow="column">
             <>
-              <Bullet>
-                <Mark /> <Content>{type} Company</Content>
-              </Bullet>
-              <Bullet>
-                <Mark /> <Content>{shares} shares</Content>
-              </Bullet>
-              <Bullet>
-                <Mark /> <Content>{requirement}</Content>
-              </Bullet>
+              {features?.map((item) => (
+                <FeatureListItem>
+                  <Mark /> <Content>{item}</Content>
+                </FeatureListItem>
+              ))}
             </>
-          )}
+          </Bullet>
+          {/* <Bullet>
+            <Mark /> <Content>{type} Company</Content>
+          </Bullet>
+          <Bullet>
+            <Mark /> <Content>{shares} shares</Content>
+          </Bullet>
+          <Bullet>
+            <Mark /> <Content>{requirement}</Content>
+          </Bullet> */}
+          {/* <FeatureList>
+            {features?.map((item) => (
+              <FeatureListItem>{item}</FeatureListItem>
+            ))}
+          </FeatureList> */}
         </Bottom>
       </Container>
     </Wrap>
   );
 };
-
-export { Wrapper as EntityWrapper } from "./wrapper";
+export default NewEntityCard;

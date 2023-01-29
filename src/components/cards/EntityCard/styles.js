@@ -1,9 +1,14 @@
 import styled from "styled-components";
-
+export const Wrap = styled.div`
+  /* display: flex;
+  flex-flow: column; */
+`;
 export const Container = styled.div`
   max-width: 550px;
   min-width: 350px;
-  height: clamp(284px, 30vw, 340px);
+  /* height: clamp(400px, 30vw, 450px); */
+  height: ${(props) =>
+    props.height ? props.height : "clamp(284px, 30vw, 340px)"};
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
@@ -14,10 +19,13 @@ export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  justify-content: ${(props) => props.content};
+  gap: ${(props) => (props.gap ? props.gap : "")};
+  /* gap: 24px; */
   flex: 1;
 
-  z-index: 0;
+  /* z-index: 0; */
   overflow: hidden;
 
   transition: all 0.2s;
@@ -27,6 +35,24 @@ export const Container = styled.div`
   &:hover {
     background: #00a2d4;
   }
+`;
+export const TopTextWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const TopText = styled.p`
+  background-color: #00a2d4;
+  color: white;
+  font-size: 24px;
+  padding: 5px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  position: absolute;
+  z-index: 999;
+  left: auto;
+  right: auto;
 `;
 
 export const Corner = styled.div`
@@ -70,7 +96,7 @@ export const Description = styled.div`
 export const Title = styled.h4`
   font-family: "BR Firma";
   font-weight: 600;
-  font-size: clamp(14px, 1.4vw, 16px);
+  font-size: clamp(14px, 1.4vw, 18px);
   line-height: 24px;
   color: #242627;
 
@@ -117,7 +143,7 @@ export const Price = styled.p`
 export const Bullet = styled.div`
   display: flex;
   gap: 16px;
-  align-items: center;
+  flex-flow: ${(props) => (props.flow ? props.flow : "")};
 
   ${Container}:hover & {
     svg {
@@ -139,4 +165,16 @@ export const Content = styled.p`
   ${Container}:hover & {
     color: #ffffff;
   }
+`;
+
+//new entity card
+export const EntityCardContainer = styled.div`
+  display: flex;
+`;
+
+export const FeatureList = styled.ul`
+  border: solid red;
+`;
+export const FeatureListItem = styled.li`
+  display: flex;
 `;

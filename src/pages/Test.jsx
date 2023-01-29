@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BankAccountTable from "components/Tables/BankAccountTable";
 import BankAccountContainer from "containers/BankAccount";
 import { ResourcesIcon } from "asset/Icons";
 import { BiRightArrowAlt } from "react-icons/bi";
 import { ScrollBox } from "containers";
 import { RewardCard } from "components/cards";
+import NewEntityCard from "components/cards/EntityCard/NewEntityCard";
+import { EntityCardsWrapper } from "./Launch/styled";
+import { useGetAllEntitiesQuery } from "services/launchService";
 
 const Test = () => {
+  let iso = "NGA";
+  const [entities, setEntities] = useState([]);
+  const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
+    iso
+    // countryISO ? countryISO : countryISOView
+  );
+
+  useEffect(() => {
+    setEntities(data);
+
+    // if (error?.status === "FETCH_ERROR") {
+    //   toast.error("Please check your internet connection");
+    // }
+  }, [data]);
+
   return (
     <div style={{ display: "flex", flexFlow: "column", gap: "40px" }}>
       <BankAccountContainer
@@ -16,6 +34,26 @@ const Test = () => {
         btnLeftIcon={ResourcesIcon}
       >
         <BankAccountTable />
+
+        <EntityCardsWrapper>
+          {entities &&
+            [...entities]
+              ?.sort((a, b) => a?.entityFee - b?.entityFee)
+              .map((item, index) => (
+                <NewEntityCard
+                  key={index}
+                  name={item?.entityName}
+                  price={item?.entityFee}
+                  features={item?.entityFeatures}
+                  timeline="3 days"
+                  requirement="dfgdfg"
+                  shares="dfgdf"
+                  type={item?.entityType}
+                  currency={item?.entityCurrency}
+                  description={item?.entityDescription}
+                />
+              ))}
+        </EntityCardsWrapper>
       </BankAccountContainer>
       <BankAccountContainer
         title="Banks"
