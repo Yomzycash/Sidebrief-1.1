@@ -127,7 +127,7 @@ const BusinessRegistration = (props) => {
               title="Manage"
               body="Make changes to already registered companies"
               // notready="false"
-              buttonText="Manage product"
+              buttonText="Manage Business"
               action={handleManage}
             />
           </DashboardSection>

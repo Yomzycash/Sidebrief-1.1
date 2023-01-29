@@ -240,8 +240,7 @@ const EntitySelect = () => {
         >
           {selectedCountry && (
             <EntityTitle>
-              {selectedCountry}:
-              <span> Please select a business type to get started</span>{" "}
+              {selectedCountry}:<span> Select a Plan</span>{" "}
             </EntityTitle>
           )}
           {isLoading && (
