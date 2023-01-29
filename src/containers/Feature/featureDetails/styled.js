@@ -1,91 +1,7 @@
-import React, { useState } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { HiArrowNarrowLeft } from "react-icons/hi";
-import Button from "components/button";
-import DashboardSection from "layout/DashboardSection";
-import { IoArrowForward } from "react-icons/io5";
-import CommonButton from "components/button/commonButton";
+import { Link } from "react-router-dom";
 
-const FeatureDetails = ({
-  backText,
-  backLink,
-  image,
-  topText,
-  title,
-  subText,
-  detailText,
-  btnText,
-  pageTitle,
-  btnIcon,
-  btnAction,
-  title2,
-  subText2,
-  viewAllLink,
-  children,
-}) => {
-  const [open, setOpen] = useState(false);
-  const [selectedReward, setSelectedReward] = useState({});
-
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
-
-  return (
-    <StaffContainer sidebarWidth={sidebarWidth}>
-      <NavigationWrapper>
-        <Back to={backLink}>
-          <HiArrowNarrowLeft />
-          <p>{backText}</p>
-        </Back>
-        <span>{pageTitle}</span>
-      </NavigationWrapper>
-      <RewardShortDetails>
-        <ImageWrapper>
-          <Image src={image} alt="" />
-          <TextWrapper>
-            {topText && (
-              <Badge>
-                <BadgeText>{topText}</BadgeText>
-              </Badge>
-            )}
-            <h4>{title}</h4>
-            <RewardShortText>{subText}</RewardShortText>
-          </TextWrapper>
-        </ImageWrapper>
-        <ButtonWrapper>
-          <CommonButton text={btnText} RightIcon={btnIcon} action={btnAction} />
-        </ButtonWrapper>
-      </RewardShortDetails>
-      <RewardDescription>
-        <TextDes>
-          <div>{detailText}</div>
-        </TextDes>
-      </RewardDescription>
-      <MobileButtonWrapper>
-        <CommonButton text={btnText} RightIcon={btnIcon} action={btnAction} />
-      </MobileButtonWrapper>
-      <RewardsScroll>
-        <DashboardSection
-          title={title2}
-          body={subText2}
-          carousel
-          link={{
-            text: "View all",
-            to: { viewAllLink },
-            image: <IoArrowForward />,
-          }}
-        >
-          {children}
-        </DashboardSection>
-      </RewardsScroll>
-    </StaffContainer>
-  );
-};
-
-export default FeatureDetails;
-
-export const StaffContainer = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
@@ -137,7 +53,7 @@ export const NavigationWrapper = styled.div`
   }
 `;
 
-export const RewardShortDetails = styled.div`
+export const ShortDetails = styled.div`
   width: inherit;
   padding: 40px clamp(24px, 2.5vw, 40px);
   display: flex;
@@ -207,13 +123,13 @@ export const MobileButtonWrapper = styled.div`
   }
 `;
 
-export const RewardShortText = styled.p`
+export const ShortText = styled.p`
   font-size: 16px;
   color: #4e5152;
   line-height: 24px;
 `;
 
-export const RewardDescription = styled.div`
+export const Description = styled.div`
   margin-top: 40px;
   padding-inline: 40px;
 `;
@@ -243,16 +159,7 @@ export const VisitLink = styled(Link)`
   margin-top: 32px;
 `;
 
-export const rewardModalStyle = {
-  padding: 0,
-  backgroundColor: "white",
-  width: "max-width",
-  borderRadius: "16px",
-  boxShadow:
-    "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
-};
-
-export const RewardsScroll = styled.div`
+export const Scroll = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
