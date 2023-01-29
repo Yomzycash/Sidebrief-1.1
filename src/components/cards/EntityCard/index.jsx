@@ -10,7 +10,11 @@ import {
   Price,
   Bullet,
   Content,
+  TopText,
+  Wrap,
+  TopTextWrapper,
   Description,
+  FeatureListItem,
 } from "./styles";
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
@@ -24,40 +28,70 @@ export const EntityCard = ({
   requirement,
   shares,
   type,
+  country,
+  features,
   currency,
   description,
 }) => {
   return (
-    <Container onClick={action}>
-      <Corner>
-        <CornerPetal />
-      </Corner>
-      <Top>
-        <Title>{name}</Title>
-        <TimeLine>{timeline}</TimeLine>
-      </Top>
-      <Description>{description}</Description>
-      <Mid>
-        <Price>
-          {numeral(price).format("0,0")} {currency}
-        </Price>
-      </Mid>
+    <Wrap>
+      {name === "Pro" && (
+        <TopTextWrapper>
+          <TopText>Popular</TopText>
+        </TopTextWrapper>
+      )}
 
-      <Bottom>
-        {/* <Bullet>
+      <Container
+        onClick={action}
+        gap={country === "NGA" && "24px"}
+        content={country === "NGA" ? "" : "space-between"}
+        height={country === "NGA" && "clamp(400px, 30vw, 450px)"}
+      >
+        <Corner>
+          <CornerPetal />
+        </Corner>
+
+        <Top>
+          <Title>{name}</Title>
+          <TimeLine>{timeline}</TimeLine>
+        </Top>
+        <Description>{description}</Description>
+        <Mid>
+          <Price>
+            {name === "Basic" ? "FREE" : numeral(price).format("0,0")}
+            {name === "Basic" ? "" : currency}
+          </Price>
+        </Mid>
+        <Bottom>
+          {/* <Bullet>
           <Mark /> <Content>{company}</Content>
         </Bullet> */}
-        <Bullet>
-          <Mark /> <Content>{type} Company</Content>
-        </Bullet>
-        <Bullet>
-          <Mark /> <Content>{shares} shares</Content>
-        </Bullet>
-        <Bullet>
-          <Mark /> <Content>{requirement}</Content>
-        </Bullet>
-      </Bottom>
-    </Container>
+          {country === "NGA" ? (
+            <Bullet flow="column">
+              <>
+                {features?.map((item) => (
+                  <FeatureListItem>
+                    <Mark /> <Content>{item}</Content>
+                  </FeatureListItem>
+                ))}
+              </>
+            </Bullet>
+          ) : (
+            <>
+              <Bullet>
+                <Mark /> <Content>{type} Company</Content>
+              </Bullet>
+              <Bullet>
+                <Mark /> <Content>{shares} shares</Content>
+              </Bullet>
+              <Bullet>
+                <Mark /> <Content>{requirement}</Content>
+              </Bullet>
+            </>
+          )}
+        </Bottom>
+      </Container>
+    </Wrap>
   );
 };
 
