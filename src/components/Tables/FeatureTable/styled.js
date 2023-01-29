@@ -4,6 +4,7 @@ export const TableContainer = styled.table`
   width: 100%;
   color: #242627;
   border-spacing: 0;
+  background: #fafafa;
 
   tr {
     width: 100%;
@@ -34,6 +35,9 @@ export const TableBody = styled.tbody`
   tr {
     :nth-of-type(even) {
       background: #fafafa;
+    }
+    :nth-of-type(odd) {
+      background: #fff;
     }
   }
 

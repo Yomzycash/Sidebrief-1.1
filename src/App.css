@@ -29,7 +29,8 @@ p {
   margin: 0;
 }
 
-.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper,
+.css-uhb5lp {
   width: 100% !important;
   max-width: 96vw !important;
   align-items: center;

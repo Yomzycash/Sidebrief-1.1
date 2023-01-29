@@ -30,6 +30,7 @@ import {
   useUpdateLaunchMutation,
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
+
 } from 'services/launchService'
 import { Puff } from 'react-loading-icons'
 import toast from 'react-hot-toast'
@@ -37,6 +38,8 @@ import { Dialog, DialogContent } from '@mui/material'
 import AppFeedback from 'components/AppFeedback'
 import { checkIsString } from 'components/Indicators/status/actions'
 import { handleBusinessInfo } from './actions'
+import NewEntityCard from "components/cards/EntityCard/NewEntityCard";
+
 
 const EntitySelect = () => {
   const navigate = useNavigate()
@@ -211,6 +214,7 @@ const EntitySelect = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loading>
           )}
+
           <EntityCardsWrapper>
             {entities &&
               [...entities]
@@ -225,6 +229,8 @@ const EntitySelect = () => {
                     description={item?.entityDescription}
                     type={item?.entityType}
                     timeline={item?.entityTimeline}
+                    country={countryISO === "NGA" ? "NGA" : ""}
+                    features={countryISO === "NGA" && item?.entityFeatures}
                     requirement={item?.entityRequirements}
                     price={parseInt(item?.entityFee).toLocaleString('en-US')}
                     currency={item?.entityCurrency}
