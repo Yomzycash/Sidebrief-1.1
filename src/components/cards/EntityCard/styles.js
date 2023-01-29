@@ -140,3 +140,8 @@ export const Content = styled.p`
     color: #ffffff;
   }
 `;
+
+//new entity card
+export const EntityCardContainer = styled.div`
+  display: flex;
+`;

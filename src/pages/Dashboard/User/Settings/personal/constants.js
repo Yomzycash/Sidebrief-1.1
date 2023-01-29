@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import * as yup from "yup";
 
 const userInfo = localStorage.getItem("userInfo");
+const userEmail = localStorage.getItem("userEmail");
 let parsedUser = JSON.parse(userInfo);
 let firstName = parsedUser.first_name;
 let lastName = parsedUser.last_name;
@@ -20,7 +21,7 @@ export const data = [
   {
     name: "email_address",
     label: "Email Address",
-    value: "akinyemiadebisi0001@gmail.com",
+    value: userEmail,
   },
   {
     name: "phone",
