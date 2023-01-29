@@ -19,6 +19,7 @@ const TagInputWithSearch = ({
   noSuggestionText,
   fetchingText,
   fetchFailedText,
+  disabled
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -206,6 +207,7 @@ const TagInputWithSearch = ({
             onBlur={() => setShowSuggestions(false)}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            disabled ={disabled}
           />
           <div>
             <IoIosArrowDown
