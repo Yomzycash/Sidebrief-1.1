@@ -1,48 +1,6 @@
-import { searchIcon } from "asset/images";
-import CommonButton from "components/button/commonButton";
-import React from "react";
 import styled from "styled-components";
 
-const BankAccountContainer = ({
-  children,
-  title,
-  subText,
-  btnText,
-  btnLeftIcon,
-  btnRightIcon,
-  btnAction,
-  searchPlaceholder,
-}) => {
-  return (
-    <BankContainer>
-      <Top>
-        <TopLeft>
-          <p>{title}</p>
-          <p>{subText}</p>
-        </TopLeft>
-        <TopRight>
-          {searchPlaceholder && (
-            <Input>
-              <img src={searchIcon} alt="" />
-              <input type="text" placeholder={searchPlaceholder} />
-            </Input>
-          )}
-          <CommonButton
-            LeftIcon={btnLeftIcon}
-            RightIcon={btnRightIcon}
-            text={btnText}
-            action={btnAction}
-          />
-        </TopRight>
-      </Top>
-      <Content>{children}</Content>
-    </BankContainer>
-  );
-};
-
-export default BankAccountContainer;
-
-export const BankContainer = styled.div`
+export const SectionContainer = styled.div`
   border: 1px solid #edf1f7;
   border-radius: 16px;
 `;

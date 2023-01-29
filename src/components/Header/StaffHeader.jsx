@@ -1,9 +1,6 @@
 import { SummaryCard } from "components/cards";
-import StaffEntityModal from "components/modal/StaffEntityModal";
 import Search from "components/navbar/Search";
 import React from "react";
-import { useState } from "react";
-import { useAddEntityMutation } from "services/staffService";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 
@@ -11,14 +8,9 @@ const StaffHeader = ({
   title = "Countries",
   shown = "12",
   total = "12",
-  handleEntityAdd,
   Description = "Add Country",
-  loading,
-  setOpen,
   handleButton,
 }) => {
-  // const [open, setOpen] = useState(false);
-
   return (
     <Container>
       <Header>
@@ -45,12 +37,6 @@ const StaffHeader = ({
                 {Description}
               </button>
             </ButtonWrapper>
-            {/* <StaffEntityModal
-              open={open}
-              setOpen={setOpen}
-              submitAction={handleEntityAdd}
-              loading={loading}
-            /> */}
           </BottomContent>
         </MainHeader>
       </Header>
@@ -58,6 +44,7 @@ const StaffHeader = ({
   );
 };
 export default StaffHeader;
+
 const Container = styled.div`
   display: flex;
   flex-flow: column;
@@ -77,7 +64,6 @@ const MainHeader = styled.div`
   width: 100%;
   padding: 40px 0px;
   gap: 24px;
-  /* height: clamp(80px, 10vw, 150px); */
   border: 1px solid #edf1f7;
   border-top: none;
   transition: 0.2s all ease;
@@ -87,7 +73,6 @@ const MainHeader = styled.div`
 
 const TopContent = styled.div`
   display: flex;
-  /* gap: 48px; */
   align-items: center;
   padding-inline: 24px;
   flex: 1;
