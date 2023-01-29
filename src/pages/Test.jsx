@@ -25,8 +25,6 @@ const Test = () => {
     // }
   }, [data]);
 
-  console.log(entities);
-
   return (
     <div style={{ display: "flex", flexFlow: "column", gap: "40px" }}>
       <BankAccountContainer
@@ -36,6 +34,26 @@ const Test = () => {
         btnLeftIcon={ResourcesIcon}
       >
         <BankAccountTable />
+
+        <EntityCardsWrapper>
+          {entities &&
+            [...entities]
+              ?.sort((a, b) => a?.entityFee - b?.entityFee)
+              .map((item, index) => (
+                <NewEntityCard
+                  key={index}
+                  name={item?.entityName}
+                  price={item?.entityFee}
+                  features={item?.entityFeatures}
+                  timeline="3 days"
+                  requirement="dfgdfg"
+                  shares="dfgdf"
+                  type={item?.entityType}
+                  currency={item?.entityCurrency}
+                  description={item?.entityDescription}
+                />
+              ))}
+        </EntityCardsWrapper>
       </BankAccountContainer>
       <BankAccountContainer
         title="Banks"
@@ -57,21 +75,6 @@ const Test = () => {
             ))}
         </ScrollBox>
       </BankAccountContainer>
-
-      <EntityCardsWrapper>
-        {entities?.map((entity) => (
-          <NewEntityCard
-            name={entity?.entityName}
-            price={entity?.entityFee}
-            timeline="3 days"
-            requirement="dfgdfg"
-            shares="dfgdf"
-            type="dfg"
-            currency="bgn"
-            description="gfdegdfgdfgdfg"
-          />
-        ))}
-      </EntityCardsWrapper>
     </div>
   );
 };
