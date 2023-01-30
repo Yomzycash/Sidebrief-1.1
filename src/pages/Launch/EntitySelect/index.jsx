@@ -37,6 +37,7 @@ import { Dialog, DialogContent } from "@mui/material";
 import AppFeedback from "components/AppFeedback";
 import { checkIsString } from "components/Indicators/status/actions";
 import { handleBusinessInfo } from "./actions";
+import NewEntityCard from "components/cards/EntityCard/NewEntityCard";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
