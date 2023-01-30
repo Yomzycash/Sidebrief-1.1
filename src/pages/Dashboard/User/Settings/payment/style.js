@@ -123,12 +123,3 @@ export const DownloadTag = styled.a`
 	color: #00a2d4;
 	text-decoration: none;
 `;
-
-export const ThreeDotContainer = styled.button`
-	border-radius: 2px;
-	background: transparent;
-	border: none;
-	width: 24px;
-	height: 24px;
-	cursor: pointer;
-`;

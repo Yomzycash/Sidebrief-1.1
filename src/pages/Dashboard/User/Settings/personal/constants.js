@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import * as yup from "yup";
 
 const userInfo = localStorage.getItem("userInfo");
