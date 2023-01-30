@@ -229,8 +229,8 @@ const AppRouter = () => {
 							index
 							element={
 								<Protected isVerified={isLoggedIn}>
-									{staffEmail ? <StaffDashboard /> : <Home />}
-									{/* <Home /> */}
+									{/* {staffEmail ? <StaffDashboard /> : <BusinessRegistration />} */}
+									<Home />
 								</Protected>
 							}
 						/>
@@ -412,7 +412,7 @@ const AppRouter = () => {
 							}
 						>
 							<Route index element={<StaffDashboard />} />
-							<Route path="home" element={<StaffDashboard />} />
+							{/* <Route path="home" element={<StaffDashboard />} /> */}
 							<Route path="businesses" element={<Outlet />}>
 								<Route element={<StaffBusinesses />}>
 									<Route

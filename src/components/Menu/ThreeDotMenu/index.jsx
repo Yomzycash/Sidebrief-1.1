@@ -20,8 +20,8 @@ export const ThreeDotMenu = ({ contextContent, classname }) => {
 	};
 
 	return (
-		<Container>
-			<ThreeDotContainer onClick={toggleContext} className={classname}>
+		<Container className={classname}>
+			<ThreeDotContainer onClick={toggleContext}>
 				<ThreeDot />
 			</ThreeDotContainer>
 			{showContext ? (
