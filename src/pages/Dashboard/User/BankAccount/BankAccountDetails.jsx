@@ -1,5 +1,5 @@
 import PetalsCard from "components/cards/RewardCard/PetalsCard";
-import FeatureDetails from "components/featureDetails";
+import FeatureDetails from "containers/Feature/featureDetails";
 import { ScrollBox } from "containers";
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";

@@ -31,7 +31,7 @@ const BusinessInfoCard = () => {
   const [viewBusinessObjects] = useViewBusinessObjectivesMutation();
   const handleViewBusinessNames = async () => {
     let responseData = await viewBusinessNames(launchResponse);
-    // console.log(responseData)
+ console.log(responseData)
     let responseArr = Object.values(responseData.data.businessNames);
     setBusinessArray(responseArr);
   };
@@ -49,6 +49,7 @@ const BusinessInfoCard = () => {
     setObjectiveArray(filteredResponseArr);
   };
   useEffect(() => {
+  
     handleViewBusinessNames();
     handleViewBusinessObject();
   }, []);
@@ -79,11 +80,11 @@ const BusinessInfoCard = () => {
             <Heading>Business Objectives</Heading>
             <TagContainer>
               {objectiveArray.map((objective, index) => (
-                <>
-                  <TagWrapper>
-                    <Tag key={index}> {objective}</Tag>
+                
+                  <TagWrapper key={index}>
+                    <Tag > {objective}</Tag>
                   </TagWrapper>
-                </>
+              
               ))}
             </TagContainer>
           </SubContainer>
