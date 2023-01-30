@@ -22,6 +22,7 @@ import { data, updateDataSchema } from "./constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputWithLabel } from "components/input";
+import { useSelector } from "react-redux";
 
 const Personal = () => {
 	const [editable, setEditable] = useState(false);
@@ -40,6 +41,8 @@ const Personal = () => {
 		setEditable(false);
 	};
 
+	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+
 	// this useEffect runs once on render, nothing should be in the dependency array
 	useEffect(() => {
 		data.forEach((el) => {
@@ -55,7 +58,9 @@ const Personal = () => {
 					{/* SVG should be changed when there is an image available */}
 					<User />
 					<NameAndPost>
-						<Name>Akinyemi Adebisi</Name>
+						<Name>
+							{`${userInfo.first_name} ${userInfo.last_name}`}
+						</Name>
 						<Position>Compliance officer</Position>
 					</NameAndPost>
 				</UserContainer>
