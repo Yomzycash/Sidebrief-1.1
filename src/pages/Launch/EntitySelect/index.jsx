@@ -36,7 +36,7 @@ import toast from "react-hot-toast";
 import { Dialog, DialogContent } from "@mui/material";
 import AppFeedback from "components/AppFeedback";
 import { checkIsString } from "components/Indicators/status/actions";
-import NewEntityCard from "components/cards/EntityCard/NewEntityCard";
+import { handleBusinessInfo } from "./actions";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
@@ -121,6 +121,7 @@ const EntitySelect = () => {
     if (generatedLaunchCode) {
       // An array is returned, if update response
       store.dispatch(setLaunchResponse(launchResponse.data[0])); // !important DO NOT DELETE
+      console.log(launchResponse);
       localStorage.setItem(
         "launchInfo",
         JSON.stringify(launchResponse.data[0])
@@ -152,7 +153,23 @@ const EntitySelect = () => {
       if (businessNames.length > 0 && selectedObjectives.length > 0)
         navigate("/launch/payment");
 
-      handleBusinessInfo(requiredLaunchInfo, launchCode);
+      const info = {
+        navigate: navigate,
+        businessNames: businessNames,
+        selectedObjectives: selectedObjectives,
+        viewBusinessNames: viewBusinessNames,
+        viewBusinessObjectives: viewBusinessObjectives,
+        updateBusinessNames: updateBusinessNames,
+        addBusinessNames: addBusinessNames,
+        updateBusinessObjectives: updateBusinessObjectives,
+        addBusinessObjectives: addBusinessObjectives,
+      };
+      let businessResponse = handleBusinessInfo(
+        requiredLaunchInfo,
+        launchCode,
+        info
+      );
+      if (businessResponse) navigate("/launch/payment");
     } else {
       if (launchResponse?.error?.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
@@ -163,56 +180,6 @@ const EntitySelect = () => {
   };
 
   //
-  // Send business information to the backend
-  const handleBusinessInfo = async (requiredLaunchInfo, launchCode) => {
-    // Check if business names or objectives exists
-    let existingNames = await viewBusinessNames(requiredLaunchInfo);
-    let existingObjectives = await viewBusinessObjectives(requiredLaunchInfo);
-
-    let namesExists = existingNames?.data?.businessNames;
-    let objectivesExists = existingObjectives?.data?.businessObjects;
-
-    // Navigate if business names and objectives exist
-    if (namesExists && objectivesExists) navigate("/launch/payment");
-
-    const requiredBusinessNamesData = {
-      launchCode: launchCode,
-      businessNames: {
-        businessName1: businessNames[0],
-        businessName2: businessNames[1],
-        businessName3: businessNames[2],
-        businessName4: businessNames[3],
-      },
-    };
-
-    const requiredBusinessObjectives = {
-      launchCode: launchCode,
-      businessObjects: {
-        businessObject1: selectedObjectives[0],
-        businessObject2: selectedObjectives[1] || "null",
-        businessObject3: selectedObjectives[2] || "null",
-        businessObject4: selectedObjectives[3] || "null",
-      },
-    };
-
-    // Update if business names exist, add if otherwise
-    const businessNamesResponse = namesExists
-      ? await updateBusinessNames(requiredBusinessNamesData)
-      : await addBusinessNames(requiredBusinessNamesData);
-
-    // Update if business objectives exist, add if otherwise
-    const businessObjectivesResponse = objectivesExists
-      ? await updateBusinessObjectives(requiredBusinessObjectives)
-      : await addBusinessObjectives(requiredBusinessObjectives);
-
-    let error = businessNamesResponse?.error;
-    let error2 = businessObjectivesResponse?.error;
-
-    if (error) {
-      toast.error(error.data.message);
-      toast.error(error2.data.message);
-    }
-  };
 
   // Navigate to the previous page
   const handlePrev = () => {
@@ -241,7 +208,8 @@ const EntitySelect = () => {
         >
           {selectedCountry && (
             <EntityTitle>
-              {selectedCountry}:<span> Select a Plan</span>{" "}
+              {selectedCountry}:
+              <span> Please select a business type to get started</span>{" "}
             </EntityTitle>
           )}
           {isLoading && (
