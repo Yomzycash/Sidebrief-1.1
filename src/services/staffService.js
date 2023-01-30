@@ -264,6 +264,39 @@ export const staffApi = createApi({
     getAllBanks: builder.query({
       query: () => "/banks",
     }),
+
+    
+    // get all notifications
+    getAllNotifications: builder.query({
+      query: () => "/notifications/all"
+    }),
+
+    // Add a notification
+    addNotification: builder.mutation({
+      query: (data) => ({
+        url: "/notifications/create",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    // delete a  notification
+    deleteNotification: builder.mutation({
+    query: (data) => ({
+      url: "/notifications/delete/${notificationId}",
+      method: "DELETE",
+      body: data,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }),
+    invalidatesTags: ["User"],
+    }),
+
   }),
 });
 
@@ -301,4 +334,8 @@ export const {
   useDeleteBankMutation,
   useGetSingleBankQuery,
   useGetAllBanksQuery,
+  
+  useAddNotificationMutation,
+  useGetAllNotificationsQuery,
+  useDeleteNotificationMutation
 } = staffApi;

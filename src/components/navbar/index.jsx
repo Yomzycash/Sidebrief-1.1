@@ -14,6 +14,8 @@ import {
   Message,
   NoMessage,
   NotificationBadge,
+  MessageSubject,
+  MessageBody,
 } from "./styled";
 import LogoNav from "./LogoNav";
 
@@ -29,6 +31,11 @@ import { store } from "redux/Store";
 import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
 import Profile from "components/Profile";
+import { useGetAllNotificationsQuery } from "services/staffService";
+
+import { formatDistance } from 'date-fns'
+
+import { sortTableData } from "utils/staffHelper";
 
 const Navbar = ({
   dashboard,
@@ -38,6 +45,69 @@ const Navbar = ({
   style,
   hideSearch,
 }) => {
+
+  const { data }  = useGetAllNotificationsQuery();
+
+  console.log("notifications", data);
+   
+  const [ notificationMessages, setNotificationMessages ] = useState([])
+  //const notificationTime = moment(notificationMessages.createdAt).fromNow(true);
+  //console.log(notificationTime)
+
+  // let sortDate = [...data];
+
+  // let sortedDate = sortDate?.sort(sortTableData);
+  // console.log("sorted date", sortedDate)
+
+  // const notificationTime = formatDistance(notificationMessages.createdAt, new Date() )
+  // console.log("new time", notificationTime)
+
+  // function timeSince(date) {
+
+  //   var seconds = Math.floor((new Date() - date) / 1000);
+  
+  //   var interval = seconds / 31536000;
+  
+  //   if (interval > 1) {
+  //     return Math.floor(interval) + " years";
+  //   }
+  //   interval = seconds / 2592000;
+  //   if (interval > 1) {
+  //     return Math.floor(interval) + " months";
+  //   }
+  //   interval = seconds / 86400;
+  //   if (interval > 1) {
+  //     return Math.floor(interval) + " days";
+  //   }
+  //   interval = seconds / 3600;
+  //   if (interval > 1) {
+  //     return Math.floor(interval) + " hours";
+  //   }
+  //   interval = seconds / 60;
+  //   if (interval > 1) {
+  //     return Math.floor(interval) + " minutes";
+  //   }
+  //   return Math.floor(seconds) + " seconds";
+  // }
+  // var aDay = 24*60*60*1000;
+  // console.log(timeSince(new Date(Date.now()-aDay)));
+  // console.log(timeSince(new Date(Date.now()-aDay*2)));
+
+
+  function convertDate(){
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const merg = new Date().toLocaleDateString("en-US", options);
+    const times = new Date().toLocaleTimeString("en-gb", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    })
+    .toUpperCase();
+
+    return merg + " " + times ;
+  }
+  var datetime = convertDate(notificationMessages.createdAt)
+  
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -55,19 +125,25 @@ const Navbar = ({
   let localUserInfo = localStorage.getItem("userInfo");
   let newUserObject = JSON.parse(localUserInfo);
 
-  useMemo(() => {
-    let status = newUserObject?.verified;
-    if (status === false) {
-      setMsgObj((prev) => [
-        ...prev,
-        {
-          messageText: "Kindly check your email for the verification link",
+  useEffect(() => {
+    setNotificationMessages(data);
+    console.log("my length", data?.length)
+  }, [data])
 
-          read: false,
-        },
-      ]);
-    }
-  }, []);
+
+  // useMemo(() => {
+  //   let status = newUserObject?.verified;
+  //   if (status === false) {
+  //     setMsgObj((prev) => [
+  //       ...prev,
+  //       {
+  //         messageText: "Kindly check your email for the verification link",
+
+  //         read: false,
+  //       },
+  //     ]);
+  //   }
+  // }, []);
 
   // console.log(msgObj);
   const handleProfile = () => {
@@ -79,6 +155,8 @@ const Navbar = ({
     updatedMsg[indexToUpdate].read = !item.read;
     setMsgObj(updatedMsg);
   };
+
+
   let menuRef = useRef();
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -145,26 +223,33 @@ const Navbar = ({
             <p>Mark all as read</p>
           </NotificationHeader>
 
-          {msgObj.length > 0 ? (
+          {notificationMessages?.length > 0 ? (
             <NotificationMessages>
-              {msgObj.map((item, index) => (
+              {notificationMessages?.map((item, index) => (
                 <Message
                   key={index}
-                  onClick={(e) => handleCheck(e, item.messageText)}
                 >
-                  <h6>
-                    {item.messageText}
-                    {/* <span>{item.messageText}</span> */}
-                  </h6>
-                  <p>12:03pm</p>
+                  <MessageSubject>
+                    {item.messageSubject}
+                    <span>
+                      {datetime}
+                      
+                    </span>
+
+                    {/* <span>
+                      {notificationTime}
+                    </span> */}
+                  </MessageSubject>
+                  {/* <br/> */}
+
+                  <MessageBody>{item.messageBody}</MessageBody>
                 </Message>
               ))}
             </NotificationMessages>
           ) : (
             <NoMessage>
               <p>
-                You do not have any notifications at the moment. Kindly check
-                back later
+                {"The length is" + "" + notificationMessages?.length}
               </p>
             </NoMessage>
           )}
