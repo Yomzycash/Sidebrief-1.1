@@ -9,7 +9,7 @@ export const ResourcesIcon = ({
   size,
 }) => {
   return (
-    <div>
+    <>
       {filled ? (
         <svg
           width={size || width || "20"}
@@ -77,6 +77,6 @@ export const ResourcesIcon = ({
           />
         </svg>
       )}
-    </div>
+    </>
   );
 };

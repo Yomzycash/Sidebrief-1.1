@@ -100,7 +100,7 @@ const LayoutRight = styled.div`
   }
 `;
 
-const LeftDetails = styled.p`
+const LeftDetails = styled.div`
   display: flex;
   flex-flow: column nowrap;
   gap: 48px;

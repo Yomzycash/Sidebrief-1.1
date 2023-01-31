@@ -63,8 +63,13 @@ const Business = () => {
   let draftTotal = drafts?.currentData?.length;
 
   const handleLaunch = () => {
+    // store.dispatch(setGeneratedLaunchCode(""));
+    // window.open("/launch", "_blank");
     store.dispatch(setGeneratedLaunchCode(""));
-    navigate("/launch");
+    store.dispatch(setLaunchResponse({}));
+    localStorage.removeItem("launchInfo");
+    localStorage.removeItem("countryISO");
+    window.open("/launch", "_blank");
   };
 
   // This sets the shown of all rewards

@@ -2,7 +2,7 @@ import React from "react";
 
 export const EntityIcon = ({ filled, hover }) => {
   return (
-    <div>
+    <>
       <svg
         width="21"
         height="21"
@@ -41,6 +41,6 @@ export const EntityIcon = ({ filled, hover }) => {
           />
         </g>
       </svg>
-    </div>
+    </>
   );
 };
