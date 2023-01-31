@@ -1,29 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
-
-const ChatCard = ({ image, name, serviceName, time, message }) => {
-  return (
-    <Container>
-      <TopContainer>
-        <InnerContainer>
-          <ImageContainer>
-            <Image src={image} alt="" />
-          </ImageContainer>
-          <NameContainer>
-            <UpperText>{name}</UpperText>
-            <LowerText>{serviceName}</LowerText>
-          </NameContainer>
-        </InnerContainer>
-        <LowerText>{time}</LowerText>
-      </TopContainer>
-      <LowerWrapper>{message}</LowerWrapper>
-    </Container>
-  )
-}
-
-export default ChatCard
-
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -36,7 +12,7 @@ const Container = styled.div`
 
   background: #ffffff;
 `
-const TopContainer = styled.div`
+export const TopContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -47,7 +23,7 @@ const TopContainer = styled.div`
   width: 100%;
   height: 40px;
 `
-const InnerContainer = styled.div`
+export const InnerContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -57,16 +33,16 @@ const InnerContainer = styled.div`
   width: max-content;
   height: 100%;
 `
-const ImageContainer = styled.div`
+export const ImageContainer = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50px;
 `
-const Image = styled.img`
+export const Image = styled.img`
   width: 100%;
   height: 100%;
 `
-const NameContainer = styled.div`
+export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -76,7 +52,7 @@ const NameContainer = styled.div`
   width: fit-content;
   height: 100%;
 `
-const UpperText = styled.h3`
+export const UpperText = styled.h3`
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
@@ -85,7 +61,7 @@ const UpperText = styled.h3`
 
   color: #242627;
 `
-const LowerText = styled.h4`
+export const LowerText = styled.h4`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
@@ -94,7 +70,7 @@ const LowerText = styled.h4`
 
   color: #727474;
 `
-const LowerWrapper = styled.p`
+export const LowerWrapper = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
