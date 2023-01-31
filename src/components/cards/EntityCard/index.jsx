@@ -58,8 +58,8 @@ export const EntityCard = ({
         <Description>{description}</Description>
         <Mid>
           <Price>
-            {name === "Basic" ? "FREE" : numeral(price).format("0,0")}
-            {name === "Basic" ? "" : currency}
+            {country === "NGA" ? "" : numeral(price).format("0,0")}
+            {country === "NGA" ? "" : currency}
           </Price>
         </Mid>
         <Bottom>
