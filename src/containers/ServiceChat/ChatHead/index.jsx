@@ -7,6 +7,7 @@ import {
 	Buttons,
 	StatusButton,
 	UserImageContainer,
+	OnlineIndicator,
 } from "./style";
 import { User, Download } from "asset/svg";
 import { CommonButton } from "components/button";
@@ -33,9 +34,10 @@ export const ChatHead = () => {
 	return (
 		<Container>
 			<TextAndImage>
-				{/* Should be relaced with an image if image is available */}
 				<UserImageContainer>
+					{/* Should be relaced with an image if image is available */}
 					<User />
+					<OnlineIndicator />
 				</UserImageContainer>
 				<TextContainer>
 					<Name>Ayomide Olabisi</Name>

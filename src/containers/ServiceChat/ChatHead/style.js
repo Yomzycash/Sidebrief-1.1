@@ -18,11 +18,22 @@ export const TextAndImage = styled.div`
 export const UserImageContainer = styled.div`
 	height: 64px;
 	width: 64px;
+	position: relative;
 
 	svg {
 		height: 64px;
 		width: 64px;
 	}
+`;
+
+export const OnlineIndicator = styled.div`
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	top: 44px;
+	right: 0;
+	background: #00d448;
+	border-radius: 50%;
 `;
 
 export const TextContainer = styled.div`
