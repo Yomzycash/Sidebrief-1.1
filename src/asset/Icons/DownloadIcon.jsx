@@ -2,7 +2,7 @@ import React from "react";
 
 const DownloadIcon = ({ clicked, width, height, size }) => {
   return (
-    <div>
+    <>
       {clicked ? (
         <svg
           width={size || width || "20"}
@@ -94,7 +94,7 @@ const DownloadIcon = ({ clicked, width, height, size }) => {
           </g>
         </svg>
       )}
-    </div>
+    </>
   );
 };
 
