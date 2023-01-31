@@ -18,3 +18,4 @@ export { ReactComponent as LaunchRocket } from "./launch-rocket-blue.svg";
 export { ReactComponent as ManageSpanner } from "./manage-spanner-blue.svg";
 export { ReactComponent as User } from "./userDefault.svg";
 export { ReactComponent as Download } from "./download.svg";
+export { ReactComponent as Send } from "./Send.svg";
