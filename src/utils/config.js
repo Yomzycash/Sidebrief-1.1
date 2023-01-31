@@ -31,6 +31,7 @@ import {
   CountryIcon,
 } from "asset/Icons";
 import ArrowDownIcon from "../asset/Icons/ArrowDownIcon.svg";
+import profile from "../asset/images/profile.svg";
 import ServicesIcon from "asset/Icons/ServicesIcon";
 
 export const userRegistrationSchema = yup.object().shape({
@@ -57,11 +58,7 @@ export const userRegistrationSchema = yup.object().shape({
   // 	.required("Password is a required field")
   // 	.matches(
   // 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,17})/,
-  // 	"Must contain alphanumeric symbols"
   // ),
-  // password: yup.string().min(7).max(10).required("Password is a required field"),
-
-  // gender: yup.string().required(),
   // date: yup
   //   .string()
   //   .matches(
@@ -1550,4 +1547,78 @@ export const entityTypes = [
 export const entityRequirements = [
   { value: "Standard", label: "Standard" },
   { value: "Non-Standard", label: "Non-Standard" },
+];
+export const chatArray = [
+  {
+    id: "1",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "2",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "3",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "4",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "5",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "6",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "7",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
+  {
+    id: "8",
+    image: profile,
+    name: "Ayomide Olabisi",
+    serviceName: "Service Name",
+    time: " 15min ago",
+    message:
+      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
+  },
 ];

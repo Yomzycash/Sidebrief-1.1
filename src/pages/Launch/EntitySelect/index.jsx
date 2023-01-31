@@ -122,7 +122,6 @@ const EntitySelect = () => {
     if (generatedLaunchCode) {
       // An array is returned, if update response
       store.dispatch(setLaunchResponse(launchResponse.data[0])); // !important DO NOT DELETE
-      console.log(launchResponse);
       localStorage.setItem(
         "launchInfo",
         JSON.stringify(launchResponse.data[0])
