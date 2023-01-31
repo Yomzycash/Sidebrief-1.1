@@ -10,12 +10,22 @@ import {
   Frame,
   CornerMobile,
   CornerDesktop,
+  CategoryName,
 } from "./styles";
 // import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { TextWithArrow } from "components/texts";
 import { CornerPetal } from "asset/svg";
 
-const PetalsCard = ({ image, title, subText, showClaim, action }) => {
+const PetalsCard = ({
+  image,
+  title,
+  subText,
+  categoryName,
+  countryName,
+  showClaim,
+  action,
+  service,
+}) => {
   const [hover, setHover] = useState(false);
   const [buttonDisplayValue, setButtonDisplayValue] = useState("");
 
@@ -54,9 +64,14 @@ const PetalsCard = ({ image, title, subText, showClaim, action }) => {
         </CornerDesktop>
       </Corner>
       <Frame>
-        <ImageHolder>
-          <img src={image} alt={title} />
-        </ImageHolder>
+        {service ? (
+          <CategoryName>{categoryName}</CategoryName>
+        ) : (
+          <ImageHolder>
+            <img src={image} alt={title} />
+          </ImageHolder>
+        )}
+
         <TextContainer>
           <Title>{title}</Title>
           <Body>{subText}</Body>

@@ -10,14 +10,15 @@ import DownloadIcon from "asset/Icons/DownloadIcon";
 import { GladeLogo } from "asset/images";
 import { IoMdMore } from "react-icons/io";
 import { Chats } from "containers/ServiceChat";
+import AllServices from "./Dashboard/staffDashboard/Businesses/Services/AllServices";
 
 const Test = () => {
   // This exemplifies a data recieved from the backend
-  
 
   return (
     <div>
-      <Chats/>
+      {/* <Chats /> */}
+      <AllServices />
     </div>
   );
 };
