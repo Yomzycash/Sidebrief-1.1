@@ -6,7 +6,15 @@ export const Container = styled.div`
 `;
 
 export const Messages = styled.div`
+	padding-inline: 24px;
 	flex: 1;
+	overflow-y: auto;
+
+	display: flex;
+	flex-direction: column-reverse;
+	gap: 8px;
+
+	margin-bottom: 40px;
 `;
 
 export const TextInputForm = styled.form`

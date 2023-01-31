@@ -37,7 +37,7 @@ export const ThreeDotMenu = ({ contextContent, classname }) => {
 								}}
 								look={el.style}
 							>
-								<el.Icon />
+								{el.Icon && <el.Icon />}
 								{el.text}
 							</ContextButton>
 						))}
