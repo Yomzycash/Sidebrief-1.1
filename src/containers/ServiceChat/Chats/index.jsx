@@ -20,7 +20,7 @@ import { IoIosArrowDown } from 'react-icons/io'
 import { useState } from 'react'
 
 export const Chats = () => {
-  const options = ['filter', 'name', 'chat']
+  const options = ['name', 'chat']
 
   const [selected, setSelected] = useState('')
   const [isActive, setIsActive] = useState(false)
@@ -30,13 +30,13 @@ export const Chats = () => {
       <TopContainer>
         <Head>
           <Heading>Chats ({numeral(2002).format('0,0')})</Heading>
-         git  <DropDown>
+          <DropDown>
             <DropDownBtn
               onClick={(e) => {
                 setIsActive(!isActive)
               }}
             >
-              <TextContainer> {selected}</TextContainer>
+              <TextContainer> {selected ? selected : 'filter'}</TextContainer>
               <ArrowDown
                 onClick={() => setIsActive(!isActive)}
                 isActive={isActive}
