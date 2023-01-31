@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 import { NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -46,7 +46,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
               onClick={() => setCollapsed(!collapsed)}
               collapsed={collapsed}
             >
-              <IoIosArrowDown />
+              <IoIosArrowUp />
             </ArrowDown>
           )}
         </div>
@@ -69,6 +69,11 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   hover={iconHovered === item.id + each.id}
                 />
                 <span>{each.title}</span>
+                {each.path === "/staff-dashboard/businesses/services" && (
+                  <span>
+                    <Badge>2</Badge>
+                  </span>
+                )}
               </NavLink>
             ))}
           </List>
@@ -151,7 +156,22 @@ const List = styled.div`
     :hover {
       color: #00a2d4;
     }
+
+    > span {
+      :nth-of-type(2) {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+      }
+    }
   }
+`;
+
+const Badge = styled.div`
+  color: white;
+  background-color: #ed4e3a;
+  border-radius: 4px;
+  padding: 1px 6px;
 `;
 
 const ArrowDown = styled.div`
