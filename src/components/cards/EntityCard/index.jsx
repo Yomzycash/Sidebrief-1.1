@@ -69,8 +69,8 @@ export const EntityCard = ({
           {country === "NGA" ? (
             <Bullet flow="column">
               <>
-                {features?.map((item) => (
-                  <FeatureListItem>
+                {features?.map((item, index) => (
+                  <FeatureListItem key={index}>
                     <Mark /> <Content>{item}</Content>
                   </FeatureListItem>
                 ))}
