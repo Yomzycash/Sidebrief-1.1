@@ -2,7 +2,7 @@ import React from "react";
 
 export const HiringIcon = ({ filled, hover }) => {
   return (
-    <div>
+    <>
       {filled ? (
         <svg
           width="21"
@@ -55,6 +55,6 @@ export const HiringIcon = ({ filled, hover }) => {
           />
         </svg>
       )}
-    </div>
+    </>
   );
 };

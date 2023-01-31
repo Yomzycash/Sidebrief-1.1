@@ -2,7 +2,7 @@ import React from "react";
 
 const ServicesIcon = ({ filled, hover, color, width, height, size }) => {
   return (
-    <div>
+    <>
       {filled ? (
         <svg
           width={size || width || "15"}
@@ -106,7 +106,7 @@ const ServicesIcon = ({ filled, hover, color, width, height, size }) => {
           />
         </svg>
       )}
-    </div>
+    </>
   );
 };
 

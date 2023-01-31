@@ -247,6 +247,17 @@ export const StaffRewardSchema = yup.object().shape({
   image: yup.string().required("Enter link to reward image"),
 });
 
+export const ServicesSchema = yup.object().shape({
+  name: yup.string().required("Service name is a required field"),
+  description: yup.string().required("Service description is a required field"),
+  id: yup.string().required("Service ID is a required field"),
+  category: yup.string().required("Category is a required field"),
+  country: yup.string().required("Operational Country is a required field"),
+  currency: yup.string().required("Currency is a required field"),
+  price: yup.string().required("Service price is a required field"),
+  timeline: yup.string().required("Service timeline is a required field"),
+});
+
 export const sidebarLink = [
   {
     id: 1,
@@ -301,9 +312,9 @@ export const StaffSidebarLinks = [
     dropDownList: [
       {
         id: 1,
-        title: "Entities",
-        icon: EntityIcon,
-        path: "/staff-dashboard/businesses/entities",
+        title: "Registrations",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/registration",
       },
       {
         id: 2,

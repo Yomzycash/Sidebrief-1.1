@@ -9,6 +9,7 @@ import CopyIcon from "asset/Icons/CopyIcon";
 import DownloadIcon from "asset/Icons/DownloadIcon";
 import { GladeLogo } from "asset/images";
 import { IoMdMore } from "react-icons/io";
+import ServicesModal from "components/modal/ServicesModal";
 
 const Test = () => {
   // This exemplifies a data recieved from the backend
@@ -42,7 +43,7 @@ const Test = () => {
 
   return (
     <div style={{ display: "flex", flexFlow: "column", gap: "40px" }}>
-      <FeatureSection
+      {/* <FeatureSection
         title="Registered Businesses"
         subText="View and create bank accounts for all registered businesses"
         btnText="Create bank account"
@@ -69,7 +70,8 @@ const Test = () => {
               />
             ))}
         </ScrollBox>
-      </FeatureSection>
+      </FeatureSection> */}
+      <ServicesModal open={true} />
     </div>
   );
 };

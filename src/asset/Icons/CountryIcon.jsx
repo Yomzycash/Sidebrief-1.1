@@ -2,7 +2,7 @@ import React from "react";
 
 export const CountryIcon = ({ filled, hover }) => {
   return (
-    <div>
+    <>
       <svg
         width="21"
         height="21"
@@ -27,6 +27,6 @@ export const CountryIcon = ({ filled, hover }) => {
           fill={filled || hover ? "#00A2D4" : "#242627"}
         />
       </svg>
-    </div>
+    </>
   );
 };

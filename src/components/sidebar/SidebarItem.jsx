@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { IoIosArrowUp } from "react-icons/io";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, Link } from "react-router-dom";
 import { useState } from "react";
 
 const SidebarItem = ({ item, expanded, homePath }) => {
@@ -55,26 +55,29 @@ const SidebarItem = ({ item, expanded, homePath }) => {
         <ListContainer collapsed={collapsed} items={item.dropDownList.length}>
           <List>
             {item?.dropDownList?.map((each, index) => (
-              <NavLink
-                to={each.path}
-                key={index}
-                onMouseEnter={() => setIconHovered(item.id + each.id)}
-                onMouseLeave={() => setIconHovered(0)}
-                style={({ isActive }) =>
-                  isActive || homePathActive ? { color: "#00a2d4" } : {}
-                }
-              >
-                <each.icon
-                  filled={locationPath?.includes(each.path) || homePathActive}
-                  hover={iconHovered === item.id + each.id}
-                />
-                <span>{each.title}</span>
-                {each.path === "/staff-dashboard/businesses/services" && (
+              <ListItem key={index}>
+                <NavLink
+                  to={each.path}
+                  onMouseEnter={() => setIconHovered(item.id + each.id)}
+                  onMouseLeave={() => setIconHovered(0)}
+                  style={({ isActive }) =>
+                    isActive || homePathActive ? { color: "#00a2d4" } : {}
+                  }
+                >
                   <span>
-                    <Badge>2</Badge>
+                    <each.icon
+                      filled={
+                        locationPath?.includes(each.path) || homePathActive
+                      }
+                      hover={iconHovered === item.id + each.id}
+                    />
                   </span>
+                  <span>{each.title}</span>
+                </NavLink>
+                {each.path === "/staff-dashboard/businesses/services" && (
+                  <Badge to={each.path}>2</Badge>
                 )}
-              </NavLink>
+              </ListItem>
             ))}
           </List>
         </ListContainer>
@@ -130,6 +133,7 @@ export const ListContainer = styled.div`
   display: flex;
   flex-flow: column;
   align-items: center;
+  padding-left: 30px;
 
   height: ${({ collapsed, items }) =>
     collapsed ? 0 : `calc(${items * 35}px)`};
@@ -140,8 +144,20 @@ export const ListContainer = styled.div`
 const List = styled.div`
   display: flex;
   flex-flow: column;
+  width: 100%;
+`;
 
-  > a {
+export const ListItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  :nth-of-type(odd) {
+    margin-block: 8px;
+  }
+
+  > a:nth-of-type(1) {
     display: flex;
     flex-flow: row nowrap;
     gap: 8px;
@@ -150,28 +166,27 @@ const List = styled.div`
     text-decoration: none;
     line-height: 21px;
     color: #242627;
-    margin-top: 8px;
     transition: 0.3s all ease;
 
     :hover {
       color: #00a2d4;
     }
 
-    > span {
-      :nth-of-type(2) {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-      }
+    span:nth-of-type(1) {
+      display: flex;
+      justify-content: center;
+      width: 21px;
     }
   }
 `;
 
-const Badge = styled.div`
+const Badge = styled(Link)`
   color: white;
   background-color: #ed4e3a;
   border-radius: 4px;
   padding: 1px 6px;
+  text-decoration: none;
+  height: max-content;
 `;
 
 const ArrowDown = styled.div`
