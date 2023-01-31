@@ -6,8 +6,7 @@ export const staffApi = createApi({
     // the base query used by each endpoint to request data.
     baseUrl: process.env.REACT_APP_DEV_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOTJlZmIwYmE3ZTk4ZGI0YTg4ODYxNiIsImlhdCI6MTY3NTEyMTU4MCwiZXhwIjoxNjc2MzMxMTgwfQ.ma5_fBTcLy1xJ5J7l5gSj_ATHMY_OeLiuo3ONtyp0Dk";
+      const token = getState().UserDataReducer.userInfo.token;
       console.log("Token: ", token);
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
