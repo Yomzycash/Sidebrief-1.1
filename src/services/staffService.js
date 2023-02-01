@@ -7,7 +7,7 @@ export const staffApi = createApi({
     baseUrl: process.env.REACT_APP_DEV_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
-      console.log(token);
+      console.log("Token: ", token);
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
@@ -297,6 +297,31 @@ export const staffApi = createApi({
     invalidatesTags: ["User"],
     }),
 
+    // Get a single service
+    getSingleService: builder.query({
+      query: (serviceId) => `/services/view/${serviceId}`,
+    }),
+
+    // Get all Services
+    getAllServices: builder.query({
+      query: () => "/services/all",
+    }),
+
+    // Get services by category
+    getServicesByCategory: builder.query({
+      query: (serviceCategory) => `/services/category/${serviceCategory}`,
+    }),
+
+    // Get services by country
+    getServicesByCountry: builder.query({
+      query: (serviceCountry) => `/services/country/${serviceCountry}`,
+    }),
+
+    // Get services by category and country
+    getServicesByCountryandCategory: builder.query({
+      query: (data) =>
+        `/services/category/${data.serviceCategory}/country/KEN${data.serviceCountry}`,
+    }),
   }),
 });
 
@@ -337,5 +362,14 @@ export const {
   
   useAddNotificationMutation,
   useGetAllNotificationsQuery,
-  useDeleteNotificationMutation
+  useDeleteNotificationMutation,
+
+  useAddServiceMutation,
+  useUpdateServiceMutation,
+  useDeleteServiceMutation,
+  useGetSingleServiceQuery,
+  useGetAllServicesQuery,
+  useGetServicesByCategoryQuery,
+  useGetServicesByCountryQuery,
+  useGetServicesByCountryandCategoryQuery,
 } = staffApi;

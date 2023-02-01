@@ -2,7 +2,7 @@ import React from "react";
 
 export const TaxesIcon = ({ filled, hover }) => {
   return (
-    <div>
+    <>
       {filled ? (
         <svg
           width="21"
@@ -61,6 +61,6 @@ export const TaxesIcon = ({ filled, hover }) => {
           />
         </svg>
       )}
-    </div>
+    </>
   );
 };

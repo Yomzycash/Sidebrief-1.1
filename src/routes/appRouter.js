@@ -169,6 +169,9 @@ const SidebriefTeam = lazy(() =>
 const ChatLayout = lazy(() =>
 	import("pages/Dashboard/staffDashboard/Businesses/Services/Chat")
 );
+const SingleChat = lazy(() =>
+	import("pages/Dashboard/staffDashboard/Businesses/Services/Chat/SingleChat")
+);
 
 const Services = lazy(() => 
 	import("pages/Dashboard/staffDashboard/Businesses/Services/Service")
@@ -495,10 +498,16 @@ const AppRouter = () => {
 										element={<Services/>}
 									>
 
+									<Route path="chat" element={<ChatLayout />}>
+										<Route
+											path=":ID"
+											element={<SingleChat />}
+										/>
 									</Route>
 								</Route>
 
 							</Route>
+
 							<Route
 								path="business/:code"
 								element={<StaffBusinessDetailLayout />}
@@ -572,6 +581,7 @@ const AppRouter = () => {
 								/>
 							</Route>
 						</Route>
+					</Route>
 					</Route>
 
 					{/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}

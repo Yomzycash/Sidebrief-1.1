@@ -26,7 +26,7 @@ const TagInput = ({
   let resultToReturn = false;
 
   function handlekeydown(e) {
-    if (e.key === "Tab") e.preventDefault();
+    // if (e.key === "Tab") e.preventDefault();
 
     if (!(e.key === "Enter" || e.key === "Tab")) return;
 

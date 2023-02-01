@@ -9,15 +9,47 @@ import CopyIcon from "asset/Icons/CopyIcon";
 import DownloadIcon from "asset/Icons/DownloadIcon";
 import { GladeLogo } from "asset/images";
 import { IoMdMore } from "react-icons/io";
+import ServicesModal from "components/modal/ServicesModal";
 import { Chats } from "containers/ServiceChat";
+import AllServices from "./Dashboard/staffDashboard/Businesses/Services/AllServices";
 
 const Test = () => {
   // This exemplifies a data recieved from the backend
-  
 
   return (
-    <div>
-      <Chats/>
+
+    <div style={{ display: "flex", flexFlow: "column", gap: "40px" }}>
+      {/* <FeatureSection
+        title="Registered Businesses"
+        subText="View and create bank accounts for all registered businesses"
+        btnText="Create bank account"
+        btnLeftIcon={ResourcesIcon}
+      >
+        <FeatureTable header={header} body={dataBody} />
+      </FeatureSection>
+      <FeatureSection
+        title="Banks"
+        subText="See all available banks to create an account with"
+        searchPlaceholder="Search for a bank"
+        btnText="View all"
+        btnRightIcon={BiRightArrowAlt}
+      >
+        <ScrollBox>
+          {Array(5)
+            .fill("__")
+            .map((reward, index) => (
+              <RewardCard
+                key={index}
+                title={reward?.rewardPartner}
+                body={reward?.rewardName}
+                image={reward?.rewardImage}
+              />
+            ))}
+        </ScrollBox>
+      </FeatureSection> */}
+      <ServicesModal open={true} />
+      <Chats />
+
     </div>
   );
 };

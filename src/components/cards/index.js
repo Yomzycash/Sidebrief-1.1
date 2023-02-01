@@ -8,3 +8,4 @@ export { RewardCard } from "./RewardCard";
 export { StatusCard } from "./StatusCard";
 export { EntityCard, EntityWrapper } from "./EntityCard";
 export { SummaryCard } from "./SummaryCard";
+export { MessageBubble } from "./MessageBubble";

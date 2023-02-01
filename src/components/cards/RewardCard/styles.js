@@ -190,3 +190,7 @@ export const Badge = styled.div`
     border-radius: 12px
   
 `
+export const CategoryName = styled.p`
+  background-color: ${(props) => props.background};
+  color: ${(props) => props.color};
+`;

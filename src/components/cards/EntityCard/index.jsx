@@ -58,8 +58,8 @@ export const EntityCard = ({
         <Description>{description}</Description>
         <Mid>
           <Price>
-            {name === "Basic" ? "FREE" : numeral(price).format("0,0")}
-            {name === "Basic" ? "" : currency}
+            {country === "NGA" ? "" : numeral(price).format("0,0")}
+            {country === "NGA" ? "" : currency}
           </Price>
         </Mid>
         <Bottom>
@@ -69,8 +69,8 @@ export const EntityCard = ({
           {country === "NGA" ? (
             <Bullet flow="column">
               <>
-                {features?.map((item) => (
-                  <FeatureListItem>
+                {features?.map((item, index) => (
+                  <FeatureListItem key={index}>
                     <Mark /> <Content>{item}</Content>
                   </FeatureListItem>
                 ))}

@@ -95,6 +95,7 @@ const ServicePage = ({}) => {
           {servicesEnquiry && servicesEnquiry.map((service, index) => (
               <PetalsCard 
                 key={index}
+                service
                 message={service?.serviceName}
                 badge={service?.serviceCategory}
                 subText={service?.serviceCountry == "NGN" ? "Nigeria" : "Kenya"}
