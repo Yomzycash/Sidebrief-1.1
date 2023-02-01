@@ -44,9 +44,9 @@ const Test = () => {
               />
             ))}
         </ScrollBox>
-      </FeatureSection> */}
+      </FeatureSection>
       <ServicesModal open={true} />
-      <Chats />
+      <Chats /> */}
     </div>
   );
 };
