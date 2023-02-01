@@ -170,6 +170,10 @@ const ChatLayout = lazy(() =>
 	import("pages/Dashboard/staffDashboard/Businesses/Services/Chat")
 );
 
+const Services = lazy(() => 
+	import("pages/Dashboard/staffDashboard/Businesses/Services/Service")
+)
+
 const AppRouter = () => {
 	const userData = useSelector((store) => store.UserDataReducer);
 	const launchData = useSelector(
@@ -458,6 +462,7 @@ const AppRouter = () => {
 									/>
 									<Route path="pending" element={<Draft />} />
 								</Route>
+
 								<Route path="entities" element={<Outlet />}>
 									<Route index element={<StaffEntities />} />
 								</Route>
@@ -484,7 +489,15 @@ const AppRouter = () => {
 										path="chat"
 										element={<ChatLayout />}
 									></Route>
+
+									<Route
+										path="service"
+										element={<Services/>}
+									>
+
+									</Route>
 								</Route>
+
 							</Route>
 							<Route
 								path="business/:code"

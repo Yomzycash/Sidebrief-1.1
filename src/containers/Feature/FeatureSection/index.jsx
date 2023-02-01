@@ -1,5 +1,6 @@
 import { searchIcon } from "asset/images";
 import CommonButton from "components/button/commonButton";
+import NoBackgroundButton from "components/button/NoBackgroundButton";
 import React from "react";
 import {
   Content,
@@ -15,8 +16,11 @@ const FeatureSection = ({
   title,
   subText,
   btnText,
+  LeftbtnText = "Add Service",
   btnLeftIcon,
   btnRightIcon,
+  LeftbtnLeftIcon,
+  RightbtnRightIcon,
   btnAction,
   searchPlaceholder,
   extraComponentLeft,
@@ -38,9 +42,17 @@ const FeatureSection = ({
               <input type="text" placeholder={searchPlaceholder} />
             </Input>
           )}
+          <NoBackgroundButton
+            LeftIcon={LeftbtnLeftIcon}
+            RightIcon={RightbtnRightIcon}
+            text2={LeftbtnText}
+            text="Add Service"
+            action={btnAction}
+          />
           <CommonButton
             LeftIcon={btnLeftIcon}
             RightIcon={btnRightIcon}
+            btnText2={btnText}
             text={btnText}
             action={btnAction}
           />

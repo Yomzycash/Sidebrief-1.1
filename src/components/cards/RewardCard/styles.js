@@ -119,6 +119,26 @@ export const Title = styled.h4`
   }
 `;
 
+export const Message = styled.h5`
+  font-family: "BR Firma";
+  font-weight: 600;
+  font-size: clamp(15px, 1.5vw, 20px);
+  line-height: 21px;
+  letter-spacing: 0.02em;
+  color: #242627;
+
+  ${({ hover }) =>
+    hover &&
+    `
+			// color: #ffffff;
+		`};
+
+  @media screen and (max-width: 532px) {
+    font-weight: 600;
+    font-size: 16px;
+  }
+`;
+
 export const Body = styled.p`
   font-family: "BR Firma";
   font-weight: 500;
@@ -148,3 +168,25 @@ export const StartButton = styled.button`
     display: none;
   }
 `;
+
+export const Badge = styled.div`
+  position: relative
+  text-decoration: none
+  padding: 3px 15px
+  color: white
+  font-weight: 500
+  border-radius: 0px
+
+  &:before
+    content: ""
+    position: absolute
+    z-index: -1
+    background: yellow
+    color: blue
+    top: -1px
+    right: -1px
+    bottom: -1px
+    left: -1px
+    border-radius: 12px
+  
+`
