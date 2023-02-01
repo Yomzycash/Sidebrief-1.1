@@ -106,7 +106,6 @@ const Navbar = ({
 
     return merg + " " + times ;
   }
-  var datetime = convertDate(notificationMessages.createdAt)
   
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
@@ -225,15 +224,14 @@ const Navbar = ({
 
           {notificationMessages?.length > 0 ? (
             <NotificationMessages>
-              {notificationMessages?.map((item, index) => (
+              {notificationMessages && notificationMessages.slice(0, 4).map((item, index) => (
                 <Message
                   key={index}
                 >
                   <MessageSubject>
                     {item.messageSubject}
                     <span>
-                      {datetime}
-                      
+                      {convertDate(item.createdAt)}
                     </span>
 
                     {/* <span>
