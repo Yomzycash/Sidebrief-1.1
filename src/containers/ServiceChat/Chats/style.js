@@ -38,7 +38,7 @@ export const DropDown = styled.div`
   background: #fafafa;
   position: relative;
   width: 109px;
-  height: 40px;
+  height: max-content;
   border: 1px solid #f1f1f1;
   border-radius: 12px;
   text-overflow: ellipsis;
@@ -68,6 +68,9 @@ export const DropDownItems = styled.div`
   padding: 4px 12px;
   cursor: pointer;
   transition: all 0.2s;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
 `
 export const TextContainer = styled.div`
   font-weight: 500;
@@ -104,7 +107,7 @@ export const SearchContainer = styled.div`
 export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  width:100%;
   padding: 0px;
   /* border: 1px solid red; */
   height: 100%;
