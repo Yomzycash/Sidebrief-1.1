@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import styled from "styled-components"
 import { ReactComponent as ChatIcon } from "asset/Icons/ChatIcon.svg";
+import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from 'components/navbar/Search'
@@ -13,10 +14,11 @@ import FeatureTable from 'components/Tables/FeatureTable';
 import DownloadIcon from "asset/Icons/DownloadIcon";
 import CopyIcon from "asset/Icons/CopyIcon";
 import { IoMdMore } from "react-icons/io";
-
+// import lookup from "country-code-lookup"
 import PetalsCard from 'components/cards/RewardCard/PetalsCard';
 import { ScrollBox } from 'containers';
 
+const lookup = require('country-code-lookup');
 const searchStyle = {
   borderRadius: "12px",
   backgroundColor: "white",
@@ -24,6 +26,14 @@ const searchStyle = {
   height: "100%",
 };
 
+const countryCodes = {
+  KEN: 'Kenya',
+  NGN: 'Nigeria'
+};
+
+const DisplayCountry = ({ shortcode }) => {
+  return <p>{countryCodes[shortcode]} </p>
+}
 const iconStyle = { width: "17px", height: "17px" };
 
 const ServicePage = ({}) => {
@@ -31,7 +41,13 @@ const ServicePage = ({}) => {
 
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
-  const header = ["Name", "Request ID", "Staus", "Country", "Date"];
+  const header = ["Name", "Request ID", "Status", "Country", "Date"];
+
+  const itemStyles = {
+    item1: { color: 'red', backgroundColor: 'yellow', category: "TAX", },
+    item2: { color: 'blue', backgroundColor: 'green',  category: "MANAGE", },
+  };
+
 
   let exampleData = [
     "Ayomide Constructions & Sons",
@@ -51,6 +67,9 @@ const ServicePage = ({}) => {
     </div>,
     <div>
        Nigeria
+    </div>,
+     <div>
+      27/02/2023
     </div>,
      <div onClick={(e) => console.log(e)}>
      <ChatIcon size={20} />
@@ -91,17 +110,28 @@ const ServicePage = ({}) => {
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
       >
-        <ScrollBox style={{position:"relative", top: 10}}>
-          {servicesEnquiry && servicesEnquiry.map((service, index) => (
-              <PetalsCard 
-                key={index}
-                service
-                message={service?.serviceName}
-                badge={service?.serviceCategory}
-                subText={service?.serviceCountry == "NGN" ? "Nigeria" : "Kenya"}
-              />
-          ))}
-        </ScrollBox>
+        <div style={{padding:"34px 25px 34px 24px"}}>
+          {isLoading ? (
+               <Loading height="300px">
+               <Puff stroke="#00A2D4" fill="white" width={60} />
+             </Loading>
+          ) : (
+            <ScrollBox>
+            {servicesEnquiry && servicesEnquiry.map((service, index) => (
+                <PetalsCard 
+                  key={index}
+                  service
+                  message={service?.serviceName}
+                  badge={service?.serviceCategory}
+                  subText={service?.serviceCountry}
+                  // subText={lookup.byIso.name("NGN")}
+                />
+            ))}
+          </ScrollBox>
+          )}
+         
+        </div>
+       
       </FeatureSection>
       <br/><br/>
 
@@ -206,6 +236,15 @@ const SearchWrapper = styled.div`
     max-width: 100%;
     width: 100%;
   }
+`;
+
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
 `;
 
 // const searchStyle = styled.div`
