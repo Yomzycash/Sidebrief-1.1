@@ -485,7 +485,7 @@ const AppRouter = () => {
 								<Route path="services" element={<Outlet />}>
 									<Route path="chat" element={<ChatLayout />}>
 										<Route
-											path=":ID"
+											path=":SenderID"
 											element={<SingleChat />}
 										/>
 									</Route>

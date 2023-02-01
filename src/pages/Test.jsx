@@ -51,7 +51,7 @@ const Test = () => {
       <Chats />
 
     </div>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test
