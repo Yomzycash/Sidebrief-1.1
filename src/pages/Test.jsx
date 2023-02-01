@@ -49,7 +49,7 @@ const Test = () => {
       <ServicesModal open={true} />
       <Chats /> */}
     </div>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test

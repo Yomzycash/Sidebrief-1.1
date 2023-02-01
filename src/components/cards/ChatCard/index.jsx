@@ -11,11 +11,11 @@ import {
   InnerContainer,
 } from './styled.js'
 
-const ChatCard = ({ image, name, serviceName, time, message }) => {
+const ChatCard = ({ image, name, serviceName, time, message, actions =() =>{}}) => {
   return (
     <Container>
       <TopContainer>
-        <InnerContainer>
+        <InnerContainer onClick={actions}>
           <ImageContainer>
             <Image src={image} alt="" />
           </ImageContainer>
