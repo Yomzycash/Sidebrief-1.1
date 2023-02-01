@@ -65,7 +65,7 @@ const StaffEntityModal = ({
     let selectedCountry = Object.values(value)[0];
     let currency = countries?.data?.filter(
       (country) => country.countryISO === selectedCountry
-    )[0].countryCurrency;
+    )[0]?.countryCurrency;
     console.log(currency);
     setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });

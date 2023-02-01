@@ -148,3 +148,8 @@ export const StartButton = styled.button`
     display: none;
   }
 `;
+
+export const CategoryName = styled.p`
+  background-color: ${(props) => props.background};
+  color: ${(props) => props.color};
+`;

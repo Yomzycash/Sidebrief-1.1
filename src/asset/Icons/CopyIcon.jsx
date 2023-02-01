@@ -2,7 +2,7 @@ import React from "react";
 
 const CopyIcon = ({ clicked, width, height, size }) => {
   return (
-    <div>
+    <>
       {clicked ? (
         <svg
           width={size || width || "16"}
@@ -30,7 +30,7 @@ const CopyIcon = ({ clicked, width, height, size }) => {
           />
         </svg>
       )}
-    </div>
+    </>
   );
 };
 
