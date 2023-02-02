@@ -265,38 +265,6 @@ export const staffApi = createApi({
       query: () => "/banks",
     }),
 
-    
-    // get all notifications
-    getAllNotifications: builder.query({
-      query: () => "/notifications/all"
-    }),
-
-    // Add a notification
-    addNotification: builder.mutation({
-      query: (data) => ({
-        url: "/notifications/create",
-        method: "POST",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
-    }),
-
-    // delete a  notification
-    deleteNotification: builder.mutation({
-    query: (data) => ({
-      url: "/notifications/delete/${notificationId}",
-      method: "DELETE",
-      body: data,
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }),
-    invalidatesTags: ["User"],
-    }),
-
     // Get a single service
     getSingleService: builder.query({
       query: (serviceId) => `/services/view/${serviceId}`,
@@ -359,10 +327,6 @@ export const {
   useDeleteBankMutation,
   useGetSingleBankQuery,
   useGetAllBanksQuery,
-  
-  useAddNotificationMutation,
-  useGetAllNotificationsQuery,
-  useDeleteNotificationMutation,
 
   useAddServiceMutation,
   useUpdateServiceMutation,

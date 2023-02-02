@@ -17,7 +17,6 @@ const Test = () => {
   // This exemplifies a data recieved from the backend
 
   return (
-
     <div style={{ display: "flex", flexFlow: "column", gap: "40px" }}>
       {/* <FeatureSection
         title="Registered Businesses"
@@ -46,10 +45,9 @@ const Test = () => {
               />
             ))}
         </ScrollBox>
-      </FeatureSection> */}
+      </FeatureSection>
       <ServicesModal open={true} />
-      <Chats />
-
+      <Chats /> */}
     </div>
   )
 }

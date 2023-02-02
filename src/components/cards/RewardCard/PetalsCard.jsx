@@ -18,7 +18,6 @@ import {
 import { TextWithArrow } from "components/texts";
 import { CornerPetal } from "asset/svg";
 
-
 const PetalsCard = ({
   image,
   title,
@@ -56,7 +55,7 @@ const PetalsCard = ({
       onMouseLeave={() => setHover(false)}
       hover={hover}
       onClick={
-        buttonDisplayValue === "none" ? (action ? action : "") : () => {}
+        buttonDisplayValue === "none" ? (action ? action : () => {}) : () => {}
       }
       rewardspage={!showClaim}
     >
@@ -69,25 +68,24 @@ const PetalsCard = ({
         </CornerDesktop>
       </Corner>
       <Frame>
-
-       {badge && <Badge>{badge}</Badge> }
-        { image && 
+        {badge && <Badge>{badge}</Badge>}
+        {image && (
           <ImageHolder>
-            <img src={image} alt={title} />  
-          </ImageHolder> 
-        }
+            <img src={image} alt={title} />
+          </ImageHolder>
+        )}
         {service ? (
           <CategoryName>{categoryName}</CategoryName>
         ) : (
           <ImageHolder>
-          <img src={image} alt={title} /> 
+            <img src={image} alt={title} />
           </ImageHolder>
         )}
 
         <TextContainer>
-          {title && <Title>{title}</Title> }
-          {message && <Message>{message}</Message> }
-          {subText && <Body>{subText}</Body> }
+          {title && <Title>{title}</Title>}
+          {message && <Message>{message}</Message>}
+          {subText && <Body>{subText}</Body>}
         </TextContainer>
       </Frame>
       <StartButton onClick={action} hide={!showClaim} ref={buttonRef}>
