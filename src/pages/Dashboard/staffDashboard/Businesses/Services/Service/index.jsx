@@ -71,7 +71,7 @@ const ServicePage = () => {
     <div>{notification.updatedAt.split("T")[0]}</div>,
     <div>{notification.updatedAt.split("T")[1].slice(0, 8)}</div>,
     <div
-      onClick={(e) => handleChat(notification.notificationId)}
+      onClick={(e) => handleChat(notification.senderId)}
       style={{ cursor: "pointer" }}
     >
       <ChatIcon size={20} />
@@ -83,8 +83,8 @@ const ServicePage = () => {
     setServicesEnquiry(data);
   }, [data]);
 
-  const handleChat = (notificationId) => {
-    navigate(`/staff-dashboard/businesses/services/chats?id=${notificationId}`);
+  const handleChat = (senderId) => {
+    navigate(`/staff-dashboard/businesses/services/chats?id=${senderId}`);
   };
 
   const handleViewAllServices = () => {
