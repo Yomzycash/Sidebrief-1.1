@@ -45,7 +45,7 @@ export const Chats = () => {
     <Container>
       <TopContainer>
         <Head>
-          <Heading>Chats ({user.length})</Heading>
+          <Heading>Chats ({data.length})</Heading>
           <DropDown>
             <DropDownBtn
               onClick={() => {
