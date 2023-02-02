@@ -62,7 +62,7 @@ export const RewardCard = ({
       </Corner>
       <Frame>
         <ImageHolder>
-          <img src={image} alt={imageAlt} />
+          <img src={image} alt={imageAlt} /> || 
         </ImageHolder>
         <TextContainer>
           <Title>{title}</Title>

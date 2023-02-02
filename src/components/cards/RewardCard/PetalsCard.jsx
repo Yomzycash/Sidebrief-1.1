@@ -10,16 +10,21 @@ import {
   Frame,
   CornerMobile,
   CornerDesktop,
+  Message,
+  Badge,
   CategoryName,
 } from "./styles";
 // import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { TextWithArrow } from "components/texts";
 import { CornerPetal } from "asset/svg";
 
+
 const PetalsCard = ({
   image,
   title,
   subText,
+  message,
+  badge,
   categoryName,
   countryName,
   showClaim,
@@ -64,17 +69,25 @@ const PetalsCard = ({
         </CornerDesktop>
       </Corner>
       <Frame>
+
+       {badge && <Badge>{badge}</Badge> }
+        { image && 
+          <ImageHolder>
+            <img src={image} alt={title} />  
+          </ImageHolder> 
+        }
         {service ? (
           <CategoryName>{categoryName}</CategoryName>
         ) : (
           <ImageHolder>
-            <img src={image} alt={title} />
+          <img src={image} alt={title} /> 
           </ImageHolder>
         )}
 
         <TextContainer>
-          <Title>{title}</Title>
-          <Body>{subText}</Body>
+          {title && <Title>{title}</Title> }
+          {message && <Message>{message}</Message> }
+          {subText && <Body>{subText}</Body> }
         </TextContainer>
       </Frame>
       <StartButton onClick={action} hide={!showClaim} ref={buttonRef}>

@@ -265,10 +265,16 @@ export const staffApi = createApi({
       query: () => "/banks",
     }),
 
-    // Add a service
-    addService: builder.mutation({
+    
+    // get all notifications
+    getAllNotifications: builder.query({
+      query: () => "/notifications/all"
+    }),
+
+    // Add a notification
+    addNotification: builder.mutation({
       query: (data) => ({
-        url: "/services/create",
+        url: "/notifications/create",
         method: "POST",
         body: data,
         headers: {
@@ -278,30 +284,17 @@ export const staffApi = createApi({
       invalidatesTags: ["User"],
     }),
 
-    // Modify a service
-    updateService: builder.mutation({
-      query: (data) => ({
-        url: `/services/update/${data.serviceId}`,
-        method: "PUT",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
+    // delete a  notification
+    deleteNotification: builder.mutation({
+    query: (data) => ({
+      url: "/notifications/delete/${notificationId}",
+      method: "DELETE",
+      body: data,
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
     }),
-
-    // Delete a service
-    deleteService: builder.mutation({
-      query: (data) => ({
-        url: `/services/delete/${data.serviceId}`,
-        method: "DELETE",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
+    invalidatesTags: ["User"],
     }),
 
     // Get a single service
@@ -366,6 +359,10 @@ export const {
   useDeleteBankMutation,
   useGetSingleBankQuery,
   useGetAllBanksQuery,
+  
+  useAddNotificationMutation,
+  useGetAllNotificationsQuery,
+  useDeleteNotificationMutation,
 
   useAddServiceMutation,
   useUpdateServiceMutation,
