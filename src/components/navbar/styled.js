@@ -180,6 +180,23 @@ export const NoMessage = styled.div`
   }
 `;
 
+export const MessageSubject = styled.h5`
+  line-height: 24px;
+  color:#4e5152;
+
+  span {
+    float:right;
+    color: #151717;
+    font-size: 10px;
+  }
+`
+
+export const MessageBody = styled.p`
+  font-size: 16px;
+  line-height: 24px;
+  color: #151717;
+`
+
 export const NotificationBadge = styled.div`
   border-radius: 100%;
   background-color: #00a2d4;

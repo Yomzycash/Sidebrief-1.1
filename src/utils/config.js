@@ -337,7 +337,7 @@ export const StaffSidebarLinks = [
     id: 3,
     title: "Taxes",
     icon: TaxesIcon,
-    path: "/staff-dashboard/taxes",
+    path: "/staff-dashboard/taxes/",
   },
   {
     id: 4,

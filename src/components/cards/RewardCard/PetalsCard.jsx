@@ -10,6 +10,8 @@ import {
   Frame,
   CornerMobile,
   CornerDesktop,
+  Message,
+  Badge,
   CategoryName,
 } from "./styles";
 // import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
@@ -20,6 +22,8 @@ const PetalsCard = ({
   image,
   title,
   subText,
+  message,
+  badge,
   categoryName,
   countryName,
   showClaim,
@@ -51,7 +55,7 @@ const PetalsCard = ({
       onMouseLeave={() => setHover(false)}
       hover={hover}
       onClick={
-        buttonDisplayValue === "none" ? (action ? action : "") : () => {}
+        buttonDisplayValue === "none" ? (action ? action : () => {}) : () => {}
       }
       rewardspage={!showClaim}
     >
@@ -64,6 +68,12 @@ const PetalsCard = ({
         </CornerDesktop>
       </Corner>
       <Frame>
+        {badge && <Badge>{badge}</Badge>}
+        {image && (
+          <ImageHolder>
+            <img src={image} alt={title} />
+          </ImageHolder>
+        )}
         {service ? (
           <CategoryName>{categoryName}</CategoryName>
         ) : (
@@ -73,8 +83,9 @@ const PetalsCard = ({
         )}
 
         <TextContainer>
-          <Title>{title}</Title>
-          <Body>{subText}</Body>
+          {title && <Title>{title}</Title>}
+          {message && <Message>{message}</Message>}
+          {subText && <Body>{subText}</Body>}
         </TextContainer>
       </Frame>
       <StartButton onClick={action} hide={!showClaim} ref={buttonRef}>

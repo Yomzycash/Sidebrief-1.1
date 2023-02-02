@@ -13,8 +13,8 @@ const FeatureTable = ({ header, body }) => {
     <TableContainer>
       <TableHead>
         <tr>
-          {header?.map((text) => (
-            <th>{text}</th>
+          {header?.map((text, index) => (
+            <th key={index}>{text}</th>
           ))}
         </tr>
       </TableHead>
