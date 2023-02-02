@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MessageBubble } from "components/cards";
 import { compareDesc } from "date-fns";
+import { useGetAllNotificationsByIdQuery } from "services/chatService";
 
 export const ChatBody = () => {
 	const { handleSubmit, register, reset } = useForm({
