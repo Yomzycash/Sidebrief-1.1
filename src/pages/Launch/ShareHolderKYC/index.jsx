@@ -108,7 +108,7 @@ const ShareHolderKYC = () => {
     const res = await convertToLink(files[0]);
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
-      launchCode: generatedLaunchCode,
+      launchCode: launchResponse.launchCode,
       memberCode: shareholder,
       memberKYC: {
         documentType: formatType,
