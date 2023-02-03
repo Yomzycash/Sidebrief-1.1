@@ -114,7 +114,7 @@ const BeneficiariesKYC = () => {
 
     const formatType = type.split("_").join(" ");
     const requiredBeneficialOwnerKYCData = {
-      launchCode: generatedLaunchCode,
+      launchCode: launchResponse.launchCode,
       beneficialOwnerCode: beneficiary,
       beneficialOwnerKYC: {
         documentType: formatType,
