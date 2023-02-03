@@ -4,6 +4,7 @@ import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
 import { imageTypeImage } from "utils/config";
+
 import {
   DetailWrapper,
   Details,
@@ -21,7 +22,7 @@ import {
   Top,
   Wrapper,
 } from "./styles";
-import { saveAs } from "file-saver";
+import { downLoadImage } from "utils/staffHelper";
 const PdfCards = ({
   name = "",
   title = "",
@@ -31,11 +32,6 @@ const PdfCards = ({
   proof,
   passport,
 }) => {
-  const magic = (link) => {
-    console.log(link);
-    saveAs(link);
-  };
-
   return (
     <>
       <Wrapper>
@@ -84,7 +80,7 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => magic(government.documentLink)}>
+              <Details onClick={() => downLoadImage(government.documentLink)}>
                 {government ? government.documentLink : "upload a file"}
               </Details>
             </PdfLowerWrapper>
@@ -115,7 +111,7 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => magic(proof.documentLink)}>
+              <Details onClick={() => downLoadImage(proof.documentLink)}>
                 {proof ? proof.documentLink : "upload a file"}
               </Details>
             </PdfLowerWrapper>
@@ -147,7 +143,7 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => magic(passport.documentLink)}>
+              <Details onClick={() => downLoadImage(passport.documentLink)}>
                 {passport ? passport?.documentLink : "upload a file"}
               </Details>
             </PdfLowerWrapper>
