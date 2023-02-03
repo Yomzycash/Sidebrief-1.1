@@ -38,7 +38,7 @@ export const Middle = styled.p`
 	margin-left: 0px !important;
 	display: flex;
 	align-items: center;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const BottomWrapper = styled.div`
@@ -51,7 +51,7 @@ export const BottomWrapper = styled.div`
 	font-weight: 500;
 	font-size: clamp(10px, 1vw, 12px);
 	line-height: 21px;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 	white-space: nowrap;
 `;
 export const IconWrapper = styled.div`

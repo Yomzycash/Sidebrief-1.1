@@ -66,7 +66,7 @@ export const HeadText = styled.h5`
 	font-size: 16px;
 	line-height: 21px;
 	letter-spacing: 0.02em;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const BodyText = styled.p`
@@ -75,7 +75,7 @@ export const BodyText = styled.p`
 	line-height: 21px;
 	letter-spacing: 0.02em;
 	font-size: 16px;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const NameContainer = styled.div`
