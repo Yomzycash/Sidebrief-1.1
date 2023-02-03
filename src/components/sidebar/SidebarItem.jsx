@@ -3,10 +3,17 @@ import styled from "styled-components";
 import { IoIosArrowUp } from "react-icons/io";
 import { NavLink, useLocation, Link } from "react-router-dom";
 import { useState } from "react";
+import { useGetAllNotificationsQuery } from "services/chatService";
 
 const SidebarItem = ({ item, expanded, homePath }) => {
   const [iconHovered, setIconHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+
+  const notifications = useGetAllNotificationsQuery();
+
+  let newNotifications = notifications.data?.filter(
+    (notification) => notification?.messageIsRead === false
+  );
 
   const location = useLocation();
   const locationPath = location?.pathname;
@@ -75,7 +82,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   <span>{each.title}</span>
                 </NavLink>
                 {each.path === "/staff-dashboard/businesses/services" && (
-                  <Badge to={each.path}>2</Badge>
+                  <Badge to={each.path}>{newNotifications?.length}</Badge>
                 )}
               </ListItem>
             ))}

@@ -137,7 +137,7 @@ const DirectorKYC = () => {
 
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
-      launchCode: generatedLaunchCode,
+      launchCode: launchResponse.launchCode,
       memberCode: director,
       memberKYC: {
         documentType: formatType,

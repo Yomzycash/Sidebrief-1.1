@@ -265,45 +265,6 @@ export const staffApi = createApi({
       query: () => "/banks",
     }),
 
-    // Add a service
-    addService: builder.mutation({
-      query: (data) => ({
-        url: "/services/create",
-        method: "POST",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
-    }),
-
-    // Modify a service
-    updateService: builder.mutation({
-      query: (data) => ({
-        url: `/services/update/${data.serviceId}`,
-        method: "PUT",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
-    }),
-
-    // Delete a service
-    deleteService: builder.mutation({
-      query: (data) => ({
-        url: `/services/delete/${data.serviceId}`,
-        method: "DELETE",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
-    }),
-
     // Get a single service
     getSingleService: builder.query({
       query: (serviceId) => `/services/view/${serviceId}`,

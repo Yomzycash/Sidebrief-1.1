@@ -10,12 +10,26 @@ import {
   Frame,
   CornerMobile,
   CornerDesktop,
+  Message,
+  Badge,
+  CategoryName,
 } from "./styles";
 // import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { TextWithArrow } from "components/texts";
 import { CornerPetal } from "asset/svg";
 
-const PetalsCard = ({ image, title, subText, showClaim, action }) => {
+const PetalsCard = ({
+  image,
+  title,
+  subText,
+  message,
+  badge,
+  categoryName,
+  countryName,
+  showClaim,
+  action,
+  service,
+}) => {
   const [hover, setHover] = useState(false);
   const [buttonDisplayValue, setButtonDisplayValue] = useState("");
 
@@ -41,7 +55,7 @@ const PetalsCard = ({ image, title, subText, showClaim, action }) => {
       onMouseLeave={() => setHover(false)}
       hover={hover}
       onClick={
-        buttonDisplayValue === "none" ? (action ? action : "") : () => {}
+        buttonDisplayValue === "none" ? (action ? action : () => {}) : () => {}
       }
       rewardspage={!showClaim}
     >
@@ -54,12 +68,24 @@ const PetalsCard = ({ image, title, subText, showClaim, action }) => {
         </CornerDesktop>
       </Corner>
       <Frame>
-        <ImageHolder>
-          <img src={image} alt={title} />
-        </ImageHolder>
+        {badge && <Badge>{badge}</Badge>}
+        {image && (
+          <ImageHolder>
+            <img src={image} alt={title} />
+          </ImageHolder>
+        )}
+        {service ? (
+          <CategoryName>{categoryName}</CategoryName>
+        ) : (
+          <ImageHolder>
+            <img src={image} alt={title} />
+          </ImageHolder>
+        )}
+
         <TextContainer>
-          <Title>{title}</Title>
-          <Body>{subText}</Body>
+          {title && <Title>{title}</Title>}
+          {message && <Message>{message}</Message>}
+          {subText && <Body>{subText}</Body>}
         </TextContainer>
       </Frame>
       <StartButton onClick={action} hide={!showClaim} ref={buttonRef}>

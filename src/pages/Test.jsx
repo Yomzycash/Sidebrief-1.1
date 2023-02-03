@@ -11,6 +11,7 @@ import { GladeLogo } from "asset/images";
 import { IoMdMore } from "react-icons/io";
 import ServicesModal from "components/modal/ServicesModal";
 import { Chats } from "containers/ServiceChat";
+import AllServices from "./Dashboard/staffDashboard/Businesses/Services/AllServices";
 
 const Test = () => {
   // This exemplifies a data recieved from the backend
@@ -44,11 +45,11 @@ const Test = () => {
               />
             ))}
         </ScrollBox>
-      </FeatureSection> */}
+      </FeatureSection>
       <ServicesModal open={true} />
-      <Chats />
+      <Chats /> */}
     </div>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test

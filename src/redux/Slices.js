@@ -263,3 +263,19 @@ const RewardInfo = createSlice({
 export const RewardReducer = RewardInfo.reducer;
 export const { setAllAvailableRewards, setMyClaimedRewards, setRewardsShown } =
   RewardInfo.actions;
+
+const ServicesInfo = createSlice({
+  //creating services slice (object) then export reducers of the slice
+  name: "Reward",
+  initialState: {
+    allServices: [],
+  },
+  reducers: {
+    setAllServices: (state, action) => {
+      state.allServices = action.payload;
+    },
+  },
+});
+
+export const ServiceReducer = ServicesInfo.reducer;
+export const { setAllServices } = ServicesInfo.actions;
