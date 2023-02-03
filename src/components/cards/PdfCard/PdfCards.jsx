@@ -81,7 +81,7 @@ const PdfCards = ({
                 )}
               </IconWrapper>
               <Details onClick={() => downLoadImage(government.documentLink)}>
-                {government ? government.documentLink : "upload a file"}
+                {government ? government.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 
@@ -112,7 +112,7 @@ const PdfCards = ({
                 )}
               </IconWrapper>
               <Details onClick={() => downLoadImage(proof.documentLink)}>
-                {proof ? proof.documentLink : "upload a file"}
+                {proof ? proof.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 
@@ -144,7 +144,7 @@ const PdfCards = ({
                 )}
               </IconWrapper>
               <Details onClick={() => downLoadImage(passport.documentLink)}>
-                {passport ? passport?.documentLink : "upload a file"}
+                {passport ? passport?.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 
