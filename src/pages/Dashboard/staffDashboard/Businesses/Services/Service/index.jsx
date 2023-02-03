@@ -106,7 +106,8 @@ const ServicePage = ({}) => {
       <FeatureSection
         title={"Services" + " (" + servicesEnquiry?.length + ")" + " available"}
         subText="Select all available banks to create an account with"
-        // LeftbtnLeftIcon={AddIcon}
+        LeftbtnLeftIcon={AddIcon}
+        LeftbtnText="Add Service"
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
       >
@@ -140,6 +141,7 @@ const ServicePage = ({}) => {
         subText="View and create bank accounts for all registered businesses"
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
+        
       >
         <FeatureTable header={header} body={dataBody} />
       </FeatureSection>
