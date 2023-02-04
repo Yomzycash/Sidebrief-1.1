@@ -7,7 +7,7 @@ export const staffApi = createApi({
     baseUrl: process.env.REACT_APP_DEV_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
-      console.log("Token: ", token);
+  
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);

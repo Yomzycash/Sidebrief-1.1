@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ReactComponent as ChatIcon } from "asset/Icons/ChatIcon.svg";
 import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
-import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
 
 import { useGetAllServicesQuery } from "services/staffService";
@@ -11,9 +10,6 @@ import { useGetAllServicesQuery } from "services/staffService";
 import FeatureSection from "containers/Feature/FeatureSection";
 import FeatureTable from "components/Tables/FeatureTable";
 
-import DownloadIcon from "asset/Icons/DownloadIcon";
-import CopyIcon from "asset/Icons/CopyIcon";
-import { IoMdMore } from "react-icons/io";
 // import lookup from "country-code-lookup"
 import PetalsCard from "components/cards/RewardCard/PetalsCard";
 import { ScrollBox } from "containers";
@@ -30,16 +26,14 @@ import {
   TopContent,
 } from "./styled";
 
-const lookup = require("country-code-lookup");
+// const countryCodes = {
+//   KEN: "Kenya",
+//   NGN: "Nigeria",
+// };
 
-const countryCodes = {
-  KEN: "Kenya",
-  NGN: "Nigeria",
-};
-
-const DisplayCountry = ({ shortcode }) => {
-  return <p>{countryCodes[shortcode]} </p>;
-};
+// const DisplayCountry = ({ shortcode }) => {
+//   return <p>{countryCodes[shortcode]} </p>;
+// };
 const iconStyle = { width: "17px", height: "17px" };
 
 //
@@ -54,10 +48,10 @@ const ServicePage = () => {
 
   const navigate = useNavigate();
 
-  const itemStyles = {
-    item1: { color: "red", backgroundColor: "yellow", category: "TAX" },
-    item2: { color: "blue", backgroundColor: "green", category: "MANAGE" },
-  };
+  // const itemStyles = {
+  //   item1: { color: "red", backgroundColor: "yellow", category: "TAX" },
+  //   item2: { color: "blue", backgroundColor: "green", category: "MANAGE" },
+  // };
 
   // Table header information
   const header = ["Notification ID", "Status", "Date", "Time"];

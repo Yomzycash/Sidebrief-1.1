@@ -47,8 +47,6 @@ const Navbar = ({
 }) => {
   const { data } = useGetAllNotificationsQuery();
 
-  console.log("notifications", data);
-
   const [notificationMessages, setNotificationMessages] = useState([]);
   //const notificationTime = moment(notificationMessages.createdAt).fromNow(true);
   //console.log(notificationTime)

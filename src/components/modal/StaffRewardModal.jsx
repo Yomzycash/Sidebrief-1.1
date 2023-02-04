@@ -47,7 +47,6 @@ const StaffRewardModal = ({
 
   const handleCategoryChange = (value) => {
     let category = Object.values(value)[0];
-    console.log(category);
     setValue("category", category, { shouldValidate: true });
   };
 

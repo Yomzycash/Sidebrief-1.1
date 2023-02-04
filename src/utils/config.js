@@ -1,12 +1,4 @@
 import * as yup from "yup";
-import {
-  HiHome,
-  HiOutlineSparkles,
-  HiOutlineLibrary,
-  HiDocumentText,
-  HiCog,
-  HiBriefcase,
-} from "react-icons/hi";
 import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
 
 import pdf from "../asset/images/pdf.png";
@@ -53,19 +45,6 @@ export const userRegistrationSchema = yup.object().shape({
       "  Must Contain  One Special Case Character"
     ),
   referrer: yup.string().notRequired(),
-  // password: yup.
-  // 	string()
-  // 	.required("Password is a required field")
-  // 	.matches(
-  // 	/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,17})/,
-  // ),
-  // date: yup
-  //   .string()
-  //   .matches(
-  //     "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$", // Date regex
-  //     "Not a valid date" // error message
-  //   )
-  //   .required(),
 });
 
 export const loginSchema = yup.object().shape({
@@ -156,7 +135,6 @@ export const checkInfoShareholderSchema = yup.object().shape({
     .min(0.00001)
     .max(100)
     .required("Share percentage is from 1% to 100%"),
-  // share_type: yup.string().required("Share type is a required field"),
   nin: yup
     .number()
     .test(
@@ -176,9 +154,7 @@ export const checkInfoShareDirSchema = yup.object().shape({
     .min(0.00001)
     .max(100)
     .required("Share percentage is from 1% to 100%"),
-  // share_type: yup.string().required("Share type is a required field"),
   reg_number: yup.number().required("Registration number is required"),
-  // director_role: yup.string().required("Director's role is required"),
 
   nin: yup
     .number()
@@ -195,7 +171,6 @@ export const checkInfoDirectorSchema = yup.object().shape({
   phone: yup.string().required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
   reg_number: yup.number().required("Registration number is required"),
-  // director_role: yup.string().required("Director's role is required"),
 });
 
 export const checkInfoBeneficiarySchema = yup.object().shape({

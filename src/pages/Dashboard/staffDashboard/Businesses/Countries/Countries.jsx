@@ -1,20 +1,14 @@
 import React, { useRef, useState } from "react";
-import Navbar from "components/navbar";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import StaffHeader from "components/Header/StaffHeader";
-import { CountryCardDetails } from "utils/config";
 import CountryCard from "components/cards/CountryCard";
 import {
   useAddCountryMutation,
   useGetAllCountriesQuery,
-  useUpdateCountryMutation,
 } from "services/staffService";
 import { Puff } from "react-loading-icons";
-import StaffEntityModal from "components/modal/StaffEntityModal";
 import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
@@ -25,18 +19,18 @@ const Countries = () => {
   const [cardAction, setCardAction] = useState("");
 
   // Exchange information with the backend
-  const { data, isLoading, isSuccess, isError, error, refetch } =
+  const { data, isLoading, isError, error, refetch } =
     useGetAllCountriesQuery();
   const [addCountry, addState] = useAddCountryMutation();
 
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   // Get information from the store
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  let hideSearch = location.pathname.includes("/dashboard/rewards");
+  // let hideSearch = location.pathname.includes("/dashboard/rewards");
 
   const handleAddButton = () => {
     setOpen(true);
@@ -52,7 +46,7 @@ const Countries = () => {
       handleError(error);
       errorRef.current = false;
     }
-  }, []);
+  }, [isError, error, refetch]);
 
   // Returns the data to be sent to the backend
   const getRequired = (formData) => {
