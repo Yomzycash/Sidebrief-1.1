@@ -72,7 +72,7 @@ const Container = styled.div`
   padding: 24px;
 
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
   &:hover {
     background: #00a2d4;
@@ -86,7 +86,7 @@ const Corner = styled.div`
 
   svg {
     ellipse {
-      fill: rgba(204, 243, 255, 0.48);
+      fill: #ccf3ff7a;
       fill-opacity: 1;
     }
   }
@@ -94,7 +94,7 @@ const Corner = styled.div`
   ${Container}:hover & {
     svg {
       ellipse {
-        fill: rgba(255, 255, 255, 0.64);
+        fill: #ffffffa3;
       }
     }
   }

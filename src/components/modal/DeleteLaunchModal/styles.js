@@ -15,7 +15,7 @@ export const Container = styled.div`
 	padding: 40px;
 
 	box-shadow: -4px 10px 16px 8px rgba(149, 150, 151, 0.08),
-		0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+		0px 10px 10px -5px #9596970a;
 
 	display: flex;
 	flex-direction: column;
@@ -106,7 +106,7 @@ export const Submit = styled.button`
 	color: #ffffff;
 
 	&:disabled {
-		color: rgba(255, 255, 255, 0.64);
+		color: #ffffffa3;
 		cursor: not-allowed;
 	}
 `;

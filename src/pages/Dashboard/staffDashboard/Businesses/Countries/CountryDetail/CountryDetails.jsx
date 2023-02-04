@@ -148,7 +148,7 @@ const LeftContainer = styled.div`
   flex: 1;
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
 `;
 const ContentContainer = styled.div`
@@ -210,7 +210,7 @@ const RightContainer = styled.div`
   padding-inline-start: 24px;
   padding-block: 40px;
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
 `;
 const InnerWrapper = styled.div`
@@ -285,7 +285,7 @@ const TitleWrapper = styled.h4`
   text-align: center;
   letter-spacing: -0.5px;
   color: white;
-  /* color: rgba(255, 255, 255, 0.64); */
+  /* color: #ffffffa3; */
 `;
 
 const Loader = styled.div`

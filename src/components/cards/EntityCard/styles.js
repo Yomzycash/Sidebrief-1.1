@@ -11,7 +11,7 @@ export const Container = styled.div`
     props.height ? props.height : "clamp(284px, 30vw, 340px)"};
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
 
   padding: clamp(24px, 2.7vw, 48px) 24px 16px;
@@ -63,7 +63,8 @@ export const Corner = styled.div`
 
   svg {
     ellipse {
-      fill: rgba(204, 243, 255, 0.48);
+      fill: #ccf3ff7a;
+      
       fill-opacity: 1;
     }
   }

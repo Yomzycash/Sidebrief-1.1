@@ -103,7 +103,7 @@ export const Right = styled.div`
 export const ChartContainer = styled.div`
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
   padding-top: 24px;
   padding-right: 24px;

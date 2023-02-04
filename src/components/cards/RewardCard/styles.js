@@ -9,7 +9,7 @@ export const Container = styled.div`
   max-height: 238px;
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
   padding: clamp(16px, 1.5vw, 24px);
   position: relative;
@@ -42,7 +42,7 @@ export const Corner = styled.div`
   /* 
 	svg {
 		ellipse {
-			fill: rgba(204, 243, 255, 0.48);
+			fill: #ccf3ff7a;
 			fill-opacity: 1;
 		}
 	} */
@@ -52,7 +52,7 @@ export const Corner = styled.div`
     `
 		svg {
 			ellipse {
-				// fill: rgba(255, 255, 255, 0.64);
+				// fill: #ffffffa3;
 			}
 		}
 		`}; */
