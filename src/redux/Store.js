@@ -1,10 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { authApi } from "services/authService";
-import { launchApi } from "services/launchService";
+import { configureStore } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/dist/query'
+import { authApi } from 'services/authService'
+import { launchApi } from 'services/launchService'
+import { RewardApi } from 'services/RewardService'
+import { staffApi } from 'services/staffService'
+import { ChatApi } from 'services/chatService'
+
+
 import { serviceApi } from "services/productService";
-import { RewardApi } from "services/RewardService";
-import { staffApi } from "services/staffService";
+
 import {
   LaunchReducer,
   LayoutInfoReducer,
@@ -21,6 +25,7 @@ export const store = configureStore({
     [launchApi.reducerPath]: launchApi.reducer,
     [RewardApi.reducerPath]: RewardApi.reducer,
     [staffApi.reducerPath]: staffApi.reducer,
+    [ChatApi.reducerPath]: ChatApi.reducer,
     [serviceApi.reducerPath]: serviceApi.reducer,
     UserDataReducer: UserDataReducer,
     LayoutInfo: LayoutInfoReducer,
@@ -37,8 +42,11 @@ export const store = configureStore({
       launchApi.middleware,
       RewardApi.middleware,
       staffApi.middleware,
-      serviceApi.middleware,
+      ChatApi.middleware,
+	  
     ]),
-});
+})
+   
 
-setupListeners(store.dispatch);
+
+setupListeners(store.dispatch)

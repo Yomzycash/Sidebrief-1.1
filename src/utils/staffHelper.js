@@ -1,5 +1,12 @@
 import { subMonths, isWithinInterval, subWeeks } from "date-fns";
 import numeral from "numeral";
+import { saveAs } from "file-saver";
+
+export const downLoadImage = async (link) => {
+  const downloadResult = await fetch(`${link}`);
+  const blob = await downloadResult.blob();
+  saveAs(blob, "");
+};
 
 export const getLastMonthData = (array) => {
   const today = new Date();

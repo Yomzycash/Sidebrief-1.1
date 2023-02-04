@@ -31,11 +31,11 @@ import { store } from "redux/Store";
 import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
 import Profile from "components/Profile";
-import { useGetAllNotificationsQuery } from "services/staffService";
 
-import { formatDistance } from 'date-fns'
+import { formatDistance } from "date-fns";
 
 import { sortTableData } from "utils/staffHelper";
+import { useGetAllNotificationsQuery } from "services/chatService";
 
 const Navbar = ({
   dashboard,
@@ -45,12 +45,11 @@ const Navbar = ({
   style,
   hideSearch,
 }) => {
-
-  const { data }  = useGetAllNotificationsQuery();
+  const { data } = useGetAllNotificationsQuery();
 
   console.log("notifications", data);
-   
-  const [ notificationMessages, setNotificationMessages ] = useState([])
+
+  const [notificationMessages, setNotificationMessages] = useState([]);
   //const notificationTime = moment(notificationMessages.createdAt).fromNow(true);
   //console.log(notificationTime)
 
@@ -65,9 +64,9 @@ const Navbar = ({
   // function timeSince(date) {
 
   //   var seconds = Math.floor((new Date() - date) / 1000);
-  
+
   //   var interval = seconds / 31536000;
-  
+
   //   if (interval > 1) {
   //     return Math.floor(interval) + " years";
   //   }
@@ -93,20 +92,25 @@ const Navbar = ({
   // console.log(timeSince(new Date(Date.now()-aDay)));
   // console.log(timeSince(new Date(Date.now()-aDay*2)));
 
-
-  function convertDate(){
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  function convertDate() {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
     const merg = new Date().toLocaleDateString("en-US", options);
-    const times = new Date().toLocaleTimeString("en-gb", {
+    const times = new Date()
+      .toLocaleTimeString("en-gb", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true,
-    })
-    .toUpperCase();
+      })
+      .toUpperCase();
 
-    return merg + " " + times ;
+    return merg + " " + times;
   }
-  
+
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -126,9 +130,8 @@ const Navbar = ({
 
   useEffect(() => {
     setNotificationMessages(data);
-    console.log("my length", data?.length)
-  }, [data])
-
+    console.log("my length", data?.length);
+  }, [data]);
 
   // useMemo(() => {
   //   let status = newUserObject?.verified;
@@ -154,7 +157,6 @@ const Navbar = ({
     updatedMsg[indexToUpdate].read = !item.read;
     setMsgObj(updatedMsg);
   };
-
 
   let menuRef = useRef();
   useEffect(() => {
@@ -224,31 +226,26 @@ const Navbar = ({
 
           {notificationMessages?.length > 0 ? (
             <NotificationMessages>
-              {notificationMessages && notificationMessages.slice(0, 4).map((item, index) => (
-                <Message
-                  key={index}
-                >
-                  <MessageSubject>
-                    {item.messageSubject}
-                    <span>
-                      {convertDate(item.createdAt)}
-                    </span>
+              {notificationMessages &&
+                notificationMessages.slice(0, 4).map((item, index) => (
+                  <Message key={index}>
+                    <MessageSubject>
+                      {item.messageSubject}
+                      <span>{convertDate(item.createdAt)}</span>
 
-                    {/* <span>
+                      {/* <span>
                       {notificationTime}
                     </span> */}
-                  </MessageSubject>
-                  {/* <br/> */}
+                    </MessageSubject>
+                    {/* <br/> */}
 
-                  <MessageBody>{item.messageBody}</MessageBody>
-                </Message>
-              ))}
+                    <MessageBody>{item.messageBody}</MessageBody>
+                  </Message>
+                ))}
             </NotificationMessages>
           ) : (
             <NoMessage>
-              <p>
-                {"The length is" + "" + notificationMessages?.length}
-              </p>
+              <p>{"The length is" + "" + notificationMessages?.length}</p>
             </NoMessage>
           )}
         </NotificationWrapper>

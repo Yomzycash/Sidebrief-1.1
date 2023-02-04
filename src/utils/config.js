@@ -161,8 +161,8 @@ export const checkInfoShareholderSchema = yup.object().shape({
     .number()
     .test(
       "len",
-      "NIN must be exactly 10 numbers",
-      (val) => val.toString().length === 10
+      "NIN must be exactly 11 numbers",
+      (val) => val.toString().length === 11
     )
     .required("NIN is a required field"),
 });
@@ -184,8 +184,8 @@ export const checkInfoShareDirSchema = yup.object().shape({
     .number()
     .test(
       "len",
-      "NIN must be exactly 10 numbers",
-      (val) => val.toString().length === 10
+      "NIN must be exactly 11 numbers",
+      (val) => val.toString().length === 11
     )
     .required("NIN is a required field"),
 });
@@ -299,7 +299,7 @@ export const StaffSidebarLinks = [
     id: 1,
     title: "Home",
     icon: HomeIcon,
-    path: "/staff-dashboard",
+    path: "/staff-dashboard/home",
   },
   {
     id: 2,
