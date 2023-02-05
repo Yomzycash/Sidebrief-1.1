@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const ScrollContainer = styled.div`
   display: flex;
@@ -7,6 +7,7 @@ export const ScrollContainer = styled.div`
   max-width: 100%;
   padding-bottom: 32px;
   scroll-behavior: smooth;
+
 
   &::-webkit-scrollbar {
     height: 6px;
@@ -22,10 +23,11 @@ export const ScrollContainer = styled.div`
       background-color: #00a2d4;
     }
   }
-`;
+`
 export const Scroll = styled.div`
   display: flex;
   flex-flow: row nowrap;
   gap: 24px;
   width: max-content;
-`;
+  
+`

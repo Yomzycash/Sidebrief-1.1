@@ -20,7 +20,7 @@ const ChatCard = ({
 	message,
 	senderID,
 	currentSelected,
-	actions = () => {},
+
 }) => {
 	const navigate = useNavigate();
 

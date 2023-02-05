@@ -25,6 +25,7 @@ import { getMessages } from "./actions";
 export const Chats = () => {
 	const options = ["senderID", "serviceID"];
 
+
 	const [selected, setSelected] = useState("filter");
 	// const [user, setUser] = useState([]);
 	const [isActive, setIsActive] = useState(false);
@@ -32,12 +33,13 @@ export const Chats = () => {
 	const params = useParams();
 
 	const messages = getMessages(data);
-
 	return (
 		<Container>
 			<TopContainer>
 				<Head>
+
 					<Heading>Chats ({messages.length})</Heading>
+
 					<DropDown>
 						<DropDownBtn
 							onClick={() => {
@@ -74,11 +76,13 @@ export const Chats = () => {
 				</SearchContainer>
 			</TopContainer>
 			<ChatContainer>
+
 				{messages
 					?.sort((a, b) =>
 						compareAsc(
 							parseJSON(a.notification.slice(-1)[0]?.createdAt),
 							parseJSON(b.notification.slice(-1)[0]?.createdAt)
+
 						)
 					)
 					.map((chat, index) => {
