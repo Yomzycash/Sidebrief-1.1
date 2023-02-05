@@ -20,15 +20,7 @@ const BankAccount = () => {
 
   useEffect(() => {
     setFilteredBank(data);
-    // setFilteredBank(
-    //   data?.map((bank) => {
-    //     let includes =
-    //       bank?.bankName?.includes(searchValue) ||
-    //       bank?.bankCountry?.includes(searchValue);
-    //     if (includes) return bank;
-    //     return {};
-    //   })
-    // );
+    
   }, [data, searchValue]);
 
   const handleBankClick = (bankCode) => {
