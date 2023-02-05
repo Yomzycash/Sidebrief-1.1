@@ -1,16 +1,16 @@
 import {
-	Container,
-	Head,
-	Heading,
-	DropDown,
-	SearchContainer,
-	TextContainer,
-	ArrowDown,
-	TopContainer,
-	ChatContainer,
-	DropDownBtn,
-	DropDownContent,
-	DropDownItems,
+  Container,
+  Head,
+  Heading,
+  DropDown,
+  SearchContainer,
+  TextContainer,
+  ArrowDown,
+  TopContainer,
+  ChatContainer,
+  DropDownBtn,
+  DropDownContent,
+  DropDownItems,
 } from "./style";
 import numeral from "numeral";
 import Search from "components/navbar/Search";
@@ -23,9 +23,11 @@ import { useEffect } from "react";
 import profile from "../../../asset/images/profile.svg";
 import { formatDistanceToNow, subHours, parseJSON, compareAsc } from "date-fns";
 import { useSearchParams, useParams } from "react-router-dom";
+import { getMessages } from "./actions";
 
 export const Chats = () => {
-	const options = ["senderID", "serviceID"];
+  const options = ["senderID", "serviceID"];
+
 
 	const [selected, setSelected] = useState("filter");
 
@@ -33,7 +35,9 @@ export const Chats = () => {
 	const { data, isError, isLoading } = useGetAllNotificationsQuery();
 	const params = useParams();
 
-	console.log(params);
+
+  const messages = getMessages(data);
+
 
   const uniqueSenders = [...new Set(data?.map((el) => el.senderId))];
   console.log(uniqueSenders);
@@ -128,4 +132,6 @@ export const Chats = () => {
 			</ChatContainer>
 		</Container>
 	);
+
+
 };
