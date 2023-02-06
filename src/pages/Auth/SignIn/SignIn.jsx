@@ -81,7 +81,21 @@ const SignIn = () => {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));
       localStorage.setItem("userEmail", formData.email);
-      navigate(staffCheck ? "/staff-dashboard" : "/dashboard");
+      staffCheck
+        ? navigate("/staff-dashboard", { state: "notNew" })
+        : navigate("/dashboard", { state: "notNew" });
+
+      // navigate(
+      //   staffCheck
+      //     ? ("/staff-dashboard",
+      //       {
+      //         state: "notNew",
+      //       })
+      //     : ("/dashboard",
+      //       {
+      //         state: "notNew",
+      //       })
+      // );
       toast.success(data.message);
     } else if (error) {
       handleError(error);

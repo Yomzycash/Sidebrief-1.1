@@ -16,6 +16,7 @@ import {
 import { StaffContainer, StatusCardContainer } from "./styled";
 // import { compareAsc } from "date-fns";
 import { ParseUsers, getPercentage } from "utils/staffHelper";
+import { useLocation } from "react-router-dom";
 
 const StaffDashboard = (props) => {
   // const [allApplications, setAllApplications] = useState([]);
@@ -27,6 +28,7 @@ const StaffDashboard = (props) => {
   const allRejectedLaunches = useGetRejectedLaunchQuery();
   const allDraftLaunches = useGetDraftLaunchQuery();
   const allUsers = useGetAllUsersQuery();
+  const { state } = useLocation();
 
   // const location = useLocation();
 
@@ -35,7 +37,7 @@ const StaffDashboard = (props) => {
   let firstName_raw = userInfo?.first_name;
   let firstName =
     firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
-  let newUser = userInfo?.newUser;
+  let alreadyUser = state;
 
   // Get all users submitted launch requests
   // useEffect(() => {
@@ -91,9 +93,9 @@ const StaffDashboard = (props) => {
     <StaffContainer>
       <DashboardSection
         title={
-          newUser
-            ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
-            : `Welcome back${firstName ? ", " + firstName : ""}`
+          alreadyUser
+            ? `Welcome back${firstName ? ", " + firstName : ""}`
+            : `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
         }
         nowrap
       >

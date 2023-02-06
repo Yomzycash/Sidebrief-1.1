@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import DropdownList from "react-widgets/DropdownList";
-import "react-widgets/styles.css";
-import { DropdownArrow } from "asset/svg";
-import { BottomText, ErrMsg } from "./styled";
+import React from 'react'
+import styled from 'styled-components'
+import DropdownList from 'react-widgets/DropdownList'
+import 'react-widgets/styles.css'
+import { DropdownArrow } from 'asset/svg'
+import { BottomText, ErrMsg } from './styled'
 
 const DropDownWithSearch = ({
   name, // name, neccessary for React-hook-form
@@ -29,9 +29,9 @@ const DropDownWithSearch = ({
       </Top>
       {register ? (
         <DropdownList
-          style={{ color: "#00A2D4", fontSize: "14px" }}
-          containerClassName={"input"}
-          textField={filterBy ? filterBy : "text"}
+          style={{ color: '#00A2D4', fontSize: '14px' }}
+          containerClassName={'input'}
+          textField={filterBy ? filterBy : 'text'}
           selectIcon={<DropdownArrow />}
           name={name}
           data={list}
@@ -50,9 +50,9 @@ const DropDownWithSearch = ({
         />
       ) : (
         <DropdownList
-          style={{ color: "#00A2D4", fontSize: "14px" }}
-          containerClassName={"input"}
-          textField={filterBy ? filterBy : "text"}
+          style={{ color: '#00A2D4', fontSize: '14px' }}
+          containerClassName={'input'}
+          textField={filterBy ? filterBy : 'text'}
           selectIcon={<DropdownArrow />}
           name={name}
           data={list}
@@ -71,10 +71,10 @@ const DropDownWithSearch = ({
       )}
       {bottomText ? <BottomText>{bottomText}</BottomText> : null}
     </Container>
-  );
-};
+  )
+}
 
-export default DropDownWithSearch;
+export default DropDownWithSearch
 
 const Container = styled.div`
   display: flex;
@@ -97,7 +97,7 @@ const Container = styled.div`
     padding-inline: 12px;
     border-radius: 8px;
   }
-`;
+`
 
 const Top = styled.div`
   display: flex;
@@ -105,13 +105,13 @@ const Top = styled.div`
   width: 100%;
   align-items: center;
   justify-content: space-between;
-`;
+`
 
 const Title = styled.span`
   font-size: clamp(13px, 1.5vw, 14px);
   font-weight: 500;
   color: #4e5152;
-  font-family: "BR Firma";
+  font-family: 'BR Firma';
   font-weight: 500;
   line-height: 21px;
-`;
+`

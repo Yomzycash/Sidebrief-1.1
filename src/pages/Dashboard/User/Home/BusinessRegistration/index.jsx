@@ -10,7 +10,7 @@ import {
 import DashboardSection from "layout/DashboardSection";
 import { IoArrowForward } from "react-icons/io5";
 import "react-multi-carousel/lib/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ScrollBox } from "containers";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery } from "services/RewardService";
@@ -30,7 +30,8 @@ const BusinessRegistration = (props) => {
   let firstName_raw = userInfo?.first_name;
   let firstName =
     firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
-  let newUser = userInfo?.newUser;
+  const { state } = useLocation();
+  let alreadyUser = state;
 
   const allRewardsResponse = useGetAllRewardsQuery();
   const drafts = useGetUserDraftQuery();
@@ -110,9 +111,9 @@ const BusinessRegistration = (props) => {
         <Main>
           <DashboardSection
             title={
-              newUser
-                ? `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
-                : `Welcome back${firstName ? ", " + firstName : ""}`
+              alreadyUser
+                ? `Welcome back${firstName ? ", " + firstName : ""}`
+                : `Welcome to Sidebrief${firstName ? ", " + firstName : ""}`
             }
             nowrap
           >
