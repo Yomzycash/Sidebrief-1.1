@@ -67,7 +67,7 @@ import { handleSingleShareholderView } from "../ShareHoldersInfo/actionss";
 const DirectorsInfo = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const [cardAction, setCardAction] = useState();
+  const [cardAction, setCardAction] = useState("");
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
   const [useSidebriefDirectors, setUseSidebriefDirectors] = useState(
@@ -452,7 +452,7 @@ const DirectorsInfo = () => {
                 name={director?.memberName}
                 email={director?.memberEmail}
                 phone={director?.memberPhone}
-                director_role={director.directorRole}
+                idNumber={director.directorIdentificationNumber}
                 editAction={() => handleEditButton(director)}
                 deleteAction={() => handleDelete(director)}
                 isLoading={
