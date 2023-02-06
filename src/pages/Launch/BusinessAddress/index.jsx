@@ -266,7 +266,7 @@ const BusinessAddress = () => {
                 containerStyle={"checkoutInput"}
                 labelStyle={"checkoutInputLabel"}
                 placeholder="--"
-                label="Postal/Zip Code"
+                label="Postal/Zip Code (Optional)"
                 type="text"
                 name="zipcode"
                 register={register}

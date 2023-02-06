@@ -56,10 +56,9 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 
   // Flutterwave config object
   const config = {
-    public_key:
-      process.env.NODE_ENV === "production"
-        ? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
-        : process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
+    public_key: import.meta.env.PROD
+      ? import.meta.env.VITE_FLUTTERWAVE_LIVE_KEY
+      : import.meta.env.VITE_FLUTTERWAVE_TEST_KEY,
     tx_ref: Date.now(),
     // amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
     amount: `${entityInfo.entityFee}`,
@@ -226,8 +225,8 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 //     amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
 //     publicKey:
 //       process.env.NODE_ENV === "production"
-//         ? process.env.REACT_APP_PAYSTACK_LIVE_KEY
-//         : process.env.REACT_APP_PAYSTACK_TEST_KEY,
+//         ? import.meta.env.VITE_PAYSTACK_LIVE_KEY
+//         : import.meta.env.VITE_PAYSTACK_TEST_KEY,
 //   };
 
 //   // you can call this function anything

@@ -127,21 +127,45 @@ export const fileFormSchema = yup.object().shape({
 });
 
 export const checkInfoShareholderSchema = yup.object().shape({
-  full_name: yup.string().required("Full name is a required field"),
-  phone: yup.string().required("Phone number is a required field"),
+  fullName: yup.string().required("Full name is a required field"),
+  phone: yup
+    .number()
+    .typeError("Enter your phone number")
+    .required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
-  share_percentage: yup
+  sharePercentage: yup
     .number("Must be a number")
+    .typeError("Enter share percentage")
     .min(0.00001)
     .max(100)
-    .required("Share percentage is from 1% to 100%"),
+    .required("Share percentage must be between 1 and 100"),
+  // shareType: yup.string().required("Share type is a required field"),
+  // director_role: yup.string().required("Director's role is required"),
   nin: yup
+    .string()
+    .typeError("Enter your identification number")
+    .required("NIN is a required field"),
+});
+
+export const checkInfoShareCompSchema = yup.object().shape({
+  fullName: yup.string().required("Full name is a required field"),
+  phone: yup
     .number()
-    .test(
-      "len",
-      "NIN must be exactly 11 numbers",
-      (val) => val.toString().length === 11
-    )
+    .typeError("Enter your phone number")
+    .required("Phone number is a required field"),
+  email: yup.string().email("Enter a valid email address").required(),
+  sharePercentage: yup
+    .number("Must be a number")
+    .typeError("Enter share percentage")
+    .min(0.00001)
+    .max(100)
+    .required("Share percentage must be between 1 and 100"),
+  // shareType: yup.string().required("Share type is a required field"),
+  regNo: yup.string().required("Registration number is required"),
+  // director_role: yup.string().required("Director's role is required"),
+  nin: yup
+    .string()
+    .typeError("Enter your identification number")
     .required("NIN is a required field"),
 });
 
@@ -167,10 +191,14 @@ export const checkInfoShareDirSchema = yup.object().shape({
 });
 
 export const checkInfoDirectorSchema = yup.object().shape({
-  full_name: yup.string().required("Full name is a required field"),
+  fullName: yup.string().required("Full name is a required field"),
   phone: yup.string().required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
-  reg_number: yup.number().required("Registration number is required"),
+  nin: yup
+    .number()
+    .typeError("Enter your identification number")
+    .required("NIN is a required field"),
+  // director_role: yup.string().required("Director's role is required"),
 });
 
 export const checkInfoBeneficiarySchema = yup.object().shape({

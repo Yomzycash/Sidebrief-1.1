@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
-import { saveUserInfo, saveUserLoginInfo, saveUserToken } from "redux/Slices";
+import { saveUserInfo, saveUserLoginInfo } from "redux/Slices";
 import AppFeedback from "components/AppFeedback";
 import { checkStaffEmail, handleError } from "utils/globalFunctions";
 import { useLoginStaffMutation } from "services/staffService";

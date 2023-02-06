@@ -128,7 +128,7 @@ const Navbar = ({
 
   useEffect(() => {
     setNotificationMessages(data);
-    console.log("my length", data?.length);
+    // console.log("my length", data?.length);
   }, [data]);
 
   // useMemo(() => {
