@@ -115,7 +115,7 @@ export const NotificationWrapper = styled.div`
   position: fixed;
   right: 24px;
   z-index: 10;
-  box-shadow: -4px 10px 10px 5px rgba(149, 150, 151, 0.08);
+  box-shadow: -4px 10px 10px 5px #95969714;
   border-radius: 10px;
   top: 72px;
   background-color: white;
@@ -146,7 +146,7 @@ export const Message = styled.div`
   border-top: solid 1px #edf1f6;
 
   :hover {
-    background-color: rgba(0, 162, 212, 0.1);
+    background-color: #00a2d419;
     cursor: pointer;
   }
 

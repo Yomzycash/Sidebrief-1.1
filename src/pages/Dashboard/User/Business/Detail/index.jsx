@@ -170,7 +170,7 @@ const StatusContent = styled.div`
   line-height: 18px;
   letter-spacing: 0.01em;
   color: #ffbf29;
-  background: rgba(255, 191, 41, 0.05);
+  background: #ffbf290c;
   border-radius: 12px;
   padding: 4px 16px;
 `;

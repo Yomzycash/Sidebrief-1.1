@@ -34,7 +34,7 @@ const Wrapper = styled.button`
 	padding: 24px 16px;
 	background: #ffffff;
 	border: 1px solid #edf1f7;
-	box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+	box-shadow: 0px 10px 10px -5px #9596970a;
 	border-radius: 16px;
 	cursor: pointer;
 `;
@@ -65,7 +65,7 @@ const TypeWrapper = styled.div`
 	align-items: center;
 	padding: 4px 16px;
 	gap: 10px;
-	background: rgba(0, 212, 72, 0.05);
+	background: #00d4480c;
 	border-radius: 12px;
 `;
 const TypeContent = styled.div`

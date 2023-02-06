@@ -21,7 +21,7 @@ export const ContextMenu = styled.div`
 
 	background: #ffffff;
 	border: 1px solid #edf1f7;
-	box-shadow: -4px 10px 16px 8px rgba(149, 150, 151, 0.08),
+	box-shadow: -4px 10px 16px 8px #95969714,
 		0px 10px 10px -5px #9596970a;
 	border-radius: 16px;
 	display: flex;

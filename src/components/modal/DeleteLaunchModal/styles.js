@@ -14,7 +14,7 @@ export const Container = styled.div`
 	border-radius: 16px;
 	padding: 40px;
 
-	box-shadow: -4px 10px 16px 8px rgba(149, 150, 151, 0.08),
+	box-shadow: -4px 10px 16px 8px #95969714,
 		0px 10px 10px -5px #9596970a;
 
 	display: flex;
@@ -92,7 +92,7 @@ export const Controller = styled.div`
 
 export const Submit = styled.button`
 	flex: 1;
-	background: rgba(0, 162, 212, 0.72);
+	background: #00a2d4b7;
 	border-radius: 8px;
 	border: none;
 

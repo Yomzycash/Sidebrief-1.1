@@ -14,13 +14,13 @@ const AllServices = () => {
     {
       id: 1,
       category: "TAX",
-      backgroundColor: "rgba(0, 212, 72, 0.05)",
+      backgroundColor: "#00d4480c",
       color: "#00D448",
     },
     {
       id: 2,
       category: "MANAGE",
-      backgroundColor: "rgba(0, 162, 212, 0.05)",
+      backgroundColor: "#00a2d40c",
       color: "#00A2D4",
     },
   ];

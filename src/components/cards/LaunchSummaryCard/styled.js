@@ -31,8 +31,8 @@ export const InfoDesktop = styled.div`
 
   background-color: ${({ shares }) =>
     shares === "Preference Shares"
-      ? "rgba(212, 0, 204, 0.05)"
-      : "rgba(0, 162, 212, 0.05)"};
+      ? "#d400cc0c"
+      : "#00a2d40c"};
 
   @media screen and (max-width: 600px) {
     display: none;
@@ -49,8 +49,8 @@ export const InfoMobile = styled.div`
 
   background-color: ${({ shares }) =>
     shares === "Preference Shares"
-      ? "rgba(212, 0, 204, 0.05)"
-      : "rgba(0, 162, 212, 0.05)"};
+      ? "#d400cc0c"
+      : "#00a2d40c"};
 
   @media screen and (min-width: 601px) {
     display: none;

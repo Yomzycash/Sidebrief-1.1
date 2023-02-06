@@ -44,7 +44,7 @@ const Sidebar = () => {
   }, [expanded]);
 
   const ActiveStyle = {
-    background: "rgba(0, 162, 212, 0.1)",
+    background: "#00a2d419",
     color: "#00a2d4",
   };
 

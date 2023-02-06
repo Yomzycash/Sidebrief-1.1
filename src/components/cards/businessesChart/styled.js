@@ -13,7 +13,7 @@ export const BusinessesChart = styled.div`
   padding: 24px;
   background-color: white;
   border: 1px solid #edf1f6;
-  box-shadow: 0 10px 10px -5px rgba(149, 150, 151, 0.08);
+  box-shadow: 0 10px 10px -5px #95969714;
   background-color: ${({ staff }) => (staff ? "#00A2D4" : "")};
 
   @media screen and (max-width: 760px) {

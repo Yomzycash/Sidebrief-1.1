@@ -79,7 +79,7 @@ const StaffDashboard = (props) => {
 		status1: {
 			text: "Total Users",
 			total: allUsers?.data?.users.length || 0,
-			color: "rgba(255, 255, 255, 0.4)",
+			color: "#ffffff66",
 		},
 		status2: {
 			text: "Registrations",

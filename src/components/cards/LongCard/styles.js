@@ -52,7 +52,7 @@ export const IconWrapper = styled.div`
 	width: 36px;
 	border-radius: 8px;
 	background-color: ${({ notready }) =>
-		notready === "true" ? "#F9C4BD" : "rgba(0, 162, 212, 0.1)"};
+		notready === "true" ? "#F9C4BD" : "#00a2d419"};
 	transition: 0.3s all ease;
 `;
 
@@ -119,7 +119,7 @@ export const LongButton = styled.button`
 		notReady &&
 		`
         cursor: not-allowed;
-        background: rgba(0, 162, 212, 0.72);
+        background: #00a2d4b7;
         p {
             color: #ffffffa3;
         }
