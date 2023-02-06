@@ -130,12 +130,13 @@ export const handleShareholdersView = async (info) => {
 //
 
 // This returns a single shareholder's info
-export const handleSingleShareholderView = async (memberCode) => {
-  let shareholders = await handleShareholdersView();
+// info needs to entail: ...launchResponse, memberCode, viewShareholders and viewMembers
+export const handleSingleShareholderView = async (info) => {
+  let shareholders = await handleShareholdersView(info);
 
   if (shareholders.data) {
     let shareholder = shareholders?.data?.filter(
-      (el) => el.memberCode === memberCode
+      (el) => el.memberCode === info.memberCode
     );
     if (shareholder.length > 0) {
       // TODO

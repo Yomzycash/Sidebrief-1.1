@@ -130,7 +130,7 @@ const ShareHoldersInfo = () => {
     };
     let memberCheck = await checkMemberExistence(actionInfo_M);
 
-    if (memberCheck.data) {
+    if (memberCheck.data.status) {
       // THROW ERROR
       toast.error("Shareholder exists");
       return false;
@@ -250,8 +250,12 @@ const ShareHoldersInfo = () => {
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
     console.log(memberResponse);
+    setSelectedToDelete(shareholder);
   };
 
+  //
+
+  // VIEW ALL SHAREHOLDERS
   const handleView = async () => {
     let actionInfo = {
       ...launchResponse,
@@ -709,23 +713,6 @@ const ShareHoldersInfo = () => {
                     dirUpdateState.isLoading
                   }
                   shareholder
-                  // handleAdd={handleShareholderAdd}
-                  // handleUpdate={handleShareholderUpdate}
-                  // cardAction={cardAction}
-                  // checkInfoSchema={checkInfoShareholderSchema}
-                  // shareDirSchema={checkInfoShareDirSchema}
-                  // isDirector={isDirector}
-                  // director={isDirector ? true : false}
-                  // addIsLoading={
-                  //   addState.isLoading ||
-                  //   deleteState.isLoading ||
-                  //   updateState.isLoading ||
-                  //   memberAddState.isLoading ||
-                  //   memberUpdateState.isLoading ||
-                  //   dirAddState.isLoading
-                  // }
-                  // selectedToEdit={selectedToEdit}
-                  // directorsInfo={directorsLaunchInfo}
                 />
               </DialogContent>
             </Dialog>

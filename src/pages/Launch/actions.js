@@ -120,7 +120,7 @@ export const checkMemberExistence = async (info) => {
           info.formData.email.toLowerCase() &&
         member.memberPhone === info.formData.phone
     );
-    if (member.length > 0) return { data: true };
+    if (member.length > 0) return { data: { status: true, data: member[0] } };
     else return { data: false };
   } else {
     return { error: members.error };

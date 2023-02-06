@@ -217,7 +217,6 @@ export const checkInfoDirectorSchema = yup.object().shape({
   fullName: yup.string().required("Full name is a required field"),
   phone: yup.string().required("Phone number is a required field"),
   email: yup.string().email("Enter a valid email address").required(),
-  regNo: yup.number().required("Registration number is required"),
   nin: yup
     .number()
     .typeError("Enter your identification number")

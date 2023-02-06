@@ -8,7 +8,7 @@ export const handleDirectorAdd = async (info) => {
     memberCode: info.addMemberData.memberCode,
     directorRole: "null",
     directorIdentificationNumber: info.formData.nin,
-    directorRegistrationNumber: info.formData.regNo,
+    directorRegistrationNumber: "",
   };
   // Send the required payload to the backend
   let addDirectorResponse = await info.addDirector(requiredDirectorData);
@@ -41,7 +41,7 @@ export const handleDirectorUpdate = async (info) => {
     directorRole: "null",
     directorCode: info.directorCode,
     directorIdentificationNumber: info.formData.nin,
-    directorRegistrationNumber: info.formData.regNo,
+    directorRegistrationNumber: "",
   };
 
   // TODO

@@ -1,6 +1,10 @@
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController } from "containers";
-import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
+import {
+  CheckoutFormInfo,
+  CheckoutSection,
+  MembersBasicInfo,
+} from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import React, { useEffect, useState } from "react";
@@ -29,6 +33,7 @@ import {
   useUpdateMemberMutation,
   useViewDirectorsMutation,
   useViewMembersMutation,
+  useViewShareholdersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
 import {
@@ -46,11 +51,18 @@ import AppFeedback from "components/AppFeedback";
 import {
   checkMemberExistence,
   handleMemberAdd,
+  handleMemberDelete,
   handleMemberUpdate,
   handleResponse,
 } from "../actions";
-import { handleDirectorAdd, handleDirectorUpdate } from "./actionss";
+import {
+  handleDirectorAdd,
+  handleDirectorDelete,
+  handleDirectorsView,
+  handleDirectorUpdate,
+} from "./actionss";
 import { handleError } from "utils/globalFunctions";
+import { handleSingleShareholderView } from "../ShareHoldersInfo/actionss";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -69,8 +81,9 @@ const DirectorsInfo = () => {
   const [updateDirector, updateState] = useUpdateDirectorMutation();
   const [addMember, memberAddState] = useAddMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
-  const [deleteMember] = useDeleteMemberMutation();
+  const [deleteMember, memberDelState] = useDeleteMemberMutation();
   const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
+  const [viewShareholders, viewState] = useViewShareholdersMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
 
   // // This gets the directors information from the store
@@ -90,28 +103,36 @@ const DirectorsInfo = () => {
     };
     let memberCheck = await checkMemberExistence(actionInfo_M);
 
-    let actionInfo_D = {
-      ...actionInfo_M,
-      addDirector: addDirector,
-    };
-    if (memberCheck.data) {
-      // ADD DIRECTOR
-      let directorResponse = await handleDirectorAdd(actionInfo_D);
-      handleResponse(directorResponse, "Director added successfully");
+    if (memberCheck.data.status) {
+      // THROW ERROR
+      toast.error("Director exists");
+      return false;
     } else {
-      // ADD MEMBER
-      let memberResponse = await handleMemberAdd(actionInfo_M);
-      actionInfo_D = {
-        ...actionInfo_D,
-        ...memberResponse,
+      let actionInfo_M = {
+        ...launchResponse,
+        formData: formData,
+        viewMembers: viewMembers,
+        addMember: addMember,
       };
+      let memberCheck = await checkMemberExistence(actionInfo_M);
+
+      let memberResponse = memberCheck?.data?.status
+        ? memberCheck.data
+        : await handleMemberAdd(actionInfo_M);
+
       if (memberResponse.data) {
         // ADD DIRECTOR
+        let actionInfo_D = {
+          ...actionInfo_M,
+          addMemberData: memberResponse.data,
+          addDirector: addDirector,
+        };
         let directorResponse = await handleDirectorAdd(actionInfo_D);
         handleResponse(directorResponse, "Director added successfully");
       } else {
         handleError(memberResponse?.error);
       }
+      return true;
     }
   };
 
@@ -144,11 +165,20 @@ const DirectorsInfo = () => {
     setSelectedToDelete(director);
     let actionInfo_D = {
       ...launchResponse,
-      memberCode: director.memberCode,
+      ...director,
       deleteDirector: deleteDirector,
       deleteMember: deleteMember,
     };
+    let directorResponse = await handleDirectorDelete(actionInfo_D);
     // DELETE MEMBER
+    let actionInfo_S = {
+      launchCode: actionInfo_D.launchCode,
+      memberCode: actionInfo_D.memberCode,
+      viewShareholders: viewShareholders,
+      viewMembers: viewMembers,
+    };
+    let shareholder = await handleSingleShareholderView(actionInfo_S);
+    if (shareholder?.data) return;
     let actionInfo_M = {
       launchCode: actionInfo_D.launchCode,
       memberCode: actionInfo_D.memberCode,
@@ -156,20 +186,25 @@ const DirectorsInfo = () => {
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
     console.log(memberResponse);
+    setSelectedToDelete(director);
   };
 
+  //
+
+  // VIEW ALL DIRECTORS
   const handleView = async () => {
     let actionInfo = {
       ...launchResponse,
-      viewShareholders: viewShareholders,
+      viewDirectors: viewDirectors,
       viewMembers: viewMembers,
     };
-    // VIEW ALL SHAREHOLDERS
-    let shareholderResponse = await handleShareholdersView(actionInfo);
-    if (shareholderResponse.data) {
-      setShareholdersInfo(shareholderResponse.data);
+    // VIEW ALL DIRECTORS
+    let directorResponse = await handleDirectorsView(actionInfo);
+    console.log(directorResponse);
+    if (directorResponse.data) {
+      setDirectorsInfo(directorResponse.data);
     } else {
-      handleError(shareholderResponse?.error);
+      handleError(directorResponse?.error);
     }
   };
 
@@ -177,23 +212,20 @@ const DirectorsInfo = () => {
     if (cardAction === "") handleView();
   }, [cardAction, selectedToDelete]);
 
+  //
+
   const handlePopulate = (setValue) => {
     // console.log(selectedToEdit);
     if (cardAction === "edit") {
       setValue("fullName", selectedToEdit?.memberName);
       setValue("email", selectedToEdit?.memberEmail);
       setValue("phone", selectedToEdit?.memberPhone);
-      setValue(
-        "sharePercentage",
-        selectedToEdit?.shareholderOwnershipPercentage
-      );
-      setValue("nin", selectedToEdit.shareholderIdentificationNumber);
+      setValue("nin", selectedToEdit.directorIdentificationNumber);
       // setValue("regNo", selectedToEdit.shareholderRegistrationNumber);
     } else {
       setValue("fullName", "");
       setValue("email", "");
       setValue("phone", "");
-      setValue("sharePercentage", "");
       setValue("nin", "");
       setValue("regNo", "");
     }
@@ -421,49 +453,54 @@ const DirectorsInfo = () => {
                 email={director?.memberEmail}
                 phone={director?.memberPhone}
                 director_role={director.directorRole}
-                editAction={() => handleEdit(director)}
+                editAction={() => handleEditButton(director)}
                 deleteAction={() => handleDelete(director)}
                 isLoading={
                   selectedToDelete?.directorCode === director?.directorCode &&
-                  deleteState?.isLoading
+                  (deleteState?.isLoading || memberDelState?.isLoading)
                     ? true
                     : false
                 }
               />
             ))}
             {!useSidebriefDirectors && (
-              <AddMore onClick={handleAddMore}>
+              <AddMore onClick={handleAddButton}>
                 <AddIcon />
                 <span>Add a Director</span>
               </AddMore>
             )}
             <Dialog open={openModal}>
               <DialogContent style={modalStyle}>
-                <CheckoutFormInfo
+                <MembersBasicInfo
                   title="Director"
-                  handleClose={handleModalClose}
-                  handleAdd={handleDirectorAdd}
-                  handleUpdate={handleDirectorUpdate}
-                  cardAction={cardAction}
-                  checkInfoSchema={checkInfoDirectorSchema}
-                  director
-                  selectedToEdit={selectedToEdit}
-                  addIsLoading={
+                  handleClose={() => setOpenModal(false)}
+                  submitForm={handleFormSubmit}
+                  populateModal={handlePopulate}
+                  infoSchema={checkInfoDirectorSchema}
+                  info={selectedToEdit}
+                  isLoading={
                     addState.isLoading ||
-                    deleteState.isLoading ||
-                    memberAddState.isLoading ||
                     updateState.isLoading ||
-                    memberUpdateState.isLoading
+                    memberAddState.isLoading ||
+                    memberUpdateState.isLoading ||
+                    viewMembersState.isLoading
                   }
+                  director
+                  // handleAdd={handleDirectorAdd}
+                  // handleUpdate={handleDirectorUpdate}
+                  // cardAction={cardAction}
+                  // checkInfoSchema={checkInfoDirectorSchema}
+                  // director
+                  // selectedToEdit={selectedToEdit}
                 />
               </DialogContent>
             </Dialog>
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
-              backAction={handlePrev}
+              backAction={() => navigate(-1)}
               backText={"Previous"}
-              forwardAction={handleNext}
+              forwardAction={() => navigate("/launch/beneficiaries-info")}
               forwardText={"Proceed"}
               forwardDisable={
                 directorsInfo.length === 0 && !useSidebriefDirectors
