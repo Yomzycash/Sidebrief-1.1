@@ -6,10 +6,6 @@ export const launchApi = createApi({
     baseUrl: `${process.env.REACT_APP_DEV_BASE_URL}`,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
-      console.log("Token: ", token);
-      // const token =
-      //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzMzg2MTViNDkyNzJlYjA2NjNjNWI5YiIsImlhdCI6MTY2NDczOTc2MiwiZXhwIjoxNjY1OTQ5MzYyfQ.Ap5TmC_WE-IjoX2pPJqYtaHcLmrfwBb3LlXSziJ7z5k";
-      // If we have a token set in state, let's assume that we should be passing it.
       headers.set("Access-Control-Allow-Origin", "*");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
