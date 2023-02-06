@@ -54,7 +54,7 @@ const Name = styled.p`
 	font-size: 14px;
 	line-height: 21px;
 	letter-spacing: -0.02em;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 	font-family: "BR Firma";
 	text-transform: capitalize;
 `;

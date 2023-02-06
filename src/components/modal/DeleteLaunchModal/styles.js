@@ -49,7 +49,7 @@ export const Heading = styled.h6`
 	line-height: 24px;
 	letter-spacing: -0.5px;
 
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const Text = styled.p`

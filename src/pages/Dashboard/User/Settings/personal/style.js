@@ -35,7 +35,7 @@ export const Name = styled.h6`
 	font-size: 20px;
 	line-height: 24px;
 	letter-spacing: -0.02em;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const Position = styled.p`
@@ -93,7 +93,7 @@ export const BottomFrame = styled.div`
 		border: none;
 
 		input {
-			color: #242627;
+			color: ${({ theme }) => theme.grey1};
 		}
 	} */
 `;
@@ -135,7 +135,7 @@ export const UploadText = styled.div`
 		font-weight: 600;
 		font-size: 14px;
 		line-height: 21px;
-		color: #242627;
+		color: ${({ theme }) => theme.grey1};
 	}
 
 	p {

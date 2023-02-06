@@ -28,7 +28,7 @@ export const TextContainer = styled.div`
 		font-size: 20px;
 		line-height: 30px;
 		letter-spacing: -0.02em;
-		color: #242627;
+		color: ${({ theme }) => theme.grey1};
 	}
 
 	p {

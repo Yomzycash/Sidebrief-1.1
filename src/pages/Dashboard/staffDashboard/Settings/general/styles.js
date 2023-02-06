@@ -45,7 +45,7 @@ export const Name = styled.h6`
 	font-size: 16px;
 	line-height: 20px;
 	letter-spacing: -0.02em;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const Title = styled.p`
