@@ -1,12 +1,12 @@
 import { handleMembersView } from "../actions";
 
 // This adds the person as a member and a director
-// info needs to entail: launchCode, formData, memberInfo, addDirector and addMember
+// info needs to entail: launchCode, formData, addMemberData, addDirector and addMember
 export const handleDirectorAdd = async (info) => {
   const requiredDirectorData = {
     launchCode: info.launchCode,
-    memberCode: info.memberInfo.memberCode,
-    directorRole: info.formData.dirRole,
+    memberCode: info.addMemberData.memberCode,
+    directorRole: "null",
     directorIdentificationNumber: info.formData.nin,
     directorRegistrationNumber: info.formData.regNo,
   };
@@ -21,7 +21,7 @@ export const handleDirectorAdd = async (info) => {
     // Get the information of the just added director
     const directorInfo = allDirectors[allDirectors.length - 1][1];
     // Merge the member information and the director information of the just added director
-    let directorAllInfo = { ...info.memberInfo, ...directorInfo };
+    let directorAllInfo = { ...info.addMemberData, ...directorInfo };
     return { data: directorAllInfo };
   } else {
     return { error: addDirectorResponse.error };
@@ -38,7 +38,7 @@ export const handleDirectorUpdate = async (info) => {
   const requiredDirectorUpdateData = {
     launchCode: info.launchCode,
     memberCode: info.memberCode,
-    directorRole: info.formData.dirRole,
+    directorRole: "null",
     directorCode: info.directorCode,
     directorIdentificationNumber: info.formData.nin,
     directorRegistrationNumber: info.formData.regNo,
@@ -73,7 +73,7 @@ export const handleDirectorDelete = async (info) => {
     launchCode: info.launchCode,
     directorCode: info.directorCode,
     memberCode: info.memberCode,
-    directorRole: info.directorRole,
+    directorRole: "null",
   };
 
   // The delete response gotten from the backend
@@ -107,7 +107,7 @@ export const handleDirectorsView = async (info) => {
   if (directors.data) {
     let directorsData = [...directors.data.businessDirectors];
     let membersData = await handleMembersView(info);
-    let mergedInfo = mergeInfo(directorsData, membersData);
+    let mergedInfo = mergeInfo(directorsData, membersData.data);
     return { data: mergedInfo };
   } else if (directors.error) {
     return { error: directors.error };
@@ -119,21 +119,22 @@ export const handleDirectorsView = async (info) => {
 //
 
 // This returns a single director's info
-export const handleDirectorView = async (directorCode) => {
-  let directors = await handleDirectorsView();
+// info needs to entail: ...launchResponse, memberCode, viewDirectors and viewMembers
+export const handleSingleDirectorView = async (info) => {
+  let directors = await handleDirectorsView(info);
 
   if (directors.data) {
-    let director = directors?.data?.filter(
-      (el) => el.directorCode === directorCode
+    let director = directors.data?.filter(
+      (el) => el.memberCode === info.memberCode
     );
-    if (director) {
+    if (director.length > 0) {
       // TODO
-      return { data: director };
+      return { data: director[0] };
     } else {
-      return { error: director };
+      return { error: "Director does not exist" };
     }
-  } else if (directors.error) {
-    return { error: directors.error };
+  } else {
+    return { error: directors?.error };
   }
 };
 

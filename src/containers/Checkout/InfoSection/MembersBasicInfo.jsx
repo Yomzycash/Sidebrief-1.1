@@ -14,29 +14,41 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { directorRoleOptions, shareTypeOptions } from "utils/config";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { useAddMemberMutation } from "services/launchService";
+import {
+  useAddMemberMutation,
+  useViewDirectorsMutation,
+  useViewMembersMutation,
+} from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
 import { ThreeDots } from "react-loading-icons";
 import { memberAdd } from "./actions";
+import { handleSingleDirectorView } from "pages/Launch/DirectorsInfo/actionss";
 
-export const CheckoutFormInfo = ({
+export const MembersBasicInfo = ({
   title,
   handleClose,
-  shareholder,
-  director,
-  beneficiary,
-  cardAction,
-  checkInfoSchema,
-  shareDirSchema,
-  handleAdd,
-  handleUpdate,
-  addIsLoading,
-  selectedToEdit,
+  submitForm,
+  populateModal,
+  shareCompanySchema,
   infoSchema,
-  info
+  info,
+  isLoading,
+  shareholder,
+  beneficiary,
+  // cardAction,
+  // checkInfoSchema,
+  // shareDirSchema,
+  // handleAdd,
+  // handleUpdate,
+  // addIsLoading,
+  // selectedToEdit,
 }) => {
+  const [viewMembers, viewMembersState] = useViewMembersMutation();
+  const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
+
+  let launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   // const [buttonText] = useState(cardAction === "edit" ? "Update" : "Save");
   // const [directorInitialRole] = useState(selectedToEdit?.directorRole);
   // const [isDirector, setIsDirector] = useState(
@@ -56,19 +68,54 @@ export const CheckoutFormInfo = ({
   //     shareDirSchema && isDirector ? shareDirSchema : checkInfoSchema
   //   ),
   // });
-  let edit = info?.memberName
-  let shareholderIsDir = info?.directorCode
+  let edit = info?.memberName;
 
-   const {
+  const [isCompany, setIsCompany] = useState(false);
+  const [isDirector, setIsDirector] = useState(false);
+  // const [defaultPhone] = useState(
+  //   edit ? info.memberPhone || info.beneficialOwnerPhone : ""
+  // );
+
+  const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(
-      shareDirSchema && isDirector ? shareDirSchema : checkInfoSchema
+      shareCompanySchema && isCompany ? shareCompanySchema : infoSchema
     ),
   });
+
+  useEffect(() => {
+    if (edit) {
+      populateModal(setValue);
+      if (shareholder) handleCheckBoxes();
+    }
+  }, [isCompany, isDirector]);
+
+  const handleCheckBoxes = async () => {
+    if (info?.shareholderRegistrationNumber) {
+      setIsCompany(true);
+      setValue("isCompany", true);
+      setValue("regNo", info.shareholderRegistrationNumber);
+    }
+    let actionInfo = {
+      ...launchInfo,
+      memberCode: info.memberCode,
+      viewMembers: viewMembers,
+      viewDirectors: viewDirectors,
+    };
+    let shareholderIsDir = await handleSingleDirectorView(actionInfo);
+    if (shareholderIsDir.data) {
+      setValue("isDirector", true);
+      setIsDirector(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!isCompany) setValue("regNo", "");
+  }, [isCompany]);
 
   // const launchInfoFromStore = useSelector((store) => store.LaunchReducer);
   // const { generatedLaunchCode } = launchInfoFromStore;
@@ -110,7 +157,7 @@ export const CheckoutFormInfo = ({
   //     setValue("full_name", selectedToEdit?.memberName);
   //     setValue("email", selectedToEdit?.memberEmail);
   //     setValue(
-  //       "share_percentage",
+  //       "sharePercentage",
   //       selectedToEdit?.shareholderOwnershipPercentage
   //     );
   //     setValue("isDirector", isDirector);
@@ -121,16 +168,16 @@ export const CheckoutFormInfo = ({
   //       shouldValidate: true,
   //     });
   //     handleNumberChange(selectedToEdit?.memberPhone);
-  //     // setValue("director_role", selectedToEdit.directorRole, {
+  //     // setValue("directorRole", selectedToEdit.directorRole, {
   //     //   shouldValidate: true,
   //     // });
 
   //     // handleShareTypeChange({
-  //     //   share_type: selectedToEdit?.shareholderOwnershipType,
+  //     //   shareType: selectedToEdit?.shareholderOwnershipType,
   //     // });
 
   //     // handleDirectorRoleChange({
-  //     //   director_role: selectedToEdit?.directorRole,
+  //     //   directorRole: selectedToEdit?.directorRole,
   //     // });
 
   //     if (beneficiary) {
@@ -147,28 +194,27 @@ export const CheckoutFormInfo = ({
   //   setValue("isDirector", isDirector);
   // }, [isDirector]);
 
-  // // This sets the share type value - attached to the onChange event
-  // const handleShareTypeChange = (value) => {
-  //   var string = Object.values(value)[0];
-  //   setValue("share_type", string, { shouldValidate: true });
-  // };
-
-  // // This sets the director role value - attached to the onChange event
-  // const handleDirectorRoleChange = (value) => {
-  //   var string = Object.values(value)[0];
-  //   setValue("director_role", string, { shouldValidate: true });
-  // };
-
-  // // This sets the phone number value - attached to the onChange event
-  // const handleNumberChange = (value) => {
-  //   setValue("phone", value, { shouldValidate: true });
+  // This sets the share type value - attached to the onChange event
+  const handleShareTypeChange = (value) => {
+    var string = Object.values(value)[0];
+    setValue("shareType", string, { shouldValidate: true });
   };
 
+  // This sets the director role value - attached to the onChange event
+  const handleDirectorRoleChange = (value) => {
+    var string = Object.values(value)[0];
+    setValue("directorRole", string, { shouldValidate: true });
+  };
+
+  // This sets the phone number value - attached to the onChange event
+  const handleNumberChange = (value) => {
+    setValue("phone", value, { shouldValidate: true });
+  };
   return (
     <Form onSubmit={handleSubmit(submitForm)}>
       <Title>
         <p>
-          {cardAction === "edit" ? "Update" : "Add a"} {title}
+          {edit ? "Update" : "Add a"} {title}
         </p>
         <div style={{ cursor: "pointer" }}>
           <CloseIcon onClick={handleClose} />
@@ -176,25 +222,34 @@ export const CheckoutFormInfo = ({
       </Title>
       <CheckInputWrapper>
         <InputWithLabel
-          label="Full Name (or Company Name, if Company) "
+          label={
+            isCompany
+              ? "Company Name"
+              : "Full Name (or Company Name, if Company) "
+          }
           labelStyle="input-label"
           bottomText="Please start with the first name then the middle name (if available) and finally the last name"
           type="text"
-          name="full_name"
+          name="fullName"
           inputClass="input-class"
           bottomTextClass="bottom-text-class"
           containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.full_name?.message}
+          errorMessage={errors.fullName?.message}
         />
 
         <DetailedSection>
           <NumberInput
-            label="Phone number"
+            label="Phone Number"
             labelStyle="input-label"
             containerStyle="input-container-class"
             name="phone"
-            value={defaultPhone}
+            value={
+              edit
+                ? info?.memberPhone.toString() ||
+                  info?.beneficialOwnerPhone.toString()
+                : ""
+            }
             type="number"
             phoneInputStyles={{
               // height: "48px",
@@ -206,7 +261,6 @@ export const CheckoutFormInfo = ({
             register={register}
             onChange={handleNumberChange}
           />
-
           <InputWithLabel
             label="Email Address"
             labelStyle="input-label"
@@ -218,20 +272,23 @@ export const CheckoutFormInfo = ({
             errorMessage={errors.email?.message}
           />
         </DetailedSection>
-        {shareholder && (
-          <DetailedSection>
+
+        <DetailedSection>
+          {shareholder && (
             <InputWithLabel
-              name="share_percentage"
+              name="sharePercentage"
               label="Share Percentage"
               labelStyle="input-label"
               containerStyle="input-container-class"
               type="number"
               inputClass="input-class"
               register={register}
-              errorMessage={errors.share_percentage?.message}
+              errorMessage={errors.sharePercentage?.message}
             />
+          )}
+          {!beneficiary && (
             <InputWithLabel
-              label="NIN (National Identification Number)"
+              label="Identification Number (e.g. NIN)"
               labelStyle="input-label"
               containerStyle="input-container-class"
               type="number"
@@ -240,46 +297,46 @@ export const CheckoutFormInfo = ({
               register={register}
               errorMessage={errors.nin?.message}
             />
-            {/* <DropDown
+          )}
+          {/* <DropDown
               containerStyle={{ margin: 0, marginBottom: "24px" }}
               label="Share Type"
               labelStyle="input-label"
               options={shareTypeOptions}
               onChange={handleShareTypeChange}
-              errorMessage={errors.share_type?.message}
-              cardAction={cardAction}
-              defaultValue={selectedToEdit?.shareholderOwnershipType}
+              errorMessage={errors.shareType?.message}
+              defaultValue={info?.shareholderOwnershipType}
               fontSize="clamp(12px, 1.2vw, 14px)"
               height="40px"
               launch
             /> */}
-          </DetailedSection>
-        )}
-        {(isDirector || director) && (
+        </DetailedSection>
+        {!beneficiary && isCompany && (
           <InputWithLabel
             label="Registration Number"
             labelStyle="input-label"
             containerStyle="input-container-class"
             type="number"
-            name="reg_number"
+            name="regNo"
             inputClass="input-class"
             register={register}
-            errorMessage={errors.reg_number?.message}
+            errorMessage={errors.regNo?.message}
           />
-          // <DropDown
-          //   containerStyle={{ margin: 0, marginBottom: "24px" }}
-          //   label="Director Role"
-          //   labelStyle="input-label"
-          //   options={directorRoleOptions}
-          //   onChange={handleDirectorRoleChange}
-          //   errorMessage={errors.director_role?.message}
-          //   cardAction={cardAction}
-          //   defaultValue={directorInitialRole}
-          //   fontSize="clamp(12px, 1.2vw, 14px)"
-          //   height="40px"
-          //   launch
-          // />
         )}
+        {/* {director && (
+          <DropDown
+            containerStyle={{ margin: 0, marginBottom: "24px" }}
+            label="Director Role"
+            labelStyle="input-label"
+            options={directorRoleOptions}
+            onChange={handleDirectorRoleChange}
+            errorMessage={errors.directorRole?.message}
+            defaultValue={info?.directorRole}
+            fontSize="clamp(12px, 1.2vw, 14px)"
+            height="40px"
+            launch
+          />
+        )} */}
         {beneficiary && (
           <DetailedSection>
             <InputWithLabel
@@ -309,24 +366,26 @@ export const CheckoutFormInfo = ({
             <div>
               <input
                 type="checkbox"
-                id="member-type1"
+                id="is_company"
                 name="isCompany"
+                checked={isCompany}
+                onClick={() => setIsCompany(!isCompany)}
                 {...register("isCompany")}
               />
-              <label htmlFor="member-type1">
+              <label htmlFor="is_company">
                 Click here if {title} is a <span>Company</span>
               </label>
             </div>
             <div>
               <input
                 type="checkbox"
-                id="member-type2"
+                id="is_director"
                 name="isDirector"
                 checked={isDirector}
                 onClick={() => setIsDirector(!isDirector)}
                 {...register("isDirector")}
               />
-              <label onClick={() => setIsDirector(!isDirector)}>
+              <label htmlFor="is_director">
                 Click here if {title} is a <span>Director</span>
               </label>
             </div>
@@ -341,15 +400,16 @@ export const CheckoutFormInfo = ({
         backBottonStyle={buttonStyles}
         forwardButtonStyle={buttonStyles}
         forwardSubmit
-        forwardLoading={addIsLoading || isLoading || isSuccess}
+        // forwardLoading={addIsLoading || isLoading || isSuccess}
+        forwardLoading={isLoading}
         forwardText={
           // addIsLoading || isLoading || isSuccess ? (
           //   <ThreeDots stroke="#98ff98" fill="white" width={50} />
           // ) : (
-          buttonText
+          edit ? "Update" : "Add"
           // )
         }
-        forwardDisable={addIsLoading || isLoading || isSuccess}
+        forwardDisable={isLoading}
         $modal
       />
     </Form>

@@ -5,43 +5,34 @@ import {
 } from "../actions";
 
 // This adds the person as a member and a shareholder
-// info needs to entail: launchCode, formData, addShareholder and addMember
+// info needs to entail: launchCode, addMemberData, formData, addShareholder and addMember
 export const handleShareholderAdd = async (info) => {
-  // TODO
-  let addMemberResponse = await handleMemberAdd({ info: info });
+  const requiredShareholderData = {
+    launchCode: info.launchCode,
+    // TODO
+    memberCode: info.addMemberData.memberCode,
+    shareholderOwnershipPercentage: info.formData.sharePercentage,
+    shareholderOwnershipType: "null",
+    shareholderIdentificationNumber: info.formData.nin,
+    shareholderRegistrationNumber: info.formData.regNo || null,
+  };
 
-  if (addMemberResponse.data) {
-    const requiredShareholderData = {
-      launchCode: info.launchCode,
-      // TODO
-      memberCode: addMemberResponse.data.memberCode,
-      shareholderOwnershipPercentage: info.formData.sharePercentage,
-      shareholderOwnershipType: info.formData.type,
-      shareholderIdentificationNumber: info.formData.nin,
-      shareholderRegistrationNumber: info.formData.regNo || null,
+  // Send the required payload to the backend
+  let response = await info.addShareHolder(requiredShareholderData);
+
+  if (response.data) {
+    // Get the information of all added shareholder
+    const allShareholders = Object.entries(response.data.businessShareholders);
+    // Get the information of the just added shareholder
+    const shareholderInfo = allShareholders[allShareholders.length - 1][1];
+    // Merge the member information and the shareholder information of the just added shareholder
+    let shareholderAllInfo = {
+      ...info.addMemberData,
+      ...shareholderInfo,
     };
-
-    // Send the required payload to the backend
-    let response = await info.addShareHolder(requiredShareholderData);
-
-    if (response.data) {
-      // Get the information of all added shareholder
-      const allShareholders = Object.entries(
-        response.data.businessShareholders
-      );
-      // Get the information of the just added shareholder
-      const shareholderInfo = allShareholders[allShareholders.length - 1][1];
-      // Merge the member information and the shareholder information of the just added shareholder
-      let shareholderAllInfo = {
-        ...addMemberResponse.data,
-        ...shareholderInfo,
-      };
-      return { data: shareholderAllInfo };
-    } else {
-      return { error: response?.error.data.message };
-    }
+    return { data: shareholderAllInfo };
   } else {
-    return { error: addMemberResponse.error };
+    return { error: response?.error };
   }
 };
 
@@ -52,37 +43,31 @@ export const handleShareholderAdd = async (info) => {
 // This updates the person's shareholder info and member info
 // info needs to entail: launchCode, formData, shareholdingCode, memberCode, updateShareholder and updateMember
 export const handleShareholderUpdate = async (info) => {
-  let updateMemberResponse = await handleMemberUpdate({ info: info });
+  const requiredShareholderUpdateData = {
+    launchCode: info.launchCode,
+    memberCode: info.addMemberData.memberCode,
+    shareholderOwnershipPercentage: info.formData.sharePercentage,
+    shareholderOwnershipType: "null",
+    shareholderIdentificationNumber: info.formData.nin,
+    shareholderRegistrationNumber: info.formData.regNo || null,
+    shareholdingCode: info.shareholdingCode,
+  };
 
-  if (updateMemberResponse.data) {
-    const requiredShareholderUpdateData = {
-      launchCode: info.launchCode,
-      memberCode: updateMemberResponse.data.memberCode,
-      shareholderOwnershipPercentage: info.formData.sharePercentage,
-      shareholderOwnershipType: info.formData.type,
-      shareholderIdentificationNumber: info.formData.nin,
-      shareholderRegistrationNumber: info.formData.regNo || null,
-      shareholdingCode: info.shareholdingCode,
-    };
+  // TODO
 
-    // TODO
+  // Responses from the backend
+  let shareholdersUpdateResponse = await info.updateShareholder(
+    requiredShareholderUpdateData
+  );
+  // The data from the response got from the backend
+  let shareholdersUpdatedData =
+    shareholdersUpdateResponse?.data?.businessShareholders;
+  let error = shareholdersUpdateResponse?.error;
 
-    // Responses from the backend
-    let shareholdersUpdateResponse = await info.updateShareholder(
-      requiredShareholderUpdateData
-    );
-    // The data from the response got from the backend
-    let shareholdersUpdatedData =
-      shareholdersUpdateResponse?.data?.businessShareholders;
-    let error = shareholdersUpdateResponse?.error;
-
-    if (shareholdersUpdatedData) {
-      return { data: shareholdersUpdatedData };
-    } else if (error) {
-      return { error: error };
-    }
-  } else {
-    return { error: updateMemberResponse.error };
+  if (shareholdersUpdatedData) {
+    return { data: shareholdersUpdatedData };
+  } else if (error) {
+    return { error: error };
   }
 };
 
@@ -98,7 +83,7 @@ export const handleShareholderDelete = async (info) => {
     shareholdingCode: info.shareholdingCode,
     memberCode: info.memberCode,
     shareholderOwnershipPercentage: info.shareholderOwnershipPercentage,
-    shareholderOwnershipType: info.shareholderOwnershipType,
+    shareholderOwnershipType: "null",
   };
   // The delete response gotten from the backend
   let deleteResponse = await info.deleteShareholder(requiredDeleteData);
@@ -133,7 +118,7 @@ export const handleShareholdersView = async (info) => {
     let shareholdersData = [...shareholders.data.businessShareholders];
     let membersData = await handleMembersView(info);
     // Merge shareholders shareholder's data and member data
-    let mergedInfo = mergeInfo(shareholdersData, membersData);
+    let mergedInfo = mergeInfo(shareholdersData, membersData.data);
     return { data: mergedInfo };
   } else if (shareholders.error) {
     return { error: shareholders.error };
@@ -145,18 +130,18 @@ export const handleShareholdersView = async (info) => {
 //
 
 // This returns a single shareholder's info
-export const handleShareholderView = async (shareholdingCode) => {
+export const handleSingleShareholderView = async (memberCode) => {
   let shareholders = await handleShareholdersView();
 
   if (shareholders.data) {
     let shareholder = shareholders?.data?.filter(
-      (el) => el.shareholdingCode === shareholdingCode
+      (el) => el.memberCode === memberCode
     );
-    if (shareholder) {
+    if (shareholder.length > 0) {
       // TODO
-      return { data: shareholder };
+      return { data: shareholder[0] };
     } else {
-      return { error: shareholder };
+      return { error: "Shareholder does not exist" };
     }
   } else if (shareholders.error) {
     return { error: shareholders.error };

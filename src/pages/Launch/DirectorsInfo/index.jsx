@@ -43,6 +43,14 @@ import {
 } from "containers/Checkout/InfoSection/actions";
 import { Puff } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
+import {
+  checkMemberExistence,
+  handleMemberAdd,
+  handleMemberUpdate,
+  handleResponse,
+} from "../actions";
+import { handleDirectorAdd, handleDirectorUpdate } from "./actionss";
+import { handleError } from "utils/globalFunctions";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -65,17 +73,142 @@ const DirectorsInfo = () => {
   const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
 
-  // This gets the directors information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { directorsLaunchInfo, shareholdersLaunchInfo, launchResponse } =
-    LaunchApplicationInfo;
+  // // This gets the directors information from the store
+  // const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+  // const { directorsLaunchInfo, shareholdersLaunchInfo, launchResponse } =
+  //   LaunchApplicationInfo;
 
-  const handleNext = () => {
-    navigate("/launch/beneficiaries-info");
+  const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
+
+  // ADD A DIRECTOR
+  const handleAdd = async (formData) => {
+    let actionInfo_M = {
+      ...launchResponse,
+      formData: formData,
+      viewMembers: viewMembers,
+      addMember: addMember,
+    };
+    let memberCheck = await checkMemberExistence(actionInfo_M);
+
+    let actionInfo_D = {
+      ...actionInfo_M,
+      addDirector: addDirector,
+    };
+    if (memberCheck.data) {
+      // ADD DIRECTOR
+      let directorResponse = await handleDirectorAdd(actionInfo_D);
+      handleResponse(directorResponse, "Director added successfully");
+    } else {
+      // ADD MEMBER
+      let memberResponse = await handleMemberAdd(actionInfo_M);
+      actionInfo_D = {
+        ...actionInfo_D,
+        ...memberResponse,
+      };
+      if (memberResponse.data) {
+        // ADD DIRECTOR
+        let directorResponse = await handleDirectorAdd(actionInfo_D);
+        handleResponse(directorResponse, "Director added successfully");
+      } else {
+        handleError(memberResponse?.error);
+      }
+    }
   };
 
-  const handlePrev = () => {
-    navigate(-1);
+  //
+
+  // UPDATE A DIRECTOR
+  const handleUpdate = async (formData) => {
+    let actionInfo_M = {
+      ...launchResponse,
+      formData: formData,
+      ...selectedToEdit,
+      updateMember: updateMember,
+    };
+    // UPDATE MEMBER
+    let memberResponse = await handleMemberUpdate(actionInfo_M);
+    let actionInfo_D = {
+      ...actionInfo_M,
+      ...selectedToEdit,
+      updateDirector: updateDirector,
+    };
+    // UPDATE DIRECTOR
+    let directorResponse = await handleDirectorUpdate(actionInfo_D);
+    handleResponse(directorResponse, "Director updated successfully");
+  };
+
+  //
+
+  // DELETE A DIRECTOR
+  const handleDelete = async (director) => {
+    setSelectedToDelete(director);
+    let actionInfo_D = {
+      ...launchResponse,
+      memberCode: director.memberCode,
+      deleteDirector: deleteDirector,
+      deleteMember: deleteMember,
+    };
+    // DELETE MEMBER
+    let actionInfo_M = {
+      launchCode: actionInfo_D.launchCode,
+      memberCode: actionInfo_D.memberCode,
+      deleteMember: deleteMember,
+    };
+    let memberResponse = await handleMemberDelete(actionInfo_M);
+    console.log(memberResponse);
+  };
+
+  const handleView = async () => {
+    let actionInfo = {
+      ...launchResponse,
+      viewShareholders: viewShareholders,
+      viewMembers: viewMembers,
+    };
+    // VIEW ALL SHAREHOLDERS
+    let shareholderResponse = await handleShareholdersView(actionInfo);
+    if (shareholderResponse.data) {
+      setShareholdersInfo(shareholderResponse.data);
+    } else {
+      handleError(shareholderResponse?.error);
+    }
+  };
+
+  useEffect(() => {
+    if (cardAction === "") handleView();
+  }, [cardAction, selectedToDelete]);
+
+  const handlePopulate = (setValue) => {
+    // console.log(selectedToEdit);
+    if (cardAction === "edit") {
+      setValue("fullName", selectedToEdit?.memberName);
+      setValue("email", selectedToEdit?.memberEmail);
+      setValue("phone", selectedToEdit?.memberPhone);
+      setValue(
+        "sharePercentage",
+        selectedToEdit?.shareholderOwnershipPercentage
+      );
+      setValue("nin", selectedToEdit.shareholderIdentificationNumber);
+      // setValue("regNo", selectedToEdit.shareholderRegistrationNumber);
+    } else {
+      setValue("fullName", "");
+      setValue("email", "");
+      setValue("phone", "");
+      setValue("sharePercentage", "");
+      setValue("nin", "");
+      setValue("regNo", "");
+    }
+  };
+
+  const handleEditButton = (shareholder) => {
+    setSelectedToEdit(shareholder);
+    setCardAction("edit");
+    setOpenModal(true);
+  };
+
+  const handleAddButton = () => {
+    setSelectedToEdit({});
+    setCardAction("add");
+    setOpenModal(true);
   };
 
   const handleCheckbox = (checked) => {
@@ -87,143 +220,174 @@ const DirectorsInfo = () => {
     }
   };
 
-  const handleAddMore = () => {
-    setCardAction("add");
-    setOpenModal(true);
-  };
-  const handleModalClose = () => {
-    setOpenModal(false);
-  };
-
-  const handleEdit = (director) => {
-    setCardAction("edit");
-    setOpenModal(true);
-    setSelectedToEdit(director);
-  };
-
-  const handleError = (error) => {
-    if (error?.status === "FETCH_ERROR") {
-      toast.error("Please check your internet connection");
-    } else {
-      toast.error(error?.data.message);
-    }
-  };
-
-  // This deletes a director's informataion
-  const handleDelete = async (director) => {
-    setSelectedToDelete(director);
-
-    let deleteResponse = await directorDelete(director, deleteDirector);
-
-    let data = deleteResponse?.data;
-    let error = deleteResponse?.error;
-    if (data) toast.success("Director deleted successfully");
-    else handleError(error);
-  };
-
-  // This adds a new director
-  const handleDirectorAdd = async (formData, launchCode) => {
-    // Add a member
-    let addMemberResponse = await memberAdd(launchCode, formData, addMember);
-    let error = addMemberResponse?.error;
-
-    // Runs if successfully added member
-    if (addMemberResponse.data) {
-      const memberInfo = addMemberResponse.data;
-
-      const addDirectorResponse = await directorAdd(
-        launchCode,
-        formData,
-        memberInfo,
-        addDirector
-      );
-
-      let directorData = addDirectorResponse?.data;
-      let error = addDirectorResponse?.error;
-
-      if (directorData) {
-        toast.success("Director added successfully");
+  const handleFormSubmit = async (formData) => {
+    // console.log(formData);
+    if (cardAction === "add") {
+      let addResponse = await handleAdd(formData);
+      if (addResponse) {
+        setCardAction("");
         setOpenModal(false);
-      } else {
-        handleError(error);
       }
-    }
-    // Runs if failed to add member
-    else if (error) {
-      // console.log(error);
-      handleError(error);
-    }
-  };
-
-  // This updates the director's information
-  const handleDirectorUpdate = async (formData, selectedDirector) => {
-    // Responses from the backend
-    let directorsUpdateResponse = await directorUpdate(
-      formData,
-      selectedDirector,
-      updateDirector
-    );
-    let membersUpdateResponse = await memberUpdate(
-      formData,
-      selectedDirector,
-      updateMember
-    );
-
-    // The data from the response got from the backend
-    let directorsUpdatedData = directorsUpdateResponse?.data;
-    let membersUpdatedData = membersUpdateResponse?.data;
-    let error = directorsUpdateResponse?.error;
-
-    // Executes if data is returned from the backend
-    if (directorsUpdatedData) {
-      toast.success("Director updated successfully");
-      // const directorsMembersMerged = mergeInfo(
-      //   directorsUpdatedData,
-      //   membersUpdatedData
-      // );
-      // console.log(directorsMembersMerged);
-      // store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
-      handleModalClose();
-    } else {
-      handleError(error);
+    } else if (cardAction === "edit") {
+      await handleUpdate(formData);
+      setCardAction("");
+      setOpenModal(false);
     }
   };
+  // const handleNext = () => {
+  //   navigate("/launch/beneficiaries-info");
+  // };
 
-  // Get the data from backend and set to state
-  const viewDraft = async () => {
-    let requiredData = {
-      launchCode: launchResponse.launchCode,
-      registrationCountry: launchResponse.registrationCountry,
-      registrationType: launchResponse.registrationType,
-    };
+  // const handlePrev = () => {
+  //   navigate(-1);
+  // };
 
-    // Get data from view endpoints
-    let members = await viewMembers(requiredData);
-    let membersData = [...members.data.businessMembers];
-    let directors = await viewDirectors(requiredData);
-    let directorsData = [...directors.data.businessDirectors];
+  // const handleCheckbox = (checked) => {
+  //   setUseSidebriefDirectors(checked === true ? checked : false);
+  //   if (checked) {
+  //     localStorage.setItem("useSidebriefDirectors", checked);
+  //   } else {
+  //     localStorage.removeItem("useSidebriefDirectors");
+  //   }
+  // };
 
-    // Merge shareholders shareholder's data and member data
-    let mergedInfo = mergeInfo(directorsData, membersData);
+  // const handleAddMore = () => {
+  //   setCardAction("add");
+  //   setOpenModal(true);
+  // };
+  // const handleModalClose = () => {
+  //   setOpenModal(false);
+  // };
 
-    setDirectorsInfo(mergedInfo);
+  // const handleEdit = (director) => {
+  //   setCardAction("edit");
+  //   setOpenModal(true);
+  //   setSelectedToEdit(director);
+  // };
 
-    if (mergedInfo.length > 0) {
-      setUseSidebriefDirectors(false);
-      localStorage.removeItem("useSidebriefDirectors");
-    }
+  // const handleError = (error) => {
+  //   if (error?.status === "FETCH_ERROR") {
+  //     toast.error("Please check your internet connection");
+  //   } else {
+  //     toast.error(error?.data.message);
+  //   }
+  // };
 
-    return mergedInfo;
-  };
+  // // This deletes a director's informataion
+  // const handleDelete = async (director) => {
+  //   setSelectedToDelete(director);
 
-  useEffect(() => {
-    viewDraft();
-  }, [
-    addState.isSuccess,
-    deleteState.isSuccess,
-    updateState.isSuccess,
-    openModal,
-  ]);
+  //   let deleteResponse = await directorDelete(director, deleteDirector);
+
+  //   let data = deleteResponse?.data;
+  //   let error = deleteResponse?.error;
+  //   if (data) toast.success("Director deleted successfully");
+  //   else handleError(error);
+  // };
+
+  // // This adds a new director
+  // const handleDirectorAdd = async (formData, launchCode) => {
+  //   // Add a member
+  //   let addMemberResponse = await memberAdd(launchCode, formData, addMember);
+  //   let error = addMemberResponse?.error;
+
+  //   // Runs if successfully added member
+  //   if (addMemberResponse.data) {
+  //     const memberInfo = addMemberResponse.data;
+
+  //     const addDirectorResponse = await directorAdd(
+  //       launchCode,
+  //       formData,
+  //       memberInfo,
+  //       addDirector
+  //     );
+
+  //     let directorData = addDirectorResponse?.data;
+  //     let error = addDirectorResponse?.error;
+
+  //     if (directorData) {
+  //       toast.success("Director added successfully");
+  //       setOpenModal(false);
+  //     } else {
+  //       handleError(error);
+  //     }
+  //   }
+  //   // Runs if failed to add member
+  //   else if (error) {
+  //     // console.log(error);
+  //     handleError(error);
+  //   }
+  // };
+
+  // // This updates the director's information
+  // const handleDirectorUpdate = async (formData, selectedDirector) => {
+  //   // Responses from the backend
+  //   let directorsUpdateResponse = await directorUpdate(
+  //     formData,
+  //     selectedDirector,
+  //     updateDirector
+  //   );
+  //   let membersUpdateResponse = await memberUpdate(
+  //     formData,
+  //     selectedDirector,
+  //     updateMember
+  //   );
+
+  //   // The data from the response got from the backend
+  //   let directorsUpdatedData = directorsUpdateResponse?.data;
+  //   let membersUpdatedData = membersUpdateResponse?.data;
+  //   let error = directorsUpdateResponse?.error;
+
+  //   // Executes if data is returned from the backend
+  //   if (directorsUpdatedData) {
+  //     toast.success("Director updated successfully");
+  //     // const directorsMembersMerged = mergeInfo(
+  //     //   directorsUpdatedData,
+  //     //   membersUpdatedData
+  //     // );
+  //     // console.log(directorsMembersMerged);
+  //     // store.dispatch(setDirectorsLaunchInfo({ info: directorsMembersMerged }));
+  //     handleModalClose();
+  //   } else {
+  //     handleError(error);
+  //   }
+  // };
+
+  // // Get the data from backend and set to state
+  // const viewDraft = async () => {
+  //   let requiredData = {
+  //     launchCode: launchResponse.launchCode,
+  //     registrationCountry: launchResponse.registrationCountry,
+  //     registrationType: launchResponse.registrationType,
+  //   };
+
+  //   // Get data from view endpoints
+  //   let members = await viewMembers(requiredData);
+  //   let membersData = [...members.data.businessMembers];
+  //   let directors = await viewDirectors(requiredData);
+  //   let directorsData = [...directors.data.businessDirectors];
+
+  //   // Merge shareholders shareholder's data and member data
+  //   let mergedInfo = mergeInfo(directorsData, membersData);
+
+  //   setDirectorsInfo(mergedInfo);
+
+  //   if (mergedInfo.length > 0) {
+  //     setUseSidebriefDirectors(false);
+  //     localStorage.removeItem("useSidebriefDirectors");
+  //   }
+
+  //   return mergedInfo;
+  // };
+
+  // useEffect(() => {
+  //   viewDraft();
+  // }, [
+  //   addState.isSuccess,
+  //   deleteState.isSuccess,
+  //   updateState.isSuccess,
+  //   openModal,
+  // ]);
 
   // Set the progress of the application
   useEffect(() => {
