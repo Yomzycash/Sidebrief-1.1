@@ -1,15 +1,5 @@
-
-import styled from 'styled-components'
-import { useState } from 'react'
-
 const BusinessInfoDetail = () => {
+  return <></>;
+};
 
-
-  return (
-    <>
-      
-    </>
-  )
-}
-
-export default BusinessInfoDetail
+export default BusinessInfoDetail;

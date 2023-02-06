@@ -2,7 +2,7 @@ import { StaffBusinessTable } from "components/Staff/Tables";
 import React, { useEffect, useState } from "react";
 import { useGetApprovedLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
-import { format, compareDesc } from "date-fns";
+import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";

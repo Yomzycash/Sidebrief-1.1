@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FiArrowLeft } from "react-icons/fi";
-import { ReactComponent as Hide } from "asset/svg/Hide.svg";
-import { ReactComponent as GladeIcon } from "../../../../asset/images/Glade.svg";
 import ActiveNav from "components/navbar/ActiveNav";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "components/navbar";
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import { useSelector } from "react-redux";
 import Button from "components/button";
 import { useGetAllRewardsQuery } from "services/RewardService";
@@ -30,7 +26,7 @@ const StaffReward = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
+  const { data, isSuccess } = useGetAllRewardsQuery({
     refetchOnMountOrArgChange: true,
   });
   const [updateReward, updateState] = useUpdateRewardMutation();
@@ -222,13 +218,13 @@ const ButtonContainer = styled.div`
   align-items: flex-start;
 `;
 
-const Top = styled.div`
-  padding-inline: 40px;
-  padding-block: 40px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
+// const Top = styled.div`
+//   padding-inline: 40px;
+//   padding-block: 40px 0;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 24px;
+// `;
 
 const BackContainer = styled.div`
   display: flex;
@@ -287,27 +283,27 @@ const MiddleText = styled.h4`
 
   color: #4e5152;
 `;
-const BottomText = styled.h4`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
+// const BottomText = styled.h4`
+//   font-weight: 500;
+//   font-size: 14px;
+//   line-height: 24px;
 
-  color: #959697;
-`;
+//   color: #959697;
+// `;
 
-const ImageWrapper = styled.div``;
-const CountryName = styled.h2`
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  /* identical to box height, or 150% */
+// const ImageWrapper = styled.div``;
+// const CountryName = styled.h2`
+//   font-family: "BR Firma";
+//   font-style: normal;
+//   font-weight: 500;
+//   font-size: 16px;
+//   line-height: 24px;
+//   /* identical to box height, or 150% */
 
-  /* Grey 3 */
+//   /* Grey 3 */
 
-  color: #4e5152;
-`;
+//   color: #4e5152;
+// `;
 
 const LHS = styled.div`
   display: flex;
@@ -318,38 +314,38 @@ const LHS = styled.div`
   max-width: 70%;
 `;
 
-const RHS = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  gap: 24px;
-  width: 159px;
-  height: 44px;
-  background-color: #00a2d4;
-  border-radius: 8px;
-`;
+// const RHS = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   padding: 0px;
+//   gap: 24px;
+//   width: 159px;
+//   height: 44px;
+//   background-color: #00a2d4;
+//   border-radius: 8px;
+// `;
 
-const RightWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 24px 12px;
-  gap: 8px;
-  width: inherit;
-`;
-const BlockText = styled.div`
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 21px;
+// const RightWrapper = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: flex-start;
+//   padding: 24px 12px;
+//   gap: 8px;
+//   width: inherit;
+// `;
+// const BlockText = styled.div`
+//   font-weight: 500;
+//   font-size: 14px;
+//   line-height: 21px;
 
-  display: flex;
-  align-items: center;
-  text-align: center;
-  letter-spacing: -0.5px;
+//   display: flex;
+//   align-items: center;
+//   text-align: center;
+//   letter-spacing: -0.5px;
 
-  color: #ffffff;
-`;
+//   color: #ffffff;
+// `;
 
 const SubHeader = styled.div`
   border-top: 1px solid #edf1f7;

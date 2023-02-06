@@ -6,7 +6,7 @@ import { sortTableData } from "utils/staffHelper";
 const AwaitingBusinessesSummary = () => {
   const [submitted, setSubmitted] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetSubmittedLaunchQuery();
+  const { data } = useGetSubmittedLaunchQuery();
 
   let sortArr = [...data];
   let sortedArr = sortArr.sort(sortTableData);

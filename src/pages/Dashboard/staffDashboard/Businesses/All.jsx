@@ -8,7 +8,7 @@ import { sortTableData } from "utils/staffHelper";
 const AllBusinessesSummary = () => {
   const [submitted, setSubmitted] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetSubmittedLaunchQuery();
+  const { data } = useGetSubmittedLaunchQuery();
 
   let sortArr = [...data];
   let sortedArr = sortArr?.sort(sortTableData);
@@ -24,7 +24,7 @@ const AllBusinessesSummary = () => {
           };
         })
     );
-  }, []);
+  }, [sortedArr]);
 
   return (
     <BusinessHomeTable

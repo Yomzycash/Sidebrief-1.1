@@ -1,8 +1,6 @@
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import React from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { EntityCardDetails } from "utils/config";
 import {
   useAddEntityMutation,
   useDeleteEntityMutation,
@@ -38,7 +36,7 @@ const CountryEntities = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const getRequired = (formData) => {
     console.log("required", formData);
