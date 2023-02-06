@@ -1,12 +1,12 @@
 import StaffRewardHeader from "components/Header/StaffRewardHeader";
-import Navbar from "components/navbar";
-import StaffSidebar from "components/sidebar/StaffSidebar";
+// import Navbar from "components/navbar";
+// import StaffSidebar from "components/sidebar/StaffSidebar";
 import React, { useState, useEffect } from "react";
 import {
-  Body,
-  BodyLeft,
+  // Body,
+  // BodyLeft,
   BodyRight,
-  Container,
+  // Container,
   ListItem,
   ListItems,
   ListItemsContainer,
@@ -15,7 +15,7 @@ import {
 } from "./style";
 import { useSelector } from "react-redux";
 import { RewardCard } from "components/cards";
-import { myRewards } from "utils/config";
+// import { myRewards } from "utils/config";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { Puff } from "react-loading-icons";
@@ -23,7 +23,7 @@ import StaffRewardModal from "components/modal/StaffRewardModal";
 import { useAddRewardMutation } from "services/staffService";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
-import { useRef } from "react";
+// import { useRef } from "react";
 
 const StaffAllRewards = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -34,11 +34,11 @@ const StaffAllRewards = () => {
   const [filteredReward, setFilteredReward] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const { data, isLoading, isError, error, refetch } = useGetAllRewardsQuery();
+  const { data, isLoading, refetch } = useGetAllRewardsQuery();
   const [category, setCategory] = useSearchParams();
   const [addReward, addState] = useAddRewardMutation();
 
-  let errorRef = useRef(true);
+  // let errorRef = useRef(true);
 
   useEffect(() => {
     setAllRewards(data);
@@ -56,7 +56,7 @@ const StaffAllRewards = () => {
     //   handleError(error);
     //   errorRef.current = false;
     // }
-  }, [data]);
+  }, [data, refetch]);
 
   useEffect(() => {
     let selectedCategory = category.get("category");

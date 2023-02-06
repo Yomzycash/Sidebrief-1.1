@@ -26,11 +26,11 @@ export const InfoDesktop = styled.div`
   border-radius: 12px;
   padding: 4px 16px;
   font-size: clamp(14px, 1.4vw, 16px);
-  color: ${({ shares }) =>
-    shares === "Preference Shares" ? "#D400CC" : "#00A2D4"};
+  text-transform: capitalize;
+  color: ${({ shares }) => (shares === "company" ? "#D400CC" : "#00A2D4")};
 
   background-color: ${({ shares }) =>
-    shares === "Preference Shares"
+    shares === "company"
       ? "#d400cc0c"
       : "#00a2d40c"};
 

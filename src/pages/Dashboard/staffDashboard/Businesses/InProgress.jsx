@@ -7,7 +7,7 @@ import { useGetApprovedLaunchQuery } from "services/staffService";
 const InProgressBusinessesSummary = () => {
   const [approved, setApproved] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetApprovedLaunchQuery();
+  const { data } = useGetApprovedLaunchQuery();
 
   useEffect(() => {
     setApproved(

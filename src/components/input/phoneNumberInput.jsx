@@ -46,6 +46,12 @@ const NumberInput = ({
     // marginTop: "20px",
   };
 
+  const errorStyle = {
+    border: "1px solid red",
+    height: "48px",
+    borderRadius: "10px",
+  };
+
   return (
     <Wrapper
       key="PhoneNumberInput"
@@ -65,10 +71,17 @@ const NumberInput = ({
         ref={inputRef}
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
+        // style={
+        //   !errorMessage && active
+        //     ? { ...activeStyle, ...phoneInputStyles }
+        //     : { ...nonActiveStyle, ...phoneInputStyles }
+        // }
         style={
-          !errorMessage && active
-            ? { ...activeStyle, ...phoneInputStyles }
-            : { ...nonActiveStyle, ...phoneInputStyles }
+          !errorMessage
+            ? active
+              ? { ...activeStyle, ...phoneInputStyles }
+              : { ...nonActiveStyle, ...phoneInputStyles }
+            : { ...errorStyle, ...phoneInputStyles }
         }
         // style={phoneInputStyles}
       >

@@ -22,7 +22,7 @@ const LaunchSummaryCard = ({
   phone,
   editAction,
   deleteAction,
-  director_role,
+  idNumber,
   stake,
   occupation,
   isLoading,
@@ -38,9 +38,7 @@ const LaunchSummaryCard = ({
               shares={shares}
             >{`${shares} - ${sharesPercentage}%`}</InfoDesktop>
           )}
-          {director_role && (
-            <InfoDesktop>{`Role - ${director_role}`}</InfoDesktop>
-          )}
+          {idNumber && <InfoDesktop>{`Id Number - ${idNumber}`}</InfoDesktop>}
           {stake && (
             <InfoDesktop>{`Occupation: ${occupation} - Stake: ${stake}%`}</InfoDesktop>
           )}
@@ -70,7 +68,7 @@ const LaunchSummaryCard = ({
           {`${shares} - ${sharesPercentage}%`}
         </InfoMobile>
       )}
-      {director_role && <InfoMobile>{`Role - ${director_role}`}</InfoMobile>}
+      {idNumber && <InfoMobile>{`Role - ${idNumber}`}</InfoMobile>}
       {stake && (
         <InfoMobile>{`Occupation: ${occupation} - Stake: ${stake}%`}</InfoMobile>
       )}

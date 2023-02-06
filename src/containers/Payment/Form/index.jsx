@@ -8,17 +8,9 @@ import {
   Radio,
   RadioInput,
   RadioLabel,
-  FormContainer,
-  PaymentButton,
   Paystack,
-  ButtonContainer,
 } from "./styles";
 import numeral from "numeral";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { cardInfoSchema } from "./constants";
-
-import { InputWithLabel } from "components/input";
 import { useActions } from "./actions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -26,23 +18,9 @@ import {
   useGetSingleEntityQuery,
   usePayLaunchMutation,
 } from "services/launchService";
-import { PaystackButton } from "react-paystack";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
-import Button from "components/button";
-import {
-  useStripe,
-  useElements,
-  CardElement,
-  PaymentElement,
-  Elements,
-} from "@stripe/react-stripe-js";
-
-import { loadStripe } from "@stripe/stripe-js";
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
-  const stripe = useStripe();
-  const elements = useElements();
-
   const [isUSD, setIsUSD] = useState(false);
   const [entityInfo, setEntityInfo] = useState({
     entityCurrency: "",
@@ -59,8 +37,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 
   const { launchCode, registrationType } = launchResponse;
 
-  const { data, isLoading, isSuccess, isError } =
-    useGetSingleEntityQuery(registrationType);
+  const { data } = useGetSingleEntityQuery(registrationType);
 
   const { symbol, onSelectCurrencyType } = useActions({
     isUSD,
@@ -79,10 +56,9 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 
   // Flutterwave config object
   const config = {
-    public_key:
-      process.env.NODE_ENV === "production"
-        ? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
-        : process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
+    public_key: import.meta.env.PROD
+      ? import.meta.env.VITE_FLUTTERWAVE_LIVE_KEY
+      : import.meta.env.VITE_FLUTTERWAVE_TEST_KEY,
     tx_ref: Date.now(),
     // amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
     amount: `${entityInfo.entityFee}`,
@@ -131,24 +107,6 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     navigate("/launch/address");
   };
 
-  const handleSubmit = (stripe, elements) => async () => {
-    const cardElement = elements.getElement(CardElement);
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: cardElement,
-    });
-
-    if (error) {
-      console.log("[error]", error);
-    } else {
-      console.log("[PaymentMethod]", paymentMethod);
-      // ... SEND to your API server to process payment intent
-    }
-  };
-  const stripePromise = loadStripe(
-    "pk_test_51MH8TfAWcsFJb6bwNtmV01wJKYUHmWALSRJUFBc68Eqjxyz4Jr5E0UEdfRKfJShRxsS9kIGq3vHSlHYoI7g8Gq1H00RNGhaPIE"
-  );
   return (
     <Container>
       <RadioButtons>
@@ -267,8 +225,8 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 //     amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
 //     publicKey:
 //       process.env.NODE_ENV === "production"
-//         ? process.env.REACT_APP_PAYSTACK_LIVE_KEY
-//         : process.env.REACT_APP_PAYSTACK_TEST_KEY,
+//         ? import.meta.env.VITE_PAYSTACK_LIVE_KEY
+//         : import.meta.env.VITE_PAYSTACK_TEST_KEY,
 //   };
 
 //   // you can call this function anything

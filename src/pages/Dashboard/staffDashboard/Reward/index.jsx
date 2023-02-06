@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FiArrowLeft } from "react-icons/fi";
-import { ReactComponent as Hide } from "asset/svg/Hide.svg";
-import { ReactComponent as GladeIcon } from "../../../../asset/images/Glade.svg";
 import ActiveNav from "components/navbar/ActiveNav";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "components/navbar";
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import { useSelector } from "react-redux";
 import Button from "components/button";
 import { useGetAllRewardsQuery } from "services/RewardService";

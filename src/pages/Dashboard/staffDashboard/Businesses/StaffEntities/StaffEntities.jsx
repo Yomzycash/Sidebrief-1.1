@@ -1,12 +1,7 @@
-import Navbar from "components/navbar";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import StaffHeader from "components/Header/StaffHeader";
-import { CountryCardDetails, EntityCardDetails } from "utils/config";
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
@@ -25,12 +20,11 @@ const StaffEntities = () => {
   const [clickedEntity, setClickedEntity] = useState({});
   const [cardAction, setCardAction] = useState("");
 
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
+  // const layoutInfo = useSelector((store) => store.LayoutInfo);
+  // const { sidebarWidth } = layoutInfo;
 
   // These communicate with the backend
-  const { data, isLoading, isSuccess, isError, refetch } =
-    useGetAllTheEntitiesQuery();
+  const { data, isLoading, refetch } = useGetAllTheEntitiesQuery();
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
   const [deleteEntity, deleteState] = useDeleteEntityMutation();
@@ -88,7 +82,6 @@ const StaffEntities = () => {
   // This updates an existing entity
   const handleEntityUpdate = async (formData) => {
     let requiredData = getRequired(formData);
-    console.log(requiredData);
     let response = await updateEntity(requiredData);
     let data = response?.data;
     let error = response?.error;
@@ -103,10 +96,7 @@ const StaffEntities = () => {
 
   // This runs when the delete icon is pressed
   const handleEntityDelete = async (entityInfo) => {
-    console.log(entityInfo);
-    console.log("deleted");
     let response = await deleteEntity(entityInfo);
-    console.log(response);
     let data = response?.data;
     let error = response?.error;
     if (data) {

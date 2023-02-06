@@ -1,14 +1,12 @@
 import StaffRewardDetails from "components/staffRewardDetails";
 import React, { useEffect, useState } from "react";
-import { setStaffReward, staffRewardInfo } from "redux/Slices";
-import { store } from "redux/Store";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { Body, Container, Loading } from "./style";
 import { Puff } from "react-loading-icons";
 
 const StaffRewardDetailsPage = () => {
   const [selectedReward, setSelectedReward] = useState([]);
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
+  const { data, isLoading } = useGetAllRewardsQuery({
     refetchOnMountOrArgChange: true,
   });
 
