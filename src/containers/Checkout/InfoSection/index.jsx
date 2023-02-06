@@ -161,7 +161,7 @@ export const CheckoutFormInfo = ({
       </Title>
       <CheckInputWrapper>
         <InputWithLabel
-          label="Full Name (or Company Name, if Company) "
+          label="Full Name"
           labelStyle="input-label"
           bottomText="Please start with the first name then the middle name (if available) and finally the last name"
           type="text"
