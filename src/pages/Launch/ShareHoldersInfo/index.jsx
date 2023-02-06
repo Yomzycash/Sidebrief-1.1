@@ -11,60 +11,61 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  LaunchReducer,
-  setCheckoutProgress,
-  setDirectorsLaunchInfo,
-  setShareHoldersLaunchInfo,
+	LaunchReducer,
+	setCheckoutProgress,
+	setDirectorsLaunchInfo,
+	setShareHoldersLaunchInfo,
 } from "redux/Slices";
 import { store } from "redux/Store";
 import {
-  AddMore,
-  Body,
-  Bottom,
-  Container,
-  Loading,
-  modalStyle,
+	AddMore,
+	Body,
+	Bottom,
+	Container,
+	Loading,
+	modalStyle,
 } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import {
+
   checkInfoShareCompSchema,
   checkInfoShareDirSchema,
   checkInfoShareholderSchema,
+
 } from "utils/config";
 import {
-  useAddDirectorMutation,
-  useAddMemberMutation,
-  useAddShareHolderMutation,
-  useDeleteDirectorMutation,
-  useDeleteMemberMutation,
-  useDeleteShareholderMutation,
-  useGetUserDraftQuery,
-  useUpdateDirectorMutation,
-  useUpdateMemberMutation,
-  useUpdateShareholderMutation,
-  useViewDirectorsMutation,
-  useViewMembersMutation,
-  useViewShareholdersMutation,
+	useAddDirectorMutation,
+	useAddMemberMutation,
+	useAddShareHolderMutation,
+	useDeleteDirectorMutation,
+	useDeleteMemberMutation,
+	useDeleteShareholderMutation,
+	useGetUserDraftQuery,
+	useUpdateDirectorMutation,
+	useUpdateMemberMutation,
+	useUpdateShareholderMutation,
+	useViewDirectorsMutation,
+	useViewMembersMutation,
+	useViewShareholdersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
 import {
-  mergeDirectorRole,
-  mergeInfo,
-  shareHolderAdd,
-  shareholderDelete,
-  shareholderUpdate,
-  updateDirectorRole,
+	mergeDirectorRole,
+	mergeInfo,
+	shareHolderAdd,
+	shareholderDelete,
+	shareholderUpdate,
 } from "./actions";
 import {
-  memberAdd,
-  memberUpdate,
+	memberAdd,
+	memberUpdate,
 } from "containers/Checkout/InfoSection/actions";
 import {
-  directorAdd,
-  directorDelete,
-  directorUpdate,
+	directorAdd,
+	directorDelete,
+	directorUpdate,
 } from "../DirectorsInfo/actions";
 import { Puff } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
@@ -733,6 +734,7 @@ const ShareHoldersInfo = () => {
       {/* <AppFeedback subProject="Shareholders Info" /> */}
     </Container>
   );
+
 };
 
 export default ShareHoldersInfo;
