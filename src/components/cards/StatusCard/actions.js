@@ -44,7 +44,7 @@ export const useActions = ({
 
 	const handleEditNavigation = async () => {
 		let status = await checkPaymentStatus();
-		console.log(status);
+		// console.log(status);
 
 		let data = status?.data?.businessPayment;
 		let error = status?.error;
@@ -57,7 +57,7 @@ export const useActions = ({
 			}
 		} else {
 			// console.log("This block ran");
-			console.log(error);
+			// console.log(error);
 		}
 	};
 
