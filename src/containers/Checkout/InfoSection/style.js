@@ -125,7 +125,7 @@ export const SaveBtn = styled.button`
   border-radius: 8px;
   background-color: #ffffff;
   :hover {
-    background-color: #00a2d4;
+    background-color: ${({ theme }) => theme.blue2};
     color: #ffffff;
   }
 `;

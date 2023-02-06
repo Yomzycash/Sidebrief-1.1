@@ -199,7 +199,7 @@ export const MessageBody = styled.p`
 
 export const NotificationBadge = styled.div`
   border-radius: 100%;
-  background-color: #00a2d4;
+  background-color: ${({ theme }) => theme.blue2};
   padding: 2px 5px 2px;
   display: flex;
   position: absolute;

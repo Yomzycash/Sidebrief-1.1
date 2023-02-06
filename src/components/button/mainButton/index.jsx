@@ -47,7 +47,7 @@ export default Button;
 const ButtonWrapper = styled(motion.button)`
   width: 100%;
   height: clamp(48px, 5vw, 59px);
-  background-color: #00a2d4;
+  background-color: ${({ theme }) => theme.blue2};
   background-color: ${(props) => (props.bg_color ? props.bg_color : "#00a2d4")};
   border-radius: 8px;
   color: ${(props) => (props.color ? props.color : "#ffffff")};

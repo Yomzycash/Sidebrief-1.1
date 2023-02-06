@@ -335,7 +335,7 @@ const RHS = styled.div`
 	gap: 24px;
 	width: 159px;
 	height: 44px;
-	background-color: #00a2d4;
+	background-color: ${({ theme }) => theme.blue2};
 	border-radius: 8px;
 `;
 

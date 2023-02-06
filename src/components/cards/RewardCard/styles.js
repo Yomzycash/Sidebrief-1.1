@@ -172,8 +172,8 @@ export const StartButton = styled.button`
 export const Badge = styled.div`
 	position: relative;
 	text-decoration: none;
-	padding: 3px 15px;
-	color: white;
+	// padding: 3px 15px;
+	color: #000;
 	font-weight: 500;
 	border-radius: 0px;
 

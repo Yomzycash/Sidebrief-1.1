@@ -43,7 +43,7 @@ export const TopTextWrapper = styled.div`
 `;
 
 export const TopText = styled.p`
-	background-color: #00a2d4;
+	background-color: ${({ theme }) => theme.blue2};
 	color: white;
 	font-size: 24px;
 	padding: 5px 14px;

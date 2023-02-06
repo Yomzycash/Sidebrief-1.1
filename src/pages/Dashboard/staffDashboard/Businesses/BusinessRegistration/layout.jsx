@@ -299,7 +299,7 @@ const ButtonWrapper = styled.div`
   button {
     width: 100%;
     height: 100%;
-    background-color: #00a2d4;
+    background-color: ${({ theme }) => theme.blue2};
     border-radius: 8px;
     border: none;
     outline: none;

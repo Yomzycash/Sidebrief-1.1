@@ -85,6 +85,6 @@ export const Button = styled.button`
 `;
 
 export const FilledButton = styled(Button)`
-	background-color: #00a2d4;
+	background-color: ${({ theme }) => theme.blue2};
 	color: #fff;
 `;

@@ -8,7 +8,7 @@ export const theme = {
 	grey7: "#F1F1F1",
     darkgrey: "#ccf3ff7a",
 	blue1: "#0082AA",
-	blue2: "#00A2D4", // tread crefully
+	blue2: "#00A2D4", // ✅ color + background
 	blue3: "#00C3FF",
 	blue4: "#2ACDFF",
 	blue5: "#55D7FF",
