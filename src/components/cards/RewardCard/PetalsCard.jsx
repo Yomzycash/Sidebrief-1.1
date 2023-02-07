@@ -69,11 +69,11 @@ const PetalsCard = ({
       </Corner>
       <Frame>
         {badge && <Badge>{badge}</Badge>}
-        {image && (
+        {/* {image && (
           <ImageHolder>
             <img src={image} alt={title} />
           </ImageHolder>
-        )}
+        )} */}
         {service ? (
           <CategoryName>{categoryName}</CategoryName>
         ) : (
