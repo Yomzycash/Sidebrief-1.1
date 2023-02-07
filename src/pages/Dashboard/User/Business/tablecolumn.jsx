@@ -1,21 +1,13 @@
 import React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { HeadText, BodyText, Checkbox, Clickable } from "./styled";
+import { HeadText, BodyText, /*Checkbox,*/ Clickable } from "./styled";
 import { TypeIndicator } from "components/Indicators";
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
 import { useNavigate as createNavigate } from "react-router-dom";
+import { navigateToDetailPage } from "utils/globalFunctions";
 
 const ColumnHelper = createColumnHelper();
-
-const navigateToDetailPage = (navigate, launchInfo) => {
-	// set the launchInfo to store and localstorage
-	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-	localStorage.setItem("countryISO", launchInfo.registrationCountry);
-	// navigate
-	navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
-};
 
 export const columns = [
 	// ColumnHelper.display({
@@ -126,19 +118,19 @@ export const columns = [
 	}),
 ];
 
-const IndeterminateCheckbox = ({
-	indeterminate,
-	className = "",
-	checked,
-	...rest
-}) => {
-	const ref = React.useRef(null);
+// const IndeterminateCheckbox = ({
+// 	indeterminate,
+// 	className = "",
+// 	checked,
+// 	...rest
+// }) => {
+// 	const ref = React.useRef(null);
 
-	React.useEffect(() => {
-		if (typeof indeterminate === "boolean") {
-			ref.current.indeterminate = !checked && indeterminate;
-		}
-	}, [ref, indeterminate, checked]);
+// 	React.useEffect(() => {
+// 		if (typeof indeterminate === "boolean") {
+// 			ref.current.indeterminate = !checked && indeterminate;
+// 		}
+// 	}, [ref, indeterminate, checked]);
 
-	return <Checkbox type="checkbox" ref={ref} checked={checked} {...rest} />;
-};
+// 	return <Checkbox type="checkbox" ref={ref} checked={checked} {...rest} />;
+// };

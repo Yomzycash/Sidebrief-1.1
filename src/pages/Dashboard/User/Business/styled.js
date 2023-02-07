@@ -48,6 +48,7 @@ export const SubHeader = styled.div`
 	width: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
+	padding-inline: 24px;
 
 	//TODO: maybe hide scroll bar
 `;
