@@ -2,10 +2,10 @@ import { subMonths, isWithinInterval, subWeeks } from "date-fns";
 import numeral from "numeral";
 import { saveAs } from "file-saver";
 
-export const downLoadImage = async (link) => {
+export const downLoadImage = async (link, documentType) => {
   const downloadResult = await fetch(`${link}`);
   const blob = await downloadResult.blob();
-  saveAs(blob, "");
+  saveAs(blob, `${documentType}`);
 };
 
 export const getLastMonthData = (array) => {

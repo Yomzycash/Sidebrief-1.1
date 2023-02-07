@@ -28,8 +28,9 @@ const PdfCards = ({
   title = "",
   email = "",
   phone = "",
-  government,
+  nin,
   proof,
+  signature,
   passport,
 }) => {
   return (
@@ -61,12 +62,11 @@ const PdfCards = ({
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
-                {government?.fileType ? (
+                {nin?.fileType ? (
                   <img
                     src={
-                      imageTypeImage?.find(
-                        (el) => el?.type === government?.fileType
-                      ).image
+                      imageTypeImage?.find((el) => el?.type === nin?.fileType)
+                        .image
                     }
                     alt="icon"
                     style={{
@@ -80,8 +80,12 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(government.documentLink)}>
-                {government ? government.documentType : "upload a file"}
+              <Details
+                onClick={() =>
+                  downLoadImage(nin.documentLink, nin.documentType)
+                }
+              >
+                {nin ? nin.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 
@@ -111,8 +115,48 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(proof.documentLink)}>
+              <Details
+                onClick={() =>
+                  downLoadImage(proof.documentLink, proof.documentType)
+                }
+              >
                 {proof ? proof.documentType : "upload a file"}
+              </Details>
+            </PdfLowerWrapper>
+
+            <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper>
+          </PdfWrapper>
+
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {signature ? (
+                  <img
+                    src={
+                      imageTypeImage?.find(
+                        (el) => el?.type === signature?.fileType
+                      )?.image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              <Details
+                onClick={() =>
+                  downLoadImage(signature.documentLink, signature.documentType)
+                }
+              >
+                {signature ? signature?.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
 
@@ -143,7 +187,11 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(passport.documentLink)}>
+              <Details
+                onClick={() =>
+                  downLoadImage(passport.documentLink, passport.documentType)
+                }
+              >
                 {passport ? passport?.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>

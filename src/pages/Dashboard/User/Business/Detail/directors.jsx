@@ -29,14 +29,17 @@ const DetailDirectors = () => {
             const currentmemberKYC = memberKYC.filter(
               (el) => el.memberCode === director.memberCode
             );
-            const governmentFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("registration document"))
-              .slice(-1)[0];
-            const passportFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("representative nin"))
+            const NINSlip = currentmemberKYC
+              .filter((el) => el.documentType.includes("NIN Slip"))
               .slice(-1)[0];
             const proofFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("signature document"))
+              .filter((el) => el.documentType.includes("Proof of address"))
+              .slice(-1)[0];
+            const eSignature = currentmemberKYC
+              .filter((el) => el.documentType.includes("E-signature"))
+              .slice(-1)[0];
+            const passportFile = currentmemberKYC
+              .filter((el) => el.documentType.includes("Passport Photograph"))
               .slice(-1)[0];
 
             return (
@@ -45,8 +48,9 @@ const DetailDirectors = () => {
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
                 title={`${director.directorRole}`}
-                government={governmentFile}
+                nin={NINSlip}
                 proof={proofFile}
+                signature={eSignature}
                 passport={passportFile}
               />
             );
