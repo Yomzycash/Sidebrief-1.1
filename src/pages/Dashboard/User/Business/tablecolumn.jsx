@@ -8,24 +8,6 @@ import { useNavigate as createNavigate } from "react-router-dom";
 
 const ColumnHelper = createColumnHelper();
 
-export const businessTypes = [
-	{
-		name: "c-corporation",
-		code: "CCORP",
-		color: "#00D448",
-	},
-	{
-		name: "limited liablity company",
-		code: "LLC",
-		color: "#00A2D4",
-	},
-	{
-		name: "public liablity company",
-		code: "PLC",
-		color: "#D400CC",
-	},
-];
-
 const navigateToDetailPage = (navigate, launchInfo) => {
 	// set the launchInfo to store and localstorage
 	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
@@ -97,7 +79,7 @@ export const columns = [
 				<Clickable
 					onClick={() => navigateToDetailPage(navigate, launchInfo)}
 				>
-					<TypeIndicator color={"blue"} type={typeName} />
+					<TypeIndicator color={"#00A2D4"} type={typeName} />
 				</Clickable>
 			);
 		},

@@ -1,4 +1,4 @@
-import { BusinessTable, GeneralTable } from "components/Tables";
+import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
 import { Body, Container, Loading } from "./styled";
 import { format, compareDesc } from "date-fns";
