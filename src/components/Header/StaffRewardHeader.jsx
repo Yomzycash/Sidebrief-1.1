@@ -111,7 +111,8 @@ const BottomContent = styled.div`
   justify-content: space-between;
 `;
 const ButtonWrapper = styled.div`
-  width: 200px;
+  justify-content: center;
+  align-items: center;
 
   button {
     width: 100%;
