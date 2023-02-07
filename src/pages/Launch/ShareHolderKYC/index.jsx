@@ -95,7 +95,6 @@ const ShareHolderKYC = () => {
   };
 
   const handleChange = async (files, shareholder, type) => {
-    console.log("sending file", files);
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
 
@@ -113,7 +112,6 @@ const ShareHolderKYC = () => {
     });
 
     const res = await convertToLink(files[0]);
-    console.log("res convert", res);
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
@@ -126,7 +124,6 @@ const ShareHolderKYC = () => {
       },
     };
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log("checing", response);
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
@@ -176,7 +173,6 @@ const ShareHolderKYC = () => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 8.5 })); // total- total pages and current - current page
   }, []);
 
-  console.log("rrrr", requiredDocuments);
   return (
     <Container>
       <HeaderCheckout />

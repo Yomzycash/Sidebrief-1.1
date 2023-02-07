@@ -25,7 +25,6 @@ const BusinessDetail = () => {
 		(store) => store.LaunchReducer.launchResponse
 	);
 
-	console.log("lau", launchResponse);
 
 	const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
 	const [viewPayLaunch, viewPayState] = useViewPayLaunchMutation();
@@ -47,20 +46,15 @@ const BusinessDetail = () => {
 	//   registrationType: data?.registrationType,
 	// }
 	const checkPaymentStatus = async () => {
-		console.log("lau", launchResponse);
 		let viewResponse = await viewPayLaunch(launchResponse);
-		console.log(viewResponse);
 		return viewResponse;
 	};
 
 	const handleContinueNavigation = async () => {
 		let status = await checkPaymentStatus();
-		console.log("femi", status);
 
 		let data = status?.data?.businessPayment[0];
 		let error = status?.error;
-		console.log("femi", data);
-		console.log(data?.paymentStatus === "successful");
 		store.dispatch(setLaunchResponse(launchResponse));
 		if (data) {
 			if (data?.paymentStatus === "successful") {

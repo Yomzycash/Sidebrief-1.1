@@ -85,13 +85,11 @@ const EntitySelect = () => {
     }
   }, [data, error?.status]);
 
-  console.log("checking entities", data);
   //
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
     // console.log(checkIsString(entities.entityFee) ? 'true' : 'false')
-    console.log(selectedItem);
     localStorage.setItem("entityType", selectedItem.entityName);
     localStorage.setItem(
       "entityTimeline",
@@ -115,8 +113,7 @@ const EntitySelect = () => {
     const launchResponse = generatedLaunchCode
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
-    console.log(generatedLaunchCode);
-    console.log(launchResponse);
+    
 
     // Set the launch response to local storage
     if (generatedLaunchCode) {

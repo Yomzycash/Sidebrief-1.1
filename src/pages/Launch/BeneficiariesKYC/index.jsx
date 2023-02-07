@@ -117,7 +117,6 @@ const BeneficiariesKYC = () => {
     //   toast.success("Valid Document");
 
     const res = await convertToLink(files[0]);
-    console.log(res);
     const formatType = type.split("_").join(" ");
     const requiredBeneficialOwnerKYCData = {
       launchCode: launchResponse.launchCode,

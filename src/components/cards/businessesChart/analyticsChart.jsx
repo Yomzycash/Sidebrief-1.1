@@ -67,8 +67,6 @@ const AnalyticsChart = ({ data }) => {
 		});
 	}, [data]);
 
-	// console.log(graphdata);
-
 	useEffect(() => {
 		switch (filterBy) {
 			case "week":

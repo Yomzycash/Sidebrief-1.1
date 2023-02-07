@@ -72,7 +72,6 @@ const StaffReward = () => {
 	// This deletes a reward information
 	const handleDelete = async () => {
 		let requiredData = { rewardID: selectedReward[0].rewardID };
-		console.log(requiredData);
 		let response = await deleteReward(requiredData);
 
 		let data = response?.data;
@@ -80,7 +79,6 @@ const StaffReward = () => {
 
 		if (data) {
 			toast.success("Reward deleted successfully");
-			console.log(data);
 			setdeleteConfirm(false);
 			navigate("/staff-dashboard/all-rewards");
 		} else {

@@ -20,8 +20,6 @@ const Completed = () => {
 		}
 	}, [rejectedLaunch, countries.isSuccess]);
 
-	console.log(tableArr);
-	console.log(countries.data);
 
 	let sortArr = [...tableArr];
 	let sortedArr = sortArr.sort(sortTableData);

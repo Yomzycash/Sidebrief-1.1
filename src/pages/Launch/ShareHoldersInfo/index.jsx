@@ -242,7 +242,6 @@ const ShareHoldersInfo = () => {
     };
     let director = await handleSingleDirectorView(actionInfo_D);
     if (director.data) return;
-    console.log("Not a director");
     // DELETE MEMBER
     let actionInfo_M = {
       launchCode: actionInfo_D.launchCode,
@@ -250,7 +249,6 @@ const ShareHoldersInfo = () => {
       deleteMember: deleteMember,
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
-    console.log(memberResponse);
     setSelectedToDelete(shareholder);
   };
 

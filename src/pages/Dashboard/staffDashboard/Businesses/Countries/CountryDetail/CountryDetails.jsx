@@ -33,7 +33,6 @@ const CountryDetails = ({
 	// This updates an existing country
 	const handleCountryUpdate = async (formData) => {
 		let requiredData = getRequired(formData);
-		console.log(requiredData);
 		let response = await updateCountry(requiredData);
 		let data = response?.data;
 		let error = response?.error;

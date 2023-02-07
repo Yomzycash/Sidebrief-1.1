@@ -185,7 +185,6 @@ const DirectorsInfo = () => {
       deleteMember: deleteMember,
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
-    console.log(memberResponse);
     setSelectedToDelete(director);
   };
 
@@ -200,7 +199,6 @@ const DirectorsInfo = () => {
     };
     // VIEW ALL DIRECTORS
     let directorResponse = await handleDirectorsView(actionInfo);
-    console.log(directorResponse);
     if (directorResponse.data) {
       setDirectorsInfo(directorResponse.data);
     } else {

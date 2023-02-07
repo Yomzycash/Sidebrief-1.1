@@ -48,7 +48,7 @@ const AllServices = () => {
     setPageCount(Math.ceil(allServices?.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, allServices]);
 
-  console.log("yy", open);
+
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
