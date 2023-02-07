@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DropDown, InputWithLabel } from "components/input";
+import { DropDown, InputWithLabel, TextAreaWithLabel } from "components/input";
+import TagInput from "components/input/TagInput";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import Modal1 from "layout/modal1";
 import React, { useState } from "react";
@@ -8,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { useDeleteEntityMutation } from "services/staffService";
+import styled from "styled-components";
 import {
   entityRequirements,
   entityTypes,
@@ -28,14 +30,18 @@ const StaffEntityModal = ({
   loading,
   handleEntityDelete,
   deleteState,
+  features,
+  setFeatures,
+  documents,
+  setDocuments,
 }) => {
   const [disable, setDisable] = useState(disableAll);
   const [entityCountries, setEntityCountries] = useState([
     { value: "", label: "" },
   ]);
-  const [entityCurrencies, setEntityCurrencies] = useState([
-    { value: "", label: "" },
-  ]);
+  // const [entityCurrencies, setEntityCurrencies] = useState([
+  //   { value: "", label: "" },
+  // ]);
 
   const countries = useGetAllCountriesQuery();
 
@@ -48,17 +54,17 @@ const StaffEntityModal = ({
     resolver: yupResolver(StaffEntitySchema),
   });
 
-  // This is attached to entity type dropdown onChange
-  const handleEntityTypeChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("type", string, { shouldValidate: true });
-  };
+  // // This is attached to entity type dropdown onChange
+  // const handleEntityTypeChange = (value) => {
+  //   var string = Object.values(value)[0];
+  //   setValue("type", string, { shouldValidate: true });
+  // };
 
-  // This is attached to entity requirements dropdown onChange
-  const handleEntityReqChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("requirements", string, { shouldValidate: true });
-  };
+  // // This is attached to entity requirements dropdown onChange
+  // const handleEntityReqChange = (value) => {
+  //   var string = Object.values(value)[0];
+  //   setValue("requirements", string, { shouldValidate: true });
+  // };
 
   // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
@@ -67,16 +73,16 @@ const StaffEntityModal = ({
       (country) => country.countryISO === selectedCountry
     )[0]?.countryCurrency;
     console.log(currency);
-    setEntityCurrencies([{ value: currency, label: currency }]);
+    // setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
-    setValue("currency", "", { shouldValidate: true });
+    setValue("currency", currency, { shouldValidate: true });
   };
 
-  // This is attached to currency dropdown onChange
-  const handleCurrencyChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("currency", string, { shouldValidate: true });
-  };
+  // // This is attached to currency dropdown onChange
+  // const handleCurrencyChange = (value) => {
+  //   var string = Object.values(value)[0];
+  //   setValue("currency", string, { shouldValidate: true });
+  // };
 
   // Update entity countries
   useEffect(() => {
@@ -94,11 +100,11 @@ const StaffEntityModal = ({
   useEffect(() => {
     if (entityInfo && cardAction === "edit") {
       console.log(entityInfo);
-      setValue("entity_name", entityInfo.entityName, { shouldValidate: true });
+      setValue("entityName", entityInfo.entityName, { shouldValidate: true });
       setValue("description", entityInfo.entityDescription, {
         shouldValidate: true,
       });
-      setValue("short_name", entityInfo.entityShortName, {
+      setValue("shortName", entityInfo.entityShortName, {
         shouldValidate: true,
       });
       setValue("code", entityInfo.entityCode, { shouldValidate: true });
@@ -114,17 +120,21 @@ const StaffEntityModal = ({
     } else {
       let countryEntity = countryInfo && Object.keys(countryInfo)?.length > 0;
 
-      setValue("entity_name", "");
+      setValue("entityName", "");
       setValue("description", "");
-      setValue("short_name", "");
+      setValue("shortName", "");
       setValue("code", "");
       setValue("shares", "");
       setValue("timeline", "");
-      setValue("country", `${countryEntity && countryInfo?.countryISO}`);
-      setValue("currency", `${countryEntity && countryInfo?.countryCurrency}`);
+      setValue("country", "");
+      // setValue("country", `${countryEntity && countryInfo?.countryISO}`);
+      // setValue("currency", `${countryEntity && countryInfo?.countryCurrency}`);
+      setValue("currency", "");
       setValue("fee", "");
       setValue("requirements", "");
       setValue("type", "");
+      setValue("features", "");
+      setValue("documents", "");
     }
     setDisable(disableAll);
   }, [entityInfo, cardAction, countryInfo]);
@@ -141,7 +151,6 @@ const StaffEntityModal = ({
       disable={disable}
       setDisable={setDisable}
       loading={loading}
-      // entityInfo={entityInfo}
       handleDelete={() => handleEntityDelete(entityInfo)}
       deleteState={deleteState}
     >
@@ -150,16 +159,15 @@ const StaffEntityModal = ({
         labelStyle="input-label"
         placeholder="Enter entity name e.g Public Limited Company"
         type="text"
-        name="entity_name"
+        name="entityName"
         inputClass="input-class"
         containerStyle="input-container-class"
         register={register}
-        errorMessage={errors.entity_name?.message}
+        errorMessage={errors.entityName?.message}
         disable={disable}
       />
-
       <DetailedSection>
-        <InputWithLabel
+        {/* <InputWithLabel
           label="Entity Description"
           labelStyle="input-label"
           placeholder="Enter entity description"
@@ -170,22 +178,31 @@ const StaffEntityModal = ({
           register={register}
           errorMessage={errors.description?.message}
           disable={disable}
-        />
+        /> */}
+      </DetailedSection>
+      <TextAreaWithLabel
+        label="Entity Description"
+        labelStyle="input-label"
+        placeholder="Enter entity description"
+        text="Here is a field that contains entity descriptions"
+        name="description"
+        register={register}
+        errorMessage={errors.description?.message}
+        disable={disable}
+      />
+      <DetailedSection>
         <InputWithLabel
           label="Entity Short Name"
           labelStyle="input-label"
           containerStyle="input-container-class"
           type="text"
           placeholder="PLC"
-          name="short_name"
+          name="shortName"
           inputClass="input-class"
           register={register}
-          errorMessage={errors.short_name?.message}
+          errorMessage={errors.shortName?.message}
           disable={disable}
         />
-      </DetailedSection>
-
-      <DetailedSection>
         <InputWithLabel
           label="Entity Code"
           placeholder="Enter unique code"
@@ -198,7 +215,8 @@ const StaffEntityModal = ({
           errorMessage={errors.code?.message}
           disable={disable}
         />
-        <DropDown
+
+        {/* <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Type"
           labelStyle="input-label"
@@ -210,11 +228,34 @@ const StaffEntityModal = ({
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable}
-        />
+        /> */}
       </DetailedSection>
-
       <DetailedSection>
-        <DropDown
+        <InputWithLabel
+          label="Entity Type"
+          placeholder="Private"
+          labelStyle="input-label"
+          type="text"
+          name="type"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.type?.message}
+          disable={disable}
+        />
+        <InputWithLabel
+          label="Entity Requirement"
+          placeholder="Standard"
+          labelStyle="input-label"
+          type="text"
+          name="requirements"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.requirements?.message}
+          disable={disable}
+        />
+        {/* <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Requirement"
           placeholder="Standard"
@@ -226,7 +267,9 @@ const StaffEntityModal = ({
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable}
-        />
+        /> */}
+      </DetailedSection>
+      <DetailedSection>
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Country"
@@ -239,10 +282,7 @@ const StaffEntityModal = ({
           height="40px"
           disable={disable || countryInfo?.countryISO}
         />
-      </DetailedSection>
-
-      <DetailedSection>
-        <DropDown
+        {/* <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Currency"
           labelStyle="input-label"
@@ -255,21 +295,20 @@ const StaffEntityModal = ({
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable || countryInfo?.countryCurrency}
-        />
+        /> */}
         <InputWithLabel
           label="Entity Fee"
           labelStyle="input-label"
           containerStyle="input-container-class"
-          type="text"
+          type="number"
           placeholder="30000"
           name="fee"
           inputClass="input-class"
           register={register}
-          errorMessage={errors.timeline?.message}
+          errorMessage={errors.fee?.message}
           disable={disable}
         />
       </DetailedSection>
-
       <DetailedSection>
         <InputWithLabel
           label="Entity Timeline"
@@ -296,8 +335,66 @@ const StaffEntityModal = ({
           disable={disable}
         />
       </DetailedSection>
+      <TagInputs>
+        <TagInput
+          label="Entity Features"
+          bottomText=""
+          placeholder="Enter entity features (seperated with a comma)"
+          initialValues={features}
+          getSelectedValues={(values) => setFeatures(values)}
+          containerClassName="tagWrapper"
+          labelClassName="labelWrapper"
+          tagClassName="entityTag"
+          inputClassName="entityTaginput"
+          maxTags={7}
+          maxError="You cannot add more than 7 features"
+          minError="Feature name must be at least 3 characters"
+          existError="You have added this earlier"
+          disable={disable}
+          // otherError={
+          //   cardAction && features.length === 0 && "Enter entity features"
+          // }
+        />
+        <TagInput
+          label="Entity Required Documents"
+          bottomText=""
+          placeholder="Enter entity required documents (seperated with a comma)"
+          initialValues={documents}
+          getSelectedValues={(values) => setDocuments(values)}
+          containerClassName="tagWrapper"
+          labelClassName="labelWrapper"
+          tagClassName="entityTag"
+          inputClassName="entityTaginput"
+          maxTags={20}
+          maxError="You cannot add more than 20 required documents"
+          minError="Required document name must be at least 3 characters"
+          existError="You have added this earlier"
+          disable={disable}
+          // otherError={
+          //   cardAction &&
+          //   documents.length === 0 &&
+          //   "Enter entity required documents"
+          // }
+        />
+      </TagInputs>
     </Modal1>
   );
 };
 
 export default StaffEntityModal;
+
+const TagInputs = styled.div`
+  .tagWrapper {
+    margin-bottom: 24px;
+  }
+  .labelWrapper {
+    label {
+      font-size: 12px;
+    }
+  }
+  .entityTag {
+  }
+  .entityTagInput {
+    height: 40px;
+  }
+`;

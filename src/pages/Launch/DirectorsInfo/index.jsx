@@ -438,12 +438,6 @@ const DirectorsInfo = () => {
           checked={useSidebriefDirectors}
         />
         <LaunchPrimaryContainer>
-          {viewDirectorsState.isLoading ||
-            (viewMembersState.isLoading && (
-              <Loading>
-                <Puff stroke="#00A2D4" fill="white" />
-              </Loading>
-            ))}
           <LaunchFormContainer>
             {directorsInfo.map((director, index) => (
               <LaunchSummaryCard
@@ -463,6 +457,12 @@ const DirectorsInfo = () => {
                 }
               />
             ))}
+            {viewDirectorsState.isLoading ||
+              (viewMembersState.isLoading && (
+                <Loading>
+                  <Puff stroke="#00A2D4" fill="white" />
+                </Loading>
+              ))}
             {!useSidebriefDirectors && (
               <AddMore onClick={handleAddButton}>
                 <AddIcon />

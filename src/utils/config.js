@@ -230,34 +230,35 @@ export const checkInfoBeneficiarySchema = yup.object().shape({
   email: yup.string().email("Enter a valid email address").required(),
   stake: yup
     .number()
+    .typeError("Enter beneficiary stake pecentage")
     .min(0.00001)
     .max(100)
-    .required("Stake percentage is required"),
-  occupation: yup.string().required("Occupation is required"),
+    .required("Enter beneficiary stake percentage"),
+  occupation: yup.string().required("Enter beneficiary occupation"),
 });
 
 export const StaffCountrySchema = yup.object().shape({
-  country_name: yup.string().required("Country name is a required field"),
-  country_code: yup.string().required("Country code is a required field"),
-  country_iso: yup.string().required("Country ISO is a required field"),
-  currency: yup.string().required("Currency is a required field"),
-  flag: yup.string().required("Country flag is a requlired field "),
+  country_name: yup.string().required("Enter country name"),
+  country_code: yup.string().required("Enter country code"),
+  country_iso: yup.string().required("Enter country ISO"),
+  currency: yup.string().required("Enter country currency"),
+  flag: yup.string().required("Enter country flag url"),
 });
 
 export const StaffEntitySchema = yup.object().shape({
-  entity_name: yup.string().required("Entity name is a required field"),
-  description: yup.string().required("Entity description is a required field"),
-  short_name: yup.string().required("Entity short name is a required field"),
-  type: yup.string().required("Entity type is a required field"),
-  code: yup.string().required("Entity code is a required field"),
-  requirements: yup.string().required("Entity requirement is a required field"),
-  country: yup.string().required("Entity country is a required field"),
-  currency: yup.string().required("Entity currency is a required field"),
-  fee: yup.string().required("Entity fee is a required field"),
-  timeline: yup.string().required("Entity timeline is a required field"),
+  entityName: yup.string().required("Enter entity name"),
+  description: yup.string().required("Enter entity description"),
+  shortName: yup.string().required("Enter entity short name"),
+  code: yup.string().required("Enter entity code"),
+  type: yup.string().required("Enter entity type"),
+  requirements: yup.string().required("Enter entity requirements"),
+  country: yup.string().required("Select entity country"),
+  fee: yup.number().typeError("Enter entity fee").required("Enter entity fee"),
+  timeline: yup.string().required("Enter entity timeline"),
   shares: yup
-    .number("Value must be a number")
-    .required("Entity shares is a required field"),
+    .number()
+    .typeError("Enter entity shares")
+    .required("Enter entity shares"),
 });
 
 export const StaffRewardSchema = yup.object().shape({

@@ -24,6 +24,8 @@ const StaffEntities = () => {
   const [open, setOpen] = useState(false);
   const [clickedEntity, setClickedEntity] = useState({});
   const [cardAction, setCardAction] = useState("");
+  const [features, setFeatures] = useState([]);
+  const [documents, setDocuments] = useState([]);
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
@@ -50,8 +52,8 @@ const StaffEntities = () => {
   // Returns the data to be sent to the backend
   const getRequired = (formData) => {
     return {
-      entityName: formData?.entity_name,
-      entityShortName: formData?.short_name,
+      entityName: formData?.entityName,
+      entityShortName: formData?.shortName,
       entityType: formData?.type,
       entityCode: formData?.code,
       entityCountry: formData?.country,
@@ -72,50 +74,61 @@ const StaffEntities = () => {
 
   // This adds a new entity
   const handleEntityAdd = async (formData) => {
-    let requiredData = getRequired(formData);
-    let response = await addEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Entity added successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    refetch();
+    console.log({
+      ...formData,
+      features: features.join(", "),
+      documents: documents.join(", "),
+    });
+
+    // let requiredData = getRequired(formData);
+    // let response = await addEntity(requiredData);
+    // let data = response?.data;
+    // let error = response?.error;
+    // if (data) {
+    //   toast.success("Entity added successfully");
+    //   setOpen(false);
+    // } else {
+    //   handleError(error);
+    // }
+    // refetch();
   };
 
   // This updates an existing entity
   const handleEntityUpdate = async (formData) => {
-    let requiredData = getRequired(formData);
-    console.log(requiredData);
-    let response = await updateEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Entity updated successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    refetch();
+    console.log({
+      ...formData,
+      features: features.join(", "),
+      documents: documents.join(", "),
+    });
+
+    // let requiredData = getRequired(formData);
+    // console.log(requiredData);
+    // let response = await updateEntity(requiredData);
+    // let data = response?.data;
+    // let error = response?.error;
+    // if (data) {
+    //   toast.success("Entity updated successfully");
+    //   setOpen(false);
+    // } else {
+    //   handleError(error);
+    // }
+    // refetch();
   };
 
   // This runs when the delete icon is pressed
   const handleEntityDelete = async (entityInfo) => {
     console.log(entityInfo);
-    console.log("deleted");
-    let response = await deleteEntity(entityInfo);
-    console.log(response);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Entity deleted successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    refetch();
+    // let response = await deleteEntity(entityInfo);
+    // console.log(response);
+    // let data = response?.data;
+    // let error = response?.error;
+    // if (data) {
+    //   toast.success("Entity deleted successfully");
+    //   setOpen(false);
+    // } else {
+    //   handleError(error);
+    // }
+    // refetch();
   };
 
   return (
@@ -171,6 +184,10 @@ const StaffEntities = () => {
             loading={updateState.isLoading || addState.isLoading}
             deleteState={deleteState}
             handleEntityDelete={handleEntityDelete}
+            features={features}
+            setFeatures={setFeatures}
+            documents={documents}
+            setDocuments={setDocuments}
           />
         </CardWrapper>
       </CardContainer>
