@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   useAddMemberKYCMutation,
+  useGetAllEntitiesQuery,
   useViewDirectorsMutation,
   useViewMembersMutation,
 } from "services/launchService";
@@ -45,11 +46,20 @@ const DirectorKYC = () => {
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse
   );
+  const countryISO = localStorage.getItem("countryISO");
+  const entityType = localStorage.getItem("entityType");
   const [viewMember, viewMembersState] = useViewMembersMutation();
   const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
   const [directorContainer, setDirectorContainer] = useState([]);
 
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
+  const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
+
+  useEffect(() => {
+    const check = data?.find((entity) => entity.entityName === entityType);
+    setRequiredDocuments(check?.entityRequiredDocuments);
+  }, [data]);
 
   useEffect(() => {
     const mapping = directorContainer.map((director) => {
@@ -202,23 +212,21 @@ const DirectorKYC = () => {
               <FileContainer key={index}>
                 <Name>{director.name}</Name>
                 <ContentWrapper>
-                  <KYCFileUpload
-                    isChanged={isChanged}
-                    documentComponentType={"registration document"}
-                    TopText={"Registration Document"}
-                    memberCode={director.code}
-                    onDrop={(files) =>
-                      handleChange(
-                        files,
-                        director.code,
-                        "registration_document"
-                      )
-                    }
-                    handleRemove={() => handleRemove("registration document")}
-                    BottomText={"Please provide your Registration Document"}
-                  />
-
-                  <KYCFileUpload
+                  {requiredDocuments.map((document, index) => (
+                    <KYCFileUpload
+                      key={index}
+                      isChanged={isChanged}
+                      documentComponentType={document}
+                      TopText={document}
+                      memberCode={director.code}
+                      onDrop={(files) =>
+                        handleChange(files, director.code, document)
+                      }
+                      handleRemove={() => handleRemove(document)}
+                      BottomText={`Please provide your ${document}`}
+                    />
+                  ))}
+                  {/* <KYCFileUpload
                     isChanged={isChanged}
                     documentComponentType={"representative nin"}
                     TopText={"Representative NIN"}
@@ -240,7 +248,7 @@ const DirectorKYC = () => {
                     }
                     handleRemove={() => handleRemove("signature document")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
-                  />
+                  /> */}
                   {/* <FileUpload
                     TopText={"Government Issued ID"}
                     name="government"
