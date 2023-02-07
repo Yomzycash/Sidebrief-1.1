@@ -29,7 +29,7 @@ const AllServices = () => {
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 12;
 
   const { data, isLoading } = useGetAllServicesQuery();
 
@@ -49,10 +49,14 @@ const AllServices = () => {
   }, [itemOffset, itemsPerPage, allServices]);
 
 
-
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
-      <StaffRewardHeader setOpen={setOpen} Description="Add Service" />
+      <StaffRewardHeader
+        setOpen={setOpen}
+        Description="Add Service"
+        title="Services"
+        placeholder="Search for a service"
+      />
       {isLoading ? (
         <Loading height="300px">
           <Puff stroke="#00A2D4" fill="white" width={60} />
@@ -77,7 +81,9 @@ const AllServices = () => {
       submitAction={submitAction}
       loading={addState.isLoading}
     /> */}
-      <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
+      {allServices?.length > itemsPerPage && (
+        <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
+      )}
     </BodyRight>
   );
 };
