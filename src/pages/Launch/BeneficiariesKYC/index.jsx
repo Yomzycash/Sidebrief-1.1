@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
   useAddBeneficialKYCMutation,
+  useGetAllEntitiesQuery,
   useViewBeneficiariesMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
@@ -36,11 +37,20 @@ const BeneficiariesKYC = () => {
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse
   );
+  const countryISO = localStorage.getItem("countryISO");
+  const entityType = localStorage.getItem("entityType");
   const [viewBeneficiaries, viewBeneficiariesState] =
     useViewBeneficiariesMutation();
+
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [beneficiaryContainer, setBeneficiaryContainer] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
+  const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
 
+  useEffect(() => {
+    const check = data?.find((entity) => entity.entityName === entityType);
+    setRequiredDocuments(check?.entityRequiredDocuments);
+  }, [data]);
   useEffect(() => {
     const mapping = beneficiaryContainer.map((beneficiary) => {
       return {
@@ -55,10 +65,6 @@ const BeneficiariesKYC = () => {
     });
     setDocumentContainer(mapping);
   }, [beneficiaryContainer]);
-
-  const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode
-  );
 
   const handleNext = () => {
     navigate("/launch/review");
@@ -111,7 +117,7 @@ const BeneficiariesKYC = () => {
     //   toast.success("Valid Document");
 
     const res = await convertToLink(files[0]);
-
+    console.log(res);
     const formatType = type.split("_").join(" ");
     const requiredBeneficialOwnerKYCData = {
       launchCode: launchResponse.launchCode,
@@ -217,7 +223,22 @@ const BeneficiariesKYC = () => {
               <FileContainer key={index}>
                 <Name>{beneficiary.name}</Name>
                 <ContentWrapper>
-                  <KYCFileUpload
+                  {requiredDocuments.map((document, index) => (
+                    <KYCFileUpload
+                      key={index}
+                      isChanged={isChanged}
+                      documentComponentType={document}
+                      TopText={document}
+                      beneficiaryCode={beneficiary.code}
+                      onDrop={(files) =>
+                        handleChange(files, beneficiary.code, document)
+                      }
+                      handleRemove={() => handleRemove(document)}
+                      BottomText={`Please provide your ${document}`}
+                    />
+                  ))}
+
+                  {/* <KYCFileUpload
                     isChanged={isChanged}
                     documentComponentType={"registration document"}
                     TopText={"Registration Document"}
@@ -231,9 +252,9 @@ const BeneficiariesKYC = () => {
                     }
                     handleRemove={() => handleRemove("registration document")}
                     BottomText={"Please provide your Registration Document"}
-                  />
+                  /> */}
 
-                  <KYCFileUpload
+                  {/* <KYCFileUpload
                     isChanged={isChanged}
                     documentComponentType={"representative nin"}
                     TopText={"Representative NIN"}
@@ -263,7 +284,7 @@ const BeneficiariesKYC = () => {
                     }
                     handleRemove={() => handleRemove("beneficiary signature")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
-                  />
+                  /> */}
 
                   {/* <FileUpload
                     TopText={"Government Issued ID"}

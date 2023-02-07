@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useAddMemberKYCMutation,
   useDeleteMemberKYCMutation,
+  useGetAllEntitiesQuery,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
@@ -41,11 +42,21 @@ const ShareHolderKYC = () => {
   const [viewShareholders, viewShareholderState] =
     useViewShareholdersMutation();
   const [shareholderContainer, setShareholder] = useState([]);
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
 
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse
   );
+  const countryISO = localStorage.getItem("countryISO");
+  const entityType = localStorage.getItem("entityType");
+
   const [documentContainer, setDocumentContainer] = useState([]);
+  const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
+
+  useEffect(() => {
+    const check = data?.find((entity) => entity.entityName === entityType);
+    setRequiredDocuments(check?.entityRequiredDocuments);
+  }, [data]);
 
   useEffect(() => {
     const mapping = shareholderContainer.map((shareholder) => {
@@ -79,10 +90,6 @@ const ShareHolderKYC = () => {
     handleMerge();
   }, []);
 
-  const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode
-  );
-
   const handlePrev = () => {
     navigate(-1);
   };
@@ -106,6 +113,7 @@ const ShareHolderKYC = () => {
     });
 
     const res = await convertToLink(files[0]);
+    console.log("res convert", res);
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
@@ -168,6 +176,7 @@ const ShareHolderKYC = () => {
     store.dispatch(setCheckoutProgress({ total: 13, current: 8.5 })); // total- total pages and current - current page
   }, []);
 
+  console.log("rrrr", requiredDocuments);
   return (
     <Container>
       <HeaderCheckout />
@@ -190,23 +199,22 @@ const ShareHolderKYC = () => {
               <FileContainer key={index}>
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
-                  <KYCFileUpload
-                    isChanged={isChanged}
-                    documentComponentType={"registration document"}
-                    TopText={"Registration Document"}
-                    memberCode={shareholder.code}
-                    onDrop={(files) =>
-                      handleChange(
-                        files,
-                        shareholder.code,
-                        "registration_document"
-                      )
-                    }
-                    handleRemove={() => handleRemove("registration document")}
-                    BottomText={"Please provide your Registration Document"}
-                  />
+                  {requiredDocuments.map((document, index) => (
+                    <KYCFileUpload
+                      key={index}
+                      isChanged={isChanged}
+                      documentComponentType={document}
+                      TopText={document}
+                      memberCode={shareholder.code}
+                      onDrop={(files) =>
+                        handleChange(files, shareholder.code, document)
+                      }
+                      handleRemove={() => handleRemove(document)}
+                      BottomText={`Please provide your ${document}`}
+                    />
+                  ))}
 
-                  <KYCFileUpload
+                  {/* <KYCFileUpload
                     isChanged={isChanged}
                     documentComponentType={"representative nin"}
                     TopText={"Representative NIN"}
@@ -236,7 +244,7 @@ const ShareHolderKYC = () => {
                     }
                     handleRemove={() => handleRemove("signature document")}
                     BottomText={"Kindly ensure image is not larger than 3MB"}
-                  />
+                  /> */}
 
                   {/* <FileUpload
                     TopText={"Government Issued ID"}
