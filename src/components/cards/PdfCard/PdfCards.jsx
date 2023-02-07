@@ -80,7 +80,11 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(nin.documentLink)}>
+              <Details
+                onClick={() =>
+                  downLoadImage(nin.documentLink, nin.documentType)
+                }
+              >
                 {nin ? nin.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
@@ -111,7 +115,11 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(proof.documentLink)}>
+              <Details
+                onClick={() =>
+                  downLoadImage(proof.documentLink, proof.documentType)
+                }
+              >
                 {proof ? proof.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
@@ -143,7 +151,11 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(signature.documentLink)}>
+              <Details
+                onClick={() =>
+                  downLoadImage(signature.documentLink, signature.documentType)
+                }
+              >
                 {signature ? signature?.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
@@ -175,7 +187,11 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details onClick={() => downLoadImage(passport.documentLink)}>
+              <Details
+                onClick={() =>
+                  downLoadImage(passport.documentLink, passport.documentType)
+                }
+              >
                 {passport ? passport?.documentType : "upload a file"}
               </Details>
             </PdfLowerWrapper>
