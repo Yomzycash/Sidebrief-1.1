@@ -56,9 +56,10 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 
 	// Flutterwave config object
 	const config = {
-		public_key: process.env.PROD
-			? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
-			: process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
+		public_key:
+			process.env.NODE_ENV === "production"
+				? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
+				: process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
 		tx_ref: Date.now(),
 		// amount: `${numeral(entityInfo.entityFee).format("0.00").replace(".", "")}`,
 		amount: `${entityInfo.entityFee}`,
