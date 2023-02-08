@@ -114,7 +114,7 @@ export const MembersBasicInfo = ({
           label={
             isCompany
               ? "Company Name"
-              : "Full Name (or Company Name, if Company) "
+              : "Full Name"
           }
           labelStyle="input-label"
           bottomText="Please start with the first name then the middle name (if available) and finally the last name"

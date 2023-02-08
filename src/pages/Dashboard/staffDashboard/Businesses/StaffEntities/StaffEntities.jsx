@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-<<<<<<< HEAD
-
-=======
->>>>>>> a77842e430eb7768dde4b38f5727103bad0f9538
 import StaffHeader from "components/Header/StaffHeader";
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
@@ -22,14 +18,8 @@ const StaffEntities = () => {
   const [open, setOpen] = useState(false);
   const [clickedEntity, setClickedEntity] = useState({});
   const [cardAction, setCardAction] = useState("");
-<<<<<<< HEAD
-
-  // const layoutInfo = useSelector((store) => store.LayoutInfo);
-  // const { sidebarWidth } = layoutInfo;
-=======
   const [features, setFeatures] = useState([]);
   const [documents, setDocuments] = useState([]);
->>>>>>> a77842e430eb7768dde4b38f5727103bad0f9538
 
   // These communicate with the backend
   const { data, isLoading, refetch } = useGetAllTheEntitiesQuery();
