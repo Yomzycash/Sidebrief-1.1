@@ -131,11 +131,44 @@ export const checkMemberExistence = async (info) => {
 
 //
 
-export const handleResponse = (response, successMessage, successAction) => {
+export const handleResponse = (
+  response,
+  successMessage,
+  successAction,
+  errorAction
+) => {
   if (response.data) {
     toast.success(successMessage);
     if (successAction) successAction();
   } else {
+    if (errorAction) errorAction();
     handleError(response?.error);
+  }
+};
+
+//
+
+//
+// info needs to entail: ...launchResponse and viewPayLaunch
+export const checkPaymentStatus = async (info) => {
+  let requiredData = {
+    launchCode: info.launchCode,
+    registrationCountry: info.registrationCountry,
+    registrationType: info.registrationType,
+  };
+
+  let viewResponse = await info.viewPayLaunch(requiredData);
+
+  let data = viewResponse?.data?.businessPayment[0];
+  let error = viewResponse?.error;
+  if (data) {
+    if (data?.paymentStatus === "successful") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    console.log(error);
+    return false;
   }
 };
