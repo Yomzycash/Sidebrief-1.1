@@ -48,7 +48,7 @@ const BeneficiariesKYC = () => {
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
 
   useEffect(() => {
-    const check = data?.find((entity) => entity.entityName === entityType);
+    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
   useEffect(() => {
