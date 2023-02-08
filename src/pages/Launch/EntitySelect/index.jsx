@@ -85,14 +85,11 @@ const EntitySelect = () => {
     }
   }, [data, error?.status]);
 
-  console.log("checking entities", data);
   //
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
     // console.log(checkIsString(entities.entityFee) ? 'true' : 'false')
-    console.log(selectedItem);
-    localStorage.setItem("entityType", selectedItem.entityName);
     localStorage.setItem(
       "entityTimeline",
       JSON.stringify(selectedItem.entityTimeline)
