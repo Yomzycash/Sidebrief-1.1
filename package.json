@@ -71,9 +71,7 @@
 	},
 	"browserslist": {
 		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
+			"last 3 versions, > 0.1% and not dead"
 		],
 		"development": [
 			"last 1 chrome version",
@@ -82,7 +80,9 @@
 		]
 	},
 	"devDependencies": {
+		"@vitejs/plugin-legacy": "^4.0.1",
 		"@vitejs/plugin-react": "^3.1.0",
+		"terser": "^5.16.3",
 		"vite": "^4.1.1",
 		"vite-jsconfig-paths": "^2.0.1",
 		"vite-plugin-svgr": "^2.4.0"
