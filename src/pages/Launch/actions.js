@@ -1,8 +1,7 @@
-// Add a member
-
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 
+// Add a member
 // info needs to entail: launchCode, formData, and addMember
 export const handleMemberAdd = async (info) => {
   const requiredData = {
@@ -131,10 +130,32 @@ export const checkMemberExistence = async (info) => {
 
 //
 
-export const handleResponse = (response, successMessage) => {
+export const handleResponse = (response, successMessage, successAction) => {
   if (response.data) {
     toast.success(successMessage);
+    if (successAction) successAction();
   } else {
     handleError(response?.error);
+  }
+};
+
+//
+
+//
+
+export const checkPaymentStatus = async (launchResponse) => {
+  let viewResponse = await viewPayLaunch(launchResponse);
+
+  let data = viewResponse?.data?.businessPayment[0];
+  let error = viewResponse?.error;
+  store.dispatch(setLaunchResponse(launchResponse));
+  if (data) {
+    if (data?.paymentStatus === "successful") {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
   }
 };

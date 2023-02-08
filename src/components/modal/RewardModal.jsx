@@ -5,6 +5,7 @@ import { ReactComponent as Close } from 'asset/images/close.svg'
 import { ReactComponent as Copy } from 'asset/images/copy.svg'
 import Button from 'components/button/mainButton/index.jsx'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+
 // import { allRewards } from "utils/config";
 import {
   useClaimRewardMutation,
@@ -13,8 +14,6 @@ import {
 import toast from 'react-hot-toast'
 const RewardModal = ({ handleClose }) => {
   const [successful, setSuccessful] = useState(false)
-
-  const [copySuccess, setCopySuccess] = useState('')
 
   const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery()
 
@@ -54,9 +53,9 @@ const RewardModal = ({ handleClose }) => {
   const copyToClipBoard = async (copyMe) => {
     try {
       await navigator.clipboard.writeText(copyMe)
-      setCopySuccess('Copied!')
+      toast.success(' copied successfully!')
     } catch (err) {
-      setCopySuccess('Failed to copy!')
+      toast.error('Failed to copy!')
     }
   }
 
@@ -95,7 +94,6 @@ const RewardModal = ({ handleClose }) => {
           <button onClick={() => copyToClipBoard(rewardDetails?.rewardCode)}>
             <Copy />
           </button>
-          {copySuccess}
         </CopyContainer>
 
         {rewardDetails && (

@@ -220,11 +220,6 @@ const DirectorsInfo = () => {
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
-            {viewState.isLoading && (
-              <Loading>
-                <Puff stroke="#00A2D4" fill="white" />
-              </Loading>
-            )}
             {beneficiariesInfo.map((beneficiary, index) => (
               <LaunchSummaryCard
                 key={index}
@@ -244,6 +239,11 @@ const DirectorsInfo = () => {
                 }
               />
             ))}
+            {viewState.isLoading && (
+              <Loading>
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            )}
             <AddMore onClick={handleAddMore}>
               <AddIcon />
               <span>Add a Beneficiary</span>

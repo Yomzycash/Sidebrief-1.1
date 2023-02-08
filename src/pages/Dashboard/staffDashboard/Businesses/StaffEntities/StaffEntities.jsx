@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
 import StaffHeader from "components/Header/StaffHeader";
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
@@ -19,9 +18,8 @@ const StaffEntities = () => {
   const [open, setOpen] = useState(false);
   const [clickedEntity, setClickedEntity] = useState({});
   const [cardAction, setCardAction] = useState("");
-
-  // const layoutInfo = useSelector((store) => store.LayoutInfo);
-  // const { sidebarWidth } = layoutInfo;
+  const [features, setFeatures] = useState([]);
+  const [documents, setDocuments] = useState([]);
 
   // These communicate with the backend
   const { data, isLoading, refetch } = useGetAllTheEntitiesQuery();
@@ -44,17 +42,19 @@ const StaffEntities = () => {
   // Returns the data to be sent to the backend
   const getRequired = (formData) => {
     return {
-      entityName: formData?.entity_name,
-      entityShortName: formData?.short_name,
+      entityName: formData?.entityName,
+      entityShortName: formData?.shortName,
+      entityDescription: formData?.description,
       entityType: formData?.type,
       entityCode: formData?.code,
       entityCountry: formData?.country,
       entityFee: formData?.fee,
       entityCurrency: formData?.currency,
-      entityDescription: formData?.description,
       entityTimeline: formData?.timeline,
       entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
+      entityFeatures: features.join(", "),
+      entityRequiredDocuments: documents.join(", "),
     };
   };
 
@@ -107,7 +107,7 @@ const StaffEntities = () => {
     }
     refetch();
   };
-
+  console.log(entities);
   return (
     <Container>
       <StaffHeader
@@ -161,6 +161,10 @@ const StaffEntities = () => {
             loading={updateState.isLoading || addState.isLoading}
             deleteState={deleteState}
             handleEntityDelete={handleEntityDelete}
+            features={features}
+            setFeatures={setFeatures}
+            documents={documents}
+            setDocuments={setDocuments}
           />
         </CardWrapper>
       </CardContainer>

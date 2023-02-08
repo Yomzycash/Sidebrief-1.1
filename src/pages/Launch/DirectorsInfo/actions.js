@@ -1,26 +1,17 @@
-//
+import { handleMembersView } from "../actions";
 
-import { memberDelete } from "containers/Checkout/InfoSection/actions";
-import {
-  useViewDirectorsMutation,
-  useViewShareholdersMutation,
-} from "services/launchService";
-
-// Add a new director
-export const directorAdd = async (
-  launchCode,
-  formData,
-  memberInfo,
-  addDirector
-) => {
+// This adds the person as a member and a director
+// info needs to entail: launchCode, formData, addMemberData, addDirector and addMember
+export const handleDirectorAdd = async (info) => {
   const requiredDirectorData = {
-    launchCode: launchCode,
-    memberCode: memberInfo.memberCode,
-    directorRole: formData.reg_number,
+    launchCode: info.launchCode,
+    memberCode: info.addMemberData.memberCode,
+    directorRole: "null",
+    directorIdentificationNumber: info.formData.nin,
+    directorRegistrationNumber: "",
   };
-
   // Send the required payload to the backend
-  let addDirectorResponse = await addDirector(requiredDirectorData);
+  let addDirectorResponse = await info.addDirector(requiredDirectorData);
 
   if (addDirectorResponse.data) {
     // Get the information of all added directors
@@ -30,7 +21,7 @@ export const directorAdd = async (
     // Get the information of the just added director
     const directorInfo = allDirectors[allDirectors.length - 1][1];
     // Merge the member information and the director information of the just added director
-    let directorAllInfo = { ...memberInfo, ...directorInfo };
+    let directorAllInfo = { ...info.addMemberData, ...directorInfo };
     return { data: directorAllInfo };
   } else {
     return { error: addDirectorResponse.error };
@@ -38,25 +29,31 @@ export const directorAdd = async (
 };
 
 //
-// Update a Director
-export const directorUpdate = async (
-  formData,
-  selectedDirector,
-  updateDirector
-) => {
+
+//
+
+// This updates the person's director info and member info
+// info needs to entail: launchCode, formData, directorCode, memberCode, and, updateDirector
+export const handleDirectorUpdate = async (info) => {
   const requiredDirectorUpdateData = {
-    launchCode: selectedDirector.launchCode,
-    memberCode: selectedDirector.memberCode,
-    directorRole: formData.reg_number,
-    directorCode: selectedDirector.directorCode,
+    launchCode: info.launchCode,
+    memberCode: info.memberCode,
+    directorRole: "null",
+    directorCode: info.directorCode,
+    directorIdentificationNumber: info.formData.nin,
+    directorRegistrationNumber: "",
   };
+
+  // TODO
+  // let updateMemberResponse = await handleMemberUpdate();
+
   // Responses from the backend
-  let directorsUpdateResponse = await updateDirector(
+  let directorsUpdateResponse = await info.updateDirector(
     requiredDirectorUpdateData
   );
   // The data from the response got from the backend
   let directorsUpdatedData = directorsUpdateResponse?.data?.businessDirectors;
-  let error = directorsUpdateResponse.error;
+  let error = directorsUpdateResponse?.error;
 
   if (directorsUpdatedData) {
     return { data: directorsUpdatedData };
@@ -66,50 +63,24 @@ export const directorUpdate = async (
 };
 
 //
-// Delete a director
 
 //
-// Delete a shareholder
-export const directorDelete = async (
-  // LaunchInfo,
-  director,
-  // viewShareholders,
-  deleteDirector
-  // deleteMember
-) => {
-  // const { shareHoldersLaunchInfo, directorsLaunchInfo } = LaunchInfo;
 
+// This deletes only the director's info
+// info needs to entail: launchCode, directorCode, memberCode, directorRole, and deleteDirector
+export const handleDirectorDelete = async (info) => {
   const requiredData = {
-    launchCode: director.launchCode,
-    directorCode: director.directorCode,
-    memberCode: director.memberCode,
-    directorRole: director.directorRole,
+    launchCode: info.launchCode,
+    directorCode: info.directorCode,
+    memberCode: info.memberCode,
+    directorRole: "null",
   };
 
   // The delete response gotten from the backend
-  let deleteResponse = await deleteDirector(requiredData);
+  let deleteResponse = await info.deleteDirector(requiredData);
 
   // This fires off, if delete response is success
   if (deleteResponse.data) {
-    // Get data from view endpoints
-    // let shareholders = await viewShareholders(requiredData);
-    // let shareholdersData = [...shareholders.data.businessShareholders];
-    // let directors = await viewDirectors(requiredData);
-    // let directorsData = [...directors.data.businessDirectors];
-    // This filters and set the filtered shareholders info to the store
-    // let filteredDirectors = directorsData.filter(
-    //   (director) => director.directorCode !== requiredData.directorCode
-    // );
-    // This checks if the deleted shareholder is a director
-    // let memberCheck = shareholdersData.filter(
-    //   (shareholder) => shareholder?.memberCode === requiredData?.memberCode
-    // );
-    // // if memberCheck length is 0 (i.e the director is not a shareholder), membership is deleted.
-    // if (memberCheck.length === 0) {
-    //   let memberDeleteResponse = await memberDelete(director, deleteMember);
-    //   console.log(memberDeleteResponse);
-    // }
-    // return { data: filteredDirectors };
     return { data: deleteResponse.data };
   } else {
     if (deleteResponse.error) {
@@ -119,13 +90,67 @@ export const directorDelete = async (
 };
 
 //
-// Merge a shareholder's member information to his shareholder information
-export const mergeInfo = (directorsUpdatedData, membersUpdatedData) => {
+
+//
+
+// This returns all directors info
+// info needs to entail: ...launchResponse, viewDirectors and viewMembers
+export const handleDirectorsView = async (info) => {
+  let requiredData = {
+    launchCode: info.launchCode,
+    registrationCountry: info.registrationCountry,
+    registrationType: info.registrationType,
+  };
+
+  let directors = await info.viewDirectors(requiredData);
+
+  if (directors.data) {
+    let directorsData = [...directors.data.businessDirectors];
+    let membersData = await handleMembersView(info);
+    let mergedInfo = mergeInfo(directorsData, membersData.data);
+    return { data: mergedInfo };
+  } else if (directors.error) {
+    return { error: directors.error };
+  }
+};
+
+//
+
+//
+
+// This returns a single director's info
+// info needs to entail: ...launchResponse, identificationNumber, viewDirectors and viewMembers
+export const handleSingleDirectorView = async (info) => {
+  let directors = await handleDirectorsView(info);
+
+  if (directors.data) {
+    let director = directors.data?.filter(
+      (el) =>
+        el.directorIdentificationNumber.toString() ===
+        info?.identificationNumber?.toString()
+    );
+    if (director.length > 0) {
+      // TODO
+      return { data: director[0] };
+    } else {
+      return { error: "Director does not exist" };
+    }
+  } else {
+    return { error: directors?.error };
+  }
+};
+
+//
+
+//
+
+// Merge a director's member information to his director information
+const mergeInfo = (directorsUpdatedData, membersUpdatedData) => {
   let directorsMembersMerged = [];
-  directorsUpdatedData.forEach((shareholder) => {
+  directorsUpdatedData.forEach((director) => {
     membersUpdatedData.forEach((member) => {
-      if (member.memberCode === shareholder.memberCode) {
-        let merged = { ...shareholder, ...member };
+      if (member.memberCode === director.memberCode) {
+        let merged = { ...director, ...member };
         directorsMembersMerged.push(merged);
       }
     });
