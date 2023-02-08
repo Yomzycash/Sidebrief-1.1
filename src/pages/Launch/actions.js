@@ -130,9 +130,10 @@ export const checkMemberExistence = async (info) => {
 
 //
 
-export const handleResponse = (response, successMessage) => {
+export const handleResponse = (response, successMessage, successAction) => {
   if (response.data) {
     toast.success(successMessage);
+    if (successAction) successAction();
   } else {
     handleError(response?.error);
   }
