@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const RewardApi = createApi({
 	reducerPath: "RewardApi",
 	baseQuery: fetchBaseQuery({
-		baseUrl: import.meta.env.VITE_DEV_BASE_URL,
+		baseUrl: process.env.REACT_APP_DEV_BASE_URL,
 		prepareHeaders: (headers, { getState }) => {
 			const token = getState().UserDataReducer.userInfo.token;
 			headers.set("Access-Control-Allow-Origin", "*");
