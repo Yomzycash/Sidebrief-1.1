@@ -243,14 +243,15 @@ export const TagInputField = styled.input`
   height: inherit;
   outline: none;
 
-  border: 1px solid #edf1f6;
+  border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #edf1f6")};
   padding: 10px;
   border-radius: 8px;
-
   transition: 0.3s all ease;
+  color: ${({ disabled }) => (disabled ? "#aca09f" : "")};
+  background-color: ${({ disabled }) => (disabled ? "#f2f2f2" : "")};
 
   &:focus {
-    border: 1px solid #00c3ff;
+    border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #00c3ff")};
   }
 `;
 
@@ -281,4 +282,21 @@ export const BottomText = styled.p`
   font-size: 12px;
   line-height: 21px;
   color: #4e5152;
+`;
+
+export const TextArea = styled.textarea`
+  transition: 0.3s ease all;
+  height: max-content;
+  min-width: 100%;
+  min-height: 40px;
+  border-radius: 8px;
+  padding: 12px;
+  resize: none;
+  border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #ececec")};
+  color: ${({ disabled }) => (disabled ? "#aca09f" : "")};
+  background-color: ${({ disabled }) => (disabled ? "#f2f2f2" : "")};
+
+  :focus {
+    border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #00A2D4")};
+  }
 `;

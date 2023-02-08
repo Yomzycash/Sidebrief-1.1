@@ -4,14 +4,16 @@ import { setLaunchResponse } from "redux/Slices";
 
 // handle error encountered in endpoints call
 export const handleError = (error) => {
-	console.log(error);
-	if (error?.status === "FETCH_ERROR") {
-		toast.error("Please check your internet connection");
-	} else if (error?.originalStatus === "404") {
-		toast.error("Please chek credentiaal");
-	} else {
-		toast.error(error?.data.message);
-	}
+  console.log(error);
+  if (error?.status === "FETCH_ERROR") {
+    toast.error("Please check your internet connection");
+  } else if (error?.originalStatus === "404") {
+    toast.error("Please check credentiaal");
+  } else if (error?.data?.message) {
+    toast.error(error?.data.message);
+  } else if (typeof error === "string") {
+    toast.error(error);
+  }
 };
 
 // Check if an email is a staff email

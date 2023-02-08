@@ -1,60 +1,60 @@
-import { memberDelete } from "containers/Checkout/InfoSection/actions";
+import { handleMembersView } from "../actions";
 
-//
-// Add a new shareholder
-export const shareHolderAdd = async (
-  launchCode,
-  formData,
-  memberInfo,
-  addShareHolder
-) => {
+// This adds the person as a member and a shareholder
+// info needs to entail: launchCode, addMemberData, formData, addShareholder and addMember
+export const handleShareholderAdd = async (info) => {
   const requiredShareholderData = {
-    launchCode: launchCode,
-    memberCode: memberInfo.memberCode,
-    shareholderOwnershipPercentage: formData.share_percentage,
-    shareholderOwnershipType: formData.nin,
+    launchCode: info.launchCode,
+    memberCode: info.addMemberData.memberCode,
+    shareholderOwnershipPercentage: info.formData.sharePercentage,
+    shareholderOwnershipType: "null",
+    shareholderIdentificationNumber: info.formData.nin,
+    shareholderRegistrationNumber: info.formData.regNo || null,
   };
 
   // Send the required payload to the backend
-  let addShareHolderResponse = await addShareHolder(requiredShareholderData);
+  let response = await info.addShareHolder(requiredShareholderData);
 
-  if (addShareHolderResponse.data) {
+  if (response.data) {
     // Get the information of all added shareholder
-    const allShareholders = Object.entries(
-      addShareHolderResponse.data.businessShareholders
-    );
+    const allShareholders = Object.entries(response.data.businessShareholders);
     // Get the information of the just added shareholder
     const shareholderInfo = allShareholders[allShareholders.length - 1][1];
     // Merge the member information and the shareholder information of the just added shareholder
-    let shareholderAllInfo = { ...memberInfo, ...shareholderInfo };
+    let shareholderAllInfo = {
+      ...info.addMemberData,
+      ...shareholderInfo,
+    };
     return { data: shareholderAllInfo };
   } else {
-    return { error: addShareHolderResponse.error.data.message };
+    return { error: response?.error };
   }
 };
 
 //
-// Update a shareholder
-export const shareholderUpdate = async (
-  formData,
-  selectedShareholder,
-  updateShareholder
-) => {
+
+//
+
+// This updates the person's shareholder info and member info
+// info needs to entail: launchCode, formData, shareholdingCode, memberCode, updateShareholder and updateMember
+export const handleShareholderUpdate = async (info) => {
   const requiredShareholderUpdateData = {
-    launchCode: selectedShareholder.launchCode,
-    memberCode: selectedShareholder.memberCode,
-    shareholderOwnershipPercentage: formData.share_percentage,
-    shareholderOwnershipType: formData.nin,
-    shareholdingCode: selectedShareholder.shareholdingCode,
+    launchCode: info.launchCode,
+    memberCode: info.addMemberData.memberCode,
+    shareholderOwnershipPercentage: info.formData.sharePercentage,
+    shareholderOwnershipType: "null",
+    shareholderIdentificationNumber: info.formData.nin,
+    shareholderRegistrationNumber: info.formData.regNo || null,
+    shareholdingCode: info.shareholdingCode,
   };
   // Responses from the backend
-  let shareholdersUpdateResponse = await updateShareholder(
+  let shareholdersUpdateResponse = await info.updateShareholder(
     requiredShareholderUpdateData
   );
   // The data from the response got from the backend
   let shareholdersUpdatedData =
     shareholdersUpdateResponse?.data?.businessShareholders;
-  let error = shareholdersUpdateResponse.error;
+  let error = shareholdersUpdateResponse?.error;
 
   if (shareholdersUpdatedData) {
     return { data: shareholdersUpdatedData };
@@ -64,29 +64,24 @@ export const shareholderUpdate = async (
 };
 
 //
-// Delete a shareholder
-export const shareholderDelete = async (
-  isDirector,
-  shareholder,
-  deleteShareholder,
-  deleteMember
-) => {
+
+//
+
+// This deletes only the shareholder's info
+// info needs to entail: launchCode, shareholdingCode, memberCode, shareholderOwnershipPercentage,shareholderOwnershipType, and deleteShareholder
+export const handleShareholderDelete = async (info) => {
   const requiredDeleteData = {
-    launchCode: shareholder.launchCode,
-    shareholdingCode: shareholder.shareholdingCode,
-    memberCode: shareholder.memberCode,
-    shareholderOwnershipPercentage: shareholder.shareholderOwnershipPercentage,
-    shareholderOwnershipType: shareholder.shareholderOwnershipType,
+    launchCode: info.launchCode,
+    shareholdingCode: info.shareholdingCode,
+    memberCode: info.memberCode,
+    shareholderOwnershipPercentage: info.shareholderOwnershipPercentage,
+    shareholderOwnershipType: "null",
   };
   // The delete response gotten from the backend
-  let deleteResponse = await deleteShareholder(requiredDeleteData);
+  let deleteResponse = await info.deleteShareholder(requiredDeleteData);
+
   // This fires off, if delete response is success
   if (deleteResponse.data) {
-    // if the shareholder is not a director, membership is deleted.
-    if (!isDirector) {
-      let memberDeleteResponse = await memberDelete(shareholder, deleteMember);
-    }
-
     return { data: "Deleted" };
   } else {
     if (deleteResponse.error) {
@@ -96,8 +91,62 @@ export const shareholderDelete = async (
 };
 
 //
+
+//
+
+// This returns all shareholders info
+// info needs to entail: ...launchResponse, viewShareholders and viewMembers
+export const handleShareholdersView = async (info) => {
+  let requiredData = {
+    launchCode: info.launchCode,
+    registrationCountry: info.registrationCountry,
+    registrationType: info.registrationType,
+  };
+
+  // Get data from view endpoints
+  let shareholders = await info.viewShareholders(requiredData);
+
+  if (shareholders.data) {
+    let shareholdersData = [...shareholders.data.businessShareholders];
+    let membersData = await handleMembersView(info);
+    // Merge shareholders shareholder's data and member data
+    let mergedInfo = mergeInfo(shareholdersData, membersData.data);
+    return { data: mergedInfo };
+  } else if (shareholders.error) {
+    return { error: shareholders.error };
+  }
+};
+
+//
+
+//
+
+// This returns a single shareholder's info
+// info needs to entail: ...launchResponse, identificationNumber, viewShareholders and viewMembers
+export const handleSingleShareholderView = async (info) => {
+  let shareholders = await handleShareholdersView(info);
+  if (shareholders.data) {
+    let shareholder = shareholders?.data?.filter(
+      (el) =>
+        el.shareholderIdentificationNumber.toString() ===
+        info?.identificationNumber?.toString()
+    );
+    if (shareholder.length > 0) {
+      return { data: shareholder[0] };
+    } else {
+      return { error: "Shareholder does not exist" };
+    }
+  } else if (shareholders.error) {
+    return { error: shareholders.error };
+  }
+};
+
+//
+
+//
+
 // Merge a shareholder's member information to his shareholder information
-export const mergeInfo = (shareholdersUpdatedData, membersUpdatedData) => {
+const mergeInfo = (shareholdersUpdatedData, membersUpdatedData) => {
   let shareholdersMembersMerged = [];
   shareholdersUpdatedData.forEach((shareholder) => {
     membersUpdatedData.forEach((member) => {
@@ -110,58 +159,3 @@ export const mergeInfo = (shareholdersUpdatedData, membersUpdatedData) => {
 
   return shareholdersMembersMerged;
 };
-
-//
-// Merge a shareholder's director role, if he is a director
-export const mergeDirectorRole = (shareholdersData, directorsData) => {
-  shareholdersData.forEach((shareholder) => {
-    directorsData.forEach((director) => {
-      if (director.memberCode === shareholder.memberCode) {
-        let shareholderIndex = shareholdersData.indexOf(shareholder);
-        let shareholderCopy = { ...shareholder };
-        shareholderCopy.directorRole = director.directorRole;
-        shareholderCopy.directorCode = director.directorCode;
-        shareholdersData.splice(shareholderIndex, 1, shareholderCopy);
-      }
-    });
-  });
-
-  return shareholdersData;
-};
-
-// //
-// //
-// export const mergeDirectorRole = (shareholdersData, directorsData
-// ) => {
-//   // Find the index of the selected shareholder, and splice in director's role
-
-//   directorsData.forEach((director) => {
-//     let shareholderIndex = shareholdersData.findIndex(
-//       (sh) => sh.memberCode === director.memberCode
-//     );
-//     let shareholderData = shareholdersData[shareholderIndex];
-//     let shareholderDataCopy = { ...shareholderData };
-//     shareholderDataCopy.directorRole = formData.director_role;
-//     shareholdersData.splice(shareholderIndex, 1, shareholderDataCopy);
-//     console.log(shareholdersData);
-
-//   })
-// };
-
-// //
-// //
-// export const updateDirectorRole = (
-//   formData,
-//   shareholdersMembersMerged,
-//   selectedShareholder
-// ) => {
-//   // Find the index of the selected shareholder, and splice in director's role
-//   let shareholderIndex = shareholdersMembersMerged.findIndex(
-//     (e) => e.memberCode === selectedShareholder.memberCode
-//   );
-//   let shareholderData = shareholdersMembersMerged[shareholderIndex];
-//   let shareholderDataCopy = { ...shareholderData };
-//   shareholderDataCopy.directorRole = formData.director_role;
-//   shareholdersMembersMerged.splice(shareholderIndex, 1, shareholderDataCopy);
-//   console.log(shareholdersMembersMerged);
-// };
