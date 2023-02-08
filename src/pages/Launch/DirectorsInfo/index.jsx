@@ -36,18 +36,7 @@ import {
   useViewShareholdersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
-import {
-  directorAdd,
-  directorDelete,
-  directorUpdate,
-  mergeInfo,
-} from "./actions";
-import {
-  memberAdd,
-  memberUpdate,
-} from "containers/Checkout/InfoSection/actions";
 import { Puff } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
 import {
   checkMemberExistence,
   handleMemberAdd,
@@ -60,9 +49,13 @@ import {
   handleDirectorDelete,
   handleDirectorsView,
   handleDirectorUpdate,
-} from "./actionss";
+  handleSingleDirectorView,
+} from "./actions";
 import { handleError } from "utils/globalFunctions";
-import { handleSingleShareholderView } from "../ShareHoldersInfo/actionss";
+import {
+  handleShareholderUpdate,
+  handleSingleShareholderView,
+} from "../ShareHoldersInfo/actions";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -98,12 +91,16 @@ const DirectorsInfo = () => {
     let actionInfo_M = {
       ...launchResponse,
       formData: formData,
-      viewMembers: viewMembers,
+      identificationNumber: formData.nin,
       addMember: addMember,
+      viewMembers: viewMembers,
+      viewDirectors: viewDirectors,
+      viewShareholders: viewShareholders,
     };
-    let memberCheck = await checkMemberExistence(actionInfo_M);
+    let directorCheck = await handleSingleDirectorView(actionInfo_M);
+    let shareholderCheck = await handleSingleShareholderView(actionInfo_M);
 
-    if (memberCheck.data.status) {
+    if (directorCheck.data) {
       // THROW ERROR
       toast.error("Director exists");
       return false;
@@ -114,10 +111,9 @@ const DirectorsInfo = () => {
         viewMembers: viewMembers,
         addMember: addMember,
       };
-      let memberCheck = await checkMemberExistence(actionInfo_M);
 
-      let memberResponse = memberCheck?.data?.status
-        ? memberCheck.data
+      let memberResponse = shareholderCheck?.data
+        ? shareholderCheck
         : await handleMemberAdd(actionInfo_M);
 
       if (memberResponse.data) {
@@ -146,16 +142,38 @@ const DirectorsInfo = () => {
       ...selectedToEdit,
       updateMember: updateMember,
     };
+
     // UPDATE MEMBER
     let memberResponse = await handleMemberUpdate(actionInfo_M);
+
     let actionInfo_D = {
       ...actionInfo_M,
       ...selectedToEdit,
+      identificationNumber: selectedToEdit.directorIdentificationNumber,
       updateDirector: updateDirector,
     };
     // UPDATE DIRECTOR
     let directorResponse = await handleDirectorUpdate(actionInfo_D);
     handleResponse(directorResponse, "Director updated successfully");
+
+    let actionInfo_S = {
+      ...actionInfo_D,
+      viewShareholders: viewShareholders,
+      viewMembers: viewMembers,
+    };
+
+    let shareholder = await handleSingleShareholderView(actionInfo_S);
+
+    if (shareholder.data) {
+      actionInfo_S = {
+        ...actionInfo_S,
+        ...shareholder?.data,
+      };
+      let shareholderResponse = handleShareholderUpdate(actionInfo_S);
+      handleResponse(shareholderResponse, "Shareholder updated successfully");
+    }
+    console.log(shareholder);
+    console.log(actionInfo_S);
   };
 
   //
@@ -170,15 +188,20 @@ const DirectorsInfo = () => {
       deleteMember: deleteMember,
     };
     let directorResponse = await handleDirectorDelete(actionInfo_D);
+    handleResponse(
+      directorResponse,
+      "Director deleted successfuly",
+      handleView
+    );
     // DELETE MEMBER
     let actionInfo_S = {
       launchCode: actionInfo_D.launchCode,
-      memberCode: actionInfo_D.memberCode,
+      identificationNumber: actionInfo_D.directorIdentificationNumber,
       viewShareholders: viewShareholders,
       viewMembers: viewMembers,
     };
     let shareholder = await handleSingleShareholderView(actionInfo_S);
-    if (shareholder?.data) return;
+    if (shareholder.data) return;
     let actionInfo_M = {
       launchCode: actionInfo_D.launchCode,
       memberCode: actionInfo_D.memberCode,
@@ -186,7 +209,6 @@ const DirectorsInfo = () => {
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
     console.log(memberResponse);
-    setSelectedToDelete(director);
   };
 
   //
@@ -200,7 +222,6 @@ const DirectorsInfo = () => {
     };
     // VIEW ALL DIRECTORS
     let directorResponse = await handleDirectorsView(actionInfo);
-    console.log(directorResponse);
     if (directorResponse.data) {
       setDirectorsInfo(directorResponse.data);
     } else {

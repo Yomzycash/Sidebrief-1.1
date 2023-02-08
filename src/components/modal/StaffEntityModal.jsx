@@ -6,16 +6,9 @@ import Modal1 from "layout/modal1";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { useGetAllCountriesQuery } from "services/launchService";
-import { useDeleteEntityMutation } from "services/staffService";
 import styled from "styled-components";
-import {
-  entityRequirements,
-  entityTypes,
-  StaffEntitySchema,
-} from "utils/config";
-import { handleError } from "utils/globalFunctions";
+import { StaffEntitySchema } from "utils/config";
 
 const StaffEntityModal = ({
   cardAction,
@@ -39,10 +32,6 @@ const StaffEntityModal = ({
   const [entityCountries, setEntityCountries] = useState([
     { value: "", label: "" },
   ]);
-  // const [entityCurrencies, setEntityCurrencies] = useState([
-  //   { value: "", label: "" },
-  // ]);
-
   const countries = useGetAllCountriesQuery();
 
   const {
@@ -54,35 +43,16 @@ const StaffEntityModal = ({
     resolver: yupResolver(StaffEntitySchema),
   });
 
-  // // This is attached to entity type dropdown onChange
-  // const handleEntityTypeChange = (value) => {
-  //   var string = Object.values(value)[0];
-  //   setValue("type", string, { shouldValidate: true });
-  // };
-
-  // // This is attached to entity requirements dropdown onChange
-  // const handleEntityReqChange = (value) => {
-  //   var string = Object.values(value)[0];
-  //   setValue("requirements", string, { shouldValidate: true });
-  // };
-
   // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
     let currency = countries?.data?.filter(
       (country) => country.countryISO === selectedCountry
     )[0]?.countryCurrency;
-    console.log(currency);
     // setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
     setValue("currency", currency, { shouldValidate: true });
   };
-
-  // // This is attached to currency dropdown onChange
-  // const handleCurrencyChange = (value) => {
-  //   var string = Object.values(value)[0];
-  //   setValue("currency", string, { shouldValidate: true });
-  // };
 
   // Update entity countries
   useEffect(() => {
@@ -99,7 +69,6 @@ const StaffEntityModal = ({
   // This populates the entity fields when an entity is clicked
   useEffect(() => {
     if (entityInfo && cardAction === "edit") {
-      console.log(entityInfo);
       setValue("entityName", entityInfo.entityName, { shouldValidate: true });
       setValue("description", entityInfo.entityDescription, {
         shouldValidate: true,
@@ -118,8 +87,6 @@ const StaffEntityModal = ({
       });
       setValue("type", entityInfo.entityType, { shouldValidate: true });
     } else {
-      let countryEntity = countryInfo && Object.keys(countryInfo)?.length > 0;
-
       setValue("entityName", "");
       setValue("description", "");
       setValue("shortName", "");
@@ -127,8 +94,6 @@ const StaffEntityModal = ({
       setValue("shares", "");
       setValue("timeline", "");
       setValue("country", "");
-      // setValue("country", `${countryEntity && countryInfo?.countryISO}`);
-      // setValue("currency", `${countryEntity && countryInfo?.countryCurrency}`);
       setValue("currency", "");
       setValue("fee", "");
       setValue("requirements", "");
@@ -166,25 +131,11 @@ const StaffEntityModal = ({
         errorMessage={errors.entityName?.message}
         disable={disable}
       />
-      <DetailedSection>
-        {/* <InputWithLabel
-          label="Entity Description"
-          labelStyle="input-label"
-          placeholder="Enter entity description"
-          type="text"
-          name="description"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.description?.message}
-          disable={disable}
-        /> */}
-      </DetailedSection>
+      <DetailedSection></DetailedSection>
       <TextAreaWithLabel
         label="Entity Description"
         labelStyle="input-label"
         placeholder="Enter entity description"
-        text="Here is a field that contains entity descriptions"
         name="description"
         register={register}
         errorMessage={errors.description?.message}
@@ -215,20 +166,6 @@ const StaffEntityModal = ({
           errorMessage={errors.code?.message}
           disable={disable}
         />
-
-        {/* <DropDown
-          containerStyle={{ margin: 0, marginBottom: "24px" }}
-          label="Entity Type"
-          labelStyle="input-label"
-          placeholder="Public"
-          options={entityTypes}
-          onChange={handleEntityTypeChange}
-          errorMessage={errors.type?.message}
-          defaultValue={entityInfo?.entityType}
-          fontSize="clamp(12px, 1.2vw, 14px)"
-          height="40px"
-          disable={disable}
-        /> */}
       </DetailedSection>
       <DetailedSection>
         <InputWithLabel
@@ -255,19 +192,6 @@ const StaffEntityModal = ({
           errorMessage={errors.requirements?.message}
           disable={disable}
         />
-        {/* <DropDown
-          containerStyle={{ margin: 0, marginBottom: "24px" }}
-          label="Entity Requirement"
-          placeholder="Standard"
-          labelStyle="input-label"
-          options={entityRequirements}
-          onChange={handleEntityReqChange}
-          errorMessage={errors.requirements?.message}
-          defaultValue={entityInfo?.entityRequirements}
-          fontSize="clamp(12px, 1.2vw, 14px)"
-          height="40px"
-          disable={disable}
-        /> */}
       </DetailedSection>
       <DetailedSection>
         <DropDown
@@ -277,27 +201,15 @@ const StaffEntityModal = ({
           options={entityCountries}
           onChange={handleCountryChange}
           errorMessage={errors.country?.message}
-          defaultValue={entityInfo?.entityCountry || countryInfo?.countryISO}
+          defaultValue={cardAction === "edit" && entityInfo?.entityCountry}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable || countryInfo?.countryISO}
         />
-        {/* <DropDown
-          containerStyle={{ margin: 0, marginBottom: "24px" }}
-          label="Entity Currency"
-          labelStyle="input-label"
-          options={entityCurrencies}
-          onChange={handleCurrencyChange}
-          errorMessage={errors.currency?.message}
-          defaultValue={
-            entityInfo?.entityCurrency || countryInfo?.countryCurrency
-          }
-          fontSize="clamp(12px, 1.2vw, 14px)"
-          height="40px"
-          disable={disable || countryInfo?.countryCurrency}
-        /> */}
         <InputWithLabel
-          label="Entity Fee"
+          label={`Entity Fee ${
+            cardAction === "edit" ? "(" + entityInfo?.entityCurrency + ")" : ""
+          } `}
           labelStyle="input-label"
           containerStyle="input-container-class"
           type="number"
@@ -340,7 +252,9 @@ const StaffEntityModal = ({
           label="Entity Features"
           bottomText=""
           placeholder="Enter entity features (seperated with a comma)"
-          initialValues={features}
+          initialValues={
+            cardAction === "edit" ? entityInfo?.entityFeatures : []
+          }
           getSelectedValues={(values) => setFeatures(values)}
           containerClassName="tagWrapper"
           labelClassName="labelWrapper"
@@ -351,15 +265,14 @@ const StaffEntityModal = ({
           minError="Feature name must be at least 3 characters"
           existError="You have added this earlier"
           disable={disable}
-          // otherError={
-          //   cardAction && features.length === 0 && "Enter entity features"
-          // }
         />
         <TagInput
           label="Entity Required Documents"
           bottomText=""
           placeholder="Enter entity required documents (seperated with a comma)"
-          initialValues={documents}
+          initialValues={
+            cardAction === "edit" ? entityInfo?.entityRequiredDocuments : []
+          }
           getSelectedValues={(values) => setDocuments(values)}
           containerClassName="tagWrapper"
           labelClassName="labelWrapper"
@@ -370,11 +283,6 @@ const StaffEntityModal = ({
           minError="Required document name must be at least 3 characters"
           existError="You have added this earlier"
           disable={disable}
-          // otherError={
-          //   cardAction &&
-          //   documents.length === 0 &&
-          //   "Enter entity required documents"
-          // }
         />
       </TagInputs>
     </Modal1>

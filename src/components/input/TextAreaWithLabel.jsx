@@ -44,9 +44,7 @@ const TextAreaWithLabel = ({
           disabled={disable}
           $error={errorMessage}
           {...register(name)}
-        >
-          {text}
-        </TextArea>
+        />
       ) : (
         <TextArea
           placeholder={placeholder}
@@ -54,9 +52,8 @@ const TextAreaWithLabel = ({
           disabled={disable}
           $error={errorMessage}
           onChange={onChange}
-        >
-          {text}
-        </TextArea>
+          value={text}
+        />
       )}
 
       {bottomText ? (

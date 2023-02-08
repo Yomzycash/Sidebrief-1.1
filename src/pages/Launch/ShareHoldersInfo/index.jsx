@@ -1,21 +1,11 @@
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController } from "containers";
-import {
-  CheckoutFormInfo,
-  CheckoutSection,
-  MembersBasicInfo,
-} from "containers/Checkout";
+import { CheckoutSection, MembersBasicInfo } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { setCheckoutProgress } from "redux/Slices";
 import { useNavigate } from "react-router-dom";
-import {
-  LaunchReducer,
-  setCheckoutProgress,
-  setDirectorsLaunchInfo,
-  setShareHoldersLaunchInfo,
-} from "redux/Slices";
 import { store } from "redux/Store";
 import {
   AddMore,
@@ -30,7 +20,6 @@ import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import {
   checkInfoShareCompSchema,
-  checkInfoShareDirSchema,
   checkInfoShareholderSchema,
 } from "utils/config";
 import {
@@ -40,7 +29,6 @@ import {
   useDeleteDirectorMutation,
   useDeleteMemberMutation,
   useDeleteShareholderMutation,
-  useGetUserDraftQuery,
   useUpdateDirectorMutation,
   useUpdateMemberMutation,
   useUpdateShareholderMutation,
@@ -49,43 +37,34 @@ import {
   useViewShareholdersMutation,
 } from "services/launchService";
 import toast from "react-hot-toast";
-import {
-  mergeDirectorRole,
-  mergeInfo,
-  shareHolderAdd,
-  shareholderDelete,
-  shareholderUpdate,
-  updateDirectorRole,
-} from "./actions";
-import {
-  memberAdd,
-  memberUpdate,
-} from "containers/Checkout/InfoSection/actions";
-import {
-  directorAdd,
-  directorDelete,
-  directorUpdate,
-} from "../DirectorsInfo/actions";
 import { Puff } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
 import {
   checkMemberExistence,
   handleMemberAdd,
   handleMemberDelete,
   handleMemberUpdate,
+  handleResponse,
 } from "../actions";
 import {
   handleShareholderAdd,
   handleShareholderDelete,
   handleShareholdersView,
   handleShareholderUpdate,
-} from "./actionss";
+  handleSingleShareholderView,
+} from "./actions";
 import {
   handleDirectorAdd,
+  handleDirectorDelete,
   handleDirectorUpdate,
   handleSingleDirectorView,
-} from "../DirectorsInfo/actionss";
+} from "../DirectorsInfo/actions";
 import { handleError } from "utils/globalFunctions";
+
+//
+
+//
+
+//
 
 const ShareHoldersInfo = () => {
   const navigate = useNavigate();
@@ -108,6 +87,7 @@ const ShareHoldersInfo = () => {
   const [deleteMember, memberDelState] = useDeleteMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [addDirector, dirAddState] = useAddDirectorMutation();
+  const [deleteDirector, dirDelState] = useDeleteDirectorMutation();
   const [updateDirector, dirUpdateState] = useUpdateDirectorMutation();
   const [viewShareholders, viewState] = useViewShareholdersMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
@@ -124,19 +104,26 @@ const ShareHoldersInfo = () => {
   const handleAdd = async (formData) => {
     let actionInfo_M = {
       ...launchResponse,
-      formData: formData,
+      identificationNumber: formData.nin,
+      viewShareholders: viewShareholders,
       viewMembers: viewMembers,
-      addMember: addMember,
     };
-    let memberCheck = await checkMemberExistence(actionInfo_M);
+    let shareholderCheck = await handleSingleShareholderView(actionInfo_M);
 
-    if (memberCheck.data.status) {
+    if (shareholderCheck.data) {
       // THROW ERROR
       toast.error("Shareholder exists");
       return false;
     } else {
+      actionInfo_M = {
+        ...actionInfo_M,
+        formData: formData,
+        addMember: addMember,
+      };
+
       // ADD MEMBER
       let memberResponse = await handleMemberAdd(actionInfo_M);
+
       if (memberResponse.data) {
         // ADD SHAREHOLDER
         let actionInfo_S = {
@@ -150,6 +137,7 @@ const ShareHoldersInfo = () => {
         } else {
           handleError(shareholderResponse?.error);
         }
+
         if (formData.isDirector) {
           // ADD DIRECTOR
           let actionInfo_D = {
@@ -180,8 +168,10 @@ const ShareHoldersInfo = () => {
       ...selectedToEdit,
       updateMember: updateMember,
     };
+
     // UPDATE MEMBER
     let memberResponse = await handleMemberUpdate(actionInfo_M);
+
     // UPDATE SHAREHOLDER
     let actionInfo_S = {
       ...actionInfo_M,
@@ -189,29 +179,49 @@ const ShareHoldersInfo = () => {
       addMemberData: memberResponse.data,
     };
     let shareholderResponse = await handleShareholderUpdate(actionInfo_S);
-    if (shareholderResponse.data) {
-      toast.success("Shareholder updated successfully");
-    } else {
-      handleError(shareholderResponse?.error);
-    }
+    handleResponse(shareholderResponse, "Shareholder updated successfully");
+
+    // UPDATE DIRECTOR / ADD DIRECTOR / DELETE DIRECTOR
     if (formData.isDirector) {
       let actionInfo_D = {
-        ...actionInfo_M,
+        ...actionInfo_S,
+        identificationNumber: selectedToEdit.shareholderIdentificationNumber,
         viewDirectors: viewDirectors,
         updateDirector: updateDirector,
+        addDirector: addDirector,
         viewMembers: viewMembers,
       };
       let director = await handleSingleDirectorView(actionInfo_D);
-      // UPDATE DIRECTOR
+      // UPDATE DIRECTOR / ADD DIRECTOR
       actionInfo_D = {
         ...actionInfo_D,
-        ...director.data,
+        ...director?.data,
       };
-      let directorResponse = await handleDirectorUpdate(actionInfo_D);
-      if (directorResponse.data) {
-        toast.success("Director updated successfully");
-      } else {
-        handleError(directorResponse?.error);
+      let directorCode = actionInfo_D?.directorCode;
+      let directorResponse = directorCode
+        ? await handleDirectorUpdate(actionInfo_D)
+        : await handleDirectorAdd(actionInfo_D);
+      let message = directorCode
+        ? "Director updated successfully"
+        : "Director added successfully";
+      handleResponse(directorResponse, message);
+    } else {
+      // DELETE DIRECTOR, IF EXTSTS
+      let actionInfo_D = {
+        ...actionInfo_S,
+        identificationNumber: formData.nin,
+        viewDirectors: viewDirectors,
+        viewMembers: viewMembers,
+      };
+      let director = await handleSingleDirectorView(actionInfo_D);
+      if (director.data) {
+        actionInfo_D = {
+          ...actionInfo_D,
+          ...director.data,
+          deleteDirector: deleteDirector,
+        };
+        let deleteResponse = await handleDirectorDelete(actionInfo_D);
+        handleResponse(deleteResponse, "Director deleted successfully");
       }
     }
   };
@@ -221,36 +231,39 @@ const ShareHoldersInfo = () => {
   // DELETE A SHAREHOLDER
   const handleDelete = async (shareholder) => {
     setSelectedToDelete(shareholder);
+
     let actionInfo_S = {
       ...launchResponse,
       ...shareholder,
       deleteShareholder: deleteShareholder,
     };
+
     // DELETE SHAREHOLDER
     let shareholderResponse = await handleShareholderDelete(actionInfo_S);
-    if (shareholderResponse.data) {
-      toast.success("Shareholder deleted successfully");
-    } else {
-      handleError(shareholderResponse?.error);
-    }
+    handleResponse(
+      shareholderResponse,
+      "Shareholder deleted successfully",
+      handleView
+    );
+
+    // IF DIRECTOR, RETURN, ELSE DELETE MEMBER
     let actionInfo_D = {
       ...launchResponse,
-      memberCode: shareholder.memberCode,
+      identificationNumber: shareholder.shareholderIdentificationNumber,
       viewDirectors: viewDirectors,
       viewMembers: viewMembers,
     };
     let director = await handleSingleDirectorView(actionInfo_D);
     if (director.data) return;
-    console.log("Not a director");
+
     // DELETE MEMBER
     let actionInfo_M = {
       launchCode: actionInfo_D.launchCode,
-      memberCode: actionInfo_D.memberCode,
+      memberCode: shareholder.memberCode,
       deleteMember: deleteMember,
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
     console.log(memberResponse);
-    setSelectedToDelete(shareholder);
   };
 
   //
@@ -266,6 +279,7 @@ const ShareHoldersInfo = () => {
     let shareholderResponse = await handleShareholdersView(actionInfo);
     if (shareholderResponse.data) {
       setShareholdersInfo(shareholderResponse.data);
+      // console.log(shareholderResponse.data);
     } else {
       handleError(shareholderResponse?.error);
     }
@@ -279,7 +293,6 @@ const ShareHoldersInfo = () => {
 
   // POPULATE FIELDS INFORMATION
   const handlePopulate = (setValue) => {
-    // console.log(selectedToEdit);
     if (cardAction === "edit") {
       setValue("fullName", selectedToEdit?.memberName);
       setValue("email", selectedToEdit?.memberEmail);
@@ -289,7 +302,7 @@ const ShareHoldersInfo = () => {
         selectedToEdit?.shareholderOwnershipPercentage
       );
       setValue("nin", selectedToEdit.shareholderIdentificationNumber);
-      // setValue("regNo", selectedToEdit.shareholderRegistrationNumber);
+      setValue("regNo", selectedToEdit.shareholderRegistrationNumber);
     } else {
       setValue("fullName", "");
       setValue("email", "");
@@ -405,6 +418,7 @@ const ShareHoldersInfo = () => {
                     updateState.isLoading ||
                     memberAddState.isLoading ||
                     memberUpdateState.isLoading ||
+                    viewMembersState.isLoading ||
                     dirAddState.isLoading ||
                     dirUpdateState.isLoading
                   }

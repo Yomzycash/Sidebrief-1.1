@@ -24,7 +24,7 @@ import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
 import { ThreeDots } from "react-loading-icons";
 import { memberAdd } from "./actions";
-import { handleSingleDirectorView } from "pages/Launch/DirectorsInfo/actionss";
+import { handleSingleDirectorView } from "pages/Launch/DirectorsInfo/actions";
 
 export const MembersBasicInfo = ({
   title,
@@ -64,17 +64,16 @@ export const MembersBasicInfo = ({
       populateModal(setValue);
       if (shareholder) handleCheckBoxes();
     }
-  }, [isCompany, isDirector]);
+  }, []);
 
   const handleCheckBoxes = async () => {
-    if (info?.shareholderRegistrationNumber) {
-      setIsCompany(true);
+    if (info.shareholderRegistrationNumber) {
       setValue("isCompany", true);
-      setValue("regNo", info.shareholderRegistrationNumber);
+      setIsCompany(true);
     }
     let actionInfo = {
       ...launchInfo,
-      memberCode: info.memberCode,
+      identificationNumber: info.shareholderIdentificationNumber,
       viewMembers: viewMembers,
       viewDirectors: viewDirectors,
     };
@@ -85,14 +84,21 @@ export const MembersBasicInfo = ({
     }
   };
 
-  useEffect(() => {
-    if (!isCompany) setValue("regNo", "");
-  }, [isCompany]);
+  const handleIsCompany = () => {
+    setValue("isCompany", !isCompany);
+    setIsCompany(!isCompany);
+    if (isCompany) {
+      setValue("regNo", "");
+    } else {
+      setValue("regNo", info.shareholderRegistrationNumber);
+    }
+  };
 
   // This sets the phone number value - attached to the onChange event
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
   };
+
   return (
     <Form onSubmit={handleSubmit(submitForm)}>
       <Title>
@@ -226,7 +232,7 @@ export const MembersBasicInfo = ({
                 id="is_company"
                 name="isCompany"
                 checked={isCompany}
-                onClick={() => setIsCompany(!isCompany)}
+                onClick={handleIsCompany}
                 {...register("isCompany")}
               />
               <label htmlFor="is_company">

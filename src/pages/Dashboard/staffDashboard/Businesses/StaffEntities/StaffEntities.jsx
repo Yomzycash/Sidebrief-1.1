@@ -1,12 +1,6 @@
-import Navbar from "components/navbar";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import StaffHeader from "components/Header/StaffHeader";
-import { CountryCardDetails, EntityCardDetails } from "utils/config";
 import StaffEntityCard from "components/cards/StaffEntityCard";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
@@ -27,12 +21,8 @@ const StaffEntities = () => {
   const [features, setFeatures] = useState([]);
   const [documents, setDocuments] = useState([]);
 
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
-
   // These communicate with the backend
-  const { data, isLoading, isSuccess, isError, refetch } =
-    useGetAllTheEntitiesQuery();
+  const { data, isLoading, refetch } = useGetAllTheEntitiesQuery();
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
   const [deleteEntity, deleteState] = useDeleteEntityMutation();
@@ -54,15 +44,17 @@ const StaffEntities = () => {
     return {
       entityName: formData?.entityName,
       entityShortName: formData?.shortName,
+      entityDescription: formData?.description,
       entityType: formData?.type,
       entityCode: formData?.code,
       entityCountry: formData?.country,
       entityFee: formData?.fee,
       entityCurrency: formData?.currency,
-      entityDescription: formData?.description,
       entityTimeline: formData?.timeline,
       entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
+      entityFeatures: features.join(", "),
+      entityRequiredDocuments: documents.join(", "),
     };
   };
 
@@ -74,63 +66,48 @@ const StaffEntities = () => {
 
   // This adds a new entity
   const handleEntityAdd = async (formData) => {
-    console.log({
-      ...formData,
-      features: features.join(", "),
-      documents: documents.join(", "),
-    });
-
-    // let requiredData = getRequired(formData);
-    // let response = await addEntity(requiredData);
-    // let data = response?.data;
-    // let error = response?.error;
-    // if (data) {
-    //   toast.success("Entity added successfully");
-    //   setOpen(false);
-    // } else {
-    //   handleError(error);
-    // }
-    // refetch();
+    let requiredData = getRequired(formData);
+    let response = await addEntity(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity added successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
   };
 
   // This updates an existing entity
   const handleEntityUpdate = async (formData) => {
-    console.log({
-      ...formData,
-      features: features.join(", "),
-      documents: documents.join(", "),
-    });
-
-    // let requiredData = getRequired(formData);
-    // console.log(requiredData);
-    // let response = await updateEntity(requiredData);
-    // let data = response?.data;
-    // let error = response?.error;
-    // if (data) {
-    //   toast.success("Entity updated successfully");
-    //   setOpen(false);
-    // } else {
-    //   handleError(error);
-    // }
-    // refetch();
+    let requiredData = getRequired(formData);
+    let response = await updateEntity(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
   };
 
   // This runs when the delete icon is pressed
   const handleEntityDelete = async (entityInfo) => {
-    console.log(entityInfo);
-    // let response = await deleteEntity(entityInfo);
-    // console.log(response);
-    // let data = response?.data;
-    // let error = response?.error;
-    // if (data) {
-    //   toast.success("Entity deleted successfully");
-    //   setOpen(false);
-    // } else {
-    //   handleError(error);
-    // }
-    // refetch();
+    let response = await deleteEntity(entityInfo);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity deleted successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
   };
-
+  console.log(entities);
   return (
     <Container>
       <StaffHeader
