@@ -4,7 +4,7 @@ export const staffApi = createApi({
   reducerPath: "staffApi",
   baseQuery: fetchBaseQuery({
     // the base query used by each endpoint to request data.
-    baseUrl: process.env.REACT_APP_DEV_BASE_URL,
+    baseUrl: import.meta.env.VITE_DEV_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
       console.log("Token: ", token);

@@ -30,14 +30,17 @@ const DetailBeneficiaries = () => {
               (el) => el.beneficialOwnerCode === beneficiary.beneficialOwnerCode
             );
 
-            const governmentFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("registration document"))
-              .slice(-1)[0];
-            const passportFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("representative nin"))
+            const NINSlip = currentmemberKYC
+              .filter((el) => el.documentType.includes("NIN Slip"))
               .slice(-1)[0];
             const proofFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("beneficiary signature"))
+              .filter((el) => el.documentType.includes("Proof of address"))
+              .slice(-1)[0];
+            const eSignature = currentmemberKYC
+              .filter((el) => el.documentType.includes("E-signature"))
+              .slice(-1)[0];
+            const passportFile = currentmemberKYC
+              .filter((el) => el.documentType.includes("Passport Photograph"))
               .slice(-1)[0];
 
             console.log("checking", currentmemberKYC);
@@ -47,8 +50,9 @@ const DetailBeneficiaries = () => {
                 email={beneficiary.beneficialOwnerEmail}
                 phone={`+${beneficiary.beneficialOwnerPhone}`}
                 title={`${beneficiary.beneficialOwnerOccupation} - ${beneficiary.beneficialOwnershipStake} stake`}
-                government={governmentFile}
+                nin={NINSlip}
                 proof={proofFile}
+                signature={eSignature}
                 passport={passportFile}
               />
             );

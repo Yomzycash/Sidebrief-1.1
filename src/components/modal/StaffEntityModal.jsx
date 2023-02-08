@@ -66,7 +66,6 @@ const StaffEntityModal = ({
     let currency = countries?.data?.filter(
       (country) => country.countryISO === selectedCountry
     )[0]?.countryCurrency;
-    console.log(currency);
     setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
     setValue("currency", "", { shouldValidate: true });
@@ -93,7 +92,6 @@ const StaffEntityModal = ({
   // This populates the entity fields when an entity is clicked
   useEffect(() => {
     if (entityInfo && cardAction === "edit") {
-      console.log(entityInfo);
       setValue("entity_name", entityInfo.entityName, { shouldValidate: true });
       setValue("description", entityInfo.entityDescription, {
         shouldValidate: true,

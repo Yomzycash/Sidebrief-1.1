@@ -40,25 +40,33 @@ const StaffRewardModal = ({
 
     setCategories(
       categories
-        ? [...new Set(categories)].map((cat) => ({ value: cat, label: cat }))
+        ? [...new Set(categories)].map((cat) => ({
+            value: cat,
+            label: cat,
+          }))
         : []
     );
   }, [data]);
 
   const handleCategoryChange = (value) => {
     let category = Object.values(value)[0];
-    console.log(category);
     setValue("category", category, { shouldValidate: true });
   };
 
   useEffect(() => {
     if (cardAction === "edit" && rewardInfo) {
-      setValue("reward_name", rewardInfo.rewardName, { shouldValidate: true });
-      setValue("partner", rewardInfo.rewardPartner, { shouldValidate: true });
+      setValue("reward_name", rewardInfo.rewardName, {
+        shouldValidate: true,
+      });
+      setValue("partner", rewardInfo.rewardPartner, {
+        shouldValidate: true,
+      });
       setValue("description", rewardInfo.rewardDescription, {
         shouldValidate: true,
       });
-      setValue("category", rewardInfo.rewardCategory, { shouldValidate: true });
+      setValue("category", rewardInfo.rewardCategory, {
+        shouldValidate: true,
+      });
       setValue("code", rewardInfo.rewardCode, { shouldValidate: true });
       setValue("link", rewardInfo.rewardLink, { shouldValidate: true });
       setValue("image", rewardInfo.rewardImage, { shouldValidate: true });

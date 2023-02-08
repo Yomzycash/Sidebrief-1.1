@@ -6,7 +6,7 @@ import { sortTableData } from "utils/staffHelper";
 const CompletedBusinessesSummary = () => {
   const [completed, setCompleted] = useState([]);
 
-  const { data, isLoading, isSuccess } = useGetRejectedLaunchQuery();
+  const { data } = useGetRejectedLaunchQuery();
 
   let sortArr = [...data];
   let sortedArr = sortArr?.sort(sortTableData);
@@ -22,7 +22,7 @@ const CompletedBusinessesSummary = () => {
           };
         })
     );
-  }, []);
+  }, [sortedArr]);
 
   return (
     <BusinessHomeTable
