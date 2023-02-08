@@ -143,7 +143,7 @@ export const handleResponse = (response, successMessage, successAction) => {
 
 //
 
-export const checkPaymentStatus = async () => {
+export const checkPaymentStatus = async (launchResponse) => {
   let viewResponse = await viewPayLaunch(launchResponse);
 
   let data = viewResponse?.data?.businessPayment[0];
