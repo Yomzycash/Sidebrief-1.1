@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+/**
+ * MAKE TABLES RESPONSIVE
+ *
+ * 1. Add overflow-x scroll to Container (Wrapping the table)
+ * 2. Add a padding to the text, both head and body
+ * */
+
 export const Container = styled.div`
 	width: 100%;
 	border: 1px solid #edf1f7;

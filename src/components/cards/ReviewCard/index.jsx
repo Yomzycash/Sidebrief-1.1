@@ -46,10 +46,11 @@ const ReviewCard = ({
     );
 
     const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "NIN Slip"
+      (item) => item.documentType === "NIN Slip/Card"
     );
 
     let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
+    console.log("adddddddddddd", lastUploadDetail);
     setGovernmentId(lastUploadDetail);
 
     //nin
@@ -68,10 +69,8 @@ const ReviewCard = ({
     );
 
     let lastUploadSignatureDetail =
-    uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
+      uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
     setNin(lastUploadSignatureDetail);
-
-    
 
     //
     const uploadedPassportDetail = fileInfo.filter(
@@ -82,6 +81,8 @@ const ReviewCard = ({
       uploadedPassportDetail[uploadedPassportDetail.length - 1];
     setPassport(lastUploadPassportDetail);
   };
+
+  console.log("checking stuff", governmentId);
 
   const handleBeneficiary = async () => {
     const response = await viewBeneficials(launchInfo);
@@ -123,15 +124,13 @@ const ReviewCard = ({
     // console.log(lastUploadPassportDetail);
     setPassport(lastUploadPassportDetail);
 
-
     const uploadedSignatureDetail = fileInfo.filter(
       (item) => item.documentType === "Passport Photograph"
     );
 
     let lastUploadSignatureDetail =
-    uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
+      uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
     setNin(lastUploadSignatureDetail);
-
   };
 
   useEffect(() => {
@@ -197,7 +196,7 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{governmentId?.fileName}</TextWrapper>
+          <TextWrapper>{governmentId?.documentType}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage.filter((fil) => proofD?.fileType === fil.type)
@@ -218,7 +217,7 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{proofD?.fileName}</TextWrapper>
+          <TextWrapper>{proofD?.documentType}</TextWrapper>
         </PdfWrapper>
         <PdfWrapper>
           {imageTypeImage.filter((fil) => passportD?.fileType === fil.type)
@@ -239,14 +238,12 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{passportD?.fileName}</TextWrapper>
+          <TextWrapper>{passportD?.documentType}</TextWrapper>
         </PdfWrapper>
 
         <PdfWrapper>
-          {imageTypeImage.filter((fil) => Nin?.fileType === fil.type)
-            .length === 0 && (
-            <NotUploaded> Proof of Address not uploaded yet</NotUploaded>
-          )}
+          {imageTypeImage.filter((fil) => Nin?.fileType === fil.type).length ===
+            0 && <NotUploaded> Proof of Address not uploaded yet</NotUploaded>}
           {imageTypeImage
             .filter((fil) => Nin?.fileType === fil.type)
             .map((m) => (
@@ -261,9 +258,8 @@ const ReviewCard = ({
                 }}
               />
             ))}
-          <TextWrapper>{Nin?.fileName}</TextWrapper>
+          <TextWrapper>{Nin?.documentType}</TextWrapper>
         </PdfWrapper>
-
       </PdfContainer>
     </Container>
   );

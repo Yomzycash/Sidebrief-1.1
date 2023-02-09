@@ -51,6 +51,7 @@ const DetailShareholder = () => {
                 proof={proofFile}
                 signature={eSignature}
                 passport={passportFile}
+                page={"sharehholders"}
               />
             );
           })}

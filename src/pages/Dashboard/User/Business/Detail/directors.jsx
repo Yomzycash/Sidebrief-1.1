@@ -52,6 +52,7 @@ const DetailDirectors = () => {
                 proof={proofFile}
                 signature={eSignature}
                 passport={passportFile}
+                page={"directors"}
               />
             );
           })}

@@ -52,6 +52,7 @@ const DetailBeneficiaries = () => {
                 proof={proofFile}
                 signature={eSignature}
                 passport={passportFile}
+                page={"beneficiaries"}
               />
             );
           })}
