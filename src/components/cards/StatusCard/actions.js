@@ -26,14 +26,6 @@ export const useActions = ({
 		showDeleteModal();
 	};
 
-	const navigateToDetailPage = () => {
-		// set the launchInfo to store and localstorage
-		store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-		localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-		// navigate
-		navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
-	};
-
 	const checkPaymentStatus = async () => {
 		let viewResponse = await viewPayLaunch(launchInfo);
 		// console.log(viewResponse);
