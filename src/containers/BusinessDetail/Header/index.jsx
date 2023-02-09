@@ -29,6 +29,8 @@ import { HiX } from "react-icons/hi";
 import {
 	useViewLaunchRequestQuery,
 	useDeleteLaunchRequestMutation,
+	useLazyGetUserDraftQuery,
+	useLazyGetUserSubmittedQuery,
 } from "services/launchService";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
@@ -40,6 +42,9 @@ export const Header = ({ isStaff }) => {
 	const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 	const [deleteLaunch, deleteState] = useDeleteLaunchRequestMutation();
 	const [openModal, setOpenModal] = useState(false);
+	const [getUserDraft, getUserDraftState] = useLazyGetUserDraftQuery();
+	const [getUserSubmitted, getUserSubmittedState] =
+		useLazyGetUserSubmittedQuery();
 
 	const { code } = useParams();
 	const { pathname } = useLocation();
@@ -59,11 +64,24 @@ export const Header = ({ isStaff }) => {
 	const handleClick = () => {
 		setOpenModal(true);
 	};
+
 	const deleteAction = async () => {
 		// perform delete action here
 		await deleteLaunch({
 			launchCode: launchResponse.launchCode,
 		});
+		if (!isStaff) {
+			switch (launchRequest.data.registrationStatus === "pending") {
+				case "pending":
+					await getUserDraft();
+					break;
+				case "submitted":
+					await getUserSubmitted();
+					break;
+				default:
+					break;
+			}
+		}
 		navigate(
 			isStaff
 				? `/${"staff-dashboard"}/businesses/registration/${
@@ -313,7 +331,11 @@ export const Header = ({ isStaff }) => {
 							backText={"No"}
 							forwardAction={deleteAction}
 							forwardText={"Yes"}
-							forwardLoading={deleteState.isLoading}
+							forwardLoading={
+								deleteState.isLoading ||
+								getUserDraftState.isLoading ||
+								getUserSubmittedState.isLoading
+							}
 						/>
 					</ModalButton>
 				</ModalWrapper>
