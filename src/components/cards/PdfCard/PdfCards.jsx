@@ -93,7 +93,7 @@ const PdfCards = ({
                 </Details>
               ) : (
                 <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload a file
+                  upload your NIN
                 </Details>
               )}
             </PdfLowerWrapper>
@@ -134,7 +134,7 @@ const PdfCards = ({
                 </Details>
               ) : (
                 <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload a file
+                  upload proof of address
                 </Details>
               )}
             </PdfLowerWrapper>
@@ -179,7 +179,7 @@ const PdfCards = ({
                 </Details>
               ) : (
                 <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload a file
+                  upload your signature
                 </Details>
               )}
             </PdfLowerWrapper>
@@ -221,7 +221,7 @@ const PdfCards = ({
                 </Details>
               ) : (
                 <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload a file
+                  upload your passport photograph
                 </Details>
               )}
             </PdfLowerWrapper>
