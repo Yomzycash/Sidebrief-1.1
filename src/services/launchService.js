@@ -17,7 +17,7 @@ export const launchApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["Application", "Allaunch", "DraftLaunch", "PendingLaunch"],
+	tagTypes: ["Application", "DraftLaunch", "PendingLaunch"],
 
 	endpoints: (builder) => ({
 		// get all draft
@@ -426,7 +426,7 @@ export const launchApi = createApi({
 				method: "POST",
 				body: values,
 			}),
-			invalidatesTags: ["Allaunch", "DraftLaunch", "PendingLaunch"],
+			invalidatesTags: ["DraftLaunch", "PendingLaunch"],
 		}),
 	}),
 });
