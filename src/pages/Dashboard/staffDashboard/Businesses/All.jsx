@@ -10,13 +10,13 @@ const AllBusinessesSummary = () => {
 
   const { data } = useGetSubmittedLaunchQuery();
 
-  let sortArr = [...data];
-  let sortedArr = sortArr?.sort(sortTableData);
+  // let sortArr = [...data];
+  // let sortedArr = data?.sort(sortTableData);
 
   useEffect(() => {
     setSubmitted(
-      sortedArr &&
-        sortedArr.map((reg) => {
+      data &&
+        data?.map((reg) => {
           return {
             name: reg.businessNames?.businessName1,
             country: reg?.registrationCountry,
@@ -24,7 +24,7 @@ const AllBusinessesSummary = () => {
           };
         })
     );
-  }, [sortedArr]);
+  }, [data]);
 
   return (
     <BusinessHomeTable

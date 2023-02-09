@@ -263,6 +263,18 @@ const TitleWrapper = styled.h3`
   background: #00a2d4;
   border-radius: 8px;
 `;
+const RegistrationBlock = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 24px;
+  gap: 8px;
+  width: 196px;
+  height: 44px;
+  background: #00a2d4;
+  border-radius: 8px;
+`;
 const TextContent = styled(Link)`
   font-weight: 500;
   font-size: 14px;

@@ -90,7 +90,6 @@ const EntitySelect = () => {
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
     // console.log(checkIsString(entities.entityFee) ? 'true' : 'false')
-    localStorage.setItem("entityType", selectedItem.entityName);
     localStorage.setItem(
       "entityTimeline",
       JSON.stringify(selectedItem.entityTimeline)

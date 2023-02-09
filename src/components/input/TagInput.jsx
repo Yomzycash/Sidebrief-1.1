@@ -16,8 +16,19 @@ import {
 const TagInput = ({
   label = "Business Name",
   bottomText = 'Please provide exactly 4 names you want for your business, in order of preferences (seperated with ",")',
+  placeholder = "Type your Business name ",
   getSelectedValues,
   initialValues,
+  containerClassName,
+  labelClassName,
+  tagClassName,
+  inputClassName,
+  maxTags = 4,
+  maxError = "You cannot choose more than 4 business names",
+  minError = "Business name must be at least 3 characters",
+  existError = "Please input unique business names",
+  otherError = "",
+  disable,
 }) => {
   const [tags, setTags] = useState([]);
   const [error, setError] = useState("");
@@ -33,13 +44,13 @@ const TagInput = ({
     const value = currentInput;
     if (!value.trim()) return;
 
-    if (tags.length >= 4) {
-      setError("You cannot choose more than 4 business names");
+    if (tags.length >= maxTags) {
+      setError(maxError);
       return;
     }
 
     if (value.length <= 2) {
-      setError("Business name must be at least 3 characters");
+      setError(minError);
       return;
     }
 
@@ -49,7 +60,7 @@ const TagInput = ({
       }
     }
     if (resultToReturn) {
-      setError("Please input unique business names");
+      setError(existError);
       return;
     }
     setTags([...tags, value.trim()]);
@@ -75,15 +86,15 @@ const TagInput = ({
         }
       }
       if (resultToReturn) {
-        setError("Please input unique business names");
+        setError(existError);
         return;
       }
 
-      if (tags.length >= 4) {
-        setError("You cannot choose more than 4 business names");
+      if (tags.length >= maxTags) {
+        setError(maxError);
         return;
       } else if (value.length <= 2) {
-        setError("Business name must be at least 3 characters");
+        setError(minError);
         return;
       } else {
         setTags([...tags, value.trim()]);
@@ -108,35 +119,37 @@ const TagInput = ({
     setTags([...initialValues]);
   }, [initialValues.length]);
 
+  // useEffect(() => {
+  //   if (otherError) setError(otherError);
+  // }, [otherError]);
+
   return (
-    <>
-      <AllWrapper>
-        <TagTop>
-          <TagLabel> {label} </TagLabel>
-          <span>{error}</span>
-        </TagTop>
-
-        <TagWrapper>
-          {tags.map((tag, index) => (
-            <TagItem key={index}>
-              <TagText>{tag}</TagText>
-              <MdClear size={20} onClick={() => removeTags(index)} />
-            </TagItem>
-          ))}
-        </TagWrapper>
-
-        <TagInputWrapper>
-          <TagInputField
-            type="text"
-            placeholder="Type your Business name "
-            onKeyDown={handlekeydown}
-            value={currentInput}
-            onChange={handleChange}
-          />
-        </TagInputWrapper>
-        <BottomText>{bottomText}</BottomText>
-      </AllWrapper>
-    </>
+    <AllWrapper className={containerClassName}>
+      <TagTop className={labelClassName}>
+        <TagLabel> {label} </TagLabel>
+        <span>{error}</span>
+      </TagTop>
+      <TagWrapper className={tagClassName}>
+        {tags.map((tag, index) => (
+          <TagItem key={index}>
+            <TagText>{tag}</TagText>
+            <MdClear size={20} onClick={() => removeTags(index)} />
+          </TagItem>
+        ))}
+      </TagWrapper>
+      <TagInputWrapper className={inputClassName}>
+        <TagInputField
+          type="text"
+          placeholder={placeholder}
+          onKeyDown={handlekeydown}
+          value={currentInput}
+          onChange={handleChange}
+          disabled={disable}
+          // $error={error}
+        />
+      </TagInputWrapper>
+      <BottomText>{bottomText}</BottomText>
+    </AllWrapper>
   );
 };
 

@@ -35,6 +35,7 @@ const ReviewCard = ({
   const [governmentId, setGovernmentId] = useState({});
   const [proofD, setProof] = useState({});
   const [passportD, setPassport] = useState({});
+  const [Nin, setNin] = useState({});
 
   const handleShareHolder = async () => {
     const response = await viewMemberKYC(launchInfo);
@@ -45,7 +46,7 @@ const ReviewCard = ({
     );
 
     const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "registration document"
+      (item) => item.documentType === "NIN Slip"
     );
 
     let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
@@ -53,7 +54,7 @@ const ReviewCard = ({
 
     //nin
     const uploadedProofDetail = fileInfo.filter(
-      (item) => item.documentType === "representative nin"
+      (item) => item.documentType === "Proof of address"
     );
 
     let lastUploadProofDetail =
@@ -62,8 +63,19 @@ const ReviewCard = ({
 
     // signature
 
+    const uploadedSignatureDetail = fileInfo.filter(
+      (item) => item.documentType === "E-signature"
+    );
+
+    let lastUploadSignatureDetail =
+    uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
+    setNin(lastUploadSignatureDetail);
+
+    
+
+    //
     const uploadedPassportDetail = fileInfo.filter(
-      (item) => item.documentType === "signature document"
+      (item) => item.documentType === "Passport Photograph"
     );
 
     let lastUploadPassportDetail =
@@ -80,7 +92,7 @@ const ReviewCard = ({
     );
 
     const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "registration document"
+      (item) => item.documentType === "NIN Slip"
     );
     // console.log(uploadedDetail);
 
@@ -90,7 +102,7 @@ const ReviewCard = ({
 
     //nin
     const uploadedProofDetail = fileInfo.filter(
-      (item) => item.documentType === "representative nin"
+      (item) => item.documentType === "Proof of address"
     );
     // console.log(uploadedDetail);
 
@@ -102,7 +114,7 @@ const ReviewCard = ({
     // signature
 
     const uploadedPassportDetail = fileInfo.filter(
-      (item) => item.documentType === "beneficiary signature"
+      (item) => item.documentType === "E-signature"
     );
     // console.log(uploadedDetail);
 
@@ -110,6 +122,16 @@ const ReviewCard = ({
       uploadedPassportDetail[uploadedPassportDetail.length - 1];
     // console.log(lastUploadPassportDetail);
     setPassport(lastUploadPassportDetail);
+
+
+    const uploadedSignatureDetail = fileInfo.filter(
+      (item) => item.documentType === "Passport Photograph"
+    );
+
+    let lastUploadSignatureDetail =
+    uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
+    setNin(lastUploadSignatureDetail);
+
   };
 
   useEffect(() => {
@@ -159,7 +181,7 @@ const ReviewCard = ({
         <PdfWrapper>
           {imageTypeImage?.filter((fil) => governmentId?.fileType === fil.type)
             .length === 0 && (
-            <NotUploaded>Government ID not uploaded yet</NotUploaded>
+            <NotUploaded>NIN Slip not uploaded yet</NotUploaded>
           )}
           {imageTypeImage
             ?.filter((fil) => governmentId?.fileType === fil.type)
@@ -201,7 +223,7 @@ const ReviewCard = ({
         <PdfWrapper>
           {imageTypeImage.filter((fil) => passportD?.fileType === fil.type)
             .length === 0 && (
-            <NotUploaded>Passport photograph not uploaded yet</NotUploaded>
+            <NotUploaded>E-signature not uploaded yet</NotUploaded>
           )}
           {imageTypeImage
             .filter((fil) => passportD?.fileType === fil.type)
@@ -219,6 +241,29 @@ const ReviewCard = ({
             ))}
           <TextWrapper>{passportD?.fileName}</TextWrapper>
         </PdfWrapper>
+
+        <PdfWrapper>
+          {imageTypeImage.filter((fil) => Nin?.fileType === fil.type)
+            .length === 0 && (
+            <NotUploaded> Proof of Address not uploaded yet</NotUploaded>
+          )}
+          {imageTypeImage
+            .filter((fil) => Nin?.fileType === fil.type)
+            .map((m) => (
+              <img
+                src={m.image}
+                alt=""
+                style={{
+                  margin: 0,
+                  height: "25px",
+                  width: "25px",
+                  marginRight: "8px",
+                }}
+              />
+            ))}
+          <TextWrapper>{Nin?.fileName}</TextWrapper>
+        </PdfWrapper>
+
       </PdfContainer>
     </Container>
   );

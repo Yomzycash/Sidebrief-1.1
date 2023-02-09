@@ -11,6 +11,7 @@ import {
   useAddMemberKYCMutation,
   useDeleteMemberKYCMutation,
   useGetAllEntitiesQuery,
+  useGetUserDraftQuery,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
@@ -48,13 +49,14 @@ const ShareHolderKYC = () => {
     (state) => state.LaunchReducer.launchResponse
   );
   const countryISO = localStorage.getItem("countryISO");
-  const entityType = localStorage.getItem("entityType");
+
 
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
+const drafts = useGetUserDraftQuery();
 
   useEffect(() => {
-    const check = data?.find((entity) => entity.entityName === entityType);
+    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -195,7 +197,7 @@ const ShareHolderKYC = () => {
               <FileContainer key={index}>
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
-                  {requiredDocuments.map((document, index) => (
+                  {requiredDocuments?.map((document, index) => (
                     <KYCFileUpload
                       key={index}
                       isChanged={isChanged}
