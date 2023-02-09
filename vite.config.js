@@ -8,20 +8,20 @@ import EnvironmentPlugin from "vite-plugin-environment";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [
-		react(),
-		viteJsconfigPaths(),
-		svgrPlugin(),
-		eslint(),
-		EnvironmentPlugin("all", { prefix: "REACT_APP_" }),
-		legacy(),
-	],
-	build: {
-		outDir: "build",
-		minify: false,
-	},
-	server: {
-		open: true,
-		port: 3000,
-	},
+  plugins: [
+    react(),
+    viteJsconfigPaths(),
+    svgrPlugin(),
+    eslint(),
+    EnvironmentPlugin("all", { prefix: "REACT_APP_" }),
+    legacy(),
+  ],
+  build: {
+    outDir: "build",
+    minify: false,
+  },
+  server: {
+    open: true,
+    port: 3000,
+  },
 });
