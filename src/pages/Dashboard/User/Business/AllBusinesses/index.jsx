@@ -14,13 +14,9 @@ import BusinessesCard from "components/cards/BusinessAddressCard";
 import { columns } from "../tablecolumn";
 
 const AllBusinesses = () => {
-	const submitted = useGetUserSubmittedQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const submitted = useGetUserSubmittedQuery();
 
-	const draft = useGetUserDraftQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const draft = useGetUserDraftQuery();
 
 	const countries = useGetAllCountriesQuery();
 

@@ -1,5 +1,4 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
 	ButtonWrapper,
 	PageTitle,
@@ -11,12 +10,10 @@ import {
 	MainHeader,
 	Drop,
 } from "./styled";
-import image from "../../../../asset/images/coming.png";
 import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Button from "components/button";
+import { Outlet, useLocation } from "react-router-dom";
 import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
 import {
 	setBusinessesShown,
@@ -29,7 +26,6 @@ import {
 	useGetUserSubmittedQuery,
 } from "services/launchService";
 import { useSelector } from "react-redux";
-import AppFeedback from "components/AppFeedback";
 import styled from "styled-components";
 
 const searchStyle = {
@@ -43,7 +39,6 @@ const iconStyle = { width: "17px", height: "17px" };
 
 const Business = () => {
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	const drafts = useGetUserDraftQuery({
 		refetchOnMountOrArgChange: true,
@@ -58,8 +53,8 @@ const Business = () => {
 
 	console.log(businessesShown);
 
-	let submittedTotal = submitted?.currentData?.length;
-	let draftTotal = drafts?.currentData?.length;
+	let submittedTotal = submitted?.data?.length;
+	let draftTotal = drafts?.data?.length;
 
 	const handleLaunch = () => {
 		// store.dispatch(setGeneratedLaunchCode(""));
@@ -74,7 +69,12 @@ const Business = () => {
 	// This sets the shown of all rewards
 	useEffect(() => {
 		if (location.pathname === "/dashboard/businesses/all-businesses")
-			store.dispatch(setBusinessesShown({ total: 0, shown: 0 }));
+			store.dispatch(
+				setBusinessesShown({
+					total: submittedTotal + draftTotal,
+					shown: submittedTotal + draftTotal,
+				})
+			);
 		if (
 			location.pathname === "/dashboard/businesses/submitted-applications"
 		)
@@ -88,7 +88,7 @@ const Business = () => {
 			store.dispatch(
 				setBusinessesShown({ total: draftTotal, shown: draftTotal })
 			);
-	}, [location.pathname]);
+	}, [location.pathname, draftTotal, submittedTotal]);
 
 	useEffect(() => {
 		// clear the localstorage when this page is entered
@@ -134,26 +134,19 @@ const Business = () => {
 						text="All"
 						total={
 							submitted.isSuccess && drafts.isSuccess
-								? submitted?.currentData.length +
-								  drafts?.currentData.length
+								? submittedTotal + draftTotal
 								: 0
 						}
 						path={"/dashboard/businesses/all-businesses"}
 					/>
 					<ActiveNav
 						text="Submitted"
-						total={
-							submitted.isSuccess
-								? submitted?.currentData.length
-								: 0
-						}
+						total={submitted.isSuccess ? submittedTotal : 0}
 						path="/dashboard/businesses/submitted-applications"
 					/>
 					<ActiveNav
 						text="Draft"
-						total={
-							drafts.isSuccess ? drafts?.currentData.length : 0
-						}
+						total={drafts.isSuccess ? draftTotal : 0}
 						path="/dashboard/businesses/draft-applications"
 					/>
 				</SubHeader>

@@ -17,16 +17,18 @@ export const launchApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["Application"],
+	tagTypes: ["Application", "Allaunch", "DraftLaunch", "PendingLaunch"],
 
 	endpoints: (builder) => ({
 		// get all draft
 		getUserDraft: builder.query({
 			query: () => "/user/launch/drafts",
+			providesTags: ["DraftLaunch"],
 		}),
 
 		getUserSubmitted: builder.query({
 			query: () => "/user/launch/submitted",
+			providesTags: ["PendingLaunch"],
 		}),
 
 		// get all countries
@@ -424,7 +426,7 @@ export const launchApi = createApi({
 				method: "POST",
 				body: values,
 			}),
-			invalidatesTags: ["Application"],
+			invalidatesTags: ["Allaunch", "DraftLaunch", "PendingLaunch"],
 		}),
 	}),
 });

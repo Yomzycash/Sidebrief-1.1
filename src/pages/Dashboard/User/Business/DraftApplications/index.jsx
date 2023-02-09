@@ -21,6 +21,7 @@ const DraftApplications = () => {
 	const countries = useGetAllCountriesQuery();
 
 	const [dataArr, setDataArr] = useState([]);
+
 	useEffect(() => {
 		if (isSuccess && countries.isSuccess) {
 			const response = [...data];
@@ -33,6 +34,7 @@ const DraftApplications = () => {
 			setDataArr(response);
 		}
 	}, [data, isSuccess, countries.isSuccess]);
+
 	const matches = useMediaQuery("(max-width:700px)");
 
 	return (

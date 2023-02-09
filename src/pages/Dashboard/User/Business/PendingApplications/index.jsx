@@ -13,9 +13,7 @@ import BusinessesCard from "components/cards/BusinessAddressCard";
 import { columns } from "../tablecolumn";
 
 const PendingApplications = () => {
-	const { data, isLoading, isSuccess } = useGetUserSubmittedQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const { data, isLoading, isSuccess } = useGetUserSubmittedQuery();
 
 	const countries = useGetAllCountriesQuery();
 

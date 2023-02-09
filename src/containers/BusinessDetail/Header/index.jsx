@@ -70,18 +70,7 @@ export const Header = ({ isStaff }) => {
 		await deleteLaunch({
 			launchCode: launchResponse.launchCode,
 		});
-		if (!isStaff) {
-			switch (launchRequest.data.registrationStatus === "pending") {
-				case "pending":
-					await getUserDraft();
-					break;
-				case "submitted":
-					await getUserSubmitted();
-					break;
-				default:
-					break;
-			}
-		}
+
 		navigate(
 			isStaff
 				? `/${"staff-dashboard"}/businesses/registration/${
