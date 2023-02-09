@@ -48,7 +48,9 @@ const BeneficiariesKYC = () => {
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
 
   useEffect(() => {
-    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
+    const check = data?.find(
+      (entity) => entity.entityCode === launchResponse.registrationType
+    );
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
   useEffect(() => {
@@ -223,7 +225,7 @@ const BeneficiariesKYC = () => {
               <FileContainer key={index}>
                 <Name>{beneficiary.name}</Name>
                 <ContentWrapper>
-                  {requiredDocuments.map((document, index) => (
+                  {requiredDocuments?.map((document, index) => (
                     <KYCFileUpload
                       key={index}
                       isChanged={isChanged}
