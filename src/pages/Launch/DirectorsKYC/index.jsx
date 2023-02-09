@@ -57,7 +57,7 @@ const DirectorKYC = () => {
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
 
   useEffect(() => {
-    const check = data?.find((entity) => entity.entityName === entityType);
+    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -212,7 +212,7 @@ const DirectorKYC = () => {
               <FileContainer key={index}>
                 <Name>{director.name}</Name>
                 <ContentWrapper>
-                  {requiredDocuments.map((document, index) => (
+                  {requiredDocuments?.map((document, index) => (
                     <KYCFileUpload
                       key={index}
                       isChanged={isChanged}

@@ -130,11 +130,17 @@ export const checkMemberExistence = async (info) => {
 
 //
 
-export const handleResponse = (response, successMessage, successAction) => {
+export const handleResponse = (
+  response,
+  successMessage,
+  successAction,
+  errorAction
+) => {
   if (response.data) {
     toast.success(successMessage);
     if (successAction) successAction();
   } else {
+    if (errorAction) errorAction();
     handleError(response?.error);
   }
 };
@@ -143,12 +149,18 @@ export const handleResponse = (response, successMessage, successAction) => {
 
 //
 
-export const checkPaymentStatus = async (launchResponse) => {
-  let viewResponse = await viewPayLaunch(launchResponse);
+// info needs to entail: ...launchResponse and viewPayLaunch
+export const checkPaymentStatus = async (info) => {
+  let requiredData = {
+    launchCode: info.launchCode,
+    registrationCountry: info.registrationCountry,
+    registrationType: info.registrationType,
+  };
+
+  let viewResponse = await info.viewPayLaunch(requiredData);
 
   let data = viewResponse?.data?.businessPayment[0];
   let error = viewResponse?.error;
-  store.dispatch(setLaunchResponse(launchResponse));
   if (data) {
     if (data?.paymentStatus === "successful") {
       return true;
@@ -156,6 +168,7 @@ export const checkPaymentStatus = async (launchResponse) => {
       return false;
     }
   } else {
+    console.log(error);
     return false;
   }
 };

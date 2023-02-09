@@ -23,6 +23,7 @@ import {
   Wrapper,
 } from "./styles";
 import { downLoadImage } from "utils/staffHelper";
+import { useNavigate } from "react-router-dom";
 const PdfCards = ({
   name = "",
   title = "",
@@ -32,7 +33,9 @@ const PdfCards = ({
   proof,
   signature,
   passport,
+  page,
 }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Wrapper>
@@ -80,13 +83,19 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details
-                onClick={() =>
-                  downLoadImage(nin.documentLink, nin.documentType)
-                }
-              >
-                {nin ? nin.documentType : "upload a file"}
-              </Details>
+              {nin ? (
+                <Details
+                  onClick={() =>
+                    downLoadImage(nin.documentLink, nin.documentType)
+                  }
+                >
+                  {nin.documentType}
+                </Details>
+              ) : (
+                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                  upload your NIN
+                </Details>
+              )}
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -115,13 +124,19 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details
-                onClick={() =>
-                  downLoadImage(proof.documentLink, proof.documentType)
-                }
-              >
-                {proof ? proof.documentType : "upload a file"}
-              </Details>
+              {proof ? (
+                <Details
+                  onClick={() =>
+                    downLoadImage(proof.documentLink, proof.documentType)
+                  }
+                >
+                  {proof.documentType}
+                </Details>
+              ) : (
+                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                  upload proof of address
+                </Details>
+              )}
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -151,13 +166,22 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details
-                onClick={() =>
-                  downLoadImage(signature.documentLink, signature.documentType)
-                }
-              >
-                {signature ? signature?.documentType : "upload a file"}
-              </Details>
+              {signature ? (
+                <Details
+                  onClick={() =>
+                    downLoadImage(
+                      signature.documentLink,
+                      signature.documentType
+                    )
+                  }
+                >
+                  {signature.documentType}
+                </Details>
+              ) : (
+                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                  upload your signature
+                </Details>
+              )}
             </PdfLowerWrapper>
 
             <IconWrapper>
@@ -187,13 +211,19 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              <Details
-                onClick={() =>
-                  downLoadImage(passport.documentLink, passport.documentType)
-                }
-              >
-                {passport ? passport?.documentType : "upload a file"}
-              </Details>
+              {passport ? (
+                <Details
+                  onClick={() =>
+                    downLoadImage(passport.documentLink, passport.documentType)
+                  }
+                >
+                  {passport.documentType}
+                </Details>
+              ) : (
+                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                  upload your passport photograph
+                </Details>
+              )}
             </PdfLowerWrapper>
 
             <IconWrapper>
