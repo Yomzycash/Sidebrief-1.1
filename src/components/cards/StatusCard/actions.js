@@ -1,5 +1,4 @@
-import { store } from "redux/Store";
-import { setLaunchResponse } from "redux/Slices";
+import { navigateToDetailPage } from "utils/globalFunctions";
 
 export const useActions = ({
 	navigate,
@@ -25,14 +24,6 @@ export const useActions = ({
 
 	const deleteAction = () => {
 		showDeleteModal();
-	};
-
-	const navigateToDetailPage = () => {
-		// set the launchInfo to store and localstorage
-		store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-		localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-		// navigate
-		navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
 	};
 
 	const checkPaymentStatus = async () => {

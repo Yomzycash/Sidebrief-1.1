@@ -14,7 +14,7 @@ import { useActions } from "./actions";
 import { useNavigate } from "react-router-dom";
 import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
 import { useViewPayLaunchMutation } from "services/launchService";
-import { navigateToDetailPage } from "components/Tables/BusinessTable/constants";
+import { navigateToDetailPage } from "utils/globalFunctions";
 import { ThreeDotMenu } from "components/Menu";
 
 export const StatusCard = ({
