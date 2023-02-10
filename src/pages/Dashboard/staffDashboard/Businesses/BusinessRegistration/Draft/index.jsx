@@ -10,9 +10,7 @@ import { columns } from "../tableColumn";
 
 const Draft = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const pendingLaunch = useGetDraftLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const pendingLaunch = useGetDraftLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 

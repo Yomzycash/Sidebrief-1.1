@@ -10,9 +10,7 @@ import { columns } from "../tableColumn";
 
 const Awaiting = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const awaitingLaunch = useGetSubmittedLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const awaitingLaunch = useGetSubmittedLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 

@@ -96,6 +96,13 @@ const Registrationlayout = () => {
 						path={"/staff-dashboard/businesses/registration/all"}
 						defaultActive={home}
 					/>
+					{/* <ActiveNav
+						text="Paid draft"
+						total={12}
+						path={
+							"/staff-dashboard/businesses/registration/paid-draft"
+						}
+					/> */}
 					<ActiveNav
 						text="Drafts"
 						total={pending}

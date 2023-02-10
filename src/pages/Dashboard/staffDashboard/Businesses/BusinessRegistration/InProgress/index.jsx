@@ -10,9 +10,7 @@ import { columns } from "../tableColumn";
 
 const InProgress = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const approvedLaunch = useGetApprovedLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const approvedLaunch = useGetApprovedLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 

@@ -10,9 +10,7 @@ import { columns } from "../tableColumn";
 
 const All = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const allLaunch = useGetAllLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const allLaunch = useGetAllLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 
