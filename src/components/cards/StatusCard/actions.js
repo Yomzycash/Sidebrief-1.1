@@ -1,59 +1,64 @@
 import { navigateToDetailPage } from "utils/globalFunctions";
+import { store } from "redux/Store";
+import { setLaunchResponse } from "redux/Slices";
 
 export const useActions = ({
-	navigate,
-	setShowDelete,
-	launchInfo,
-	viewPayLaunch,
+  navigate,
+  setShowDelete,
+  launchInfo,
+  viewPayLaunch,
 }) => {
-	const showDeleteModal = () => {
-		setShowDelete(true);
-	};
+  const showDeleteModal = () => {
+    setShowDelete(true);
+  };
 
-	const hideDeleteModal = () => {
-		setShowDelete(false);
-	};
+  const hideDeleteModal = () => {
+    setShowDelete(false);
+  };
 
-	const viewAction = () => {
-		navigateToDetailPage();
-	};
+  const viewAction = () => {
+    navigateToDetailPage(navigate, launchInfo);
+  };
 
-	const editAction = async () => {
-		await handleEditNavigation();
-	};
+  const editAction = async () => {
+    await handleEditNavigation();
+  };
 
-	const deleteAction = () => {
-		showDeleteModal();
-	};
+  const deleteAction = () => {
+    showDeleteModal();
+  };
 
-	const checkPaymentStatus = async () => {
-		let viewResponse = await viewPayLaunch(launchInfo);
-		// console.log(viewResponse);
-		return viewResponse;
-	};
+  const checkPaymentStatus = async () => {
+    let viewResponse = await viewPayLaunch(launchInfo);
+    // console.log(viewResponse);
+    return viewResponse;
+  };
 
-	const handleEditNavigation = async () => {
-		let status = await checkPaymentStatus();
+  const handleEditNavigation = async () => {
+    let status = await checkPaymentStatus();
 
-		let data = status?.data?.businessPayment;
-		let error = status?.error;
+    let data = status?.data?.businessPayment;
+    let error = status?.error;
 
-		if (data) {
-			if (data.length === 0) {
-				navigate("/launch");
-			} else {
-				navigate("/launch/address");
-			}
-		} else {
-			// console.log("This block ran");
-			console.log(error);
-		}
-	};
+    store.dispatch(setLaunchResponse(launchInfo));
+    localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
+    if (data) {
+      if (data.length === 0) {
+        navigate("/launch");
+        localStorage.setItem("navigatedFrom", "/launch/entity");
+      } else {
+        navigate("/launch/address");
+      }
+    } else {
+      // console.log("This block ran");
+      console.log(error);
+    }
+  };
 
-	return {
-		viewAction,
-		editAction,
-		deleteAction,
-		hideDeleteModal,
-	};
+  return {
+    viewAction,
+    editAction,
+    deleteAction,
+    hideDeleteModal,
+  };
 };
