@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { navigateToDetailPage } from "components/Tables/BusinessTable/constants";
+import { navigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate } from "react-router-dom";
 
 const BusinessesCard = ({ name, type, code, countryISO }) => {

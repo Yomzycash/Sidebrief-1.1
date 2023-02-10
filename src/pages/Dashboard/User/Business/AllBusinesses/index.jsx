@@ -1,4 +1,4 @@
-import { BusinessTable } from "components/Tables";
+import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
 import { Body, Container, Loading } from "./styled";
 import { format, compareDesc } from "date-fns";
@@ -11,15 +11,12 @@ import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
+import { columns } from "../tablecolumn";
 
 const AllBusinesses = () => {
-	const submitted = useGetUserSubmittedQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const submitted = useGetUserSubmittedQuery();
 
-	const draft = useGetUserDraftQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const draft = useGetUserDraftQuery();
 
 	const countries = useGetAllCountriesQuery();
 
@@ -50,7 +47,7 @@ const AllBusinesses = () => {
 					</Loading>
 				)}
 				{!matches && dataArr.length > 0 ? (
-					<BusinessTable
+					<GeneralTable
 						data={dataArr.map((element) => {
 							return {
 								name: element.businessNames
@@ -70,6 +67,7 @@ const AllBusinesses = () => {
 								countryISO: element.registrationCountry,
 							};
 						})}
+						columns={columns}
 					/>
 				) : (
 					<MobileContainer>

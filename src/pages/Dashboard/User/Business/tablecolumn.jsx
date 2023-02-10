@@ -1,43 +1,13 @@
 import React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { HeadText, BodyText, Checkbox, Clickable } from "./styles";
+import { HeadText, BodyText, /*Checkbox,*/ Clickable } from "./styled";
 import { TypeIndicator } from "components/Indicators";
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
 import { useNavigate as createNavigate } from "react-router-dom";
+import { navigateToDetailPage } from "utils/globalFunctions";
 
 const ColumnHelper = createColumnHelper();
-
-// export const businessTypes = [
-// 	{
-// 		name: "c-corporation",
-// 		code: "CCORP",
-// 		color: "#00D448",
-// 	},
-// 	{
-// 		name: "limited liablity company",
-// 		code: "LLC",
-// 		color: "#00A2D4",
-// 	},
-// 	{
-// 		name: "public liablity company",
-// 		code: "PLC",
-// 		color: "#D400CC",
-// 	},
-// ];
-
-export const navigateToDetailPage = (navigate, launchInfo) => {
-	// set the launchInfo to store and localstorage
-	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-	// console.log("laugggg", launchInfo);
-	localStorage.setItem(
-		"countryISO",
-		JSON.stringify(launchInfo.registrationCountry)
-	);
-	// navigate
-	navigate(`/staff-dashboard/business/${launchInfo.launchCode}/detail`);
-};
 
 export const columns = [
 	// ColumnHelper.display({
@@ -101,7 +71,7 @@ export const columns = [
 				<Clickable
 					onClick={() => navigateToDetailPage(navigate, launchInfo)}
 				>
-					<TypeIndicator color={"blue"} type={typeName} />
+					<TypeIndicator color={"#00A2D4"} type={typeName} />
 				</Clickable>
 			);
 		},
