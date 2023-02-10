@@ -1,4 +1,6 @@
 import { navigateToDetailPage } from "utils/globalFunctions";
+import { store } from "redux/Store";
+import { setLaunchResponse } from "redux/Slices";
 
 export const useActions = ({
 	navigate,
@@ -15,7 +17,7 @@ export const useActions = ({
 	};
 
 	const viewAction = () => {
-		navigateToDetailPage();
+		navigateToDetailPage(navigate, launchInfo);
 	};
 
 	const editAction = async () => {
@@ -37,6 +39,8 @@ export const useActions = ({
 
 		let data = status?.data?.businessPayment;
 		let error = status?.error;
+
+		store.dispatch(setLaunchResponse(launchInfo));
 
 		if (data) {
 			if (data.length === 0) {
