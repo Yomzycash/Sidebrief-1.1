@@ -15,7 +15,7 @@ export const useActions = ({
 	};
 
 	const viewAction = () => {
-		navigateToDetailPage();
+		navigateToDetailPage(navigate, launchInfo);
 	};
 
 	const editAction = async () => {
