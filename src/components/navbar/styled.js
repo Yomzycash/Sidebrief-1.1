@@ -187,7 +187,8 @@ export const MessageSubject = styled.h5`
   span {
     float:right;
     color: #151717;
-    font-size: 10px;
+    font-size: 14px;
+    font-weight:300;
   }
 `
 

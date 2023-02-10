@@ -26,6 +26,7 @@ import {
   Status,
   TopContent,
 } from "./styled";
+import StaffServiceModal from "components/modal/StaffServiceModal";
 
 // const countryCodes = {
 //   KEN: "Kenya",
@@ -42,6 +43,8 @@ const iconStyle = { width: "17px", height: "17px" };
 //
 
 const ServicePage = () => {
+  const [open, setOpen] = useState(false);
+  const [cardAction, setCardAction] = useState("");
   const { data, isLoading } = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
 
@@ -54,6 +57,11 @@ const ServicePage = () => {
   //   item2: { color: "blue", backgroundColor: "green", category: "MANAGE" },
   // };
 
+  // Add Service
+  const handleAddButton = () => {
+    setOpen(true);
+    setCardAction("add");
+  };
   // Table header information
   const header = ["Notification ID", "Status", "Date", "Time"];
 
@@ -117,6 +125,7 @@ const ServicePage = () => {
         LeftbtnLeftIcon={AddIcon}
         LeftbtnText="Add Service"
         btnText="View all"
+        anotherBtnAction={handleAddButton}
         btnAction={handleViewAllServices}
         btnRightIcon={ArrowLeftIcon}
       >
@@ -153,6 +162,11 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
+        <StaffServiceModal
+          open={open}
+          setOpen={open}
+          cardAction={cardAction}
+        />
       </FeatureSection>
     </Container>
   );

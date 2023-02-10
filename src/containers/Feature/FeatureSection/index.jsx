@@ -22,6 +22,7 @@ const FeatureSection = ({
   LeftbtnLeftIcon,
   RightbtnRightIcon,
   btnAction,
+  anotherBtnAction,
   searchPlaceholder,
   extraComponentLeft,
   extraComponentRight,
@@ -46,7 +47,7 @@ const FeatureSection = ({
             LeftIcon={LeftbtnLeftIcon}
             RightIcon={RightbtnRightIcon}
             text={LeftbtnText}
-            action={btnAction}
+            action={anotherBtnAction}
           />
           <CommonButton
             LeftIcon={btnLeftIcon}

@@ -260,7 +260,7 @@ const TitleWrapper = styled.h3`
 	color: ${({ theme }) => theme.grey1};
   width: 196px;
   height: 44px;
-  background: #00a2d4;
+  background: none;
   border-radius: 8px;
 `;
 const RegistrationBlock = styled.div`
