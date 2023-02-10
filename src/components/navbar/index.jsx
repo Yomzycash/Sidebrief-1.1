@@ -32,9 +32,8 @@ import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
 import Profile from "components/Profile";
 
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow, parseJSON } from "date-fns";
 
-import { sortTableData } from "utils/staffHelper";
 import { useGetAllNotificationsQuery } from "services/chatService";
 
 const Navbar = ({
@@ -172,7 +171,12 @@ const Navbar = ({
                   <Message key={index}>
                     <MessageSubject>
                       {item.messageSubject}
-                      <span>{convertDate(item.createdAt)}</span>
+                      <span>
+                        {formatDistanceToNow(
+                  parseJSON(notificationMessages.slice(-1)[0].createdAt),
+                  { addSuffix: true }
+                )}
+                      </span>
 
                       {/* <span>
                       {notificationTime}
