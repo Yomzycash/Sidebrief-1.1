@@ -13,7 +13,15 @@ export default defineConfig({
 		viteJsconfigPaths(),
 		svgrPlugin(),
 		eslint(),
-		EnvironmentPlugin("all", { prefix: "REACT_APP_" }),
+		EnvironmentPlugin(
+			"all",
+			{
+				prefix: "REACT_APP_",
+			},
+			{
+				NODE_ENV: "development",
+			}
+		),
 		legacy(),
 	],
 	build: {

@@ -1,29 +1,30 @@
 import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
-import { useGetRejectedLaunchQuery } from "services/staffService";
-import { Body, Container, Loading } from "./styled";
+import { useGetDraftLaunchQuery } from "services/staffService";
+import { Body, Container, Loading } from "./styles";
 import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
 import { columns } from "../tableColumn";
 
-const Completed = () => {
+const Draft = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const rejectedLaunch = useGetRejectedLaunchQuery();
+	const pendingLaunch = useGetDraftLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 
 	useEffect(() => {
-		if (rejectedLaunch.isSuccess && countries.isSuccess) {
-			setTableArr(rejectedLaunch.data);
+		if (pendingLaunch.isSuccess && countries.isSuccess) {
+			setTableArr(pendingLaunch.data);
+			console.log(pendingLaunch.data);
 		}
-	}, [rejectedLaunch, countries.isSuccess]);
+	}, [pendingLaunch, countries.isSuccess]);
 
 	let sortArr = [...tableArr];
 	let sortedArr = sortArr.sort(sortTableData);
 
-	const loadingData = rejectedLaunch.isLoading;
+	const loadingData = pendingLaunch.isLoading;
 
 	return (
 		<Container>
@@ -59,4 +60,4 @@ const Completed = () => {
 	);
 };
 
-export default Completed;
+export default Draft;
