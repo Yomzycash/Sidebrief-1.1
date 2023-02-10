@@ -38,7 +38,7 @@ const ShareholderReview = () => {
   );
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-director");
+    navigate("/launch/review-directors");
     store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
   };
   const handlePrev = () => {

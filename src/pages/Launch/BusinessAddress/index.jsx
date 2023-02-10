@@ -14,6 +14,7 @@ import {
   useAddBusinessAddressMutation,
   useUpdateBusinessAddressMutation,
   useViewBusinessAddressQuery,
+  useViewPayLaunchMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -22,16 +23,18 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import { Loading } from "notiflix";
 import { useRef } from "react";
 import AppFeedback from "components/AppFeedback";
+import { checkPaymentStatus } from "../actions";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState(defaultLocation);
   const [state, setState] = useState(defaultLocation);
   const [city, setCity] = useState(defaultLocation);
+  const [paid, setPaid] = useState(false);
 
   const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
-
   const [updateBusinessAddress, updateAddressState] =
     useUpdateBusinessAddressMutation();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse
@@ -146,7 +149,8 @@ const BusinessAddress = () => {
   };
 
   const handlePrev = () => {
-    navigate(-1);
+    if (paid) navigate("/launch");
+    else navigate(-1);
   };
 
   if (address.isLoading) {
@@ -154,6 +158,15 @@ const BusinessAddress = () => {
       svgColor: "#fff",
     });
   }
+
+  // Check the payment status of the
+  const handlePaymentStatus = async () => {
+    let actionInfo = {
+      ...launchResponse,
+      viewPayLaunch: viewPayLaunch,
+    };
+    setPaid(await checkPaymentStatus(actionInfo));
+  };
 
   useEffect(() => {
     if (address.isSuccess) {
@@ -198,6 +211,7 @@ const BusinessAddress = () => {
 
   // Set the progress of the application
   useEffect(() => {
+    handlePaymentStatus();
     store.dispatch(setCheckoutProgress({ total: 13, current: 5.5 })); // total- total pages and current - current page
   }, []);
 

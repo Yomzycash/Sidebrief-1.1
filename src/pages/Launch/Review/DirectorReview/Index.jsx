@@ -70,7 +70,7 @@ const DirectorReview = () => {
 
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-beneficiary");
+    navigate("/launch/review-beneficiaries");
   };
   const handlePrev = () => {
     navigate(-1);

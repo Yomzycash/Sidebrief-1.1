@@ -21,6 +21,7 @@ import {
   useUpdateBusinessObjectivesMutation,
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
+  useViewPayLaunchMutation,
 } from "services/launchService";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
@@ -28,7 +29,8 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import AppFeedback from "components/AppFeedback";
 import { set } from "date-fns";
-import { handleBusinessInfo } from "../EntitySelect/actions";
+import { checkPaymentStatus } from "../actions";
+import { handleBusinessInfo } from "./actions";
 
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
@@ -40,6 +42,7 @@ const BusinessInfo = () => {
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [selectedCountryISO, setselectedCountryISO] = useState("");
+  const [paid, setPaid] = useState(false);
 
   const { data, error, isError, isSuccess, isLoading, refetch } =
     useGetAllCountriesQuery();
@@ -48,6 +51,7 @@ const BusinessInfo = () => {
     useViewBusinessObjectivesMutation();
   const [updateBusinessNames] = useUpdateBusinessNamesMutation();
   const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const navigate = useNavigate();
 
@@ -58,7 +62,7 @@ const BusinessInfo = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setCountryISO(selectedCountryISO));
     localStorage.setItem("countryISO", selectedCountryISO);
-    store.dispatch(setCountryISO(selectedCountryISO));
+    // store.dispatch(setCountryISO(selectedCountryISO));
     let resultToReturn = false;
     // call some function with callback function as argument
     resultToReturn = businessNames.some((element, index) => {
@@ -73,7 +77,6 @@ const BusinessInfo = () => {
       toast.error("Please input unique business names");
       return;
     }
-    console.log(businessNames);
 
     if (selectedObjectives.length >= 1) {
       store.dispatch(setBusinessObjectives(selectedObjectives));
@@ -91,6 +94,7 @@ const BusinessInfo = () => {
         navigate: navigate,
         businessNames: businessNames,
         selectedObjectives: selectedObjectives,
+        responseData: launchResponse,
         updateBusinessNames: updateBusinessNames,
         updateBusinessObjectives: updateBusinessObjectives,
         viewBusinessNames: viewBusinessNames,
@@ -98,18 +102,18 @@ const BusinessInfo = () => {
         addBusinessNames: () => {},
         addBusinessObjectives: () => {},
       };
-      await handleBusinessInfo(launchResponse, launchResponse.launchCode, info);
+      await handleBusinessInfo(info);
       navigate(navigatedFrom);
       localStorage.removeItem("navigatedFrom");
     } else {
-      navigate("/launch/entity");
+      if (paid) navigate("/launch/address");
+      else navigate("/launch/entity");
     }
   };
 
   const handlePrev = () => {
     navigate(-1);
   };
-
   const handleBusinessNames = (valuesSelected) => {
     setBusinessNames(valuesSelected);
   };
@@ -117,14 +121,10 @@ const BusinessInfo = () => {
   // Handle supported countries fetch
   const handleCountry = useCallback(
     async (value) => {
-      let responseData = data;
-      let countries = [];
-      responseData?.forEach((data) => {
-        countries = [...countries, data?.countryName];
-      });
-      if (responseData) {
-        setCountriesData([...responseData]);
-        setCountries([...countries]);
+      let countries = data?.map((el) => el?.countryName);
+      if (data) {
+        setCountriesData(data);
+        setCountries(countries);
         setselectedCountry(value);
       }
       // else if (isError) {
@@ -172,6 +172,18 @@ const BusinessInfo = () => {
     }
   }, [launchResponse, viewBusinessNames, viewBusinessObjectives]);
 
+  //
+
+  //
+  // Check the payment status of the
+  const handlePaymentStatus = async () => {
+    let actionInfo = {
+      ...launchResponse,
+      viewPayLaunch: viewPayLaunch,
+    };
+    setPaid(await checkPaymentStatus(actionInfo));
+  };
+
   // Set the selected country's ISO
   useEffect(() => {
     viewDraft();
@@ -188,6 +200,7 @@ const BusinessInfo = () => {
 
   // Set the progress of the application
   useEffect(() => {
+    handlePaymentStatus();
     store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
   }, []);
 

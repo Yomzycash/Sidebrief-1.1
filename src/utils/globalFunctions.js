@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { countriesInfo } from "./allCountries";
 
 // handle error encountered in endpoints call
 export const handleError = (error) => {
@@ -21,4 +22,12 @@ export const checkStaffEmail = (email) => {
   let check = email?.slice(index + 1, index + 10)?.toLowerCase();
   let staff = check === "sidebrief" ? true : false;
   return staff;
+};
+
+export const getCurrencyInfo = (currency) => {
+  let currencyInfo = countriesInfo.filter(
+    (country) => country.currency === currency
+  )[0];
+  if (currency) return currencyInfo;
+  else return "";
 };

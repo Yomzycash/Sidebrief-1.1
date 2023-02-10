@@ -42,6 +42,8 @@ import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistratio
 import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
 import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
+import { checkPaymentStatus } from "pages/Launch/actions";
+import { useViewPayLaunchMutation } from "services/launchService";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -186,7 +188,9 @@ const SingleChat = lazy(() =>
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
-  const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
+  const { launchResponse, launchPaid } = useSelector(
+    (store) => store.LaunchReducer
+  );
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
@@ -204,30 +208,28 @@ const AppRouter = () => {
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
   const loggedIn = token?.length > 0 || user_token > 0;
+
+  const allowLaunch = launchCode && countryISO;
+
+  //
+
   useEffect(() => {
     setisLoggedIn(loggedIn);
   }, [loggedIn, userData.userInfo]);
 
   useEffect(() => {
     setLaunchCode(entityLaunchCode);
-  }, [entityLaunchCode, launchData.launchCode]);
-
-  const allowLaunch = launchCode && countryISO;
-
-  useEffect(() => {
-    setisLoggedIn(loggedIn);
-  }, [loggedIn]);
-
-  useEffect(() => {
-    setLaunchCode(entityLaunchCode);
-  }, [entityLaunchCode]);
-
+  }, [entityLaunchCode, launchResponse.launchCode, launchPaid]);
+  console.log(launchPaid);
   useEffect(() => {
     setCountryISO(selectedCountryISO);
-  }, [selectedCountryISO, launchData.registrationCountry]);
+  }, [selectedCountryISO, launchResponse.registrationCountry]);
+
+  //
 
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
+  let paid = launchPaid === "successful" ? true : false;
 
   return (
     <Suspense fallback={<Loader />}>
@@ -467,7 +469,9 @@ const AppRouter = () => {
               path="address"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <BusinessAddress />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <BusinessAddress />
+                  </Protected>
                 </Protected>
               }
             />
@@ -475,7 +479,9 @@ const AppRouter = () => {
               path="shareholders-info"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <ShareHoldersInfo />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <ShareHoldersInfo />
+                  </Protected>
                 </Protected>
               }
             />
@@ -483,7 +489,9 @@ const AppRouter = () => {
               path="directors-info"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <DirectorsInfo />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <DirectorsInfo />
+                  </Protected>
                 </Protected>
               }
             />
@@ -491,7 +499,9 @@ const AppRouter = () => {
               path="beneficiaries-info"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <BeneficiariesInfo />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <BeneficiariesInfo />
+                  </Protected>
                 </Protected>
               }
             />
@@ -499,15 +509,19 @@ const AppRouter = () => {
               path="beneficiaries-kyc"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <BeneficiariesKYC />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <BeneficiariesKYC />
+                  </Protected>
                 </Protected>
               }
             />
             <Route
-              path="sharehholders-kyc"
+              path="shareholders-kyc"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <ShareHolderKYC />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <ShareHolderKYC />
+                  </Protected>
                 </Protected>
               }
             />
@@ -515,48 +529,60 @@ const AppRouter = () => {
               path="directors-kyc"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <DirectorKYC />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <DirectorKYC />
+                  </Protected>
                 </Protected>
               }
             />
 
             <Route
-              path="/launch/review-beneficiary"
+              path="review-beneficiaries"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <BeneficiaryReview />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <BeneficiaryReview />
+                  </Protected>
                 </Protected>
               }
             />
             <Route
-              path="/launch/review"
+              path="review"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <BusinessInformationReview />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <BusinessInformationReview />
+                  </Protected>
                 </Protected>
               }
             />
             <Route
-              path="/launch/review-director"
+              path="review-directors"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <DirectorReview />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <DirectorReview />
+                  </Protected>
                 </Protected>
               }
             />
             <Route
-              path="/launch/review-shareholder"
+              path="review-shareholders"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <ShareholderReview />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <ShareholderReview />
+                  </Protected>
                 </Protected>
               }
             />
             <Route
-              path="/launch/review-success"
+              path="success"
               element={
                 <Protected isVerified={allowLaunch} path="/launch">
-                  <ApplicationSuccessPage />
+                  <Protected isVerified={paid} path="/launch/payment">
+                    <ApplicationSuccessPage />
+                  </Protected>
                 </Protected>
               }
             />

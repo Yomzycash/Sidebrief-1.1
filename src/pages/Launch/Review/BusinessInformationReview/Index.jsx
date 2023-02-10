@@ -19,7 +19,7 @@ const BusinessInformationReview = () => {
   };
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-shareholder");
+    navigate("/launch/review-shareholders");
   };
   const handlePrev = () => {
     navigate(-1);

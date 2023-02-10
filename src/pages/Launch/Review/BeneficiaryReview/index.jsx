@@ -59,7 +59,7 @@ const BeneficiaryReview = () => {
     const error = response.error;
     if (response.data) {
       toast.success(response.data.registrationStatus);
-      navigate("/launch/review-success");
+      navigate("/launch/success");
     } else {
       toast.error(error.data.message);
     }

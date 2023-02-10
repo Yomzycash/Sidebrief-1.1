@@ -19,6 +19,7 @@ import {
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import numeral from "numeral";
+import { getCurrencyInfo } from "utils/globalFunctions";
 
 export const EntityCard = ({
   action,
@@ -43,9 +44,9 @@ export const EntityCard = ({
 
       <Container
         onClick={action}
-        gap={country === "NGA" && "24px"}
-        content={country === "NGA" ? "" : "space-between"}
-        height={country === "NGA" && "clamp(400px, 30vw, 450px)"}
+        gap={"24px"}
+        content={"space-between"}
+        height={"clamp(400px, 30vw, 450px)"}
       >
         <Corner>
           <CornerPetal />
@@ -58,8 +59,9 @@ export const EntityCard = ({
         <Description>{description}</Description>
         <Mid>
           <Price>
-            {country === "NGA" ? "" : numeral(price).format("0,0")}
-            {country === "NGA" ? "" : currency}
+            {getCurrencyInfo(currency)?.symbol}
+            {numeral(price).format("0,0")}
+            {/* {currency} */}
           </Price>
         </Mid>
         <Bottom>
