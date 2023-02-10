@@ -29,9 +29,8 @@ import { HiX } from "react-icons/hi";
 import {
 	useViewLaunchRequestQuery,
 	useDeleteLaunchRequestMutation,
-	useLazyGetUserDraftQuery,
-	useLazyGetUserSubmittedQuery,
 } from "services/launchService";
+import { useDeleteLaunchRequestStaffMutation } from "services/staffService";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
@@ -41,10 +40,9 @@ import { CheckoutController } from "containers/Checkout";
 export const Header = ({ isStaff }) => {
 	const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 	const [deleteLaunch, deleteState] = useDeleteLaunchRequestMutation();
+	const [deleteLaunchStaff, deleteLaunchStaffState] =
+		useDeleteLaunchRequestStaffMutation();
 	const [openModal, setOpenModal] = useState(false);
-	const [getUserDraft, getUserDraftState] = useLazyGetUserDraftQuery();
-	const [getUserSubmitted, getUserSubmittedState] =
-		useLazyGetUserSubmittedQuery();
 
 	const { code } = useParams();
 	const { pathname } = useLocation();
@@ -67,9 +65,15 @@ export const Header = ({ isStaff }) => {
 
 	const deleteAction = async () => {
 		// perform delete action here
-		await deleteLaunch({
-			launchCode: launchResponse.launchCode,
-		});
+		if (!isStaff) {
+			await deleteLaunch({
+				launchCode: launchResponse.launchCode,
+			});
+		} else {
+			await deleteLaunchStaff({
+				launchCode: launchResponse.launchCode,
+			});
+		}
 
 		navigate(
 			isStaff
@@ -322,8 +326,7 @@ export const Header = ({ isStaff }) => {
 							forwardText={"Yes"}
 							forwardLoading={
 								deleteState.isLoading ||
-								getUserDraftState.isLoading ||
-								getUserSubmittedState.isLoading
+								deleteLaunchStaffState.isLoading
 							}
 						/>
 					</ModalButton>

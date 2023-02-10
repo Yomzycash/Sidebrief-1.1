@@ -1,11 +1,9 @@
 import React from "react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { HeadText, BodyText, Checkbox, Clickable } from "./styles";
+import { HeadText, BodyText, /*Checkbox,*/ Clickable } from "./styles";
 import { TypeIndicator } from "components/Indicators";
-import { store } from "redux/Store";
-import { setLaunchResponse } from "redux/Slices";
 import { useNavigate as createNavigate } from "react-router-dom";
-import { navigateToDetailPage } from "utils/globalFunctions";
+import { staffNavigateToDetailPage } from "utils/globalFunctions";
 
 const ColumnHelper = createColumnHelper();
 
@@ -63,7 +61,9 @@ export const columns = [
 
 			return (
 				<Clickable
-					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+					onClick={() =>
+						staffNavigateToDetailPage(navigate, launchInfo)
+					}
 				>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
@@ -87,7 +87,9 @@ export const columns = [
 			// ).color;
 			return (
 				<Clickable
-					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+					onClick={() =>
+						staffNavigateToDetailPage(navigate, launchInfo)
+					}
 				>
 					<TypeIndicator color={"blue"} type={typeName} />
 				</Clickable>
@@ -107,7 +109,9 @@ export const columns = [
 			};
 			return (
 				<Clickable
-					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+					onClick={() =>
+						staffNavigateToDetailPage(navigate, launchInfo)
+					}
 				>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
@@ -127,7 +131,9 @@ export const columns = [
 			};
 			return (
 				<Clickable
-					onClick={() => navigateToDetailPage(navigate, launchInfo)}
+					onClick={() =>
+						staffNavigateToDetailPage(navigate, launchInfo)
+					}
 				>
 					<BodyText>{info.getValue()}</BodyText>
 				</Clickable>
