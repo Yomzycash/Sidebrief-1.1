@@ -14,8 +14,11 @@ import { useActions } from "./actions";
 import { useNavigate } from "react-router-dom";
 import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
 import { useViewPayLaunchMutation } from "services/launchService";
-import { navigateToDetailPage } from "components/Tables/BusinessTable/constants";
+import { navigateToDetailPage } from "utils/globalFunctions";
 import { ThreeDotMenu } from "components/Menu";
+import { rewardModalStyle } from "pages/Dashboard/User/Rewards/RewardDetails/styled";
+import { Dialog } from "@mui/material";
+import { DialogContent } from "@mui/material";
 
 export const StatusCard = ({
   name, // string
@@ -30,7 +33,13 @@ export const StatusCard = ({
 
   const [viewPayLaunch] = useViewPayLaunchMutation();
 
-  const { deleteAction, editAction, viewAction, hideDeleteModal } = useActions({
+  const {
+    deleteAction,
+    editAction,
+    viewAction,
+    hideDeleteModal,
+    showDeleteModal,
+  } = useActions({
     navigate,
     setShowDelete,
     launchInfo,
@@ -79,11 +88,14 @@ export const StatusCard = ({
       <ThreeDotMenu contextContent={contextContent} classname={"threedot"} />
       {showDelete ? (
         <>
-          <InvisibleBackDrop onClick={hideDeleteModal} />
-          <DeleteLaunchModal
-            hide={hideDeleteModal}
-            launchCode={launchInfo.launchCode}
-          />
+          <Dialog onClose={hideDeleteModal} open={showDelete}>
+            <DialogContent style={rewardModalStyle}>
+              <DeleteLaunchModal
+                hide={hideDeleteModal}
+                launchCode={launchInfo.launchCode}
+              />
+            </DialogContent>
+          </Dialog>
         </>
       ) : null}
     </Wrapper>

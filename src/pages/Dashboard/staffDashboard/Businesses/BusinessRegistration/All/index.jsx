@@ -1,4 +1,4 @@
-import { StaffBusinessTable } from "components/Staff/Tables";
+import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
 import { useGetAllLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
@@ -6,12 +6,11 @@ import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
+import { columns } from "../tableColumn";
 
 const All = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const allLaunch = useGetAllLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const allLaunch = useGetAllLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 
@@ -20,9 +19,6 @@ const All = () => {
 			setTableArr(allLaunch.data);
 		}
 	}, [allLaunch, countries.isSuccess]);
-
-	// console.log(tableArr);
-	console.log(countries.data);
 
 	let sortArr = [...tableArr];
 	let sortedArr = sortArr.sort(sortTableData);
@@ -39,7 +35,7 @@ const All = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<StaffBusinessTable
+					<GeneralTable
 						data={sortedArr.map((element) => {
 							return {
 								name: element.businessNames
@@ -55,6 +51,7 @@ const All = () => {
 								countryISO: element.registrationCountry,
 							};
 						})}
+						columns={columns}
 					/>
 				)}
 			</Body>

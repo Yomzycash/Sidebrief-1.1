@@ -43,6 +43,7 @@ import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
 import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
 import { useViewPayLaunchMutation } from "services/launchService";
+import PaidDraft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -180,10 +181,6 @@ const ChatLayout = lazy(() =>
 const SingleChat = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/Chat/SingleChat")
 );
-
-//
-
-//
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);

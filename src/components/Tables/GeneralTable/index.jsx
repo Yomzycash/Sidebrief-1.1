@@ -29,8 +29,8 @@ export const GeneralTable = ({
 
 	// returns SelectedRows
 	useEffect(() => {
-		getSelectedRows(selectedRows);
-	}, [getSelectedRows, selectedRows]);
+		if (selectionRow && getSelectedRows) getSelectedRows(selectedRows);
+	}, [getSelectedRows, selectedRows, selectionRow]);
 
 	return (
 		<Container>

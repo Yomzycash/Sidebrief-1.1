@@ -1,3 +1,4 @@
+import { navigateToDetailPage } from "utils/globalFunctions";
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
 
@@ -16,7 +17,7 @@ export const useActions = ({
   };
 
   const viewAction = () => {
-    navigateToDetailPage();
+    navigateToDetailPage(navigate, launchInfo, viewPayLaunch);
   };
 
   const editAction = async () => {
@@ -25,15 +26,6 @@ export const useActions = ({
 
   const deleteAction = () => {
     showDeleteModal();
-  };
-
-  const navigateToDetailPage = async () => {
-    // set the launchInfo to store and localstorage
-    store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-    localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-
-    // navigate
-    navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
   };
 
   const checkPaymentStatus = async () => {
@@ -48,9 +40,12 @@ export const useActions = ({
     let data = status?.data?.businessPayment;
     let error = status?.error;
 
+    store.dispatch(setLaunchResponse(launchInfo));
+    localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
     if (data) {
       if (data.length === 0) {
         navigate("/launch");
+        localStorage.setItem("navigatedFrom", "/launch/entity");
       } else {
         navigate("/launch/address");
       }

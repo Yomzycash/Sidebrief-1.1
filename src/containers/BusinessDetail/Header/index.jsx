@@ -30,6 +30,7 @@ import {
   useViewLaunchRequestQuery,
   useDeleteLaunchRequestMutation,
 } from "services/launchService";
+import { useDeleteLaunchRequestStaffMutation } from "services/staffService";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
@@ -39,6 +40,8 @@ import { CheckoutController } from "containers/Checkout";
 export const Header = ({ isStaff }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const [deleteLaunch, deleteState] = useDeleteLaunchRequestMutation();
+  const [deleteLaunchStaff, deleteLaunchStaffState] =
+    useDeleteLaunchRequestStaffMutation();
   const [openModal, setOpenModal] = useState(false);
 
   const { code } = useParams();
@@ -59,11 +62,19 @@ export const Header = ({ isStaff }) => {
   const handleClick = () => {
     setOpenModal(true);
   };
+
   const deleteAction = async () => {
     // perform delete action here
-    await deleteLaunch({
-      launchCode: launchResponse.launchCode,
-    });
+    if (!isStaff) {
+      await deleteLaunch({
+        launchCode: launchResponse.launchCode,
+      });
+    } else {
+      await deleteLaunchStaff({
+        launchCode: launchResponse.launchCode,
+      });
+    }
+
     navigate(
       isStaff
         ? `/${"staff-dashboard"}/businesses/registration/${
@@ -279,7 +290,9 @@ export const Header = ({ isStaff }) => {
               backText={"No"}
               forwardAction={deleteAction}
               forwardText={"Yes"}
-              forwardLoading={deleteState.isLoading}
+              forwardLoading={
+                deleteState.isLoading || deleteLaunchStaffState.isLoading
+              }
             />
           </ModalButton>
         </ModalWrapper>
@@ -287,7 +300,6 @@ export const Header = ({ isStaff }) => {
     </Container>
   );
 };
-
 const ModalWrapper = styled.div`
   display: flex;
   align-items: center;

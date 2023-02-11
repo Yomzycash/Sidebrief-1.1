@@ -28,8 +28,10 @@ import { compareDesc } from "date-fns";
 // import AppFeedback from "components/AppFeedback";
 import { LaunchRocket, ManageSpanner } from "asset/svg";
 import { useEffect } from "react";
+import { useState } from "react";
 
 const BusinessRegistration = (props) => {
+  const [allLaunchContainer, setAllLaunchContainer] = useState([]);
   // Get user data information
   const { userInfo, refreshApp } = useSelector(
     (store) => store.UserDataReducer
@@ -53,16 +55,21 @@ const BusinessRegistration = (props) => {
     navigate(`/dashboard/rewards/${rewardID}`);
   };
 
-  let allLaunch = [];
+  useEffect(() => {
+    let allLaunch = [];
 
-  if (drafts.isSuccess && submitted.isSuccess) {
-    allLaunch = [...drafts?.currentData, ...submitted?.currentData];
-    allLaunch.sort((launch1, launch2) =>
-      compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
-    );
-    // console.log(allLaunch);
-  }
+    if (drafts.isSuccess && submitted.isSuccess) {
+      allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+      allLaunch.sort((launch1, launch2) =>
+        compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
+      );
+      // console.log(allLaunch);
+    }
+    setAllLaunchContainer(allLaunch);
 
+    drafts.refetch();
+    submitted.refetch();
+  }, [drafts, submitted]);
   const analytics = {
     label: "Registrations",
     status1: {
@@ -146,7 +153,7 @@ const BusinessRegistration = (props) => {
               action={handleManage}
             />
           </DashboardSection>
-          {allLaunch.length > 0 ? (
+          {allLaunchContainer.length > 0 ? (
             <DashboardSection
               title="Businesses"
               body="Manage all your business registration in one place"
@@ -162,7 +169,7 @@ const BusinessRegistration = (props) => {
                 loading={submitted.isLoading || drafts.isLoading}
               />
               <Recently>
-                {allLaunch.slice(0, 3).map((el) => {
+                {allLaunchContainer.slice(0, 3).map((el) => {
                   return (
                     <StatusCard
                       key={el.launchCode}

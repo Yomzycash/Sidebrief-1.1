@@ -16,7 +16,14 @@ export const staffApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["Staff"],
+	tagTypes: [
+		"Staff",
+		"allLaunch",
+		"submittedLaunch",
+		"approvedLaunch",
+		"rejectedLaunch",
+		"draftLaunch",
+	],
 
 	endpoints: (builder) => ({
 		getAllCountries: builder.query({
@@ -34,26 +41,47 @@ export const staffApi = createApi({
 		//all launches
 		getAllLaunch: builder.query({
 			query: () => "/launch/all",
+			providesTags: ["allLaunch"],
 		}),
 
 		//submitted launches
 		getSubmittedLaunch: builder.query({
 			query: () => "/launch/submitted",
+			providesTags: ["submittedLaunch"],
 		}),
 
 		//in progress launches
 		getApprovedLaunch: builder.query({
 			query: () => "/launch/approved",
+			providesTags: ["approvedLaunch"],
 		}),
 
 		//rejected launches
 		getRejectedLaunch: builder.query({
 			query: () => "/launch/rejected",
+			providesTags: ["rejectedLaunch"],
 		}),
 
 		//draft launches
 		getDraftLaunch: builder.query({
 			query: () => "/launch/pending",
+			providesTags: ["draftLaunch"],
+		}),
+
+		//delete launch
+		deleteLaunchRequestStaff: builder.mutation({
+			query: (values) => ({
+				url: "/launch/remove",
+				method: "POST",
+				body: values,
+			}),
+			invalidatesTags: [
+				"allLaunch",
+				"submittedLaunch",
+				"approvedLaunch",
+				"rejectedLaunch",
+				"draftLaunch",
+			],
 		}),
 
 		//Staff registration
@@ -307,6 +335,7 @@ export const {
 	useGetSubmittedLaunchQuery,
 	useGetRejectedLaunchQuery,
 	useGetDraftLaunchQuery,
+	useDeleteLaunchRequestStaffMutation,
 
 	useAddEntityMutation,
 	useUpdateEntityMutation,

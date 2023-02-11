@@ -1,4 +1,4 @@
-import { BusinessTable } from "components/Tables";
+import { BusinessTable, GeneralTable } from "components/Tables";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
@@ -12,6 +12,7 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import styled from "styled-components";
+import { columns } from "../tablecolumn";
 
 const DraftApplications = () => {
   const { data, error, isLoading, isSuccess } = useGetUserDraftQuery({
@@ -19,9 +20,11 @@ const DraftApplications = () => {
   });
 
   const countries = useGetAllCountriesQuery();
+
   const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const [dataArr, setDataArr] = useState([]);
+
   useEffect(() => {
     if (isSuccess && countries.isSuccess) {
       const response = [...data];
@@ -34,6 +37,7 @@ const DraftApplications = () => {
       setDataArr(response);
     }
   }, [data, isSuccess, countries.isSuccess]);
+
   const matches = useMediaQuery("(max-width:700px)");
 
   return (
@@ -46,14 +50,14 @@ const DraftApplications = () => {
             </Loading>
           ))}
         {!matches && dataArr.length > 0 ? (
-          <BusinessTable
+          <GeneralTable
             data={dataArr.map((element) => {
               return {
                 name: element.businessNames
                   ? element.businessNames.businessName1
                   : "No name ",
                 type: element?.registrationType,
-                country: countries?.data?.find(
+                country: countries.data.find(
                   (country) =>
                     country.countryISO === element.registrationCountry
                 )?.countryName,
@@ -63,6 +67,7 @@ const DraftApplications = () => {
                 viewPayLaunch: viewPayLaunch,
               };
             })}
+            columns={columns}
           />
         ) : (
           <MobileContainer>
