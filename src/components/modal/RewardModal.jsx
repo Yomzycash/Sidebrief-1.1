@@ -156,7 +156,7 @@ const MiddleContainer = styled.div`
   align-items: center;
   padding: 8px 24px;
   gap: 8px;
-  background: rgba(0, 212, 72, 0.1);
+  background: #00d44819;
   border-radius: 8px;
   margin-bottom: 40px;
 `

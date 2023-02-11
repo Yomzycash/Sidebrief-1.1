@@ -63,7 +63,7 @@ export const UpperText = styled.h3`
 	font-size: 14px;
 	line-height: 18px;
 	letter-spacing: -0.02em;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 export const LowerText = styled.h4`
 	font-weight: 400;

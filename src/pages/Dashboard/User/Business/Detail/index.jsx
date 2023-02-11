@@ -25,7 +25,6 @@ const BusinessDetail = () => {
 		(store) => store.LaunchReducer.launchResponse
 	);
 
-	console.log("lau", launchResponse);
 
 	const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
 	const [viewPayLaunch, viewPayState] = useViewPayLaunchMutation();
@@ -47,20 +46,15 @@ const BusinessDetail = () => {
 	//   registrationType: data?.registrationType,
 	// }
 	const checkPaymentStatus = async () => {
-		console.log("lau", launchResponse);
 		let viewResponse = await viewPayLaunch(launchResponse);
-		console.log(viewResponse);
 		return viewResponse;
 	};
 
 	const handleContinueNavigation = async () => {
 		let status = await checkPaymentStatus();
-		console.log("femi", status);
 
 		let data = status?.data?.businessPayment[0];
 		let error = status?.error;
-		console.log("femi", data);
-		console.log(data?.paymentStatus === "successful");
 		store.dispatch(setLaunchResponse(launchResponse));
 		if (data) {
 			if (data?.paymentStatus === "successful") {
@@ -165,6 +159,16 @@ const LowerContainer = styled.div`
 	width: 100%;
 `;
 const StatusContent = styled.div`
+<<<<<<< HEAD
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: #ffbf29;
+  background: #ffbf290c;
+  border-radius: 12px;
+  padding: 4px 16px;
+=======
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 18px;
@@ -173,6 +177,7 @@ const StatusContent = styled.div`
 	background: rgba(255, 191, 41, 0.05);
 	border-radius: 12px;
 	padding: 4px 16px;
+>>>>>>> 9c515719fb38ffefd3a96b3f9348c078f5c4411d
 `;
 const TimeLine = styled.div`
 	font-weight: 500;

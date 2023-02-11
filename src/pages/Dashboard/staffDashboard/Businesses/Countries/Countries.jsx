@@ -34,7 +34,6 @@ const Countries = () => {
 
   const handleAddButton = () => {
     setOpen(true);
-    console.log();
     setCardAction("add");
   };
 
@@ -62,7 +61,6 @@ const Countries = () => {
   // This adds a new country
   const handleCountryAdd = async (formData) => {
     let requiredData = getRequired(formData);
-    console.log(requiredData);
     let response = await addCountry(requiredData);
     let data = response?.data;
     let error = response?.error;

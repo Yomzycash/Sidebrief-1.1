@@ -97,7 +97,6 @@ const drafts = useGetUserDraftQuery();
   };
 
   const handleChange = async (files, shareholder, type) => {
-    console.log("sending file", files);
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
 
@@ -115,7 +114,6 @@ const drafts = useGetUserDraftQuery();
     });
 
     const res = await convertToLink(files[0]);
-
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
@@ -128,7 +126,6 @@ const drafts = useGetUserDraftQuery();
       },
     };
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log("checing", response);
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);

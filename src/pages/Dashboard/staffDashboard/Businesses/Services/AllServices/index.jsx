@@ -8,6 +8,20 @@ import { useGetAllServicesQuery } from "services/productService";
 import Paginator from "components/Paginator";
 
 const AllServices = () => {
+  const serviceCategory = [
+    {
+      id: 1,
+      category: "TAX",
+      backgroundColor: "#00d4480c",
+      color: "#00D448",
+    },
+    {
+      id: 2,
+      category: "MANAGE",
+      backgroundColor: "#00a2d40c",
+      color: "#00A2D4",
+    },
+  ];
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
   const [open, setOpen] = useState(false);
@@ -33,6 +47,7 @@ const AllServices = () => {
     setCurrentItems(allServices?.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(allServices?.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, allServices]);
+
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>

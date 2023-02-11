@@ -112,8 +112,7 @@ const EntitySelect = () => {
     const launchResponse = generatedLaunchCode
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
-    console.log(generatedLaunchCode);
-    console.log(launchResponse);
+    
 
     // Set the launch response to local storage
     if (generatedLaunchCode) {

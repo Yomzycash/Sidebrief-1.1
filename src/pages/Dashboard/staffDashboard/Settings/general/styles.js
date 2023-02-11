@@ -45,7 +45,7 @@ export const Name = styled.h6`
 	font-size: 16px;
 	line-height: 20px;
 	letter-spacing: -0.02em;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const Title = styled.p`
@@ -85,6 +85,6 @@ export const Button = styled.button`
 `;
 
 export const FilledButton = styled(Button)`
-	background-color: #00a2d4;
+	background-color: ${({ theme }) => theme.blue2};
 	color: #fff;
 `;

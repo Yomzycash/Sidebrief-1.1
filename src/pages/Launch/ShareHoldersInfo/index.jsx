@@ -255,7 +255,6 @@ const ShareHoldersInfo = () => {
     };
     let director = await handleSingleDirectorView(actionInfo_D);
     if (director.data) return;
-
     // DELETE MEMBER
     let actionInfo_M = {
       launchCode: actionInfo_D.launchCode,
@@ -263,6 +262,7 @@ const ShareHoldersInfo = () => {
       deleteMember: deleteMember,
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
+    setSelectedToDelete(shareholder);
     console.log(memberResponse);
   };
 

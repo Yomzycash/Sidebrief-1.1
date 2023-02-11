@@ -4,7 +4,6 @@ import { setLaunchResponse } from "redux/Slices";
 
 // handle error encountered in endpoints call
 export const handleError = (error) => {
-	console.log(error);
 	if (error?.status === "FETCH_ERROR") {
 		toast.error("Please check your internet connection");
 	} else if (error?.originalStatus === "404") {

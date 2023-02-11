@@ -8,7 +8,7 @@ export const Container = styled.div`
 	min-height: 124px;
 	background: #ffffff;
 	border: 1px solid #edf1f7;
-	box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+	box-shadow: 0px 10px 10px -5px #9596970a;
 	border-radius: 16px;
 	padding: clamp(15px, 1.5vw, 24px);
 	display: flex;
@@ -52,7 +52,7 @@ export const IconWrapper = styled.div`
 	width: 36px;
 	border-radius: 8px;
 	background-color: ${({ notready }) =>
-		notready === "true" ? "#F9C4BD" : "rgba(0, 162, 212, 0.1)"};
+		notready === "true" ? "#F9C4BD" : "#00a2d419"};
 	transition: 0.3s all ease;
 `;
 
@@ -119,13 +119,13 @@ export const LongButton = styled.button`
 		notReady &&
 		`
         cursor: not-allowed;
-        background: rgba(0, 162, 212, 0.72);
+        background: #00a2d4b7;
         p {
-            color: rgba(255, 255, 255, 0.64);
+            color: #ffffffa3;
         }
         svg {
             path {
-                fill:  rgba(255, 255, 255, 0.64);
+                fill:  #ffffffa3;
             }
         }
     `}
