@@ -26,6 +26,7 @@ import {
   Status,
   TopContent,
 } from "./styled";
+import ServicesModal from "components/modal/ServicesModal";
 import StaffServiceModal from "components/modal/StaffServiceModal";
 
 // const countryCodes = {
@@ -162,7 +163,12 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
-        <StaffServiceModal
+        {/* <StaffServiceModal
+          open={open}
+          setOpen={open}
+          cardAction={cardAction}
+        /> */}
+        <ServicesModal
           open={open}
           setOpen={open}
           cardAction={cardAction}

@@ -6,11 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import NumberInput from "components/input/phoneNumberInput";
 import { useState } from "react";
-import { StaffCountrySchema, StaffRewardSchema } from "utils/config";
+import { ServicesSchema } from "utils/config";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-import { useGetAllRewardsQuery } from "services/RewardService";
 import { useEffect } from "react";
-import { useAddRewardMutation } from "services/staffService";
+import { 
+    useGetAllCountriesQuery,
+    useGetAllServicesQuery,
+    useAddServiceMutation 
+} from "services/staffService";
 
 const StaffServiceModal = ({
   cardAction,
@@ -22,7 +25,7 @@ const StaffServiceModal = ({
 }) => {
   const [categories, setCategories] = useState([{ value: "", label: "" }]);
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllServicesQuery();
 
   const {
     handleSubmit,
@@ -30,7 +33,7 @@ const StaffServiceModal = ({
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(StaffRewardSchema),
+    resolver: yupResolver(ServicesSchema),
   });
 
   useEffect(() => {
@@ -146,13 +149,13 @@ const StaffServiceModal = ({
       <DetailedSection>
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
-          label="Category"
-          name="category"
+          label="Operational Country"
+          name="country"
           labelStyle="input-label"
           placeholder="Select Category"
           options={categories}
           onChange={handleCategoryChange}
-          errorMessage={errors.category?.message}
+          errorMessage={errors.country?.message}
           cardAction={cardAction}
           defaultValue={rewardInfo ? rewardInfo.rewardCategory : ""}
           fontSize="clamp(12px, 1.2vw, 14px)"
@@ -164,11 +167,11 @@ const StaffServiceModal = ({
           placeholder="Enter service price"
           labelStyle="input-label"
           type="text"
-          name="service_price"
+          name="price"
           inputClass="input-class"
           containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.service_price?.message}
+          errorMessage={errors.price?.message}
         />
       </DetailedSection>
 
@@ -178,11 +181,11 @@ const StaffServiceModal = ({
             placeholder="Enter service timeline"
             labelStyle="input-label"
             type="text"
-            name="service_timeline"
+            name="timeline"
             inputClass="input-class"
             container="input-container-class"
             register={register}
-            errorMessage={errors.service_timeline?.message}
+            errorMessage={errors.timeline?.message}
         />
       </DetailedSection>
     </Modal1>
