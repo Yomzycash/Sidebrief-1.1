@@ -51,12 +51,7 @@ const StaffEntityModal = ({
   // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
-    // let currency = countries?.data?.filter(
-    //   (country) => country.countryISO === selectedCountry
-    // )[0]?.countryCurrency;
-    // // setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
-    // setValue("currency", currency, { shouldValidate: true });
   };
 
   // This is attached to country dropdown onChange
