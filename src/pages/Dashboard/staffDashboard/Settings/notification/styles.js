@@ -30,7 +30,7 @@ export const Heading = styled.h3`
 	font-weight: 600;
 	font-size: 20px;
 	line-height: 36px;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 	padding-block: 8px;
 `;
 

@@ -9,201 +9,221 @@ import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
 
 const SidebarItem = ({ item, expanded, homePath }) => {
-  const [iconHovered, setIconHovered] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+	const [iconHovered, setIconHovered] = useState(false);
+	const [collapsed, setCollapsed] = useState(false);
 
-  const notifications = useGetAllNotificationsQuery();
+	const notifications = useGetAllNotificationsQuery();
 
-  let newNotifications = notifications.data?.filter(
-    (notification) => notification?.messageIsRead === false
-  );
+	let newNotifications = notifications.data?.filter(
+		(notification) => notification?.messageIsRead === false
+	);
 
-  const location = useLocation();
-  const locationPath = location?.pathname;
+	const location = useLocation();
+	const locationPath = location?.pathname;
 
-  let isActive = locationPath?.includes(item.path);
+	let isActive = locationPath?.includes(item.path);
 
-  const ActiveStyle = {
-    background: "rgba(0, 162, 212, 0.1)",
-    color: "#00a2d4",
-  };
+	const ActiveStyle = {
+		background: "#00a2d419",
+		color: "#00a2d4",
+	};
 
-  let homePathActive = homePath && item.id === 1;
+	let homePathActive = homePath && item.id === 1;
 
-  return (
-    <SidebarItemContainer>
-      <Item>
-        <div
-          style={isActive || homePathActive ? ActiveStyle : {}}
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          <NavLink
-            to={item.path}
-            onMouseEnter={() => setIconHovered(item.id)}
-            onMouseLeave={() => setIconHovered(0)}
-            style={({ isActive }) =>
-              isActive || homePathActive ? { color: "#00a2d4" } : {}
-            }
-          >
-            <item.icon
-              filled={locationPath?.includes(item.path) || homePathActive}
-              hover={iconHovered === item.id}
-            />
-            {expanded && item.title}
-          </NavLink>
-          {expanded && item.dropDownList && (
-            <ArrowDown
-              onClick={() => setCollapsed(!collapsed)}
-              collapsed={collapsed}
-            >
-              <IoIosArrowUp />
-            </ArrowDown>
-          )}
-        </div>
-      </Item>
-      {expanded && item.dropDownList && (
-        <ListContainer collapsed={collapsed} items={item.dropDownList.length}>
-          <List>
-            {item?.dropDownList?.map((each, index) => (
-              <ListItem key={index}>
-                <NavLink
-                  to={each.path}
-                  onMouseEnter={() => setIconHovered(item.id + each.id)}
-                  onMouseLeave={() => setIconHovered(0)}
-                  style={({ isActive }) =>
-                    isActive || homePathActive ? { color: "#00a2d4" } : {}
-                  }
-                >
-                  <span>
-                    <each.icon
-                      filled={
-                        locationPath?.includes(each.path) || homePathActive
-                      }
-                      hover={iconHovered === item.id + each.id}
-                    />
-                  </span>
-                  <span>{each.title}</span>
-                </NavLink>
-                {each.path === "/staff-dashboard/businesses/services" && (
-                  <Badge to={each.path}>{newNotifications?.length}</Badge>
-                )}
-              </ListItem>
-            ))}
-          </List>
-        </ListContainer>
-      )}
-    </SidebarItemContainer>
-  );
+	return (
+		<SidebarItemContainer>
+			<Item>
+				<div
+					style={isActive || homePathActive ? ActiveStyle : {}}
+					onClick={() => setCollapsed(!collapsed)}
+				>
+					<NavLink
+						to={item.path}
+						onMouseEnter={() => setIconHovered(item.id)}
+						onMouseLeave={() => setIconHovered(0)}
+						style={({ isActive }) =>
+							isActive || homePathActive
+								? { color: "#00a2d4" }
+								: {}
+						}
+					>
+						<item.icon
+							filled={
+								locationPath?.includes(item.path) ||
+								homePathActive
+							}
+							hover={iconHovered === item.id}
+						/>
+						{expanded && item.title}
+					</NavLink>
+					{expanded && item.dropDownList && (
+						<ArrowDown
+							onClick={() => setCollapsed(!collapsed)}
+							collapsed={collapsed}
+						>
+							<IoIosArrowUp />
+						</ArrowDown>
+					)}
+				</div>
+			</Item>
+			{expanded && item.dropDownList && (
+				<ListContainer
+					collapsed={collapsed}
+					items={item.dropDownList.length}
+				>
+					<List>
+						{item?.dropDownList?.map((each, index) => (
+							<ListItem key={index}>
+								<NavLink
+									to={each.path}
+									onMouseEnter={() =>
+										setIconHovered(item.id + each.id)
+									}
+									onMouseLeave={() => setIconHovered(0)}
+									style={({ isActive }) =>
+										isActive || homePathActive
+											? { color: "#00a2d4" }
+											: {}
+									}
+								>
+									<span>
+										<each.icon
+											filled={
+												locationPath?.includes(
+													each.path
+												) || homePathActive
+											}
+											hover={
+												iconHovered ===
+												item.id + each.id
+											}
+										/>
+									</span>
+									<span>{each.title}</span>
+								</NavLink>
+								{each.path ===
+									"/staff-dashboard/businesses/services" && (
+									<Badge to={each.path}>
+										{newNotifications?.length}
+									</Badge>
+								)}
+							</ListItem>
+						))}
+					</List>
+				</ListContainer>
+			)}
+		</SidebarItemContainer>
+	);
 };
 
 export default SidebarItem;
 
 const SidebarItemContainer = styled.div`
-  font-size: 14px;
-  font-weight: 400;
+	font-size: 14px;
+	font-weight: 400;
 `;
 const Item = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
+	display: flex;
+	align-items: center;
+	position: relative;
 
-  > div {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: 0.3s all ease;
-    height: max-content;
-    color: #242627;
+	> div {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		gap: 8px;
+		text-decoration: none;
+		transition: 0.3s all ease;
+		height: max-content;
+		color: ${({ theme }) => theme.grey1};
 
-    padding: 12px 16px;
-    border-radius: 8px;
+		padding: 12px 16px;
+		border-radius: 8px;
 
-    white-space: nowrap;
-    border: none;
+		white-space: nowrap;
+		border: none;
 
-    > a {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      gap: 8px;
-      color: #242627;
-      text-decoration: none;
-      transition: 0.3s all ease;
+		> a {
+			display: flex;
+			flex: 1;
+			align-items: center;
+			gap: 8px;
+			color: ${({ theme }) => theme.grey1};
+			text-decoration: none;
+			transition: 0.3s all ease;
 
-      :hover {
-        color: #00a2d4;
-      }
-    }
-  }
+			:hover {
+				color: #00a2d4;
+			}
+		}
+	}
 `;
 
 export const ListContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  padding-left: 30px;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	padding-left: 30px;
 
-  height: ${({ collapsed, items }) =>
-    collapsed ? 0 : `calc(${items * 35}px)`};
-  overflow: hidden;
-  transition: 0.3s height ease;
+	height: ${({ collapsed, items }) =>
+		collapsed ? 0 : `calc(${items * 35}px)`};
+	overflow: hidden;
+	transition: 0.3s height ease;
 `;
 
 const List = styled.div`
-  display: flex;
-  flex-flow: column;
-  width: 100%;
+	display: flex;
+	flex-flow: column;
+	width: 100%;
 `;
 
 export const ListItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
 
-  :nth-of-type(odd) {
-    margin-block: 8px;
-  }
+	:nth-of-type(odd) {
+		margin-block: 8px;
+	}
 
-  > a:nth-of-type(1) {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 8px;
-    align-items: center;
-    white-space: nowrap;
-    text-decoration: none;
-    line-height: 21px;
-    color: #242627;
-    transition: 0.3s all ease;
+	> a:nth-of-type(1) {
+		display: flex;
+		flex-flow: row nowrap;
+		gap: 8px;
+		align-items: center;
+		white-space: nowrap;
+		text-decoration: none;
+		line-height: 21px;
+		color: ${({ theme }) => theme.grey1};
+		transition: 0.3s all ease;
 
-    :hover {
-      color: #00a2d4;
-    }
+		:hover {
+			color: #00a2d4;
+		}
 
-    span:nth-of-type(1) {
-      display: flex;
-      justify-content: center;
-      width: 21px;
-    }
-  }
+		span:nth-of-type(1) {
+			display: flex;
+			justify-content: center;
+			width: 21px;
+		}
+	}
 `;
 
 const Badge = styled(Link)`
-  color: white;
-  background-color: #ed4e3a;
-  border-radius: 4px;
-  padding: 1px 6px;
-  text-decoration: none;
-  height: max-content;
+	color: white;
+	background-color: #ed4e3a;
+	border-radius: 4px;
+	padding: 1px 6px;
+	text-decoration: none;
+	height: max-content;
 `;
 
 const ArrowDown = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transform: ${({ collapsed }) => (collapsed ? "rotate(180deg)" : "")};
-  transition: 0.3s transform ease;
-  padding: 0 5px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transform: ${({ collapsed }) => (collapsed ? "rotate(180deg)" : "")};
+	transition: 0.3s transform ease;
+	padding: 0 5px;
 `;

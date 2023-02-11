@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as ChatIcon } from "asset/Icons/ChatIcon.svg";
 import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
+import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
 
 import { useGetAllServicesQuery } from "services/staffService";
@@ -25,6 +26,8 @@ import {
   Status,
   TopContent,
 } from "./styled";
+import ServicesModal from "components/modal/ServicesModal";
+import StaffServiceModal from "components/modal/StaffServiceModal";
 
 // const countryCodes = {
 //   KEN: "Kenya",
@@ -41,6 +44,8 @@ const iconStyle = { width: "17px", height: "17px" };
 //
 
 const ServicePage = () => {
+  const [open, setOpen] = useState(false);
+  const [cardAction, setCardAction] = useState("");
   const { data, isLoading } = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
 
@@ -53,6 +58,11 @@ const ServicePage = () => {
   //   item2: { color: "blue", backgroundColor: "green", category: "MANAGE" },
   // };
 
+  // Add Service
+  const handleAddButton = () => {
+    setOpen(true);
+    setCardAction("add");
+  };
   // Table header information
   const header = ["Notification ID", "Status", "Date", "Time"];
 
@@ -113,7 +123,10 @@ const ServicePage = () => {
       <FeatureSection
         title={`Services (${totalServices}) available`}
         subText="Select all available banks to create an account with"
+        LeftbtnLeftIcon={AddIcon}
+        LeftbtnText="Add Service"
         btnText="View all"
+        anotherBtnAction={handleAddButton}
         btnAction={handleViewAllServices}
         btnRightIcon={ArrowLeftIcon}
       >
@@ -150,6 +163,16 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
+        {/* <StaffServiceModal
+          open={open}
+          setOpen={open}
+          cardAction={cardAction}
+        /> */}
+        <ServicesModal
+          open={open}
+          setOpen={open}
+          cardAction={cardAction}
+        />
       </FeatureSection>
     </Container>
   );

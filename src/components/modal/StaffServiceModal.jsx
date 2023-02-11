@@ -4,15 +4,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
-import NumberInput from "components/input/phoneNumberInput";
 import { useState } from "react";
-import { StaffCountrySchema, StaffRewardSchema } from "utils/config";
-import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-import { useGetAllRewardsQuery } from "services/RewardService";
+import { ServicesSchema } from "utils/config";
 import { useEffect } from "react";
-import { useAddRewardMutation } from "services/staffService";
+import { 
+    useGetAllServicesQuery,
+} from "services/staffService";
 
-const StaffRewardModal = ({
+const StaffServiceModal = ({
   cardAction,
   open,
   setOpen,
@@ -22,7 +21,7 @@ const StaffRewardModal = ({
 }) => {
   const [categories, setCategories] = useState([{ value: "", label: "" }]);
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery();
+  const { data, isLoading, isError, isSuccess } = useGetAllServicesQuery();
 
   const {
     handleSubmit,
@@ -30,7 +29,7 @@ const StaffRewardModal = ({
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(StaffRewardSchema),
+    resolver: yupResolver(ServicesSchema),
   });
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const StaffRewardModal = ({
       handleSubmit={handleSubmit}
       submitAction={submitAction}
       cardAction={cardAction}
-      title="Add New Reward"
+      title="Add New Service"
       open={open}
       setOpen={setOpen}
       loading={loading}
@@ -86,42 +85,46 @@ const StaffRewardModal = ({
     >
       <DetailedSection>
         <InputWithLabel
-          label="Name"
+          label="Service Name"
           labelStyle="input-label"
-          placeholder="Enter reward name"
+          placeholder="Enter service name"
           type="text"
-          name="reward_name"
+          name="service_name"
           inputClass="input-class"
           containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.reward_name?.message}
-        />
-        <InputWithLabel
-          label="Partner"
-          labelStyle="input-label"
-          placeholder="Enter partner name"
-          type="text"
-          name="partner"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.partner?.message}
+          errorMessage={errors.service_name?.message}
         />
       </DetailedSection>
 
-      <InputWithLabel
-        label="Description"
-        labelStyle="input-label"
-        placeholder="Enter reward description"
-        type="text"
-        name="description"
-        inputClass="input-class"
-        containerStyle="input-container-class"
-        register={register}
-        errorMessage={errors.description?.message}
-      />
+      <DetailedSection>
+        <InputWithLabel
+          label="Service Description"
+          labelStyle="input-label"
+          placeholder="Enter service description"
+          type="text"
+          name="service_description"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.service_description?.message}
+        />
+      </DetailedSection>
+      
 
       <DetailedSection>
+        <InputWithLabel
+            label="Service ID"
+            labelStyle="input-label"
+            placeholder="Enter service ID"
+            type="text"
+            name="service_id"
+            inputClass="input-class"
+            containerStyle="input-container-class"
+            register={register}
+            errorMessage={errors.service_id?.message}
+        />
+
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Category"
@@ -137,45 +140,52 @@ const StaffRewardModal = ({
           height="40px"
           // disable={disable}
         />
+      </DetailedSection>
+
+      <DetailedSection>
+        <DropDown
+          containerStyle={{ margin: 0, marginBottom: "24px" }}
+          label="Operational Country"
+          name="country"
+          labelStyle="input-label"
+          placeholder="Select Category"
+          options={categories}
+          onChange={handleCategoryChange}
+          errorMessage={errors.country?.message}
+          cardAction={cardAction}
+          defaultValue={rewardInfo ? rewardInfo.rewardCategory : ""}
+          fontSize="clamp(12px, 1.2vw, 14px)"
+          height="40px"
+          // disable={disable}
+        />
         <InputWithLabel
-          label="Code"
-          placeholder="Enter reward code"
+          label="Service Price"
+          placeholder="Enter service price"
           labelStyle="input-label"
           type="text"
-          name="code"
+          name="price"
           inputClass="input-class"
           containerStyle="input-container-class"
           register={register}
-          errorMessage={errors.code?.message}
+          errorMessage={errors.price?.message}
         />
       </DetailedSection>
 
       <DetailedSection>
         <InputWithLabel
-          label="Link"
-          placeholder="Enter link to reward"
-          labelStyle="input-label"
-          type="text"
-          name="link"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.link?.message}
-        />
-        <InputWithLabel
-          label="Image"
-          placeholder="Enter link to reward image"
-          labelStyle="input-label"
-          type="text"
-          name="image"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.image?.message}
+            label="Service Timeline"
+            placeholder="Enter service timeline"
+            labelStyle="input-label"
+            type="text"
+            name="timeline"
+            inputClass="input-class"
+            container="input-container-class"
+            register={register}
+            errorMessage={errors.timeline?.message}
         />
       </DetailedSection>
     </Modal1>
   );
 };
 
-export default StaffRewardModal;
+export default StaffServiceModal;

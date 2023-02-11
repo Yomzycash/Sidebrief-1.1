@@ -173,8 +173,8 @@ const Registration = styled.div`
   padding: 59px;
   background-color: white;
   border: 1px solid #edf1f7;
-  box-shadow: -10px -10px 10px -5px rgba(149, 150, 151, 0.04),
-    10px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: -10px -10px 10px -5px #9596970a,
+    10px 10px 10px -5px #9596970a;
   border-radius: 12px;
   @media screen and (max-width: 1000px) {
     gap: 32px;

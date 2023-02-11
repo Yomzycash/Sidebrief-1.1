@@ -6,7 +6,6 @@ import { checkPaymentStatus } from "pages/Launch/actions";
 
 // handle error encountered in endpoints call
 export const handleError = (error) => {
-  console.log(error);
   if (error?.status === "FETCH_ERROR") {
     toast.error("Please check your internet connection");
   } else if (error?.originalStatus === "404") {

@@ -28,7 +28,6 @@ const CountryDetailLayout = (pages) => {
   // This deletes an entity
   const handleEntityDel = async () => {
     if (isSuccess) {
-      console.log(data);
       let delResponse = await deleteCountry(data);
       let resData = delResponse?.data;
       let error = delResponse?.error;
@@ -39,7 +38,6 @@ const CountryDetailLayout = (pages) => {
       } else {
         handleError(error);
       }
-      console.log(delResponse);
     }
   };
 

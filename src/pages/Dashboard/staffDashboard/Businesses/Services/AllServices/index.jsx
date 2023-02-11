@@ -10,6 +10,20 @@ import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
 
 const AllServices = () => {
+  const serviceCategory = [
+    {
+      id: 1,
+      category: "TAX",
+      backgroundColor: "#00d4480c",
+      color: "#00D448",
+    },
+    {
+      id: 2,
+      category: "MANAGE",
+      backgroundColor: "#00a2d40c",
+      color: "#00A2D4",
+    },
+  ];
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
   const [open, setOpen] = useState(false);
@@ -38,6 +52,7 @@ const AllServices = () => {
     setPageCount(Math.ceil(allServices?.length / itemsPerPage));
     store.dispatch(setRefreshApp(!refreshApp));
   }, [itemOffset, itemsPerPage, allServices]);
+
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>

@@ -61,7 +61,6 @@ export const EntityCard = ({
           <Price>
             {getCurrencyInfo(currency)?.symbol}
             {numeral(price).format("0,0")}
-            {/* {currency} */}
           </Price>
         </Mid>
         <Bottom>

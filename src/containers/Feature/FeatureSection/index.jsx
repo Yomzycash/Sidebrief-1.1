@@ -16,12 +16,13 @@ const FeatureSection = ({
   title,
   subText,
   btnText,
-  LeftbtnText = "Add Service",
+  LeftbtnText,
   btnLeftIcon,
   btnRightIcon,
   LeftbtnLeftIcon,
   RightbtnRightIcon,
   btnAction,
+  anotherBtnAction,
   searchPlaceholder,
   extraComponentLeft,
   extraComponentRight,
@@ -45,9 +46,8 @@ const FeatureSection = ({
           <NoBackgroundButton
             LeftIcon={LeftbtnLeftIcon}
             RightIcon={RightbtnRightIcon}
-            text2={LeftbtnText}
-            text="Add Service"
-            action={btnAction}
+            text={LeftbtnText}
+            action={anotherBtnAction}
           />
           <CommonButton
             LeftIcon={btnLeftIcon}

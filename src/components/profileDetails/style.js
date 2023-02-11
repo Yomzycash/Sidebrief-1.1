@@ -25,7 +25,7 @@ export const TextTitle = styled.div`
 	font-weight: 600;
 	font-size: 14px;
 	line-height: 21px;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 export const TextParagraph = styled.div`
 	font-weight: 400;

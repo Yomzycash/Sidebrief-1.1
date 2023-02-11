@@ -20,7 +20,6 @@ const InProgress = () => {
 		}
 	}, [approvedLaunch, countries.isSuccess]);
 
-	console.log(tableArr);
 	let sortArr = [...tableArr];
 	let sortedArr = sortArr.sort(sortTableData);
 

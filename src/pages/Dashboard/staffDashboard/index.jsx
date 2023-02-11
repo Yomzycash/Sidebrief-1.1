@@ -73,20 +73,20 @@ const StaffDashboard = (props) => {
   // 	console.log(ParseUsers(allUsers?.data?.users || []));
   // }
 
-  const analytics = {
-    title: "User Analytics",
-    options: ["All time", 1, 2, 3, 4, 5, 6, 7],
-    status1: {
-      text: "Total Users",
-      total: allUsers?.data?.users.length || 0,
-      color: "rgba(255, 255, 255, 0.4)",
-    },
-    status2: {
-      text: "Registrations",
-      total: allLaunches?.data?.length || 0,
-      color: "#ffffff",
-    },
-  };
+	const analytics = {
+		title: "User Analytics",
+		options: ["All time", 1, 2, 3, 4, 5, 6, 7],
+		status1: {
+			text: "Total Users",
+			total: allUsers?.data?.users.length || 0,
+			color: "#ffffff66",
+		},
+		status2: {
+			text: "Registrations",
+			total: allLaunches?.data?.length || 0,
+			color: "#ffffff",
+		},
+	};
 
   return (
     <StaffContainer>

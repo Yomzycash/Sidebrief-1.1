@@ -13,8 +13,6 @@ const DetailShareholder = () => {
 
   const members = isSuccess ? data.businessMembers : [];
   const memberKYC = isSuccess ? data.businessMembersKYC : [];
-
-  console.log("dataaa", data);
   return (
     <>
       {isLoading ? (

@@ -140,14 +140,14 @@ const LowerContainer = styled.div`
   width: 100%;
 `;
 const StatusContent = styled.div`
+  background: #ffbf290c;
+  border-radius: 12px;
+  padding: 4px 16px;
   font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: #ffbf29;
-  background: rgba(255, 191, 41, 0.05);
-  border-radius: 12px;
-  padding: 4px 16px;
 `;
 const TimeLine = styled.div`
   font-weight: 500;

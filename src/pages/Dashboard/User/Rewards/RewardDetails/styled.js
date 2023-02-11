@@ -91,7 +91,7 @@ export const TextWrapper = styled.div`
 `;
 
 export const Badge = styled.div`
-  background-color: rgba(212, 0, 204, 0.05);
+  background-color: #d400cc0c;
   padding: 4px 16px;
   margin-bottom: 20px;
   border-radius: 12px;

@@ -40,8 +40,8 @@ import { CheckoutController } from "containers/Checkout";
 export const Header = ({ isStaff }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const [deleteLaunch, deleteState] = useDeleteLaunchRequestMutation();
-  const [deleteLaunchStaff, deleteLaunchStaffState] =
-    useDeleteLaunchRequestStaffMutation();
+  // const [deleteLaunchStaff, deleteLaunchStaffState] =
+  //   useDeleteLaunchRequestStaffMutation();
   const [openModal, setOpenModal] = useState(false);
 
   const { code } = useParams();
@@ -69,11 +69,12 @@ export const Header = ({ isStaff }) => {
       await deleteLaunch({
         launchCode: launchResponse.launchCode,
       });
-    } else {
-      await deleteLaunchStaff({
-        launchCode: launchResponse.launchCode,
-      });
     }
+    // else {
+    //   await deleteLaunchStaff({
+    //     launchCode: launchResponse.launchCode,
+    //   });
+    // }
 
     navigate(
       isStaff
@@ -290,9 +291,7 @@ export const Header = ({ isStaff }) => {
               backText={"No"}
               forwardAction={deleteAction}
               forwardText={"Yes"}
-              forwardLoading={
-                deleteState.isLoading || deleteLaunchStaffState.isLoading
-              }
+              forwardLoading={deleteState.isLoading}
             />
           </ModalButton>
         </ModalWrapper>
