@@ -10,6 +10,7 @@ const UserData = createSlice({
     userLoginInfo: {},
     partnerLoginInfo: {},
     resellerLoginInfo: {},
+    refreshApp: false,
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -30,6 +31,9 @@ const UserData = createSlice({
     saveResellerLoginInfo: (state, action) => {
       state.loginIfo = action.payload;
     },
+    setRefreshApp: (state, action) => {
+      state.refreshApp = action.payload;
+    },
   },
 });
 export const UserDataReducer = UserData.reducer;
@@ -41,6 +45,7 @@ export const {
   saveUserLoginInfo,
   savePartnerLoginInfo,
   saveResellerLoginInfo,
+  setRefreshApp,
 } = UserData.actions;
 
 // This slice will hold all glabally needed layout and similar information

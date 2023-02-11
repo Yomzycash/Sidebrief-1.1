@@ -1,20 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
-import Navbar from 'components/navbar'
-import { useSelector } from 'react-redux'
-import BusinessRegistration from './Dashboard/User/Home/BusinessRegistration'
-import Sidebar from 'components/sidebar'
-import MobileNavbar from 'components/navbar/MobileNavbar'
-import { checkStaffEmail } from 'utils/globalFunctions'
-import StaffLayout from './Dashboard/staffDashboard/layout'
-import StaffDashboard from './Dashboard/staffDashboard'
+import React from "react";
+import styled from "styled-components";
+import Navbar from "components/navbar";
+import { useSelector } from "react-redux";
+import BusinessRegistration from "./Dashboard/User/Home/BusinessRegistration";
+import Sidebar from "components/sidebar";
+import MobileNavbar from "components/navbar/MobileNavbar";
+import { checkStaffEmail } from "utils/globalFunctions";
+import StaffLayout from "./Dashboard/staffDashboard/layout";
+import StaffDashboard from "./Dashboard/staffDashboard";
 
 const Home = () => {
-  const layoutInfo = useSelector((store) => store.LayoutInfo)
-  const { sidebarWidth } = layoutInfo
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
 
-  let userEmail = localStorage.getItem('userEmail')
-  let staffEmail = checkStaffEmail(userEmail)
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
 
   return (
     <div>
@@ -27,8 +27,8 @@ const Home = () => {
           <MobileNavbar />
           <Navbar
             dashboard
-            imgStyles={{ maxWidth: '100px' }}
-            style={{ padding: '12px 24px' }}
+            imgStyles={{ maxWidth: "100px" }}
+            style={{ padding: "12px 24px" }}
           />
           <Body>
             <BodyLeft>
@@ -41,21 +41,21 @@ const Home = () => {
         </Dashboard>
       )}
     </div>
-  )
-}
-export default Home
+  );
+};
+export default Home;
 
 const Dashboard = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
   flex: 1;
-`
+`;
 const Body = styled.div`
   display: flex;
   flex-flow: row nowrap;
-`
-const BodyLeft = styled.div``
+`;
+const BodyLeft = styled.div``;
 const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
@@ -65,4 +65,4 @@ const BodyRight = styled.div`
   @media screen and (max-width: 700px) {
     width: 100%;
   }
-`
+`;

@@ -230,6 +230,7 @@ export const StaffEntitySchema = yup.object().shape({
   type: yup.string().required("Enter entity type"),
   requirements: yup.string().required("Enter entity requirements"),
   country: yup.string().required("Select entity country"),
+  currency: yup.string().required("Select entity currency"),
   fee: yup.number().typeError("Enter entity fee").required("Enter entity fee"),
   timeline: yup.string().required("Enter entity timeline"),
   shares: yup

@@ -164,12 +164,12 @@ export const checkPaymentStatus = async (info) => {
     let error = viewResponse?.error;
     if (data) {
       if (data?.paymentStatus === "successful") {
-        return true;
+        return { status: true, data: data };
       } else {
-        return false;
+        return { status: false };
       }
     } else {
-      return false;
+      return { status: false };
     }
-  } else return false;
+  } else return { status: false };
 };

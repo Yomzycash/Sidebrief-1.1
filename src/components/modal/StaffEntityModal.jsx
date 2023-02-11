@@ -32,6 +32,11 @@ const StaffEntityModal = ({
   const [entityCountries, setEntityCountries] = useState([
     { value: "", label: "" },
   ]);
+
+  const [entityCurrencies, setEntityCurrencies] = useState([
+    { value: "", label: "" },
+  ]);
+
   const countries = useGetAllCountriesQuery();
 
   const {
@@ -46,12 +51,18 @@ const StaffEntityModal = ({
   // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
-    let currency = countries?.data?.filter(
-      (country) => country.countryISO === selectedCountry
-    )[0]?.countryCurrency;
-    // setEntityCurrencies([{ value: currency, label: currency }]);
+    // let currency = countries?.data?.filter(
+    //   (country) => country.countryISO === selectedCountry
+    // )[0]?.countryCurrency;
+    // // setEntityCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
-    setValue("currency", currency, { shouldValidate: true });
+    // setValue("currency", currency, { shouldValidate: true });
+  };
+
+  // This is attached to country dropdown onChange
+  const handleCurrencyChange = (value) => {
+    let selectedCurrency = Object.values(value)[0];
+    setValue("currency", selectedCurrency, { shouldValidate: true });
   };
 
   // Update entity countries
@@ -62,6 +73,13 @@ const StaffEntityModal = ({
         allCountries.map((country) => ({
           value: country.countryISO,
           label: country.countryISO,
+        }))
+    );
+    setEntityCurrencies(
+      allCountries &&
+        allCountries.map((currency) => ({
+          value: currency.countryCurrency,
+          label: currency.countryCurrency,
         }))
     );
   }, [countries.data]);
@@ -119,29 +137,19 @@ const StaffEntityModal = ({
       handleDelete={() => handleEntityDelete(entityInfo)}
       deleteState={deleteState}
     >
-      <InputWithLabel
-        label="Entity Name"
-        labelStyle="input-label"
-        placeholder="Enter entity name e.g Public Limited Company"
-        type="text"
-        name="entityName"
-        inputClass="input-class"
-        containerStyle="input-container-class"
-        register={register}
-        errorMessage={errors.entityName?.message}
-        disable={disable}
-      />
-      <DetailedSection></DetailedSection>
-      <TextAreaWithLabel
-        label="Entity Description"
-        labelStyle="input-label"
-        placeholder="Enter entity description"
-        name="description"
-        register={register}
-        errorMessage={errors.description?.message}
-        disable={disable}
-      />
       <DetailedSection>
+        <InputWithLabel
+          label="Entity Name"
+          labelStyle="input-label"
+          placeholder="Enter entity name e.g Public Limited Company"
+          type="text"
+          name="entityName"
+          inputClass="input-class"
+          containerStyle="input-container-class"
+          register={register}
+          errorMessage={errors.entityName?.message}
+          disable={disable}
+        />
         <InputWithLabel
           label="Entity Short Name"
           labelStyle="input-label"
@@ -154,6 +162,17 @@ const StaffEntityModal = ({
           errorMessage={errors.shortName?.message}
           disable={disable}
         />
+      </DetailedSection>
+      <TextAreaWithLabel
+        label="Entity Description"
+        labelStyle="input-label"
+        placeholder="Enter entity description"
+        name="description"
+        register={register}
+        errorMessage={errors.description?.message}
+        disable={disable}
+      />
+      <DetailedSection>
         <InputWithLabel
           label="Entity Code"
           placeholder="Enter unique code"
@@ -166,8 +185,6 @@ const StaffEntityModal = ({
           errorMessage={errors.code?.message}
           disable={disable}
         />
-      </DetailedSection>
-      <DetailedSection>
         <InputWithLabel
           label="Entity Type"
           placeholder="Private"
@@ -180,6 +197,8 @@ const StaffEntityModal = ({
           errorMessage={errors.type?.message}
           disable={disable}
         />
+      </DetailedSection>
+      <DetailedSection>
         <InputWithLabel
           label="Entity Requirement"
           placeholder="Standard"
@@ -192,8 +211,6 @@ const StaffEntityModal = ({
           errorMessage={errors.requirements?.message}
           disable={disable}
         />
-      </DetailedSection>
-      <DetailedSection>
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Entity Country"
@@ -204,7 +221,21 @@ const StaffEntityModal = ({
           defaultValue={cardAction === "edit" && entityInfo?.entityCountry}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
-          disable={disable || countryInfo?.countryISO}
+          disable={disable}
+        />
+      </DetailedSection>
+      <DetailedSection>
+        <DropDown
+          containerStyle={{ margin: 0, marginBottom: "24px" }}
+          label="Entity Currency"
+          labelStyle="input-label"
+          options={entityCurrencies}
+          onChange={handleCurrencyChange}
+          errorMessage={errors.currency?.message}
+          defaultValue={cardAction === "edit" && entityInfo?.entityCurrency}
+          fontSize="clamp(12px, 1.2vw, 14px)"
+          height="40px"
+          disable={disable}
         />
         <InputWithLabel
           label={`Entity Fee ${

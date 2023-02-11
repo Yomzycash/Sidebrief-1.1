@@ -13,6 +13,9 @@ import {
   useGetApprovedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
+import { useSelector } from "react-redux";
 
 const StaffBusinesses = (props) => {
   const [countries, setCountries] = useState([]);
@@ -24,6 +27,8 @@ const StaffBusinesses = (props) => {
   const allEntities = useGetAllTheEntitiesQuery();
   const allSubmittedLaunches = useGetSubmittedLaunchQuery();
   const allApprovedLaunches = useGetApprovedLaunchQuery();
+
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   // const layoutInfo = useSelector((store) => store.LayoutInfo);
   // const { sidebarWidth } = layoutInfo;
@@ -75,6 +80,7 @@ const StaffBusinesses = (props) => {
     );
     // console.log(countries);
     // console.log(entities);
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [
     allSubmittedLaunches?.data,
     allApprovedLaunches?.data,

@@ -29,7 +29,6 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import AppFeedback from "components/AppFeedback";
 import { set } from "date-fns";
-import { checkPaymentStatus } from "../actions";
 import { handleBusinessInfo } from "./actions";
 
 const BusinessInfo = () => {
@@ -42,7 +41,7 @@ const BusinessInfo = () => {
   const [countries, setCountries] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [selectedCountryISO, setselectedCountryISO] = useState("");
-  const [paid, setPaid] = useState(false);
+  // const [paid, setPaid] = useState(false);
 
   const { data, error, isError, isSuccess, isLoading, refetch } =
     useGetAllCountriesQuery();
@@ -56,6 +55,11 @@ const BusinessInfo = () => {
   const navigate = useNavigate();
 
   let navigatedFrom = localStorage.getItem("navigatedFrom");
+
+  // Get payment information from the local storage
+  const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+  let paidStatus =
+    paymentDetails?.paymentStatus === "successful" ? true : false;
 
   // This runs when next button is clicked
   const handleNext = async () => {
@@ -106,7 +110,7 @@ const BusinessInfo = () => {
       navigate(navigatedFrom);
       localStorage.removeItem("navigatedFrom");
     } else {
-      if (paid) navigate("/launch/address");
+      if (paidStatus) navigate("/launch/address");
       else navigate("/launch/entity");
     }
   };
@@ -175,14 +179,14 @@ const BusinessInfo = () => {
   //
 
   //
-  // Check the payment status of the
-  const handlePaymentStatus = async () => {
-    let actionInfo = {
-      ...launchResponse,
-      viewPayLaunch: viewPayLaunch,
-    };
-    setPaid(await checkPaymentStatus(actionInfo));
-  };
+  // // Check the payment status of the
+  // const handlePaymentStatus = async () => {
+  //   let actionInfo = {
+  //     ...launchResponse,
+  //     viewPayLaunch: viewPayLaunch,
+  //   };
+  //   setPaid(await checkPaymentStatus(actionInfo));
+  // };
 
   // Set the selected country's ISO
   useEffect(() => {
@@ -200,7 +204,7 @@ const BusinessInfo = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    handlePaymentStatus();
+    // handlePaymentStatus();
     store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
   }, []);
 

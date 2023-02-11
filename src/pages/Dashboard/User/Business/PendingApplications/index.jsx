@@ -1,37 +1,39 @@
-import { BusinessTable } from 'components/Tables'
-import React, { useEffect, useState } from 'react'
-import { Body, Container, Loading } from './styled'
-import { format, compareDesc } from 'date-fns'
+import { BusinessTable } from "components/Tables";
+import React, { useEffect, useState } from "react";
+import { Body, Container, Loading } from "./styled";
+import { format, compareDesc } from "date-fns";
 import {
   useGetAllCountriesQuery,
   useGetUserSubmittedQuery,
-} from 'services/launchService'
-import { Puff } from 'react-loading-icons'
-import styled from 'styled-components'
-import { useMediaQuery } from '@mui/material'
-import BusinessesCard from 'components/cards/BusinessAddressCard'
+  useViewPayLaunchMutation,
+} from "services/launchService";
+import { Puff } from "react-loading-icons";
+import styled from "styled-components";
+import { useMediaQuery } from "@mui/material";
+import BusinessesCard from "components/cards/BusinessAddressCard";
 
 const PendingApplications = () => {
   const { data, error, isLoading, isSuccess } = useGetUserSubmittedQuery({
     refetchOnMountOrArgChange: true,
-  })
+  });
 
-  const countries = useGetAllCountriesQuery()
+  const countries = useGetAllCountriesQuery();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
-  const [dataArr, setDataArr] = useState([])
+  const [dataArr, setDataArr] = useState([]);
   useEffect(() => {
     if (isSuccess && countries.isSuccess) {
-      const response = [...data]
+      const response = [...data];
       response.sort((launch1, launch2) => {
         return compareDesc(
           new Date(launch1.createdAt),
-          new Date(launch2.createdAt),
-        )
-      })
-      setDataArr(response)
+          new Date(launch2.createdAt)
+        );
+      });
+      setDataArr(response);
     }
-  }, [data, isSuccess, countries.isSuccess])
-  const matches = useMediaQuery('(max-width:700px)')
+  }, [data, isSuccess, countries.isSuccess]);
+  const matches = useMediaQuery("(max-width:700px)");
 
   return (
     <Container>
@@ -47,16 +49,17 @@ const PendingApplications = () => {
               return {
                 name: element.businessNames
                   ? element.businessNames.businessName1
-                  : 'No name ',
+                  : "No name ",
                 type: element?.registrationType,
                 country: countries.data.find(
                   (country) =>
-                    country.countryISO === element.registrationCountry,
+                    country.countryISO === element.registrationCountry
                 ).countryName,
-                date: format(new Date(element.createdAt), 'dd/MM/yyyy'),
+                date: format(new Date(element.createdAt), "dd/MM/yyyy"),
                 code: element.launchCode,
                 countryISO: element.registrationCountry,
-              }
+                viewPayLaunch: viewPayLaunch,
+              };
             })}
           />
         ) : (
@@ -67,22 +70,23 @@ const PendingApplications = () => {
                   name={
                     element.businessNames
                       ? element.businessNames.businessName1
-                      : 'No name '
+                      : "No name "
                   }
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
+                  viewPayLaunch={viewPayLaunch}
                 />
-              )
+              );
             })}
           </MobileContainer>
         )}
       </Body>
     </Container>
-  )
-}
+  );
+};
 
-export default PendingApplications
+export default PendingApplications;
 
 const MobileContainer = styled.div`
   display: flex;
@@ -93,4 +97,4 @@ const MobileContainer = styled.div`
   justify-content: center;
 
   gap: 8px;
-`
+`;

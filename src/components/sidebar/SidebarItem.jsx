@@ -4,6 +4,9 @@ import { IoIosArrowUp } from "react-icons/io";
 import { NavLink, useLocation, Link } from "react-router-dom";
 import { useState } from "react";
 import { useGetAllNotificationsQuery } from "services/chatService";
+import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const SidebarItem = ({ item, expanded, homePath }) => {
   const [iconHovered, setIconHovered] = useState(false);

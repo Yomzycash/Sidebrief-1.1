@@ -22,14 +22,16 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { Loading } from "notiflix";
 import { useRef } from "react";
-import AppFeedback from "components/AppFeedback";
-import { checkPaymentStatus } from "../actions";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState(defaultLocation);
   const [state, setState] = useState(defaultLocation);
   const [city, setCity] = useState(defaultLocation);
-  const [paid, setPaid] = useState(false);
+  // const [paid, setPaid] = useState(false);
+
+  const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+  let paidStatus =
+    paymentDetails?.paymentStatus === "successful" ? true : false;
 
   const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
   const [updateBusinessAddress, updateAddressState] =
@@ -149,7 +151,7 @@ const BusinessAddress = () => {
   };
 
   const handlePrev = () => {
-    if (paid) navigate("/launch");
+    if (paidStatus) navigate("/launch");
     else navigate(-1);
   };
 
@@ -159,14 +161,14 @@ const BusinessAddress = () => {
     });
   }
 
-  // Check the payment status of the
-  const handlePaymentStatus = async () => {
-    let actionInfo = {
-      ...launchResponse,
-      viewPayLaunch: viewPayLaunch,
-    };
-    setPaid(await checkPaymentStatus(actionInfo));
-  };
+  // // Check the payment status of the launch
+  // const handlePaymentStatus = async () => {
+  //   let actionInfo = {
+  //     ...launchResponse,
+  //     viewPayLaunch: viewPayLaunch,
+  //   };
+  //   setPaid(await checkPaymentStatus(actionInfo));
+  // };
 
   useEffect(() => {
     if (address.isSuccess) {
@@ -211,7 +213,7 @@ const BusinessAddress = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    handlePaymentStatus();
+    // handlePaymentStatus();
     store.dispatch(setCheckoutProgress({ total: 13, current: 5.5 })); // total- total pages and current - current page
   }, []);
 

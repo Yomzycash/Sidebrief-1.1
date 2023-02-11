@@ -16,6 +16,8 @@ import {
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import ConfirmDelete from "components/modal/ConfirmDelete";
+import { setRefreshApp } from "redux/Slices";
+import { store } from "redux/Store";
 
 const StaffReward = () => {
   const [selectedReward, setSelectedReward] = useState([]);
@@ -32,6 +34,8 @@ const StaffReward = () => {
   const [updateReward, updateState] = useUpdateRewardMutation();
   const [deleteReward, deleteState] = useDeleteRewardMutation();
 
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
   useEffect(() => {
     let localRewardID = localStorage.getItem("rewardId");
     let rewardID = JSON.parse(localRewardID);
@@ -40,6 +44,7 @@ const StaffReward = () => {
       (data) => data.rewardID === rewardID
     );
     setSelectedReward(rewardDatails);
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [data]);
 
   const getRequiredData = (info) => ({

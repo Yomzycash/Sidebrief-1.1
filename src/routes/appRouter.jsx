@@ -42,7 +42,6 @@ import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistratio
 import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
 import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
-import { checkPaymentStatus } from "pages/Launch/actions";
 import { useViewPayLaunchMutation } from "services/launchService";
 
 const Home = lazy(() => import("../pages/Home"));
@@ -192,44 +191,54 @@ const AppRouter = () => {
     (store) => store.LaunchReducer
   );
 
+  // Get user information from local storage
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
+  let userEmail = localStorage.getItem("userEmail");
+  const loggedIn = token?.length > 0 || user_token > 0;
 
+  //
+
+  // Get launch information from local storage
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   const entityLaunchCode = launchInfo?.launchCode;
-  //const selectedCountryISO = JSON.parse(localStorage.getItem('country'))?.ISO
   const selectedCountryISO = localStorage.getItem("countryISO");
+  const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+  let paidStatus =
+    paymentDetails?.paymentStatus === "successful" ? true : false;
+
+  //
 
   const [isLoggedIn, setisLoggedIn] = useState(
     token?.length > 0 || user_token > 0
   );
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
-
-  const loggedIn = token?.length > 0 || user_token > 0;
+  const [paid, setPaid] = useState(paidStatus);
+  const [staff, setStaff] = useState(userEmail);
 
   const allowLaunch = launchCode && countryISO;
 
   //
 
-  useEffect(() => {
-    setisLoggedIn(loggedIn);
-  }, [loggedIn, userData.userInfo]);
+  //
 
   useEffect(() => {
-    setLaunchCode(entityLaunchCode);
-  }, [entityLaunchCode, launchResponse.launchCode, launchPaid]);
-  console.log(launchPaid);
-  useEffect(() => {
-    setCountryISO(selectedCountryISO);
-  }, [selectedCountryISO, launchResponse.registrationCountry]);
+    setisLoggedIn(loggedIn);
+    let staffEmail = checkStaffEmail(userEmail);
+    setStaff(staffEmail);
+  }, [loggedIn, userData.refreshApp, userData.userInfo]);
 
   //
 
-  let userEmail = localStorage.getItem("userEmail");
-  let staffEmail = checkStaffEmail(userEmail);
-  let paid = launchPaid === "successful" ? true : false;
+  //
+
+  useEffect(() => {
+    setLaunchCode(entityLaunchCode);
+    setCountryISO(selectedCountryISO);
+    setPaid(paidStatus);
+  }, [launchResponse, launchPaid]);
 
   return (
     <Suspense fallback={<Loader />}>
@@ -243,7 +252,6 @@ const AppRouter = () => {
               index
               element={
                 <Protected isVerified={isLoggedIn}>
-                  {/* {staffEmail ? <StaffDashboard /> : <BusinessRegistration />} */}
                   <Home />
                 </Protected>
               }
@@ -281,7 +289,9 @@ const AppRouter = () => {
               path="dashboard"
               element={
                 <Protected isVerified={isLoggedIn}>
-                  <UserDashboard />
+                  <Protected isVerified={!staff} path="/staff-dashboard">
+                    <UserDashboard />
+                  </Protected>
                 </Protected>
               }
             >
@@ -352,7 +362,9 @@ const AppRouter = () => {
               path="staff-dashboard"
               element={
                 <Protected isVerified={isLoggedIn}>
-                  <Stafflayout />
+                  <Protected isVerified={staff} path="/dashboard">
+                    <Stafflayout />
+                  </Protected>
                 </Protected>
               }
             >

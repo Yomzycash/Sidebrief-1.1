@@ -19,6 +19,8 @@ import {
 } from "services/staffService";
 import { useEffect } from "react";
 import { useState } from "react";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
@@ -50,9 +52,12 @@ const Registrationlayout = () => {
   let pending = pendingLaunch?.currentData?.length;
   let approved = approvedLaunch?.currentData?.length;
 
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
   useEffect(() => {
     setAllReg(all ? all : []);
     setAwaiting(awaiting ? awaiting : []);
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [all, awaiting, pending, approved]);
 
   const location = useLocation();

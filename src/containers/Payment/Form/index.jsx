@@ -102,6 +102,10 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
         paymentStatus: reference.status,
       },
     };
+    localStorage.setItem(
+      "paymentDetails",
+      JSON.stringify(requiredData.paymentDetails)
+    );
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await payLaunch(requiredData);
 
@@ -143,7 +147,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
-      {paymentProvider === "flutterwave" && (
+      {paymentProvider === "flutterwave" && entityInfo.entityFee && (
         <Paystack>
           <FlutterWaveButton className="paystack-button" {...fwConfig} />
         </Paystack>

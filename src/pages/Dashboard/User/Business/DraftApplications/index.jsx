@@ -1,38 +1,40 @@
-import { BusinessTable } from 'components/Tables'
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import { BusinessTable } from "components/Tables";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import {
   useGetAllCountriesQuery,
   useGetUserDraftQuery,
-} from 'services/launchService'
-import { Body, Container, Loading } from './styled'
-import { format, compareDesc } from 'date-fns'
-import { Puff } from 'react-loading-icons'
-import { useMediaQuery } from '@mui/material'
-import BusinessesCard from 'components/cards/BusinessAddressCard'
-import styled from 'styled-components'
+  useViewPayLaunchMutation,
+} from "services/launchService";
+import { Body, Container, Loading } from "./styled";
+import { format, compareDesc } from "date-fns";
+import { Puff } from "react-loading-icons";
+import { useMediaQuery } from "@mui/material";
+import BusinessesCard from "components/cards/BusinessAddressCard";
+import styled from "styled-components";
 
 const DraftApplications = () => {
   const { data, error, isLoading, isSuccess } = useGetUserDraftQuery({
     refetchOnMountOrArgChange: true,
-  })
+  });
 
-  const countries = useGetAllCountriesQuery()
+  const countries = useGetAllCountriesQuery();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
-  const [dataArr, setDataArr] = useState([])
+  const [dataArr, setDataArr] = useState([]);
   useEffect(() => {
     if (isSuccess && countries.isSuccess) {
-      const response = [...data]
+      const response = [...data];
       response.sort((launch1, launch2) => {
         return compareDesc(
           new Date(launch1.createdAt),
-          new Date(launch2.createdAt),
-        )
-      })
-      setDataArr(response)
+          new Date(launch2.createdAt)
+        );
+      });
+      setDataArr(response);
     }
-  }, [data, isSuccess, countries.isSuccess])
-  const matches = useMediaQuery('(max-width:700px)')
+  }, [data, isSuccess, countries.isSuccess]);
+  const matches = useMediaQuery("(max-width:700px)");
 
   return (
     <Container>
@@ -49,16 +51,17 @@ const DraftApplications = () => {
               return {
                 name: element.businessNames
                   ? element.businessNames.businessName1
-                  : 'No name ',
+                  : "No name ",
                 type: element?.registrationType,
                 country: countries?.data?.find(
                   (country) =>
-                    country.countryISO === element.registrationCountry,
+                    country.countryISO === element.registrationCountry
                 )?.countryName,
-                date: format(new Date(element.createdAt), 'dd/MM/yyyy'),
+                date: format(new Date(element.createdAt), "dd/MM/yyyy"),
                 code: element.launchCode,
                 countryISO: element.registrationCountry,
-              }
+                viewPayLaunch: viewPayLaunch,
+              };
             })}
           />
         ) : (
@@ -69,29 +72,30 @@ const DraftApplications = () => {
                   name={
                     element.businessNames
                       ? element.businessNames.businessName1
-                      : 'No name '
+                      : "No name "
                   }
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
+                  viewPayLaunch={viewPayLaunch}
                 />
-              )
+              );
             })}
           </MobileContainer>
         )}
-        {error?.status === 'FETCH_ERROR' ||
-        countries?.isLoading === 'FETCH_ERROR' ? (
+        {error?.status === "FETCH_ERROR" ||
+        countries?.isLoading === "FETCH_ERROR" ? (
           <p>Please check your internet connection</p>
         ) : (
-          ''
+          ""
         )}
         {/* {console.log(countries.isError)} */}
       </Body>
     </Container>
-  )
-}
+  );
+};
 
-export default DraftApplications
+export default DraftApplications;
 
 const MobileContainer = styled.div`
   display: flex;
@@ -102,4 +106,4 @@ const MobileContainer = styled.div`
   justify-content: center;
 
   gap: 8px;
-`
+`;
