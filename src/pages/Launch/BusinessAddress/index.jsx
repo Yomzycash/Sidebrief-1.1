@@ -107,13 +107,10 @@ const BusinessAddress = () => {
       },
     };
 
-    console.log(requiredAddressData);
-
     const response = (await address.currentData.businessAddress)
       ? await updateBusinessAddress(requiredAddressData)
       : await addBusinessAddress(requiredAddressData);
     // console.log(address.currentData.businessAddress ? 'true' : 'false')
-    console.log(response);
 
     if (response.data) {
       store.dispatch(setBusinessAddress(requiredAddressData));

@@ -27,7 +27,7 @@ const mockData = [
 ];
 
 const getSelectedRows = (rows) => {
-	console.log(rows);
+	//console.log(rows);
 };
 
 const Payment = () => {

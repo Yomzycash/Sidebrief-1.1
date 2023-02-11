@@ -51,7 +51,6 @@ const Business = () => {
 		(store) => store.BusinessesInfo.businessesShown
 	);
 
-	console.log(businessesShown);
 
 	let submittedTotal = submitted?.data?.length;
 	let draftTotal = drafts?.data?.length;

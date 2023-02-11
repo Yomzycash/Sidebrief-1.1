@@ -12,7 +12,6 @@ const DetailBeneficiaries = () => {
     useViewLaunchRequestQuery(launchResponse);
 
   if (isSuccess) {
-    console.log(data);
   }
 
   const beneficiaryKYC = isSuccess ? data.beneficialOwnersKYC : [];
@@ -43,7 +42,6 @@ const DetailBeneficiaries = () => {
               .filter((el) => el.documentType.includes("Passport Photograph"))
               .slice(-1)[0];
 
-            console.log("checking", currentmemberKYC);
             return (
               <PdfCard
                 name={beneficiary.beneficialOwnerName}

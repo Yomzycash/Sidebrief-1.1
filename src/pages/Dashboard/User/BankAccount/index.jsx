@@ -26,7 +26,6 @@ const BankAccount = () => {
   const handleBankClick = (bankCode) => {
     navigate(`/dashboard/bank-account/${bankCode}`);
   };
-  console.log(data);
 
   return (
     <Container>

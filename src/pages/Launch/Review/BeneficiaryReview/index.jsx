@@ -286,7 +286,7 @@ const NotAdded = styled.div`
     padding: 10px 14px;
     border-radius: 8px;
     outline: none;
-    background-color: #00a2d4;
+    background-color: ${({ theme }) => theme.blue2};
     color: white;
     text-decoration: none;
     margin-block: auto;

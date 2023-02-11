@@ -11,7 +11,6 @@ const BankAccountDetails = () => {
   const params = useParams();
 
   const { data } = useGetSingleBankQuery(params.bankCode);
-  console.log("check", data?.bankUrl);
   const allBanks = useGetAllBanksQuery();
 
   const navigate = useNavigate();

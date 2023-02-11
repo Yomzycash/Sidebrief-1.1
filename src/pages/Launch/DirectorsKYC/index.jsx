@@ -157,10 +157,8 @@ const DirectorKYC = () => {
       },
     };
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log("check", response);
     if (response.data) {
       toast.success("Document uploaded successfully");
-      console.log("adora", response.data);
       setIsChanged(!isChanged);
     } else if (response.error) {
       toast.error(response.error?.data.message);
