@@ -4,15 +4,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
-import NumberInput from "components/input/phoneNumberInput";
 import { useState } from "react";
 import { ServicesSchema } from "utils/config";
-import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 import { useEffect } from "react";
 import { 
-    useGetAllCountriesQuery,
     useGetAllServicesQuery,
-    useAddServiceMutation 
 } from "services/staffService";
 
 const StaffServiceModal = ({
