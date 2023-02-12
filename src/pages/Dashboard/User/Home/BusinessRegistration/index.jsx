@@ -66,10 +66,13 @@ const BusinessRegistration = (props) => {
       // console.log(allLaunch);
     }
     setAllLaunchContainer(allLaunch);
+  }, [drafts, submitted]);
 
+  useEffect(() => {
     drafts.refetch();
     submitted.refetch();
-  }, [drafts, submitted]);
+  }, []);
+
   const analytics = {
     label: "Registrations",
     status1: {
