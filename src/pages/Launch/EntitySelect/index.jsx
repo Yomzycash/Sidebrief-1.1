@@ -34,10 +34,7 @@ import {
 import { Puff } from "react-loading-icons";
 import toast from "react-hot-toast";
 import { Dialog, DialogContent } from "@mui/material";
-import AppFeedback from "components/AppFeedback";
-import { checkIsString } from "components/Indicators/status/actions";
-import { handleBusinessInfo } from "./actions";
-import NewEntityCard from "components/cards/EntityCard/NewEntityCard";
+import { handleBusinessInfo } from "../BusinessInfo/actions";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
@@ -48,25 +45,6 @@ const EntitySelect = () => {
   // const selectCountry = useSelector(
   //   (store) => store.LaunchReducer.selectedCountry
   // );
-
-  const LaunchInfo = useSelector((store) => store.LaunchReducer);
-  const {
-    selectedObjectives,
-    generatedLaunchCode,
-    businessNames,
-    countryISO,
-    selectedCountry,
-    launchResponse,
-  } = LaunchInfo;
-
-  const countryISOView = launchResponse.registrationCountry;
-  const launchCodeView = launchResponse.launchCode;
-  const registrationTypeView = launchResponse.registrationType;
-
-  const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
-    countryISO ? countryISO : countryISOView
-  );
-
   const [getStarted, launchState] = useGetStartedMutation();
   const [updateLaunch, launchUpdateState] = useUpdateLaunchMutation();
   const [addBusinessNames] = useAddBusinessNamesMutation();
@@ -75,6 +53,26 @@ const EntitySelect = () => {
   const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
   const [viewBusinessNames] = useViewBusinessNamesMutation();
   const [viewBusinessObjectives] = useViewBusinessObjectivesMutation();
+
+  const LaunchInfo = useSelector((store) => store.LaunchReducer);
+  const {
+    selectedObjectives,
+    generatedLaunchCode,
+    businessNames,
+    // countryISO,
+    selectedCountry,
+    launchResponse,
+  } = LaunchInfo;
+
+  let countryISO = localStorage.getItem("countryISO");
+
+  const countryISOView = launchResponse.registrationCountry;
+
+  const { data, error, isLoading, isSuccess } = useGetAllEntitiesQuery(
+    countryISO ? countryISO : countryISOView
+  );
+
+  let existingLaunchInfo = JSON.parse(localStorage.getItem("launchInfo"));
 
   // Set to state all entities of the specified country
   useEffect(() => {
@@ -86,6 +84,9 @@ const EntitySelect = () => {
   }, [data, error?.status]);
 
   //
+
+  //
+
   // This fires off when an entity is selected
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
@@ -103,19 +104,17 @@ const EntitySelect = () => {
 
     // To be sent to the backend to update a launch
     const requiredLaunchUpdateData = {
-      launchCode: generatedLaunchCode,
+      launchCode: existingLaunchInfo?.launchCode,
       registrationCountry: selectedItem.entityCountry,
       registrationType: selectedItem.entityCode,
     };
-
     // If generatedLaunchCode exists in store, then it runs update endpoint. If otherwise, it runs get started endpoint.
-    const launchResponse = generatedLaunchCode
+    const launchResponse = existingLaunchInfo
       ? await updateLaunch(requiredLaunchUpdateData)
       : await getStarted(requiredLaunchData);
-    
 
     // Set the launch response to local storage
-    if (generatedLaunchCode) {
+    if (existingLaunchInfo) {
       // An array is returned, if update response
       store.dispatch(setLaunchResponse(launchResponse.data[0])); // !important DO NOT DELETE
       localStorage.setItem(
@@ -128,17 +127,19 @@ const EntitySelect = () => {
       localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
     }
 
-    handleResponse(launchResponse, requiredLaunchUpdateData);
+    let responseData = existingLaunchInfo
+      ? launchResponse?.data[0]
+      : launchResponse?.data;
+
+    handleResponse(responseData, requiredLaunchUpdateData);
   };
 
   //
   // Handle launch response
-  const handleResponse = (launchResponse, requiredLaunchInfo) => {
-    if (launchResponse.data) {
+  const handleResponse = async (responseData) => {
+    if (responseData) {
       // Get launchCode from the launch response
-      const launchCode = generatedLaunchCode
-        ? launchResponse.data[0].launchCode
-        : launchResponse.data.launchCode;
+      const launchCode = responseData?.launchCode;
 
       // If launchCode does not exist, store the launch code gotten from the launch response
       if (!generatedLaunchCode) {
@@ -150,9 +151,9 @@ const EntitySelect = () => {
         navigate("/launch/payment");
 
       const info = {
-        navigate: navigate,
         businessNames: businessNames,
         selectedObjectives: selectedObjectives,
+        responseData: responseData,
         viewBusinessNames: viewBusinessNames,
         viewBusinessObjectives: viewBusinessObjectives,
         updateBusinessNames: updateBusinessNames,
@@ -160,12 +161,8 @@ const EntitySelect = () => {
         updateBusinessObjectives: updateBusinessObjectives,
         addBusinessObjectives: addBusinessObjectives,
       };
-      let businessResponse = handleBusinessInfo(
-        requiredLaunchInfo,
-        launchCode,
-        info
-      );
-      if (businessResponse) navigate("/launch/payment");
+      console.log(info);
+      await handleBusinessInfo(info);
     } else {
       if (launchResponse?.error?.status === "FETCH_ERROR") {
         toast.error("Please check your internet connection");
@@ -187,7 +184,7 @@ const EntitySelect = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
   }, []);
 
   return (
@@ -196,12 +193,7 @@ const EntitySelect = () => {
         <HeaderCheckout />
       </Header>
       <Body style={{ maxWidth: "100%" }}>
-        <CheckoutSection
-        // title={`${selectedCountry.toUpperCase()}: Please select a business type to get started`}
-        // titleStyles={{
-        //   fontWeight: 600,
-        // }}
-        >
+        <CheckoutSection>
           {selectedCountry && (
             <EntityTitle>
               {selectedCountry}:
@@ -228,8 +220,8 @@ const EntitySelect = () => {
                     description={item?.entityDescription}
                     type={item?.entityType}
                     timeline={item?.entityTimeline}
-                    country={countryISO === "NGA" ? "NGA" : ""}
-                    features={countryISO === "NGA" && item?.entityFeatures}
+                    // country={countryISO === "NGA" ? "NGA" : ""}
+                    features={item?.entityFeatures}
                     requirement={item?.entityRequirements}
                     price={parseInt(item?.entityFee).toLocaleString("en-US")}
                     currency={item?.entityCurrency}

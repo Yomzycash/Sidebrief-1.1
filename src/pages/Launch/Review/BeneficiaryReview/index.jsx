@@ -59,7 +59,7 @@ const BeneficiaryReview = () => {
     const error = response.error;
     if (response.data) {
       toast.success(response.data.registrationStatus);
-      navigate("/launch/review-success");
+      navigate("/launch/success");
     } else {
       toast.error(error.data.message);
     }
@@ -102,6 +102,11 @@ const BeneficiaryReview = () => {
   useEffect(() => {
     handleBeneficialArray();
   }, [beneficiaryDocumentContainer]);
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <>

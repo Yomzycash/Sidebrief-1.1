@@ -66,7 +66,7 @@ const DirectorsInfo = () => {
 
     let navigateTo = "";
 
-    if (!useSidebriefShareholders) navigateTo = "/launch/sharehholders-kyc";
+    if (!useSidebriefShareholders) navigateTo = "/launch/shareholders-kyc";
     if (useSidebriefShareholders) navigateTo = "/launch/directors-kyc";
     if (useSidebriefDirectors && useSidebriefShareholders)
       navigateTo = "/launch/beneficiaries-kyc";
@@ -80,7 +80,7 @@ const DirectorsInfo = () => {
     //   navigate(navigateTo);
     // }
 
-    navigate(navigateTo ? navigateTo : "/launch/sharehholders-kyc");
+    navigate(navigateTo ? navigateTo : "/launch/shareholders-kyc");
   };
   const handlePrev = () => {
     navigate(-1);
@@ -198,6 +198,7 @@ const DirectorsInfo = () => {
   // Get the data from backend and set to state
   const viewDraft = async () => {
     let beneficiariesData = await getBeneficiaries();
+    console.log(beneficiariesData);
     setBeneficiariesInfo(beneficiariesData.data);
   };
 

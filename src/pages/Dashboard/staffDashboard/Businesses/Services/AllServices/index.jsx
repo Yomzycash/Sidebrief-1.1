@@ -6,6 +6,8 @@ import { BodyRight, Loading, ServiceContainer } from "./style";
 import PetalsCard from "components/cards/RewardCard/PetalsCard";
 import { useGetAllServicesQuery } from "services/productService";
 import Paginator from "components/Paginator";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const AllServices = () => {
   const serviceCategory = [
@@ -31,6 +33,8 @@ const AllServices = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 12;
 
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
   const { data, isLoading } = useGetAllServicesQuery();
 
   const handlePageClick = (e) => {
@@ -46,6 +50,7 @@ const AllServices = () => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(allServices?.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(allServices?.length / itemsPerPage));
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [itemOffset, itemsPerPage, allServices]);
 
 

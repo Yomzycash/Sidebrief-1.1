@@ -13,10 +13,13 @@ import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   // Exchange information with the backend
   const { data, isLoading, isError, error, refetch } =
@@ -45,6 +48,7 @@ const Countries = () => {
       handleError(error);
       errorRef.current = false;
     }
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [isError, error, refetch]);
 
   // Returns the data to be sent to the backend

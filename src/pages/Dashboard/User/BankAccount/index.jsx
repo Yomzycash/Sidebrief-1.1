@@ -9,6 +9,9 @@ import styled from "styled-components";
 import { Puff } from "react-loading-icons";
 import PetalsCard from "components/cards/RewardCard/PetalsCard";
 import { useGetAllBanksQuery } from "services/staffService";
+import { useSelector } from "react-redux";
+import { setRefreshApp } from "redux/Slices";
+import { store } from "redux/Store";
 
 const BankAccount = () => {
   const [filteredBank, setFilteredBank] = useState([]);
@@ -16,11 +19,15 @@ const BankAccount = () => {
 
   const { data, isLoading } = useGetAllBanksQuery();
 
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+  useEffect(() => {
+    store.dispatch(setRefreshApp(!refreshApp));
+  }, []);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     setFilteredBank(data);
-    
   }, [data, searchValue]);
 
   const handleBankClick = (bankCode) => {

@@ -156,6 +156,7 @@ const TagInputWithSearch = ({
       let res = setSelected(value);
       if (res === "error") return;
       setError("");
+      setValue('')
       setTags([...tags, value]);
       return;
     }

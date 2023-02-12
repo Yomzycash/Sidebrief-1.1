@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Container,
   TextContainer,
@@ -7,18 +7,18 @@ import {
   Description,
   InvisibleBackDrop,
   Wrapper,
-} from './styles'
-import { StatusIndicator } from 'components/Indicators'
-import { ViewSvg, EditGreySvg, DeleteRedSvg } from 'asset/svg'
-import { useActions } from './actions'
-import { useNavigate } from 'react-router-dom'
-import { DeleteLaunchModal } from 'components/modal/DeleteLaunchModal'
-import { useViewPayLaunchMutation } from 'services/launchService'
-import { navigateToDetailPage } from 'utils/globalFunctions'
-import { ThreeDotMenu } from 'components/Menu'
-import { rewardModalStyle } from 'pages/Dashboard/User/Rewards/RewardDetails/styled'
-import { Dialog } from '@mui/material'
-import { DialogContent } from '@mui/material'
+} from "./styles";
+import { StatusIndicator } from "components/Indicators";
+import { ViewSvg, EditGreySvg, DeleteRedSvg } from "asset/svg";
+import { useActions } from "./actions";
+import { useNavigate } from "react-router-dom";
+import { DeleteLaunchModal } from "components/modal/DeleteLaunchModal";
+import { useViewPayLaunchMutation } from "services/launchService";
+import { navigateToDetailPage } from "utils/globalFunctions";
+import { ThreeDotMenu } from "components/Menu";
+import { rewardModalStyle } from "pages/Dashboard/User/Rewards/RewardDetails/styled";
+import { Dialog } from "@mui/material";
+import { DialogContent } from "@mui/material";
 
 export const StatusCard = ({
   name, // string
@@ -26,12 +26,12 @@ export const StatusCard = ({
   ShortDescription,
   launchInfo,
 }) => {
-  const [hover, setHover] = useState(false)
-  const [showDelete, setShowDelete] = useState(false)
+  const [hover, setHover] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [viewPayLaunch] = useViewPayLaunchMutation()
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const {
     deleteAction,
@@ -44,28 +44,28 @@ export const StatusCard = ({
     setShowDelete,
     launchInfo,
     viewPayLaunch,
-  })
+  });
 
   const contextContent = [
     {
-      text: 'View',
+      text: "View",
       Icon: ViewSvg,
       action: viewAction,
-      style: 'normal',
+      style: "normal",
     },
     {
-      text: 'Edit',
+      text: "Edit",
       Icon: EditGreySvg,
       action: editAction,
-      style: 'normal',
+      style: "normal",
     },
     {
-      text: 'Delete',
+      text: "Delete",
       Icon: DeleteRedSvg,
       action: deleteAction,
-      style: 'danger',
+      style: "danger",
     },
-  ]
+  ];
 
   return (
     <Wrapper>
@@ -73,7 +73,9 @@ export const StatusCard = ({
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         hover={hover}
-        onClick={() => navigateToDetailPage(navigate, launchInfo)}
+        onClick={() =>
+          navigateToDetailPage(navigate, launchInfo, viewPayLaunch)
+        }
       >
         <TextContainer>
           <Top>
@@ -83,7 +85,7 @@ export const StatusCard = ({
         </TextContainer>
         <Description hover={hover}>{ShortDescription}</Description>
       </Container>
-      <ThreeDotMenu contextContent={contextContent} classname={'threedot'} />
+      <ThreeDotMenu contextContent={contextContent} classname={"threedot"} />
       {showDelete ? (
         <>
           <Dialog onClose={hideDeleteModal} open={showDelete}>
@@ -97,5 +99,5 @@ export const StatusCard = ({
         </>
       ) : null}
     </Wrapper>
-  )
-}
+  );
+};

@@ -19,7 +19,11 @@ import {
   useGetUserSubmittedQuery,
 } from "services/launchService";
 import { store } from "redux/Store";
-import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
+import {
+  setGeneratedLaunchCode,
+  setLaunchResponse,
+  setRefreshApp,
+} from "redux/Slices";
 import { compareDesc } from "date-fns";
 // import AppFeedback from "components/AppFeedback";
 import { LaunchRocket, ManageSpanner } from "asset/svg";
@@ -29,7 +33,14 @@ import { useState } from "react";
 const BusinessRegistration = (props) => {
   const [allLaunchContainer, setAllLaunchContainer] = useState([]);
   // Get user data information
-  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  const { userInfo, refreshApp } = useSelector(
+    (store) => store.UserDataReducer
+  );
+
+  useEffect(() => {
+    store.dispatch(setRefreshApp(!refreshApp));
+  }, []);
+
   let firstName_raw = userInfo?.first_name;
   let firstName =
     firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
@@ -105,7 +116,9 @@ const BusinessRegistration = (props) => {
     store.dispatch(setLaunchResponse({}));
     localStorage.removeItem("launchInfo");
     localStorage.removeItem("countryISO");
-    window.open("/launch", "_blank");
+    localStorage.removeItem("paymentDetails");
+    // window.open("/launch", "_blank");
+    navigate("/launch");
   };
 
   const handleManage = () => {

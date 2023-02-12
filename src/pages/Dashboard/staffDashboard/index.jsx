@@ -64,7 +64,6 @@ const StaffDashboard = (props) => {
   // 	);
   // }, [allLaunches, launchToUser]);
 
-  console.log("testing", launchToUser);
   useEffect(() => {
     setLaunchToUser(ParseUsers(allUsers?.data?.users || []));
   }, [allUsers?.data?.users]);

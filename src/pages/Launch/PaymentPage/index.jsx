@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { setCheckoutProgress } from "redux/Slices";
 import { PaymentButton } from "containers/Payment/Form/styles.js";
 import AppFeedback from "components/AppFeedback";
+import { useEffect } from "react";
 
 const PaymentPage = () => {
   const [providers, dispatch] = useReducer(
@@ -54,10 +55,29 @@ const PaymentPage = () => {
     navigate(-1);
   };
 
-  // This fires off whenever next button is clicked
-  // useEffect(() => {
-  //
-  // }, [nextClicked]);
+  // const reference = {
+  //       account_bank: "044",
+  //       account_number: "0690000035",
+  //       amount: "10",
+  //       narration: "Payment for goods",
+  //       currency: "NGN",
+  //       reference: "MK-676767676767",
+  //       recipient_name: "John Doe",
+  //     };
+
+  //     const payWithTransfer = () => {
+  //       axios.post("https://api.flutterwave.com/v3/transfers", reference, {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${process.env(
+  //           "REACT_APP_FLUTTERWAVE_TEST_KEY"
+  //         )}`,
+  //       });
+  //     }
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 4 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>
