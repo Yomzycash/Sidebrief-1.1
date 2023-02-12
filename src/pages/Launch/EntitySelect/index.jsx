@@ -184,7 +184,7 @@ const EntitySelect = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 1 })); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: 2 })); // total- total pages and current - current page
   }, []);
 
   return (

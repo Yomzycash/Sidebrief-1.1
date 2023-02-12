@@ -103,6 +103,11 @@ const BeneficiaryReview = () => {
     handleBeneficialArray();
   }, [beneficiaryDocumentContainer]);
 
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page
+  }, []);
+
   return (
     <>
       <Container>

@@ -204,9 +204,20 @@ const BusinessInfo = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    // handlePaymentStatus();
-    store.dispatch(setCheckoutProgress({ total: 13, current: 0 })); // total- total pages and current - current page
-  }, []);
+    let review = localStorage.getItem("navigatedFrom");
+
+    let filled =
+      selectedObjectives?.length > 0 &&
+      businessNames?.length === 4 &&
+      selectedCountry;
+
+    store.dispatch(
+      setCheckoutProgress({
+        total: 13,
+        current: review ? 13 : filled ? 0.1 : 0,
+      })
+    ); // total- total pages and current - current page
+  }, [selectedObjectives.length, businessNames.length, selectedCountry]);
 
   useEffect(() => {
     viewDraft();

@@ -198,6 +198,7 @@ const DirectorsInfo = () => {
   // Get the data from backend and set to state
   const viewDraft = async () => {
     let beneficiariesData = await getBeneficiaries();
+    console.log(beneficiariesData);
     setBeneficiariesInfo(beneficiariesData.data);
   };
 

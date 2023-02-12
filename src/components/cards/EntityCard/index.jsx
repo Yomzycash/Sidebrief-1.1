@@ -34,6 +34,8 @@ export const EntityCard = ({
   currency,
   description,
 }) => {
+  console.log(features);
+  console.log(country);
   return (
     <Wrap>
       {name === "Pro" && (
@@ -64,32 +66,20 @@ export const EntityCard = ({
           </Price>
         </Mid>
         <Bottom>
-          {/* <Bullet>
-          <Mark /> <Content>{company}</Content>
-        </Bullet> */}
-          {country === "NGA" ? (
-            <Bullet flow="column">
-              <>
-                {features?.map((item, index) => (
-                  <FeatureListItem key={index}>
-                    <Mark /> <Content>{item}</Content>
-                  </FeatureListItem>
-                ))}
-              </>
+          <Bullet>
+            <Mark /> <Content>{type} Company</Content>
+          </Bullet>
+          <Bullet>
+            <Mark /> <Content>{shares} shares</Content>
+          </Bullet>
+          <Bullet>
+            <Mark /> <Content>{requirement}</Content>
+          </Bullet>
+          {features?.map((item, index) => (
+            <Bullet key={index}>
+              <Mark /> <Content>{item}</Content>
             </Bullet>
-          ) : (
-            <>
-              <Bullet>
-                <Mark /> <Content>{type} Company</Content>
-              </Bullet>
-              <Bullet>
-                <Mark /> <Content>{shares} shares</Content>
-              </Bullet>
-              <Bullet>
-                <Mark /> <Content>{requirement}</Content>
-              </Bullet>
-            </>
-          )}
+          ))}
         </Bottom>
       </Container>
     </Wrap>
@@ -97,3 +87,29 @@ export const EntityCard = ({
 };
 
 export { Wrapper as EntityWrapper } from "./wrapper";
+
+//  {
+//    country === "NGA" ? (
+//      <Bullet flow="column">
+//        <>
+//          {features?.map((item, index) => (
+//            <FeatureListItem key={index}>
+//              <Mark /> <Content>{item}</Content>
+//            </FeatureListItem>
+//          ))}
+//        </>
+//      </Bullet>
+//    ) : (
+//      <>
+//        <Bullet>
+//          <Mark /> <Content>{type} Company</Content>
+//        </Bullet>
+//        <Bullet>
+//          <Mark /> <Content>{shares} shares</Content>
+//        </Bullet>
+//        <Bullet>
+//          <Mark /> <Content>{requirement}</Content>
+//        </Bullet>
+//      </>
+//    );
+//  }

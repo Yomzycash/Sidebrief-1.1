@@ -81,11 +81,10 @@ const ShareholderReview = () => {
     handleMerge();
   }, [shareholderDocumentContainer]);
 
-  // let shareholderLocalStorage = JSON.parse(
-  //   localStorage.getItem("localShareholderInfo")
-  // );
-
-  // console.log("package from local", shareholderLocalStorage);
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page
+  }, []);
   return (
     <>
       <Container>

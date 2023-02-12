@@ -210,8 +210,11 @@ const BusinessAddress = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    // handlePaymentStatus();
-    store.dispatch(setCheckoutProgress({ total: 13, current: 5.5 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 5.5 })
+    ); // total- total pages and current - current page
   }, []);
 
   return (
