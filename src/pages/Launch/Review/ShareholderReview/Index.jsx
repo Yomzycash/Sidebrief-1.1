@@ -38,7 +38,7 @@ const ShareholderReview = () => {
   );
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-director");
+    navigate("/launch/review-directors");
     store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
   };
   const handlePrev = () => {
@@ -81,11 +81,10 @@ const ShareholderReview = () => {
     handleMerge();
   }, [shareholderDocumentContainer]);
 
-  // let shareholderLocalStorage = JSON.parse(
-  //   localStorage.getItem("localShareholderInfo")
-  // );
-
-  // console.log("package from local", shareholderLocalStorage);
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page
+  }, []);
   return (
     <>
       <Container>

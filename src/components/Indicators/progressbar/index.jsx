@@ -10,7 +10,7 @@ const ProgressBar = ({
       <ProgressLine>
         <Progress progress={progress} />
       </ProgressLine>
-      <KeyProgress text="Business Info" color={progress >= 0 ? "active" : ""} />
+      <KeyProgress text="Business Info" color={progress > 0 ? "active" : ""} />
       <KeyProgress text="Payment" color={progress >= 25 ? "active" : ""} />
       <KeyProgress
         text="KYC Information"

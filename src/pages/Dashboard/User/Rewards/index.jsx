@@ -17,7 +17,7 @@ import {
   useGetUserRewardQuery,
 } from "services/RewardService";
 import AppFeedback from "components/AppFeedback";
-import { setRewardsShown } from "redux/Slices";
+import { setRefreshApp, setRewardsShown } from "redux/Slices";
 import { store } from "redux/Store";
 
 const searchStyle = {
@@ -27,8 +27,8 @@ const searchStyle = {
 };
 
 const Rewards = () => {
-  // const [boxshadow, setBoxShadow] = useState("false");
-  // const [rewardsShown, setRewardsShown] = useState({ total: 0, shown: 0 });
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
   const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
 
   const location = useLocation();
@@ -76,6 +76,7 @@ const Rewards = () => {
       store.dispatch(
         setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal })
       );
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [location.pathname]);
 
   return (

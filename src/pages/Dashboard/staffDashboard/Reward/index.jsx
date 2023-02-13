@@ -10,184 +10,180 @@ import { useGetAllRewardsQuery } from "services/RewardService";
 import { Image, ImageContainer } from "./style";
 import StaffRewardModal from "components/modal/StaffRewardModal";
 import {
-	useDeleteRewardMutation,
-	useUpdateRewardMutation,
+  useDeleteRewardMutation,
+  useUpdateRewardMutation,
 } from "services/staffService";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import ConfirmDelete from "components/modal/ConfirmDelete";
+import { setRefreshApp } from "redux/Slices";
+import { store } from "redux/Store";
 
 const StaffReward = () => {
-	const [selectedReward, setSelectedReward] = useState([]);
-	const [open, setOpen] = useState(false);
-	const [deleteConfirm, setdeleteConfirm] = useState(false);
+  const [selectedReward, setSelectedReward] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [deleteConfirm, setdeleteConfirm] = useState(false);
 
-	const navigate = useNavigate();
-	const layoutInfo = useSelector((store) => store.LayoutInfo);
-	const { sidebarWidth } = layoutInfo;
+  const navigate = useNavigate();
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
 
-	const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
-		refetchOnMountOrArgChange: true,
-	});
-	const [updateReward, updateState] = useUpdateRewardMutation();
-	const [deleteReward, deleteState] = useDeleteRewardMutation();
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
+    refetchOnMountOrArgChange: true,
+  });
+  const [updateReward, updateState] = useUpdateRewardMutation();
+  const [deleteReward, deleteState] = useDeleteRewardMutation();
 
-	useEffect(() => {
-		let localRewardID = localStorage.getItem("rewardId");
-		let rewardID = JSON.parse(localRewardID);
-		const rewardData = data === undefined ? [] : [...data];
-		const rewardDatails = rewardData.filter(
-			(data) => data.rewardID === rewardID
-		);
-		setSelectedReward(rewardDatails);
-	}, [data]);
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
-	const getRequiredData = (info) => ({
-		rewardID: selectedReward[0].rewardID,
-		rewardCategory: info.category,
-		rewardCode: info.code,
-		rewardDescription: info.description,
-		rewardImage: info.image,
-		rewardLink: info.link,
-		rewardName: info.reward_name,
-		rewardPartner: info.partner,
-	});
+  useEffect(() => {
+    let localRewardID = localStorage.getItem("rewardId");
+    let rewardID = JSON.parse(localRewardID);
+    const rewardData = data === undefined ? [] : [...data];
+    const rewardDatails = rewardData.filter(
+      (data) => data.rewardID === rewardID
+    );
+    setSelectedReward(rewardDatails);
+    store.dispatch(setRefreshApp(!refreshApp));
+  }, [data]);
 
-	// This updates a reward information
-	const handleUpdate = async (formData) => {
-		let requiredData = getRequiredData(formData);
-		let response = await updateReward(requiredData);
+  const getRequiredData = (info) => ({
+    rewardID: selectedReward[0].rewardID,
+    rewardCategory: info.category,
+    rewardCode: info.code,
+    rewardDescription: info.description,
+    rewardImage: info.image,
+    rewardLink: info.link,
+    rewardName: info.reward_name,
+    rewardPartner: info.partner,
+  });
 
-		let data = response?.data;
-		let error = response?.error;
+  // This updates a reward information
+  const handleUpdate = async (formData) => {
+    let requiredData = getRequiredData(formData);
+    let response = await updateReward(requiredData);
 
-		if (data) {
-			toast.success("Reward updated successfully");
-			setOpen(false);
-		} else {
-			handleError(error);
-		}
-	};
+    let data = response?.data;
+    let error = response?.error;
 
-	// This deletes a reward information
-	const handleDelete = async () => {
-		let requiredData = { rewardID: selectedReward[0].rewardID };
-		let response = await deleteReward(requiredData);
+    if (data) {
+      toast.success("Reward updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+  };
 
-		let data = response?.data;
-		let error = response?.error;
+  // This deletes a reward information
+  const handleDelete = async () => {
+    let requiredData = { rewardID: selectedReward[0].rewardID };
+    let response = await deleteReward(requiredData);
 
-		if (data) {
-			toast.success("Reward deleted successfully");
-			setdeleteConfirm(false);
-			navigate("/staff-dashboard/all-rewards");
-		} else {
-			handleError(error);
-		}
-	};
+    let data = response?.data;
+    let error = response?.error;
 
-	return (
-		<BodyRight SidebarWidth={sidebarWidth}>
-			<Container>
-				<BackContainer
-					onClick={() => navigate("/staff-dashboard/all-rewards")}
-				>
-					<FiArrowLeft color="#151717" size={24} />
-					<Text>Back to Rewards</Text>
-				</BackContainer>
-				<TopContainer>
-					{selectedReward?.map((selected, index) => (
-						<TitleContainer key={index}>
-							<LHS>
-								<ImageContainer>
-									<Image src={selected?.rewardImage} />
-								</ImageContainer>
+    if (data) {
+      toast.success("Reward deleted successfully");
+      setdeleteConfirm(false);
+      navigate("/staff-dashboard/all-rewards");
+    } else {
+      handleError(error);
+    }
+  };
 
-								<DetailWrappper>
-									<LittleWrapper>
-										{" "}
-										<TopText>
-											{selected?.rewardName}
-											{selected?.rewardPartner}
-										</TopText>
-										<MiddleText>
-											{selected?.rewardPartner}
-										</MiddleText>
-									</LittleWrapper>
-									{/* Do not remove, it will be needed later */}
-									{/* <BottomText>
+  return (
+    <BodyRight SidebarWidth={sidebarWidth}>
+      <Container>
+        <BackContainer onClick={() => navigate("/staff-dashboard/all-rewards")}>
+          <FiArrowLeft color="#151717" size={24} />
+          <Text>Back to Rewards</Text>
+        </BackContainer>
+        <TopContainer>
+          {selectedReward?.map((selected, index) => (
+            <TitleContainer key={index}>
+              <LHS>
+                <ImageContainer>
+                  <Image src={selected?.rewardImage} />
+                </ImageContainer>
+
+                <DetailWrappper>
+                  <LittleWrapper>
+                    {" "}
+                    <TopText>
+                      {selected?.rewardName}
+                      {selected?.rewardPartner}
+                    </TopText>
+                    <MiddleText>{selected?.rewardPartner}</MiddleText>
+                  </LittleWrapper>
+                  {/* Do not remove, it will be needed later */}
+                  {/* <BottomText>
                     Created 12th August, 2022 by Esther Ashimolowo
                   </BottomText> */}
-								</DetailWrappper>
-							</LHS>
+                </DetailWrappper>
+              </LHS>
 
-							<ButtonContainer>
-								<Button
-									title="Update Changes"
-									onClick={() => setOpen(true)}
-								/>
-							</ButtonContainer>
-							{/* <RHS>
+              <ButtonContainer>
+                <Button title="Update Changes" onClick={() => setOpen(true)} />
+              </ButtonContainer>
+              {/* <RHS>
                 <RightWrapper>
                   <Hide />
                   <BlockText>Make Public</BlockText>
                 </RightWrapper>
               </RHS> */}
-						</TitleContainer>
-					))}
+            </TitleContainer>
+          ))}
 
-					<SubHeader
-					// onMouseEnter={() => setSubHeaderHovered(true)}
-					// onMouseLeave={() => setSubHeaderHovered(false)}
-					// $hovered={subHeaderHovered}
-					>
-						<ActiveNav
-							text={"Reward Details"}
-							path="/staff-dashboard/all-rewards/reward/details"
-						/>
-						<ActiveNav
-							text={"Analytics"}
-							path="/staff-dashboard/all-rewards/reward/analytics"
-						/>
-					</SubHeader>
-				</TopContainer>
-				<Outlet />
-				<StaffRewardModal
-					cardAction="edit"
-					open={open}
-					setOpen={setOpen}
-					rewardInfo={selectedReward[0]}
-					submitAction={handleUpdate}
-					loading={updateState.isLoading}
-				/>
-				{isSuccess && (
-					<Delete onClick={() => setdeleteConfirm(true)}>
-						Delete
-					</Delete>
-				)}
-				<ConfirmDelete
-					toDelete="Reward"
-					open={deleteConfirm}
-					setOpen={setdeleteConfirm}
-					handleDelete={handleDelete}
-					loading={deleteState.isLoading}
-				/>
-			</Container>
-		</BodyRight>
-	);
+          <SubHeader
+          // onMouseEnter={() => setSubHeaderHovered(true)}
+          // onMouseLeave={() => setSubHeaderHovered(false)}
+          // $hovered={subHeaderHovered}
+          >
+            <ActiveNav
+              text={"Reward Details"}
+              path="/staff-dashboard/all-rewards/reward/details"
+            />
+            <ActiveNav
+              text={"Analytics"}
+              path="/staff-dashboard/all-rewards/reward/analytics"
+            />
+          </SubHeader>
+        </TopContainer>
+        <Outlet />
+        <StaffRewardModal
+          cardAction="edit"
+          open={open}
+          setOpen={setOpen}
+          rewardInfo={selectedReward[0]}
+          submitAction={handleUpdate}
+          loading={updateState.isLoading}
+        />
+        {isSuccess && (
+          <Delete onClick={() => setdeleteConfirm(true)}>Delete</Delete>
+        )}
+        <ConfirmDelete
+          toDelete="Reward"
+          open={deleteConfirm}
+          setOpen={setdeleteConfirm}
+          handleDelete={handleDelete}
+          loading={deleteState.isLoading}
+        />
+      </Container>
+    </BodyRight>
+  );
 };
 
 export default StaffReward;
 
 const BodyRight = styled.div`
-	display: flex;
-	flex-flow: row;
-	/* width: calc(100% - ${({ SidebarWidth }) => SidebarWidth}); */
-	padding: 0px 0px 0px 40px;
-	gap: 40px;
-	@media screen and (max-width: 700px) {
-		width: 100%;
-	}
+  display: flex;
+  flex-flow: row;
+  /* width: calc(100% - ${({ SidebarWidth }) => SidebarWidth}); */
+  padding: 0px 0px 0px 40px;
+  gap: 40px;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 // export const Container = styled.div`
@@ -202,202 +198,202 @@ const BodyRight = styled.div`
 // `;
 
 const Container = styled.header`
-	width: 100%;
-	padding: 40px;
-	padding-left: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 40px;
+  width: 100%;
+  padding: 40px;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 
-	border-top: none;
+  border-top: none;
 `;
 const TopContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	border: 1px solid #edf1f7;
-	border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #edf1f7;
+  border-radius: 16px;
 `;
 const ButtonContainer = styled.div`
-	display: flex;
-	flex: 1;
-	max-width: 180px;
-	align-items: flex-start;
+  display: flex;
+  flex: 1;
+  max-width: 180px;
+  align-items: flex-start;
 `;
 
 const Top = styled.div`
-	padding-inline: 40px;
-	padding-block: 40px 0;
-	display: flex;
-	flex-direction: column;
-	gap: 24px;
+  padding-inline: 40px;
+  padding-block: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 const BackContainer = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	text-decoration: none;
-	align-self: flex-start;
-	cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  align-self: flex-start;
+  cursor: pointer;
 
-	@media screen and (max-width: 700px) {
-		display: none;
-	}
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const Text = styled.p`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 21px;
-	color: #151717;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #151717;
 `;
 
 const TitleContainer = styled.div`
-	padding-block: 28px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 24px;
-	padding: 40px;
-	width: 100%;
+  padding-block: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 40px;
+  width: 100%;
 `;
 const DetailWrappper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 `;
 const LittleWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
 `;
 const TopText = styled.div`
-	font-weight: 700;
-	font-size: 24px;
-	line-height: 36px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
 
-	color: ${({ theme }) => theme.grey1};
+  color: ${({ theme }) => theme.grey1};
 `;
 const MiddleText = styled.h4`
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 24px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
 
-	color: #4e5152;
+  color: #4e5152;
 `;
 const BottomText = styled.h4`
-	font-weight: 500;
-	font-size: 14px;
-	line-height: 24px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
 
-	color: #959697;
+  color: #959697;
 `;
 
 const ImageWrapper = styled.div``;
 const CountryName = styled.h2`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 24px;
-	/* identical to box height, or 150% */
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
 
-	/* Grey 3 */
+  /* Grey 3 */
 
-	color: #4e5152;
+  color: #4e5152;
 `;
 
 const LHS = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	padding: 0px;
-	gap: 24px;
-	max-width: 70%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  max-width: 70%;
 `;
 
 const RHS = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	padding: 0px;
-	gap: 24px;
-	width: 159px;
-	height: 44px;
-	background-color: ${({ theme }) => theme.blue2};
-	border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  width: 159px;
+  height: 44px;
+  background-color: ${({ theme }) => theme.blue2};
+  border-radius: 8px;
 `;
 
 const RightWrapper = styled.div`
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-	padding: 24px 12px;
-	gap: 8px;
-	width: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 24px 12px;
+  gap: 8px;
+  width: inherit;
 `;
 const BlockText = styled.div`
-	font-weight: 500;
-	font-size: 14px;
-	line-height: 21px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
 
-	display: flex;
-	align-items: center;
-	text-align: center;
-	letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.5px;
 
-	color: #ffffff;
+  color: #ffffff;
 `;
 
 const SubHeader = styled.div`
-	border-top: 1px solid #edf1f7;
-	display: flex;
-	gap: 24px;
-	padding-inline: 24px;
-	width: 100%;
-	overflow-x: auto;
-	overflow-y: hidden;
-	scroll-behavior: smooth;
+  border-top: 1px solid #edf1f7;
+  display: flex;
+  gap: 24px;
+  padding-inline: 24px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
 
-	&::-webkit-scrollbar {
-		height: 5px;
-		background: ${({ $hovered }) => ($hovered ? "#aaaaaa33" : "#fff")};
-	}
-	&::-webkit-scrollbar-thumb {
-		background: ${({ $hovered }) => ($hovered ? "#aaaaaa" : "#fff")};
-		border-radius: 15px;
-	}
+  &::-webkit-scrollbar {
+    height: 5px;
+    background: ${({ $hovered }) => ($hovered ? "#aaaaaa33" : "#fff")};
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ $hovered }) => ($hovered ? "#aaaaaa" : "#fff")};
+    border-radius: 15px;
+  }
 
-	@media screen and (max-width: 700px) {
-		/* border-width: 1px 0px;
+  @media screen and (max-width: 700px) {
+    /* border-width: 1px 0px;
       border-style: solid; */
-		border-bottom: 1px solid #edf1f7;
-		/* border-color: #edf1f7; */
-	}
+    border-bottom: 1px solid #edf1f7;
+    /* border-color: #edf1f7; */
+  }
 `;
 
 export const Delete = styled.button`
-	text-transform: capitalize;
-	font-weight: 600;
-	font-size: clamp(14px, 1.4vw, 16px);
-	padding: 15px;
-	background-color: #ffdbdb;
-	color: red;
-	border: none;
-	outline: none;
-	max-width: 150px;
-	border-radius: 8px;
-	transition: 0.3s all ease;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: clamp(14px, 1.4vw, 16px);
+  padding: 15px;
+  background-color: #ffdbdb;
+  color: red;
+  border: none;
+  outline: none;
+  max-width: 150px;
+  border-radius: 8px;
+  transition: 0.3s all ease;
 
-	:hover {
-		background-color: #ffb5b5;
-	}
-	:active {
-		transform: scale(0.9);
-	}
+  :hover {
+    background-color: #ffb5b5;
+  }
+  :active {
+    transform: scale(0.9);
+  }
 `;

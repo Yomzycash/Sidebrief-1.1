@@ -70,7 +70,7 @@ const DirectorReview = () => {
 
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-beneficiary");
+    navigate("/launch/review-beneficiaries");
   };
   const handlePrev = () => {
     navigate(-1);
@@ -79,6 +79,11 @@ const DirectorReview = () => {
   const handleNavigate = () => {
     navigate("/launch/directors-info");
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 13 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <>

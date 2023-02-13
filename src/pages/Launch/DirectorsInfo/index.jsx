@@ -31,6 +31,7 @@ import {
   useDeleteMemberMutation,
   useUpdateDirectorMutation,
   useUpdateMemberMutation,
+  useUpdateShareholderMutation,
   useViewDirectorsMutation,
   useViewMembersMutation,
   useViewShareholdersMutation,
@@ -72,12 +73,15 @@ const DirectorsInfo = () => {
   const [addDirector, addState] = useAddDirectorMutation();
   const [deleteDirector, deleteState] = useDeleteDirectorMutation();
   const [updateDirector, updateState] = useUpdateDirectorMutation();
+  const [viewDirectors, viewState] = useViewDirectorsMutation();
   const [addMember, memberAddState] = useAddMemberMutation();
-  const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [deleteMember, memberDelState] = useDeleteMemberMutation();
-  const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
-  const [viewShareholders, viewState] = useViewShareholdersMutation();
+  const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
+  const [updateShareholder, shareholderUpdateState] =
+    useUpdateShareholderMutation();
+  const [viewShareholders, shareholderViewState] =
+    useViewShareholdersMutation();
 
   // // This gets the directors information from the store
   // const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
@@ -163,17 +167,16 @@ const DirectorsInfo = () => {
     };
 
     let shareholder = await handleSingleShareholderView(actionInfo_S);
-
     if (shareholder.data) {
       actionInfo_S = {
         ...actionInfo_S,
-        ...shareholder?.data,
+        ...shareholder.data,
+        addMemberData: shareholder?.data,
+        updateShareholder: updateShareholder,
       };
-      let shareholderResponse = handleShareholderUpdate(actionInfo_S);
+      let shareholderResponse = await handleShareholderUpdate(actionInfo_S);
       handleResponse(shareholderResponse, "Shareholder updated successfully");
     }
-    console.log(shareholder);
-    console.log(actionInfo_S);
   };
 
   //
@@ -478,7 +481,7 @@ const DirectorsInfo = () => {
                 }
               />
             ))}
-            {viewDirectorsState.isLoading ||
+            {viewState.isLoading ||
               (viewMembersState.isLoading && (
                 <Loading>
                   <Puff stroke="#00A2D4" fill="white" />

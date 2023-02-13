@@ -230,6 +230,7 @@ export const StaffEntitySchema = yup.object().shape({
   type: yup.string().required("Enter entity type"),
   requirements: yup.string().required("Enter entity requirements"),
   country: yup.string().required("Select entity country"),
+  currency: yup.string().required("Select entity currency"),
   fee: yup.number().typeError("Enter entity fee").required("Enter entity fee"),
   timeline: yup.string().required("Enter entity timeline"),
   shares: yup
@@ -898,251 +899,6 @@ export const BusinessObjectives = [
   "Other services",
 ];
 
-export const myRewards = [
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-];
-
-export const allRewards = [
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-  {
-    title: "Lendha Africa",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: lendhaLogo,
-  },
-  {
-    title: "Glade",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: GladeLogo,
-  },
-  {
-    title: "Okra",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: OkraLogo,
-  },
-  {
-    title: "Sterling",
-    body: "Get 25% off you first year of using Landha Africa",
-    alt: "Lendha",
-    image: SterlingLogo,
-  },
-];
 export const ReviewTab = [
   {
     id: 1,
@@ -1152,17 +908,17 @@ export const ReviewTab = [
   {
     id: 2,
     title: "Shareholder Information",
-    path: "/launch/review-shareholder",
+    path: "/launch/review-shareholders",
   },
   {
     id: 3,
     title: "Director Information",
-    path: "/launch/review-director",
+    path: "/launch/review-directors",
   },
   {
     id: 4,
     title: "Beneficiary Information",
-    path: "/launch/review-beneficiary",
+    path: "/launch/review-beneficiaries",
   },
 ];
 export const imageTypeImage = [

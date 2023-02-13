@@ -157,18 +157,19 @@ export const checkPaymentStatus = async (info) => {
     registrationType: info.registrationType,
   };
 
-  let viewResponse = await info.viewPayLaunch(requiredData);
+  if (info.launchCode) {
+    let viewResponse = await info.viewPayLaunch(requiredData);
 
-  let data = viewResponse?.data?.businessPayment[0];
-  let error = viewResponse?.error;
-  if (data) {
-    if (data?.paymentStatus === "successful") {
-      return true;
+    let data = viewResponse?.data?.businessPayment[0];
+    let error = viewResponse?.error;
+    if (data) {
+      if (data?.paymentStatus === "successful") {
+        return { status: true, data: data };
+      } else {
+        return { status: false };
+      }
     } else {
-      return false;
+      return { status: false };
     }
-  } else {
-    console.log(error);
-    return false;
-  }
+  } else return { status: false };
 };

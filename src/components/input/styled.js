@@ -292,11 +292,12 @@ export const TextArea = styled.textarea`
   border-radius: 8px;
   padding: 12px;
   resize: none;
+  letter-spacing: 0;
+  font-family: "Br Firma";
   border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #ececec")};
-  //color: ${({ disabled }) => (disabled ? "#4e5152" : "")};
-  color: #4e5152;
+  color: ${({ disabled }) => (disabled ? "#aca09f" : "#4e5152")};
   background-color: ${({ disabled }) => (disabled ? "#f2f2f2" : "")};
-  font-family: 'Br Firma', sans-serif;
+  font-family: "Br Firma", sans-serif;
   :focus {
     border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #00A2D4")};
   }
