@@ -16,7 +16,7 @@ export const Main = styled.div`
 	flex-flow: column;
 	gap: clamp(1px, 2vw, 23px);
 	/* border: 1px solid red; */
-	max-width: 1200px;
+	
 `;
 export const Recently = styled.div`
 	display: flex;

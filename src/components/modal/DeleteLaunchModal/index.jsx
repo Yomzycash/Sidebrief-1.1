@@ -72,7 +72,7 @@ export const DeleteLaunchModal = ({ hide, launchCode }) => {
 					<Controller>
 						<Cancel onClick={hide}>Cancel</Cancel>
 						<Submit
-							disabled={value !== "Delete" || loading}
+							disabled={value.toLowerCase() !== "delete" ||  loading}
 							onClick={deleteAction}
 						>
 							{loading ? (
