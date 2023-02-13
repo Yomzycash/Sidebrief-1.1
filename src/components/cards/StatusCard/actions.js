@@ -1,6 +1,6 @@
-import { navigateToDetailPage } from "utils/globalFunctions";
-import { store } from "redux/Store";
-import { setLaunchResponse } from "redux/Slices";
+import { navigateToDetailPage } from 'utils/globalFunctions'
+import { store } from 'redux/Store'
+import { setLaunchResponse } from 'redux/Slices'
 
 export const useActions = ({
   navigate,
@@ -9,56 +9,57 @@ export const useActions = ({
   viewPayLaunch,
 }) => {
   const showDeleteModal = () => {
-    setShowDelete(true);
-  };
+    setShowDelete(true)
+  }
 
   const hideDeleteModal = () => {
-    setShowDelete(false);
-  };
+    setShowDelete(false)
+  }
 
   const viewAction = () => {
-    navigateToDetailPage(navigate, launchInfo, viewPayLaunch);
-  };
+    navigateToDetailPage(navigate, launchInfo, viewPayLaunch)
+  }
 
   const editAction = async () => {
-    await handleEditNavigation();
-  };
+    await handleEditNavigation()
+  }
 
   const deleteAction = () => {
-    showDeleteModal();
-  };
+    showDeleteModal()
+  }
 
   const checkPaymentStatus = async () => {
-    let viewResponse = await viewPayLaunch(launchInfo);
+    let viewResponse = await viewPayLaunch(launchInfo)
     // console.log(viewResponse);
-    return viewResponse;
-  };
+    return viewResponse
+  }
 
   const handleEditNavigation = async () => {
-    let status = await checkPaymentStatus();
+    let status = await checkPaymentStatus()
 
-    let data = status?.data?.businessPayment;
-    let error = status?.error;
+    let data = status?.data?.businessPayment
+    let error = status?.error
 
-    store.dispatch(setLaunchResponse(launchInfo));
-    localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
+    store.dispatch(setLaunchResponse(launchInfo))
+    localStorage.setItem('launchInfo', JSON.stringify(launchInfo))
+    console.log(data)
     if (data) {
       if (data.length === 0) {
-        navigate("/launch");
-        localStorage.setItem("navigatedFrom", "/launch/entity");
+        navigate('/launch')
+        localStorage.setItem('navigatedFrom', '/launch/entity')
       } else {
-        navigate("/launch/address");
+        navigate('/launch/address')
       }
     } else {
       // console.log("This block ran");
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   return {
     viewAction,
     editAction,
     deleteAction,
     hideDeleteModal,
-  };
-};
+  }
+}
