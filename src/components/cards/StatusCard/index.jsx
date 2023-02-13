@@ -33,8 +33,6 @@ export const StatusCard = ({
 
   const [viewPayLaunch] = useViewPayLaunchMutation()
 
-
-
   const {
     deleteAction,
     editAction,
@@ -57,7 +55,7 @@ export const StatusCard = ({
     },
 
     {
-      text: 'Edit',
+      text: 'Continue',
       Icon: EditGreySvg,
       action: editAction,
       style: 'normal',
@@ -68,6 +66,7 @@ export const StatusCard = ({
       Icon: DeleteRedSvg,
       action: deleteAction,
       style: 'danger',
+      hide: status.text === 'pending',
     },
   ]
 
