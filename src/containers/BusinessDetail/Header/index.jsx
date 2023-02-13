@@ -63,6 +63,10 @@ export const Header = ({ isStaff }) => {
 		setOpenModal(true);
 	};
 
+	// when launch is submitted and userside
+	const noDelete =
+		!isStaff || launchRequest.data.registrationStatus === "submitted";
+
 	const deleteAction = async () => {
 		// perform delete action here
 		if (!isStaff) {
@@ -231,10 +235,12 @@ export const Header = ({ isStaff }) => {
 						</BottomInfo>
 					</LHS>
 					<RHS>
-						<DeleteButton onClick={handleClick}>
-							<p>Delete</p>
-							<RedTrash />
-						</DeleteButton>
+						{!noDelete ? (
+							<DeleteButton onClick={handleClick}>
+								<p>Delete</p>
+								<RedTrash />
+							</DeleteButton>
+						) : null}
 					</RHS>
 				</TitleContainer>
 			</Top>
@@ -310,7 +316,10 @@ export const Header = ({ isStaff }) => {
 							backText={"No"}
 							forwardAction={deleteAction}
 							forwardText={"Yes"}
-							forwardLoading={deleteState.isLoading}
+							forwardLoading={
+								deleteState.isLoading ||
+								deleteLaunchStaffState.isLoading
+							}
 						/>
 					</ModalButton>
 				</ModalWrapper>
