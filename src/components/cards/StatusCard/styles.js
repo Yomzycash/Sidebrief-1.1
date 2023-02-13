@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
+cursor: pointer;
 	min-height: 74px;
 	background: #ffffff;
 	border: 1px solid #edf1f7;

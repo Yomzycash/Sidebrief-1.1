@@ -34,6 +34,8 @@ const InputWithLabel = ({
   bottomTextClass,
   disable,
   onChange,
+  maxNumber,
+  defaultValue,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -86,6 +88,8 @@ const InputWithLabel = ({
             type={!show ? type || "password" : "text"}
             name={name}
             disabled={disable}
+            max={maxNumber}
+            defaultValue={defaultValue}
             {...register(name)}
             {...rest}
           />
@@ -97,6 +101,8 @@ const InputWithLabel = ({
             type={!show ? type || "password" : "text"}
             name={name}
             disabled={disable}
+            max={maxNumber}
+            defaultValue={defaultValue}
             onChange={onChange}
             {...rest}
           />

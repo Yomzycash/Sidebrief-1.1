@@ -1,4 +1,4 @@
-import { DropDown, InputWithLabel } from "components/input";
+import { InputWithLabel } from "components/input";
 import React, { useEffect, useState } from "react";
 import {
   DetailedSection,
@@ -11,24 +11,19 @@ import {
 } from "./style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { directorRoleOptions, shareTypeOptions } from "utils/config";
-import { useSelector } from "react-redux";
-import toast from "react-hot-toast";
 import {
-  useAddMemberMutation,
   useViewDirectorsMutation,
   useViewMembersMutation,
 } from "services/launchService";
 import NumberInput from "components/input/phoneNumberInput";
 import { CheckoutController } from "..";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
-import { ThreeDots } from "react-loading-icons";
-import { memberAdd } from "./actions";
 import { handleSingleDirectorView } from "pages/Launch/DirectorsInfo/actions";
 
 export const MembersBasicInfo = ({
   title,
   handleClose,
+  maxPercentage,
   submitForm,
   populateModal,
   shareCompanySchema,
@@ -38,12 +33,15 @@ export const MembersBasicInfo = ({
   shareholder,
   beneficiary,
 }) => {
-  const [viewMembers, viewMembersState] = useViewMembersMutation();
-  const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
+  const [sharesLeft, setSharesLeft] = useState(maxPercentage);
+  const [stakeLeft, setStakeLeft] = useState(maxPercentage);
+
+  const [viewMembers] = useViewMembersMutation();
+  const [viewDirectors] = useViewDirectorsMutation();
 
   let launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
 
-  let edit = info?.memberName;
+  let edit = info?.memberName || info?.beneficialOwnerName;
 
   const [isCompany, setIsCompany] = useState(false);
   const [isDirector, setIsDirector] = useState(false);
@@ -94,10 +92,29 @@ export const MembersBasicInfo = ({
     }
   };
 
+  const handleShareChange = (e) => {
+    let currValue = e.target.value;
+    let diff = info?.shareholderOwnershipPercentage - currValue;
+    let newMax = maxPercentage + diff;
+    setSharesLeft(newMax > 0 ? newMax : 0);
+    setValue("sharePercentage", currValue);
+  };
+
+  const handleStakeChange = (e) => {
+    let currValue = e.target.value;
+    let diff = info?.beneficialOwnershipStake - currValue;
+    let newMax = maxPercentage + diff;
+    setStakeLeft(newMax > 0 ? newMax : 0);
+    setValue("stake", currValue);
+  };
+
   // This sets the phone number value - attached to the onChange event
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
   };
+
+  let maxShare = maxPercentage + (info?.shareholderOwnershipPercentage || 0);
+  let maxStake = maxPercentage + (info?.beneficialOwnershipStake || 0);
 
   return (
     <Form onSubmit={handleSubmit(submitForm)}>
@@ -111,11 +128,7 @@ export const MembersBasicInfo = ({
       </Title>
       <CheckInputWrapper>
         <InputWithLabel
-          label={
-            isCompany
-              ? "Company Name"
-              : "Full Name"
-          }
+          label={isCompany ? "Company Name" : "Full Name"}
           labelStyle="input-label"
           bottomText="Please start with the first name then the middle name (if available) and finally the last name"
           type="text"
@@ -135,8 +148,8 @@ export const MembersBasicInfo = ({
             name="phone"
             value={
               edit
-                ? info?.memberPhone.toString() ||
-                  info?.beneficialOwnerPhone.toString()
+                ? info?.memberPhone?.toString() ||
+                  info?.beneficialOwnerPhone?.toString()
                 : ""
             }
             type="number"
@@ -166,12 +179,15 @@ export const MembersBasicInfo = ({
           {shareholder && (
             <InputWithLabel
               name="sharePercentage"
-              label="Share Percentage"
+              label={`Share Percentage (left: ${sharesLeft}%)  (max: ${maxShare}%)`}
               labelStyle="input-label"
               containerStyle="input-container-class"
               type="number"
+              onChange={handleShareChange}
+              maxNumber={maxShare}
               inputClass="input-class"
-              register={register}
+              defaultValue={info?.shareholderOwnershipPercentage}
+              // register={register}
               errorMessage={errors.sharePercentage?.message}
             />
           )}
@@ -204,12 +220,15 @@ export const MembersBasicInfo = ({
           <DetailedSection>
             <InputWithLabel
               name="stake"
-              label="Stake Percentage"
+              label={`Stake Percentage (left: ${stakeLeft}%)  (max: ${maxStake}%)`}
               labelStyle="input-label"
               containerStyle="input-container-class"
               type="number"
+              onChange={handleStakeChange}
+              maxNumber={maxStake}
               inputClass="input-class"
-              register={register}
+              defaultValue={info?.beneficialOwnershipStake}
+              // register={register}
               errorMessage={errors.stake?.message}
             />
             <InputWithLabel

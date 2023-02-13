@@ -43,13 +43,14 @@ const BusinessInfo = () => {
   const [selectedCountryISO, setselectedCountryISO] = useState("");
   // const [paid, setPaid] = useState(false);
 
-  const { data, error, isError, isSuccess, isLoading, refetch } =
-    useGetAllCountriesQuery();
+  const { data, isLoading } = useGetAllCountriesQuery();
   const [viewBusinessNames, viewNamesState] = useViewBusinessNamesMutation();
   const [viewBusinessObjectives, viewObjectivesState] =
     useViewBusinessObjectivesMutation();
-  const [updateBusinessNames] = useUpdateBusinessNamesMutation();
-  const [updateBusinessObjectives] = useUpdateBusinessObjectivesMutation();
+  const [updateBusinessNames, updateNamesState] =
+    useUpdateBusinessNamesMutation();
+  const [updateBusinessObjectives, updateObjectivesState] =
+    useUpdateBusinessObjectivesMutation();
   const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const BusinessInfo = () => {
     }
 
     if (navigatedFrom) {
-      const info = {
+      const actionInfo = {
         navigate: navigate,
         businessNames: businessNames,
         selectedObjectives: selectedObjectives,
@@ -106,7 +107,7 @@ const BusinessInfo = () => {
         addBusinessNames: () => {},
         addBusinessObjectives: () => {},
       };
-      await handleBusinessInfo(info);
+      await handleBusinessInfo(actionInfo);
       navigate(navigatedFrom);
       localStorage.removeItem("navigatedFrom");
     } else {
@@ -261,7 +262,7 @@ const BusinessInfo = () => {
                   suggestionLoading={isLoading}
                   fetchingText="Fetching Countries..."
                   fetchFailedText="Could not fetch Countries"
-                  // disabled={selectedCountry}
+                  disabled={paidStatus}
                 />
               </div>
             </LaunchFormContainer>
@@ -271,6 +272,9 @@ const BusinessInfo = () => {
                 backAction={handlePrev}
                 backText={"Previous"}
                 forwardText={"Next"}
+                forwardLoading={
+                  updateNamesState.isLoading || updateObjectivesState.isLoading
+                }
                 hidePrev
               />
             </Bottom>

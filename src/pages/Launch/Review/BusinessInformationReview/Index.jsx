@@ -81,7 +81,7 @@ const Nav = styled.nav`
   padding: 20px 40px 0px 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
 `;

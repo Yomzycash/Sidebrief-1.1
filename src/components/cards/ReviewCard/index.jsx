@@ -19,7 +19,7 @@ const ReviewCard = ({
   phone,
   editAction,
   deleteAction,
-  director_role,
+  directorID,
   stake,
   occupation,
   isLoading,
@@ -147,7 +147,7 @@ const ReviewCard = ({
         <p>{`${number}. ${name}`}</p>
         <SharesWrapper shares={shares}>
           {shares && <div>{`${shares} - ${sharesPercentage}%`}</div>}
-          {director_role && <div>{`Role - ${director_role}`}</div>}
+          {directorID && <div>{`ID Number - ${directorID}`}</div>}
           {stake && <div>{`Occupation: ${occupation} - Stake: ${stake}%`}</div>}
           {/* {!icon && ( */}
           <IconWrapper>
