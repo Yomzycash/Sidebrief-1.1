@@ -8,9 +8,11 @@ export const Container = styled.div`
 
 export const Body = styled.div`
 	display: flex;
-	gap: 42px;
+	gap: 24px;
 	border: 1px solid #edf1f7;
 	border-top: none;
+	flex-direction: column;
+	padding-bottom: 24px;
 `;
 
 export const Loading = styled.div`

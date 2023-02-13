@@ -1,4 +1,4 @@
-import { BusinessTable, GeneralTable } from "components/Tables";
+import { GeneralTable } from "components/Tables";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import {
