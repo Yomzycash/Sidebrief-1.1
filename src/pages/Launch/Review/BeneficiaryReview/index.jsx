@@ -1,6 +1,12 @@
 import { CheckoutController, CheckoutSection } from "containers";
 import React from "react";
-import { NavLink, Outlet, useNavigate, Link } from "react-router-dom";
+import {
+  NavLink,
+  Outlet,
+  useNavigate,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
 import { imageTypeImage, ReviewTab } from "utils/config";
@@ -30,11 +36,12 @@ const BeneficiaryReview = () => {
     borderRadius: 0,
   };
   const [beneficialArray, setBeneficialArray] = useState([]);
-  // const [beneficialKycArray, setBeneficialKycArray] = useState([]);
-  // const [mergedBeneficialKycArray, setMergedBeneficialKycArray] = useState([]);
 
   const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
+
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [submitLaunch] = useSubmitLaunchMutation();
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
@@ -48,8 +55,6 @@ const BeneficiaryReview = () => {
   );
 
   const [viewBeneficials, viewBeneficialState] = useViewBeneficiariesMutation();
-  const [viewBeneficialKyc, viewBeneficialKycState] =
-    useViewBeneficialsKYCMutation();
 
   const handleNext = async () => {
     const requiredData = {
@@ -70,13 +75,11 @@ const BeneficiaryReview = () => {
 
   const handleNavigate = () => {
     navigate("/launch/beneficiaries-info");
+    localStorage.setItem("navigatedFrom", location.pathname);
   };
 
   const handleBeneficialArray = async () => {
-    let titlesMembersMerged = [];
-
     let beneficialInfo = await viewBeneficials(launchResponse);
-    // setBeneficialArray(beneficialInfo.data.businessBeneficialOwners);
     let newBeneficiaryInfo = [...beneficialInfo.data.businessBeneficialOwners];
     setBeneficialArray(newBeneficiaryInfo);
   };
@@ -99,6 +102,11 @@ const BeneficiaryReview = () => {
   //   setBeneficialArray(titlesMembersMerged);
   //   console.log("testing files", titlesMembersMerged);
   // }, [beneficiaryDocumentContainer]);
+  const handleAdd = () => {
+    navigate("/launch/beneficiaries-info");
+    localStorage.setItem("navigatedFrom", location.pathname);
+  };
+
   useEffect(() => {
     handleBeneficialArray();
   }, [beneficiaryDocumentContainer]);
@@ -129,12 +137,6 @@ const BeneficiaryReview = () => {
               </ReviweTabWrapper>
             ))}
           </Nav>
-          {/* <ContentWrapper>
-            <EditWrapper onClick={handleNavigate}>
-              <EditIcon />
-              <EditText>Edit beneficiary Information</EditText>
-            </EditWrapper>
-          </ContentWrapper> */}
 
           {viewBeneficialState.isLoading && (
             <Loading height="50vh">
@@ -146,7 +148,7 @@ const BeneficiaryReview = () => {
             {beneficialArray?.length === 0 && (
               <NotAdded>
                 <span>No beneficiary added</span>
-                <Link to="/launch/beneficiaries-info">Add</Link>
+                <div onClick={handleAdd}>Add</div>
               </NotAdded>
             )}
             {beneficialArray.map((beneficiary, index) => (
@@ -189,7 +191,7 @@ const Nav = styled.nav`
   padding: 20px 40px 0px 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
 `;
@@ -286,7 +288,7 @@ const NotAdded = styled.div`
     padding: 16px 24px;
     border-radius: 8px;
   }
-  a {
+  div {
     border: none;
     padding: 10px 14px;
     border-radius: 8px;
@@ -296,6 +298,7 @@ const NotAdded = styled.div`
     text-decoration: none;
     margin-block: auto;
     transition: 0.3s ease all;
+    cursor: pointer;
 
     :hover {
       opacity: 0.8;

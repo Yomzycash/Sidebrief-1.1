@@ -200,7 +200,11 @@ const BeneficiariesKYC = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 11 })
+    ); // total- total pages and current - current page
   }, []);
 
   return (

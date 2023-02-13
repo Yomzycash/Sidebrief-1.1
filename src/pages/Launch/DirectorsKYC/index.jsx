@@ -57,7 +57,9 @@ const DirectorKYC = () => {
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
 
   useEffect(() => {
-    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
+    const check = data?.find(
+      (entity) => entity.entityCode === launchResponse.registrationType
+    );
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -186,7 +188,11 @@ const DirectorKYC = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 10 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 10 })
+    ); // total- total pages and current - current page
   }, []);
 
   return (

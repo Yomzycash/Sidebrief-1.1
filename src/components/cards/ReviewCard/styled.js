@@ -47,13 +47,10 @@ export const SharesWrapper = styled.div`
   > div:nth-of-type(1) {
     border-radius: 12px;
     padding: 4px 16px;
-    color: ${({ shares }) =>
-      shares === "Preference Shares" ? "#D400CC" : "#00A2D4"};
+    color: ${({ shares }) => (shares === "company" ? "#D400CC" : "#00A2D4")};
 
     background-color: ${({ shares }) =>
-      shares === "Preference Shares"
-        ? "#d400cc0c"
-        : "#00a2d40c"};
+      shares === "company" ? "#d400cc0c" : "#00a2d40c"};
   }
 `;
 export const IconWrapper = styled.div`

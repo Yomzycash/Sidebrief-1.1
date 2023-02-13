@@ -1,24 +1,19 @@
 import { CheckoutController, CheckoutSection } from "containers";
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
 import { ReviewTab } from "utils/config";
-import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useSelector } from "react-redux";
-import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
 import {
   useViewDirectorsMutation,
-  useViewMembersKYCMutation,
   useViewMembersMutation,
 } from "services/launchService";
-import AppFeedback from "components/AppFeedback";
 import ReviewCard from "components/cards/ReviewCard";
 import { Puff } from "react-loading-icons";
-import { mergeInfo, mergeThreeInfo } from "utils/LaunchHelper";
 
 const DirectorReview = () => {
   const ActiveStyles = {
@@ -26,12 +21,8 @@ const DirectorReview = () => {
     borderBottom: "4px solid #00A2D4",
     borderRadius: 0,
   };
-  const [directorsInfo, setDirectorsInfo] = useState([]);
-  const [directorsKycInfo, setDirectorsKycInfo] = useState([]);
-  const [members, setMembers] = useState([]);
   const [mergedResponse, setMergedResponse] = useState([]);
 
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
   );
@@ -43,7 +34,6 @@ const DirectorReview = () => {
   );
   const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
-  const [viewDirectorsKyc] = useViewMembersKYCMutation();
 
   const handleMerge = async () => {
     let memberInfo = await viewMembers(launchResponse);
@@ -69,15 +59,20 @@ const DirectorReview = () => {
   }, [directorDocumentContainer]);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
   const handleNext = () => {
     navigate("/launch/review-beneficiaries");
+    localStorage.setItem("navigatedFrom", location.pathname);
   };
+
   const handlePrev = () => {
     navigate(-1);
   };
 
   const handleNavigate = () => {
     navigate("/launch/directors-info");
+    localStorage.setItem("navigatedFrom", location.pathname);
   };
 
   // Set the progress of the application
@@ -128,7 +123,7 @@ const DirectorReview = () => {
                 name={director?.memberName}
                 email={director?.memberEmail}
                 phone={director?.memberPhone}
-                director_role={director.directorRole}
+                directorID={director.directorIdentificationNumber}
                 memberCode={director.memberCode}
                 editAction={handleNavigate}
                 icon
@@ -161,7 +156,7 @@ const Nav = styled.nav`
   padding: 20px 40px 0px 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
 `;
