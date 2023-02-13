@@ -78,6 +78,7 @@ const ShareHoldersInfo = () => {
     localStorage.getItem("useSidebriefShareholders")
   );
   const [shareholdersInfo, setShareholdersInfo] = useState([]);
+  const [maxPercentage, setmaxPercentage] = useState(100);
 
   // Endpont hook for shareholder add
   const [addShareHolder, addState] = useAddShareHolderMutation();
@@ -92,9 +93,6 @@ const ShareHoldersInfo = () => {
   const [viewShareholders, viewState] = useViewShareholdersMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
   const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
-
-  // This gets some information from the store
-  // const { launchResponse } = useSelector((store) => store.LaunchReducer);
 
   const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
 
@@ -279,7 +277,12 @@ const ShareHoldersInfo = () => {
     let shareholderResponse = await handleShareholdersView(actionInfo);
     if (shareholderResponse.data) {
       setShareholdersInfo(shareholderResponse.data);
-      // console.log(shareholderResponse.data);
+      // Get all share percentage and set the percentage left
+      let totalSharePerc = shareholderResponse.data.reduce(
+        (acc, curr) => curr.shareholderOwnershipPercentage + acc,
+        0
+      );
+      setmaxPercentage(100 - totalSharePerc);
     } else {
       handleError(shareholderResponse?.error);
     }
@@ -349,10 +352,37 @@ const ShareHoldersInfo = () => {
     }
   };
 
+  const handleNext = () => {
+    let navigatedFrom = localStorage.getItem("navigatedFrom");
+
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
+      return;
+    }
+    navigate("/launch/directors-info");
+  };
+
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 6.5 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 6.5 })
+    ); // total- total pages and current - current page
   }, []);
+
+  let loading =
+    !addState.isLoading &&
+    !updateState.isLoading &&
+    !deleteState.isLoading &&
+    !memberAddState.isLoading &&
+    !memberUpdateState.isLoading &&
+    !memberDelState.isLoading &&
+    !dirAddState.isLoading &&
+    !dirUpdateState.isLoading &&
+    !dirDelState.isLoading &&
+    (viewState.isLoading || viewMembersState.isLoading);
 
   return (
     <Container>
@@ -391,12 +421,11 @@ const ShareHoldersInfo = () => {
                 }
               />
             ))}
-            {viewState.isLoading ||
-              (viewMembersState.isLoading && (
-                <Loading>
-                  <Puff stroke="#00A2D4" fill="white" />
-                </Loading>
-              ))}
+            {loading && (
+              <Loading>
+                <Puff stroke="#00A2D4" fill="white" />
+              </Loading>
+            )}
             {!useSidebriefShareholders && (
               <AddMore onClick={handleAddButton}>
                 <AddIcon />
@@ -408,6 +437,7 @@ const ShareHoldersInfo = () => {
                 <MembersBasicInfo
                   title="Shareholder"
                   handleClose={() => setOpenModal(false)}
+                  maxPercentage={maxPercentage}
                   submitForm={handleFormSubmit}
                   populateModal={handlePopulate}
                   shareCompanySchema={checkInfoShareCompSchema}
@@ -431,7 +461,7 @@ const ShareHoldersInfo = () => {
             <CheckoutController
               backAction={() => navigate(-1)}
               backText={"Previous"}
-              forwardAction={() => navigate("/launch/directors-info")}
+              forwardAction={handleNext}
               forwardText={"Proceed"}
               forwardDisable={
                 shareholdersInfo.length === 0 && !useSidebriefShareholders

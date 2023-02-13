@@ -1,10 +1,9 @@
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { CheckoutController } from "containers";
-import { CheckoutFormInfo, CheckoutSection } from "containers/Checkout";
+import { CheckoutSection, MembersBasicInfo } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
@@ -26,18 +25,28 @@ import {
   useUpdateBeneficiaryMutation,
   useViewBeneficiariesMutation,
 } from "services/launchService";
-import toast from "react-hot-toast";
-import { beneficiaryAdd, beneficiaryDelete, beneficiaryUpdate } from "./action";
+import {
+  handleBeneficiariesView,
+  handleBeneficiaryAdd,
+  handleBeneficiaryDelete,
+  handleBeneficiaryUpdate,
+} from "./action";
 import { Puff } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
+import { handleError } from "utils/globalFunctions";
+import { handleResponse } from "../actions";
+
+//
+
+//
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
-  const [cardAction, setCardAction] = useState();
+  const [cardAction, setCardAction] = useState("");
   const [selectedToEdit, setSelectedToEdit] = useState({});
   const [selectedToDelete, setSelectedToDelete] = useState({});
   const [beneficiariesInfo, setBeneficiariesInfo] = useState([]);
+  const [maxPercentage, setMaxPercentage] = useState(100);
 
   // Endpont hooks
   const [addBeneficiary, addState] = useAddBeneficiaryMutation();
@@ -45,12 +54,17 @@ const DirectorsInfo = () => {
   const [updateBeneficiary, updateState] = useUpdateBeneficiaryMutation();
   const [viewBeneficiaries, viewState] = useViewBeneficiariesMutation();
 
-  // This gets the beneficiary information from the store
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  const { beneficiariesLaunchInfo, generatedLaunchCode, launchResponse } =
-    LaunchApplicationInfo;
+  const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
 
-  const handleNext = async () => {
+  const handleNext = () => {
+    let navigatedFrom = localStorage.getItem("navigatedFrom");
+
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
+      return;
+    }
+
     if (beneficiariesInfo.length > 0) {
       localStorage.setItem("beneficiaries", true);
     } else {
@@ -62,8 +76,6 @@ const DirectorsInfo = () => {
     );
     let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
 
-    // let navigatedFrom = localStorage.getItem("navigatedFrom");
-
     let navigateTo = "";
 
     if (!useSidebriefShareholders) navigateTo = "/launch/shareholders-kyc";
@@ -73,143 +85,149 @@ const DirectorsInfo = () => {
     if (beneficiariesInfo.length === 0 && useSidebriefShareholders)
       navigateTo = "/launch/review";
 
-    // if (navigatedFrom) {
-    //   navigate(navigatedFrom);
-    //   localStorage.removeItem("navigatedFrom");
-    // } else {
-    //   navigate(navigateTo);
-    // }
-
     navigate(navigateTo ? navigateTo : "/launch/shareholders-kyc");
   };
-  const handlePrev = () => {
-    navigate(-1);
+
+  //
+
+  // ADD BENEFICIARY
+  const handleAdd = async (formData) => {
+    let actionInfo = {
+      launchCode: launchResponse.launchCode,
+      formData: formData,
+      addBeneficiary: addBeneficiary,
+    };
+
+    let addResponse = await handleBeneficiaryAdd(actionInfo);
+    console.log(addResponse);
+    if (addResponse.data) {
+      handleResponse(addResponse, "Beneficiary added successfully");
+      return true;
+    } else handleError(addResponse?.error);
+    return false;
   };
 
-  const handleAddMore = () => {
+  //
+
+  // UPDATE BENEFICIARY
+  const handleUpdate = async (formData) => {
+    let actionInfo = {
+      launchCode: launchResponse.launchCode,
+      formData: formData,
+      selectedBeneficiary: selectedToEdit,
+      updateBeneficiary: updateBeneficiary,
+    };
+
+    let addResponse = await handleBeneficiaryUpdate(actionInfo);
+
+    if (addResponse.data) {
+      handleResponse(addResponse, "Beneficiary updated successfully");
+      return true;
+    } else handleError(addResponse?.error);
+    return false;
+  };
+
+  //
+
+  // DELETE BENEFICIARY
+  const handleDelete = async (beneficiary) => {
+    setSelectedToDelete(beneficiary);
+
+    let actionInfo = {
+      launchCode: launchResponse.launchCode,
+      selectedBeneficiary: beneficiary,
+      deleteBeneficiary: deleteBeneficiary,
+    };
+
+    let addResponse = await handleBeneficiaryDelete(actionInfo);
+  };
+
+  // VIEW ALL BENEFICIARIES
+  const handleView = async () => {
+    let actionInfo = {
+      ...launchResponse,
+      viewBeneficiaries: viewBeneficiaries,
+    };
+    // VIEW ALL DIRECTORS
+    let viewResponse = await handleBeneficiariesView(actionInfo);
+    if (viewResponse.data) {
+      setBeneficiariesInfo(viewResponse.data);
+      // Get all share percentage and set the percentage left
+      let totalStakePerc = viewResponse.data.reduce(
+        (acc, curr) => curr.beneficialOwnershipStake + acc,
+        0
+      );
+      setMaxPercentage(100 - totalStakePerc);
+    } else {
+      handleError(viewResponse?.error);
+    }
+  };
+
+  useEffect(() => {
+    if (cardAction === "") handleView();
+  }, [cardAction, selectedToDelete]);
+
+  //
+
+  const handlePopulate = (setValue) => {
+    if (cardAction === "edit") {
+      setValue("fullName", selectedToEdit?.beneficialOwnerName);
+      setValue("email", selectedToEdit?.beneficialOwnerEmail);
+      setValue("phone", selectedToEdit?.beneficialOwnerPhone);
+      setValue("stake", selectedToEdit?.beneficialOwnershipStake);
+      setValue("occupation", selectedToEdit?.beneficialOwnerOccupation);
+    } else {
+      setValue("fullName", "");
+      setValue("email", "");
+      setValue("phone", "");
+      setValue("stake", "");
+      setValue("occupation", "");
+    }
+  };
+
+  //
+
+  const handleFormSubmit = async (formData) => {
+    if (cardAction === "add") {
+      let addResponse = await handleAdd(formData);
+      if (addResponse) {
+        setCardAction("");
+        setOpenModal(false);
+      }
+    } else if (cardAction === "edit") {
+      await handleUpdate(formData);
+      setCardAction("");
+      setOpenModal(false);
+    }
+  };
+
+  //
+
+  const handleAddButton = () => {
+    setSelectedToEdit({});
     setCardAction("add");
     setOpenModal(true);
   };
-  const handleModalClose = () => {
-    setOpenModal(false);
-  };
 
-  const handleEdit = (beneficiary) => {
+  const handleEditButton = (beneficiary) => {
     setCardAction("edit");
     setOpenModal(true);
     setSelectedToEdit(beneficiary);
   };
 
-  const handleError = (error) => {
-    // console.log(error);
-    if (error?.status === "FETCH_ERROR") {
-      toast.error("Please check your internet connection");
-    } else {
-      toast.error(error?.data.message);
-    }
-  };
-
   //
-  // This deletes a beneficiary's informataion
-  const handleDelete = async (beneficiary) => {
-    setSelectedToDelete(beneficiary);
-
-    let deleteResponse = await beneficiaryDelete(
-      generatedLaunchCode,
-      beneficiary,
-      beneficiariesLaunchInfo,
-      deleteBeneficiary
-    );
-    // console.log(deleteResponse);
-
-    let data = deleteResponse.data;
-    let error = deleteResponse.error;
-
-    if (data) toast.success("Beneficiary deleted successfully");
-    else handleError(error);
-  };
-
-  //
-  // This adds a new beneficiary
-  const handleBeneficiaryAdd = async (formData, launchCode) => {
-    let addBeneficiaryResponse = await beneficiaryAdd(
-      launchCode,
-      formData,
-      addBeneficiary
-    );
-
-    let beneficiaryData = addBeneficiaryResponse?.data;
-    let error = addBeneficiaryResponse?.error;
-
-    if (beneficiaryData) {
-      toast.success("Beneficiary added successfully");
-      setOpenModal(false);
-    } else {
-      handleError(error);
-    }
-  };
-
-  //
-  // This updates the beneficiary's information
-  const handleBeneficiaryUpdate = async (
-    formData,
-    launchCode,
-    selectedBeneficiary
-  ) => {
-    let beneficiaryUpdateResponse = await beneficiaryUpdate(
-      formData,
-      launchCode,
-      selectedBeneficiary,
-      updateBeneficiary
-    );
-    // console.log(beneficiaryUpdateResponse);
-
-    // The data from the response got from the backend
-    let beneficiariesUpdatedData = beneficiaryUpdateResponse?.data;
-
-    let error = beneficiaryUpdateResponse.error;
-
-    // Executes if data is returned from the backend
-    if (beneficiariesUpdatedData) {
-      toast.success("Beneficiary updated successfully");
-      handleModalClose();
-    } else {
-      handleError(error);
-    }
-  };
-
-  // Get beneficiaries data from the backend
-  const getBeneficiaries = async () => {
-    let requiredData = {
-      launchCode: launchResponse.launchCode,
-      registrationCountry: launchResponse.registrationCountry,
-      registrationType: launchResponse.registrationType,
-    };
-
-    // Get data from view endpoints
-    let beneficiaries = await viewBeneficiaries(requiredData);
-    let beneficiariesData = beneficiaries?.data && [
-      ...beneficiaries.data.businessBeneficialOwners,
-    ];
-
-    return { data: beneficiariesData };
-  };
-
-  // Get the data from backend and set to state
-  const viewDraft = async () => {
-    let beneficiariesData = await getBeneficiaries();
-    console.log(beneficiariesData);
-    setBeneficiariesInfo(beneficiariesData.data);
-  };
-
-  useEffect(() => {
-    viewDraft();
-  }, [addState.isSuccess, deleteState.isSuccess, updateState.isSuccess]);
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 7.5 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 7.5 })
+    ); // total- total pages and current - current page
   }, []);
+
+  let loading =
+    !deleteState.isLoading && !addState && !updateState && viewState.isLoading;
 
   return (
     <Container>
@@ -230,7 +248,7 @@ const DirectorsInfo = () => {
                 phone={beneficiary?.beneficialOwnerPhone}
                 occupation={beneficiary.beneficialOwnerOccupation}
                 stake={beneficiary.beneficialOwnershipStake}
-                editAction={() => handleEdit(beneficiary)}
+                editAction={() => handleEditButton(beneficiary)}
                 deleteAction={() => handleDelete(beneficiary)}
                 isLoading={
                   selectedToDelete?.beneficialOwnerCode ===
@@ -240,39 +258,35 @@ const DirectorsInfo = () => {
                 }
               />
             ))}
-            {viewState.isLoading && (
+            {loading && (
               <Loading>
                 <Puff stroke="#00A2D4" fill="white" />
               </Loading>
             )}
-            <AddMore onClick={handleAddMore}>
+            <AddMore onClick={handleAddButton}>
               <AddIcon />
               <span>Add a Beneficiary</span>
             </AddMore>
-            {/* )} */}
+
             <Dialog open={openModal}>
               <DialogContent style={modalStyle}>
-                <CheckoutFormInfo
+                <MembersBasicInfo
                   title="Beneficiary"
-                  handleClose={handleModalClose}
-                  handleAdd={handleBeneficiaryAdd}
-                  handleUpdate={handleBeneficiaryUpdate}
-                  cardAction={cardAction}
-                  checkInfoSchema={checkInfoBeneficiarySchema}
+                  handleClose={() => setOpenModal(false)}
+                  maxPercentage={maxPercentage}
+                  submitForm={handleFormSubmit}
+                  populateModal={handlePopulate}
+                  infoSchema={checkInfoBeneficiarySchema}
+                  info={selectedToEdit}
+                  isLoading={addState.isLoading || updateState.isLoading}
                   beneficiary
-                  selectedToEdit={selectedToEdit}
-                  addIsLoading={
-                    addState.isLoading ||
-                    deleteState.isLoading ||
-                    updateState.isLoading
-                  }
                 />
               </DialogContent>
             </Dialog>
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
-              backAction={handlePrev}
+              backAction={() => navigate(-1)}
               backText={"Previous"}
               forwardAction={handleNext}
               forwardText={"Proceed"}
