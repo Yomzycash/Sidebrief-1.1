@@ -66,7 +66,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     amount: `${entityInfo.entityFee}`,
 
     currency: entityInfo?.entityCurrency,
-    payment_options: "card, mobilemoney, ussd, banktransfer",
+    payment_options: "card, mobilemoney, ussd",
     customer: {
       email: userEmail,
       phone_number: "070********",
