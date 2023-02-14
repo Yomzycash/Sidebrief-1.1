@@ -16,8 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
 import { setCheckoutProgress } from "redux/Slices";
-import { PaymentButton } from "containers/Payment/Form/styles.js";
-import AppFeedback from "components/AppFeedback";
+import { useEffect } from "react";
 
 const PaymentPage = () => {
   const [providers, dispatch] = useReducer(
@@ -47,17 +46,16 @@ const PaymentPage = () => {
 
   const handleNext = () => {
     navigate("/launch/entity");
-    store.dispatch(setCheckoutProgress({ total: 13, current: 3 })); // total- total pages and current - current page
   };
 
   const handlePrev = () => {
     navigate(-1);
   };
 
-  // This fires off whenever next button is clicked
-  // useEffect(() => {
-  //
-  // }, [nextClicked]);
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setCheckoutProgress({ total: 13, current: 4 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

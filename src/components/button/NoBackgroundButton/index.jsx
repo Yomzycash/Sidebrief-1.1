@@ -12,9 +12,9 @@ const NoBackgroundButton = ({
 }) => {
   return (
     <ButtonContainer onClick={action} style={style}>
-      {/* {LeftIcon && <LeftIcon size={24} color={leftIconColor || "white"} />}
+      {LeftIcon && ( <LeftIcon size={24} color={leftIconColor || "white"} />)}
       {text && <span>{text}</span>}
-      {RightIcon && <RightIcon size={24} color={rightIconColor || "white"} />} */}
+      {RightIcon && (<RightIcon size={24} color={rightIconColor || "white"} />)}
     </ButtonContainer>
   );
 };

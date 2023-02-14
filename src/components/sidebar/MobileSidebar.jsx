@@ -28,10 +28,10 @@ const MobileSidebar = ({ toggleDrawer }) => {
 
 	const navigate = useNavigate();
 
-	const ActiveStyle = {
-		background: "rgba(0, 162, 212, 0.1)",
-		color: "#00a2d4",
-	};
+  const ActiveStyle = {
+    background: "#00a2d419",
+    color: "#00a2d4",
+  };
 
 	const handleLogout = () => {
 		localStorage.clear();

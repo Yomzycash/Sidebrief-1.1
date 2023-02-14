@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   max-height: 550px;
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: 4px 4px 8px 4px rgba(185, 190, 196, 0.08);
+  box-shadow: 4px 4px 8px 4px #b9bec414;
   border-radius: 16px;
   padding: 40px 24px 56px 24px;
 `;
@@ -38,7 +38,8 @@ export const NameWrapper = styled.div`
 
 export const TitleWrapper = styled.div`
   padding: 4px 16px;
-  background: rgba(0, 162, 212, 0.05);
+  background-color: ${({ type }) =>
+    type === "company" ? "#d400cc0c" : "#00a2d40c"};
   border-radius: 12px;
   text-align: center;
 `;
@@ -50,7 +51,7 @@ export const Title = styled.h3`
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: #00a2d4;
+  color: ${({ type }) => (type === "company" ? "#D400CC" : "#00A2D4")};
 `;
 
 export const EmailWrapper = styled.div`

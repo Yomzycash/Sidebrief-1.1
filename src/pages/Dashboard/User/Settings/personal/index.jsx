@@ -37,7 +37,6 @@ const Personal = () => {
   });
 
   const updateInfo = (data) => {
-    console.log(data);
     setEditable(false);
   };
 

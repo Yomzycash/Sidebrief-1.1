@@ -14,6 +14,7 @@ import {
   useAddBusinessAddressMutation,
   useUpdateBusinessAddressMutation,
   useViewBusinessAddressQuery,
+  useViewPayLaunchMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -21,17 +22,21 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { Loading } from "notiflix";
 import { useRef } from "react";
-import AppFeedback from "components/AppFeedback";
 
 const BusinessAddress = () => {
   const [country, setCountry] = useState(defaultLocation);
   const [state, setState] = useState(defaultLocation);
   const [city, setCity] = useState(defaultLocation);
+  // const [paid, setPaid] = useState(false);
+
+  const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+  let paidStatus =
+    paymentDetails?.paymentStatus === "successful" ? true : false;
 
   const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
-
   const [updateBusinessAddress, updateAddressState] =
     useUpdateBusinessAddressMutation();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse
@@ -107,13 +112,10 @@ const BusinessAddress = () => {
       },
     };
 
-    console.log(requiredAddressData);
-
     const response = (await address.currentData.businessAddress)
       ? await updateBusinessAddress(requiredAddressData)
       : await addBusinessAddress(requiredAddressData);
     // console.log(address.currentData.businessAddress ? 'true' : 'false')
-    console.log(response);
 
     if (response.data) {
       store.dispatch(setBusinessAddress(requiredAddressData));
@@ -146,7 +148,8 @@ const BusinessAddress = () => {
   };
 
   const handlePrev = () => {
-    navigate(-1);
+    if (paidStatus) navigate("/launch");
+    else navigate(-1);
   };
 
   if (address.isLoading) {
@@ -154,6 +157,15 @@ const BusinessAddress = () => {
       svgColor: "#fff",
     });
   }
+
+  // // Check the payment status of the launch
+  // const handlePaymentStatus = async () => {
+  //   let actionInfo = {
+  //     ...launchResponse,
+  //     viewPayLaunch: viewPayLaunch,
+  //   };
+  //   setPaid(await checkPaymentStatus(actionInfo));
+  // };
 
   useEffect(() => {
     if (address.isSuccess) {
@@ -198,7 +210,11 @@ const BusinessAddress = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 5.5 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 5.5 })
+    ); // total- total pages and current - current page
   }, []);
 
   return (

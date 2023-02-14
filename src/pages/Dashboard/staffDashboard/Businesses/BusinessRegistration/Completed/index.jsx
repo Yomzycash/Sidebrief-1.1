@@ -1,4 +1,4 @@
-import { StaffBusinessTable } from "components/Staff/Tables";
+import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
 import { useGetRejectedLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
@@ -6,11 +6,11 @@ import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
+import { columns } from "../tableColumn";
+
 const Completed = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const rejectedLaunch = useGetRejectedLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const rejectedLaunch = useGetRejectedLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 
@@ -19,9 +19,6 @@ const Completed = () => {
 			setTableArr(rejectedLaunch.data);
 		}
 	}, [rejectedLaunch, countries.isSuccess]);
-
-	console.log(tableArr);
-	console.log(countries.data);
 
 	let sortArr = [...tableArr];
 	let sortedArr = sortArr.sort(sortTableData);
@@ -38,7 +35,7 @@ const Completed = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<StaffBusinessTable
+					<GeneralTable
 						data={sortedArr.map((element) => {
 							return {
 								name: element.businessNames
@@ -54,6 +51,7 @@ const Completed = () => {
 								countryISO: element.registrationCountry,
 							};
 						})}
+						columns={columns}
 					/>
 				)}
 			</Body>

@@ -13,6 +13,9 @@ import {
   useGetApprovedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
+import { useSelector } from "react-redux";
 
 const StaffBusinesses = (props) => {
   const [countries, setCountries] = useState([]);
@@ -24,6 +27,8 @@ const StaffBusinesses = (props) => {
   const allEntities = useGetAllTheEntitiesQuery();
   const allSubmittedLaunches = useGetSubmittedLaunchQuery();
   const allApprovedLaunches = useGetApprovedLaunchQuery();
+
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   // const layoutInfo = useSelector((store) => store.LayoutInfo);
   // const { sidebarWidth } = layoutInfo;
@@ -75,6 +80,7 @@ const StaffBusinesses = (props) => {
     );
     // console.log(countries);
     // console.log(entities);
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [
     allSubmittedLaunches?.data,
     allApprovedLaunches?.data,
@@ -201,11 +207,11 @@ const SideWrapper = styled.div`
   gap: 4px;
 `;
 const Heading = styled.h3`
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 30px;
-  letter-spacing: 0.01em;
-  color: #242627;
+	font-weight: 700;
+	font-size: 20px;
+	line-height: 30px;
+	letter-spacing: 0.01em;
+	color: ${({ theme }) => theme.grey1};
 `;
 const LowerText = styled.h4`
   font-weight: 500;
@@ -253,11 +259,15 @@ const MiddleContainer = styled.div`
   margin-block-end: 24px;
 `;
 const TitleWrapper = styled.h3`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 30px;
-  letter-spacing: 0.01em;
-  color: #242627;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 30px;
+	letter-spacing: 0.01em;
+	color: ${({ theme }) => theme.grey1};
+  width: 196px;
+  height: 44px;
+  background: none;
+  border-radius: 8px;
 `;
 const RegistrationBlock = styled.div`
   display: flex;

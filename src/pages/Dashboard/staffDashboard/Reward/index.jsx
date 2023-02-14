@@ -16,6 +16,8 @@ import {
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import ConfirmDelete from "components/modal/ConfirmDelete";
+import { setRefreshApp } from "redux/Slices";
+import { store } from "redux/Store";
 
 const StaffReward = () => {
   const [selectedReward, setSelectedReward] = useState([]);
@@ -26,11 +28,13 @@ const StaffReward = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  const { data, isSuccess } = useGetAllRewardsQuery({
+  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
     refetchOnMountOrArgChange: true,
   });
   const [updateReward, updateState] = useUpdateRewardMutation();
   const [deleteReward, deleteState] = useDeleteRewardMutation();
+
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   useEffect(() => {
     let localRewardID = localStorage.getItem("rewardId");
@@ -40,6 +44,7 @@ const StaffReward = () => {
       (data) => data.rewardID === rewardID
     );
     setSelectedReward(rewardDatails);
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [data]);
 
   const getRequiredData = (info) => ({
@@ -72,7 +77,6 @@ const StaffReward = () => {
   // This deletes a reward information
   const handleDelete = async () => {
     let requiredData = { rewardID: selectedReward[0].rewardID };
-    console.log(requiredData);
     let response = await deleteReward(requiredData);
 
     let data = response?.data;
@@ -80,7 +84,6 @@ const StaffReward = () => {
 
     if (data) {
       toast.success("Reward deleted successfully");
-      console.log(data);
       setdeleteConfirm(false);
       navigate("/staff-dashboard/all-rewards");
     } else {
@@ -218,13 +221,13 @@ const ButtonContainer = styled.div`
   align-items: flex-start;
 `;
 
-// const Top = styled.div`
-//   padding-inline: 40px;
-//   padding-block: 40px 0;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 24px;
-// `;
+const Top = styled.div`
+  padding-inline: 40px;
+  padding-block: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
 
 const BackContainer = styled.div`
   display: flex;
@@ -274,7 +277,7 @@ const TopText = styled.div`
   font-size: 24px;
   line-height: 36px;
 
-  color: #242627;
+  color: ${({ theme }) => theme.grey1};
 `;
 const MiddleText = styled.h4`
   font-weight: 500;
@@ -283,27 +286,27 @@ const MiddleText = styled.h4`
 
   color: #4e5152;
 `;
-// const BottomText = styled.h4`
-//   font-weight: 500;
-//   font-size: 14px;
-//   line-height: 24px;
+const BottomText = styled.h4`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
 
-//   color: #959697;
-// `;
+  color: #959697;
+`;
 
-// const ImageWrapper = styled.div``;
-// const CountryName = styled.h2`
-//   font-family: "BR Firma";
-//   font-style: normal;
-//   font-weight: 500;
-//   font-size: 16px;
-//   line-height: 24px;
-//   /* identical to box height, or 150% */
+const ImageWrapper = styled.div``;
+const CountryName = styled.h2`
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
 
-//   /* Grey 3 */
+  /* Grey 3 */
 
-//   color: #4e5152;
-// `;
+  color: #4e5152;
+`;
 
 const LHS = styled.div`
   display: flex;
@@ -314,38 +317,38 @@ const LHS = styled.div`
   max-width: 70%;
 `;
 
-// const RHS = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   padding: 0px;
-//   gap: 24px;
-//   width: 159px;
-//   height: 44px;
-//   background-color: #00a2d4;
-//   border-radius: 8px;
-// `;
+const RHS = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 24px;
+  width: 159px;
+  height: 44px;
+  background-color: ${({ theme }) => theme.blue2};
+  border-radius: 8px;
+`;
 
-// const RightWrapper = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   align-items: flex-start;
-//   padding: 24px 12px;
-//   gap: 8px;
-//   width: inherit;
-// `;
-// const BlockText = styled.div`
-//   font-weight: 500;
-//   font-size: 14px;
-//   line-height: 21px;
+const RightWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 24px 12px;
+  gap: 8px;
+  width: inherit;
+`;
+const BlockText = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
 
-//   display: flex;
-//   align-items: center;
-//   text-align: center;
-//   letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.5px;
 
-//   color: #ffffff;
-// `;
+  color: #ffffff;
+`;
 
 const SubHeader = styled.div`
   border-top: 1px solid #edf1f7;

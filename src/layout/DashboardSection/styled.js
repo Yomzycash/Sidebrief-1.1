@@ -10,6 +10,7 @@ export const Section = styled.div`
   margin: clamp(2px, 4vw, 38px) clamp(20px, 5vw, 40px);
   margin-right: ${(props) => props.MarginRight};
   user-select: ${({ carousel }) => (carousel ? 'none' : '')};
+  max-width: ${({ maxWidth }) => (maxWidth ? '1200px' : '100%')};> 
 `
 
 export const Header = styled.div`

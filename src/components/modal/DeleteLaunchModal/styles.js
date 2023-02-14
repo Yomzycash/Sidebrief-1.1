@@ -14,8 +14,8 @@ export const Container = styled.div`
 	border-radius: 16px;
 	padding: 40px;
 
-	box-shadow: -4px 10px 16px 8px rgba(149, 150, 151, 0.08),
-		0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+	box-shadow: -4px 10px 16px 8px #95969714,
+		0px 10px 10px -5px #9596970a;
 
 	display: flex;
 	flex-direction: column;
@@ -49,7 +49,7 @@ export const Heading = styled.h6`
 	line-height: 24px;
 	letter-spacing: -0.5px;
 
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const Text = styled.p`
@@ -92,7 +92,7 @@ export const Controller = styled.div`
 
 export const Submit = styled.button`
 	flex: 1;
-	background: rgba(0, 162, 212, 0.72);
+	background: #00a2d4b7;
 	border-radius: 8px;
 	border: none;
 
@@ -106,7 +106,7 @@ export const Submit = styled.button`
 	color: #ffffff;
 
 	&:disabled {
-		color: rgba(255, 255, 255, 0.64);
+		color: #ffffffa3;
 		cursor: not-allowed;
 	}
 `;

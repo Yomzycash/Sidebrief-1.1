@@ -24,7 +24,6 @@ const BusinessAddressCard = () => {
     if (address.isSuccess) {
       let viewAddress = address.data.businessAddress;
       setBusinessAddress(viewAddress);
-      // console.log(viewAddress)
     }
   }, [address]);
 

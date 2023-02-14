@@ -50,13 +50,14 @@ const ShareHolderKYC = () => {
   );
   const countryISO = localStorage.getItem("countryISO");
 
-
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
-const drafts = useGetUserDraftQuery();
+  const drafts = useGetUserDraftQuery();
 
   useEffect(() => {
-    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
+    const check = data?.find(
+      (entity) => entity.entityCode === launchResponse.registrationType
+    );
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -97,7 +98,6 @@ const drafts = useGetUserDraftQuery();
   };
 
   const handleChange = async (files, shareholder, type) => {
-    console.log("sending file", files);
     setDocumentContainer((prev) => {
       const updatedState = [...prev];
 
@@ -115,7 +115,6 @@ const drafts = useGetUserDraftQuery();
     });
 
     const res = await convertToLink(files[0]);
-
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
@@ -128,7 +127,6 @@ const drafts = useGetUserDraftQuery();
       },
     };
     const response = await addMemberKYC(requiredAddMemberData);
-    console.log("checing", response);
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
@@ -175,7 +173,11 @@ const drafts = useGetUserDraftQuery();
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 8.5 })); // total- total pages and current - current page
+    let review = localStorage.getItem("navigatedFrom");
+
+    store.dispatch(
+      setCheckoutProgress({ total: 13, current: review ? 13 : 8.5 })
+    ); // total- total pages and current - current page
   }, []);
 
   return (

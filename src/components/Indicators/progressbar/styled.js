@@ -35,7 +35,7 @@ export const ProgressLine = styled.div`
 export const Progress = styled.div`
   height: inherit;
   width: ${({ progress }) => `${progress}%`};
-  background-color: #00a2d4;
+  background-color: ${({ theme }) => theme.blue2};
   transition: 0.4s all ease;
 `;
 export const Container = styled.div`

@@ -81,6 +81,6 @@ export const ContinueButton = styled.button`
 	cursor: pointer;
 
 	&:hover {
-		background: rgba(0, 162, 212, 0.72);
+		background: #00a2d4b7;
 	}
 `;

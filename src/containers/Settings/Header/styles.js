@@ -28,7 +28,7 @@ export const Heading = styled.h2`
 	font-weight: 700;
 	font-size: 24px;
 	line-height: 36px;
-	color: #242627;
+	color: ${({ theme }) => theme.grey1};
 `;
 
 export const SubHeader = styled.div`

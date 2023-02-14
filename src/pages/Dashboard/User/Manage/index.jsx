@@ -42,7 +42,6 @@ const ManageProduct = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(selectedResource, selectedCountry);
 	};
 
 	const handleResourceSelect = (valuesSelected) => {

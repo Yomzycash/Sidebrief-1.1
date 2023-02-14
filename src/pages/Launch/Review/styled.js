@@ -43,6 +43,6 @@ export const Data = styled.div`
 
   p {
     font-size: 14px;
-    color: #242627;
+    color: ${({ theme }) => theme.grey1};
   }
 `;

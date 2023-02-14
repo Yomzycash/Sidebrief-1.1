@@ -76,7 +76,7 @@ export const ComingBtn = styled.button`
 	margin-top: 40px;
 
 	:hover {
-		background-color: #00a2d4;
+		background-color: ${({ theme }) => theme.blue2};
 		color: white;
 	}
 `;

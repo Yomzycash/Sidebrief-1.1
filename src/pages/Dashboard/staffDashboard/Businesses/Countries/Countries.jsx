@@ -13,10 +13,13 @@ import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   // Exchange information with the backend
   const { data, isLoading, isError, error, refetch } =
@@ -34,7 +37,6 @@ const Countries = () => {
 
   const handleAddButton = () => {
     setOpen(true);
-    console.log();
     setCardAction("add");
   };
 
@@ -46,6 +48,7 @@ const Countries = () => {
       handleError(error);
       errorRef.current = false;
     }
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [isError, error, refetch]);
 
   // Returns the data to be sent to the backend
@@ -62,7 +65,6 @@ const Countries = () => {
   // This adds a new country
   const handleCountryAdd = async (formData) => {
     let requiredData = getRequired(formData);
-    console.log(requiredData);
     let response = await addCountry(requiredData);
     let data = response?.data;
     let error = response?.error;

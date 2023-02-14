@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { SummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
@@ -5,11 +6,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as ExportIcon } from "../../../../../asset/svg/ExportIcon.svg";
 import { ReactComponent as NoteIcon } from "../../../../../asset/images/note.svg";
-
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Navbar from "components/navbar";
-import { useSelector } from "react-redux";
-import StaffSidebar from "components/sidebar/StaffSidebar";
 import {
   useGetAllLaunchQuery,
   useGetApprovedLaunchQuery,
@@ -17,42 +14,36 @@ import {
   useGetRejectedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
-import { useEffect } from "react";
-import { useState } from "react";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
+import { useSelector } from "react-redux";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
   const [allReg, setAllReg] = useState([]);
   const [awaitingReg, setAwaiting] = useState([]);
 
-  const allLaunch = useGetAllLaunchQuery({
-    refetchOnMountOrArgChange: true,
-  });
+  const allLaunch = useGetAllLaunchQuery();
 
-  const awaitingLaunch = useGetSubmittedLaunchQuery({
-    refetchOnMountOrArgChange: true,
-  });
+  const awaitingLaunch = useGetSubmittedLaunchQuery();
 
-  const rejectedLaunch = useGetRejectedLaunchQuery({
-    refetchOnMountOrArgChange: true,
-  });
+  const rejectedLaunch = useGetRejectedLaunchQuery();
 
-  const pendingLaunch = useGetDraftLaunchQuery({
-    refetchOnMountOrArgChange: true,
-  });
+  const pendingLaunch = useGetDraftLaunchQuery();
 
-  const approvedLaunch = useGetApprovedLaunchQuery({
-    refetchOnMountOrArgChange: true,
-  });
+  const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
   let awaiting = awaitingLaunch?.currentData?.length;
   let rejected = rejectedLaunch?.currentData?.length;
   let pending = pendingLaunch?.currentData?.length;
   let approved = approvedLaunch?.currentData?.length;
 
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
   useEffect(() => {
     setAllReg(all ? all : []);
     setAwaiting(awaiting ? awaiting : []);
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [all, awaiting, pending, approved]);
 
   const location = useLocation();
@@ -61,9 +52,6 @@ const Registrationlayout = () => {
     location.pathname === "/staff-dashboard/businesses/registration"
       ? true
       : false;
-
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
 
   const searchStyle = {
     borderRadius: "12px",
@@ -114,6 +102,13 @@ const Registrationlayout = () => {
             path={"/staff-dashboard/businesses/registration/all"}
             defaultActive={home}
           />
+          {/* <ActiveNav
+						text="Paid draft"
+						total={12}
+						path={
+							"/staff-dashboard/businesses/registration/paid-draft"
+						}
+					/> */}
           <ActiveNav
             text="Drafts"
             total={pending}
@@ -191,6 +186,7 @@ const SubHeader = styled.div`
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  padding-inline: 24px;
 
   //TODO: maybe hide scroll bar
 `;
@@ -318,12 +314,12 @@ const ButtonWrapper = styled.div`
     }
   }
 `;
-const searchStyle = styled.div`
-  border-radius: 12px;
-  background-color: "white";
-  max-width: 384px;
-  height: 40px;
-  @media screen and (max-width: 700px) {
-    width: 100%;
-  }
-`;
+// const searchStyle = styled.div`
+// 	border-radius: 12px;
+// 	background-color: "white";
+// 	max-width: 384px;
+// 	height: 40px;
+// 	@media screen and (max-width: 700px) {
+// 		width: 100%;
+// 	}
+// `;

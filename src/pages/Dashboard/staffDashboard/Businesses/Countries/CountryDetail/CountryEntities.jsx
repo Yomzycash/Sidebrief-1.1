@@ -15,11 +15,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { handleError } from "utils/globalFunctions";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const CountryEntities = () => {
   const [open, setOpen] = useOutletContext();
   const [clickedEntity, setClickedEntity] = useState({});
   const [cardAction, setCardAction] = useState("");
+  const [features, setFeatures] = useState([]);
+  const [documents, setDocuments] = useState([]);
 
   const { ISO } = useParams();
   const { data, isLoading, refetch } = useGetCountryEntitiesQuery(ISO);
@@ -27,6 +32,12 @@ const CountryEntities = () => {
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
   const [deleteEntity, deleteState] = useDeleteEntityMutation();
+
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
+  useEffect(() => {
+    store.dispatch(setRefreshApp(!refreshApp));
+  }, [data]);
 
   const handleCardClick = (entity) => {
     setCardAction("edit");
@@ -38,36 +49,23 @@ const CountryEntities = () => {
     refetch();
   }, [refetch]);
 
+  // Returns the data to be sent to the backend
   const getRequired = (formData) => {
-    console.log("required", formData);
     return {
-      entityName: formData?.entity_name,
-      entityShortName: formData?.short_name,
+      entityName: formData?.entityName,
+      entityShortName: formData?.shortName,
+      entityDescription: formData?.description,
       entityType: formData?.type,
       entityCode: formData?.code,
       entityCountry: formData?.country,
       entityFee: formData?.fee,
       entityCurrency: formData?.currency,
-      entityDescription: formData?.description,
       entityTimeline: formData?.timeline,
       entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
+      entityFeatures: features.join(", "),
+      entityRequiredDocuments: documents.join(", "),
     };
-  };
-
-  // This updates an existing entity
-  const handleEntityUpdate = async (formData) => {
-    let requiredData = getRequired(formData);
-    let response = await updateEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Entity updated successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    refetch();
   };
 
   // This adds a new entity
@@ -85,12 +83,24 @@ const CountryEntities = () => {
     refetch();
   };
 
+  // This updates an existing entity
+  const handleEntityUpdate = async (formData) => {
+    let requiredData = getRequired(formData);
+    let response = await updateEntity(requiredData);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Entity updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    refetch();
+  };
+
   // This runs when the delete icon is pressed
   const handleEntityDelete = async (entityInfo) => {
-    console.log(entityInfo);
-    console.log("deleted");
     let response = await deleteEntity(entityInfo);
-    console.log(response);
     let data = response?.data;
     let error = response?.error;
     if (data) {
@@ -135,13 +145,16 @@ const CountryEntities = () => {
               cardAction === "edit" ? "Entity Information" : "Add New Entity"
             }
             entityInfo={clickedEntity}
-            countryInfo={countryInfo?.data}
             submitAction={
               cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
             }
             loading={updateState.isLoading || addState.isLoading}
             deleteState={deleteState}
             handleEntityDelete={handleEntityDelete}
+            features={features}
+            setFeatures={setFeatures}
+            documents={documents}
+            setDocuments={setDocuments}
           />
         </CardWrapper>
       </CardContainer>

@@ -20,7 +20,7 @@ export const ScrollContainer = styled.div`
   }
   &:hover {
     &::-webkit-scrollbar-thumb {
-      background-color: #00a2d4;
+      background-color: ${({ theme }) => theme.blue2};
     }
   }
 `

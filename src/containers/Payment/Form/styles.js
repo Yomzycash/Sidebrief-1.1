@@ -7,9 +7,8 @@ export const Container = styled.div`
   /* height: 501px; */
   background: #ffffff;
   border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+  box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,7 +31,7 @@ export const Price = styled.h5`
   font-weight: 700;
   font-size: 32px;
   line-height: 40px;
-  color: #242627;
+  color: ${({ theme }) => theme.grey1};
 `;
 
 export const Text = styled.p`
@@ -123,6 +122,7 @@ export const Paystack = styled.div`
   width: 100%;
 
   .paystack-button {
+    cursor: pointer;
     grid-column: span 2;
     padding: 16px 48px;
     height: 59px;
@@ -137,6 +137,14 @@ export const Paystack = styled.div`
     line-height: 27px;
     letter-spacing: -0.5px;
     color: #ffffff;
+    transition: 0.3s ease all;
+
+    :hover {
+      opacity: 0.8;
+    }
+    :active {
+      transform: scale(0.95);
+    }
   }
 
   @media screen and (max-width: 600px) {

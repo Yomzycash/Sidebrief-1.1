@@ -11,10 +11,11 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
+cursor: pointer;
 	min-height: 74px;
 	background: #ffffff;
 	border: 1px solid #edf1f7;
-	box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+	box-shadow: 0px 10px 10px -5px #9596970a;
 	border-radius: 16px;
 	padding: 24px 24px;
 	display: flex;
@@ -26,8 +27,8 @@ export const Container = styled.div`
 
 	&:hover {
 		border: 1px solid #00c3ff;
-		box-shadow: 0px 20px 25px -5px rgba(149, 150, 151, 0.1),
-			0px 10px 10px -5px rgba(149, 150, 151, 0.04);
+		box-shadow: 0px 20px 25px -5px #9596970a,
+			0px 10px 10px -5px #9596970a;
 	}
 `;
 

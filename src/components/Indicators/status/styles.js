@@ -24,23 +24,23 @@ export const Status = styled.p`
 		switch (status) {
 			case "completed":
 				return `
-                    background: rgba(0, 212, 72, 0.1);
+                    background: #00d44819;
 	                color: #00d448;
                 `;
 			case "awaiting":
 			case "submitted":
 				return `
-                    background: rgba(212, 0, 204, 0.1);
+                    background: #d400cc19;
 	                color: #D400CC;
                 `;
 			case "progress":
 				return `
-                    background: rgba(255, 191, 41, 0.1);
+                    background: #ffbf2919;
 	                color: #FFBF29;
                 `;
 			case "declined":
 				return `
-                    background: rgba(237, 78, 58, 0.1);
+                    background: #ed4e3a19;
 	                color: #ED4E3A;
                 `;
 			case "draft":

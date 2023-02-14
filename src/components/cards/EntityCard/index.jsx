@@ -19,6 +19,7 @@ import {
 import { ReactComponent as CornerPetal } from "asset/svg/cornerPetal.svg";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import numeral from "numeral";
+import { getCurrencyInfo } from "utils/globalFunctions";
 
 export const EntityCard = ({
   action,
@@ -33,6 +34,8 @@ export const EntityCard = ({
   currency,
   description,
 }) => {
+  console.log(features);
+  console.log(country);
   return (
     <Wrap>
       {name === "Pro" && (
@@ -43,9 +46,9 @@ export const EntityCard = ({
 
       <Container
         onClick={action}
-        gap={country === "NGA" && "24px"}
-        content={country === "NGA" ? "" : "space-between"}
-        height={country === "NGA" && "clamp(400px, 30vw, 450px)"}
+        gap={"24px"}
+        content={"space-between"}
+        height={"clamp(400px, 30vw, 450px)"}
       >
         <Corner>
           <CornerPetal />
@@ -58,37 +61,25 @@ export const EntityCard = ({
         <Description>{description}</Description>
         <Mid>
           <Price>
-            {country === "NGA" ? "" : numeral(price).format("0,0")}
-            {country === "NGA" ? "" : currency}
+            {getCurrencyInfo(currency)?.symbol}
+            {numeral(price).format("0,0")}
           </Price>
         </Mid>
         <Bottom>
-          {/* <Bullet>
-          <Mark /> <Content>{company}</Content>
-        </Bullet> */}
-          {country === "NGA" ? (
-            <Bullet flow="column">
-              <>
-                {features?.map((item, index) => (
-                  <FeatureListItem key={index}>
-                    <Mark /> <Content>{item}</Content>
-                  </FeatureListItem>
-                ))}
-              </>
+          <Bullet>
+            <Mark /> <Content>{type} Company</Content>
+          </Bullet>
+          <Bullet>
+            <Mark /> <Content>{shares} shares</Content>
+          </Bullet>
+          <Bullet>
+            <Mark /> <Content>{requirement}</Content>
+          </Bullet>
+          {features?.map((item, index) => (
+            <Bullet key={index}>
+              <Mark /> <Content>{item}</Content>
             </Bullet>
-          ) : (
-            <>
-              <Bullet>
-                <Mark /> <Content>{type} Company</Content>
-              </Bullet>
-              <Bullet>
-                <Mark /> <Content>{shares} shares</Content>
-              </Bullet>
-              <Bullet>
-                <Mark /> <Content>{requirement}</Content>
-              </Bullet>
-            </>
-          )}
+          ))}
         </Bottom>
       </Container>
     </Wrap>
@@ -96,3 +87,29 @@ export const EntityCard = ({
 };
 
 export { Wrapper as EntityWrapper } from "./wrapper";
+
+//  {
+//    country === "NGA" ? (
+//      <Bullet flow="column">
+//        <>
+//          {features?.map((item, index) => (
+//            <FeatureListItem key={index}>
+//              <Mark /> <Content>{item}</Content>
+//            </FeatureListItem>
+//          ))}
+//        </>
+//      </Bullet>
+//    ) : (
+//      <>
+//        <Bullet>
+//          <Mark /> <Content>{type} Company</Content>
+//        </Bullet>
+//        <Bullet>
+//          <Mark /> <Content>{shares} shares</Content>
+//        </Bullet>
+//        <Bullet>
+//          <Mark /> <Content>{requirement}</Content>
+//        </Bullet>
+//      </>
+//    );
+//  }

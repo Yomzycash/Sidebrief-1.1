@@ -19,14 +19,28 @@ import {
   useGetUserSubmittedQuery,
 } from "services/launchService";
 import { store } from "redux/Store";
-import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
+import {
+  setGeneratedLaunchCode,
+  setLaunchResponse,
+  setRefreshApp,
+} from "redux/Slices";
 import { compareDesc } from "date-fns";
 // import AppFeedback from "components/AppFeedback";
 import { LaunchRocket, ManageSpanner } from "asset/svg";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const BusinessRegistration = (props) => {
+  const [allLaunchContainer, setAllLaunchContainer] = useState([]);
   // Get user data information
-  const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  const { userInfo, refreshApp } = useSelector(
+    (store) => store.UserDataReducer
+  );
+
+  useEffect(() => {
+    store.dispatch(setRefreshApp(!refreshApp));
+  }, []);
+
   let firstName_raw = userInfo?.first_name;
   let firstName =
     firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
@@ -41,15 +55,23 @@ const BusinessRegistration = (props) => {
     navigate(`/dashboard/rewards/${rewardID}`);
   };
 
-  let allLaunch = [];
+  useEffect(() => {
+    let allLaunch = [];
 
-  if (drafts.isSuccess && submitted.isSuccess) {
-    allLaunch = [...drafts?.currentData, ...submitted?.currentData];
-    allLaunch.sort((launch1, launch2) =>
-      compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
-    );
-    // console.log(allLaunch);
-  }
+    if (drafts.isSuccess && submitted.isSuccess) {
+      allLaunch = [...drafts?.currentData, ...submitted?.currentData];
+      allLaunch.sort((launch1, launch2) =>
+        compareDesc(new Date(launch1.updatedAt), new Date(launch2.updatedAt))
+      );
+      // console.log(allLaunch);
+    }
+    setAllLaunchContainer(allLaunch);
+  }, [drafts, submitted]);
+
+  useEffect(() => {
+    drafts.refetch();
+    submitted.refetch();
+  }, []);
 
   const analytics = {
     label: "Registrations",
@@ -97,12 +119,23 @@ const BusinessRegistration = (props) => {
     store.dispatch(setLaunchResponse({}));
     localStorage.removeItem("launchInfo");
     localStorage.removeItem("countryISO");
-    window.open("/launch", "_blank");
+    localStorage.removeItem("paymentDetails");
+    // window.open("/launch", "_blank");
+    navigate("/launch");
   };
 
   const handleManage = () => {
     navigate("/manage");
   };
+
+  useEffect(() => {
+    // clear the localstorage when this page is entered
+    store.dispatch(setGeneratedLaunchCode(""));
+    store.dispatch(setLaunchResponse({}));
+    localStorage.removeItem("launchInfo");
+    localStorage.removeItem("countryISO");
+    localStorage.removeItem("paymentDetails");
+  }, []);
 
   return (
     <Container>
@@ -110,6 +143,7 @@ const BusinessRegistration = (props) => {
       <Body>
         <Main>
           <DashboardSection
+            maxWidth
             title={
               alreadyUser
                 ? `Welcome back${firstName ? ", " + firstName : ""}`
@@ -132,8 +166,9 @@ const BusinessRegistration = (props) => {
               action={handleManage}
             />
           </DashboardSection>
-          {allLaunch.length > 0 ? (
+          {allLaunchContainer.length > 0 ? (
             <DashboardSection
+              maxWidth
               title="Businesses"
               body="Manage all your business registration in one place"
               link={{
@@ -148,7 +183,7 @@ const BusinessRegistration = (props) => {
                 loading={submitted.isLoading || drafts.isLoading}
               />
               <Recently>
-                {allLaunch.slice(0, 3).map((el) => {
+                {allLaunchContainer.slice(0, 3).map((el) => {
                   return (
                     <StatusCard
                       key={el.launchCode}

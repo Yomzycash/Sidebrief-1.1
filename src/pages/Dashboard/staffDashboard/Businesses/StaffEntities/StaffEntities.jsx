@@ -12,6 +12,9 @@ import {
 } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setRefreshApp } from "redux/Slices";
 
 const StaffEntities = () => {
   const [entities, setEntities] = useState([]);
@@ -27,10 +30,13 @@ const StaffEntities = () => {
   const [addEntity, addState] = useAddEntityMutation();
   const [deleteEntity, deleteState] = useDeleteEntityMutation();
 
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+
   useEffect(() => {
     if (data) {
       setEntities(data);
     }
+    store.dispatch(setRefreshApp(!refreshApp));
   }, [data]);
 
   const handleCardClick = (entity) => {
@@ -107,7 +113,7 @@ const StaffEntities = () => {
     }
     refetch();
   };
-  console.log(entities);
+
   return (
     <Container>
       <StaffHeader

@@ -19,7 +19,7 @@ const BusinessInformationReview = () => {
   };
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-shareholder");
+    navigate("/launch/review-shareholders");
   };
   const handlePrev = () => {
     navigate(-1);
@@ -81,7 +81,7 @@ const Nav = styled.nav`
   padding: 20px 40px 0px 40px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
 `;

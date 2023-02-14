@@ -1,4 +1,4 @@
-import { StaffBusinessTable } from "components/Staff/Tables";
+import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
 import { useGetApprovedLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
@@ -6,11 +6,11 @@ import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
+import { columns } from "../tableColumn";
+
 const InProgress = () => {
 	const [tableArr, setTableArr] = useState([]);
-	const approvedLaunch = useGetApprovedLaunchQuery({
-		refetchOnMountOrArgChange: true,
-	});
+	const approvedLaunch = useGetApprovedLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
 
@@ -20,11 +20,8 @@ const InProgress = () => {
 		}
 	}, [approvedLaunch, countries.isSuccess]);
 
-	console.log(tableArr);
 	let sortArr = [...tableArr];
 	let sortedArr = sortArr.sort(sortTableData);
-
-	console.log(countries.data);
 
 	const loadingData = approvedLaunch.isLoading;
 
@@ -38,7 +35,7 @@ const InProgress = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<StaffBusinessTable
+					<GeneralTable
 						data={sortedArr.map((element) => {
 							return {
 								name: element.businessNames
@@ -54,6 +51,7 @@ const InProgress = () => {
 								countryISO: element.registrationCountry,
 							};
 						})}
+						columns={columns}
 					/>
 				)}
 			</Body>

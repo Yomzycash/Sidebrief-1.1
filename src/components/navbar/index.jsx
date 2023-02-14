@@ -32,9 +32,8 @@ import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
 import Profile from "components/Profile";
 
-import { formatDistance } from "date-fns";
+import { formatDistanceToNow, parseJSON } from "date-fns";
 
-import { sortTableData } from "utils/staffHelper";
 import { useGetAllNotificationsQuery } from "services/chatService";
 
 const Navbar = ({
@@ -48,47 +47,6 @@ const Navbar = ({
   const { data } = useGetAllNotificationsQuery();
 
   const [notificationMessages, setNotificationMessages] = useState([]);
-  //const notificationTime = moment(notificationMessages.createdAt).fromNow(true);
-  //console.log(notificationTime)
-
-  // let sortDate = [...data];
-
-  // let sortedDate = sortDate?.sort(sortTableData);
-  // console.log("sorted date", sortedDate)
-
-  // const notificationTime = formatDistance(notificationMessages.createdAt, new Date() )
-  // console.log("new time", notificationTime)
-
-  // function timeSince(date) {
-
-  //   var seconds = Math.floor((new Date() - date) / 1000);
-
-  //   var interval = seconds / 31536000;
-
-  //   if (interval > 1) {
-  //     return Math.floor(interval) + " years";
-  //   }
-  //   interval = seconds / 2592000;
-  //   if (interval > 1) {
-  //     return Math.floor(interval) + " months";
-  //   }
-  //   interval = seconds / 86400;
-  //   if (interval > 1) {
-  //     return Math.floor(interval) + " days";
-  //   }
-  //   interval = seconds / 3600;
-  //   if (interval > 1) {
-  //     return Math.floor(interval) + " hours";
-  //   }
-  //   interval = seconds / 60;
-  //   if (interval > 1) {
-  //     return Math.floor(interval) + " minutes";
-  //   }
-  //   return Math.floor(seconds) + " seconds";
-  // }
-  // var aDay = 24*60*60*1000;
-  // console.log(timeSince(new Date(Date.now()-aDay)));
-  // console.log(timeSince(new Date(Date.now()-aDay*2)));
 
   function convertDate() {
     const options = {
@@ -128,24 +86,8 @@ const Navbar = ({
 
   useEffect(() => {
     setNotificationMessages(data);
-    // console.log("my length", data?.length);
   }, [data]);
-
-  // useMemo(() => {
-  //   let status = newUserObject?.verified;
-  //   if (status === false) {
-  //     setMsgObj((prev) => [
-  //       ...prev,
-  //       {
-  //         messageText: "Kindly check your email for the verification link",
-
-  //         read: false,
-  //       },
-  //     ]);
-  //   }
-  // }, []);
-
-  // console.log(msgObj);
+  
   const handleProfile = () => {
     setShowProfile(!showProfile);
   };
@@ -229,7 +171,12 @@ const Navbar = ({
                   <Message key={index}>
                     <MessageSubject>
                       {item.messageSubject}
-                      <span>{convertDate(item.createdAt)}</span>
+                      <span>
+                        {formatDistanceToNow(
+                  parseJSON(notificationMessages.slice(-1)[0].createdAt),
+                  { addSuffix: true }
+                )}
+                      </span>
 
                       {/* <span>
                       {notificationTime}
