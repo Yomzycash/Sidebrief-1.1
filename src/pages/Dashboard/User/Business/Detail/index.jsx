@@ -43,7 +43,6 @@ const BusinessDetail = () => {
       ...launchResponse,
       viewPayLaunch,
     });
-
     if (paymentInfo.status) {
       navigate("/launch/address");
     } else {

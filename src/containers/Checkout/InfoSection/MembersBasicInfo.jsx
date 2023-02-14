@@ -96,7 +96,8 @@ export const MembersBasicInfo = ({
     let currValue = e.target.value;
     let diff = info?.shareholderOwnershipPercentage - currValue;
     let newMax = maxPercentage + diff;
-    setSharesLeft(newMax > 0 ? newMax : 0);
+    let newMax2 = maxPercentage - currValue;
+    setSharesLeft(edit ? (newMax > 0 ? newMax : 0) : newMax2 > 0 ? newMax2 : 0);
     setValue("sharePercentage", currValue);
   };
 
@@ -104,7 +105,8 @@ export const MembersBasicInfo = ({
     let currValue = e.target.value;
     let diff = info?.beneficialOwnershipStake - currValue;
     let newMax = maxPercentage + diff;
-    setStakeLeft(newMax > 0 ? newMax : 0);
+    let newMax2 = maxPercentage - currValue;
+    setStakeLeft(edit ? (newMax > 0 ? newMax : 0) : newMax2 > 0 ? newMax2 : 0);
     setValue("stake", currValue);
   };
 

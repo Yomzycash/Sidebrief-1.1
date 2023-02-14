@@ -156,11 +156,10 @@ export const checkPaymentStatus = async (info) => {
     registrationCountry: info.registrationCountry,
     registrationType: info.registrationType,
   };
-
   if (info.launchCode) {
     let viewResponse = await info.viewPayLaunch(requiredData);
-
-    let data = viewResponse?.data?.businessPayment[0];
+    let paymentInfo = viewResponse?.data?.businessPayment;
+    let data = paymentInfo[paymentInfo?.length - 1];
     let error = viewResponse?.error;
     if (data) {
       if (data?.paymentStatus === "successful") {
