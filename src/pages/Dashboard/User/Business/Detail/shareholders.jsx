@@ -13,6 +13,9 @@ const DetailShareholder = () => {
 
   const members = isSuccess ? data.businessMembers : [];
   const memberKYC = isSuccess ? data.businessMembersKYC : [];
+  console.log("members list", members);
+  console.log("members listsssss", data);
+  console.log("members kyc", memberKYC);
   return (
     <>
       {isLoading ? (
@@ -46,12 +49,21 @@ const DetailShareholder = () => {
                 name={member.memberName}
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
-                title={`${shareholder.shareholderOwnershipType} - ${shareholder.shareholderOwnershipPercentage}`}
+                title={`${
+                  shareholder.shareholderRegistrationNumber
+                    ? "Company"
+                    : "Individual"
+                } - ${shareholder.shareholderOwnershipPercentage}%`}
                 nin={NINSlip}
                 proof={proofFile}
                 signature={eSignature}
                 passport={passportFile}
-                page={"sharehholders"}
+                page={"shareholders"}
+                type={
+                  shareholder.shareholderRegistrationNumber
+                    ? "company"
+                    : "individual"
+                }
               />
             );
           })}
