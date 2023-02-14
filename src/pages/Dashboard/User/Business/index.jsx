@@ -56,8 +56,6 @@ const Business = () => {
   let draftTotal = drafts?.currentData?.length;
 
   const handleLaunch = () => {
-    // store.dispatch(setGeneratedLaunchCode(""));
-    // window.open("/launch", "_blank");
     store.dispatch(setGeneratedLaunchCode(""));
     store.dispatch(setLaunchResponse({}));
     localStorage.removeItem("launchInfo");

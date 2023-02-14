@@ -38,7 +38,8 @@ export const NameWrapper = styled.div`
 
 export const TitleWrapper = styled.div`
   padding: 4px 16px;
-  background: #00a2d40c;
+  background-color: ${({ type }) =>
+    type === "company" ? "#d400cc0c" : "#00a2d40c"};
   border-radius: 12px;
   text-align: center;
 `;
@@ -50,7 +51,7 @@ export const Title = styled.h3`
   font-size: 14px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: #00a2d4;
+  color: ${({ type }) => (type === "company" ? "#D400CC" : "#00A2D4")};
 `;
 
 export const EmailWrapper = styled.div`

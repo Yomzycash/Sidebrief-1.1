@@ -1,6 +1,7 @@
-import { navigateToDetailPage } from 'utils/globalFunctions'
-import { store } from 'redux/Store'
-import { setLaunchResponse } from 'redux/Slices'
+import { navigateToDetailPage } from "utils/globalFunctions";
+import { store } from "redux/Store";
+import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import { checkPaymentStatus } from "pages/Launch/actions";
 
 export const useActions = ({
   navigate,
@@ -9,57 +10,53 @@ export const useActions = ({
   viewPayLaunch,
 }) => {
   const showDeleteModal = () => {
-    setShowDelete(true)
-  }
+    setShowDelete(true);
+  };
 
   const hideDeleteModal = () => {
-    setShowDelete(false)
-  }
+    setShowDelete(false);
+  };
 
   const viewAction = () => {
-    navigateToDetailPage(navigate, launchInfo, viewPayLaunch)
-  }
+    navigateToDetailPage(navigate, launchInfo, viewPayLaunch);
+  };
 
   const editAction = async () => {
-    await handleEditNavigation()
-  }
+    await handleEditNavigation();
+  };
 
   const deleteAction = () => {
-    showDeleteModal()
-  }
+    showDeleteModal();
+  };
 
-  const checkPaymentStatus = async () => {
-    let viewResponse = await viewPayLaunch(launchInfo)
-    // console.log(viewResponse);
-    return viewResponse
-  }
+  // const checkPaymentStatus = async () => {
+  //   let viewResponse = await viewPayLaunch(launchInfo);
+  //   // console.log(viewResponse);
+  //   return viewResponse;
+  // };
 
   const handleEditNavigation = async () => {
-    let status = await checkPaymentStatus()
+    localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
 
-    let data = status?.data?.businessPayment
-
-    let error = status?.error
-
-    store.dispatch(setLaunchResponse(launchInfo))
-    localStorage.setItem('launchInfo', JSON.stringify(launchInfo))
-    console.log(data)
-    if (data) {
-      if (data.length === 0) {
-        navigate('/launch')
-      } else {
-        navigate('/launch/address')
-      }
+    let paymentInfo = await checkPaymentStatus({
+      ...launchInfo,
+      viewPayLaunch,
+    });
+    if (paymentInfo?.data) {
+      localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo?.data));
+      store.dispatch(setLaunchPaid(paymentInfo));
+      store.dispatch(setLaunchResponse(launchInfo));
+      localStorage.setItem("countryISO", launchInfo.registrationCountry);
+      navigate("/launch/address");
     } else {
-      // console.log("This block ran");
-      console.log(error)
+      navigate("/launch");
     }
-  }
+  };
 
   return {
     viewAction,
     editAction,
     deleteAction,
     hideDeleteModal,
-  }
-}
+  };
+};

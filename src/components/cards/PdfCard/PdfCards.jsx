@@ -34,6 +34,7 @@ const PdfCards = ({
   signature,
   passport,
   page,
+  type
 }) => {
   const navigate = useNavigate();
   return (
@@ -43,8 +44,8 @@ const PdfCards = ({
           <Top>
             <NameWrapper>{name}</NameWrapper>
             {title ? (
-              <TitleWrapper>
-                <Title>{title}</Title>
+              <TitleWrapper type={type}>
+                <Title type={type}>{title}</Title>
               </TitleWrapper>
             ) : null}
           </Top>
@@ -62,6 +63,47 @@ const PdfCards = ({
           </PhoneWrapper>
         </DetailWrapper>
         <LowerContainer>
+          <PdfWrapper>
+            <PdfLowerWrapper>
+              <IconWrapper>
+                {passport ? (
+                  <img
+                    src={
+                      imageTypeImage?.find(
+                        (el) => el?.type === passport?.fileType
+                      )?.image
+                    }
+                    alt="icon"
+                    style={{
+                      margin: 0,
+                      height: "25px",
+                      width: "25px",
+                      marginRight: "8px",
+                    }}
+                  />
+                ) : (
+                  <PdfIcon />
+                )}
+              </IconWrapper>
+              {passport ? (
+                <Details
+                  onClick={() =>
+                    downLoadImage(passport.documentLink, passport.documentType)
+                  }
+                >
+                  {passport.documentType}
+                </Details>
+              ) : (
+                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                  upload your passport photograph
+                </Details>
+              )}
+            </PdfLowerWrapper>
+
+            {/* <IconWrapper>
+              <DeleteIcon />
+            </IconWrapper> */}
+          </PdfWrapper>
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
@@ -98,50 +140,9 @@ const PdfCards = ({
               )}
             </PdfLowerWrapper>
 
-            <IconWrapper>
+            {/* <IconWrapper>
               <DeleteIcon />
-            </IconWrapper>
-          </PdfWrapper>
-
-          <PdfWrapper>
-            <PdfLowerWrapper>
-              <IconWrapper>
-                {proof ? (
-                  <img
-                    src={
-                      imageTypeImage?.find((el) => el?.type === proof?.fileType)
-                        ?.image
-                    }
-                    alt="icon"
-                    style={{
-                      margin: 0,
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "8px",
-                    }}
-                  />
-                ) : (
-                  <PdfIcon />
-                )}
-              </IconWrapper>
-              {proof ? (
-                <Details
-                  onClick={() =>
-                    downLoadImage(proof.documentLink, proof.documentType)
-                  }
-                >
-                  {proof.documentType}
-                </Details>
-              ) : (
-                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload proof of address
-                </Details>
-              )}
-            </PdfLowerWrapper>
-
-            <IconWrapper>
-              <DeleteIcon />
-            </IconWrapper>
+            </IconWrapper> */}
           </PdfWrapper>
 
           <PdfWrapper>
@@ -184,20 +185,19 @@ const PdfCards = ({
               )}
             </PdfLowerWrapper>
 
-            <IconWrapper>
+            {/* <IconWrapper>
               <DeleteIcon />
-            </IconWrapper>
+            </IconWrapper> */}
           </PdfWrapper>
 
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
-                {passport ? (
+                {proof ? (
                   <img
                     src={
-                      imageTypeImage?.find(
-                        (el) => el?.type === passport?.fileType
-                      )?.image
+                      imageTypeImage?.find((el) => el?.type === proof?.fileType)
+                        ?.image
                     }
                     alt="icon"
                     style={{
@@ -211,24 +211,24 @@ const PdfCards = ({
                   <PdfIcon />
                 )}
               </IconWrapper>
-              {passport ? (
+              {proof ? (
                 <Details
                   onClick={() =>
-                    downLoadImage(passport.documentLink, passport.documentType)
+                    downLoadImage(proof.documentLink, proof.documentType)
                   }
                 >
-                  {passport.documentType}
+                  {proof.documentType}
                 </Details>
               ) : (
                 <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload your passport photograph
+                  upload proof of address
                 </Details>
               )}
             </PdfLowerWrapper>
 
-            <IconWrapper>
+            {/* <IconWrapper>
               <DeleteIcon />
-            </IconWrapper>
+            </IconWrapper> */}
           </PdfWrapper>
         </LowerContainer>
       </Wrapper>
