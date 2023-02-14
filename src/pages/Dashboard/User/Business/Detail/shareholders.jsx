@@ -13,6 +13,8 @@ const DetailShareholder = () => {
 
   const members = isSuccess ? data.businessMembers : [];
   const memberKYC = isSuccess ? data.businessMembersKYC : [];
+  console.log("members list", members);
+  console.log("members kyc", memberKYC);
   return (
     <>
       {isLoading ? (
@@ -51,7 +53,7 @@ const DetailShareholder = () => {
                 proof={proofFile}
                 signature={eSignature}
                 passport={passportFile}
-                page={"sharehholders"}
+                page={"shareholders"}
               />
             );
           })}
