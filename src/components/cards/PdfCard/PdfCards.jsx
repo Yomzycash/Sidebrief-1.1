@@ -34,6 +34,7 @@ const PdfCards = ({
   signature,
   passport,
   page,
+  type
 }) => {
   const navigate = useNavigate();
   return (
@@ -43,8 +44,8 @@ const PdfCards = ({
           <Top>
             <NameWrapper>{name}</NameWrapper>
             {title ? (
-              <TitleWrapper>
-                <Title>{title}</Title>
+              <TitleWrapper type={type}>
+                <Title type={type}>{title}</Title>
               </TitleWrapper>
             ) : null}
           </Top>
