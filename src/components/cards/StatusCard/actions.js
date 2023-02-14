@@ -38,6 +38,7 @@ export const useActions = ({
     let status = await checkPaymentStatus()
 
     let data = status?.data?.businessPayment
+
     let error = status?.error
 
     store.dispatch(setLaunchResponse(launchInfo))
@@ -46,7 +47,6 @@ export const useActions = ({
     if (data) {
       if (data.length === 0) {
         navigate('/launch')
-        localStorage.setItem('navigatedFrom', '/launch/entity')
       } else {
         navigate('/launch/address')
       }
