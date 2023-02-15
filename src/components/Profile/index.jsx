@@ -19,9 +19,9 @@ const Profile = ({ setShowProfile }) => {
 				<User />
 				<ProfileList onClick={handleProfile}>Profile</ProfileList>
 			</ProfileLists>
-			<ProfileLists onClick={handleLogout}>
+			<ProfileLists onClick={() => handleLogout(navigate)}>
 				<DeleteI />
-				<Delete onClick={handleLogout}>Logout</Delete>
+				<Delete onClick={() => handleLogout(navigate)}>Logout</Delete>
 			</ProfileLists>
 		</ProfileContainer>
 	);

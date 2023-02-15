@@ -16,7 +16,7 @@ import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { handleLogout } from "utils/globalFunctions";
 
 const Sidebar = () => {
@@ -25,6 +25,7 @@ const Sidebar = () => {
 	const location = useLocation();
 	const locationPath = location.pathname;
 
+	const navigate = useNavigate();
 	const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
 
 	const sidebarVariants = {
@@ -89,10 +90,12 @@ const Sidebar = () => {
 			</Top>
 
 			<Logout>
-				<LogoutWrapper onClick={handleLogout}>
+				<LogoutWrapper onClick={() => handleLogout(navigate)}>
 					<HiOutlineLogout color="#ed4e3a" size={20} />
 					{expanded ? (
-						<LogoutText onClick={handleLogout}>Logout</LogoutText>
+						<LogoutText onClick={() => handleLogout(navigate)}>
+							Logout
+						</LogoutText>
 					) : null}
 				</LogoutWrapper>
 			</Logout>

@@ -31,7 +31,7 @@ const MobileSidebar = ({ toggleDrawer }) => {
 
 	const handleLogout = () => {
 		toggleDrawer(false);
-		logout();
+		logout(navigate);
 	};
 
 	const handleNavigate = (path) => {
