@@ -20,9 +20,8 @@ import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
 
 const CountryEntities = () => {
-  const [open, setOpen] = useOutletContext();
   const [clickedEntity, setClickedEntity] = useState({});
-  const [cardAction, setCardAction] = useState("");
+  const [cardAction, setCardAction] = useOutletContext();
   const [features, setFeatures] = useState([]);
   const [documents, setDocuments] = useState([]);
 
@@ -41,7 +40,6 @@ const CountryEntities = () => {
 
   const handleCardClick = (entity) => {
     setCardAction("edit");
-    setOpen(true);
     setClickedEntity(entity);
   };
 
@@ -76,7 +74,8 @@ const CountryEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity added successfully");
-      setOpen(false);
+      // setOpen(false);
+      setCardAction("");
     } else {
       handleError(error);
     }
@@ -91,7 +90,8 @@ const CountryEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity updated successfully");
-      setOpen(false);
+      setCardAction("");
+      // setOpen(false);
     } else {
       handleError(error);
     }
@@ -105,7 +105,8 @@ const CountryEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity deleted successfully");
-      setOpen(false);
+      setCardAction("");
+      // setOpen(false);
     } else {
       handleError(error);
     }
@@ -137,8 +138,8 @@ const CountryEntities = () => {
           )}
           <StaffEntityModal
             disableAll={cardAction === "edit" ? true : false}
-            open={open}
-            setOpen={setOpen}
+            open={cardAction ? true : false}
+            // setOpen={setOpen}
             cardAction={cardAction}
             setCardAction={setCardAction}
             title={

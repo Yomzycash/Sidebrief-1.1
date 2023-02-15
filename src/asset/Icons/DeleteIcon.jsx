@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteIcon = ({ color }) => {
+const DeleteIcon = ({ color, onClick }) => {
   return (
     <svg
       width="20"
@@ -8,6 +8,7 @@ const DeleteIcon = ({ color }) => {
       viewBox="0 0 17 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick}
     >
       <path
         fillRule="evenodd"

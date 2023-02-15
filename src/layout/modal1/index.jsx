@@ -15,6 +15,8 @@ import {
 import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
 import { SpinningCircles } from "react-loading-icons";
 import DeleteIcon from "asset/Icons/DeleteIcon";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const Modal1 = ({
   handleSubmit,
@@ -32,9 +34,12 @@ const Modal1 = ({
   deleteState,
   $hideIcons,
 }) => {
+  const [confirm, setConfirm] = useState(false);
+  const [value, setValue] = useState("");
+
   // Called when closed button is clicked
   const handleClose = () => {
-    setOpen(false);
+    setOpen && setOpen(false);
     setCardAction && setCardAction("");
   };
 
@@ -42,6 +47,15 @@ const Modal1 = ({
   const handleDisable = () => {
     setDisable(false);
   };
+  const handleDeleteSelected = () => {
+    setConfirm(true);
+    if (value === "delete") handleDelete();
+  };
+
+  useEffect(() => {
+    setConfirm(false);
+    setValue("");
+  }, [cardAction]);
 
   return (
     <Dialog open={open}>
@@ -53,20 +67,35 @@ const Modal1 = ({
               {!$hideIcons && cardAction === "edit" && (
                 <EditIcon width={20} onClick={handleDisable} />
               )}
-              {!$hideIcons &&
-                cardAction === "edit" &&
-                (deleteState?.isLoading ? (
-                  <SpinningCircles
-                    stroke="#cb1b1b"
-                    fill="#cb1b1b"
-                    width={20}
-                    height={20}
-                  />
-                ) : (
-                  <DeleteWrapper onClick={handleDelete}>
-                    <DeleteIcon width={20} color="#cb1b1b" />
-                  </DeleteWrapper>
-                ))}
+              {!$hideIcons && cardAction === "edit" && (
+                <DeleteWrapper>
+                  {confirm && (
+                    <input
+                      type="text"
+                      placeholder="Type DELETE to confirm"
+                      onChange={(e) => setValue(e.target.value.toLowerCase())}
+                    />
+                  )}
+                  {deleteState?.isLoading ? (
+                    <SpinningCircles
+                      stroke="#cb1b1b"
+                      fill="#cb1b1b"
+                      width={20}
+                      height={20}
+                    />
+                  ) : (
+                    <DeleteIcon
+                      width={20}
+                      color={
+                        value === "delete" || confirm === false
+                          ? "#cb1b1b"
+                          : "#c68181"
+                      }
+                      onClick={handleDeleteSelected}
+                    />
+                  )}
+                </DeleteWrapper>
+              )}
               <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
             </TopIcons>
           </Title>
