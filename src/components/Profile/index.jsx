@@ -1,23 +1,12 @@
 import React from "react";
-import {
-	ProfileContainer,
-	ProfileListss,
-	Delete,
-	ProfileLists,
-	ProfileList,
-} from "./style";
+import { ProfileContainer, Delete, ProfileLists, ProfileList } from "./style";
 import { ReactComponent as User } from "../../asset/svg/user.svg";
-import { ReactComponent as Shield } from "../../asset/svg/sh.svg";
 import { ReactComponent as DeleteI } from "../../asset/svg/de.svg";
 import { useNavigate } from "react-router-dom";
+import { handleLogout } from "utils/globalFunctions";
+
 const Profile = ({ setShowProfile }) => {
 	const navigate = useNavigate();
-
-	const handleLogout = () => {
-		localStorage.clear();
-		navigate("/login");
-		// console.log("User logged out");
-	};
 
 	const handleProfile = () => {
 		navigate("/dashboard/settings/personal");

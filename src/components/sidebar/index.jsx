@@ -16,7 +16,8 @@ import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import { handleLogout } from "utils/globalFunctions";
 
 const Sidebar = () => {
 	const [iconHovered, setIconHovered] = useState(0);
@@ -24,7 +25,6 @@ const Sidebar = () => {
 	const location = useLocation();
 	const locationPath = location.pathname;
 
-	const navigate = useNavigate();
 	const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
 
 	const sidebarVariants = {
@@ -42,14 +42,9 @@ const Sidebar = () => {
 		);
 	}, [expanded]);
 
-  const ActiveStyle = {
-    background: "#00a2d419",
-    color: "#00a2d4",
-  };
-
-	const handleLogout = () => {
-		localStorage.clear();
-		navigate("/login");
+	const ActiveStyle = {
+		background: "#00a2d419",
+		color: "#00a2d4",
 	};
 
 	return (

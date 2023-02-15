@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { staffSidebarLink, StaffSidebarLinks } from "utils/config";
+import { StaffSidebarLinks } from "utils/config";
 import {
 	ListWrapper,
 	Logout,
 	LogoutText,
 	LogoutWrapper,
-	SidebarContentItemIcon,
-	SidebarContentItemLink,
 	SidebarLinks,
 	SidebarWrapper,
-	SideLinkWrapper,
-	SidebarFlex,
 	Top,
 } from "./styled";
 import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
 import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
+import { handleLogout } from "utils/globalFunctions";
 
 const StaffSidebar = () => {
 	const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
 
 	const location = useLocation();
-	const navigate = useNavigate();
 
 	let homePath = location.pathname === "/staff-dashboard" ? true : false;
 
@@ -42,11 +38,6 @@ const StaffSidebar = () => {
 			setSidebarWidth(expanded ? sidebarVariants.true.width : "100px")
 		);
 	}, [expanded]);
-
-	const handleLogout = () => {
-		localStorage.clear();
-		navigate("/login");
-	};
 
 	return (
 		<SidebarWrapper
