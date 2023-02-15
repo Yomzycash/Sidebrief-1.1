@@ -216,6 +216,7 @@ export const TagItem = styled.div`
   gap: 0.5em;
   color: #fafafa;
   text-transform: capitalize;
+  opacity: ${({ $disable }) => ($disable ? 0.7 : 1)};
 `;
 
 export const TagText = styled.span`

@@ -76,7 +76,16 @@ const EntitySelect = () => {
 
   // Set to state all entities of the specified country
   useEffect(() => {
-    setEntities(data);
+    if (data)
+      setEntities(
+        data.map((el) => ({
+          ...el,
+          usdRate:
+            currencyRate?.filter(
+              (each) => each?.currency === el?.entityCurrency
+            )[0]?.usdRate * el?.entityFee,
+        }))
+      );
 
     if (error?.status === "FETCH_ERROR") {
       toast.error("Please check your internet connection");
@@ -84,7 +93,7 @@ const EntitySelect = () => {
   }, [data, error?.status]);
 
   //
-
+  console.log(entities);
   //
 
   // This fires off when an entity is selected
@@ -209,7 +218,7 @@ const EntitySelect = () => {
           <EntityCardsWrapper>
             {entities &&
               [...entities]
-                ?.sort((a, b) => a?.entityFee - b?.entityFee)
+                ?.sort((a, b) => a?.usdRate - b?.usdRate)
                 .map((item, index) => (
                   <EntityCard
                     key={index}
@@ -220,7 +229,6 @@ const EntitySelect = () => {
                     description={item?.entityDescription}
                     type={item?.entityType}
                     timeline={item?.entityTimeline}
-                    // country={countryISO === "NGA" ? "NGA" : ""}
                     features={item?.entityFeatures}
                     requirement={item?.entityRequirements}
                     price={parseInt(item?.entityFee).toLocaleString("en-US")}
@@ -247,9 +255,15 @@ const EntitySelect = () => {
           </DialogContent>
         </Dialog>
       )}
-      {/* <AppFeedback subProject="Entity select" /> */}
     </Container>
   );
 };
 
 export default EntitySelect;
+
+const currencyRate = [
+  { currency: "NGN", usdRate: 0.002171323 },
+  { currency: "KES", usdRate: 0.0079684653 },
+  { currency: "ZAR", usdRate: 0.055761334 },
+  { currency: "USD", usdRate: 1 },
+];
