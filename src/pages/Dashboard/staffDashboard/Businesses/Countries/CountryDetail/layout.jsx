@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { handleError } from "utils/globalFunctions";
 
 const CountryDetailLayout = (pages) => {
-  const [open, setOpen] = useState(false);
+  const [cardAction, setCardAction] = useState("");
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const [deleteCountry, deleteState] = useDeleteCountryMutation();
@@ -44,7 +44,7 @@ const CountryDetailLayout = (pages) => {
   return (
     <Container>
       <HeaderDetail
-        setOpen={setOpen}
+        setCardAction={setCardAction}
         delLoading={deleteState.isLoading}
         setDeleteConfirm={setDeleteConfirm}
       />
@@ -56,7 +56,7 @@ const CountryDetailLayout = (pages) => {
         loading={deleteState.isLoading}
       />
       <DetailBody>
-        <Outlet context={[open, setOpen]} />
+        <Outlet context={[cardAction, setCardAction]} />
       </DetailBody>
     </Container>
   );

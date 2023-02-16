@@ -20,7 +20,7 @@ import { useGetAllNotificationsQuery } from 'services/chatService'
 import profile from 'asset/images/profile.svg'
 import { formatDistanceToNow, parseJSON, compareAsc } from 'date-fns'
 import { useParams } from 'react-router-dom'
-import { getMessages, getServiceIDMessages } from './actions'
+import { getMessages, getUsersMessages } from './actions'
 
 export const Chats = () => {
   const options = ['senderID', 'serviceID']
@@ -32,8 +32,10 @@ export const Chats = () => {
   const params = useParams()
 
   const messages = getMessages(data)
-  const jdsjd = getServiceIDMessages(data)
-  console.log(jdsjd)
+
+  const userServicesMsgs = getUsersMessages(data)
+  console.log(userServicesMsgs)
+
   return (
     <Container>
       <TopContainer>
@@ -76,6 +78,7 @@ export const Chats = () => {
         </SearchContainer>
       </TopContainer>
       <ChatContainer>
+        
         {messages
           ?.sort((a, b) =>
             compareAsc(
@@ -85,6 +88,7 @@ export const Chats = () => {
           )
           .map((chat, index) => {
             return (
+
               <ChatCard
                 key={index}
                 image={profile}

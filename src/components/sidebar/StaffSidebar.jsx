@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { staffSidebarLink, StaffSidebarLinks } from "utils/config";
+import { StaffSidebarLinks } from "utils/config";
 import {
 	ListWrapper,
 	Logout,
 	LogoutText,
 	LogoutWrapper,
-	SidebarContentItemIcon,
-	SidebarContentItemLink,
 	SidebarLinks,
 	SidebarWrapper,
-	SideLinkWrapper,
-	SidebarFlex,
 	Top,
 } from "./styled";
 import { HiMenu } from "react-icons/hi";
@@ -19,6 +15,7 @@ import { store } from "redux/Store";
 import { setSidebarWidth } from "redux/Slices";
 import { useLocation, useNavigate } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
+import { handleLogout } from "utils/globalFunctions";
 
 const StaffSidebar = () => {
 	const [expanded, setExpaned] = useState(() => window.innerWidth > 1050);
@@ -42,11 +39,6 @@ const StaffSidebar = () => {
 			setSidebarWidth(expanded ? sidebarVariants.true.width : "100px")
 		);
 	}, [expanded]);
-
-	const handleLogout = () => {
-		localStorage.clear();
-		navigate("/login");
-	};
 
 	return (
 		<SidebarWrapper
@@ -72,10 +64,12 @@ const StaffSidebar = () => {
 			</Top>
 
 			<Logout>
-				<LogoutWrapper onClick={handleLogout}>
+				<LogoutWrapper onClick={() => handleLogout(navigate)}>
 					<HiOutlineLogout color="#ed4e3a" size={20} />
 					{expanded ? (
-						<LogoutText onClick={handleLogout}>Logout</LogoutText>
+						<LogoutText onClick={() => handleLogout(navigate)}>
+							Logout
+						</LogoutText>
 					) : null}
 				</LogoutWrapper>
 			</Logout>

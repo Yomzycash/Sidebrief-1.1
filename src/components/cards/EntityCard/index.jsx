@@ -34,8 +34,6 @@ export const EntityCard = ({
   currency,
   description,
 }) => {
-  console.log(features);
-  console.log(country);
   return (
     <Wrap>
       {name === "Pro" && (

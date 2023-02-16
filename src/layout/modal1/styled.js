@@ -70,6 +70,7 @@ export const Title = styled.div`
 
 export const TopIcons = styled.div`
   display: flex;
+  align-items: center;
   gap: clamp(16px, 6vw, 60px);
 `;
 
@@ -83,4 +84,17 @@ export const DeleteWrapper = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+
+  input {
+    color: #cb1b1b;
+    padding: 8px 16px;
+    width: 90%;
+    border: 1px solid #cb1b1b;
+    border-radius: 10px;
+    background: none;
+    outline: none;
+    font-weight: 400;
+    font-size: 14px;
+    margin-right: 5px;
+  }
 `;
