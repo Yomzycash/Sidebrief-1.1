@@ -20,7 +20,7 @@ import { useGetAllNotificationsQuery } from "services/chatService";
 import profile from "asset/images/profile.svg";
 import { formatDistanceToNow, parseJSON, compareAsc } from "date-fns";
 import { useParams } from "react-router-dom";
-import { getMessages } from "./actions";
+import { getMessages, getUsersMessages } from "./actions";
 
 export const Chats = () => {
   const options = ["senderID", "serviceID"];
@@ -32,6 +32,10 @@ export const Chats = () => {
   const params = useParams();
 
   const messages = getMessages(data);
+
+  const userServicesMsgs = getUsersMessages(data);
+  console.log(userServicesMsgs);
+
   return (
     <Container>
       <TopContainer>
