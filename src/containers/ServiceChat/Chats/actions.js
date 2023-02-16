@@ -1,16 +1,16 @@
 import { parseJSON, compareAsc } from "date-fns";
 
 export const getMessages = (data) => {
-	const uniqueSenders = [...new Set(data?.map((el) => el.senderId))];
+	const uniqueSenders = [...new Set(data?.map((el) => el.serviceId))];
 
 	const uniqueData = uniqueSenders
 		.map((el) => {
 			const relatedData = data?.filter(
-				(notification) => notification.senderID === el
+				(notification) => notification.serviceId === el
 			);
 
 			return {
-				senderID: el,
+				serviceId: el,
 				notification: relatedData.sort((a, b) =>
 					compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
 				),

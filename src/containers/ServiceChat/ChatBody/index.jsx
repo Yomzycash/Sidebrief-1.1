@@ -73,18 +73,18 @@ export const ChatBody = ({ isUser }) => {
 	return (
 		<Container>
 			<Messages>
-				{modifiedMessage
-					?.sort((a, b) =>
-						compareDesc(
-							new Date(a.formatedDate),
-							new Date(b.formatedDate)
+				<>
+					{modifiedMessage
+						?.sort((a, b) =>
+							compareDesc(
+								new Date(a.formatedDate),
+								new Date(b.formatedDate)
+							)
 						)
-					)
-					?.map((el, index) => (
-						<>
+						?.map((el, index) => (
 							<MessageBubble key={index} {...el} />
-						</>
-					))}
+						))}
+				</>
 			</Messages>
 			<TextInputForm onSubmit={handleSubmit(sendMessage)}>
 				<TextInput

@@ -18,9 +18,8 @@ const ChatCard = ({
 	serviceName,
 	time,
 	message,
-	senderID,
+	serviceId,
 	currentSelected,
-
 }) => {
 	const navigate = useNavigate();
 
@@ -28,10 +27,10 @@ const ChatCard = ({
 		navigate(`${id}`);
 	};
 
-	const isSelected = currentSelected === senderID;
+	const isSelected = currentSelected === serviceId;
 
 	return (
-		<Container onClick={() => openChat(senderID)} selected={isSelected}>
+		<Container onClick={() => openChat(serviceId)} selected={isSelected}>
 			<TopContainer>
 				<InnerContainer>
 					<ImageContainer>
