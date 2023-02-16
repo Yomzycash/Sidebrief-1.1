@@ -7,20 +7,21 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { MessageBubble } from 'components/cards'
 import { compareDesc, differenceInDays, isToday, isYesterday } from 'date-fns'
 import {
-  useGetAllNotificationsByIdQuery,
-  useGetAllNotificationsQuery,
-} from 'services/chatService'
-import { getMessages } from '../Chats/actions'
-import { useParams } from 'react-router-dom'
+	useGetAllNotificationsByIdQuery,
+	useGetAllNotificationsQuery,
+} from "services/chatService";
+import { getMessages } from "../Chats/actions";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export const ChatBody = () => {
-  const { data, isError, isLoading } = useGetAllNotificationsQuery()
-  console.log(data)
+export const ChatBody = ({ isUser }) => {
+	const { data, isError, isLoading } = useGetAllNotificationsQuery();
 
   const { handleSubmit, register, reset } = useForm({
     resolver: yupResolver(messageSchema),
   })
 
+	const { serviceId } = useParams();
   const sendMessage = (data) => {
     console.log(data.message)
     reset()
@@ -30,7 +31,9 @@ export const ChatBody = () => {
 
   let messages = getMessages(data)
 
-  let clickedMessage = messages?.filter((message) => message?.senderID === ID)
+	let clickedMessage = messages?.filter(
+		(message) => message?.serviceId === serviceId
+	);
 
   let messageContent =
     clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
@@ -53,32 +56,49 @@ export const ChatBody = () => {
     }
   }
 
-  let modifiedMessage = messageContent?.map((msg) => ({
-    ...msg,
-    formatedDate: formatDate(msg?.updatedAt),
-  }))
+	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
 
-  return (
-    <Container>
-      <Messages>
-        {modifiedMessage
-          ?.sort((a, b) =>
-            compareDesc(new Date(a.formatedDate), new Date(b.formatedDate)),
-          )
-          ?.map((el, index) => (
-            <>
-              <MessageBubble key={index} {...el} />
-            </>
-          ))}
-      </Messages>
-      <TextInputForm onSubmit={handleSubmit(sendMessage)}>
-        <SubjectInput placeholder="Subject" />
-        <TextBody>
-        <TextInput placeholder="Send a message" {...register('message')} />
+	const sendMessage = (data) => {
+		const requiredData = {
+			serviceId: serviceId,
+			senderId: userInfo.id,
+			messageSubject: "Subject", // you can change this when you start working
+			messageBody: data.message,
+			messageIsRead: false,
+			messageFiles: [], //empty array, should be populated when we implement file sending
+		};
+		console.log(requiredData);
+		reset();
+	};
 
-          <CommonButton text={'Send'} RightIcon={Send} />
-          </TextBody>
-      </TextInputForm>
-    </Container>
-  )
-}
+	let modifiedMessage = messageContent?.map((msg) => ({
+		...msg,
+		formatedDate: formatDate(msg?.updatedAt),
+	}));
+
+	return (
+		<Container>
+			<Messages>
+				<>
+					{modifiedMessage
+						?.sort((a, b) =>
+							compareDesc(
+								new Date(a.formatedDate),
+								new Date(b.formatedDate)
+							)
+						)
+						?.map((el, index) => (
+							<MessageBubble key={index} {...el} />
+						))}
+				</>
+			</Messages>
+			<TextInputForm onSubmit={handleSubmit(sendMessage)}>
+				<TextInput
+					placeholder="Send a message"
+					{...register("message")}
+				/>
+				<CommonButton text={"Send"} RightIcon={Send} />
+			</TextInputForm>
+		</Container>
+	);
+};

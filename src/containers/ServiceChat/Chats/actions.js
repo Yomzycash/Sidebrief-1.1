@@ -1,7 +1,7 @@
 import { parseJSON, compareAsc } from "date-fns";
 
 export const getMessages = (data) => {
-  const uniqueSenders = [...new Set(data?.map((el) => el.senderId))];
+	const uniqueSenders = [...new Set(data?.map((el) => el.serviceId))];
 
   const uniqueData = uniqueSenders
     .map((el) => {
@@ -70,12 +70,12 @@ export const getServiceIDMessages = (data) => {
 
 	const uniqueData =uniqueServiceID
 		.map((el) => {
-			const relatedData = senderMessages?.filter(
-				(notification) => notification.serviceID === el
+			const relatedData = data?.filter(
+				(notification) => notification.serviceId === el
 			);
 
 			return {
-				serviceID: el,
+				serviceId: el,
 				notification: relatedData.sort((a, b) =>
 					compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
 				),
