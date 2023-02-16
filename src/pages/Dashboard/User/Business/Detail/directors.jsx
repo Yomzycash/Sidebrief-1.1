@@ -3,16 +3,21 @@ import { CardContainer, Loader } from "./styles";
 import { useSelector } from "react-redux";
 import { useViewLaunchRequestQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
+import { useEffect } from "react";
 
 const DetailDirectors = () => {
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
   );
-  const { data, isLoading, isSuccess } =
+  const { data, isLoading, isSuccess, refetch } =
     useViewLaunchRequestQuery(launchResponse);
 
   const members = isSuccess ? data.businessMembers : [];
   const memberKYC = isSuccess ? data.businessMembersKYC : [];
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <>
@@ -47,7 +52,7 @@ const DetailDirectors = () => {
                 name={member.memberName}
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
-                title={`${director.directorRole}`}
+                title={`${director.directorCode}`}
                 nin={NINSlip}
                 proof={proofFile}
                 signature={eSignature}
