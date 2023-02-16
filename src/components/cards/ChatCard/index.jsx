@@ -9,9 +9,11 @@ import {
 	LowerText,
 	LowerWrapper,
 	InnerContainer,
-	Top,
+	Wrapper,
+	ListWrapper,
 } from "./styled.js";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const ChatCard = ({
 	image,
@@ -24,6 +26,12 @@ const ChatCard = ({
 
 }) => {
 	const navigate = useNavigate();
+	const [iconHovered, setIconHovered] = useState(false);
+	const [collapsed, setCollapsed] = useState(false);
+	const ActiveStyle = {
+		background: "#00a2d419",
+		color: "#00a2d4",
+	};
 
 	const openChat = (id) => {
 		navigate(`${id}`);
@@ -32,7 +40,15 @@ const ChatCard = ({
 	const isSelected = currentSelected === senderID;
 
 	return (
-		<Top>
+		<Wrapper>
+			<ListWrapper >
+			<div
+					
+					onClick={() => setCollapsed(!collapsed)}
+				>
+
+				</div>
+				</ListWrapper>
 		<Container onClick={() => openChat(senderID)} selected={isSelected}>
 			<TopContainer>
 				<InnerContainer>
@@ -47,8 +63,9 @@ const ChatCard = ({
 				<LowerText>{time}</LowerText>
 			</TopContainer>
 			<LowerWrapper>{message}</LowerWrapper>
-		</Container>
-		</Top>
+			</Container>
+			</Wrapper>
+		
 	);
 };
 

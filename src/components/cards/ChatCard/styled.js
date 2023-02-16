@@ -1,5 +1,8 @@
 import styled from "styled-components";
-export const Top = styled.div`
+export const Wrapper = styled.div`
+`
+export const ListWrapper= styled.div`
+
 `
 export const Container = styled.div`
 	display: flex;
