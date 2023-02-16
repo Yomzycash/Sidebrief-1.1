@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export const Top = styled.div``;
