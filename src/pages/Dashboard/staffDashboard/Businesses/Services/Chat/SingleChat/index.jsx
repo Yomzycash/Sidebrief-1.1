@@ -1,11 +1,11 @@
 import { Container } from "./style";
 import { ChatHead, ChatBody } from "containers/ServiceChat";
 
-const SingleChat = () => {
+const SingleChat = ({ isUser }) => {
 	return (
 		<Container>
-			<ChatHead />
-			<ChatBody />
+			<ChatHead isUser={isUser} />
+			<ChatBody isUser={isUser} />
 		</Container>
 	);
 };

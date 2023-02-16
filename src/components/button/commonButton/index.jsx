@@ -10,6 +10,7 @@ const CommonButton = ({
 	leftIconColor,
 	rightIconColor,
 	classname,
+	component,
 }) => {
 	return (
 		<ButtonContainer onClick={action} style={style} className={classname}>
@@ -20,6 +21,7 @@ const CommonButton = ({
 			{RightIcon && (
 				<RightIcon size={24} color={rightIconColor || "white"} />
 			)}
+			{component && <>{component}</>}
 		</ButtonContainer>
 	);
 };

@@ -13,7 +13,7 @@ import {
 import { getMessages } from "../Chats/actions";
 import { useParams } from "react-router-dom";
 
-export const ChatBody = () => {
+export const ChatBody = ({ isUser }) => {
 	const { data, isError, isLoading } = useGetAllNotificationsQuery();
 
 	const { handleSubmit, register, reset } = useForm({
