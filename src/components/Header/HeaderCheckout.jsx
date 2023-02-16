@@ -40,7 +40,7 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
 	};
 
 	const toDashboard = () => {
-		// navigate("/dashboard");
+		navigate("/dashboard");
 	};
 
 	return (
