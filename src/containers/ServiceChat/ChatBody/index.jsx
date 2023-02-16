@@ -1,11 +1,11 @@
-import { Container, TextInput, TextInputForm, Messages } from "./style";
-import { CommonButton } from "components/button";
-import { Send } from "asset/svg";
-import { messageSchema, mockMessages } from "./constants";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { MessageBubble } from "components/cards";
-import { compareDesc, differenceInDays, isToday, isYesterday } from "date-fns";
+import { Container, TextInput, TextInputForm, Messages, SubjectInput, TextBody } from './style'
+import { CommonButton } from 'components/button'
+import { Send } from 'asset/svg'
+import { messageSchema, mockMessages } from './constants'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { MessageBubble } from 'components/cards'
+import { compareDesc, differenceInDays, isToday, isYesterday } from 'date-fns'
 import {
 	useGetAllNotificationsByIdQuery,
 	useGetAllNotificationsQuery,
@@ -17,38 +17,44 @@ import { useSelector } from "react-redux";
 export const ChatBody = ({ isUser }) => {
 	const { data, isError, isLoading } = useGetAllNotificationsQuery();
 
-	const { handleSubmit, register, reset } = useForm({
-		resolver: yupResolver(messageSchema),
-	});
+  const { handleSubmit, register, reset } = useForm({
+    resolver: yupResolver(messageSchema),
+  })
 
 	const { serviceId } = useParams();
+  const sendMessage = (data) => {
+    console.log(data.message)
+    reset()
+  }
 
-	let messages = getMessages(data);
+  let ID = useParams().SenderID
+
+  let messages = getMessages(data)
 
 	let clickedMessage = messages?.filter(
 		(message) => message?.serviceId === serviceId
 	);
 
-	let messageContent =
-		clickedMessage?.length > 0 ? clickedMessage[0]?.notification : [];
-	// console.log(messageContent);
+  let messageContent =
+    clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
+  // console.log(messageContent);
 
-	const formatDate = (updatedAt) => {
-		let date = updatedAt.split("T").join("-");
-		let accDate = date.slice(0, 19).replace(/-0/g, "-");
-		if (isToday(new Date(accDate))) {
-			return "Today";
-		} else if (isYesterday(new Date(accDate))) {
-			return "Yesterday";
-		} else {
-			let date = new Date(accDate);
-			return date.toLocaleString("default", {
-				month: "long",
-				day: "numeric",
-				year: "numeric",
-			});
-		}
-	};
+  const formatDate = (updatedAt) => {
+    let date = updatedAt.split('T').join('-')
+    let accDate = date.slice(0, 19).replace(/-0/g, '-')
+    if (isToday(new Date(accDate))) {
+      return 'Today'
+    } else if (isYesterday(new Date(accDate))) {
+      return 'Yesterday'
+    } else {
+      let date = new Date(accDate)
+      return date.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    }
+  }
 
 	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
 

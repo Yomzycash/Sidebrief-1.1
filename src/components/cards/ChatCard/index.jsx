@@ -9,6 +9,7 @@ import {
 	LowerText,
 	LowerWrapper,
 	InnerContainer,
+	Top,
 } from "./styled.js";
 import { useNavigate } from "react-router-dom";
 
@@ -45,6 +46,7 @@ const ChatCard = ({
 			</TopContainer>
 			<LowerWrapper>{message}</LowerWrapper>
 		</Container>
+		</Top>
 	);
 };
 
