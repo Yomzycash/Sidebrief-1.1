@@ -6,6 +6,7 @@ import { SpinningCircles } from "react-loading-icons";
 import styled from "styled-components";
 import { imageTypeImage } from "utils/config";
 import {
+  useGetAllEntitiesQuery,
   useViewBeneficialsKYCMutation,
   useViewMembersKYCMutation,
 } from "services/launchService";
@@ -28,7 +29,7 @@ const ReviewCard = ({
   beneficialOwnerCode,
 }) => {
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-
+  const countryISO = localStorage.getItem("countryISO");
   const [documentInfo, setDocumentInfo] = useState({});
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficials] = useViewBeneficialsKYCMutation();
@@ -36,50 +37,71 @@ const ReviewCard = ({
   const [proofD, setProof] = useState({});
   const [passportD, setPassport] = useState({});
   const [signature, setSignature] = useState({});
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
+  const [sameData, setSameData] = useState([]);
 
+  const { data, isSuccess } = useGetAllEntitiesQuery(countryISO);
+  useEffect(() => {
+    const check = data?.find(
+      (entity) => entity.entityCode === launchInfo.registrationType
+    );
+    setRequiredDocuments(check?.entityRequiredDocuments);
+  }, [data]);
+
+  // console.log("requierd", requiredDocuments);
   const handleShareHolder = async () => {
     const response = await viewMemberKYC(launchInfo);
-
+    // console.log("checik res", response);
     const MemberKYCInfo = [...response.data.businessMembersKYC];
+    // console.log("checik resmember", MemberKYCInfo);
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.memberCode === memberCode
     );
+    setSameData(fileInfo);
 
-    const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "NIN Slip/Card"
-    );
+    // requiredDocuments?.forEach((required) => {
+    //   fileInfo?.forEach((file) => {
+    //     if (required === fileInfo.documentType) {
+    //       setDocumentInfo()
+    //     }
+    //   })
+    // })
 
-    let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
-    console.log("adddddddddddd", lastUploadDetail);
-    setGovernmentId(lastUploadDetail);
+    // const uploadedDetail = fileInfo.filter(
+    //   (item) => item.documentType === "NIN Slip/Card"
+    // );
 
-    //nin
-    const uploadedProofDetail = fileInfo.filter(
-      (item) => item.documentType === "Proof of address"
-    );
+    // let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
+    // // console.log("adddddddddddd", lastUploadDetail);
+    // setGovernmentId(lastUploadDetail);
 
-    let lastUploadProofDetail =
-      uploadedProofDetail[uploadedProofDetail.length - 1];
-    setProof(lastUploadProofDetail);
+    // //nin
+    // const uploadedProofDetail = fileInfo.filter(
+    //   (item) => item.documentType === "Proof of address"
+    // );
 
-    // signature
+    // let lastUploadProofDetail =
+    //   uploadedProofDetail[uploadedProofDetail.length - 1];
+    // setProof(lastUploadProofDetail);
 
-    const uploadedSignatureDetail = fileInfo.filter(
-      (item) => item.documentType === "E-signature"
-    );
+    // // signature
 
-    let lastUploadSignatureDetail =
-      uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
-    setSignature(lastUploadSignatureDetail);
+    // const uploadedSignatureDetail = fileInfo.filter(
+    //   (item) => item.documentType === "E-signature"
+    // );
 
-    //
-    const uploadedPassportDetail = fileInfo.filter(
-      (item) => item.documentType === "Passport Photograph"
-    );
+    // let lastUploadSignatureDetail =
+    //   uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
+    // setSignature(lastUploadSignatureDetail);
 
-    let lastUploadPassportDetail =
-      uploadedPassportDetail[uploadedPassportDetail.length - 1];
-    setPassport(lastUploadPassportDetail);
+    // //
+    // const uploadedPassportDetail = fileInfo.filter(
+    //   (item) => item.documentType === "Passport Photograph"
+    // );
+
+    // let lastUploadPassportDetail =
+    //   uploadedPassportDetail[uploadedPassportDetail.length - 1];
+    // setPassport(lastUploadPassportDetail);
   };
 
   const handleBeneficiary = async () => {
@@ -90,41 +112,43 @@ const ReviewCard = ({
       (member) => member.beneficialOwnerCode === beneficialOwnerCode
     );
 
-    const uploadedDetail = fileInfo.filter(
-      (item) => item.documentType === "NIN Slip/Card"
-    );
+    setSameData(fileInfo);
 
-    let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
-    console.log("adddddddddddd", lastUploadDetail);
-    setGovernmentId(lastUploadDetail);
+    // const uploadedDetail = fileInfo.filter(
+    //   (item) => item.documentType === "NIN Slip/Card"
+    // );
 
-    //nin
-    const uploadedProofDetail = fileInfo.filter(
-      (item) => item.documentType === "Proof of address"
-    );
+    // let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
+    // // console.log("adddddddddddd", lastUploadDetail);
+    // setGovernmentId(lastUploadDetail);
 
-    let lastUploadProofDetail =
-      uploadedProofDetail[uploadedProofDetail.length - 1];
-    setProof(lastUploadProofDetail);
+    // //nin
+    // const uploadedProofDetail = fileInfo.filter(
+    //   (item) => item.documentType === "Proof of address"
+    // );
 
-    // signature
+    // let lastUploadProofDetail =
+    //   uploadedProofDetail[uploadedProofDetail.length - 1];
+    // setProof(lastUploadProofDetail);
 
-    const uploadedSignatureDetail = fileInfo.filter(
-      (item) => item.documentType === "E-signature"
-    );
+    // // signature
 
-    let lastUploadSignatureDetail =
-      uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
-    setSignature(lastUploadSignatureDetail);
+    // const uploadedSignatureDetail = fileInfo.filter(
+    //   (item) => item.documentType === "E-signature"
+    // );
 
-    //
-    const uploadedPassportDetail = fileInfo.filter(
-      (item) => item.documentType === "Passport Photograph"
-    );
+    // let lastUploadSignatureDetail =
+    //   uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
+    // setSignature(lastUploadSignatureDetail);
 
-    let lastUploadPassportDetail =
-      uploadedPassportDetail[uploadedPassportDetail.length - 1];
-    setPassport(lastUploadPassportDetail);
+    // //
+    // const uploadedPassportDetail = fileInfo.filter(
+    //   (item) => item.documentType === "Passport Photograph"
+    // );
+
+    // let lastUploadPassportDetail =
+    //   uploadedPassportDetail[uploadedPassportDetail.length - 1];
+    // setPassport(lastUploadPassportDetail);
   };
 
   useEffect(() => {
@@ -171,7 +195,7 @@ const ReviewCard = ({
   documentInfo.lastIndexOf((item) => item.documentType === "government id").map(())
 } */}
       <PdfContainer>
-        <PdfWrapper>
+        {/* <PdfWrapper>
           {imageTypeImage.filter((fil) => passportD?.fileType === fil.type)
             .length === 0 && (
             <NotUploaded>Passport Photograph not uploaded yet</NotUploaded>
@@ -255,7 +279,69 @@ const ReviewCard = ({
               />
             ))}
           <TextWrapper>{proofD?.documentType}</TextWrapper>
-        </PdfWrapper>
+        </PdfWrapper> */}
+        {/* {sameData?.map((set) => (
+          <PdfWrapper>
+            {imageTypeImage.filter((fil) => set?.fileType === fil.type)
+              .length === 0 && (
+              <NotUploaded>Proof of address not uploaded yet</NotUploaded>
+            )}
+            {imageTypeImage
+              .filter((fil) => set?.fileType === fil.type)
+              .map((m) => (
+                <img
+                  src={m.image}
+                  alt=""
+                  style={{
+                    margin: 0,
+                    height: "25px",
+                    width: "25px",
+                    marginRight: "8px",
+                  }}
+                />
+              ))}
+            <TextWrapper>{set?.documentType}</TextWrapper>
+          </PdfWrapper>
+        ))} */}
+        {requiredDocuments?.map((document) => {
+          return (
+            <PdfWrapper>
+              {sameData?.filter((data) => document === data.documentType)
+                .length === 0 && (
+                <NotUploaded>{document} not uploaded yet</NotUploaded>
+              )}
+
+              {sameData?.map((data) => {
+                if (document === data.documentType) {
+                  return (
+                    <>
+                      {imageTypeImage
+                        .filter((fil) => data?.fileType === fil.type)
+                        .map((m) => (
+                          <img
+                            src={m.image}
+                            alt=""
+                            style={{
+                              margin: 0,
+                              height: "25px",
+                              width: "25px",
+                              marginRight: "8px",
+                            }}
+                          />
+                        ))}
+
+                      {data.documentType ? (
+                        <TextWrapper>{data.documentType}</TextWrapper>
+                      ) : (
+                        <TextWrapper>documentType</TextWrapper>
+                      )}
+                    </>
+                  );
+                }
+              })}
+            </PdfWrapper>
+          );
+        })}
       </PdfContainer>
     </Container>
   );
@@ -278,7 +364,7 @@ const PdfWrapper = styled.div`
   width: 100%;
   height: 48px;
   background: #fafafa;
-  border: 1px dashed #edf1f7;
+  border: 3px dashed #edf1f7;
   border-radius: 8px;
   margin-left: 0px !important;
 `;

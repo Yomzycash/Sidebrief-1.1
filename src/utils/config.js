@@ -55,11 +55,13 @@ export const loginSchema = yup.object().shape({
   password: yup.string().required("Password is a required field"),
 });
 
-export const genderOptions = [
-  { value: "Male", label: "Male" },
-  { value: "Female", label: "Female" },
-  { value: "Transgender", label: "Transgender" },
-  { value: "Non-binary", label: "Non-binary" },
+export const referOptions = [
+  { value: "Facebook", label: "Facebook" },
+  { value: "Instagram", label: "Instagram" },
+  { value: "Twitter", label: "Twitter" },
+  { value: "Bus Ad", label: "Bus Ad" },
+  { value: "Radio", label: "Radio" },
+  { value: "Bill board", label: "Bill board" },
   { value: "Other", label: "Other" },
 ];
 
