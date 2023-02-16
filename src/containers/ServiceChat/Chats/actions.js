@@ -42,27 +42,11 @@ export const getUsersMessages = (data) => {
 
     return { senderId: el, servicesMessages: servicesMessages };
 
-    // return {
-    //   senderID: el,
-    //   servicesNotifications: servicesNotifications,
-    // };
-
-    // return {
-    //   senderID: el,
-    //   notification: relatedData.sort((a, b) =>
-    //     compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
-    //   ),
-    // };
+    
   });
-  // .filter((el) => {
-  //   return el.notification.length > 0;
-  // });
-  // // console.log(uniqueData);
-  // const uniqueServicesId = uniqueData?.map((user) => [
-  //   ...new Set(user?.notification?.map((el) => el?.serviceID || el?.serviceId)),
-  // ]);
+  
+ 
 
-  // console.log(uniqueServicesId);
 
   return uniqueData;
 };
@@ -78,4 +62,29 @@ const getServicesMessages = (notifications) => {
   }));
 
   return servicesNotifications;
+};
+
+export const getServiceIDMessages = (data) => {
+	const senderMessages = getMessages(data)
+	const uniqueServiceID = [...new Set(senderMessages?.map((el) => el.serviceID))];
+
+	const uniqueData =uniqueServiceID
+		.map((el) => {
+			const relatedData = senderMessages?.filter(
+				(notification) => notification.serviceID === el
+			);
+
+			return {
+				serviceID: el,
+				notification: relatedData.sort((a, b) =>
+					compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
+				),
+			};
+		})
+
+		// .filter((el) => {
+		// 	return el.notification.length > 0;
+		// });
+
+	return uniqueData;
 };
