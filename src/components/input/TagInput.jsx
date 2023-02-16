@@ -131,9 +131,12 @@ const TagInput = ({
       </TagTop>
       <TagWrapper className={tagClassName}>
         {tags.map((tag, index) => (
-          <TagItem key={index}>
+          <TagItem key={index} $disable={disable}>
             <TagText>{tag}</TagText>
-            <MdClear size={20} onClick={() => removeTags(index)} />
+            <MdClear
+              size={20}
+              onClick={() => (disable ? "" : removeTags(index))}
+            />
           </TagItem>
         ))}
       </TagWrapper>
