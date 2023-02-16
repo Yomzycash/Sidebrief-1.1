@@ -9,6 +9,7 @@ import {
 	LowerText,
 	LowerWrapper,
 	InnerContainer,
+	Top,
 } from "./styled.js";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +19,8 @@ const ChatCard = ({
 	serviceName,
 	time,
 	message,
-	senderID,
+	serviceId,
 	currentSelected,
-
 }) => {
 	const navigate = useNavigate();
 
@@ -28,10 +28,10 @@ const ChatCard = ({
 		navigate(`${id}`);
 	};
 
-	const isSelected = currentSelected === senderID;
+	const isSelected = currentSelected === serviceId;
 
 	return (
-		<Container onClick={() => openChat(senderID)} selected={isSelected}>
+		<Container onClick={() => openChat(serviceId)} selected={isSelected}>
 			<TopContainer>
 				<InnerContainer>
 					<ImageContainer>
@@ -46,6 +46,7 @@ const ChatCard = ({
 			</TopContainer>
 			<LowerWrapper>{message}</LowerWrapper>
 		</Container>
+		</Top>
 	);
 };
 

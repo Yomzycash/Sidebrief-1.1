@@ -24,7 +24,7 @@ const Resources = () => {
   }, []);
   return (
     <Container>
-      <TabNavBar />
+      {/* <TabNavBar /> */}
       <Body>
         <Main>
           <Image src={image} alt="" />

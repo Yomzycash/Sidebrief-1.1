@@ -129,7 +129,7 @@ const Navbar = ({
           <Link to="/" style={imgStyle}>
             <Image src={logo} alt="logo" style={{ ...imgStyles }} />
           </Link>
-          {!hideSearch && <Search style={{ height: "32px" }} />}
+          {hideSearch && <Search style={{ height: "32px" }} />}
           <RightIcons>
             <BellContainer
               onClick={() => setShowNotification(!showNotification)}

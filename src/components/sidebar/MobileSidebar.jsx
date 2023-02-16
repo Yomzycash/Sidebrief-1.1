@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { sidebarLink } from "utils/config";
 import {
-	ListWrapper,
 	Logout,
 	LogoutText,
 	LogoutWrapper,
@@ -9,16 +8,13 @@ import {
 	SidebarContentItemIcon,
 	SidebarContentItemLink,
 	SidebarLinks,
-	SidebarWrapper,
 	SideLinkWrapper,
 	Top,
 } from "./styled";
-import { HiMenu } from "react-icons/hi";
 import { HiOutlineLogout } from "react-icons/hi";
-import { store } from "redux/Store";
-import { setSidebarWidth } from "redux/Slices";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { MdClear } from "react-icons/md";
+import { handleLogout as logout } from "utils/globalFunctions";
 
 const MobileSidebar = ({ toggleDrawer }) => {
 	const [iconHovered, setIconHovered] = useState(0);
@@ -28,15 +24,14 @@ const MobileSidebar = ({ toggleDrawer }) => {
 
 	const navigate = useNavigate();
 
-  const ActiveStyle = {
-    background: "#00a2d419",
-    color: "#00a2d4",
-  };
+	const ActiveStyle = {
+		background: "#00a2d419",
+		color: "#00a2d4",
+	};
 
 	const handleLogout = () => {
-		localStorage.clear();
 		toggleDrawer(false);
-		navigate("/login");
+		logout(navigate);
 	};
 
 	const handleNavigate = (path) => {
