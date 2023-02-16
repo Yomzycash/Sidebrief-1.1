@@ -41,28 +41,7 @@ export const getUsersMessages = (data) => {
     let servicesMessages = getServicesMessages(notifications);
 
     return { senderId: el, servicesMessages: servicesMessages };
-
-    // return {
-    //   senderID: el,
-    //   servicesNotifications: servicesNotifications,
-    // };
-
-    // return {
-    //   senderID: el,
-    //   notification: relatedData.sort((a, b) =>
-    //     compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
-    //   ),
-    // };
   });
-  // .filter((el) => {
-  //   return el.notification.length > 0;
-  // });
-  // // console.log(uniqueData);
-  // const uniqueServicesId = uniqueData?.map((user) => [
-  //   ...new Set(user?.notification?.map((el) => el?.serviceID || el?.serviceId)),
-  // ]);
-
-  // console.log(uniqueServicesId);
 
   return uniqueData;
 };
