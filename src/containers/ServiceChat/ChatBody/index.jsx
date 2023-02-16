@@ -12,6 +12,7 @@ import {
 } from "services/chatService";
 import { getMessages } from "../Chats/actions";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export const ChatBody = ({ isUser }) => {
 	const { data, isError, isLoading } = useGetAllNotificationsQuery();
@@ -20,17 +21,12 @@ export const ChatBody = ({ isUser }) => {
 		resolver: yupResolver(messageSchema),
 	});
 
-	const sendMessage = (data) => {
-		console.log(data.message);
-		reset();
-	};
-
-	let ID = useParams().SenderID;
+	const { serviceId } = useParams();
 
 	let messages = getMessages(data);
 
 	let clickedMessage = messages?.filter(
-		(message) => message?.senderID === ID
+		(message) => message?.serviceId === serviceId
 	);
 
 	let messageContent =
@@ -52,6 +48,21 @@ export const ChatBody = ({ isUser }) => {
 				year: "numeric",
 			});
 		}
+	};
+
+	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+
+	const sendMessage = (data) => {
+		const requiredData = {
+			serviceId: serviceId,
+			senderId: userInfo.id,
+			messageSubject: "Subject", // you can change this when you start working
+			messageBody: data.message,
+			messageIsRead: false,
+			messageFiles: [], //empty array, should be populated when we implement file sending
+		};
+		console.log(requiredData);
+		reset();
 	};
 
 	let modifiedMessage = messageContent?.map((msg) => ({

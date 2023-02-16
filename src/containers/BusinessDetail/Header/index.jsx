@@ -119,8 +119,12 @@ export const Header = ({ isStaff }) => {
 	};
 
 	const navigateToMessages = () => {
-		const path = pathname.split("/").slice(0, -3).join("/");
-		navigate(`${path}/chat/${code}`);
+		if (isStaff) {
+			navigate(`/staff-dashboard/businesses/services/chats/${code}`);
+		} else {
+			const path = pathname.split("/").slice(0, -3).join("/");
+			navigate(`${path}/chat/${code}`);
+		}
 	};
 
 	const getStatus = (stat) => {
