@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
+  ButtonContainer,
+  Button,
+  ReplyButton,
+  Dropdown,
+  DropdownContent,
+  DropdownMenu,
   Image,
   BellIcon,
   UserIcon,
@@ -16,13 +22,15 @@ import {
   NotificationBadge,
   MessageSubject,
   MessageBody,
+  ViewAllMessages,
 } from "./styled";
 import LogoNav from "./LogoNav";
-
+import styled from "styled-components";
 import logo from "../../asset/images/SidebriefLogo.png";
 import bell from "../../asset/images/bell.png";
 import user from "../../asset/images/user.png";
 import down from "../../asset/images/down.png";
+import { ReactComponent as ArrowDownIcon } from "../../asset/Icons/ArrowDownIcon.svg";
 import { Messages } from "utils/config";
 import Search from "./Search";
 import { Link } from "react-router-dom";
@@ -35,6 +43,7 @@ import Profile from "components/Profile";
 import { formatDistanceToNow, parseJSON } from "date-fns";
 
 import { useGetAllNotificationsQuery } from "services/chatService";
+import { DropDown } from "components/input";
 
 const Navbar = ({
   dashboard,
@@ -67,10 +76,14 @@ const Navbar = ({
     return merg + " " + times;
   }
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const [msgObj, setMsgObj] = useState([]);
 
   useEffect(() => {
     if (!dashboard && !rewards) {
@@ -90,12 +103,6 @@ const Navbar = ({
   
   const handleProfile = () => {
     setShowProfile(!showProfile);
-  };
-  const handleCheck = (e, item) => {
-    const indexToUpdate = msgObj.findIndex((msg) => msg.messageText === item);
-    const updatedMsg = [...msgObj]; // creates a copy of the array
-    updatedMsg[indexToUpdate].read = !item.read;
-    setMsgObj(updatedMsg);
   };
 
   let menuRef = useRef();
@@ -135,7 +142,7 @@ const Navbar = ({
               onClick={() => setShowNotification(!showNotification)}
             >
               <NotificationBadge>
-                <p>{msgObj.length}</p>
+                <p>{notificationMessages?.length}</p>
               </NotificationBadge>
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
@@ -164,13 +171,35 @@ const Navbar = ({
             <p>Mark all as read</p>
           </NotificationHeader>
 
+          {/* <Dropdown>
+            <select>
+              <option value="Sort">Sort</option>
+              <option value="All">All</option>
+            </select>
+          </Dropdown> */}
+
+        <DropdownMenu>
+          <button onClick={toggleDropdown}>
+            All Notifications <CaretDownIcon/>
+          </button>
+          {isOpen && (
+            <Dropdown>
+              <DropdownContent>Unread</DropdownContent>
+              <DropdownContent>Read</DropdownContent>
+              <DropdownContent>New</DropdownContent>
+            </Dropdown>
+          )}
+        </DropdownMenu>
+
           {notificationMessages?.length > 0 ? (
             <NotificationMessages>
               {notificationMessages &&
-                notificationMessages.slice(0, 4).map((item, index) => (
+                notificationMessages.map((item, index) => (
                   <Message key={index}>
                     <MessageSubject>
+                      
                       {item.messageSubject}
+
                       <span>
                         {formatDistanceToNow(
                   parseJSON(notificationMessages.slice(-1)[0].createdAt),
@@ -185,6 +214,16 @@ const Navbar = ({
                     {/* <br/> */}
 
                     <MessageBody>{item.messageBody}</MessageBody>
+
+                    <ButtonContainer>
+                      <Button>
+                        Mark as Read
+                      </Button>
+                      <ReplyButton>
+                        Reply
+                      </ReplyButton>
+                    </ButtonContainer>
+                   
                   </Message>
                 ))}
             </NotificationMessages>
@@ -193,6 +232,9 @@ const Navbar = ({
               <p>{"The length is" + "" + notificationMessages?.length}</p>
             </NoMessage>
           )}
+          <ViewAllMessages>
+            <p>View All</p>
+          </ViewAllMessages>
         </NotificationWrapper>
       )}
 
@@ -203,3 +245,10 @@ const Navbar = ({
 
 export default Navbar;
 export { LogoNav };
+
+const CaretDownIcon = styled(ArrowDownIcon)`
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5em;
+  float:right;
+`;
