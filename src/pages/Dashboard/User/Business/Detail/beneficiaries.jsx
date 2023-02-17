@@ -53,6 +53,7 @@ const DetailBeneficiaries = () => {
                 email={beneficiary.beneficialOwnerEmail}
                 phone={`+${beneficiary.beneficialOwnerPhone}`}
                 title={`${beneficiary.beneficialOwnerOccupation}`}
+                beneCode={beneficiary.beneficialOwnerCode}
                 nin={NINSlip}
                 proof={proofFile}
                 signature={eSignature}
