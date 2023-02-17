@@ -22,19 +22,19 @@ import { formatDistanceToNow, parseJSON, compareAsc } from 'date-fns'
 import { useParams } from 'react-router-dom'
 import { getMessages, getUsersMessages } from './actions'
 
-export const Chats = () => {
+export const Chats = ({ setParamsId }) => {
   const options = ['senderID', 'serviceID']
 
   const [selected, setSelected] = useState('filter')
   // const [user, setUser] = useState([]);
   const [isActive, setIsActive] = useState(false)
   const { data, isError, isLoading } = useGetAllNotificationsQuery()
-  const params = useParams()
 
   const messages = getMessages(data)
+  let usersMessages = getUsersMessages(data)
 
   const userServicesMsgs = getUsersMessages(data)
-  console.log(userServicesMsgs)
+  console.log(usersMessages)
 
   return (
     <Container>
@@ -78,35 +78,35 @@ export const Chats = () => {
         </SearchContainer>
       </TopContainer>
       <ChatContainer>
-        
-        {messages
-          ?.sort((a, b) =>
-            compareAsc(
-              parseJSON(a.notification.slice(-1)[0]?.createdAt),
-              parseJSON(b.notification.slice(-1)[0]?.createdAt),
-            ),
+        {usersMessages.map((chats, index) => {
+          return (
+            <ChatCard
+              chats={chats}
+              key={index}
+              setParamsId={setParamsId}
+              // image={profile}
+              // name={chats.senderID || 'No senderID'}
+              // serviceName={
+              //   chats?.notification.slice(-1)[0].serviceID || 'No serviceID'
+              // }
+              // senderID={chats.senderID || 'undefined'}
+              // message={chats?.notification.slice(-1)[0].messageSubject}
+              // time={formatDistanceToNow(
+              //   parseJSON(chats?.notification.slice(-1)[0].createdAt),
+              //   { addSuffix: true },
+              // )}
+              // currentSelected={params.SenderID}
+            />
           )
-          .map((chat, index) => {
-            return (
-
-              <ChatCard
-                key={index}
-                image={profile}
-                name={chat.senderID || 'No senderID'}
-                serviceName={
-                  chat?.notification.slice(-1)[0].serviceID || 'No serviceID'
-                }
-                senderID={chat.senderID || 'undefined'}
-                message={chat?.notification.slice(-1)[0].messageSubject}
-                time={formatDistanceToNow(
-                  parseJSON(chat?.notification.slice(-1)[0].createdAt),
-                  { addSuffix: true },
-                )}
-                currentSelected={params.SenderID}
-              />
-            )
-          })}
+        })}
       </ChatContainer>
     </Container>
   )
 }
+
+// ?.sort((a, b) =>
+//   compareAsc(
+//     parseJSON(a.notification.slice(-1)[0]?.createdAt),
+//     parseJSON(b.notification.slice(-1)[0]?.createdAt),
+//   ),
+// )
