@@ -25,9 +25,15 @@ import {
 import { downLoadImage } from "utils/staffHelper";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkPaymentStatus } from "pages/Launch/actions";
-import { useViewPayLaunchMutation } from "services/launchService";
+import {
+  useGetAllEntitiesQuery,
+  useViewLaunchRequestQuery,
+  useViewPayLaunchMutation,
+} from "services/launchService";
 import { store } from "redux/Store";
 import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import { useEffect } from "react";
+import { useState } from "react";
 const PdfCards = ({
   name = "",
   title = "",
@@ -43,6 +49,25 @@ const PdfCards = ({
   const navigate = useNavigate();
   let location = useLocation();
   const [viewPayLaunch] = useViewPayLaunchMutation();
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const countryISO = localStorage.getItem("countryISO");
+
+  // // const { data, isLoading, isSuccess, refetch } =
+  // //   useViewLaunchRequestQuery(launchInfo);
+  // // const members = isSuccess ? data.businessMembers : [];
+  // // const memberKYC = isSuccess ? data.businessMembersKYC : [];
+  // const [requiredDocuments, setRequiredDocuments] = useState([]);
+
+  // const { data, isSuccess } = useGetAllEntitiesQuery(countryISO);
+  // console.log(data);
+  // useEffect(() => {
+  //   const check = data?.find(
+  //     (entity) => entity.entityCode === launchInfo.registrationType
+  //   );
+  //   console.log(data);
+  //   setRequiredDocuments(check?.entityRequiredDocuments);
+  // }, [data]);
+
   const handleDocumentClick = async () => {
     const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
 
@@ -86,6 +111,7 @@ const PdfCards = ({
           </PhoneWrapper>
         </DetailWrapper>
         <LowerContainer>
+          {/* {requiredDocuments.map((document) => ( */}
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
@@ -124,9 +150,10 @@ const PdfCards = ({
             </PdfLowerWrapper>
 
             {/* <IconWrapper>
-              <DeleteIcon />
-            </IconWrapper> */}
+                    <DeleteIcon />
+                  </IconWrapper> */}
           </PdfWrapper>
+
           <PdfWrapper>
             <PdfLowerWrapper>
               <IconWrapper>
