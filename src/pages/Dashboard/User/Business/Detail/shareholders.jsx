@@ -50,6 +50,7 @@ const DetailShareholder = () => {
                 name={member.memberName}
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
+                code={member.memberCode}
                 title={`${
                   shareholder.shareholderRegistrationNumber
                     ? "Company"
