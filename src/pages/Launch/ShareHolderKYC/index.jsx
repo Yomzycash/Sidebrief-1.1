@@ -117,6 +117,7 @@ const ShareHolderKYC = () => {
     });
 
     const res = await convertToLink(files[0]);
+    console.log("linkkkkk", res.url);
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
