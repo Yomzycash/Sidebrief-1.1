@@ -8,23 +8,17 @@ import {
 } from "./style";
 import { CommonButton } from "components/button";
 import { Send } from "asset/svg";
-import { messageSchema, mockMessages } from "./constants";
+import { messageSchema } from "./constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { MessageBubble } from "components/cards";
 import { compareDesc, differenceInDays, isToday, isYesterday } from "date-fns";
-import {
-  useGetAllNotificationsByIdQuery,
-  useGetAllNotificationsQuery,
-  useGetNotificationsByServiceIdQuery,
-} from "services/chatService";
-import { getMessages } from "../Chats/actions";
+import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 
 export const ChatBody = ({ paramsId }) => {
   const serviceId = paramsId.get("serviceId");
 
   const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId);
-  console.log(data);
 
   const senderId = paramsId.get("senderId");
 
