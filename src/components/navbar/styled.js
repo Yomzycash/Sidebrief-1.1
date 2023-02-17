@@ -332,7 +332,7 @@ export const ReplyButton = styled.button`
   line-height: 21px;
   letter-spacing: -0.5px;
   cursor: pointer;
-	background-color: ##9CA69C;
+	background-color: transparent;
 	color: #9CA69C;
   border:1px solid #9CA69C;
 `;

@@ -202,9 +202,9 @@ const Navbar = ({
 
                       <span>
                         {formatDistanceToNow(
-                  parseJSON(notificationMessages.slice(-1)[0].createdAt),
-                  { addSuffix: true }
-                )}
+                          parseJSON(notificationMessages.slice(-1)[0].createdAt),
+                          { addSuffix: true }
+                        )}
                       </span>
 
                       {/* <span>
