@@ -3,7 +3,10 @@ import numeral from "numeral";
 import { saveAs } from "file-saver";
 
 export const downLoadImage = async (link, documentType) => {
-  const downloadResult = await fetch(`${link}`);
+  let httpsLink = link.split("");
+  httpsLink.splice(4, 0, "s");
+  httpsLink = httpsLink.join("");
+  const downloadResult = await fetch(`${httpsLink}`);
   const blob = await downloadResult.blob();
   saveAs(blob, `${documentType}`);
 };
