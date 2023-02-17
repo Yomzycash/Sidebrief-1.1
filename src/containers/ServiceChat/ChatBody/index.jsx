@@ -5,38 +5,40 @@ import {
   Messages,
   SubjectInput,
   TextBody,
-} from './style'
-import { CommonButton } from 'components/button'
-import { Send } from 'asset/svg'
-import { messageSchema, mockMessages } from './constants'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { MessageBubble } from 'components/cards'
-import { compareDesc, differenceInDays, isToday, isYesterday } from 'date-fns'
+} from "./style";
+import { CommonButton } from "components/button";
+import { Send } from "asset/svg";
+import { messageSchema, mockMessages } from "./constants";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { MessageBubble } from "components/cards";
+import { compareDesc, differenceInDays, isToday, isYesterday } from "date-fns";
 import {
   useGetAllNotificationsByIdQuery,
   useGetAllNotificationsQuery,
   useGetNotificationsByServiceIdQuery,
-} from 'services/chatService'
-import { getMessages } from '../Chats/actions'
+} from "services/chatService";
+import { getMessages } from "../Chats/actions";
 
 export const ChatBody = ({ paramsId }) => {
-  const serviceId = paramsId.get('serviceId')
+  const serviceId = paramsId.get("serviceId");
 
-  const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId)
-  console.log(data)
+  const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId);
+  console.log(data);
 
-  const senderId = paramsId.get('senderId')
+  const senderId = paramsId.get("senderId");
 
   const { handleSubmit, register, reset } = useForm({
     resolver: yupResolver(messageSchema),
-  })
+  });
 
   const sendMessage = (data) => {
-    reset()
-  }
-  const messages = data?.filter((el) => el?.senderId === senderId || el?.senderID ===senderId)
-  console.log(messages)
+    reset();
+  };
+  const messages = data?.filter(
+    (el) => el?.senderId === senderId || el?.senderID === senderId
+  );
+  console.log(messages);
   // let ID = useParams().SenderID
 
   // let messages = getMessages(data)
@@ -48,21 +50,21 @@ export const ChatBody = ({ paramsId }) => {
   // console.log(messageContent);
 
   const formatDate = (updatedAt) => {
-    let date = updatedAt.split('T').join('-')
-    let accDate = date.slice(0, 19).replace(/-0/g, '-')
+    let date = updatedAt.split("T").join("-");
+    let accDate = date.slice(0, 19).replace(/-0/g, "-");
     if (isToday(new Date(accDate))) {
-      return 'Today'
+      return "Today";
     } else if (isYesterday(new Date(accDate))) {
-      return 'Yesterday'
+      return "Yesterday";
     } else {
-      let date = new Date(accDate)
-      return date.toLocaleString('default', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
+      let date = new Date(accDate);
+      return date.toLocaleString("default", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
     }
-  }
+  };
 
   // let modifiedMessage = messageContent?.map((msg) => ({
   //   ...msg,
@@ -70,12 +72,11 @@ export const ChatBody = ({ paramsId }) => {
   // }))
 
   return (
-    
     <Container>
       <Messages>
         {messages
           ?.sort((a, b) =>
-            compareDesc(new Date(a.formatedDate), new Date(b.formatedDate)),
+            compareDesc(new Date(a.formatedDate), new Date(b.formatedDate))
           )
           ?.map((el, index) => (
             <>
@@ -86,11 +87,11 @@ export const ChatBody = ({ paramsId }) => {
       <TextInputForm onSubmit={handleSubmit(sendMessage)}>
         <SubjectInput placeholder="Subject" />
         <TextBody>
-          <TextInput placeholder="Send a message" {...register('message')} />
+          <TextInput placeholder="Send a message" {...register("message")} />
 
-          <CommonButton text={'Send'} RightIcon={Send} />
+          <CommonButton text={"Send"} RightIcon={Send} />
         </TextBody>
       </TextInputForm>
     </Container>
-  )
-}
+  );
+};

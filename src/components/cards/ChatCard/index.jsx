@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Container,
   TopContainer,
@@ -11,11 +11,11 @@ import {
   InnerContainer,
   Wrapper,
   ListWrapper,
-} from './styled.js'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
-import profile from 'asset/images/profile.svg'
-import { useSendResetPasswordCodeMutation } from 'services/authService.js'
+} from "./styled.js";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import profile from "asset/images/profile.svg";
+import { useSendResetPasswordCodeMutation } from "services/authService.js";
 
 const ChatCard = ({
   chats,
@@ -28,29 +28,29 @@ const ChatCard = ({
   currentSelected,
   setParamsId,
 }) => {
-  const [iconHovered, setIconHovered] = useState(false)
-  const [collapsed, setCollapsed] = useState(false)
+  const [iconHovered, setIconHovered] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const ActiveStyle = {
-    background: '#00a2d419',
-    color: '#00a2d4',
-  }
-  const navigate = useNavigate()
+    background: "#00a2d419",
+    color: "#00a2d4",
+  };
+  const navigate = useNavigate();
 
   const openChat = (serviceId, senderId) => {
     let id = {
       serviceId: serviceId,
       senderId: senderId,
-    }
-    setParamsId(id)
-  }
+    };
+    setParamsId(id);
+  };
 
-  const isSelected = currentSelected === serviceId
+  const isSelected = currentSelected === serviceId;
 
   const lastMessage = (messages) => {
     return messages?.serviceNotifications[
       messages.serviceNotifications?.length - 1
-    ]
-  }
+    ];
+  };
 
   return (
     <Wrapper>
@@ -80,7 +80,7 @@ const ChatCard = ({
         </Container>
       ))}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default ChatCard
+export default ChatCard;
