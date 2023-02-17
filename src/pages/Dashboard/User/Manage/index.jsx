@@ -55,7 +55,7 @@ const ManageProduct = () => {
 
 				<Body onSubmit={handleSubmit}>
 					<CheckoutSection
-						title="Manage your product"
+						title="Manage your business"
 						HeaderParagraph="Make changes to already registered companies"
 					/>
 					<LaunchPrimaryContainer>

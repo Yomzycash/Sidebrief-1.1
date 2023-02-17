@@ -10,19 +10,28 @@ import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
 import ReviewCard from "components/cards/ReviewCard";
 import {
+  useGetAllEntitiesQuery,
+  useViewMembersKYCMutation,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
 import { useEffect } from "react";
 import { Puff } from "react-loading-icons";
+import {
+  handleCheckDocument,
+  handleMemberCodeMerge,
+  handleMembersCodeMerge,
+} from "../action";
 
 const ShareholderReview = () => {
   const [mergedResponse, setMergedResponse] = useState([]);
-
+  const [mergedDocuments, setMergedDocuments] = useState([]);
   // getting the shareholder container from store
   const shareholderDocumentContainer = useSelector(
     (state) => state.LaunchReducer.shareholderDocs
   );
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const countryISO = localStorage.getItem("countryISO");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +48,9 @@ const ShareholderReview = () => {
   const [viewShareholders, viewShareholderState] =
     useViewShareholdersMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
-
+  const [viewMemberKYC] = useViewMembersKYCMutation();
+  const { data } = useGetAllEntitiesQuery(countryISO);
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
   const handleNavigate = () => {
     navigate("/launch/shareholders-info");
     localStorage.setItem("navigatedFrom", location.pathname);
@@ -54,21 +65,49 @@ const ShareholderReview = () => {
       ...shareholderInfo.data.businessShareholders,
     ];
 
-    let shareholdersMembersMerged = [];
-    shareholdersUpdatedData.forEach((shareholder) => {
-      membersUpdatedData.forEach((member) => {
-        if (member.memberCode === shareholder.memberCode) {
-          let merged = { ...shareholder, ...member };
-          shareholdersMembersMerged.push(merged);
-        }
-      });
-    });
-    setMergedResponse(shareholdersMembersMerged);
+    // let viewResponse = await viewMemberKYC(launchInfo);
+    // let MemberUploadedKYCInfo = [...viewResponse?.data.businessMembersKYC];
+
+    let finalMerge = handleMembersCodeMerge(
+      shareholdersUpdatedData,
+      membersUpdatedData
+    );
+    // let fileInfo = MemberUploadedKYCInfo.filter(
+    //   (member) => member.memberCode === memberCode
+    // );
+
+    // console.log("merge", finalMerge);
+    // console.log("upload", MemberUploadedKYCInfo);
+
+    setMergedResponse(finalMerge);
   };
 
   useEffect(() => {
     handleMerge();
-  }, [shareholderDocumentContainer]);
+  }, []);
+
+  // useEffect(() => {
+  //   const check = data?.find(
+  //     (entity) => entity.entityCode === launchInfo.registrationType
+  //   );
+  //   setRequiredDocuments(check?.entityRequiredDocuments);
+  // }, [data, launchInfo]);
+
+  // // merging required document list and uploaded list
+  // const handleDocumentCheck = async () => {
+  //   let viewResponse = await viewMemberKYC(launchInfo);
+  //   let MemberUploadedKYCInfo = [...viewResponse?.data.businessMembersKYC];
+
+  //   const checkMergeDocument = handleCheckDocument(
+  //     requiredDocuments,
+  //     MemberUploadedKYCInfo
+  //   );
+  //   console.log("check document merged", checkMergeDocument);
+  // };
+
+  // useEffect(() => {
+  //   handleDocumentCheck();
+  // }, []);
 
   // Set the progress of the application
   useEffect(() => {

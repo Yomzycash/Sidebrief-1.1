@@ -45,6 +45,8 @@ const ShareHolderKYC = () => {
   const [shareholderContainer, setShareholder] = useState([]);
   const [requiredDocuments, setRequiredDocuments] = useState([]);
 
+  let navigatedFrom = localStorage.getItem("navigatedFrom");
+
   const launchResponse = useSelector(
     (state) => state.LaunchReducer.launchResponse
   );
@@ -142,15 +144,20 @@ const ShareHolderKYC = () => {
   );
 
   const handleNext = () => {
-    let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-    let beneficiaries = localStorage.getItem("beneficiaries");
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
+    } else {
+      let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+      let beneficiaries = localStorage.getItem("beneficiaries");
 
-    let navigateTo = "/launch/directors-kyc";
-    if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-    if (useSidebriefDirectors && beneficiaries === "false")
-      navigateTo = "/launch/review";
+      let navigateTo = "/launch/directors-kyc";
+      if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+      if (useSidebriefDirectors && beneficiaries === "false")
+        navigateTo = "/launch/review";
 
-    navigate(navigateTo);
+      navigate(navigateTo);
+    }
   };
 
   const handleRemove = async (documentName) => {

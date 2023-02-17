@@ -55,7 +55,7 @@ const DirectorKYC = () => {
   const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
-
+  let navigatedFrom = localStorage.getItem("navigatedFrom");
   useEffect(() => {
     const check = data?.find(
       (entity) => entity.entityCode === launchResponse.registrationType
@@ -83,12 +83,17 @@ const DirectorKYC = () => {
   );
 
   const handleNext = () => {
-    let beneficiaries = localStorage.getItem("beneficiaries");
-
-    if (beneficiaries === "false") {
-      navigate("/launch/review");
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
     } else {
-      navigate("/launch/beneficiaries-kyc");
+      let beneficiaries = localStorage.getItem("beneficiaries");
+
+      if (beneficiaries === "false") {
+        navigate("/launch/review");
+      } else {
+        navigate("/launch/beneficiaries-kyc");
+      }
     }
   };
 

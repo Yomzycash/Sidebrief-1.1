@@ -46,7 +46,7 @@ const BeneficiariesKYC = () => {
   const [beneficiaryContainer, setBeneficiaryContainer] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
-
+  let navigatedFrom = localStorage.getItem("navigatedFrom");
   useEffect(() => {
     const check = data?.find(
       (entity) => entity.entityCode === launchResponse.registrationType
@@ -69,7 +69,11 @@ const BeneficiariesKYC = () => {
   }, [beneficiaryContainer]);
 
   const handleNext = () => {
-    navigate("/launch/review");
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+    } else {
+      navigate("/launch/review");
+    }
   };
 
   const handlePrev = () => {
