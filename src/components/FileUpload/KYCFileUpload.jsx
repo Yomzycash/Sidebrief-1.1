@@ -278,6 +278,7 @@ const DetailsPage = styled.p`
   overflow: hidden;
   color: #151717;
   text-decoration-line: underline;
+  cursor: pointer;
 `;
 
 const KYCPage = styled.p`
