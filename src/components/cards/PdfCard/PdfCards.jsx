@@ -23,7 +23,11 @@ import {
   Wrapper,
 } from "./styles";
 import { downLoadImage } from "utils/staffHelper";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { checkPaymentStatus } from "pages/Launch/actions";
+import { useViewPayLaunchMutation } from "services/launchService";
+import { store } from "redux/Store";
+import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
 const PdfCards = ({
   name = "",
   title = "",
@@ -34,9 +38,28 @@ const PdfCards = ({
   signature,
   passport,
   page,
-  type
+  type,
 }) => {
   const navigate = useNavigate();
+  let location = useLocation();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
+  const handleDocumentClick = async () => {
+    const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+
+    let paymentInfo = await checkPaymentStatus({
+      ...launchInfo,
+      viewPayLaunch,
+    });
+    if (paymentInfo?.data) {
+      localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo?.data));
+      store.dispatch(setLaunchPaid(paymentInfo));
+      store.dispatch(setLaunchResponse(launchInfo));
+      localStorage.setItem("countryISO", launchInfo.registrationCountry);
+      navigate(`/launch/${page}-kyc`);
+      // navigate(`/launch/review-${page}`);
+      localStorage.setItem("navigatedFrom", location.pathname);
+    }
+  };
   return (
     <>
       <Wrapper>
@@ -94,7 +117,7 @@ const PdfCards = ({
                   {passport.documentType}
                 </Details>
               ) : (
-                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                <Details onClick={handleDocumentClick}>
                   upload your passport photograph
                 </Details>
               )}
@@ -134,9 +157,7 @@ const PdfCards = ({
                   {nin.documentType}
                 </Details>
               ) : (
-                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
-                  upload your NIN
-                </Details>
+                <Details onClick={handleDocumentClick}>upload your NIN</Details>
               )}
             </PdfLowerWrapper>
 
@@ -179,7 +200,7 @@ const PdfCards = ({
                   {signature.documentType}
                 </Details>
               ) : (
-                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                <Details onClick={handleDocumentClick}>
                   upload your signature
                 </Details>
               )}
@@ -220,7 +241,7 @@ const PdfCards = ({
                   {proof.documentType}
                 </Details>
               ) : (
-                <Details onClick={() => navigate(`/launch/${page}-kyc`)}>
+                <Details onClick={handleDocumentClick}>
                   upload proof of address
                 </Details>
               )}

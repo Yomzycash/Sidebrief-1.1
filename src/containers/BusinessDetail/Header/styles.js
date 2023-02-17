@@ -57,6 +57,21 @@ export const TopInfo = styled.div`
 	display: flex;
 	gap: 24px;
 	align-items: center;
+
+	.transbutton {
+		background: transparent;
+		color: #242627;
+		font-family: "BR Firma";
+
+		svg {
+			/* transform: scale(1.5); */
+			width: 20px;
+			height: 20px;
+			path {
+				fill: #242627;
+			}
+		}
+	}
 `;
 
 export const CompanyName = styled.h2`
@@ -94,6 +109,34 @@ export const RHS = styled.div`
 	@media screen and (max-width: 700px) {
 		display: none;
 	}
+
+	.transbutton {
+		background: transparent;
+		color: #242627;
+		font-family: "BR Firma";
+
+		svg {
+			/* transform: scale(1.5); */
+			width: 20px;
+			height: 20px;
+			path {
+				fill: #242627;
+			}
+		}
+	}
+`;
+
+export const MessageCount = styled.div`
+	width: 22px;
+	height: 22px;
+	left: 146px;
+	top: 13px;
+	background: #ed4e3a;
+	border-radius: 6px;
+	color: #fff;
+	display: grid;
+	place-items: center;
+	margin-left: 16px;
 `;
 
 export const BottomInfo = styled.div`
