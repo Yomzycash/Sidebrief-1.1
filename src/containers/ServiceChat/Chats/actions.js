@@ -58,33 +58,33 @@ const getServicesMessages = (notifications) => {
 
   let servicesNotifications = uniqueServicesId?.map((id) => ({
     serviceId: id,
-    serviceNotifications: notifications?.filter((el) => el?.serviceId === id),
+    serviceNotifications: notifications?.filter((el) => el?.serviceId === id || el?.serviceID===id),
   }));
 
   return servicesNotifications;
 };
 
-export const getServiceIDMessages = (data) => {
-	const senderMessages = getMessages(data)
-	const uniqueServiceID = [...new Set(senderMessages?.map((el) => el.serviceID))];
+// export const getServiceIDMessages = (data) => {
+// 	const senderMessages = getMessages(data)
+// 	const uniqueServiceID = [...new Set(senderMessages?.map((el) => el.serviceID))];
 
-	const uniqueData =uniqueServiceID
-		.map((el) => {
-			const relatedData = data?.filter(
-				(notification) => notification.serviceId === el
-			);
+// 	const uniqueData =uniqueServiceID
+// 		.map((el) => {
+// 			const relatedData = data?.filter(
+// 				(notification) => notification.serviceId === el
+// 			);
 
-			return {
-				serviceId: el,
-				notification: relatedData.sort((a, b) =>
-					compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
-				),
-			};
-		})
+// 			return {
+// 				serviceId: el,
+// 				notification: relatedData.sort((a, b) =>
+// 					compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
+// 				),
+// 			};
+// 		})
 
-		// .filter((el) => {
-		// 	return el.notification.length > 0;
-		// });
+// 		// .filter((el) => {
+// 		// 	return el.notification.length > 0;
+// 		// });
 
-	return uniqueData;
-};
+// 	return uniqueData;
+// };

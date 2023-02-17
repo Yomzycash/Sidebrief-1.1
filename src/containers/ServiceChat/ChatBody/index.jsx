@@ -1,4 +1,11 @@
-import { Container, TextInput, TextInputForm, Messages, SubjectInput, TextBody } from './style'
+import {
+  Container,
+  TextInput,
+  TextInputForm,
+  Messages,
+  SubjectInput,
+  TextBody,
+} from './style'
 import { CommonButton } from 'components/button'
 import { Send } from 'asset/svg'
 import { messageSchema, mockMessages } from './constants'
@@ -7,36 +14,37 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { MessageBubble } from 'components/cards'
 import { compareDesc, differenceInDays, isToday, isYesterday } from 'date-fns'
 import {
-	useGetAllNotificationsByIdQuery,
-	useGetAllNotificationsQuery,
-} from "services/chatService";
-import { getMessages } from "../Chats/actions";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+  useGetAllNotificationsByIdQuery,
+  useGetAllNotificationsQuery,
+  useGetNotificationsByServiceIdQuery,
+} from 'services/chatService'
+import { getMessages } from '../Chats/actions'
 
-export const ChatBody = ({ isUser }) => {
-	const { data, isError, isLoading } = useGetAllNotificationsQuery();
+export const ChatBody = ({ paramsId }) => {
+  const serviceId = paramsId.get('serviceId')
+
+  const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId)
+  console.log(data)
+
+  const senderId = paramsId.get('senderId')
 
   const { handleSubmit, register, reset } = useForm({
     resolver: yupResolver(messageSchema),
   })
 
-	const { serviceId } = useParams();
   const sendMessage = (data) => {
-    console.log(data.message)
     reset()
   }
+  const messages = data?.filter((el) => el?.senderId === senderId || el?.senderID ===senderId)
+  console.log(messages)
+  // let ID = useParams().SenderID
 
-  let ID = useParams().SenderID
+  // let messages = getMessages(data)
 
-  let messages = getMessages(data)
+  // let clickedMessage = messages?.filter((message) => message?.senderID === ID)
 
-	let clickedMessage = messages?.filter(
-		(message) => message?.serviceId === serviceId
-	);
-
-  let messageContent =
-    clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
+  // let messageContent =
+  //   clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
   // console.log(messageContent);
 
   const formatDate = (updatedAt) => {
@@ -56,49 +64,33 @@ export const ChatBody = ({ isUser }) => {
     }
   }
 
-	const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
+  // let modifiedMessage = messageContent?.map((msg) => ({
+  //   ...msg,
+  //   formatedDate: formatDate(msg?.updatedAt),
+  // }))
 
-	const sendMessage = (data) => {
-		const requiredData = {
-			serviceId: serviceId,
-			senderId: userInfo.id,
-			messageSubject: "Subject", // you can change this when you start working
-			messageBody: data.message,
-			messageIsRead: false,
-			messageFiles: [], //empty array, should be populated when we implement file sending
-		};
-		console.log(requiredData);
-		reset();
-	};
+  return (
+    
+    <Container>
+      <Messages>
+        {messages
+          ?.sort((a, b) =>
+            compareDesc(new Date(a.formatedDate), new Date(b.formatedDate)),
+          )
+          ?.map((el, index) => (
+            <>
+              <MessageBubble key={index} {...el} />
+            </>
+          ))}
+      </Messages>
+      <TextInputForm onSubmit={handleSubmit(sendMessage)}>
+        <SubjectInput placeholder="Subject" />
+        <TextBody>
+          <TextInput placeholder="Send a message" {...register('message')} />
 
-	let modifiedMessage = messageContent?.map((msg) => ({
-		...msg,
-		formatedDate: formatDate(msg?.updatedAt),
-	}));
-
-	return (
-		<Container>
-			<Messages>
-				<>
-					{modifiedMessage
-						?.sort((a, b) =>
-							compareDesc(
-								new Date(a.formatedDate),
-								new Date(b.formatedDate)
-							)
-						)
-						?.map((el, index) => (
-							<MessageBubble key={index} {...el} />
-						))}
-				</>
-			</Messages>
-			<TextInputForm onSubmit={handleSubmit(sendMessage)}>
-				<TextInput
-					placeholder="Send a message"
-					{...register("message")}
-				/>
-				<CommonButton text={"Send"} RightIcon={Send} />
-			</TextInputForm>
-		</Container>
-	);
-};
+          <CommonButton text={'Send'} RightIcon={Send} />
+        </TextBody>
+      </TextInputForm>
+    </Container>
+  )
+}
