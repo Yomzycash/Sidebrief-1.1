@@ -15,39 +15,27 @@ import { MessageBubble } from "components/cards";
 import { compareDesc, differenceInDays, isToday, isYesterday } from "date-fns";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useRef } from "react";
 
 export const ChatBody = ({ data }) => {
+  const [value, setValue] = useState();
+
   const location = useLocation();
   let params = new URLSearchParams(location.search);
   let notificationId = params.get("notificationId");
 
-	const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId);
-	console.log(data);
+  const { handleSubmit, register, reset } = useForm({
+    resolver: yupResolver(messageSchema),
+  });
 
   const sendMessage = (data) => {
     reset();
   };
+
   const message = data?.filter(
     (el) => el?.notificationId === notificationId
   )[0];
-
-  // console.log(messages);
-  // let ID = useParams().SenderID
-
-	const messages = data?.filter(
-		(el) => el?.senderId === senderId || el?.senderID === senderId
-	);
-	console.log(messages);
-	// let ID = useParams().SenderID
-
-	// let messages = getMessages(data)
-
-	// let clickedMessage = messages?.filter((message) => message?.senderID === ID)
-
-  // let modifiedMessage = messageContent?.map((msg) => ({
-  //   ...msg,
-  //   formatedDate: formatDate(msg?.updatedAt),
-  // }))
 
   return (
     <Container>
@@ -57,7 +45,11 @@ export const ChatBody = ({ data }) => {
       <TextInputForm onSubmit={handleSubmit(sendMessage)}>
         <SubjectInput placeholder="Subject" />
         <TextBody>
-          <TextInput placeholder="Send a message" {...register("message")} />
+          <TextInput
+            placeholder="Send a message"
+            {...register("message")}
+            value={value}
+          />
           <CommonButton text={"Send"} RightIcon={Send} />
         </TextBody>
       </TextInputForm>
