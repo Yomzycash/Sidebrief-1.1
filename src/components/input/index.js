@@ -7,12 +7,13 @@ import Checkbox from "./Checkbox";
 import TextAreaWithLabel from "./TextAreaWithLabel";
 
 export {
-  InputWithLabel,
-  DropDownInput,
-  DropDown,
-  CountryInput,
-  DropDownWithSearch,
-  Checkbox,
-  TextAreaWithLabel,
+	InputWithLabel,
+	DropDownInput,
+	DropDown,
+	CountryInput,
+	DropDownWithSearch,
+	Checkbox,
+	TextAreaWithLabel,
 };
 export { DateInput } from "./dateInput";
+export { Editor } from "./editor";

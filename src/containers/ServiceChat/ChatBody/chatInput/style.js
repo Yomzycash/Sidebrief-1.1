@@ -6,6 +6,7 @@ export const TextInputForm = styled.form`
 	flex-direction: column;
 	align-items: flex-start;
 	padding-inline: 24px;
+	/* background: #222; */
 `;
 export const TextBody = styled.div`
 	width: 100%;

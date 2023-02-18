@@ -4,8 +4,9 @@ import { Send } from "asset/svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { messageSchema } from "../constants";
+import { Editor } from "components/input";
 
-export const ChatInput = () => {
+export const ChatInput = ({ noEditor }) => {
 	const { handleSubmit, register, reset } = useForm({
 		resolver: yupResolver(messageSchema),
 	});
@@ -25,6 +26,11 @@ export const ChatInput = () => {
 				/>
 				<CommonButton text={"Send"} RightIcon={Send} />
 			</TextBody>
+			{!noEditor && (
+				<>
+					<Editor />
+				</>
+			)}
 		</TextInputForm>
 	);
 };
