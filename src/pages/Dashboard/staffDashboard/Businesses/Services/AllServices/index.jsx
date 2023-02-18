@@ -53,7 +53,6 @@ const AllServices = () => {
     store.dispatch(setRefreshApp(!refreshApp));
   }, [itemOffset, itemsPerPage, allServices]);
 
-
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
