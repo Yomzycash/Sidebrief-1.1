@@ -9,78 +9,58 @@ import {
   LowerText,
   LowerWrapper,
   InnerContainer,
-  Wrapper,
-  ListWrapper,
 } from "./styled.js";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import profile from "asset/images/profile.svg";
-import { useSendResetPasswordCodeMutation } from "services/authService.js";
 
-const ChatCard = ({
-  chats,
-  image,
-  name,
-  serviceName,
-  time,
-  message,
-  serviceId,
-  currentSelected,
-  setParamsId,
-}) => {
-  const [iconHovered, setIconHovered] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const ActiveStyle = {
-    background: "#00a2d419",
-    color: "#00a2d4",
-  };
+const ChatCard = ({ notification }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const navigate = useNavigate();
 
-  const openChat = (serviceId, senderId) => {
-    let id = {
+  const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let serviceId = params.get("serviceId");
+
+  const openChat = () => {
+    let newParams = {
       serviceId: serviceId,
-      senderId: senderId,
+      notificationId: notification?.notificationId,
     };
-    setParamsId(id);
+    setSearchParams(newParams);
   };
 
-  const isSelected = currentSelected === serviceId;
+  // const isSelected = currentSelected === serviceId;
 
-  const lastMessage = (messages) => {
-    return messages?.serviceNotifications[
-      messages.serviceNotifications?.length - 1
-    ];
-  };
+  // const lastMessage = (messages) => {
+  //   return messages?.serviceNotifications[
+  //     messages.serviceNotifications?.length - 1
+  //   ];
+  // };
 
   return (
-    <Wrapper>
-      <ListWrapper>
-        <div onClick={() => setCollapsed(!collapsed)}>{chats?.senderId}</div>
-      </ListWrapper>
-      {chats?.servicesMessages?.map((messages, index) => (
-        <Container
-          key={index}
-          onClick={() => openChat(messages?.serviceId, chats?.senderId)}
-          selected={isSelected}
-        >
-          <TopContainer>
-            <InnerContainer>
-              <ImageContainer>
-                <Image src={profile} alt="" />
-              </ImageContainer>
-              <NameContainer>
-                <UpperText>{lastMessage(messages)?.serviceId}</UpperText>
-                <LowerText>{lastMessage(messages)?.messageSubject}</LowerText>
-              </NameContainer>
-            </InnerContainer>
-            {/* <LowerText>{new Date(lastMessage(messages)?.updatedAt)}</LowerText> */}
-          </TopContainer>
+    <Container onClick={openChat} selected={true}>
+      <TopContainer>
+        <InnerContainer>
+          <ImageContainer>
+            <Image src={profile} alt="" />
+          </ImageContainer>
+          <NameContainer>
+            <UpperText>{notification?.serviceId}</UpperText>
+            <LowerText>{notification?.messageSubject}</LowerText>
+          </NameContainer>
+        </InnerContainer>
+        {/* <LowerText>{new Date(lastMessage(messages)?.updatedAt)}</LowerText> */}
+      </TopContainer>
 
-          <LowerWrapper>{lastMessage(messages)?.messageBody}</LowerWrapper>
-        </Container>
-      ))}
-    </Wrapper>
+      <LowerWrapper>{notification?.messageBody}</LowerWrapper>
+    </Container>
   );
 };
 
 export default ChatCard;
+
+const ActiveStyle = {
+  background: "#00a2d419",
+  color: "#00a2d4",
+};
