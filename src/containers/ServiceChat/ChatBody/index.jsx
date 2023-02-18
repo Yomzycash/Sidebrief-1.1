@@ -21,9 +21,8 @@ export const ChatBody = ({ data }) => {
   let params = new URLSearchParams(location.search);
   let notificationId = params.get("notificationId");
 
-  const { handleSubmit, register, reset } = useForm({
-    resolver: yupResolver(messageSchema),
-  });
+	const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId);
+	console.log(data);
 
   const sendMessage = (data) => {
     reset();
@@ -35,13 +34,15 @@ export const ChatBody = ({ data }) => {
   // console.log(messages);
   // let ID = useParams().SenderID
 
-  // let messages = getMessages(data)
+	const messages = data?.filter(
+		(el) => el?.senderId === senderId || el?.senderID === senderId
+	);
+	console.log(messages);
+	// let ID = useParams().SenderID
 
-  // let clickedMessage = messages?.filter((message) => message?.senderID === ID)
+	// let messages = getMessages(data)
 
-  // let messageContent =
-  //   clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
-  // console.log(messageContent);
+	// let clickedMessage = messages?.filter((message) => message?.senderID === ID)
 
   // let modifiedMessage = messageContent?.map((msg) => ({
   //   ...msg,
