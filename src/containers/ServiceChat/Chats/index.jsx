@@ -16,19 +16,13 @@ import Search from "components/navbar/Search";
 import ChatCard from "components/cards/ChatCard";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
-import { useGetAllNotificationsQuery } from "services/chatService";
-import { getUsersMessages } from "./actions";
+import { compareAsc, parseJSON } from "date-fns";
 
-export const Chats = ({ setParamsId }) => {
-  const options = ["senderID", "serviceID"];
-
+export const Chats = ({ data }) => {
   const [selected, setSelected] = useState("filter");
   const [isActive, setIsActive] = useState(false);
-  const { data, isError, isLoading } = useGetAllNotificationsQuery();
 
-  let usersMessages = getUsersMessages(data);
-
-  console.log(usersMessages);
+  const options = ["senderID", "serviceID"];
 
   return (
     <Container>
@@ -72,19 +66,16 @@ export const Chats = ({ setParamsId }) => {
         </SearchContainer>
       </TopContainer>
       <ChatContainer>
-        {usersMessages.map((chats, index) => {
-          return (
-            <ChatCard chats={chats} key={index} setParamsId={setParamsId} />
-          );
-        })}
+        {data?.map((notification, index) => (
+          <ChatCard notification={notification} key={index} />
+        ))}
       </ChatContainer>
     </Container>
   );
 };
-
-// ?.sort((a, b) =>
-//   compareAsc(
-//     parseJSON(a.notification.slice(-1)[0]?.createdAt),
-//     parseJSON(b.notification.slice(-1)[0]?.createdAt),
-//   ),
-// )
+// .sort((a, b) =>
+//             compareAsc(
+//               parseJSON(a?.notification?.updatedAt),
+//               parseJSON(b?.notification?.updatedAt)
+//             )
+//           )

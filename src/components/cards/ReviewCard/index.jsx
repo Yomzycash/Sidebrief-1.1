@@ -58,50 +58,6 @@ const ReviewCard = ({
       (member) => member.memberCode === memberCode
     );
     setSameData(fileInfo);
-
-    // requiredDocuments?.forEach((required) => {
-    //   fileInfo?.forEach((file) => {
-    //     if (required === fileInfo.documentType) {
-    //       setDocumentInfo()
-    //     }
-    //   })
-    // })
-
-    // const uploadedDetail = fileInfo.filter(
-    //   (item) => item.documentType === "NIN Slip/Card"
-    // );
-
-    // let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
-    // // console.log("adddddddddddd", lastUploadDetail);
-    // setGovernmentId(lastUploadDetail);
-
-    // //nin
-    // const uploadedProofDetail = fileInfo.filter(
-    //   (item) => item.documentType === "Proof of address"
-    // );
-
-    // let lastUploadProofDetail =
-    //   uploadedProofDetail[uploadedProofDetail.length - 1];
-    // setProof(lastUploadProofDetail);
-
-    // // signature
-
-    // const uploadedSignatureDetail = fileInfo.filter(
-    //   (item) => item.documentType === "E-signature"
-    // );
-
-    // let lastUploadSignatureDetail =
-    //   uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
-    // setSignature(lastUploadSignatureDetail);
-
-    // //
-    // const uploadedPassportDetail = fileInfo.filter(
-    //   (item) => item.documentType === "Passport Photograph"
-    // );
-
-    // let lastUploadPassportDetail =
-    //   uploadedPassportDetail[uploadedPassportDetail.length - 1];
-    // setPassport(lastUploadPassportDetail);
   };
 
   const handleBeneficiary = async () => {
@@ -113,42 +69,6 @@ const ReviewCard = ({
     );
 
     setSameData(fileInfo);
-
-    // const uploadedDetail = fileInfo.filter(
-    //   (item) => item.documentType === "NIN Slip/Card"
-    // );
-
-    // let lastUploadDetail = uploadedDetail[uploadedDetail.length - 1];
-    // // console.log("adddddddddddd", lastUploadDetail);
-    // setGovernmentId(lastUploadDetail);
-
-    // //nin
-    // const uploadedProofDetail = fileInfo.filter(
-    //   (item) => item.documentType === "Proof of address"
-    // );
-
-    // let lastUploadProofDetail =
-    //   uploadedProofDetail[uploadedProofDetail.length - 1];
-    // setProof(lastUploadProofDetail);
-
-    // // signature
-
-    // const uploadedSignatureDetail = fileInfo.filter(
-    //   (item) => item.documentType === "E-signature"
-    // );
-
-    // let lastUploadSignatureDetail =
-    //   uploadedSignatureDetail[uploadedSignatureDetail.length - 1];
-    // setSignature(lastUploadSignatureDetail);
-
-    // //
-    // const uploadedPassportDetail = fileInfo.filter(
-    //   (item) => item.documentType === "Passport Photograph"
-    // );
-
-    // let lastUploadPassportDetail =
-    //   uploadedPassportDetail[uploadedPassportDetail.length - 1];
-    // setPassport(lastUploadPassportDetail);
   };
 
   useEffect(() => {
@@ -172,18 +92,6 @@ const ReviewCard = ({
             <div style={{ cursor: "pointer" }} onClick={editAction}>
               <EditIcon /> Edit
             </div>
-            {/* {isLoading ? (
-                <SpinningCircles
-                  stroke="#00A2D4"
-                  fill="#00A2D4"
-                  width={25}
-                  height={25}
-                />
-              ) : (
-                <div style={{ cursor: "pointer" }}>
-                  <DeleteIcon onClick={deleteAction} />
-                </div>
-              )} */}
           </IconWrapper>
           {/* )} */}
         </SharesWrapper>
@@ -191,118 +99,7 @@ const ReviewCard = ({
       <div>{email}</div>
       <div>{phone}</div>
 
-      {/* {
-  documentInfo.lastIndexOf((item) => item.documentType === "government id").map(())
-} */}
       <PdfContainer>
-        {/* <PdfWrapper>
-          {imageTypeImage.filter((fil) => passportD?.fileType === fil.type)
-            .length === 0 && (
-            <NotUploaded>Passport Photograph not uploaded yet</NotUploaded>
-          )}
-          {imageTypeImage
-            .filter((fil) => passportD?.fileType === fil.type)
-            .map((m) => (
-              <img
-                src={m.image}
-                alt=""
-                style={{
-                  margin: 0,
-                  height: "25px",
-                  width: "25px",
-                  marginRight: "8px",
-                }}
-              />
-            ))}
-          <TextWrapper>{passportD?.documentType}</TextWrapper>
-        </PdfWrapper>
-
-        <PdfWrapper>
-          {imageTypeImage?.filter((fil) => governmentId?.fileType === fil.type)
-            .length === 0 && (
-            <NotUploaded>NIN Slip not uploaded yet</NotUploaded>
-          )}
-          {imageTypeImage
-            ?.filter((fil) => governmentId?.fileType === fil.type)
-            .map((m) => (
-              <img
-                src={m.image}
-                alt=""
-                style={{
-                  margin: 0,
-                  height: "25px",
-                  width: "25px",
-                  marginRight: "8px",
-                }}
-              />
-            ))}
-          <TextWrapper>{governmentId?.documentType}</TextWrapper>
-        </PdfWrapper>
-        <PdfWrapper>
-          {imageTypeImage.filter((fil) => signature?.fileType === fil.type)
-            .length === 0 && (
-            <NotUploaded> E-signature not uploaded yet</NotUploaded>
-          )}
-          {imageTypeImage
-            .filter((fil) => signature?.fileType === fil.type)
-            .map((m) => (
-              <img
-                src={m.image}
-                alt=""
-                style={{
-                  margin: 0,
-                  height: "25px",
-                  width: "25px",
-                  marginRight: "8px",
-                }}
-              />
-            ))}
-          <TextWrapper>{signature?.documentType}</TextWrapper>
-        </PdfWrapper>
-        <PdfWrapper>
-          {imageTypeImage.filter((fil) => proofD?.fileType === fil.type)
-            .length === 0 && (
-            <NotUploaded>Proof of address not uploaded yet</NotUploaded>
-          )}
-          {imageTypeImage
-            .filter((fil) => proofD?.fileType === fil.type)
-            .map((m) => (
-              <img
-                src={m.image}
-                alt=""
-                style={{
-                  margin: 0,
-                  height: "25px",
-                  width: "25px",
-                  marginRight: "8px",
-                }}
-              />
-            ))}
-          <TextWrapper>{proofD?.documentType}</TextWrapper>
-        </PdfWrapper> */}
-        {/* {sameData?.map((set) => (
-          <PdfWrapper>
-            {imageTypeImage.filter((fil) => set?.fileType === fil.type)
-              .length === 0 && (
-              <NotUploaded>Proof of address not uploaded yet</NotUploaded>
-            )}
-            {imageTypeImage
-              .filter((fil) => set?.fileType === fil.type)
-              .map((m) => (
-                <img
-                  src={m.image}
-                  alt=""
-                  style={{
-                    margin: 0,
-                    height: "25px",
-                    width: "25px",
-                    marginRight: "8px",
-                  }}
-                />
-              ))}
-            <TextWrapper>{set?.documentType}</TextWrapper>
-          </PdfWrapper>
-        ))} */}
         {requiredDocuments?.map((document) => {
           return (
             <PdfWrapper>

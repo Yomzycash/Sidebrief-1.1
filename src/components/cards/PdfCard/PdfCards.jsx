@@ -1,20 +1,14 @@
 import React from "react";
 import { ReactComponent as PhoneIcon } from "asset/svg/phone.svg";
-import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
-import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
 import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
-import { imageTypeImage } from "utils/config";
 
 import {
   DetailWrapper,
-  Details,
   Email,
   EmailWrapper,
   IconWrapper,
   LowerContainer,
   NameWrapper,
-  PdfLowerWrapper,
-  PdfWrapper,
   Phone,
   PhoneWrapper,
   Title,
@@ -22,17 +16,23 @@ import {
   Top,
   Wrapper,
 } from "./styles";
-import { downLoadImage } from "utils/staffHelper";
-import { useLocation, useNavigate } from "react-router-dom";
-import { checkPaymentStatus } from "pages/Launch/actions";
-import { useViewPayLaunchMutation } from "services/launchService";
-import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import {
+  useAddBeneficialKYCMutation,
+  useAddMemberKYCMutation,
+  useGetAllEntitiesQuery,
+} from "services/launchService";
+import { useEffect } from "react";
+import { useState } from "react";
+import KYCFileUpload from "components/FileUpload/KYCFileUpload";
+import { convertToLink } from "utils/LaunchHelper";
+import toast from "react-hot-toast";
 const PdfCards = ({
   name = "",
   title = "",
   email = "",
   phone = "",
+  code,
+  beneCode,
   nin,
   proof,
   signature,
@@ -40,26 +40,78 @@ const PdfCards = ({
   page,
   type,
 }) => {
-  const navigate = useNavigate();
-  let location = useLocation();
-  const [viewPayLaunch] = useViewPayLaunchMutation();
-  const handleDocumentClick = async () => {
-    const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const countryISO = localStorage.getItem("countryISO");
+  const [addMemberKYC] = useAddMemberKYCMutation();
+  const [addBeneficialKYC] = useAddBeneficialKYCMutation();
+  const [isChanged, setIsChanged] = useState(false);
+  const [requiredDocuments, setRequiredDocuments] = useState([]);
 
-    let paymentInfo = await checkPaymentStatus({
-      ...launchInfo,
-      viewPayLaunch,
-    });
-    if (paymentInfo?.data) {
-      localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo?.data));
-      store.dispatch(setLaunchPaid(paymentInfo));
-      store.dispatch(setLaunchResponse(launchInfo));
-      localStorage.setItem("countryISO", launchInfo.registrationCountry);
-      navigate(`/launch/${page}-kyc`);
-      // navigate(`/launch/review-${page}`);
-      localStorage.setItem("navigatedFrom", location.pathname);
+  const { data } = useGetAllEntitiesQuery(countryISO);
+  console.log("data", data);
+
+  const checkE = useGetAllEntitiesQuery(countryISO);
+  console.log("dcheckEata", checkE);
+
+  useEffect(() => {
+    console.log("data", data);
+    const check = data?.find(
+      (entity) => entity.entityCode === launchInfo.registrationType
+    );
+    setRequiredDocuments(check?.entityRequiredDocuments);
+  }, [data, launchInfo]);
+
+  const handleChange = async (files, shareholder, beneficiary, type) => {
+    const res = await convertToLink(files[0]);
+    const formatType = type.split("_").join(" ");
+
+    if (shareholder) {
+      const requiredAddMemberData = {
+        launchCode: launchInfo.launchCode,
+        memberCode: shareholder,
+        memberKYC: {
+          documentType: formatType,
+          documentLink: res.url,
+          fileName: files[0].name,
+          fileType: files[0].type,
+        },
+      };
+      const response = await addMemberKYC(requiredAddMemberData);
+      if (response.data) {
+        toast.success("Document uploaded successfully");
+        setIsChanged(!isChanged);
+      } else if (response.error) {
+        toast.error(response.error?.data.message);
+      }
+    }
+
+    if (beneficiary) {
+      const requiredBeneficialOwnerKYCData = {
+        launchCode: launchInfo.launchCode,
+        beneficialOwnerCode: beneficiary,
+        beneficialOwnerKYC: {
+          documentType: formatType,
+          documentLink: res.url,
+          fileName: files[0].name,
+          fileType: files[0].type,
+        },
+      };
+
+      const beneficialResult = await addBeneficialKYC(
+        requiredBeneficialOwnerKYCData
+      );
+      if (beneficialResult.data) {
+        let returnedArray = beneficialResult.data.beneficialOwnersKYC;
+        let lastElememt = returnedArray[returnedArray.length - 1];
+
+        toast.success("Document uploaded successfully");
+        setIsChanged(!isChanged);
+      } else if (beneficialResult.error) {
+        toast.error(beneficialResult.error?.data.message);
+      }
     }
   };
+
   return (
     <>
       <Wrapper>
@@ -86,171 +138,18 @@ const PdfCards = ({
           </PhoneWrapper>
         </DetailWrapper>
         <LowerContainer>
-          <PdfWrapper>
-            <PdfLowerWrapper>
-              <IconWrapper>
-                {passport ? (
-                  <img
-                    src={
-                      imageTypeImage?.find(
-                        (el) => el?.type === passport?.fileType
-                      )?.image
-                    }
-                    alt="icon"
-                    style={{
-                      margin: 0,
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "8px",
-                    }}
-                  />
-                ) : (
-                  <PdfIcon />
-                )}
-              </IconWrapper>
-              {passport ? (
-                <Details
-                  onClick={() =>
-                    downLoadImage(passport.documentLink, passport.documentType)
-                  }
-                >
-                  {passport.documentType}
-                </Details>
-              ) : (
-                <Details onClick={handleDocumentClick}>
-                  upload your passport photograph
-                </Details>
-              )}
-            </PdfLowerWrapper>
-
-            {/* <IconWrapper>
-              <DeleteIcon />
-            </IconWrapper> */}
-          </PdfWrapper>
-          <PdfWrapper>
-            <PdfLowerWrapper>
-              <IconWrapper>
-                {nin?.fileType ? (
-                  <img
-                    src={
-                      imageTypeImage?.find((el) => el?.type === nin?.fileType)
-                        .image
-                    }
-                    alt="icon"
-                    style={{
-                      margin: 0,
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "8px",
-                    }}
-                  />
-                ) : (
-                  <PdfIcon />
-                )}
-              </IconWrapper>
-              {nin ? (
-                <Details
-                  onClick={() =>
-                    downLoadImage(nin.documentLink, nin.documentType)
-                  }
-                >
-                  {nin.documentType}
-                </Details>
-              ) : (
-                <Details onClick={handleDocumentClick}>upload your NIN</Details>
-              )}
-            </PdfLowerWrapper>
-
-            {/* <IconWrapper>
-              <DeleteIcon />
-            </IconWrapper> */}
-          </PdfWrapper>
-
-          <PdfWrapper>
-            <PdfLowerWrapper>
-              <IconWrapper>
-                {signature ? (
-                  <img
-                    src={
-                      imageTypeImage?.find(
-                        (el) => el?.type === signature?.fileType
-                      )?.image
-                    }
-                    alt="icon"
-                    style={{
-                      margin: 0,
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "8px",
-                    }}
-                  />
-                ) : (
-                  <PdfIcon />
-                )}
-              </IconWrapper>
-              {signature ? (
-                <Details
-                  onClick={() =>
-                    downLoadImage(
-                      signature.documentLink,
-                      signature.documentType
-                    )
-                  }
-                >
-                  {signature.documentType}
-                </Details>
-              ) : (
-                <Details onClick={handleDocumentClick}>
-                  upload your signature
-                </Details>
-              )}
-            </PdfLowerWrapper>
-
-            {/* <IconWrapper>
-              <DeleteIcon />
-            </IconWrapper> */}
-          </PdfWrapper>
-
-          <PdfWrapper>
-            <PdfLowerWrapper>
-              <IconWrapper>
-                {proof ? (
-                  <img
-                    src={
-                      imageTypeImage?.find((el) => el?.type === proof?.fileType)
-                        ?.image
-                    }
-                    alt="icon"
-                    style={{
-                      margin: 0,
-                      height: "25px",
-                      width: "25px",
-                      marginRight: "8px",
-                    }}
-                  />
-                ) : (
-                  <PdfIcon />
-                )}
-              </IconWrapper>
-              {proof ? (
-                <Details
-                  onClick={() =>
-                    downLoadImage(proof.documentLink, proof.documentType)
-                  }
-                >
-                  {proof.documentType}
-                </Details>
-              ) : (
-                <Details onClick={handleDocumentClick}>
-                  upload proof of address
-                </Details>
-              )}
-            </PdfLowerWrapper>
-
-            {/* <IconWrapper>
-              <DeleteIcon />
-            </IconWrapper> */}
-          </PdfWrapper>
+          {requiredDocuments?.map((document, index) => (
+            <KYCFileUpload
+              key={index}
+              detailsPage
+              isChanged={isChanged}
+              documentComponentType={document}
+              documentName={document}
+              memberCode={code}
+              beneficiaryCode={beneCode}
+              onDrop={(files) => handleChange(files, code, beneCode, document)}
+            />
+          ))}
         </LowerContainer>
       </Wrapper>
     </>

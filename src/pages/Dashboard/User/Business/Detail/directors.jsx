@@ -52,6 +52,7 @@ const DetailDirectors = () => {
                 name={member.memberName}
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
+                code={member.memberCode}
                 title={`${director.directorCode}`}
                 nin={NINSlip}
                 proof={proofFile}
