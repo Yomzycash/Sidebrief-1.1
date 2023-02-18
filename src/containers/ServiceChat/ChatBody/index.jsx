@@ -32,25 +32,10 @@ export const ChatBody = ({ data }) => {
   const sendMessage = (data) => {
     reset();
   };
+
   const message = data?.filter(
     (el) => el?.notificationId === notificationId
   )[0];
-
-  // console.log(messages);
-  // let ID = useParams().SenderID
-
-  // let messages = getMessages(data)
-
-  // let clickedMessage = messages?.filter((message) => message?.senderID === ID)
-
-  // let messageContent =
-  //   clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
-  // console.log(messageContent);
-
-  // let modifiedMessage = messageContent?.map((msg) => ({
-  //   ...msg,
-  //   formatedDate: formatDate(msg?.updatedAt),
-  // }))
 
   return (
     <Container>

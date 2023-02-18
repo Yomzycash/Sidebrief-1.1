@@ -70,4 +70,5 @@ export const TextInput = styled.textarea`
   &::placeholder {
     color: #727474;
   }
+  margin-bottom: 40px;
 `;

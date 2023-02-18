@@ -27,6 +27,9 @@ export default defineConfig({
 	build: {
 		outDir: "build",
 		minify: false,
+		commonjsOptions: {
+			esmExternals: true,
+		},
 	},
 	server: {
 		open: true,
