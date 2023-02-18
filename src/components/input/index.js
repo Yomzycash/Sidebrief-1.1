@@ -16,4 +16,4 @@ export {
 	TextAreaWithLabel,
 };
 export { DateInput } from "./dateInput";
-export { Editor } from "./editor";
+export { SlateEditor } from "./slate";

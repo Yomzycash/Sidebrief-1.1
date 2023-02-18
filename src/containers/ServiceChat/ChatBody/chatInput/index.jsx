@@ -4,7 +4,7 @@ import { Send } from "asset/svg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { messageSchema } from "../constants";
-import { Editor } from "components/input";
+import { SlateEditor } from "components/input";
 
 export const ChatInput = ({ noEditor }) => {
 	const { handleSubmit, register, reset } = useForm({
@@ -20,17 +20,17 @@ export const ChatInput = ({ noEditor }) => {
 		<TextInputForm onSubmit={handleSubmit(sendMessage)}>
 			<SubjectInput placeholder="Subject" {...register("subject")} />
 			<TextBody>
-				<TextInput
+				{/* <TextInput
 					placeholder="Send a message"
 					{...register("message")}
-				/>
+				/> */}
+				{!noEditor && (
+					<>
+						<SlateEditor placeholder="Send a message..." />
+					</>
+				)}
 				<CommonButton text={"Send"} RightIcon={Send} />
 			</TextBody>
-			{!noEditor && (
-				<>
-					<Editor />
-				</>
-			)}
 		</TextInputForm>
 	);
 };
