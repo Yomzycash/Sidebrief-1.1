@@ -5,8 +5,8 @@ export const Container = styled.div`
 	flex: 1;
 	width: 100%;
 
-	height: 120px;
-	padding: 16px 13px 16px;
+	height: 150px;
+	padding: 0 13px 16px;
 	flex: 1;
 	/* border: none; */
 
@@ -17,6 +17,8 @@ export const Container = styled.div`
 	line-height: 24px;
 	color: #000;
 	resize: none;
+	/* position: relative; */
+	overflow-y: auto;
 
 	&::placeholder {
 		color: #727474;
@@ -68,11 +70,14 @@ export const IconSpan = styled.span`
 `;
 
 export const MenuDiv = styled.div`
-	position: relative;
-	padding: 1px 18px 17px;
+	position: sticky;
+	top: 0;
+	padding: 15px 18px 5px;
 	margin: 0 -13px;
 	border-bottom: 2px solid #eee;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
+	background: #fff;
+	z-index: 2;
 
 	& > * {
 		display: inline-block;

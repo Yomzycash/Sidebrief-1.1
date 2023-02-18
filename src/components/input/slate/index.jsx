@@ -9,6 +9,7 @@ import {
 	Element as SlateElement,
 } from "slate";
 import { withHistory } from "slate-history";
+import * as Md from "react-icons/md";
 
 import { Button, Icon, Toolbar } from "./components";
 
@@ -31,25 +32,28 @@ export const SlateEditor = ({ placeholder }) => {
 		<Container>
 			<Slate editor={editor} value={initialValue}>
 				<Toolbar>
-					<MarkButton format="bold" icon="MdFormatBold" />
-					<MarkButton format="italic" icon="MdFormatItalic" />
-					<MarkButton format="underline" icon="MdFormatUnderlined" />
-					{/* <MarkButton format="code" icon="MdOutlineCode" /> */}
-					<BlockButton format="heading-one" icon="MdLooksOne" />
-					<BlockButton format="heading-two" icon="MdLooksTwo" />
-					<BlockButton format="block-quote" icon="MdFormatQuote" />
+					<MarkButton format="bold" Svg={Md.MdFormatBold} />
+					<MarkButton format="italic" Svg={Md.MdFormatItalic} />
+					<MarkButton
+						format="underline"
+						Svg={Md.MdFormatUnderlined}
+					/>
+					{/* <MarkButton format="code" Svg="MdOutlineCode" /> */}
+					<BlockButton format="heading-one" Svg={Md.MdLooksOne} />
+					<BlockButton format="heading-two" Svg={Md.MdLooksTwo} />
+					<BlockButton format="block-quote" Svg={Md.MdFormatQuote} />
 					<BlockButton
 						format="numbered-list"
-						icon="MdFormatListNumbered"
+						Svg={Md.MdFormatListNumbered}
 					/>
 					<BlockButton
 						format="bulleted-list"
-						icon="MdFormatListBulleted"
+						Svg={Md.MdFormatListBulleted}
 					/>
-					{/* <BlockButton format="left" icon="format_align_left" />
-					<BlockButton format="center" icon="format_align_center" />
-					<BlockButton format="right" icon="format_align_right" />
-					<BlockButton format="justify" icon="format_align_justify" /> */}
+					{/* <BlockButton format="left" Svg="format_align_left" />
+					<BlockButton format="center" Svg="format_align_center" />
+					<BlockButton format="right" Svg="format_align_right" />
+					<BlockButton format="justify" Svg="format_align_justify" /> */}
 				</Toolbar>
 				<Editable
 					renderElement={renderElement}
@@ -207,7 +211,7 @@ const Leaf = ({ attributes, children, leaf }) => {
 	return <span {...attributes}>{children}</span>;
 };
 
-const BlockButton = ({ format, icon }) => {
+const BlockButton = ({ format, Svg }) => {
 	const editor = useSlate();
 	return (
 		<Button
@@ -221,12 +225,14 @@ const BlockButton = ({ format, icon }) => {
 				toggleBlock(editor, format);
 			}}
 		>
-			<Icon>{icon}</Icon>
+			<Icon>
+				<Svg />
+			</Icon>
 		</Button>
 	);
 };
 
-const MarkButton = ({ format, icon }) => {
+const MarkButton = ({ format, Svg }) => {
 	const editor = useSlate();
 	return (
 		<Button
@@ -236,34 +242,16 @@ const MarkButton = ({ format, icon }) => {
 				toggleMark(editor, format);
 			}}
 		>
-			<Icon>{icon}</Icon>
+			<Icon>
+				<Svg />
+			</Icon>
 		</Button>
 	);
 };
 
 const initialValue = [
-	// {
-	// 	type: "paragraph",
-	// 	children: [
-	// 		{ text: "This is editable " },
-	// 		{ text: "rich", bold: true },
-	// 		{ text: " text, " },
-	// 	],
-	// },
-	// {
-	// 	type: "paragraph",
-	// 	children: [
-	// 		{
-	// 			text: "Since it's rich text, you can do things like turn a selection of text ",
-	// 		},
-	// 		{ text: "bold", bold: true },
-	// 		{
-	// 			text: ", or add a semantically rendered block quote in the middle of the page, like this:",
-	// 		},
-	// 	],
-	// },
-	// {
-	// 	type: "block-quote",
-	// 	children: [{ text: "A wise quote." }],
-	// },
+	{
+		type: "paragraph",
+		children: [{ text: "" }],
+	},
 ];

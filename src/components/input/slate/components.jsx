@@ -1,6 +1,5 @@
 import React from "react";
 import { ButtonSpan, IconSpan, MenuDiv } from "./style";
-import * as Md from "react-icons/md";
 
 export const Button = React.forwardRef(
 	({ className, active, reversed, ...props }, ref) => (
@@ -16,11 +15,9 @@ export const Button = React.forwardRef(
 
 export const Icon = React.forwardRef(
 	({ className, children, ...props }, ref) => {
-		const Icon = Md[children];
-
 		return (
 			<IconSpan {...props} ref={ref} className={className}>
-				<Icon />
+				{children}
 			</IconSpan>
 		);
 	}
