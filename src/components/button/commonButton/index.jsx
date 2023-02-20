@@ -11,9 +11,10 @@ const CommonButton = ({
 	rightIconColor,
 	classname,
 	component,
+	type
 }) => {
 	return (
-		<ButtonContainer onClick={action} style={style} className={classname}>
+		<ButtonContainer onClick={action} style={style} className={classname} type = {type || 'button'}>
 			{LeftIcon && (
 				<LeftIcon size={24} color={leftIconColor || "white"} />
 			)}

@@ -1,12 +1,12 @@
-import React from "react";
-import { ChatInput } from "containers/ServiceChat/ChatBody/chatInput";
+import React from 'react'
+import { ChatInput } from 'containers/ServiceChat/ChatBody/chatInput'
 
 const Test = () => {
-	return (
-		<div style={{}}>
-			<ChatInput />
-		</div>
-	);
-};
+  return (
+    <div style={{}}>
+      <ChatInput />
+    </div>
+  )
+}
 
-export default Test;
+export default Test

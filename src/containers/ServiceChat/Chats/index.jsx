@@ -11,18 +11,18 @@ import {
   DropDownBtn,
   DropDownContent,
   DropDownItems,
-} from "./style";
-import Search from "components/navbar/Search";
-import ChatCard from "components/cards/ChatCard";
-import { IoIosArrowDown } from "react-icons/io";
-import { useState } from "react";
-import { compareAsc, parseJSON } from "date-fns";
+} from './style'
+import Search from 'components/navbar/Search'
+import ChatCard from 'components/cards/ChatCard'
+import { IoIosArrowDown } from 'react-icons/io'
+import { useState } from 'react'
+import { compareAsc, parseJSON } from 'date-fns'
 
-export const Chats = ({ data }) => {
-  const [selected, setSelected] = useState("filter");
-  const [isActive, setIsActive] = useState(false);
+export const Chats = ({ data, isUser }) => {
+  const [selected, setSelected] = useState('filter')
+  const [isActive, setIsActive] = useState(false)
 
-  const options = ["senderID", "serviceID"];
+  const options = ['senderID', 'serviceID']
 
   return (
     <Container>
@@ -33,7 +33,7 @@ export const Chats = ({ data }) => {
           <DropDown>
             <DropDownBtn
               onClick={() => {
-                setIsActive(!isActive);
+                setIsActive(!isActive)
               }}
             >
               <TextContainer> {selected}</TextContainer>
@@ -50,8 +50,8 @@ export const Chats = ({ data }) => {
                   <DropDownItems
                     key={index}
                     onClick={(e) => {
-                      setSelected(option);
-                      setIsActive(false);
+                      setSelected(option)
+                      setIsActive(false)
                     }}
                   >
                     {option}
@@ -67,12 +67,12 @@ export const Chats = ({ data }) => {
       </TopContainer>
       <ChatContainer>
         {data?.map((notification, index) => (
-          <ChatCard notification={notification} key={index} />
+          <ChatCard notification={notification} key={index}  />
         ))}
       </ChatContainer>
     </Container>
-  );
-};
+  )
+}
 // .sort((a, b) =>
 //             compareAsc(
 //               parseJSON(a?.notification?.updatedAt),
