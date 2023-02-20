@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
@@ -9,15 +9,19 @@ export const Container = styled.div`
 
   width: 100%;
   height: 116px;
-  background: #ffffff;
+  background:  ${({ selected }) =>
+    !selected
+      ? 'linear-gradient(0deg, rgba(0, 162, 212, 0.05), rgba(0, 162, 212, 0.05)), rgba(36, 38, 39, 0.05);'
+      : ' #FAFAFA'};
+  border-left:${({ selected }) => (!selected ? ' 2px solid #00A2D4' : 'none')}
 
-  &:hover {
+  /* &:hover {
     background: #fafafa;
     ${({ selected }) => selected && `background: #f1f1f1`};
   }
 
-  ${({ selected }) => selected && `background: #f1f1f1`};
-`;
+  ${({ selected }) => selected && `background: #f1f1f1`}; */
+`
 export const TopContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -29,7 +33,7 @@ export const TopContainer = styled.div`
   /* gap: 106px; */
   width: 100%;
   height: 40px;
-`;
+`
 export const InnerContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -40,16 +44,16 @@ export const InnerContainer = styled.div`
   width: max-content;
   height: 100%;
   cursor: pointer;
-`;
+`
 export const ImageContainer = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50px;
-`;
+`
 export const Image = styled.img`
   width: 100%;
   height: 100%;
-`;
+`
 export const NameContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -58,21 +62,21 @@ export const NameContainer = styled.div`
   gap: 2px;
   width: 100%;
   height: 100%;
-`;
+`
 export const UpperText = styled.h3`
   font-weight: 600;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: -0.02em;
   color: ${({ theme }) => theme.grey1};
-`;
+`
 export const LowerText = styled.h4`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: -0.02em;
   color: #727474;
-`;
+`
 export const LowerWrapper = styled.p`
   font-weight: 400;
   font-size: 12px;
@@ -83,4 +87,4 @@ export const LowerWrapper = styled.p`
   color: #4e5152;
   width: 100%;
   height: 36px;
-`;
+`
