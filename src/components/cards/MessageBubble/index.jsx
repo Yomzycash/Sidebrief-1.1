@@ -9,10 +9,12 @@ import {
   Title,
   Body,
   TimeStamp,
+  CardContainer,
 } from './style'
 import { ReactComponent as PdfIcon } from 'asset/svg/pdf.svg'
 import { ThreeDotMenu } from 'components/Menu'
 import { format, isToday, isYesterday, parseJSON } from 'date-fns'
+import ChatFileCard from '../ChatFileCard'
 
 export const MessageBubble = ({
   messageBody,
@@ -25,6 +27,7 @@ export const MessageBubble = ({
   fileType,
   fileSize,
 }) => {
+  console.log(messageFiles)
   const menuContent = [
     {
       text: 'View',
@@ -59,19 +62,19 @@ export const MessageBubble = ({
           <Body>{messageBody}</Body>
         </Container>
       ) : null}
-
-      {containsFile ? (
-        <FileContainer>
-          <PdfIcon />
-          <TextContainer>
-            <Name>{fileName}</Name>
-            <Size>{fileSize}</Size>
-          </TextContainer>
-          <ContextContainer>
-            <ThreeDotMenu contextContent={menuContent} />
-          </ContextContainer>
-        </FileContainer>
-      ) : null}
+      <CardContainer>
+      {messageFiles?.length > 0
+        ? messageFiles?.map((el, index) => {
+            return (
+              <ChatFileCard
+                key={index}
+                fileName={el?.fileName}
+                fileType={el?.fileType}
+              />
+            )
+          })
+          : null}
+        </CardContainer>
       {updatedAt && (
         <TimeStamp>
           <span>{formatDate(updatedAt)}</span>

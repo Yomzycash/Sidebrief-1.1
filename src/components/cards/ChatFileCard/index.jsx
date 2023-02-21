@@ -12,21 +12,19 @@ import {
 import { useState } from 'react'
 import { ThreeDotMenu } from 'components/Menu'
 
-import { contextContent } from './constant'
+import { contextContent, imageTypeImage } from './constant'
 
 const ChatFileCard = ({
   fileName = 'CAC-Registration.pdf',
-  fileSize = '7.1 MB',
+  fileType = { pdf },
+  fileUrl,
 }) => {
   return (
     <Container>
       <InnerContainer>
-        {/* {imageTypeImage
-          .filter((fil) => data?.messageFiles[fileType] === fil.fileType)
-          .map((m) => ( */}
         <img
-          src={pdf}
-          alt=""
+          src={imageTypeImage[fileType]}
+          alt={fileType}
           style={{
             margin: 0,
             height: '25px',
@@ -34,10 +32,10 @@ const ChatFileCard = ({
             marginRight: '8px',
           }}
         />
-        {/* ))} */}
+
         <FileContainer>
           <FileText>{fileName}</FileText>
-          <FileSize>{fileSize}</FileSize>
+          {/* <FileSize>{fileSize}</FileSize> */}
         </FileContainer>
       </InnerContainer>
       <ThreeDotMenu contextContent={contextContent} position="10px" />
