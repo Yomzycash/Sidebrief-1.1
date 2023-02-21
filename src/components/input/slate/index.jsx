@@ -12,6 +12,7 @@ import { withHistory } from "slate-history";
 import * as Md from "react-icons/md";
 import { Button, Icon, Toolbar, ControlButton } from "./components";
 import { useActions } from "./actions";
+import { useEffect } from "react";
 
 const HOTKEYS = {
 	"mod+b": "bold",
@@ -30,11 +31,33 @@ const initialValue = [
 	},
 ];
 
-export const SlateEditor = ({ placeholder, setValue }) => {
+export const SlateEditor = ({
+	placeholder,
+	setValue,
+	clearSlate = false,
+	unClear,
+}) => {
 	const renderElement = useCallback((props) => <Element {...props} />, []);
 	const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 	const { showToolbar, toggleShowToolbar } = useActions({});
+
+	const Clear = useCallback(() => {
+		Transforms.delete(editor, {
+			at: {
+				anchor: Editor.start(editor, []),
+				focus: Editor.end(editor, []),
+			},
+		});
+	}, [editor]);
+
+	useEffect(() => {
+		if (clearSlate) {
+			Clear();
+			console.log("I am a boy");
+		}
+		return () => unClear();
+	}, [clearSlate, Clear, unClear]);
 
 	return (
 		<Container>

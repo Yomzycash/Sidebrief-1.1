@@ -1,7 +1,6 @@
 import {
 	SubjectInput,
 	TextBody,
-	TextInput,
 	TextInputForm,
 	Wrapper,
 	FileBeforeUpload,
@@ -14,29 +13,33 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { messageSchema } from "../constants";
 import { SlateEditor } from "components/input";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 export const ChatInput = () => {
-	const [folder] = useState(new DataTransfer());
 	const [files, setFiles] = useState([]);
+	const [clearSlate, setClearSlate] = useState(false);
+	const folder = useMemo(() => new DataTransfer(), []);
 
 	const {
 		handleSubmit,
 		register,
 		reset,
 		setValue,
-		getValues,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(messageSchema),
 	});
 
 	const sendMessage = (data) => {
+		// send data
 		console.log(data);
+
+		// clear data
+		folder.items.clear();
+		setFiles([]);
+		setClearSlate(true);
 		reset();
 	};
-
-	// const dataFiles = new DataTransfer();
 
 	const fileCollector = (files) => {
 		Array.from(files).forEach((file) => {
@@ -60,6 +63,8 @@ export const ChatInput = () => {
 					<SlateEditor
 						placeholder="Send a message..."
 						setValue={setValue}
+						clearSlate={clearSlate}
+						unClear={() => setClearSlate(false)}
 					/>
 					<Files>
 						{files.map((file, index) => {
