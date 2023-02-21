@@ -35,7 +35,7 @@ export const SlateEditor = ({
 	placeholder,
 	setValue,
 	clearSlate = false,
-	unClear,
+	unclear,
 }) => {
 	const renderElement = useCallback((props) => <Element {...props} />, []);
 	const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
@@ -49,15 +49,16 @@ export const SlateEditor = ({
 				focus: Editor.end(editor, []),
 			},
 		});
+		Editor.normalize(editor);
 	}, [editor]);
 
 	useEffect(() => {
 		if (clearSlate) {
 			Clear();
-			console.log("I am a boy");
+			unclear();
 		}
-		return () => unClear();
-	}, [clearSlate, Clear, unClear]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [clearSlate, Clear]);
 
 	return (
 		<Container>

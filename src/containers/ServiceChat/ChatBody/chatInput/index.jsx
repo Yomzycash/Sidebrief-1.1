@@ -25,6 +25,7 @@ export const ChatInput = () => {
 		register,
 		reset,
 		setValue,
+		getValues,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(messageSchema),
@@ -64,7 +65,7 @@ export const ChatInput = () => {
 						placeholder="Send a message..."
 						setValue={setValue}
 						clearSlate={clearSlate}
-						unClear={() => setClearSlate(false)}
+						unclear={() => setClearSlate(false)}
 					/>
 					<Files>
 						{files.map((file, index) => {
@@ -88,6 +89,11 @@ export const ChatInput = () => {
 				style={{ display: "none" }}
 				multiple
 				onChange={(event) => fileCollector(event.target.files)}
+			/>
+			<CommonButton
+				type={"button"}
+				text={"Get files"}
+				action={() => console.log(getValues("files"))}
 			/>
 		</TextInputForm>
 	);
