@@ -1,13 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-	border: 1px solid blue;
-	flex: 1;
-	width: 100%;
-
 	height: 150px;
 	padding: 0 13px 16px;
-	flex: 1;
 	/* border: none; */
 
 	font-family: "BR Firma";
@@ -34,6 +29,9 @@ export const Container = styled.div`
 	}
 
 	.editor {
+		height: fit-content;
+		width: 100%;
+
 		& > * + * {
 			margin-top: 1em;
 		}
@@ -70,19 +68,40 @@ export const IconSpan = styled.span`
 `;
 
 export const MenuDiv = styled.div`
-	position: sticky;
-	top: 0;
-	padding: 15px 18px 5px;
-	margin: 0 -13px;
-	border-bottom: 2px solid #eee;
-	margin-bottom: 10px;
-	background: #fff;
-	z-index: 2;
-
 	& > * {
 		display: inline-block;
 	}
 	& > * + * {
 		margin-left: 15px;
 	}
+`;
+
+export const SlateTop = styled.div`
+	margin: 0 -13px;
+	border-bottom: 2px solid #eee;
+	margin-bottom: 10px;
+	position: sticky;
+	top: 0;
+	padding: 15px 18px 5px;
+	background: #fff;
+	z-index: 2;
+
+	display: flex;
+	align-items: center;
+`;
+
+export const ToolbarRight = styled.div`
+	margin-left: auto;
+	display: flex;
+	gap: 16px;
+`;
+
+export const ControlButton = styled.span`
+	cursor: pointer;
+	font-size: 24px;
+`;
+
+export const Label = styled.label`
+	cursor: pointer;
+	font-size: 24px;
 `;

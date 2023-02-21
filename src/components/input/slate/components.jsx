@@ -1,5 +1,11 @@
 import React from "react";
-import { ButtonSpan, IconSpan, MenuDiv } from "./style";
+import {
+	ButtonSpan,
+	IconSpan,
+	MenuDiv,
+	ControlButton as Control,
+	Label,
+} from "./style";
 
 export const Button = React.forwardRef(
 	({ className, active, reversed, ...props }, ref) => (
@@ -30,3 +36,19 @@ export const Icon = React.forwardRef(
 export const Toolbar = React.forwardRef(({ className, ...props }, ref) => (
 	<MenuDiv {...props} ref={ref} className={className} />
 ));
+
+export const ControlButton = ({ action, Icon, label, hfor }) => {
+	return (
+		<>
+			{!label ? (
+				<Control onClick={action}>
+					<Icon />
+				</Control>
+			) : (
+				<Label htmlFor={hfor}>
+					<Icon />
+				</Label>
+			)}
+		</>
+	);
+};
