@@ -7,30 +7,30 @@ import { messageSchema } from "../constants";
 import { SlateEditor } from "components/input";
 
 export const ChatInput = ({ noEditor }) => {
-	const { handleSubmit, register, reset } = useForm({
-		resolver: yupResolver(messageSchema),
-	});
+  const { handleSubmit, register, reset } = useForm({
+    resolver: yupResolver(messageSchema),
+  });
 
-	const sendMessage = (data) => {
-		console.log(data);
-		reset();
-	};
+  const sendMessage = (data) => {
+    console.log(data);
+    reset();
+  };
 
-	return (
-		<TextInputForm onSubmit={handleSubmit(sendMessage)}>
-			<SubjectInput placeholder="Subject" {...register("subject")} />
-			<TextBody>
-				{/* <TextInput
+  return (
+    <TextInputForm onSubmit={handleSubmit(sendMessage)}>
+      {/* <SubjectInput placeholder="Subject" {...register("subject")} /> */}
+      <TextBody>
+        {/* <TextInput
 					placeholder="Send a message"
 					{...register("message")}
 				/> */}
-				{!noEditor && (
-					<>
-						<SlateEditor placeholder="Send a message..." />
-					</>
-				)}
-				<CommonButton text={"Send"} RightIcon={Send} />
-			</TextBody>
-		</TextInputForm>
-	);
+        {!noEditor && (
+          <>
+            <SlateEditor placeholder="Send a message..." />
+          </>
+        )}
+        <CommonButton text={"Send"} RightIcon={Send} />
+      </TextBody>
+    </TextInputForm>
+  );
 };

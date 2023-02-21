@@ -394,6 +394,8 @@ const ShareHoldersInfo = () => {
           checkBoxAction={handleCheckbox}
           disableCheckbox={shareholdersInfo?.length > 0 ? true : false}
           checked={useSidebriefShareholders}
+          tipText="Shareholders in a company are individuals or entities that own shares of stock, which represent a portion of ownership in the company."
+          tipStyle={{ maxWidth: "290px" }}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>

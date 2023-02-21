@@ -17,6 +17,7 @@ import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useRef } from "react";
+import { ChatInput } from "./chatInput";
 
 export const ChatBody = ({ data }) => {
   const [value, setValue] = useState();
@@ -42,7 +43,8 @@ export const ChatBody = ({ data }) => {
       <Messages>
         <MessageBubble {...message} />
       </Messages>
-      <TextInputForm onSubmit={handleSubmit(sendMessage)}>
+      <ChatInput />
+      {/* <TextInputForm onSubmit={handleSubmit(sendMessage)}>
         <SubjectInput placeholder="Subject" />
         <TextBody>
           <TextInput
@@ -52,7 +54,7 @@ export const ChatBody = ({ data }) => {
           />
           <CommonButton text={"Send"} RightIcon={Send} />
         </TextBody>
-      </TextInputForm>
+      </TextInputForm> */}
     </Container>
   );
 };
