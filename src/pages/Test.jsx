@@ -1,13 +1,12 @@
-import React from 'react'
-import { ChatInput } from 'containers/ServiceChat/ChatBody/chatInput'
-import ChatFileCard from 'components/cards/ChatFileCard'
+import React from "react";
+import { ChatInput } from "containers/ServiceChat/ChatBody/chatInput";
 
 const Test = () => {
-  return (
-    <div style={{}}>
-      <ChatFileCard/>
-    </div>
-  )
-}
+	return (
+		<div style={{}}>
+			<ChatInput />
+		</div>
+	);
+};
 
-export default Test
+export default Test;
