@@ -4,7 +4,8 @@ import {
   Button,
   ReplyButton,
   Dropdown,
-  DropdownContent,
+  DropdownContainer,
+  DropdownList,
   DropdownMenu,
   Image,
   BellIcon,
@@ -36,14 +37,12 @@ import Search from "./Search";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
 import { store } from "redux/Store";
-import { setMessageObj } from "redux/Slices";
 import { useRef } from "react";
 import Profile from "components/Profile";
-
+import { checkStaffEmail } from "utils/globalFunctions";
 import { formatDistanceToNow, parseJSON } from "date-fns";
-
+import { useNavigate } from "react-router-dom";
 import { useGetAllNotificationsQuery } from "services/chatService";
-import { DropDown } from "components/input";
 
 const Navbar = ({
   dashboard,
@@ -57,30 +56,22 @@ const Navbar = ({
 
   const [notificationMessages, setNotificationMessages] = useState([]);
 
-  function convertDate() {
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    };
-    const merg = new Date().toLocaleDateString("en-US", options);
-    const times = new Date()
-      .toLocaleTimeString("en-gb", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      })
-      .toUpperCase();
-
-    return merg + " " + times;
-  }
+  const DropdownItems = ["All", "New", "Read"] 
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const [selectedOption, setSelectedOption] = useState(null)
+  
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
+  const clickedOption = value => () => {
+    setSelectedOption(value);
+    setIsOpen(false);
+  }
   const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
@@ -109,8 +100,8 @@ const Navbar = ({
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!menuRef.current?.contains(event.target)) {
-        setShowNotification(false);
-        // setShowProfile(false);
+        //setShowNotification(false);
+        //setShowProfile(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -119,127 +110,182 @@ const Navbar = ({
     };
   });
 
+  
+
+  // let navigate = useNavigate();
+
+  // const handleNavigate = () => {
+  //   navigate("/staff-dashboard/businesses/services/chats")
+  // }
   return (
-    <>
-      {dashboard || rewards ? (
-        <NavWrapper
-          boxshadow={boxshadow}
-          border="1px solid #EDF1F7"
-          key="Navbar"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          $displayMobile={$displayMobile}
-          style={{ ...style }}
-        >
-          <Link to="/" style={imgStyle}>
-            <Image src={logo} alt="logo" style={{ ...imgStyles }} />
-          </Link>
-          {hideSearch && <Search style={{ height: "32px" }} />}
-          <RightIcons>
-            <BellContainer
-              onClick={() => setShowNotification(!showNotification)}
+    // <> 
+    //   { staffEmail ? (
+        <>
+          {dashboard || rewards ? (
+            <NavWrapper
+              boxshadow={boxshadow}
+              border="1px solid #EDF1F7"
+              key="Navbar"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              $displayMobile={$displayMobile}
+              style={{ ...style }}
             >
-              <NotificationBadge>
-                <p>{notificationMessages?.length}</p>
-              </NotificationBadge>
-              <BellIcon src={bell} alt="logo" />
-            </BellContainer>
-            <UserContainer onClick={handleProfile}>
-              <UserIcon src={user} alt="logo" />
-            </UserContainer>
-
-            <DownIcon src={down} alt="logo" />
-          </RightIcons>
-        </NavWrapper>
-      ) : (
-        <NavWrapper
-          boxshadow={boxshadow}
-          key="NavbarImg"
-          $displayMobile={$displayMobile}
-          style={{ ...style }}
-        >
-          <Image src={logo} alt="logo" style={{ ...imgStyles }} />
-        </NavWrapper>
-      )}
-
-      {showNotification && (
-        <NotificationWrapper>
-          <NotificationHeader ref={menuRef}>
-            <h3>Notifications</h3>
-            <p>Mark all as read</p>
-          </NotificationHeader>
-
-          {/* <Dropdown>
-            <select>
-              <option value="Sort">Sort</option>
-              <option value="All">All</option>
-            </select>
-          </Dropdown> */}
-
-        <DropdownMenu>
-          <button onClick={toggleDropdown}>
-            All Notifications <CaretDownIcon/>
-          </button>
-          {isOpen && (
-            <Dropdown>
-              <DropdownContent>Unread</DropdownContent>
-              <DropdownContent>Read</DropdownContent>
-              <DropdownContent>New</DropdownContent>
-            </Dropdown>
-          )}
-        </DropdownMenu>
-
-          {notificationMessages?.length > 0 ? (
-            <NotificationMessages>
-              {notificationMessages &&
-                notificationMessages.map((item, index) => (
-                  <Message key={index}>
-                    <MessageSubject>
-                      
-                      {item.messageSubject}
-
-                      <span>
-                        {formatDistanceToNow(
-                          parseJSON(notificationMessages.slice(-1)[0].createdAt),
-                          { addSuffix: true }
-                        )}
-                      </span>
-
-                      {/* <span>
-                      {notificationTime}
-                    </span> */}
-                    </MessageSubject>
-                    {/* <br/> */}
-
-                    <MessageBody>{item.messageBody}</MessageBody>
-
-                    <ButtonContainer>
-                      <Button>
-                        Mark as Read
-                      </Button>
-                      <ReplyButton>
-                        Reply
-                      </ReplyButton>
-                    </ButtonContainer>
-                   
-                  </Message>
-                ))}
-            </NotificationMessages>
+              <Link to="/" style={imgStyle}>
+                <Image src={logo} alt="logo" style={{ ...imgStyles }} />
+              </Link>
+              {hideSearch && <Search style={{ height: "32px" }} />}
+              <RightIcons>
+                <BellContainer
+                  onClick={() => setShowNotification(!showNotification)}
+                >
+                  <NotificationBadge>
+                    <p>{notificationMessages?.length}</p>
+                  </NotificationBadge>
+                  <BellIcon src={bell} alt="logo" />
+                </BellContainer>
+                <UserContainer onClick={handleProfile}>
+                  <UserIcon src={user} alt="logo" />
+                </UserContainer>
+    
+                <DownIcon src={down} alt="logo" />
+              </RightIcons>
+            </NavWrapper>
           ) : (
-            <NoMessage>
-              <p>{"The length is" + "" + notificationMessages?.length}</p>
-            </NoMessage>
+            <NavWrapper
+              boxshadow={boxshadow}
+              key="NavbarImg"
+              $displayMobile={$displayMobile}
+              style={{ ...style }}
+            >
+              <Image src={logo} alt="logo" style={{ ...imgStyles }} />
+            </NavWrapper>
           )}
-          <ViewAllMessages>
-            <p>View All</p>
-          </ViewAllMessages>
-        </NotificationWrapper>
-      )}
+          {staffEmail ? (
+            <>
+             {showNotification && (
+            <NotificationWrapper>
+              <NotificationHeader ref={menuRef}>
+                <h3>Notifications</h3>
+                <p>Mark all as read</p>
+              </NotificationHeader>
+    
+              {/* <Dropdown>
+                <select>
+                  <option value="Sort">Sort</option>
+                  <option value="All">All</option>
+                </select>
+              </Dropdown> */}
+    
+            <DropdownMenu>
+              <button onClick={toggleDropdown}>
+                {selectedOption || "All"} <CaretDownIcon/> 
+              </button>
+              {isOpen && (
+                <Dropdown>
+                    <DropdownContainer>
+                      { DropdownItems.map((item, id) => (
+                      <DropdownList onClick={clickedOption(item)} key={id}>
+                        {item}
+                      </DropdownList>
+                      ))}
+                    </DropdownContainer>    
+                </Dropdown>
+              )}
+            </DropdownMenu>
+    
+              {notificationMessages?.length > 0 ? (
+                <>
+                  <NotificationMessages>
+                    {notificationMessages &&
+                      notificationMessages.map((item, index) => (
+                        <Message key={index}>
+                          <MessageSubject>
+                            
+                            {item.messageSubject}
+    
+                            <span>
+                              {formatDistanceToNow(
+                                parseJSON(notificationMessages.slice(-1)[0].createdAt),
+                                { addSuffix: true }
+                              )}
+                            </span>
+                          </MessageSubject>
+    
+                          <MessageBody>{item.messageBody}</MessageBody>
+    
+                          <ButtonContainer>
+                            <Button>
+                              Mark as Read
+                            </Button>
+                            <ReplyButton>
+                              Reply
+                            </ReplyButton>
+                          </ButtonContainer>
+                        
+                        </Message>
+                      ))}
+                  </NotificationMessages>
+                  <ViewAllMessages>
+                    <p>View All</p>
+                  </ViewAllMessages>
+                </>
+              ) : (
+                <NoMessage>
+                  <p>No unread messages</p>
+                </NoMessage>
+              )}
+              
+            </NotificationWrapper>
+          )}
+            </>
+          ) : (
+            <></>)
+          }
+         
 
-      {showProfile && <Profile setShowProfile={setShowProfile} />}
-    </>
+          {showProfile && <Profile setShowProfile={setShowProfile} />}
+        </>
+      // ): (
+      // <>
+      //   <NavWrapper
+      //     boxshadow={boxshadow}
+      //     border="1px solid #EDF1F7"
+      //     key="Navbar"
+      //     initial={{ opacity: 0 }}
+      //     animate={{ opacity: 1 }}
+      //     exit={{ opacity: 0 }}
+      //     transition={{ duration: 0.5 }}
+      //     $displayMobile={$displayMobile}
+      //     style={{ ...style }}
+      //   >
+      //     <Link to="/" style={imgStyle}>
+      //       <Image src={logo} alt="logo" style={{ ...imgStyles }} />
+      //     </Link>
+      //     {hideSearch && <Search style={{ height: "32px" }} />}
+      //     <RightIcons>
+      //       <BellContainer
+      //         onClick={() => setShowNotification(!showNotification)}
+      //       >
+      //         {/* <NotificationBadge>
+      //           <p>{notificationMessages?.length}</p>
+      //         </NotificationBadge> */}
+      //         <BellIcon src={bell} alt="logo" />
+      //       </BellContainer>
+      //       <UserContainer onClick={handleProfile}>
+      //         <UserIcon src={user} alt="logo" />
+      //       </UserContainer>
+
+      //       <DownIcon src={down} alt="logo" />
+      //     </RightIcons>
+      //   </NavWrapper>
+      // </>
+      // )}
+    
+    //</>
+    
   );
 };
 
