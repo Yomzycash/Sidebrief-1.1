@@ -8,7 +8,7 @@ import {
 } from './style'
 import { ThreeDot } from 'asset/svg'
 
-export const ThreeDotMenu = ({ contextContent, classname }) => {
+export const ThreeDotMenu = ({ contextContent, classname, position }) => {
   const [showContext, setShowContext] = useState(false)
 
   const hideContext = () => {
@@ -27,7 +27,7 @@ export const ThreeDotMenu = ({ contextContent, classname }) => {
       {showContext ? (
         <>
           <InvisibleBackDrop onClick={hideContext} />
-          <ContextMenu>
+          <ContextMenu position={position}>
             {contextContent.map((el, index) => (
               <ContextButton
                 hide={el.hide}
