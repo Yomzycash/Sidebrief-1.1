@@ -1,4 +1,4 @@
-import { Container } from "./style";
+import { Container, SlateTop, ToolbarRight } from "./style";
 import React, { useCallback, useMemo } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
@@ -10,14 +10,14 @@ import {
 } from "slate";
 import { withHistory } from "slate-history";
 import * as Md from "react-icons/md";
-
-import { Button, Icon, Toolbar } from "./components";
+import { Button, Icon, Toolbar, ControlButton } from "./components";
+import { useActions } from "./actions";
 
 const HOTKEYS = {
 	"mod+b": "bold",
 	"mod+i": "italic",
 	"mod+u": "underline",
-	"mod+`": "code",
+	// "mod+`": "code",
 };
 
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
@@ -34,6 +34,7 @@ export const SlateEditor = ({ placeholder, setValue }) => {
 	const renderElement = useCallback((props) => <Element {...props} />, []);
 	const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+	const { showToolbar, toggleShowToolbar } = useActions({});
 
 	return (
 		<Container>
@@ -50,30 +51,57 @@ export const SlateEditor = ({ placeholder, setValue }) => {
 					}
 				}}
 			>
-				<Toolbar>
-					<MarkButton format="bold" Svg={Md.MdFormatBold} />
-					<MarkButton format="italic" Svg={Md.MdFormatItalic} />
-					<MarkButton
-						format="underline"
-						Svg={Md.MdFormatUnderlined}
-					/>
-					{/* <MarkButton format="code" Svg="MdOutlineCode" /> */}
-					<BlockButton format="heading-one" Svg={Md.MdLooksOne} />
-					<BlockButton format="heading-two" Svg={Md.MdLooksTwo} />
-					<BlockButton format="block-quote" Svg={Md.MdFormatQuote} />
-					<BlockButton
-						format="numbered-list"
-						Svg={Md.MdFormatListNumbered}
-					/>
-					<BlockButton
-						format="bulleted-list"
-						Svg={Md.MdFormatListBulleted}
-					/>
-					{/* <BlockButton format="left" Svg="format_align_left" />
+				<SlateTop>
+					{showToolbar && (
+						<Toolbar>
+							<MarkButton format="bold" Svg={Md.MdFormatBold} />
+							<MarkButton
+								format="italic"
+								Svg={Md.MdFormatItalic}
+							/>
+							<MarkButton
+								format="underline"
+								Svg={Md.MdFormatUnderlined}
+							/>
+							{/* <MarkButton format="code" Svg="MdOutlineCode" /> */}
+							<BlockButton
+								format="heading-one"
+								Svg={Md.MdLooksOne}
+							/>
+							<BlockButton
+								format="heading-two"
+								Svg={Md.MdLooksTwo}
+							/>
+							<BlockButton
+								format="block-quote"
+								Svg={Md.MdFormatQuote}
+							/>
+							<BlockButton
+								format="numbered-list"
+								Svg={Md.MdFormatListNumbered}
+							/>
+							<BlockButton
+								format="bulleted-list"
+								Svg={Md.MdFormatListBulleted}
+							/>
+							{/* <BlockButton format="left" Svg="format_align_left" />
 					<BlockButton format="center" Svg="format_align_center" />
 					<BlockButton format="right" Svg="format_align_right" />
 					<BlockButton format="justify" Svg="format_align_justify" /> */}
-				</Toolbar>
+						</Toolbar>
+					)}
+					<ToolbarRight>
+						<ControlButton
+							Icon={Md.MdOutlineTextFormat}
+							action={toggleShowToolbar}
+						/>
+						<ControlButton
+							label
+							hfor={"files"}
+							Icon={Md.MdAttachFile}
+						/>
+					</ToolbarRight>
+				</SlateTop>
 				<Editable
 					renderElement={renderElement}
 					renderLeaf={renderLeaf}

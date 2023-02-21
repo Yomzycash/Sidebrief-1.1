@@ -12,6 +12,7 @@ export const TextBody = styled.div`
 	width: 100%;
 	display: flex;
 	align-items: flex-start;
+	gap: 24px;
 
 	button {
 		margin-top: 25px;
@@ -53,4 +54,28 @@ export const TextInput = styled.textarea`
 	&::placeholder {
 		color: #727474;
 	}
+`;
+
+export const Wrapper = styled.div`
+	flex: 1;
+	width: 100%;
+`;
+
+export const FileBeforeUpload = styled.div`
+	display: inline-block;
+	padding: 5px 10px;
+	border: 1px solid ${({ theme }) => theme.grey2};
+	font-size: 12px;
+`;
+
+export const Close = styled.span`
+	margin-left: 10px;
+	color: red;
+	cursor: pointer;
+`;
+
+export const Files = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+	gap: 15px;
 `;
