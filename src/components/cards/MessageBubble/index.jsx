@@ -9,10 +9,10 @@ import {
   Title,
   Body,
   TimeStamp,
-} from "./style";
-import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
-import { ThreeDotMenu } from "components/Menu";
-import { format, isToday, isYesterday, parseJSON } from "date-fns";
+} from './style'
+import { ReactComponent as PdfIcon } from 'asset/svg/pdf.svg'
+import { ThreeDotMenu } from 'components/Menu'
+import { format, isToday, isYesterday, parseJSON } from 'date-fns'
 
 export const MessageBubble = ({
   messageBody,
@@ -27,29 +27,29 @@ export const MessageBubble = ({
 }) => {
   const menuContent = [
     {
-      text: "View",
+      text: 'View',
       action: () => {},
     },
     {
-      text: "Download",
+      text: 'Download',
       action: () => {},
     },
-  ];
+  ]
 
   const formatDate = (updatedAt) => {
     if (isToday(new Date(updatedAt))) {
-      return "Today";
+      return 'Today'
     } else if (isYesterday(new Date(updatedAt))) {
-      return "Yesterday";
+      return 'Yesterday'
     } else {
-      let date = new Date(updatedAt);
-      return date.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
+      let date = new Date(updatedAt)
+      return date.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -75,10 +75,10 @@ export const MessageBubble = ({
       {updatedAt && (
         <TimeStamp>
           <span>{formatDate(updatedAt)}</span>
-          <span>{format(parseJSON(updatedAt), "hh:mm aaa")}</span>
+          <span>{format(parseJSON(updatedAt), 'hh:mm aaa')}</span>
         </TimeStamp>
       )}
     </Wrapper>
-  );
-};
+  )
+}
 // updatedAt?.slice(11, 16);
