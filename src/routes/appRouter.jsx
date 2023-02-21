@@ -44,6 +44,7 @@ import { checkStaffEmail } from "utils/globalFunctions";
 import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
 import { useViewPayLaunchMutation } from "services/launchService";
 import PaidDraft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft";
+import ServiceDownload from "pages/Dashboard/User/Manage/Download";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -326,7 +327,7 @@ const AppRouter = () => {
                   path="draft-applications"
                   element={<DraftApplications />}
                 ></Route>
-                <Route path="chats" element={<SingleChat isUser />} />
+                <Route path="chats" element={<ChatLayout />} />
               </Route>
               <Route path="business/:code" element={<BusinessDetailLayout />}>
                 <Route path="detail" element={<BusinessDetail />} />
@@ -453,6 +454,7 @@ const AppRouter = () => {
 
           {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
           <Route path="manage" element={<Manage />} />
+          <Route path="download-manage" element={<ServiceDownload />} />
 
           {/* Launch pages routes */}
           <Route

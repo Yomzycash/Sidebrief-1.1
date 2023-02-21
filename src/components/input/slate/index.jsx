@@ -1,4 +1,4 @@
-import { Container } from "./style";
+import { Container, SlateTop, ToolbarRight } from "./style";
 import React, { useCallback, useMemo } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
@@ -10,51 +10,122 @@ import {
 } from "slate";
 import { withHistory } from "slate-history";
 import * as Md from "react-icons/md";
-
-import { Button, Icon, Toolbar } from "./components";
+import { Button, Icon, Toolbar, ControlButton } from "./components";
+import { useActions } from "./actions";
+import { useEffect } from "react";
 
 const HOTKEYS = {
 	"mod+b": "bold",
 	"mod+i": "italic",
 	"mod+u": "underline",
-	"mod+`": "code",
+	// "mod+`": "code",
 };
 
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 
-export const SlateEditor = ({ placeholder }) => {
+const initialValue = [
+	{
+		type: "paragraph",
+		children: [{ text: "" }],
+	},
+];
+
+export const SlateEditor = ({
+	placeholder,
+	setValue,
+	clearSlate = false,
+	unclear,
+}) => {
 	const renderElement = useCallback((props) => <Element {...props} />, []);
 	const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 	const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+	const { showToolbar, toggleShowToolbar } = useActions({});
+
+	const Clear = useCallback(() => {
+		Transforms.delete(editor, {
+			at: {
+				anchor: Editor.start(editor, []),
+				focus: Editor.end(editor, []),
+			},
+		});
+		Editor.normalize(editor);
+	}, [editor]);
+
+	useEffect(() => {
+		if (clearSlate) {
+			Clear();
+			unclear();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [clearSlate, Clear]);
 
 	return (
 		<Container>
-			<Slate editor={editor} value={initialValue}>
-				<Toolbar>
-					<MarkButton format="bold" Svg={Md.MdFormatBold} />
-					<MarkButton format="italic" Svg={Md.MdFormatItalic} />
-					<MarkButton
-						format="underline"
-						Svg={Md.MdFormatUnderlined}
-					/>
-					{/* <MarkButton format="code" Svg="MdOutlineCode" /> */}
-					<BlockButton format="heading-one" Svg={Md.MdLooksOne} />
-					<BlockButton format="heading-two" Svg={Md.MdLooksTwo} />
-					<BlockButton format="block-quote" Svg={Md.MdFormatQuote} />
-					<BlockButton
-						format="numbered-list"
-						Svg={Md.MdFormatListNumbered}
-					/>
-					<BlockButton
-						format="bulleted-list"
-						Svg={Md.MdFormatListBulleted}
-					/>
-					{/* <BlockButton format="left" Svg="format_align_left" />
+			<Slate
+				editor={editor}
+				value={initialValue}
+				onChange={(value) => {
+					const isAstChange = editor.operations.some(
+						(op) => "set_selection" !== op.type
+					);
+					if (isAstChange) {
+						const content = JSON.stringify(value);
+						setValue("message", content);
+					}
+				}}
+			>
+				<SlateTop>
+					{showToolbar && (
+						<Toolbar>
+							<MarkButton format="bold" Svg={Md.MdFormatBold} />
+							<MarkButton
+								format="italic"
+								Svg={Md.MdFormatItalic}
+							/>
+							<MarkButton
+								format="underline"
+								Svg={Md.MdFormatUnderlined}
+							/>
+							{/* <MarkButton format="code" Svg="MdOutlineCode" /> */}
+							<BlockButton
+								format="heading-one"
+								Svg={Md.MdLooksOne}
+							/>
+							<BlockButton
+								format="heading-two"
+								Svg={Md.MdLooksTwo}
+							/>
+							<BlockButton
+								format="block-quote"
+								Svg={Md.MdFormatQuote}
+							/>
+							<BlockButton
+								format="numbered-list"
+								Svg={Md.MdFormatListNumbered}
+							/>
+							<BlockButton
+								format="bulleted-list"
+								Svg={Md.MdFormatListBulleted}
+							/>
+							{/* <BlockButton format="left" Svg="format_align_left" />
 					<BlockButton format="center" Svg="format_align_center" />
 					<BlockButton format="right" Svg="format_align_right" />
 					<BlockButton format="justify" Svg="format_align_justify" /> */}
-				</Toolbar>
+						</Toolbar>
+					)}
+					<ToolbarRight>
+						<ControlButton
+							Icon={Md.MdOutlineTextFormat}
+							action={toggleShowToolbar}
+						/>
+						<ControlButton
+							label
+							hfor={"files"}
+							Icon={Md.MdAttachFile}
+						/>
+					</ToolbarRight>
+				</SlateTop>
 				<Editable
 					renderElement={renderElement}
 					renderLeaf={renderLeaf}
@@ -248,10 +319,3 @@ const MarkButton = ({ format, Svg }) => {
 		</Button>
 	);
 };
-
-const initialValue = [
-	{
-		type: "paragraph",
-		children: [{ text: "" }],
-	},
-];
