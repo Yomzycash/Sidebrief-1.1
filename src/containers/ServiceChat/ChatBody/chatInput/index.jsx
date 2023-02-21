@@ -90,11 +90,6 @@ export const ChatInput = () => {
 				multiple
 				onChange={(event) => fileCollector(event.target.files)}
 			/>
-			<CommonButton
-				type={"button"}
-				text={"Get files"}
-				action={() => console.log(getValues("files"))}
-			/>
 		</TextInputForm>
 	);
 };
