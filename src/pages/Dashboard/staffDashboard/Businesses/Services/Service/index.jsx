@@ -164,7 +164,11 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
-        <ServicesModal open={open} setOpen={open} cardAction={cardAction} />
+        <ServicesModal 
+          open={open} 
+          setOpen={open} 
+          cardAction={cardAction} 
+        />
       </FeatureSection>
     </Container>
   );
