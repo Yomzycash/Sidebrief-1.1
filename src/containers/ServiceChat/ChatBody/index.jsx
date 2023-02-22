@@ -1,9 +1,5 @@
 import { Container, Messages } from "./style";
 import { MessageBubble } from "components/cards";
-import {
-	useAddNotificationMutation,
-	useGetNotificationsByServiceIdQuery,
-} from "services/chatService";
 import { useLocation } from "react-router-dom";
 import { ChatInput } from "./chatInput";
 
