@@ -14,9 +14,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { messageSchema } from "../constants";
 import { SlateEditor } from "components/input";
 import { useState, useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import { useAddNotificationMutation } from "services/chatService";
+import { convertToLink } from "utils/LaunchHelper";
+import { useEffect } from "react";
 
-export const ChatInput = () => {
+export const ChatInput = ({ message }) => {
+  const [addNotification] = useAddNotificationMutation();
   const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState([]);
+
   const [clearSlate, setClearSlate] = useState(false);
   const folder = useMemo(() => new DataTransfer(), []);
 
@@ -30,16 +37,47 @@ export const ChatInput = () => {
   } = useForm({
     resolver: yupResolver(messageSchema),
   });
+  const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let serviceId = params.get("serviceId");
+  let notificationId = params.get("notificationId");
+  const username = JSON.parse(localStorage.getItem("userInfo"));
 
-  const sendMessage = (data) => {
-    // send data
-    console.log(data);
+  const handleGetRequiredChat = (formData, files) => {
+    return {
+      serviceId: serviceId,
+      senderId: username?.username,
+      messageSubject: formData.subject,
+      messageBody: formData.message,
+      messageIsRead: false,
+      messageFiles: files,
+    };
+  };
 
+  const sendMessage = async (formData) => {
     // clear data
     folder.items.clear();
     setFiles([]);
     setClearSlate(true);
     reset();
+
+    const docArray = await Promise.all(
+      files.map(async (el) => {
+        const toLink = await convertToLink(el);
+        return {
+          fileUrl: toLink.url,
+          fileName: toLink.original_filename,
+          fileType: toLink.format,
+        };
+      })
+    );
+
+    let response = await addNotification(
+      handleGetRequiredChat(formData, docArray)
+    );
+    console.log(response);
+
+    console.log(handleGetRequiredChat(formData, docArray));
   };
 
   const fileCollector = (files) => {
@@ -56,9 +94,18 @@ export const ChatInput = () => {
     setValue("files", folder.files);
   };
 
+  useEffect(() => {
+    if (notificationId) setValue("subject", `Re: ${message.messageSubject}`);
+    else setValue("subject", "");
+  }, [message?.messageSubject]);
+
   return (
     <TextInputForm onSubmit={handleSubmit(sendMessage)}>
-      <SubjectInput placeholder="Subject" {...register("subject")} />
+      <SubjectInput
+        placeholder="Subject"
+        {...register("subject")}
+        disabled={message?.messageSubject}
+      />
       <TextBody>
         <Wrapper>
           <SlateEditor

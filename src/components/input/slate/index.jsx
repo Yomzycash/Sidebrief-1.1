@@ -30,6 +30,7 @@ const initialValue = [
     children: [{ text: "" }],
   },
 ];
+console.log(initialValue[0].children[0].text);
 
 export const SlateEditor = ({
   placeholder,
