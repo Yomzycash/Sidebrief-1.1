@@ -214,12 +214,14 @@ const AppRouter = () => {
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
   const [paid, setPaid] = useState(paidStatus);
-  const [staff, setStaff] = useState(userEmail);
+  const [staff, setStaff] = useState(
+    userEmail?.includes("@sidebrief.com") ? true : false
+  );
 
   const allowLaunch = launchCode && countryISO;
 
   //
-
+  console.log(staff);
   //
 
   useEffect(() => {

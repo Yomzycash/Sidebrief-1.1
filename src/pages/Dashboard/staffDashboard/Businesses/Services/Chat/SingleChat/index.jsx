@@ -4,8 +4,8 @@ import { ChatHead, ChatBody } from "containers/ServiceChat";
 const SingleChat = ({ isUser, data }) => {
   return (
     <Container>
-      <ChatHead isUser={isUser} />
-      <ChatBody isUser={isUser} data={data} />
+      <ChatHead data={data} />
+      <ChatBody data={data} />
     </Container>
   );
 };

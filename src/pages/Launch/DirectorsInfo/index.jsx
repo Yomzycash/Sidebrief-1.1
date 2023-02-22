@@ -328,6 +328,8 @@ const DirectorsInfo = () => {
           checkBoxAction={handleCheckbox}
           disableCheckbox={directorsInfo.length > 0 ? true : false}
           checked={useSidebriefDirectors}
+          tipText="Directors are persons duly appointed by the company to direct and manage the business of the company."
+          tipStyle={{ maxWidth: "270px" }}
         />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>

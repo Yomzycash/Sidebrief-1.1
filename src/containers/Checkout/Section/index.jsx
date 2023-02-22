@@ -1,12 +1,16 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import ToolTip from "components/texts/ToolTip";
 import {
   Container,
   Heading,
   ContentWrapper,
   SectionContainer,
   CheckBox,
+  LabelTip,
 } from "./styles";
+import { useRef } from "react";
 
 export const CheckoutSection = ({
   title,
@@ -22,10 +26,16 @@ export const CheckoutSection = ({
   checked,
   titleStyles,
   hideCheckbox,
+  tipText,
+  tipStyle,
 }) => {
+  const [mouseEnter, setMouseEnter] = useState();
+
   const handleCheckbox = (e) => {
     checkBoxAction(e.target.checked);
   };
+
+  let tipParentRef = useRef();
 
   return (
     <Container>
@@ -41,8 +51,23 @@ export const CheckoutSection = ({
             checked={checked}
           />
           <label htmlFor="checkbox">
-            Click here to use Sidebrief's <span>{checkbox}</span> until you
-            sustain your own
+            Check the box to use SIDEBRIEF's{" "}
+            <LabelTip
+              ref={tipParentRef}
+              onMouseEnter={() => setMouseEnter(true)}
+              onMouseLeave={() => setMouseEnter(false)}
+            >
+              <span>{checkbox}</span>
+              {mouseEnter && (
+                <ToolTip
+                  message={tipText}
+                  style={tipStyle}
+                  parentRef={tipParentRef}
+                  disabled={disableCheckbox}
+                />
+              )}
+            </LabelTip>{" "}
+            for your first 3 months
           </label>
         </CheckBox>
       )}
