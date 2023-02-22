@@ -15,6 +15,7 @@ import { partnerRegistrationSchema } from "utils/config";
 import { savePartnerInfo } from "redux/Slices";
 import { store } from "redux/Store";
 import AppFeedback from "components/AppFeedback";
+import NumberInput from "components/input/phoneNumberInput";
 
 const PartnerRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -86,6 +87,11 @@ const PartnerRegistration = () => {
     let value = e.target.value;
     setValue("operational_country", value, { shouldValidate: true });
   };
+  const handleNumberChange = (value) => {
+    setValue("phone", value, { shouldValidate: true });
+  };
+
+  
 
   return (
     <AuthLayout
@@ -155,12 +161,13 @@ const PartnerRegistration = () => {
                 register={register}
                 errorMessage={errors.password?.message}
               />
-              <InputWithLabel
+              <NumberInput
                 placeholder="Phone number"
                 label="Phone Number"
                 name="phone"
                 type="number"
                 register={register}
+                onChange={handleNumberChange}
                 errorMessage={errors.phone?.message}
               />
             </div>

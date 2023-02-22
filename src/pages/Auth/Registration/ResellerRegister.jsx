@@ -17,6 +17,7 @@ import { saveResellerInfo } from "redux/Slices";
 import { store } from "redux/Store";
 import { ThreeDots } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
+import NumberInput from "components/input/phoneNumberInput";
 
 const ResellerRegister = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -90,6 +91,10 @@ const ResellerRegister = () => {
     setValue("operational_country", value, { shouldValidate: true });
   };
 
+  const handleNumberChange = (value) => {
+    setValue("phone", value, { shouldValidate: true });
+  };
+
   return (
     <AuthLayout
       register={true}
@@ -158,12 +163,13 @@ const ResellerRegister = () => {
                 register={register}
                 errorMessage={errors.password?.message}
               />
-              <InputWithLabel
+              <NumberInput
                 placeholder="Phone number"
                 label="Phone Number"
                 name="phone"
                 type="number"
                 register={register}
+                onChange={handleNumberChange}
                 errorMessage={errors.phone?.message}
               />
             </div>
