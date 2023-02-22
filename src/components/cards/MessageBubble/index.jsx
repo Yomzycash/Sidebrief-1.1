@@ -70,6 +70,7 @@ export const MessageBubble = ({
                   key={index}
                   fileName={el?.fileName}
                   fileType={el?.fileType}
+                  fileUrl={el?.fileUrl}
                 />
               )
             })

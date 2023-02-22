@@ -1,21 +1,43 @@
 import React from 'react'
 import pdf from '../../../asset/images/pdf.png'
 
-import {
-  Container,
-  FileContainer,
-  FileText,
-  InnerContainer,
-} from './style'
+import { Container, FileContainer, FileText, InnerContainer } from './style'
 import { ThreeDotMenu } from 'components/Menu'
 
-import { contextContent, imageTypeImage } from './constant'
+import { imageTypeImage } from './constant'
+import { ViewSvg, DownloadSvg } from '../../../asset/svg'
+import { useActions } from './actions'
 
 const ChatFileCard = ({
   fileName = 'CAC-Registration.pdf',
-  fileType = { pdf },
+  fileType,
   fileUrl,
 }) => {
+  const link = fileUrl
+  const documentType = fileType
+
+  const { downloadFileAction } = useActions({
+    link,
+    documentType,
+  })
+
+  const contextContent = [
+    {
+      text: 'View',
+      Icon: ViewSvg,
+      action: downloadFileAction,
+      style: 'normal',
+    },
+
+    {
+      text: 'Download',
+      Icon: DownloadSvg,
+      action: downloadFileAction,
+      style: 'normal',
+    },
+  ]
+
+  console.log('link', documentType)
   return (
     <Container>
       <InnerContainer>
