@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	max-width: 500px;
-	border: 1px solid #d1d1d1;
-	border-radius: 8px;
-	background: #fafafa;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 500px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  background: #fafafa;
 `;
 
 export const Container = styled.div`

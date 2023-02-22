@@ -16,7 +16,7 @@ export const ContextMenu = styled.div`
   z-index: 6;
   width: 192px;
   // height: 150px;
-  top: 34px;
+  top: ${({ position }) => (position ? position : '34px')};
   right: 0px;
   left: ${({ position }) => (position ? position : '')};
 

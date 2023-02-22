@@ -43,7 +43,7 @@ export const MessageBubble = ({
 			});
 		}
 	};
-
+  
 	const serializeToHtml = (node) => {
 		if (Text.isText(node)) {
 			let string = escapeHtml(node.text);
