@@ -42,3 +42,17 @@ p {
 *:focus {
   outline: none !important;
 }
+
+.button__effect {
+  transition: 0.3s ease all;
+}
+.button__effect:hover {
+  opacity: 0.9;
+}
+.button__effect:focus {
+  opacity: 0.7;
+}
+.button__effect:active {
+  opacity: 0.9;
+  transform: scale(0.95);
+}

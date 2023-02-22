@@ -9,10 +9,12 @@ import {
   Title,
   Body,
   TimeStamp,
-} from "./style";
-import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
-import { ThreeDotMenu } from "components/Menu";
-import { format, isToday, isYesterday, parseJSON } from "date-fns";
+  CardContainer,
+} from './style'
+import { ReactComponent as PdfIcon } from 'asset/svg/pdf.svg'
+import { ThreeDotMenu } from 'components/Menu'
+import { format, isToday, isYesterday, parseJSON } from 'date-fns'
+import ChatFileCard from '../ChatFileCard'
 
 export const MessageBubble = ({
   messageBody,
@@ -25,31 +27,32 @@ export const MessageBubble = ({
   fileType,
   fileSize,
 }) => {
+  console.log(messageFiles)
   const menuContent = [
     {
-      text: "View",
+      text: 'View',
       action: () => {},
     },
     {
-      text: "Download",
+      text: 'Download',
       action: () => {},
     },
-  ];
+  ]
 
   const formatDate = (updatedAt) => {
     if (isToday(new Date(updatedAt))) {
-      return "Today";
+      return 'Today'
     } else if (isYesterday(new Date(updatedAt))) {
-      return "Yesterday";
+      return 'Yesterday'
     } else {
-      let date = new Date(updatedAt);
-      return date.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
+      let date = new Date(updatedAt)
+      return date.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
     }
-  };
+  }
 
   return (
     <Wrapper>
@@ -59,26 +62,26 @@ export const MessageBubble = ({
           <Body>{messageBody}</Body>
         </Container>
       ) : null}
-
-      {containsFile ? (
-        <FileContainer>
-          <PdfIcon />
-          <TextContainer>
-            <Name>{fileName}</Name>
-            <Size>{fileSize}</Size>
-          </TextContainer>
-          <ContextContainer>
-            <ThreeDotMenu contextContent={menuContent} />
-          </ContextContainer>
-        </FileContainer>
-      ) : null}
+      <CardContainer>
+      {messageFiles?.length > 0
+        ? messageFiles?.map((el, index) => {
+            return (
+              <ChatFileCard
+                key={index}
+                fileName={el?.fileName}
+                fileType={el?.fileType}
+              />
+            )
+          })
+          : null}
+        </CardContainer>
       {updatedAt && (
         <TimeStamp>
           <span>{formatDate(updatedAt)}</span>
-          <span>{format(parseJSON(updatedAt), "hh:mm aaa")}</span>
+          <span>{format(parseJSON(updatedAt), 'hh:mm aaa')}</span>
         </TimeStamp>
       )}
     </Wrapper>
-  );
-};
+  )
+}
 // updatedAt?.slice(11, 16);

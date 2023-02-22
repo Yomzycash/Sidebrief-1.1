@@ -49,9 +49,14 @@ export const CheckBox = styled.div`
     color: yellow;
     border-radius: 4px;
   }
+`;
+
+export const LabelTip = styled.span`
+  color: #0082aa;
+  position: relative;
 
   span {
-    color: #0082aa;
+    cursor: pointer;
   }
 `;
 
