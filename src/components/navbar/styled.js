@@ -242,20 +242,6 @@ export const ViewAllMessages = styled.div`
   }
 `
 
-// export const Dropdown = styled.div`
-// display: flex;
-// border: 1px solid #f1f1f1;
-// border-radius: 12px;
-// background-color: #fafafa;
-// padding: 8px 16px;
-
-// select {
-//   border: none;
-//   outline: none;
-//   width: 60px;
-//   background: none;
-// }
-// `
 export const DropdownMenu = styled.div`
   display: flex;
   border: 1px solid #000;
@@ -270,29 +256,38 @@ export const DropdownMenu = styled.div`
     background: none;
     text-align:left;
     color:#000;
+    font-family: "Br Firma", sans serif;
   }
 
   
 `
 
 export const Dropdown = styled.div`
-display: flex;
-border: 1px solid #f1f1f1;
-border-radius: 12px;
-background-color: #fafafa;
-padding: 8px 16px;
-  // position: absolute;
-  // top: 100%;
-  // left: 0;
-  // width: 100%;
-  // background-color: white;
-  // padding: 1em;
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  z-index:100;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
-export const DropdownContent = styled.p`
-  margin: 0;
-  padding: 0.5em 0;
+export const DropdownContainer = styled.div`
+  // width:100%;
+`
+
+export const DropdownList = styled.li`
+  list-style-type:none;
+  padding: 0.8em;
+  padding-left:1em;
+  flex-direction: column;
+  color:#000;
+  font-size:13px;
+
+  :hover {
+    background-color: #00a2d419;
+    cursor: pointer;
+  }
 `;
 
 export const ButtonContainer = styled.div`

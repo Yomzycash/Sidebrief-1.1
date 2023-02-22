@@ -11,18 +11,26 @@ import {
   DropDownBtn,
   DropDownContent,
   DropDownItems,
-} from './style'
-import Search from 'components/navbar/Search'
-import ChatCard from 'components/cards/ChatCard'
-import { IoIosArrowDown } from 'react-icons/io'
-import { useState } from 'react'
-import { compareAsc, parseJSON } from 'date-fns'
+} from "./style";
+import Search from "components/navbar/Search";
+import ChatCard from "components/cards/ChatCard";
+import { IoIosArrowDown } from "react-icons/io";
+import { useState } from "react";
+import { compareAsc, parseJSON } from "date-fns";
+import { CommonButton } from "components/button";
+import { useSearchParams } from "react-router-dom";
 
 export const Chats = ({ data, isUser }) => {
-  const [selected, setSelected] = useState('filter')
-  const [isActive, setIsActive] = useState(false)
+  const [selected, setSelected] = useState("filter");
+  const [isActive, setIsActive] = useState(false);
+  const [params, setParams] = useSearchParams();
 
-  const options = ['senderID', 'serviceID']
+  const options = ["senderID", "serviceID"];
+
+  const handleNew = () => {
+    setParams({ serviceId: data[0]?.serviceId });
+    console.log(data);
+  };
 
   return (
     <Container>
@@ -33,7 +41,7 @@ export const Chats = ({ data, isUser }) => {
           <DropDown>
             <DropDownBtn
               onClick={() => {
-                setIsActive(!isActive)
+                setIsActive(!isActive);
               }}
             >
               <TextContainer> {selected}</TextContainer>
@@ -50,8 +58,8 @@ export const Chats = ({ data, isUser }) => {
                   <DropDownItems
                     key={index}
                     onClick={(e) => {
-                      setSelected(option)
-                      setIsActive(false)
+                      setSelected(option);
+                      setIsActive(false);
                     }}
                   >
                     {option}
@@ -66,13 +74,15 @@ export const Chats = ({ data, isUser }) => {
         </SearchContainer>
       </TopContainer>
       <ChatContainer>
+        <CommonButton text="New Conversation" action={handleNew} />
+
         {data?.map((notification, index) => (
-          <ChatCard notification={notification} key={index}  />
+          <ChatCard notification={notification} key={index} />
         ))}
       </ChatContainer>
     </Container>
-  )
-}
+  );
+};
 // .sort((a, b) =>
 //             compareAsc(
 //               parseJSON(a?.notification?.updatedAt),

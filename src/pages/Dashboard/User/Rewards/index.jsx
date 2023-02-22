@@ -79,6 +79,11 @@ const Rewards = () => {
     store.dispatch(setRefreshApp(!refreshApp));
   }, [location.pathname]);
 
+  useEffect(() => {
+    allRewardsResponse.refetch();
+    myRewardsResponse.refetch();
+  }, [location.pathname]);
+
   return (
     <Container>
       {rewardsPageHeader && (
