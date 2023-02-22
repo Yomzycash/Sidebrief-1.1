@@ -34,6 +34,7 @@ export const SubjectInput = styled.input`
   color: #000;
   resize: none;
   max-width: calc(100% - 136px);
+  text-overflow: ellipsis;
 
   &::placeholder {
     color: #727474;

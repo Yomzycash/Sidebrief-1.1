@@ -1,7 +1,26 @@
 import { parseJSON, compareAsc } from "date-fns";
 
-export const getServiceMessages = (serviceId) => {
-  let messages = "";
+export const getThreadedMessages = (data) => {
+  const uniqueSubjects = [...new Set(data?.map((el) => el?.messageSubject))];
+
+  let threads = uniqueSubjects?.map((subject) => {
+    let messageThread = data?.filter((msg) => msg?.messageSubject === subject);
+
+    messageThread = messageThread?.sort((a, b) =>
+      compareAsc(new Date(b.updatedAt), new Date(a.updatedAt))
+    );
+
+    return {
+      subject: subject,
+      messages: messageThread,
+    };
+  });
+  return threads;
+};
+
+export const getSelectedThread = (data, subject) => {
+  let threadedMessages = getThreadedMessages(data);
+  return threadedMessages?.find((thread) => thread?.subject === subject);
 };
 
 //

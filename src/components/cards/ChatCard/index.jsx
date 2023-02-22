@@ -14,24 +14,24 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import profile from "asset/images/profile.svg";
 import { Node } from "slate";
 
-const ChatCard = ({ notification }) => {
+const ChatCard = ({ lastMessage }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const navigate = useNavigate();
 
   const location = useLocation();
   let params = new URLSearchParams(location.search);
-  let serviceId = params.get("serviceId");
-  let notificationId = params.get("notificationId");
+  let subject = params.get("subject");
+  // let serviceId = params.get("serviceId");
+  // let notificationId = params.get("notificationId");
 
-  const { messageBody, messageSubject } = notification;
+  const { messageBody, messageSubject, serviceId } = lastMessage;
 
-  let isActive = notificationId === notification?.notificationId;
+  let isActive = messageSubject === subject;
 
   const openChat = () => {
     let newParams = {
       serviceId: serviceId,
-      notificationId: notification?.notificationId,
+      subject: messageSubject,
+      // notificationId: notification?.notificationId,
     };
     setSearchParams(newParams);
   };
@@ -47,10 +47,9 @@ const ChatCard = ({ notification }) => {
   const serializeToText = (nodes) => {
     return nodes.map((n) => Node.string(n)).join("\n");
   };
-  // console.log(messageBody);
 
   const message = serializeToText(JSON.parse(messageBody));
-
+  console.log(JSON.parse(messageBody));
   return (
     <Container onClick={openChat} selected={isActive}>
       <TopContainer>
@@ -59,8 +58,9 @@ const ChatCard = ({ notification }) => {
             <Image src={profile} alt="" />
           </ImageContainer>
           <NameContainer>
-            <UpperText>{notification?.serviceId}</UpperText>
-            <LowerText>{messageSubject}</LowerText>
+            {/* <UpperText>{serviceId}</UpperText> */}
+            <UpperText>{messageSubject}</UpperText>
+            {/* <LowerText>{messageSubject}</LowerText> */}
           </NameContainer>
         </InnerContainer>
         {/* <LowerText>{new Date(lastMessage(messages)?.updatedAt)}</LowerText> */}
