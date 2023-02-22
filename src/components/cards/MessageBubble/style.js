@@ -9,6 +9,8 @@ export const Wrapper = styled.div`
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   background: #fafafa;
+ 
+
 `
 
 export const Container = styled.div`

@@ -4,12 +4,9 @@ import pdf from '../../../asset/images/pdf.png'
 import {
   Container,
   FileContainer,
-  FileSize,
   FileText,
   InnerContainer,
-  ThreeDotContainer,
 } from './style'
-import { useState } from 'react'
 import { ThreeDotMenu } from 'components/Menu'
 
 import { contextContent, imageTypeImage } from './constant'
