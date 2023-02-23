@@ -29,10 +29,6 @@ export const ChatHead = ({ data }) => {
 
   const { getStatus } = useActions();
 
-  // const getAttachment = () => {
-  //   console.log("Attachment");
-  // };
-
   const deleteMessage = () => {};
 
   const location = useLocation();
@@ -42,12 +38,8 @@ export const ChatHead = ({ data }) => {
   const selectedThread = getSelectedThread(data, subject);
 
   const lastMessage = selectedThread?.messages[0];
-  console.log(selectedThread);
 
-  // const message = data?.filter(
-  //   (el) => el?.notificationId === notificationId
-  // )[0];
-
+  console.log(data);
   return (
     <Container>
       <TextAndImage>
@@ -57,17 +49,19 @@ export const ChatHead = ({ data }) => {
           <OnlineIndicator />
         </UserImageContainer>
         <TextContainer>
-          <ServiceID>{lastMessage?.messageSubject}</ServiceID>
-          <Name>{lastMessage?.senderId}</Name>
+          <Name>{data[0]?.senderId}</Name>
+          <ServiceID>
+            <span>Subject: </span> {lastMessage?.messageSubject}
+          </ServiceID>
         </TextContainer>
       </TextAndImage>
       <Buttons>
-        <StatusButton
+        {/* <StatusButton
           color={getStatus(status).color}
           onClick={() => setShowStatusDropdown((prev) => !prev)}
         >
           {getStatus(status).text}
-        </StatusButton>
+        </StatusButton> */}
         {showStatusDropdown ? (
           <>
             <InvisibleBackDrop onClick={() => setShowStatusDropdown(false)} />
@@ -92,12 +86,12 @@ export const ChatHead = ({ data }) => {
           action={getAttachment}
         /> */}
 
-        <CommonButton
+        {/* <CommonButton
           text={"Delete"}
           action={deleteMessage}
           style={{ backgroundColor: "#ffc0c0", padding: "5px 15px" }}
           textStyle={{ color: "#cc0000", fontWeight: "500" }}
-        />
+        /> */}
       </Buttons>
     </Container>
   );

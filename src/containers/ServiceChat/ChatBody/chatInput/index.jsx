@@ -17,9 +17,10 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAddNotificationMutation } from "services/chatService";
 import { convertToLink } from "utils/LaunchHelper";
+import { toast } from "react-hot-toast";
 
-export const ChatInput = ({ message }) => {
-  const [addNotification] = useAddNotificationMutation();
+export const ChatInput = ({ message, threadsRefetch }) => {
+  const [addNotification, addState] = useAddNotificationMutation();
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState([]);
 
@@ -36,18 +37,18 @@ export const ChatInput = ({ message }) => {
   } = useForm({
     resolver: yupResolver(messageSchema),
   });
+
   const location = useLocation();
   let params = new URLSearchParams(location.search);
   let serviceId = params.get("serviceId");
   let subject = params.get("subject");
-  // let notificationId = params.get("notificationId");
   const username = JSON.parse(localStorage.getItem("userInfo"));
 
   const handleGetRequiredChat = (formData, files) => {
     return {
       serviceId: serviceId,
       senderId: username?.username,
-      messageSubject: formData.subject,
+      messageSubject: subject,
       messageBody: formData.message,
       messageIsRead: false,
       messageFiles: files,
@@ -55,8 +56,6 @@ export const ChatInput = ({ message }) => {
   };
 
   const sendMessage = async (formData) => {
-    // clear data
-    folder.items.clear();
     setFiles([]);
     setClearSlate(true);
     reset();
@@ -72,7 +71,14 @@ export const ChatInput = ({ message }) => {
       })
     );
 
-    addNotification(handleGetRequiredChat(formData, docArray));
+    await addNotification(handleGetRequiredChat(formData, docArray));
+    // clear data
+    console.log(folder.items);
+    folder.items.clear();
+
+    setValue("subject", `Re: ${subject}`);
+    toast.success("Message sent");
+    threadsRefetch();
   };
 
   const fileCollector = (files) => {
@@ -120,7 +126,12 @@ export const ChatInput = ({ message }) => {
             })}
           </Files>
         </Wrapper>
-        <CommonButton type={"submit"} text={"Send"} RightIcon={Send} />
+        <CommonButton
+          type={"submit"}
+          text={"Send"}
+          RightIcon={Send}
+          loading={addState.isLoading}
+        />
       </TextBody>
       <input
         id="files"

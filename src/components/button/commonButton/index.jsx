@@ -1,4 +1,5 @@
 import React from "react";
+import { Puff } from "react-loading-icons";
 import { ButtonContainer } from "./styled";
 
 const CommonButton = ({
@@ -13,6 +14,7 @@ const CommonButton = ({
   classname,
   component,
   type,
+  loading,
 }) => {
   return (
     <ButtonContainer
@@ -21,10 +23,18 @@ const CommonButton = ({
       className={"button__effect" || classname}
       type={type || "button"}
     >
-      {LeftIcon && <LeftIcon size={24} color={leftIconColor || "white"} />}
-      {text && <span style={textStyle}>{text}</span>}
-      {RightIcon && <RightIcon size={24} color={rightIconColor || "white"} />}
-      {component && <>{component}</>}
+      {loading ? (
+        <Puff stroke="#ffffff" fill="white" width={24} height={24} />
+      ) : (
+        <>
+          {LeftIcon && <LeftIcon size={20} color={leftIconColor || "white"} />}
+          {text && <span style={textStyle}>{text}</span>}
+          {RightIcon && (
+            <RightIcon size={24} color={rightIconColor || "white"} />
+          )}
+          {component && <>{component}</>}
+        </>
+      )}
     </ButtonContainer>
   );
 };

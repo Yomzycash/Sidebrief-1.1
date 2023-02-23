@@ -75,10 +75,9 @@ export const Chats = ({ data, isUser }) => {
         <SearchContainer>
           <Search />
         </SearchContainer>
+        <CommonButton text="New Conversation" action={handleNew} />
       </TopContainer>
       <ChatContainer>
-        <CommonButton text="New Conversation" action={handleNew} />
-
         {threadedMessages?.map((thread, index) => (
           <ChatCard lastMessage={thread?.messages[0]} key={index} />
         ))}

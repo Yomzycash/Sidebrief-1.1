@@ -10,12 +10,22 @@ export const Messages = styled.div`
   padding-inline: 24px;
   flex: 1;
   overflow-y: auto;
+  max-height: calc(100vh - 482px);
 
   display: flex;
   flex-direction: column-reverse;
   gap: 8px;
 
-  margin-bottom: 40px;
+  padding-block: 24px;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f4f4f4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #d9d9d9;
+  }
 `;
 
 export const TextInputForm = styled.form`

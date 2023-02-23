@@ -90,7 +90,7 @@ const DraftApplications = () => {
         )}
         {error?.status === "FETCH_ERROR" ||
         countries?.isLoading === "FETCH_ERROR" ? (
-          <p>Please check your internet connection</p>
+          <p>Connection error</p>
         ) : (
           ""
         )}
