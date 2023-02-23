@@ -21,6 +21,7 @@ const CountryDetailLayout = (pages) => {
 
   // Get country ISO from the current location path
   let pathArray = location.pathname.split("/");
+  console.log(pathArray)
   const ISO = pathArray[pathArray.length - 2];
 
   const { data, isSuccess } = useGetSingleCountryQuery(ISO);
