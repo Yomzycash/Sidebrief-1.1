@@ -36,41 +36,44 @@ export const getSelectedThread = (data, subject) => {
 // DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
 // DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
 // DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
-// // Get all users messages
-// export const getUsersMessages = (data) => {
-//   const uniqueSenders = [
-//     ...new Set(data?.map((el) => el.senderId || el.senderID)),
-//   ].filter((el) => el !== undefined);
+// Get all users messages
+export const getUsersMessages = (data) => {
+  const uniqueSenders = [
+    ...new Set(data?.map((el) => el.senderId || el.senderID)),
+  ].filter((el) => el !== undefined);
 
-//   const uniqueData = uniqueSenders.map((el) => {
-//     const relatedData = data?.filter(
-//       (notification) =>
-//         notification.senderID === el || notification.senderId === el
-//     );
-//     let notifications = relatedData.sort((a, b) =>
-//       compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
-//     );
+  const uniqueData = uniqueSenders.map((el) => {
+    const relatedData = data?.filter(
+      (notification) =>
+        notification.senderID === el || notification.senderId === el
+    );
+    let notifications = relatedData.sort((a, b) =>
+      compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
+    );
 
-//     let servicesMessages = getServicesMessages(notifications);
+    let servicesMessages = getServicesMessages(notifications);
 
-//     return { senderId: el, servicesMessages: servicesMessages };
-//   });
+    return {
+      senderId: el,
+      servicesMessages: servicesMessages,
+    };
+  });
 
-//   return uniqueData;
-// };
+  return uniqueData;
+};
 
-// // Get a user's services messages
-// const getServicesMessages = (notifications) => {
-//   let uniqueServicesId = [
-//     ...new Set(notifications?.map((el) => el?.serviceID || el?.serviceId)),
-//   ];
+// Get a user's services messages
+const getServicesMessages = (notifications) => {
+  let uniqueServicesId = [
+    ...new Set(notifications?.map((el) => el?.serviceID || el?.serviceId)),
+  ];
 
-//   let servicesNotifications = uniqueServicesId?.map((id) => ({
-//     serviceId: id,
-//     serviceNotifications: notifications?.filter(
-//       (el) => el?.serviceId === id || el?.serviceID === id
-//     ),
-//   }));
+  let servicesNotifications = uniqueServicesId?.map((id) => ({
+    serviceId: id,
+    serviceNotifications: notifications?.filter(
+      (el) => el?.serviceId === id || el?.serviceID === id
+    ),
+  }));
 
-//   return servicesNotifications;
-// };
+  return servicesNotifications;
+};

@@ -37,7 +37,7 @@ const ChatFileCard = ({
     },
   ]
 
-  console.log('link', documentType)
+  console.log('link', fileUrl)
   return (
     <Container>
       <InnerContainer>

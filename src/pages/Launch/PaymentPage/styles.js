@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Body = styled.div`
   display: flex;
@@ -13,4 +13,4 @@ export const Body = styled.div`
   flex: 1;
   padding-bottom: 100px;
   border-top: none;
-`
+`;

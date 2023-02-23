@@ -23,29 +23,29 @@ const SidebarItem = ({ item, expanded, homePath }) => {
   const notifications = useGetAllNotificationsQuery();
   const services = useGetAllServicesQuery();
 
-  useMemo(() => {
-    if (!notifications.data || !services.data) return;
+  // useMemo(() => {
+  //   if (!notifications.data || !services.data) return;
 
-    let newNotifications = notifications.data?.filter(
-      (notification) => notification?.messageIsRead === false
-    );
-    console.log(newNotifications);
+  //   let newNotifications = notifications.data?.filter(
+  //     (notification) => notification?.messageIsRead === false
+  //   );
+  //   console.log(newNotifications);
 
-    let servicesNotifications = services.data.map((service) =>
-      newNotifications.filter((el) => el?.serviceId === service?.serviceId)
-    );
-    let servicesCount = servicesNotifications.filter((el) => el.length > 0);
+  //   let servicesNotifications = services.data.map((service) =>
+  //     newNotifications.filter((el) => el?.serviceId === service?.serviceId)
+  //   );
+  //   let servicesCount = servicesNotifications.filter((el) => el.length > 0);
 
-    setUnreadLaunchNots(newNotifications?.length - servicesCount?.length);
-    setUnreadServicesNots(servicesCount?.length);
+  //   setUnreadLaunchNots(newNotifications?.length - servicesCount?.length);
+  //   setUnreadServicesNots(servicesCount?.length);
 
-    store.dispatch(setUnreadLaunchNotifications(newNotifications));
-  }, [services.data]);
+  //   store.dispatch(setUnreadLaunchNotifications(newNotifications));
+  // }, [services.data]);
 
-  useMemo(() => {
-    notifications.refetch();
-    services.refetch();
-  }, [refreshNotifications]);
+  // useMemo(() => {
+  //   notifications.refetch();
+  //   services.refetch();
+  // }, [refreshNotifications]);
 
   const location = useLocation();
   const locationPath = location?.pathname;
@@ -113,9 +113,9 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   </span>
                   <span>{each.title}</span>
                 </NavLink>
-                {unreadServicesNots > 0 &&
+                {notifications.data?.length > 0 &&
                   each.path === "/staff-dashboard/businesses/services" && (
-                    <Badge to={each.path}>{unreadServicesNots}</Badge>
+                    <Badge to={each.path}>{notifications.data?.length}</Badge>
                   )}
                 {unreadLaunchNots > 0 &&
                   each.path === "/staff-dashboard/businesses/registration" && (
