@@ -99,9 +99,6 @@ export const MessageBubble = ({
 
   const message = parse(messageBody);
 
-  console.log(messageBody);
-  console.log(message);
-
   const handleDelete = async () => {
     setSelectedToDelete(notificationId);
     const response = await deleteNotification(notificationId);

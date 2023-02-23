@@ -78,7 +78,7 @@ export const Chats = ({ data, isUser }) => {
       </TopContainer>
       <ChatContainer>
         {threadedMessages?.map((thread, index) => (
-          <ChatCard lastMessage={thread?.messages[0]} key={index} />
+          <ChatCard messages={thread?.messages} key={index} />
         ))}
       </ChatContainer>
     </Container>

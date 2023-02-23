@@ -10,8 +10,6 @@ export const ChatBody = ({ data, threadsRefetch }) => {
   let subject = params.get("subject");
 
   const selectedThread = getSelectedThread(data, subject);
-  console.log(selectedThread);
-  // console.log(data);
 
   return (
     <Container>
