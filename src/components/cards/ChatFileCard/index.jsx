@@ -22,12 +22,12 @@ const ChatFileCard = ({
   })
 
   const contextContent = [
-    {
-      text: 'View',
-      Icon: ViewSvg,
-      action: downloadFileAction,
-      style: 'normal',
-    },
+    // {
+    //   text: 'View',
+    //   Icon: ViewSvg,
+    //   action: '',
+    //   style: 'normal',
+    // },
 
     {
       text: 'Download',
