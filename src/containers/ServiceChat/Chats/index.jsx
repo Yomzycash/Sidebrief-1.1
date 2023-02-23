@@ -33,7 +33,6 @@ export const Chats = ({ data, isUser }) => {
   };
 
   const threadedMessages = getThreadedMessages(data);
-  console.log(threadedMessages);
 
   return (
     <Container>
