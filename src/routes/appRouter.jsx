@@ -221,8 +221,6 @@ const AppRouter = () => {
   const allowLaunch = launchCode && countryISO;
 
   //
-  console.log(staff);
-  //
 
   useEffect(() => {
     setisLoggedIn(loggedIn);

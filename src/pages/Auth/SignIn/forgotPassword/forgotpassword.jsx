@@ -77,7 +77,7 @@ const ForgotPassword = () => {
       navigate(`${location.pathname}/verifyotp`, { state: data.email });
     } else {
       if (error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
+        toast.error("Connection error");
       } else {
         toast.error(error.data?.message);
       }
@@ -173,8 +173,7 @@ const Registration = styled.div`
   padding: 59px;
   background-color: white;
   border: 1px solid #edf1f7;
-  box-shadow: -10px -10px 10px -5px #9596970a,
-    10px 10px 10px -5px #9596970a;
+  box-shadow: -10px -10px 10px -5px #9596970a, 10px 10px 10px -5px #9596970a;
   border-radius: 12px;
   @media screen and (max-width: 1000px) {
     gap: 32px;

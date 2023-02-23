@@ -12,8 +12,7 @@ const ChatLayout = () => {
   let params = new URLSearchParams(location.search);
   let serviceId = params.get("serviceId");
 
-  const { data, isError, isLoading } =
-    useGetNotificationsByServiceIdQuery(serviceId);
+  const { data, refetch } = useGetNotificationsByServiceIdQuery(serviceId);
 
   useEffect(() => {
     setNotifications(data ? data : []);
@@ -22,7 +21,7 @@ const ChatLayout = () => {
   return (
     <ServiceChatLayout>
       <Chats data={notifications} />
-      <SingleChat data={notifications} />
+      <SingleChat data={notifications} threadsRefetch={refetch} />
     </ServiceChatLayout>
   );
 };

@@ -73,7 +73,7 @@ const Verify = ({ title, paragraph }) => {
       // navigate(`${location.pathname}/verifyotp`, { email: data.email });
     } else {
       if (error.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
+        toast.error("Connection error");
       } else {
         toast.error(error.data?.message);
       }

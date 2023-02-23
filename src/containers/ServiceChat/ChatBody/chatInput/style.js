@@ -5,10 +5,9 @@ export const TextInputForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-inline: 24px;
-  margin-bottom: 50px;
-  max-width: 700px;
-  /* background: #222; */
+  padding: 24px 24px 50px;
+  filter: drop-shadow(-20px -5px 20px #c4c4c466);
+  background: #fff;
 `;
 export const TextBody = styled.div`
   width: 100%;
@@ -34,6 +33,7 @@ export const SubjectInput = styled.input`
   color: #000;
   resize: none;
   max-width: calc(100% - 136px);
+  text-overflow: ellipsis;
 
   &::placeholder {
     color: #727474;

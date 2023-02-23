@@ -1,11 +1,11 @@
 import {
-	SubjectInput,
-	TextBody,
-	TextInputForm,
-	Wrapper,
-	FileBeforeUpload,
-	Close,
-	Files,
+  SubjectInput,
+  TextBody,
+  TextInputForm,
+  Wrapper,
+  FileBeforeUpload,
+  Close,
+  Files,
 } from "./style";
 import { CommonButton } from "components/button";
 import { Send } from "asset/svg";
@@ -17,121 +17,130 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAddNotificationMutation } from "services/chatService";
 import { convertToLink } from "utils/LaunchHelper";
+import { toast } from "react-hot-toast";
 
-export const ChatInput = ({ message }) => {
-	const [addNotification] = useAddNotificationMutation();
-	const [files, setFiles] = useState([]);
-	const [uploading, setUploading] = useState([]);
+export const ChatInput = ({ message, threadsRefetch }) => {
+  const [addNotification, addState] = useAddNotificationMutation();
+  const [files, setFiles] = useState([]);
+  const [uploading, setUploading] = useState([]);
 
-	const [clearSlate, setClearSlate] = useState(false);
-	const folder = useMemo(() => new DataTransfer(), []);
+  const [clearSlate, setClearSlate] = useState(false);
+  const folder = useMemo(() => new DataTransfer(), []);
 
-	const {
-		handleSubmit,
-		register,
-		reset,
-		setValue,
-		getValues,
-		formState: { errors },
-	} = useForm({
-		resolver: yupResolver(messageSchema),
-	});
-	const location = useLocation();
-	let params = new URLSearchParams(location.search);
-	let serviceId = params.get("serviceId");
-	let notificationId = params.get("notificationId");
-	const username = JSON.parse(localStorage.getItem("userInfo"));
+  const {
+    handleSubmit,
+    register,
+    reset,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(messageSchema),
+  });
 
-	const handleGetRequiredChat = (formData, files) => {
-		return {
-			serviceId: serviceId,
-			senderId: username?.username,
-			messageSubject: formData.subject,
-			messageBody: formData.message,
-			messageIsRead: false,
-			messageFiles: files,
-		};
-	};
+  const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let serviceId = params.get("serviceId");
+  let subject = params.get("subject");
+  const username = JSON.parse(localStorage.getItem("userInfo"));
 
-	const sendMessage = async (formData) => {
-		// clear data
-		folder.items.clear();
-		setFiles([]);
-		setClearSlate(true);
-		reset();
+  const handleGetRequiredChat = (formData, files) => {
+    return {
+      serviceId: serviceId,
+      senderId: username?.username,
+      messageSubject: subject,
+      messageBody: formData.message,
+      messageIsRead: false,
+      messageFiles: files,
+    };
+  };
 
-		const docArray = await Promise.all(
-			files.map(async (el) => {
-				const toLink = await convertToLink(el);
-				return {
-					fileUrl: toLink.url,
-					fileName: toLink.original_filename,
-					fileType: toLink.format,
-				};
-			})
-		);
+  const sendMessage = async (formData) => {
+    setFiles([]);
+    setClearSlate(true);
+    reset();
 
-		addNotification(handleGetRequiredChat(formData, docArray));
-	};
+    const docArray = await Promise.all(
+      files.map(async (el) => {
+        const toLink = await convertToLink(el);
+        return {
+          fileUrl: toLink.url,
+          fileName: toLink.original_filename,
+          fileType: toLink.format,
+        };
+      })
+    );
 
-	const fileCollector = (files) => {
-		Array.from(files).forEach((file) => {
-			folder.items.add(file);
-		});
-		setFiles(Array.from(folder.files));
-		setValue("files", folder.files);
-	};
+    await addNotification(handleGetRequiredChat(formData, docArray));
+    // clear data
+    console.log(folder.items);
+    folder.items.clear();
 
-	const removeFile = (index) => {
-		folder.items.remove(index);
-		setFiles(Array.from(folder.files));
-		setValue("files", folder.files);
-	};
+    setValue("subject", `Re: ${subject}`);
+    toast.success("Message sent");
+    threadsRefetch();
+  };
 
-	// useEffect(() => {
-	// 	if (notificationId)
-	// 		setValue("subject", `Re: ${message.messageSubject}`);
-	// 	else setValue("subject", "");
-	// }, [message?.messageSubject]);
+  const fileCollector = (files) => {
+    Array.from(files).forEach((file) => {
+      folder.items.add(file);
+    });
+    setFiles(Array.from(folder.files));
+    setValue("files", folder.files);
+  };
 
-	return (
-		<TextInputForm onSubmit={handleSubmit(sendMessage)}>
-			<SubjectInput
-				placeholder="Subject"
-				{...register("subject")}
-				disabled={message?.messageSubject}
-			/>
-			<TextBody>
-				<Wrapper>
-					<SlateEditor
-						placeholder="Send a message..."
-						setValue={setValue}
-						clearSlate={clearSlate}
-						unclear={() => setClearSlate(false)}
-					/>
-					<Files>
-						{files.map((file, index) => {
-							return (
-								<FileBeforeUpload key={index}>
-									{file.name}
-									<Close onClick={() => removeFile(index)}>
-										X
-									</Close>
-								</FileBeforeUpload>
-							);
-						})}
-					</Files>
-				</Wrapper>
-				<CommonButton type={"submit"} text={"Send"} RightIcon={Send} />
-			</TextBody>
-			<input
-				id="files"
-				name="files"
-				type="file"
-				style={{ display: "none" }}
-				multiple
-				onChange={(event) => fileCollector(event.target.files)}
-			/>
-		</TextInputForm>
-	);
+  const removeFile = (index) => {
+    folder.items.remove(index);
+    setFiles(Array.from(folder.files));
+    setValue("files", folder.files);
+  };
+
+  useEffect(() => {
+    if (subject) setValue("subject", `Re: ${subject}`);
+    else setValue("subject", "");
+  }, [subject]);
+
+  return (
+    <TextInputForm onSubmit={handleSubmit(sendMessage)}>
+      <SubjectInput
+        placeholder="Subject"
+        {...register("subject")}
+        disabled={message?.messageSubject}
+      />
+      <TextBody>
+        <Wrapper>
+          <SlateEditor
+            placeholder="Send a message..."
+            setValue={setValue}
+            clearSlate={clearSlate}
+            unclear={() => setClearSlate(false)}
+          />
+          <Files>
+            {files.map((file, index) => {
+              return (
+                <FileBeforeUpload key={index}>
+                  {file.name}
+                  <Close onClick={() => removeFile(index)}>X</Close>
+                </FileBeforeUpload>
+              );
+            })}
+          </Files>
+        </Wrapper>
+        <CommonButton
+          type={"submit"}
+          text={"Send"}
+          RightIcon={Send}
+          loading={addState.isLoading}
+        />
+      </TextBody>
+      <input
+        id="files"
+        name="files"
+        type="file"
+        style={{ display: "none" }}
+        multiple
+        onChange={(event) => fileCollector(event.target.files)}
+      />
+    </TextInputForm>
+  );
 };

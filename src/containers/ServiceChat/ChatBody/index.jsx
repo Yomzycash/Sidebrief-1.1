@@ -2,23 +2,25 @@ import { Container, Messages } from "./style";
 import { MessageBubble } from "components/cards";
 import { useLocation } from "react-router-dom";
 import { ChatInput } from "./chatInput";
+import { getSelectedThread } from "../Chats/actions";
 
-export const ChatBody = ({ data }) => {
-	const location = useLocation();
-	let params = new URLSearchParams(location.search);
-	let notificationId = params.get("notificationId");
+export const ChatBody = ({ data, threadsRefetch }) => {
+  const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let subject = params.get("subject");
 
-	const message = data?.filter(
-		(el) => el?.notificationId === notificationId
-	)[0];
-	console.log(message);
-
-	return (
-		<Container>
-			<Messages>
-				{message?.messageSubject && <MessageBubble {...message} />}
-			</Messages>
-			<ChatInput message={message} />
-		</Container>
-	);
+  const selectedThread = getSelectedThread(data, subject);
+  console.log(data);
+  return (
+    <Container>
+      <Messages>
+        {subject &&
+          selectedThread?.messages?.map((msg) => <MessageBubble {...msg} />)}
+      </Messages>
+      <ChatInput
+        message={selectedThread?.messages[0]}
+        threadsRefetch={threadsRefetch}
+      />
+    </Container>
+  );
 };
