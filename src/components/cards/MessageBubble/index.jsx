@@ -17,11 +17,12 @@ import DeleteIcon from "asset/Icons/DeleteIcon";
 import { useDeleteNotificationMutation } from "services/chatService";
 import { SpinningCircles } from "react-loading-icons";
 import { handleResponse } from "pages/Launch/actions";
-import { handleError } from "utils/globalFunctions";
+import { checkStaffEmail, handleError } from "utils/globalFunctions";
 import { useState, useEffect } from "react";
 import { Node } from "slate";
 
 export const MessageBubble = ({
+  senderId,
   messageBody,
   messageSubject,
   messageFiles,
@@ -107,11 +108,22 @@ export const MessageBubble = ({
   let timeDiff = (Date.now() - new Date(createdAt).getTime()) / 1000;
   let width = (timeDiff / 900) * 100;
 
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let username = userInfo.username;
+
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
+  let isStaff = senderId === "Sidebrief" ? true : false;
+
+  let isMyMessage =
+    senderId === username || (isStaff && staffEmail) ? true : false;
+
   return (
-    <Wrapper>
+    <Wrapper $isMyMessage={isMyMessage}>
+      <Title $staff={isStaff}>{senderId}</Title>
       {messageBody ? (
         <Container>
-          {/* <Title>{messageSubject}</Title> */}
           <Body>{message}</Body>
           {timeDiff < 900 && (
             <Delete>
