@@ -18,6 +18,7 @@ const StripePaymentSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [payLaunch, payState] = usePayLaunchMutation();
+  const [status, setStatus] = useState("");
   const [entityInfo, setEntityInfo] = useState({
     entityCurrency: "",
     entityFee: "",
@@ -33,14 +34,12 @@ const StripePaymentSuccess = () => {
   //   }, [data]);
 
   const queryParams = new URLSearchParams(window.location.search);
-  console.log("checking params", queryParams);
 
   const paymentStatus = queryParams.get("redirect_status");
-  console.log("checking params status", paymentStatus);
 
   const paymentTransactionId = queryParams.get("payment_intent");
-  console.log("checking params ID", paymentTransactionId);
 
+  console.log(status);
   //   Send the payment reference information to the backend
   const sendRefToBackend = async () => {
     const requiredData = {
@@ -50,16 +49,16 @@ const StripePaymentSuccess = () => {
         paymentCurrency: data?.entityCurrency,
         paymentTransactionId: paymentTransactionId,
         paymentProvider: "Stripe",
-        paymentStatus: paymentStatus,
+        paymentStatus: paymentStatus === "succeeded" && "successful",
       },
     };
 
-    console.log("requed", requiredData);
+    // console.log("requed", requiredData);
     localStorage.setItem(
       "paymentDetails",
       JSON.stringify(requiredData.paymentDetails)
     );
-    store.dispatch(setLaunchPaid(paymentStatus));
+    store.dispatch(setLaunchPaid(status));
     const payResponse = await payLaunch(requiredData);
     console.log("payResponse", payResponse);
     navigate("/launch/address");
