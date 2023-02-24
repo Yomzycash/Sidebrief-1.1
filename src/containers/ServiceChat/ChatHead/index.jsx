@@ -19,6 +19,7 @@ import {
   InvisibleBackDrop,
 } from "components/Menu/ThreeDotMenu/style";
 import { useLocation } from "react-router-dom";
+import { getSelectedThread } from "../Chats/actions";
 
 export const ChatHead = ({ data }) => {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
@@ -28,21 +29,17 @@ export const ChatHead = ({ data }) => {
 
   const { getStatus } = useActions();
 
-  // const getAttachment = () => {
-  //   console.log("Attachment");
-  // };
-
   const deleteMessage = () => {};
 
   const location = useLocation();
   let params = new URLSearchParams(location.search);
-  let notificationId = params.get("notificationId");
+  let subject = params.get("subject");
 
-  const message = data?.filter(
-    (el) => el?.notificationId === notificationId
-  )[0];
-  console.log(message);
+  const selectedThread = getSelectedThread(data, subject);
 
+  const lastMessage = selectedThread?.messages[0];
+
+  console.log(data);
   return (
     <Container>
       <TextAndImage>
@@ -52,17 +49,19 @@ export const ChatHead = ({ data }) => {
           <OnlineIndicator />
         </UserImageContainer>
         <TextContainer>
-          <ServiceID>Sender ID</ServiceID>
-          <Name>{message?.senderId}</Name>
+          <Name>{data[0]?.senderId}</Name>
+          <ServiceID>
+            <span>Subject: </span> {lastMessage?.messageSubject}
+          </ServiceID>
         </TextContainer>
       </TextAndImage>
       <Buttons>
-        <StatusButton
+        {/* <StatusButton
           color={getStatus(status).color}
           onClick={() => setShowStatusDropdown((prev) => !prev)}
         >
           {getStatus(status).text}
-        </StatusButton>
+        </StatusButton> */}
         {showStatusDropdown ? (
           <>
             <InvisibleBackDrop onClick={() => setShowStatusDropdown(false)} />
@@ -87,12 +86,12 @@ export const ChatHead = ({ data }) => {
           action={getAttachment}
         /> */}
 
-        <CommonButton
+        {/* <CommonButton
           text={"Delete"}
           action={deleteMessage}
           style={{ backgroundColor: "#ffc0c0", padding: "5px 15px" }}
           textStyle={{ color: "#cc0000", fontWeight: "500" }}
-        />
+        /> */}
       </Buttons>
     </Container>
   );

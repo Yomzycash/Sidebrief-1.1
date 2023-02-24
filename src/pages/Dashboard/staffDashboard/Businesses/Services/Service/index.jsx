@@ -27,6 +27,7 @@ import {
   TopContent,
 } from "./styled";
 import ServicesModal from "components/modal/ServicesModal";
+import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
 
 const iconStyle = { width: "17px", height: "17px" };
 
@@ -57,24 +58,50 @@ const ServicePage = () => {
     return serviceNots?.length > 0;
   });
 
+  // All users messages
+  const usersMessages = getUsersMessages(notifications.data);
+  console.log(usersMessages);
+
   let lastNotification = servicesNotifications?.map(
     (nots) => nots[nots?.length - 1]
   );
-  console.log(lastNotification);
 
   // Table header information
-  const header = ["Notification ID", "Status", "Date", "Time"];
+  const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
 
   // Table body information
-  const dataBody = notifications.data?.map((notification) => [
-    notification?.notificationId,
-    <Status $read={notification?.messageIsRead}>
-      {notification?.messageIsRead === true ? "In Progress" : "New Request"}
+  const dataBody = usersMessages?.map((notifications) => [
+    notifications?.senderId,
+    notifications?.servicesMessages[0]?.notificationId,
+    <Status
+      $read={
+        notifications?.servicesMessages[0]?.serviceNotifications[0]
+          ?.messageIsRead
+      }
+    >
+      {notifications?.servicesMessages[0]?.serviceNotifications[0]
+        ?.messageIsRead === true
+        ? "In Progress"
+        : "New Request"}
     </Status>,
-    <div>{notification?.updatedAt?.split("T")[0]}</div>,
-    <div>{notification?.updatedAt?.split("T")[1]?.slice(0, 8)}</div>,
+    <div>
+      {
+        notifications?.servicesMessages[0]?.serviceNotifications[0]?.updatedAt?.split(
+          "T"
+        )[0]
+      }
+    </div>,
+    <div>
+      {notifications?.servicesMessages[0]?.serviceNotifications[0]?.updatedAt
+        ?.split("T")[1]
+        ?.slice(0, 8)}
+    </div>,
     <div
-      onClick={(e) => handleChat(notification?.serviceId)}
+      onClick={(e) =>
+        handleChat(
+          notifications?.servicesMessages[0]?.serviceNotifications[0]?.serviceId
+        )
+      }
       style={{ cursor: "pointer" }}
     >
       <ChatIcon size={20} />
@@ -82,11 +109,29 @@ const ServicePage = () => {
     </div>,
   ]);
 
+  // // Table body information
+  // const dataBody = notifications.data?.map((notification) => [
+  //   notification?.notificationId,
+  //   <Status $read={notification?.messageIsRead}>
+  //     {notification?.messageIsRead === true ? "In Progress" : "New Request"}
+  //   </Status>,
+  //   <div>{notification?.updatedAt?.split("T")[0]}</div>,
+  //   <div>{notification?.updatedAt?.split("T")[1]?.slice(0, 8)}</div>,
+  //   <div
+  //     onClick={(e) => handleChat(notification?.serviceId)}
+  //     style={{ cursor: "pointer" }}
+  //   >
+  //     <ChatIcon size={20} />
+  //     <span style={{ color: "#00A2D4" }}>Resolve</span>
+  //   </div>,
+  // ]);
+
   useEffect(() => {
     setServicesEnquiry(data);
   }, [data]);
 
   const handleChat = (serviceId) => {
+    console.log(serviceId);
     navigate(
       `/staff-dashboard/businesses/services/chats?serviceId=${serviceId}`
     );
@@ -164,11 +209,7 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
-        <ServicesModal 
-          open={open} 
-          setOpen={open} 
-          cardAction={cardAction} 
-        />
+        <ServicesModal open={open} setOpen={open} cardAction={cardAction} />
       </FeatureSection>
     </Container>
   );

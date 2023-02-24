@@ -16,9 +16,9 @@ import Search from "components/navbar/Search";
 import ChatCard from "components/cards/ChatCard";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
-import { compareAsc, parseJSON } from "date-fns";
 import { CommonButton } from "components/button";
 import { useSearchParams } from "react-router-dom";
+import { getThreadedMessages } from "./actions";
 
 export const Chats = ({ data, isUser }) => {
   const [selected, setSelected] = useState("filter");
@@ -31,6 +31,9 @@ export const Chats = ({ data, isUser }) => {
     setParams({ serviceId: data[0]?.serviceId });
     console.log(data);
   };
+
+  const threadedMessages = getThreadedMessages(data);
+  console.log(threadedMessages);
 
   return (
     <Container>
@@ -72,20 +75,13 @@ export const Chats = ({ data, isUser }) => {
         <SearchContainer>
           <Search />
         </SearchContainer>
+        <CommonButton text="New Conversation" action={handleNew} />
       </TopContainer>
       <ChatContainer>
-        <CommonButton text="New Conversation" action={handleNew} />
-
-        {data?.map((notification, index) => (
-          <ChatCard notification={notification} key={index} />
+        {threadedMessages?.map((thread, index) => (
+          <ChatCard lastMessage={thread?.messages[0]} key={index} />
         ))}
       </ChatContainer>
     </Container>
   );
 };
-// .sort((a, b) =>
-//             compareAsc(
-//               parseJSON(a?.notification?.updatedAt),
-//               parseJSON(b?.notification?.updatedAt)
-//             )
-//           )

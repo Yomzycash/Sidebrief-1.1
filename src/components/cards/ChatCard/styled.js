@@ -88,4 +88,12 @@ export const LowerWrapper = styled.p`
   color: #4e5152;
   width: 100%;
   height: 36px;
+
+  /* Remove this if you don't want to limit the text length */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

@@ -38,7 +38,6 @@ export const StatusCard = ({
     editAction,
     viewAction,
     hideDeleteModal,
-    showDeleteModal,
   } = useActions({
     navigate,
     setShowDelete,

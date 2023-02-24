@@ -1,44 +1,29 @@
-import {
-  Container,
-  TextInput,
-  TextInputForm,
-  Messages,
-  SubjectInput,
-  TextBody,
-} from "./style";
-import { CommonButton } from "components/button";
-import { Send } from "asset/svg";
-import { messageSchema } from "./constants";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { MessageBubble } from "components/cards";
-import { compareDesc, differenceInDays, isToday, isYesterday } from "date-fns";
-import {
-  useAddNotificationMutation,
-  useGetNotificationsByServiceIdQuery,
-} from "services/chatService";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { ChatInput } from "./chatInput";
+import { Container, Messages } from './style'
+import { MessageBubble } from 'components/cards'
+import { useLocation } from 'react-router-dom'
+import { ChatInput } from './chatInput'
+import { getSelectedThread } from '../Chats/actions'
 
-export const ChatBody = ({ data }) => {
-  const location = useLocation();
-  let params = new URLSearchParams(location.search);
-  let notificationId = params.get("notificationId");
+export const ChatBody = ({ data, threadsRefetch }) => {
+  const location = useLocation()
+  let params = new URLSearchParams(location.search)
+  let subject = params.get('subject')
 
-  const message = data?.filter(
-    (el) => el?.notificationId === notificationId
-  )[0];
-  console.log(message);
+  const selectedThread = getSelectedThread(data, subject)
+  // console.log(data);
 
   return (
     <Container>
       <Messages>
-        {message?.messageSubject && <MessageBubble {...message} />}
+        {subject &&
+          selectedThread?.messages?.map((msg) => (
+            <MessageBubble {...msg} threadsRefetch ={threadsRefetch} />
+          ))}
       </Messages>
-      <ChatInput message={message} />
+      <ChatInput
+        message={selectedThread?.messages[0]}
+        threadsRefetch={threadsRefetch}
+      />
     </Container>
-  );
-};
+  )
+}

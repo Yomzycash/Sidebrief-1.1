@@ -6,7 +6,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding-inline: 24px;
+  background-color: #fff;
+  z-index: 2;
 
   ::-webkit-scrollbar {
     display: none;
@@ -93,10 +94,15 @@ export const ArrowDown = styled.div`
   padding: 0 5px;
 `;
 export const TopContainer = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 40px;
+  padding: 0 20px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #edf1f7;
+  box-shadow: 0 5px 5px #f1f1f155;
 `;
 
 export const SearchContainer = styled.div`
@@ -108,6 +114,8 @@ export const ChatContainer = styled.div`
   gap: 16px;
   width: 100%;
   padding: 0px;
+  padding-inline: 24px;
   /* border: 1px solid red; */
   height: 100%;
+  padding-block: 20px 30px;
 `;
