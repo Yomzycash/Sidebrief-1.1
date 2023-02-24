@@ -20,7 +20,7 @@ import { convertToLink } from "utils/LaunchHelper";
 import { toast } from "react-hot-toast";
 import { getSubject } from "./actions";
 import { handleResponse } from "pages/Launch/actions";
-import { handleError } from "utils/globalFunctions";
+import { checkStaffEmail, handleError } from "utils/globalFunctions";
 
 export const ChatInput = ({ message, threadsRefetch }) => {
   const [addNotification, addState] = useAddNotificationMutation();
@@ -46,10 +46,14 @@ export const ChatInput = ({ message, threadsRefetch }) => {
   let serviceId = params.get("serviceId");
   let subject = params.get("subject");
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   const handleGetRequiredChat = (formData, files) => {
+    let userEmail = localStorage.getItem("userEmail");
+    let staffEmail = checkStaffEmail(userEmail);
+
     return {
       serviceId: serviceId,
-      senderId: userInfo?.username,
+      senderId: staffEmail ? "Sidebrief" : userInfo?.username,
       messageSubject: getSubject(formData.subject),
       messageBody: formData.message,
       messageIsRead: false,
