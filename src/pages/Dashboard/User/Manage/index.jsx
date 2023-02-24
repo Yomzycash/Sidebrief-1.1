@@ -7,6 +7,7 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { resources } from "utils/config";
+import { store } from "redux/Store";
 
 const ManageProduct = () => {
 	const [selectedResource, setselectedResource] = useState("");
@@ -15,6 +16,9 @@ const ManageProduct = () => {
 
 	const { data, isLoading } = useGetAllCountriesQuery();
 
+	const handleNext = async () => {
+		store.dispatch()
+	}
 	// Handle supported countries fetch
 	const handleCountry = useCallback(
 		async (value) => {
