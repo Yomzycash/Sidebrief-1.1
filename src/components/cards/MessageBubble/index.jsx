@@ -127,16 +127,14 @@ export const MessageBubble = ({
       ) : null}
       <CardContainer>
         {messageFiles?.length > 0
-          ? messageFiles?.map((el, index) => {
-              return (
-                <ChatFileCard
-                  key={index}
-                  fileName={el?.fileName}
-                  fileType={el?.fileType}
-                  fileUrl={el?.fileUrl}
-                />
-              );
-            })
+          ? messageFiles?.map((el, index) => (
+              <ChatFileCard
+                key={index}
+                fileName={el?.fileName}
+                fileType={el?.fileType}
+                fileUrl={el?.fileUrl}
+              />
+            ))
           : null}
       </CardContainer>
       {updatedAt && (

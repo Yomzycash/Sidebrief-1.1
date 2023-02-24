@@ -56,8 +56,6 @@ const ChatCard = ({ messages }) => {
     console.log(requiredData);
     const response = await updateNotification(requiredData);
 
-    if (response?.data) handleResponse(response);
-    else handleError(response?.error);
     console.log(response);
   };
 
