@@ -69,6 +69,30 @@ export const Body = styled.p`
     padding-inline-start: 40px;
   }
 `;
+
+export const Delete = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+export const DeleteStatus = styled.div`
+  width: 30px;
+  min-width: 30px;
+  height: 5px;
+  background-color: #ffb59caa;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  opacity: 0.8;
+
+  div {
+    width: ${({ width }) => width + "%"};
+    height: 100%;
+    background-color: #bd1c1caa;
+    border-radius: 10px;
+  }
+`;
+
 export const CardContainer = styled.div`
   width: 100%;
   padding: 24px 16px;

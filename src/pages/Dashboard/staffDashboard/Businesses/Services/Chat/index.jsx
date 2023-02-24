@@ -20,7 +20,7 @@ const ChatLayout = () => {
 
   return (
     <ServiceChatLayout>
-      <Chats data={notifications} />
+      <Chats data={notifications} threadsRefetch={refetch} />
       <SingleChat data={notifications} threadsRefetch={refetch} />
     </ServiceChatLayout>
   );

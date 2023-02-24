@@ -19,7 +19,7 @@ import { handleError } from "utils/globalFunctions";
 
 //
 
-const ChatCard = ({ messages }) => {
+const ChatCard = ({ messages, threadsRefetch }) => {
   const [updateNotification, updateState] = useUpdateNotificationMutation();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,8 +53,8 @@ const ChatCard = ({ messages }) => {
       messageIsRead: true,
       messageFiles: notification?.messageFiles,
     };
-    console.log(requiredData);
     const response = await updateNotification(requiredData);
+    if (response?.data) threadsRefetch();
 
     console.log(response);
   };

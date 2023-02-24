@@ -20,7 +20,7 @@ import { CommonButton } from "components/button";
 import { useSearchParams } from "react-router-dom";
 import { getThreadedMessages } from "./actions";
 
-export const Chats = ({ data, isUser }) => {
+export const Chats = ({ data, threadsRefetch }) => {
   const [selected, setSelected] = useState("filter");
   const [isActive, setIsActive] = useState(false);
   const [params, setParams] = useSearchParams();
@@ -78,7 +78,11 @@ export const Chats = ({ data, isUser }) => {
       </TopContainer>
       <ChatContainer>
         {threadedMessages?.map((thread, index) => (
-          <ChatCard messages={thread?.messages} key={index} />
+          <ChatCard
+            messages={thread?.messages}
+            key={index}
+            threadsRefetch={threadsRefetch}
+          />
         ))}
       </ChatContainer>
     </Container>

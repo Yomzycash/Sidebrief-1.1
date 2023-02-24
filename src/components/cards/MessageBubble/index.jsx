@@ -5,6 +5,8 @@ import {
   Body,
   TimeStamp,
   CardContainer,
+  Delete,
+  DeleteStatus,
 } from "./style";
 import { format, isToday, isYesterday, parseJSON } from "date-fns";
 import ChatFileCard from "../ChatFileCard";
@@ -16,14 +18,14 @@ import { useDeleteNotificationMutation } from "services/chatService";
 import { SpinningCircles } from "react-loading-icons";
 import { handleResponse } from "pages/Launch/actions";
 import { handleError } from "utils/globalFunctions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Node } from "slate";
 
 export const MessageBubble = ({
   messageBody,
   messageSubject,
   messageFiles,
-  updatedAt,
+  createdAt,
   notificationId,
   threadsRefetch,
 }) => {
@@ -31,13 +33,13 @@ export const MessageBubble = ({
 
   const [deleteNotification, deleteState] = useDeleteNotificationMutation();
 
-  const formatDate = (updatedAt) => {
-    if (isToday(new Date(updatedAt))) {
+  const formatDate = (createdAt) => {
+    if (isToday(new Date(createdAt))) {
       return "Today";
-    } else if (isYesterday(new Date(updatedAt))) {
+    } else if (isYesterday(new Date(createdAt))) {
       return "Yesterday";
     } else {
-      let date = new Date(updatedAt);
+      let date = new Date(createdAt);
       return date.toLocaleString("default", {
         month: "long",
         day: "numeric",
@@ -85,27 +87,25 @@ export const MessageBubble = ({
     }
   };
 
-  const serializeToText = (nodes) => {
-    return nodes.map((n) => Node.string(n)).join("\n");
-  };
-
-  const parse = (messageBody) => {
+  const parseMessage = (messageBody) => {
     try {
-      return serializeToText(JSON.parse(messageBody));
+      return serializeToHtml({ children: JSON.parse(messageBody) });
     } catch (err) {
       return messageBody;
     }
   };
 
-  const message = parse(messageBody);
+  const message = parse(parseMessage(messageBody));
 
   const handleDelete = async () => {
     setSelectedToDelete(notificationId);
     const response = await deleteNotification(notificationId);
     if (response?.data) handleResponse(response, "Deleted", threadsRefetch);
     else handleError(response?.error);
-    console.log(response);
   };
+
+  let timeDiff = (Date.now() - new Date(createdAt).getTime()) / 1000;
+  let width = (timeDiff / 900) * 100;
 
   return (
     <Wrapper>
@@ -113,15 +113,22 @@ export const MessageBubble = ({
         <Container>
           {/* <Title>{messageSubject}</Title> */}
           <Body>{message}</Body>
-          {deleteState.isLoading && notificationId === selectedToDelete ? (
-            <SpinningCircles
-              stroke="#BD1C1C"
-              fill="#BD1C1C"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <DeleteIcon color="#c20000" onClick={handleDelete} />
+          {timeDiff < 900 && (
+            <Delete>
+              <DeleteStatus width={width > 0 ? width : 0}>
+                <div />
+              </DeleteStatus>
+              {deleteState.isLoading && notificationId === selectedToDelete ? (
+                <SpinningCircles
+                  stroke="#BD1C1C"
+                  fill="#BD1C1C"
+                  width={24}
+                  height={24}
+                />
+              ) : (
+                <DeleteIcon color="#c20000ce" onClick={handleDelete} />
+              )}
+            </Delete>
           )}
         </Container>
       ) : null}
@@ -137,13 +144,13 @@ export const MessageBubble = ({
             ))
           : null}
       </CardContainer>
-      {updatedAt && (
+      {createdAt && (
         <TimeStamp>
-          <span>{formatDate(updatedAt)}</span>
-          <span>{format(parseJSON(updatedAt), "hh:mm aaa")}</span>
+          <span>{formatDate(createdAt)}</span>
+          <span>{format(parseJSON(createdAt), "hh:mm aaa")}</span>
         </TimeStamp>
       )}
     </Wrapper>
   );
 };
-// updatedAt?.slice(11, 16);
+// createdAt?.slice(11, 16);
