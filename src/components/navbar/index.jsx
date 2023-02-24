@@ -143,14 +143,14 @@ const Navbar = ({
           </Link>
           {hideSearch && <Search style={{ height: "32px" }} />}
           <RightIcons>
-            <BellContainer
+            {/* <BellContainer
               onClick={() => setShowNotification(!showNotification)}
             >
               <NotificationBadge>
                 <p>{notificationMessages?.length}</p>
               </NotificationBadge>
               <BellIcon src={bell} alt="logo" />
-            </BellContainer>
+            </BellContainer> */}
             <UserContainer onClick={() => setShowProfile(!showProfile)}>
               <UserIcon src={user} alt="logo" />
             </UserContainer>
