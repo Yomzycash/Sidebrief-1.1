@@ -7,6 +7,7 @@ export const Container = styled.div`
   padding: 16px 24px;
   gap: 8px;
   border-radius: 16px;
+  cursor: pointer;
 
   width: 100%;
   height: 116px;
@@ -70,6 +71,7 @@ export const UpperText = styled.h3`
   line-height: 18px;
   letter-spacing: -0.02em;
   color: ${({ theme }) => theme.grey1};
+  opacity: ${({ $read }) => ($read ? 0.6 : 1)};
 `;
 export const LowerText = styled.h4`
   font-weight: 400;
@@ -88,6 +90,7 @@ export const LowerWrapper = styled.p`
   color: #4e5152;
   width: 100%;
   height: 36px;
+  opacity: ${({ $read }) => ($read ? 0.6 : 1)};
 
   /* Remove this if you don't want to limit the text length */
   display: -webkit-box;
