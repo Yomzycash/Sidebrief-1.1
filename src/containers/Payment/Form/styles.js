@@ -168,3 +168,7 @@ export const FormData = styled.div`
   border: 1.5px solid #edf1f7;
   border-radius: 8px;
 `;
+
+export const ButtonHolder = styled.div`
+  margin-top: 24px;
+`;
