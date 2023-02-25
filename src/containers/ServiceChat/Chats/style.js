@@ -100,9 +100,10 @@ export const TopContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 0 20px 20px;
-  background-color: #fff;
   border-bottom: 1px solid #edf1f7;
   box-shadow: 0 5px 5px #f1f1f155;
+  background-color: #fff;
+  z-index: 5;
 `;
 
 export const SearchContainer = styled.div`

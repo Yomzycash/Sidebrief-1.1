@@ -28,6 +28,7 @@ import {
 } from "./styled";
 import ServicesModal from "components/modal/ServicesModal";
 import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
+import { parseJSON, compareAsc } from "date-fns";
 
 const iconStyle = { width: "17px", height: "17px" };
 
@@ -81,8 +82,8 @@ const ServicePage = () => {
     >
       {notifications?.servicesMessages[0]?.serviceNotifications[0]
         ?.messageIsRead === true
-        ? "In Progress"
-        : "New Request"}
+        ? "Read"
+        : "New"}
     </Status>,
     <div>
       {
