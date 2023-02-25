@@ -72,7 +72,7 @@ const ServicePage = () => {
   // Table body information
   const dataBody = usersMessages?.map((notifications) => [
     notifications?.senderId,
-    notifications?.servicesMessages[0]?.notificationId,
+    notifications?.servicesMessages[0]?.serviceNotifications[0]?.notificationId,
     <Status
       $read={
         notifications?.servicesMessages[0]?.serviceNotifications[0]

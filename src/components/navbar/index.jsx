@@ -85,6 +85,7 @@ const Navbar = ({
           </Link>
           {hideSearch && <Search style={{ height: "32px" }} />}
           <RightIcons>
+
             {staffEmail && (
               <>
                 <BellContainer
