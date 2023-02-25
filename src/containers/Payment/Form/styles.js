@@ -172,3 +172,10 @@ export const FormData = styled.div`
 export const ButtonHolder = styled.div`
   margin-top: 24px;
 `;
+
+export const SPaymentButton = styled.button`
+  background-color: #00a2d4 !important;
+  color: white;
+  border-radius: 8px !important;
+  padding: 16px auto !important;
+`;

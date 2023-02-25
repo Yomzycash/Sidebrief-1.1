@@ -16,7 +16,6 @@ const Profile = ({ handleProfileToggle }) => {
   useEffect(() => {
     const onClickOutside = (e) => {
       if (!profileRef.current.contains(e.target)) {
-        console.log("profileRef ref", profileRef.current);
         e.preventDefault();
         e.stopPropagation();
         handleProfileToggle();

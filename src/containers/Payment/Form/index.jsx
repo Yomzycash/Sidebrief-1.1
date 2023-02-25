@@ -169,7 +169,9 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
           <FlutterWaveButton className="paystack-button" {...fwConfig} />
         </Paystack>
       )}
-      {paymentProvider === "stripe" && <StripePayment amount={500} />}
+      {paymentProvider === "stripe" && (
+        <StripePayment amount={entityInfo.entityFee} />
+      )}
     </Container>
   );
 };

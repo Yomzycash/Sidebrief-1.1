@@ -52,8 +52,6 @@ const StripePaymentSuccess = () => {
         paymentStatus: paymentStatus === "succeeded" && "successful",
       },
     };
-
-    // console.log("requed", requiredData);
     localStorage.setItem(
       "paymentDetails",
       JSON.stringify(requiredData.paymentDetails)
@@ -63,10 +61,6 @@ const StripePaymentSuccess = () => {
     console.log("payResponse", payResponse);
     navigate("/launch/address");
   };
-
-  //   useEffect(() => {
-  //     sendRefToBackend();
-  //   }, []);
 
   return (
     <MainWrapper>

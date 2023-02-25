@@ -17,7 +17,7 @@ import { checkPaymentStatus } from "pages/Launch/actions";
 import { store } from "redux/Store";
 import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
 import { useNavigate } from "react-router-dom";
-import { ButtonHolder } from "./styles";
+import { ButtonHolder, SPaymentButton } from "./styles";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -82,13 +82,15 @@ export default function StripeForm() {
         // options={paymentElementOptions}
         />
         <ButtonHolder>
-          <Button
+          <SPaymentButton
             bg_color="#00A2D4"
             color="white"
             title="Pay Now"
             type="submit"
             disabled={isLoading || !stripe || !elements}
-          />
+          >
+            Pay Now
+          </SPaymentButton>
         </ButtonHolder>
 
         {/* Show any error or success messages */}
