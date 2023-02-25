@@ -18,10 +18,10 @@ export const paymentProviders = [
   // 	name: "interswitch",
   // 	image: InterSwitchImg,
   // },
-  // {
-  //   name: "stripe",
-  //   image: Stripe,
-  // },
+  {
+    name: "stripe",
+    image: Stripe,
+  },
   {
     name: "flutterwave",
     image: FlutterwaveImg,
