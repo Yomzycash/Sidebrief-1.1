@@ -11,9 +11,11 @@ import {
 } from "./style";
 import SingleNotification from "./SingleNotification";
 import EmptyBellNotification from "components/texts/EmptyChat/EmptyBellNotification";
+import { compareAsc } from "date-fns";
+import { checkStaffEmail } from "utils/globalFunctions";
 
 const Notification = ({ closeNotifications, data }) => {
-  const [notifications, setnotifications] = useState(data);
+  const [notifications, setNotifications] = useState(data);
   const [active, setActive] = useState({
     read: false,
     unread: false,
@@ -27,14 +29,38 @@ const Notification = ({ closeNotifications, data }) => {
     notificationRef.current.focus();
   }, [data, active]);
 
+  let userInfo = localStorage.getItem("userInfo");
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
+  // Set notifications conditionally
   const handleNotifications = () => {
-    if (active.all) setnotifications(data);
+    if (!data) return;
+
+    let sortedData = [...data]?.sort((a, b) =>
+      compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))
+    );
+
+    let receivedMessages = sortedData?.filter((el) =>
+      staffEmail
+        ? el?.senderId !== "Sidebrief"
+        : el?.senderId !== userInfo?.username
+    );
+
+    if (active.all) setNotifications(receivedMessages);
     else if (active.read)
-      setnotifications(data?.filter((el) => el?.messageIsRead === true));
-    else if (active.unread)
-      setnotifications(data?.filter((el) => el?.messageIsRead === false));
+      setNotifications(
+        receivedMessages?.filter((el) => el?.messageIsRead === true)
+      );
+    else if (active.unread) {
+      let newNotifications = receivedMessages?.filter(
+        (el) => el?.messageIsRead === false
+      );
+      setNotifications(newNotifications);
+    }
   };
 
+  // This runs onClick outside the notifications container
   const handleBlur = () => {
     notificationRef.current.blur();
     closeNotifications();

@@ -35,7 +35,7 @@ const SingleNotification = ({ item, handleBlur }) => {
   const message = parse(item?.messageBody);
 
   return (
-    <Message onClick={handleClick}>
+    <Message onClick={handleClick} $read={item?.messageIsRead}>
       <MessageSubject>{item.messageSubject}</MessageSubject>
 
       <MessageBody>{message}</MessageBody>

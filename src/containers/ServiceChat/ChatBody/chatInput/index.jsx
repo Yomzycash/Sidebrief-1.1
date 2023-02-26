@@ -17,10 +17,12 @@ import { useState, useMemo, useEffect } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useAddNotificationMutation } from "services/chatService";
 import { convertToLink } from "utils/LaunchHelper";
-import { toast } from "react-hot-toast";
 import { getSubject } from "./actions";
 import { handleResponse } from "pages/Launch/actions";
 import { checkStaffEmail, handleError } from "utils/globalFunctions";
+import { useSelector } from "react-redux";
+import { setRefreshNotifications } from "redux/Slices";
+import { store } from "redux/Store";
 
 export const ChatInput = ({ message, threadsRefetch }) => {
   const [addNotification, addState] = useAddNotificationMutation();
@@ -29,6 +31,10 @@ export const ChatInput = ({ message, threadsRefetch }) => {
 
   const [clearSlate, setClearSlate] = useState(false);
   const folder = useMemo(() => new DataTransfer(), []);
+
+  const { refreshNotifications } = useSelector(
+    (store) => store.UserDataReducer
+  );
 
   const {
     handleSubmit,
@@ -83,6 +89,7 @@ export const ChatInput = ({ message, threadsRefetch }) => {
     // clear data
 
     threadsRefetch();
+    store.dispatch(setRefreshNotifications(!refreshNotifications));
   };
 
   const handleSuccess = (formData) => {

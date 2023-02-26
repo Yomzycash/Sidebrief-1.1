@@ -121,27 +121,29 @@ export const MessageBubble = ({
 
   return (
     <Wrapper $isMyMessage={isMyMessage}>
-      <Title $staff={isStaff}>{senderId}</Title>
+      <Title $staff={isStaff}>
+        <span>{senderId}</span>
+        {timeDiff < 900 && (
+          <Delete>
+            <DeleteStatus width={width > 0 ? width : 0}>
+              <div />
+            </DeleteStatus>
+            {deleteState.isLoading && notificationId === selectedToDelete ? (
+              <SpinningCircles
+                stroke="#BD1C1C"
+                fill="#BD1C1C"
+                width={24}
+                height={24}
+              />
+            ) : (
+              <DeleteIcon color="#c20000ce" onClick={handleDelete} />
+            )}
+          </Delete>
+        )}
+      </Title>
       {messageBody ? (
         <Container>
           <Body>{message}</Body>
-          {timeDiff < 900 && (
-            <Delete>
-              <DeleteStatus width={width > 0 ? width : 0}>
-                <div />
-              </DeleteStatus>
-              {deleteState.isLoading && notificationId === selectedToDelete ? (
-                <SpinningCircles
-                  stroke="#BD1C1C"
-                  fill="#BD1C1C"
-                  width={24}
-                  height={24}
-                />
-              ) : (
-                <DeleteIcon color="#c20000ce" onClick={handleDelete} />
-              )}
-            </Delete>
-          )}
         </Container>
       ) : null}
       <CardContainer>

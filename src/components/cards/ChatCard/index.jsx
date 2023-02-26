@@ -13,22 +13,20 @@ import {
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import profile from "asset/images/profile.svg";
 import { Node } from "slate";
-import { useUpdateNotificationMutation } from "services/chatService.js";
-import { handleResponse } from "pages/Launch/actions";
-import { handleError } from "utils/globalFunctions";
+import { checkStaffEmail } from "utils/globalFunctions.js";
+import { useEffect } from "react";
 
 //
 
 const ChatCard = ({ messages, threadsRefetch }) => {
-  const [updateNotification, updateState] = useUpdateNotificationMutation();
-
   const [searchParams, setSearchParams] = useSearchParams();
 
   const location = useLocation();
   let params = new URLSearchParams(location.search);
   let subject = params.get("subject");
 
-  const { messageBody, messageSubject, serviceId, messageIsRead } = messages[0];
+  const { senderId, messageBody, messageSubject, serviceId, messageIsRead } =
+    messages[0];
 
   let isActive = messageSubject === subject;
 
@@ -38,25 +36,6 @@ const ChatCard = ({ messages, threadsRefetch }) => {
       subject: messageSubject,
     };
     setSearchParams(newParams);
-
-    let unread = messages?.filter((el) => el?.messageIsRead === false);
-    unread?.forEach((el) => updateReadField(el));
-  };
-
-  const updateReadField = async (notification) => {
-    let requiredData = {
-      notificationId: notification?.notificationId,
-      senderId: notification?.senderId,
-      serviceId: notification?.serviceId,
-      messageSubject: notification?.messageSubject,
-      messageBody: notification?.messageBody,
-      messageIsRead: true,
-      messageFiles: notification?.messageFiles,
-    };
-    const response = await updateNotification(requiredData);
-    if (response?.data) threadsRefetch();
-
-    console.log(response);
   };
 
   const serializeToText = (nodes) => {
@@ -73,8 +52,17 @@ const ChatCard = ({ messages, threadsRefetch }) => {
 
   const message = parse(messageBody);
 
-  // console.log(JSON.parse(messageBody));
+  let userInfo = localStorage.getItem("userInfo");
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
 
+  let isRead = messageIsRead
+    ? messageIsRead
+    : staffEmail
+    ? senderId === "Sidebrief"
+    : senderId === userInfo?.username;
+  // console.log(JSON.parse(messageBody));
+  // console.log(message)
   return (
     <Container onClick={openChat} selected={isActive}>
       <TopContainer>
@@ -97,8 +85,3 @@ const ChatCard = ({ messages, threadsRefetch }) => {
 };
 
 export default ChatCard;
-
-const ActiveStyle = {
-  background: "#00a2d419",
-  color: "#00a2d4",
-};

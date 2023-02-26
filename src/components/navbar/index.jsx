@@ -23,6 +23,7 @@ import { useGetAllNotificationsQuery } from "services/chatService";
 import Notification from "components/notification";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useRef } from "react";
+import { useSelector } from "react-redux";
 
 const Navbar = ({
   dashboard,
@@ -32,15 +33,20 @@ const Navbar = ({
   style,
   hideSearch,
 }) => {
-  const { data } = useGetAllNotificationsQuery();
-
-  let userEmail = localStorage.getItem("userEmail");
-  let staffEmail = checkStaffEmail(userEmail);
-
   // const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
+  const { data, refetch } = useGetAllNotificationsQuery();
+
+  const { refreshNotifications } = useSelector(
+    (store) => store.UserDataReducer
+  );
+  // console.log(refreshNotifications);
+
+  let userInfo = localStorage.getItem("userInfo");
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
   // useEffect(() => {
   //   if (!dashboard && !rewards) {
   //     window.addEventListener("scroll", () => {
@@ -62,8 +68,19 @@ const Navbar = ({
     setShowNotification(true);
   };
 
-  let newNotifications = data?.filter((el) => el?.messageIsRead === false);
-  console.log(newNotifications);
+  useEffect(() => {
+    refetch();
+  }, [refreshNotifications]);
+
+  let receivedMessages = data?.filter((el) =>
+    staffEmail
+      ? el?.senderId !== "Sidebrief"
+      : el?.senderId !== userInfo?.username
+  );
+
+  let newNotifications = receivedMessages?.filter(
+    (el) => el?.messageIsRead === false
+  );
 
   return (
     <>
@@ -87,7 +104,9 @@ const Navbar = ({
             {/* {staffEmail && ( */}
             <BellContainer onClick={handleShowNotification}>
               {newNotifications?.length > 0 && (
-                <NotificationBadge>{newNotifications}</NotificationBadge>
+                <NotificationBadge>
+                  {newNotifications?.length}
+                </NotificationBadge>
               )}
               <BellIcon src={bell} alt="logo" />
             </BellContainer>

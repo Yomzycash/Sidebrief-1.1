@@ -55,7 +55,7 @@ export const NotificationMessages = styled.div`
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: #e6f6fb;
+    background-color: #edf1f7;
   }
 
   // ::-webkit-scrollbar-thumb:hover {
@@ -69,6 +69,8 @@ export const Message = styled.div`
   padding: 16px;
   border-bottom: ${({ $last }) => (!$last ? "1px solid #edf1f6" : "")};
   border-radius: 10px;
+
+  opacity: ${({ $read }) => ($read ? 0.6 : 1)};
 
   :hover {
     background-color: #00a2d419;

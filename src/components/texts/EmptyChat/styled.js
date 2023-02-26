@@ -9,6 +9,7 @@ export const EmptyNotification = styled.div`
   opacity: 0.8;
   font-size: 14px;
   font-style: italic;
+  opacity: 0.7;
 `;
 
 export const EmptyLeft = styled.div`

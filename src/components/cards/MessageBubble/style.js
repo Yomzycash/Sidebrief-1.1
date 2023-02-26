@@ -24,7 +24,9 @@ export const Container = styled.div`
   border-radius: 10px;
 `;
 
-export const Title = styled.p`
+export const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-weight: 400;
   font-size: 12px;
   color: ${({ $staff }) => ($staff ? "#5DDBB0" : "#6a00c1")};
