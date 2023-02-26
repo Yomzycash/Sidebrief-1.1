@@ -17,8 +17,9 @@ import ChatCard from "components/cards/ChatCard";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
 import { CommonButton } from "components/button";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { getThreadedMessages } from "./actions";
+import EmptyChatLeft from "components/texts/EmptyChat/EmptyChatLeft";
 
 export const Chats = ({ data, threadsRefetch }) => {
   const [selected, setSelected] = useState("filter");
@@ -27,9 +28,10 @@ export const Chats = ({ data, threadsRefetch }) => {
 
   const options = ["senderID", "serviceID"];
 
+  let serviceId = params.get("serviceId");
+
   const handleNew = () => {
-    setParams({ serviceId: data[0]?.serviceId });
-    console.log(data);
+    setParams({ serviceId: serviceId });
   };
 
   const threadedMessages = getThreadedMessages(data);
@@ -77,13 +79,19 @@ export const Chats = ({ data, threadsRefetch }) => {
         <CommonButton text="New Conversation" action={handleNew} />
       </TopContainer>
       <ChatContainer>
-        {threadedMessages?.map((thread, index) => (
-          <ChatCard
-            messages={thread?.messages}
-            key={index}
-            threadsRefetch={threadsRefetch}
-          />
-        ))}
+        {threadedMessages?.length > 0 ? (
+          <>
+            {threadedMessages?.map((thread, index) => (
+              <ChatCard
+                messages={thread?.messages}
+                key={index}
+                threadsRefetch={threadsRefetch}
+              />
+            ))}
+          </>
+        ) : (
+          <EmptyChatLeft />
+        )}
       </ChatContainer>
     </Container>
   );

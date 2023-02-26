@@ -32,7 +32,7 @@ export const Title = styled.p`
   padding: 12px 16px 0;
 `;
 
-export const Body = styled.p`
+export const Body = styled.div`
   font-weight: 300;
   font-size: 14px;
   line-height: 20px;

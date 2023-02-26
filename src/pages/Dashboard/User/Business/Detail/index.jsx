@@ -30,6 +30,7 @@ const BusinessDetail = () => {
   const navigate = useNavigate();
 
   const matches = useMediaQuery("(max-width:700px)");
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -59,7 +60,7 @@ const BusinessDetail = () => {
       "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
   };
 
-  const isPending = isLoading ? false : data.registrationStatus === "pending";
+  const isPending = isLoading ? false : data?.registrationStatus === "pending";
 
   return (
     <>
@@ -79,7 +80,7 @@ const BusinessDetail = () => {
                   <Dialog onClose={handleClose} open={open}>
                     <DialogContent style={StepbarStyle}>
                       <StepBar
-                        applied={data.createdAt}
+                        applied={data?.createdAt}
                         mobile
                         handleClose={handleClose}
                       />
@@ -95,7 +96,7 @@ const BusinessDetail = () => {
                 address={data?.businessAddress}
                 type={data?.registrationType}
               />
-              <StepBar applied={data.createdAt} />
+              <StepBar applied={data?.createdAt} />
             </DetailContainer>
           </DetailWrapper>
           {isPending ? (

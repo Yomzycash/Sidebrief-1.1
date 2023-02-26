@@ -228,7 +228,11 @@ export const Header = ({ isStaff }) => {
                 text={"Messages"}
                 classname="transbutton"
                 LeftIcon={Mail}
-                component={<MessageCount>{data?.length}</MessageCount>}
+                component={
+                  data?.length > 0 && (
+                    <MessageCount>{data?.length}</MessageCount>
+                  )
+                }
                 action={navigateToMessages}
               />
             </TopInfo>

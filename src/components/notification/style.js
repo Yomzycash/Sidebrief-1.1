@@ -2,14 +2,19 @@ import styled from "styled-components";
 import { ReactComponent as ArrowDownIcon } from "../../asset/Icons/ArrowDownIcon.svg";
 
 export const NotificationWrapper = styled.div`
+  min-width: 300px;
   width: 32%;
+  max-width: 450px;
   position: fixed;
+  top: 50px;
   right: 24px;
   z-index: 10;
   box-shadow: -4px 10px 10px 5px #95969714;
   border-radius: 10px;
-  top: 72px;
+  overflow-x: hidden;
   background-color: white;
+  border: 1px solid #edf1f6;
+  padding: 10px;
 `;
 
 export const NotificationHeader = styled.div`
@@ -31,9 +36,10 @@ export const NotificationHeader = styled.div`
 `;
 
 export const NotificationMessages = styled.div`
-  height: 270px;
-  width: 97%;
-  overflow-y: scroll;
+  max-height: 270px;
+  width: 100%;
+  overflow-y: auto;
+
   ::-webkit-scrollbar {
     width: 5px;
     height: 8px;
@@ -49,8 +55,11 @@ export const NotificationMessages = styled.div`
 `;
 
 export const Message = styled.div`
+  display: flex;
+  flex-flow: column;
   padding: 16px;
-  border-top: solid 1px #edf1f6;
+  border-bottom: ${({ $last }) => (!$last ? "1px solid #edf1f6" : "")};
+  border-radius: 10px;
 
   :hover {
     background-color: #00a2d419;
@@ -63,15 +72,17 @@ export const Message = styled.div`
     line-height: 24px;
     font-weight: 500;
   }
-  span {
-    color: #00a2d4;
-    font-size: 14px;
-  }
-
-  p {
+  > p {
     color: #959697;
     font-size: 12px;
   }
+`;
+
+export const MessageTIme = styled.div`
+  align-self: flex-end;
+  color: #00a2d4;
+  font-size: 12px;
+  margin-top: 10px;
 `;
 
 export const NoMessage = styled.div`
@@ -204,20 +215,17 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-export const ReplyButton = styled.button`
-  height: 32px;
-  padding-inline: 24px;
+export const ReplyButton = styled.div`
+  padding: 8px 24px;
   border-radius: 16px;
-  font-family: "BR Firma";
-  font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
   letter-spacing: -0.5px;
   cursor: pointer;
-  background-color: transparent;
   color: #9ca69c;
   border: 1px solid #9ca69c;
+  background-color: #fff;
 `;
 
 export const CaretDownIcon = styled(ArrowDownIcon)`
