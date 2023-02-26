@@ -20,6 +20,7 @@ import { CommonButton } from "components/button";
 import { useParams, useSearchParams } from "react-router-dom";
 import { getThreadedMessages } from "./actions";
 import EmptyChatLeft from "components/texts/EmptyChat/EmptyChatLeft";
+import { compareAsc } from "date-fns";
 
 export const Chats = ({ data, threadsRefetch }) => {
   const [selected, setSelected] = useState("filter");

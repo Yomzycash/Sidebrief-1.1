@@ -1,11 +1,15 @@
+import { getUnReadNotifications } from "components/navbar/actions";
 import { formatDistanceToNow, parseJSON } from "date-fns";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useUpdateNotificationMutation } from "services/chatService";
 import { Node } from "slate";
 import { checkStaffEmail } from "utils/globalFunctions";
 import { Message, MessageBody, MessageSubject, MessageTIme } from "./style";
 
-const SingleNotification = ({ item, handleBlur }) => {
+const SingleNotification = ({ item, handleBlur, refetch }) => {
+  const [updateNotification] = useUpdateNotificationMutation();
+
   const serializeToText = (nodes) => {
     return nodes.map((n) => Node.string(n)).join("\n");
   };
@@ -16,6 +20,7 @@ const SingleNotification = ({ item, handleBlur }) => {
   let staffEmail = checkStaffEmail(userEmail);
 
   const handleClick = () => {
+    updateReadField(item);
     navigate(
       staffEmail
         ? `/staff-dashboard/businesses/services/chats?serviceId=${item?.serviceId}&subject=${item?.messageSubject}`
@@ -33,6 +38,26 @@ const SingleNotification = ({ item, handleBlur }) => {
   };
 
   const message = parse(item?.messageBody);
+  // const handleRead = () => {
+  //   let unread = getUnReadNotifications(data);
+  //   unread?.forEach((el) => updateReadField(el));
+  // };
+
+  const updateReadField = async (notification) => {
+    let requiredData = {
+      notificationId: notification?.notificationId,
+      senderId: notification?.senderId,
+      serviceId: notification?.serviceId,
+      messageSubject: notification?.messageSubject,
+      messageBody: notification?.messageBody,
+      messageIsRead: true,
+      messageFiles: notification?.messageFiles,
+    };
+    const response = await updateNotification(requiredData);
+    if (response?.data) refetch();
+
+    console.log(response);
+  };
 
   return (
     <Message onClick={handleClick} $read={item?.messageIsRead}>

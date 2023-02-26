@@ -40,6 +40,7 @@ import { CheckoutController } from "containers/Checkout";
 import { CommonButton } from "components/button";
 import { Mail } from "asset/svg";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
+import { getUnReadNotifications } from "components/navbar/actions";
 
 export const Header = ({ isStaff }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
@@ -55,6 +56,8 @@ export const Header = ({ isStaff }) => {
 
   const { data, isError, isLoading, refetch } =
     useGetNotificationsByServiceIdQuery(code);
+
+  let newNotifications = getUnReadNotifications(data);
 
   const launchResponse = useSelector(
     (store) => store.LaunchReducer.launchResponse
@@ -229,8 +232,8 @@ export const Header = ({ isStaff }) => {
                 classname="transbutton"
                 LeftIcon={Mail}
                 component={
-                  data?.length > 0 && (
-                    <MessageCount>{data?.length}</MessageCount>
+                  newNotifications?.length > 0 && (
+                    <MessageCount>{newNotifications?.length}</MessageCount>
                   )
                 }
                 action={navigateToMessages}

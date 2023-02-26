@@ -18,12 +18,17 @@ import down from "../../asset/images/down.png";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import Profile from "components/Profile";
-import { checkStaffEmail } from "utils/globalFunctions";
+import {
+  checkStaffEmail,
+  getReceivedNotifications,
+} from "utils/globalFunctions";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import Notification from "components/notification";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
+import { getReadNotifications, getUnReadNotifications } from "./actions";
+import { useMemo } from "react";
 
 const Navbar = ({
   dashboard,
@@ -72,15 +77,10 @@ const Navbar = ({
     refetch();
   }, [refreshNotifications]);
 
-  let receivedMessages = data?.filter((el) =>
-    staffEmail
-      ? el?.senderId !== "Sidebrief"
-      : el?.senderId !== userInfo?.username
-  );
-
-  let newNotifications = receivedMessages?.filter(
-    (el) => el?.messageIsRead === false
-  );
+  let newNotifications = useMemo(() => {
+    getUnReadNotifications(data);
+  }, [refreshNotifications]);
+  // let newNotifications = getUnReadNotifications(data);
 
   return (
     <>
@@ -134,7 +134,11 @@ const Navbar = ({
         </NavWrapper>
       )}
       {showNotification && (
-        <Notification closeNotifications={closeNotifications} data={data} />
+        <Notification
+          closeNotifications={closeNotifications}
+          data={data}
+          refetch={refetch}
+        />
       )}
 
       {showProfile && (

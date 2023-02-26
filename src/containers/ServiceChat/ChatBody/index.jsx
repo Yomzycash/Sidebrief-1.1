@@ -7,9 +7,11 @@ import EmptyChatRight from "components/texts/EmptyChat/EmptyChatRight";
 import { useUpdateNotificationMutation } from "services/chatService";
 import { useEffect } from "react";
 import { checkStaffEmail } from "utils/globalFunctions";
+import { getUnReadNotifications } from "components/navbar/actions";
+import { useSelector } from "react-redux";
 
 export const ChatBody = ({ data, threadsRefetch }) => {
-  const [updateNotification, updateState] = useUpdateNotificationMutation();
+  const [updateNotification] = useUpdateNotificationMutation();
 
   const location = useLocation();
   let params = new URLSearchParams(location.search);
@@ -17,24 +19,17 @@ export const ChatBody = ({ data, threadsRefetch }) => {
 
   const selectedThread = getSelectedThread(data, subject);
 
+  const { refreshNotifications } = useSelector(
+    (store) => store.UserDataReducer
+  );
+
   useEffect(() => {
     handleRead();
-  }, []);
+  }, [refreshNotifications]);
 
   const handleRead = () => {
-    let userEmail = localStorage.getItem("userEmail");
-    let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    let staffEmail = checkStaffEmail(userEmail);
-
-    let receivedMessages = data?.filter((el) =>
-      staffEmail
-        ? el?.senderId !== "Sidebrief"
-        : el?.senderId !== userInfo?.username
-    );
-
-    let unread = receivedMessages?.filter((el) => el?.messageIsRead === false);
-    console.log(unread);
-    // unread?.forEach((el) => updateReadField(el));
+    let unread = getUnReadNotifications(data);
+    unread?.forEach((el) => updateReadField(el));
   };
 
   const updateReadField = async (notification) => {
@@ -59,8 +54,12 @@ export const ChatBody = ({ data, threadsRefetch }) => {
         {selectedThread?.messages?.length > 0 ? (
           <>
             {subject &&
-              selectedThread?.messages?.map((msg) => (
-                <MessageBubble {...msg} threadsRefetch={threadsRefetch} />
+              selectedThread?.messages?.map((msg, index) => (
+                <MessageBubble
+                  {...msg}
+                  key={index}
+                  threadsRefetch={threadsRefetch}
+                />
               ))}
           </>
         ) : (

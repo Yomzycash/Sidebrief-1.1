@@ -14,7 +14,7 @@ import EmptyBellNotification from "components/texts/EmptyChat/EmptyBellNotificat
 import { compareAsc } from "date-fns";
 import { checkStaffEmail } from "utils/globalFunctions";
 
-const Notification = ({ closeNotifications, data }) => {
+const Notification = ({ closeNotifications, data, refetch }) => {
   const [notifications, setNotifications] = useState(data);
   const [active, setActive] = useState({
     read: false,
@@ -108,6 +108,7 @@ const Notification = ({ closeNotifications, data }) => {
               key={index}
               item={item}
               handleBlur={handleBlur}
+              refetch={refetch}
             />
           ))
         ) : (

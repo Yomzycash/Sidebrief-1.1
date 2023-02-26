@@ -109,10 +109,10 @@ export const MessageBubble = ({
   let width = (timeDiff / 900) * 100;
 
   let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  let username = userInfo.username;
-
   let userEmail = localStorage.getItem("userEmail");
+
   let staffEmail = checkStaffEmail(userEmail);
+  let username = userInfo.username;
 
   let isStaff = senderId === "Sidebrief" ? true : false;
 
@@ -146,18 +146,18 @@ export const MessageBubble = ({
           <Body>{message}</Body>
         </Container>
       ) : null}
-      <CardContainer>
-        {messageFiles?.length > 0
-          ? messageFiles?.map((el, index) => (
-              <ChatFileCard
-                key={index}
-                fileName={el?.fileName}
-                fileType={el?.fileType}
-                fileUrl={el?.fileUrl}
-              />
-            ))
-          : null}
-      </CardContainer>
+      {messageFiles?.length > 0 && (
+        <CardContainer>
+          {messageFiles?.map((el, index) => (
+            <ChatFileCard
+              key={index}
+              fileName={el?.fileName}
+              fileType={el?.fileType}
+              fileUrl={el?.fileUrl}
+            />
+          ))}
+        </CardContainer>
+      )}
       {createdAt && (
         <TimeStamp>
           <span>{formatDate(createdAt)}</span>

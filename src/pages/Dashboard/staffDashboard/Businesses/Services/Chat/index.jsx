@@ -4,6 +4,7 @@ import SingleChat from "./SingleChat";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useState } from "react";
 import { useEffect } from "react";
+import { compareAsc } from "date-fns";
 
 const ChatLayout = () => {
   const [notifications, setNotifications] = useState([]);
@@ -15,7 +16,12 @@ const ChatLayout = () => {
   const { data, refetch } = useGetNotificationsByServiceIdQuery(serviceId);
 
   useEffect(() => {
-    setNotifications(data ? data : []);
+    if (!data) return;
+
+    let sorted = [...data]?.sort((a, b) =>
+      compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))
+    );
+    setNotifications(sorted ? sorted : []);
   }, [data]);
 
   return (
@@ -27,3 +33,6 @@ const ChatLayout = () => {
 };
 
 export default ChatLayout;
+//  ?.sort((a, b) =>
+//                 compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))
+//               )
