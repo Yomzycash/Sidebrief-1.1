@@ -29,6 +29,7 @@ const KYCFileUpload = ({
   detailsPage,
   documentName,
   downloadPage,
+  handleRefetch,
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
@@ -38,6 +39,17 @@ const KYCFileUpload = ({
   const [deleted, setDeleted] = useState(false);
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+
+  const nameLengthValidator = (file) => {
+    if (file.name.length <= 0) {
+      return {
+        code: "no file",
+        message: `Please upload a document`,
+      };
+    }
+
+    return null;
+  };
 
   const handleView = async () => {
     const response = await viewMemberKYC(launchInfo);
@@ -85,6 +97,7 @@ const KYCFileUpload = ({
         toast.success(response?.data[0].message);
         setDeleted(!deleted);
         setDocumentInfo({});
+        handleRefetch();
       } else if (response.error) {
         // console.log(response.error?.data.message);
         toast.error(response.error?.data.message);
@@ -100,6 +113,7 @@ const KYCFileUpload = ({
         toast.success(response?.data[0].message);
         setDeleted(!deleted);
         setDocumentInfo({});
+        handleRefetch();
       } else if (response.error) {
         toast.error(response.error?.data.message);
       }
@@ -108,6 +122,7 @@ const KYCFileUpload = ({
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
+    validator: nameLengthValidator,
   });
   return (
     <Container style={{ ...style }} width="100%">
