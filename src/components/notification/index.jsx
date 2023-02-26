@@ -2,77 +2,82 @@ import React from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useGetAllNotificationsQuery } from "services/chatService";
 import {
-  Button,
-  ButtonContainer,
-  CaretDownIcon,
-  Dropdown,
-  DropdownContainer,
-  DropdownList,
-  DropdownMenu,
-  Message,
-  MessageBody,
-  MessageSubject,
-  NoMessage,
+  HeaderActive,
+  HeaderToggle,
   NotificationHeader,
   NotificationMessages,
   NotificationWrapper,
-  ReplyButton,
-  ViewAllMessages,
 } from "./style";
-import { formatDistanceToNow, parseJSON } from "date-fns";
 import SingleNotification from "./SingleNotification";
-import { checkStaffEmail } from "utils/globalFunctions";
-import { useNavigate } from "react-router-dom";
 import EmptyBellNotification from "components/texts/EmptyChat/EmptyBellNotification";
 
 const Notification = ({ closeNotifications, data }) => {
+  const [notifications, setnotifications] = useState(data);
+  const [active, setActive] = useState({
+    read: false,
+    unread: false,
+    all: true,
+  });
+
   const notificationRef = useRef();
 
   useEffect(() => {
+    handleNotifications();
     notificationRef.current.focus();
-  }, [data]);
+  }, [data, active]);
+
+  const handleNotifications = () => {
+    if (active.all) setnotifications(data);
+    else if (active.read)
+      setnotifications(data?.filter((el) => el?.messageIsRead === true));
+    else if (active.unread)
+      setnotifications(data?.filter((el) => el?.messageIsRead === false));
+  };
 
   const handleBlur = () => {
     notificationRef.current.blur();
     closeNotifications();
   };
 
+  const handleActive = (curr) => {
+    setActive({ read: curr.read, unread: curr.unread, all: curr.all });
+  };
+
   return (
     <NotificationWrapper ref={notificationRef} onBlur={handleBlur} tabIndex={0}>
-      {/* <NotificationHeader>
-          <h3>Notifications</h3>
-          <p>Mark all as read</p>
-        </NotificationHeader> */}
-
-      {/* <Dropdown>
-                <select>
-                  <option value="Sort">Sort</option>
-                  <option value="All">All</option>
-                </select>
-              </Dropdown> */}
-
-      {/* <DropdownMenu>
-          <button onClick={toggleDropdown}>
-            {selectedOption || "All"} <CaretDownIcon />
-          </button>
-          {isOpen && (
-            <Dropdown>
-              <DropdownContainer>
-                {DropdownItems.map((item, id) => (
-                  <DropdownList onClick={clickedOption(item)} key={id}>
-                    {item}
-                  </DropdownList>
-                ))}
-              </DropdownContainer>
-            </Dropdown>
-          )}
-        </DropdownMenu> */}
-
+      <NotificationHeader>
+        <p>Notifications</p>
+        <HeaderToggle active={active}>
+          <HeaderActive
+            active={active.all}
+            onClick={() =>
+              handleActive({ all: true, read: false, unread: false })
+            }
+          >
+            All
+          </HeaderActive>
+          <HeaderActive
+            active={active.unread}
+            onClick={() =>
+              handleActive({ unread: true, read: false, all: false })
+            }
+          >
+            Unread
+          </HeaderActive>
+          <HeaderActive
+            onClick={() =>
+              handleActive({ read: true, unread: false, all: false })
+            }
+            active={active.read}
+          >
+            Read
+          </HeaderActive>
+        </HeaderToggle>
+      </NotificationHeader>
       <NotificationMessages>
-        {data?.length > 0 ? (
-          data?.map((item, index) => (
+        {notifications?.length > 0 ? (
+          notifications?.map((item, index) => (
             <SingleNotification
               key={index}
               item={item}
@@ -80,7 +85,7 @@ const Notification = ({ closeNotifications, data }) => {
             />
           ))
         ) : (
-          <EmptyBellNotification />
+          <EmptyBellNotification active={active} />
         )}
       </NotificationMessages>
     </NotificationWrapper>
@@ -88,27 +93,3 @@ const Notification = ({ closeNotifications, data }) => {
 };
 
 export default Notification;
-
-//  <ViewAllMessages>
-//    <p>View All</p>
-//  </ViewAllMessages>;
-
-//  <Message key={index}>
-//                     <MessageSubject>
-//                       {item.messageSubject}
-
-//                       <span>
-//                         {formatDistanceToNow(
-//                           parseJSON(data?.slice(-1)[0].createdAt),
-//                           { addSuffix: true }
-//                         )}
-//                       </span>
-//                     </MessageSubject>
-
-//                     <MessageBody>{item.messageBody}</MessageBody>
-
-//                     <ButtonContainer>
-//                       {/* <Button>Mark as Read</Button> */}
-//                       <ReplyButton onClick={handleBlur}>Reply</ReplyButton>
-//                     </ButtonContainer>
-//                   </Message>

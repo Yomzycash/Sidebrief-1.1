@@ -1,10 +1,16 @@
 import React from "react";
 import { EmptyNotification } from "./styled";
 
-const EmptyBellNotification = () => {
+const EmptyBellNotification = ({ active }) => {
+  let curr = active?.all ? "" : "";
+  curr = active?.read ? "read" : "";
+  curr = active?.unread ? "new" : "";
+
   return (
     <EmptyNotification>
-      You have no notification at the moment
+      You have no
+      {" " + curr + " "}
+      notification at the moment
     </EmptyNotification>
   );
 };

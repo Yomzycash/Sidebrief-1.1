@@ -3,14 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Node } from "slate";
 import { checkStaffEmail } from "utils/globalFunctions";
-import {
-  ButtonContainer,
-  Message,
-  MessageBody,
-  MessageSubject,
-  MessageTIme,
-  ReplyButton,
-} from "./style";
+import { Message, MessageBody, MessageSubject, MessageTIme } from "./style";
 
 const SingleNotification = ({ item, handleBlur }) => {
   const serializeToText = (nodes) => {
@@ -40,7 +33,6 @@ const SingleNotification = ({ item, handleBlur }) => {
   };
 
   const message = parse(item?.messageBody);
-  console.log(item.createdAt);
 
   return (
     <Message onClick={handleClick}>
@@ -57,7 +49,3 @@ const SingleNotification = ({ item, handleBlur }) => {
 };
 
 export default SingleNotification;
-
-// <ButtonContainer>
-//   <ReplyButton onClick={() => {}}>Reply</ReplyButton>
-// </ButtonContainer>

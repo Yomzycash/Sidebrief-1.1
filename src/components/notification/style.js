@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { ReactComponent as ArrowDownIcon } from "../../asset/Icons/ArrowDownIcon.svg";
 
 export const NotificationWrapper = styled.div`
   min-width: 300px;
@@ -9,7 +8,7 @@ export const NotificationWrapper = styled.div`
   top: 50px;
   right: 24px;
   z-index: 10;
-  box-shadow: -4px 10px 10px 5px #95969714;
+  box-shadow: 0 10px 10px 5px #95969714;
   border-radius: 10px;
   overflow-x: hidden;
   background-color: white;
@@ -18,10 +17,7 @@ export const NotificationWrapper = styled.div`
 `;
 
 export const NotificationHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 24px 16px;
+  padding: 16px 16px 0;
 
   h3 {
     font-size: 18px;
@@ -29,10 +25,23 @@ export const NotificationHeader = styled.div`
     color: #151717;
   }
 
-  p {
-    color: ${({ theme }) => theme.blue2};
-    font-size: 12px;
+  > p {
+    font-size: 17px;
   }
+`;
+
+export const HeaderToggle = styled.div`
+  display: flex;
+  margin-block: 20px 10px;
+  border-bottom: 2px solid #edf1f7;
+`;
+
+export const HeaderActive = styled.div`
+  cursor: pointer;
+  padding: 10px;
+  font-size: 12px;
+  border-bottom: ${({ active, theme }) =>
+    active ? `2px solid ${theme.blue2}` : ""};
 `;
 
 export const NotificationMessages = styled.div`
@@ -81,21 +90,8 @@ export const Message = styled.div`
 export const MessageTIme = styled.div`
   align-self: flex-end;
   color: #00a2d4;
-  font-size: 12px;
+  font-size: 11px;
   margin-top: 10px;
-`;
-
-export const NoMessage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 150px 24px;
-  p {
-    font-size: 16px;
-    line-height: 24px;
-    color: #151717;
-    text-align: center;
-  }
 `;
 
 export const MessageSubject = styled.h5`
@@ -129,108 +125,4 @@ export const NotificationBadge = styled.div`
     font-size: 12px;
     font-weight: bold;
   }
-`;
-
-export const ViewAllMessages = styled.div`
-  border-radius: 0px 0px 20px 10px;
-  background-color: #fff;
-
-  p {
-    cursor: pointer;
-    text-align: center;
-    padding: 10px 5px;
-    color: ${({ theme }) => theme.blue2};
-  }
-`;
-
-export const DropdownMenu = styled.div`
-  display: flex;
-  border: 1px solid #000;
-  border-radius: 8px;
-  padding: 14px 16px;
-  margin: 0px 15px 15px 15px;
-
-  button {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: none;
-    text-align: left;
-    color: #000;
-    font-family: "Br Firma", sans serif;
-  }
-`;
-
-export const Dropdown = styled.div`
-  position: absolute;
-  z-index: 100;
-  top: 30%;
-  left: 0;
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-`;
-
-export const DropdownContainer = styled.div`
-  // width:100%;
-`;
-
-export const DropdownList = styled.li`
-  list-style-type: none;
-  padding: 0.8em;
-  padding-left: 1em;
-  flex-direction: column;
-  color: #000;
-  font-size: 13px;
-
-  :hover {
-    background-color: #00a2d419;
-    cursor: pointer;
-  }
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: fkex-start;
-  align-items: center;
-  flex-direction: row;
-  padding-top: 0.5em;
-  gap: 15px;
-`;
-export const Button = styled.button`
-  background-color: ${({ theme }) => theme.blue2};
-  color: #fff;
-  border: none;
-  height: 32px;
-  padding-inline: 24px;
-  border-radius: 16px;
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 21px;
-  align-items: center;
-  text-align: center;
-  letter-spacing: -0.5px;
-  cursor: pointer;
-`;
-
-export const ReplyButton = styled.div`
-  padding: 8px 24px;
-  border-radius: 16px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: -0.5px;
-  cursor: pointer;
-  color: #9ca69c;
-  border: 1px solid #9ca69c;
-  background-color: #fff;
-`;
-
-export const CaretDownIcon = styled(ArrowDownIcon)`
-  width: 1em;
-  height: 1em;
-  margin-left: 0.5em;
-  float: right;
 `;

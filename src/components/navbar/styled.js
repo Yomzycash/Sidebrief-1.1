@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const NavWrapper = styled(motion.div)`
   position: sticky;
   top: 0;
+  left: 0;
   align-items: center;
   justify-content: space-between;
   display: flex;
@@ -216,7 +217,7 @@ export const MessageBody = styled.p`
 
 export const NotificationBadge = styled.p`
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.blue2};
+  background-color: #ed4e3a;
   padding: 2px 5px;
   display: flex;
   position: absolute;

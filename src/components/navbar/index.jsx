@@ -62,8 +62,8 @@ const Navbar = ({
     setShowNotification(true);
   };
 
-  let notifications = data?.length;
-  console.log(notifications);
+  let newNotifications = data?.filter((el) => el?.messageIsRead === false);
+  console.log(newNotifications);
 
   return (
     <>
@@ -86,8 +86,8 @@ const Navbar = ({
           <RightIcons>
             {/* {staffEmail && ( */}
             <BellContainer onClick={handleShowNotification}>
-              {notifications && (
-                <NotificationBadge>{notifications}</NotificationBadge>
+              {newNotifications?.length > 0 && (
+                <NotificationBadge>{newNotifications}</NotificationBadge>
               )}
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
