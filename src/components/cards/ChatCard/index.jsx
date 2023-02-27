@@ -13,9 +13,13 @@ import {
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import profile from "asset/images/profile.svg";
 import { Node } from "slate";
+import { checkStaffEmail } from "utils/globalFunctions.js";
+import { useEffect } from "react";
 import { useUpdateNotificationMutation } from "services/chatService.js";
-import { handleResponse } from "pages/Launch/actions";
-import { handleError } from "utils/globalFunctions";
+import { getUnReadNotifications } from "components/navbar/actions.js";
+import { store } from "redux/Store.js";
+import { setRefreshNotifications } from "redux/Slices.js";
+import { useSelector } from "react-redux";
 
 //
 
@@ -28,18 +32,17 @@ const ChatCard = ({ messages, threadsRefetch }) => {
   let params = new URLSearchParams(location.search);
   let subject = params.get("subject");
 
-  const { messageBody, messageSubject, serviceId, messageIsRead } = messages[0];
+  const { refreshNotifications } = useSelector(
+    (store) => store.UserDataReducer
+  );
+
+  const { senderId, messageBody, messageSubject, serviceId, messageIsRead } =
+    messages[0];
 
   let isActive = messageSubject === subject;
 
-  const openChat = () => {
-    let newParams = {
-      serviceId: serviceId,
-      subject: messageSubject,
-    };
-    setSearchParams(newParams);
-
-    let unread = messages?.filter((el) => el?.messageIsRead === false);
+  const handleRead = () => {
+    let unread = getUnReadNotifications(messages);
     unread?.forEach((el) => updateReadField(el));
   };
 
@@ -56,7 +59,18 @@ const ChatCard = ({ messages, threadsRefetch }) => {
     const response = await updateNotification(requiredData);
     if (response?.data) threadsRefetch();
 
+    store.dispatch(setRefreshNotifications(!refreshNotifications));
+
     console.log(response);
+  };
+
+  const openChat = () => {
+    let newParams = {
+      serviceId: serviceId,
+      subject: messageSubject,
+    };
+    setSearchParams(newParams);
+    handleRead();
   };
 
   const serializeToText = (nodes) => {
@@ -73,32 +87,39 @@ const ChatCard = ({ messages, threadsRefetch }) => {
 
   const message = parse(messageBody);
 
-  // console.log(JSON.parse(messageBody));
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
+  let isMyMessage = staffEmail
+    ? senderId === "Sidebrief"
+    : senderId === userInfo?.username;
+
+  console.log(messageIsRead);
 
   return (
-    <Container onClick={openChat} selected={isActive}>
+    <Container
+      onClick={openChat}
+      selected={isActive}
+      $read={messageIsRead || isMyMessage}
+    >
       <TopContainer>
         <InnerContainer>
-          <ImageContainer>
-            <Image src={profile} alt="" />
+          <ImageContainer isMyMessage={isMyMessage}>
+            <span>{senderId?.slice(0, 2)}</span>
           </ImageContainer>
           <NameContainer>
             {/* <UpperText>{serviceId}</UpperText> */}
-            <UpperText $read={messageIsRead}>{messageSubject}</UpperText>
+            <UpperText>{messageSubject}</UpperText>
             {/* <LowerText>{messageSubject}</LowerText> */}
           </NameContainer>
         </InnerContainer>
         {/* <LowerText>{new Date(lastMessage(message)?.updatedAt)}</LowerText> */}
       </TopContainer>
 
-      <LowerWrapper $read={messageIsRead}>{message}</LowerWrapper>
+      <LowerWrapper>{message}</LowerWrapper>
     </Container>
   );
 };
 
 export default ChatCard;
-
-const ActiveStyle = {
-  background: "#00a2d419",
-  color: "#00a2d4",
-};

@@ -7,7 +7,7 @@ export const getThreadedMessages = (data) => {
     let messageThread = data?.filter((msg) => msg?.messageSubject === subject);
 
     messageThread = messageThread?.sort((a, b) =>
-      compareAsc(new Date(b.updatedAt), new Date(a.updatedAt))
+      compareAsc(new Date(b.createdAt), new Date(a.createdAt))
     );
 
     return {
@@ -37,7 +37,7 @@ export const getUsersMessages = (data) => {
       (notification) => notification.serviceId === el
     );
     let notifications = relatedData.sort((a, b) =>
-      compareAsc(parseJSON(b.updatedAt), parseJSON(a.updatedAt))
+      compareAsc(parseJSON(b.createdAt), parseJSON(a.createdAt))
     );
 
     let servicesMessages = getServicesMessages(notifications);

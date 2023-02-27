@@ -7,26 +7,18 @@ import { checkStaffEmail, handleLogout } from "utils/globalFunctions";
 import { useEffect } from "react";
 import { useRef } from "react";
 
-const Profile = ({ handleProfileToggle }) => {
+const Profile = ({ closeProfile }) => {
   const navigate = useNavigate();
+
   const profileRef = useRef();
+
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
   useEffect(() => {
-    const onClickOutside = (e) => {
-      if (!profileRef.current.contains(e.target)) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleProfileToggle();
-      }
-    };
-    document.addEventListener("mousedown", onClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", onClickOutside);
-    };
-  });
+    profileRef.current.focus();
+    console.log("This function ran");
+  }, []);
 
   const handleProfile = () => {
     navigate(
@@ -36,8 +28,13 @@ const Profile = ({ handleProfileToggle }) => {
     );
   };
 
+  const handleBlur = () => {
+    profileRef.current.blur();
+    closeProfile();
+  };
+
   return (
-    <ProfileContainer ref={profileRef}>
+    <ProfileContainer ref={profileRef} tabIndex={0} onBlur={handleBlur}>
       <ProfileLists onClick={handleProfile}>
         <User />
         <ProfileList onClick={handleProfile}>Profile</ProfileList>

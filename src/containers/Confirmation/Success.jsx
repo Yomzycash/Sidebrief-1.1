@@ -15,7 +15,7 @@ const Success = ({
   imageName = "success",
   description = "We have confirmed your payment. Kindly continue to complete documentation.",
   buttonTitle = "continue",
-  onButtonClick,
+  onClick,
   lastText,
   action,
   loading,
@@ -35,7 +35,7 @@ const Success = ({
           <Title>{title}</Title>
           <BottomText>{description}</BottomText>
         </TextWrapper>
-        <Button title={buttonTitle} onClick={onButtonClick} loading={loading} />
+        <Button title={buttonTitle} onClick={onClick} loading={loading} />
         {lastText && (
           <FinalText onClick={action}>Change Payment Method</FinalText>
         )}

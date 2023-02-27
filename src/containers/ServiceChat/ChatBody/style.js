@@ -10,7 +10,7 @@ export const Messages = styled.div`
   padding-inline: 24px;
   flex: 1;
   overflow-y: auto;
-  max-height: calc(100vh - 482px);
+  max-height: calc(100vh - 432px);
 
   display: flex;
   flex-direction: column-reverse;

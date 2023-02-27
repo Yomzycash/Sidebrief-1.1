@@ -64,7 +64,7 @@ const StripePaymentSuccess = () => {
 
   return (
     <MainWrapper>
-      <Success image={image} onButtonClick={sendRefToBackend} />
+      <Success image={image} onClick={sendRefToBackend} />
     </MainWrapper>
   );
 };
