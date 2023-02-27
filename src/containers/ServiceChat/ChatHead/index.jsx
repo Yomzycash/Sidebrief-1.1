@@ -20,6 +20,7 @@ import {
 } from "components/Menu/ThreeDotMenu/style";
 import { useLocation } from "react-router-dom";
 import { getSelectedThread } from "../Chats/actions";
+import { getReceivedNotifications } from "components/navbar/actions";
 
 export const ChatHead = ({ data }) => {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
@@ -39,6 +40,8 @@ export const ChatHead = ({ data }) => {
 
   const lastMessage = selectedThread?.messages[0];
 
+  let received = getReceivedNotifications(data);
+
   return (
     <Container>
       <TextAndImage>
@@ -48,7 +51,7 @@ export const ChatHead = ({ data }) => {
           <OnlineIndicator />
         </UserImageContainer>
         <TextContainer>
-          <Name>{data[0]?.senderId}</Name>
+          <Name>{received[0]?.senderId}</Name>
           <ServiceID>
             <span>Subject: </span> {lastMessage?.messageSubject}
           </ServiceID>

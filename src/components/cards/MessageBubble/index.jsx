@@ -106,13 +106,13 @@ export const MessageBubble = ({
   };
 
   let timeDiff = (Date.now() - new Date(createdAt).getTime()) / 1000;
-  let width = (timeDiff / 900) * 100;
+  let width = timeDiff < 900 ? (timeDiff / 900) * 100 : 100;
 
   let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  let username = userInfo.username;
-
   let userEmail = localStorage.getItem("userEmail");
+
   let staffEmail = checkStaffEmail(userEmail);
+  let username = userInfo.username;
 
   let isStaff = senderId === "Sidebrief" ? true : false;
 
@@ -121,41 +121,43 @@ export const MessageBubble = ({
 
   return (
     <Wrapper $isMyMessage={isMyMessage}>
-      <Title $staff={isStaff}>{senderId}</Title>
+      <Title $isMyMessage={isMyMessage}>
+        <span>{senderId}</span>
+        {isMyMessage && timeDiff < 900 && (
+          <Delete>
+            <DeleteStatus width={width > 0 ? width : 0}>
+              <div />
+            </DeleteStatus>
+            {deleteState.isLoading && notificationId === selectedToDelete ? (
+              <SpinningCircles
+                stroke="#BD1C1C"
+                fill="#BD1C1C"
+                width={24}
+                height={24}
+              />
+            ) : (
+              <DeleteIcon color="#c20000ce" onClick={handleDelete} />
+            )}
+          </Delete>
+        )}
+      </Title>
       {messageBody ? (
         <Container>
           <Body>{message}</Body>
-          {timeDiff < 900 && (
-            <Delete>
-              <DeleteStatus width={width > 0 ? width : 0}>
-                <div />
-              </DeleteStatus>
-              {deleteState.isLoading && notificationId === selectedToDelete ? (
-                <SpinningCircles
-                  stroke="#BD1C1C"
-                  fill="#BD1C1C"
-                  width={24}
-                  height={24}
-                />
-              ) : (
-                <DeleteIcon color="#c20000ce" onClick={handleDelete} />
-              )}
-            </Delete>
-          )}
         </Container>
       ) : null}
-      <CardContainer>
-        {messageFiles?.length > 0
-          ? messageFiles?.map((el, index) => (
-              <ChatFileCard
-                key={index}
-                fileName={el?.fileName}
-                fileType={el?.fileType}
-                fileUrl={el?.fileUrl}
-              />
-            ))
-          : null}
-      </CardContainer>
+      {messageFiles?.length > 0 && (
+        <CardContainer>
+          {messageFiles?.map((el, index) => (
+            <ChatFileCard
+              key={index}
+              fileName={el?.fileName}
+              fileType={el?.fileType}
+              fileUrl={el?.fileUrl}
+            />
+          ))}
+        </CardContainer>
+      )}
       {createdAt && (
         <TimeStamp>
           <span>{formatDate(createdAt)}</span>

@@ -8,6 +8,7 @@ export const Container = styled.div`
   gap: 8px;
   border-radius: 16px;
   cursor: pointer;
+  opacity: ${({ $read }) => ($read ? 0.6 : 1)};
 
   width: 100%;
   height: 116px;
@@ -44,13 +45,23 @@ export const InnerContainer = styled.div`
   gap: 16px;
 
   width: max-content;
-  height: 100%;
   cursor: pointer;
 `;
 export const ImageContainer = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 40px;
+  max-width: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  text-transform: uppercase;
+  font-weight: 700;
+
+  color: #fff;
+  background-color: ${({ theme, isMyMessage }) =>
+    isMyMessage ? "#00B895" : "#6a00c1"};
 `;
 export const Image = styled.img`
   width: 100%;
@@ -71,7 +82,10 @@ export const UpperText = styled.h3`
   line-height: 18px;
   letter-spacing: -0.02em;
   color: ${({ theme }) => theme.grey1};
-  opacity: ${({ $read }) => ($read ? 0.6 : 1)};
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 export const LowerText = styled.h4`
   font-weight: 400;
@@ -90,7 +104,6 @@ export const LowerWrapper = styled.p`
   color: #4e5152;
   width: 100%;
   height: 36px;
-  opacity: ${({ $read }) => ($read ? 0.6 : 1)};
 
   /* Remove this if you don't want to limit the text length */
   display: -webkit-box;

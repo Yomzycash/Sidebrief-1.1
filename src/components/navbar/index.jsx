@@ -18,66 +18,83 @@ import down from "../../asset/images/down.png";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import Profile from "components/Profile";
-import { checkStaffEmail } from "utils/globalFunctions";
+import {
+  checkStaffEmail,
+  getReceivedNotifications,
+} from "utils/globalFunctions";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import Notification from "components/notification";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import { useRef } from "react";
+import { useSelector } from "react-redux";
+import { getReadNotifications, getUnReadNotifications } from "./actions";
+import { useMemo } from "react";
 
 const Navbar = ({
   dashboard,
   rewards,
-  $displayMobile,
+  displayMobile,
   imgStyles,
   style,
   hideSearch,
 }) => {
-  const { data } = useGetAllNotificationsQuery();
-
-  const [notificationMessages, setNotificationMessages] = useState([]);
-
-  useEffect(() => {
-    setNotificationMessages(data);
-  }, [data]);
-
-  let userEmail = localStorage.getItem("userEmail");
-  let staffEmail = checkStaffEmail(userEmail);
-
-  const [boxshadow, setBoxShadow] = useState("false");
+  // const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
-  useEffect(() => {
-    if (!dashboard && !rewards) {
-      window.addEventListener("scroll", () => {
-        setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
-      });
-    }
-  }, []);
+  const { data, refetch } = useGetAllNotificationsQuery();
 
-  let imgStyle = { width: "13%", textDecoration: "none" };
-  let localUserInfo = localStorage.getItem("userInfo");
-  let newUserObject = JSON.parse(localUserInfo);
+  const { refreshNotifications } = useSelector(
+    (store) => store.UserDataReducer
+  );
+  // console.log(refreshNotifications);
 
-  const handleProfileToggle = () => {
+  let userInfo = localStorage.getItem("userInfo");
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+  // useEffect(() => {
+  //   if (!dashboard && !rewards) {
+  //     window.addEventListener("scroll", () => {
+  //       setBoxShadow(window.pageYOffset > 0 ? "true" : "false");
+  //     });
+  //   }
+  // }, []);
+
+  const closeProfile = () => {
     setShowProfile(false);
   };
 
-  const handleNotificationToggle = () => {
+  const closeNotifications = () => {
     setShowNotification(false);
   };
+  // console.log(showNotification);
+  const handleShowNotification = () => {
+    if (showNotification) return;
+    setShowNotification(true);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [refreshNotifications]);
+
+  // let newNotifications = useMemo(() => {
+  //   return getUnReadNotifications(data);
+  // }, [refreshNotifications]);
+  let newNotifications = getUnReadNotifications(data);
+  console.log(getUnReadNotifications(data));
 
   return (
     <>
       {dashboard || rewards ? (
         <NavWrapper
-          boxshadow={boxshadow}
+          // boxshadow={boxshadow}
           border="1px solid #EDF1F7"
           key="Navbar"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          $displayMobile={$displayMobile}
+          $displayMobile={displayMobile}
           style={{ ...style }}
         >
           <Link to="/" style={imgStyle}>
@@ -85,19 +102,16 @@ const Navbar = ({
           </Link>
           {hideSearch && <Search style={{ height: "32px" }} />}
           <RightIcons>
-
-            {staffEmail && (
-              <>
-                <BellContainer
-                  onClick={() => setShowNotification(!showNotification)}
-                >
-                  <NotificationBadge>
-                    <p>{notificationMessages?.length}</p>
-                  </NotificationBadge>
-                  <BellIcon src={bell} alt="logo" />
-                </BellContainer>
-              </>
-            )}
+            {/* {staffEmail && ( */}
+            <BellContainer onClick={handleShowNotification}>
+              {newNotifications?.length > 0 && (
+                <NotificationBadge>
+                  {newNotifications?.length}
+                </NotificationBadge>
+              )}
+              <BellIcon src={bell} alt="logo" />
+            </BellContainer>
+            {/* )} */}
 
             <UserContainer onClick={() => setShowProfile(!showProfile)}>
               <UserIcon src={user} alt="logo" />
@@ -112,28 +126,30 @@ const Navbar = ({
         </NavWrapper>
       ) : (
         <NavWrapper
-          boxshadow={boxshadow}
+          // boxshadow={boxshadow}
           key="NavbarImg"
-          $displayMobile={$displayMobile}
+          $displayMobile={displayMobile}
           style={{ ...style }}
         >
           <Image src={logo} alt="logo" style={{ ...imgStyles }} />
         </NavWrapper>
       )}
-      {staffEmail ? (
-        <>
-          {showNotification && (
-            <Notification handleNotificationToggle={handleNotificationToggle} />
-          )}
-        </>
-      ) : (
-        <></>
+      {showNotification && (
+        <Notification
+          closeNotifications={closeNotifications}
+          data={data}
+          refetch={refetch}
+        />
       )}
 
-      {showProfile && <Profile handleProfileToggle={handleProfileToggle} />}
+      {showProfile && (
+        <Profile closeProfile={closeProfile} showProfile={showProfile} />
+      )}
     </>
   );
 };
 
 export default Navbar;
 export { LogoNav };
+
+let imgStyle = { width: "13%", textDecoration: "none" };

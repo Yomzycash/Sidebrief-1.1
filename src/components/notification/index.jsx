@@ -2,136 +2,120 @@ import React from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useGetAllNotificationsQuery } from "services/chatService";
 import {
-  Button,
-  ButtonContainer,
-  CaretDownIcon,
-  Dropdown,
-  DropdownContainer,
-  DropdownList,
-  DropdownMenu,
-  Message,
-  MessageBody,
-  MessageSubject,
-  NoMessage,
+  HeaderActive,
+  HeaderToggle,
   NotificationHeader,
   NotificationMessages,
   NotificationWrapper,
-  ReplyButton,
-  ViewAllMessages,
 } from "./style";
-import { formatDistanceToNow, parseJSON } from "date-fns";
+import SingleNotification from "./SingleNotification";
+import EmptyBellNotification from "components/texts/EmptyChat/EmptyBellNotification";
+import { compareAsc } from "date-fns";
+import { checkStaffEmail } from "utils/globalFunctions";
 
-const Notification = ({ handleNotificationToggle }) => {
-  const { data } = useGetAllNotificationsQuery();
-  let notificationRef = useRef();
-  const [notificationMessages, setNotificationMessages] = useState([]);
-
-  const DropdownItems = ["All", "New", "Read"];
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  useEffect(() => {
-    setNotificationMessages(data);
-  }, [data]);
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const clickedOption = (value) => () => {
-    setSelectedOption(value);
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    const onClickOutside = (e) => {
-      if (!notificationRef.current.contains(e.target)) {
-        e.preventDefault();
-        e.stopPropagation();
-        handleNotificationToggle();
-      }
-    };
-    document.addEventListener("mousedown", onClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", onClickOutside);
-    };
+const Notification = ({ closeNotifications, data, refetch }) => {
+  const [notifications, setNotifications] = useState(data);
+  const [active, setActive] = useState({
+    read: false,
+    unread: false,
+    all: true,
   });
 
+  const notificationRef = useRef();
+
+  useEffect(() => {
+    handleNotifications();
+    notificationRef.current.focus();
+  }, [data, active]);
+
+  let userInfo = localStorage.getItem("userInfo");
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
+
+  // Set notifications conditionally
+  const handleNotifications = () => {
+    if (!data) return;
+
+    let sortedData = [...data]?.sort((a, b) =>
+      compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))
+    );
+
+    let receivedMessages = sortedData?.filter((el) =>
+      staffEmail
+        ? el?.senderId !== "Sidebrief"
+        : el?.senderId !== userInfo?.username
+    );
+
+    if (active.all) setNotifications(receivedMessages);
+    else if (active.read)
+      setNotifications(
+        receivedMessages?.filter((el) => el?.messageIsRead === true)
+      );
+    else if (active.unread) {
+      let newNotifications = receivedMessages?.filter(
+        (el) => el?.messageIsRead === false
+      );
+      setNotifications(newNotifications);
+    }
+  };
+
+  // This runs onClick outside the notifications container
+  const handleBlur = () => {
+    notificationRef.current.blur();
+    closeNotifications();
+  };
+
+  const handleActive = (curr) => {
+    setActive({ read: curr.read, unread: curr.unread, all: curr.all });
+  };
+
   return (
-    <>
-      <NotificationWrapper ref={notificationRef}>
-        <NotificationHeader>
-          <h3>Notifications</h3>
-          <p>Mark all as read</p>
-        </NotificationHeader>
-
-        {/* <Dropdown>
-                <select>
-                  <option value="Sort">Sort</option>
-                  <option value="All">All</option>
-                </select>
-              </Dropdown> */}
-
-        <DropdownMenu>
-          <button onClick={toggleDropdown}>
-            {selectedOption || "All"} <CaretDownIcon />
-          </button>
-          {isOpen && (
-            <Dropdown>
-              <DropdownContainer>
-                {DropdownItems.map((item, id) => (
-                  <DropdownList onClick={clickedOption(item)} key={id}>
-                    {item}
-                  </DropdownList>
-                ))}
-              </DropdownContainer>
-            </Dropdown>
-          )}
-        </DropdownMenu>
-
-        {notificationMessages?.length > 0 ? (
-          <>
-            <NotificationMessages>
-              {notificationMessages &&
-                notificationMessages.map((item, index) => (
-                  <Message key={index}>
-                    <MessageSubject>
-                      {item.messageSubject}
-
-                      <span>
-                        {formatDistanceToNow(
-                          parseJSON(
-                            notificationMessages.slice(-1)[0].createdAt
-                          ),
-                          { addSuffix: true }
-                        )}
-                      </span>
-                    </MessageSubject>
-
-                    <MessageBody>{item.messageBody}</MessageBody>
-
-                    <ButtonContainer>
-                      <Button>Mark as Read</Button>
-                      <ReplyButton>Reply</ReplyButton>
-                    </ButtonContainer>
-                  </Message>
-                ))}
-            </NotificationMessages>
-            <ViewAllMessages>
-              <p>View All</p>
-            </ViewAllMessages>
-          </>
+    <NotificationWrapper ref={notificationRef} onBlur={handleBlur} tabIndex={0}>
+      <NotificationHeader>
+        <p>Notifications</p>
+        <HeaderToggle active={active}>
+          <HeaderActive
+            active={active.all}
+            onClick={() =>
+              handleActive({ all: true, read: false, unread: false })
+            }
+          >
+            All
+          </HeaderActive>
+          <HeaderActive
+            active={active.unread}
+            onClick={() =>
+              handleActive({ unread: true, read: false, all: false })
+            }
+          >
+            Unread
+          </HeaderActive>
+          <HeaderActive
+            onClick={() =>
+              handleActive({ read: true, unread: false, all: false })
+            }
+            active={active.read}
+          >
+            Read
+          </HeaderActive>
+        </HeaderToggle>
+      </NotificationHeader>
+      <NotificationMessages>
+        {notifications?.length > 0 ? (
+          notifications?.map((item, index) => (
+            <SingleNotification
+              key={index}
+              item={item}
+              handleBlur={handleBlur}
+              refetch={refetch}
+            />
+          ))
         ) : (
-          <NoMessage>
-            <p>No unread messages</p>
-          </NoMessage>
+          <EmptyBellNotification active={active} />
         )}
-      </NotificationWrapper>
-    </>
+      </NotificationMessages>
+    </NotificationWrapper>
   );
 };
 

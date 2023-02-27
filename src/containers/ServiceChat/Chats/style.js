@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   border-right: 1px solid #edf1f7;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 57px);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -100,9 +100,10 @@ export const TopContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 0 20px 20px;
-  background-color: #fff;
   border-bottom: 1px solid #edf1f7;
   box-shadow: 0 5px 5px #f1f1f155;
+  background-color: #fff;
+  z-index: 5;
 `;
 
 export const SearchContainer = styled.div`
@@ -111,11 +112,10 @@ export const SearchContainer = styled.div`
 export const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 16px;
   width: 100%;
   padding: 0px;
   padding-inline: 24px;
-  /* border: 1px solid red; */
-  height: 100%;
   padding-block: 20px 30px;
 `;

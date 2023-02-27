@@ -9,6 +9,8 @@ export const Wrapper = styled.div`
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   background: #fafafa;
+  border-inline: 3px solid
+    ${({ $isMyMessage }) => ($isMyMessage ? "#00B895" : "#6a00c1")};
 
   align-self: ${({ $isMyMessage }) =>
     $isMyMessage ? "flex-end" : "flex-start"};
@@ -24,15 +26,17 @@ export const Container = styled.div`
   border-radius: 10px;
 `;
 
-export const Title = styled.p`
+export const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-weight: 400;
   font-size: 12px;
-  color: ${({ $staff }) => ($staff ? "#5DDBB0" : "#6a00c1")};
+  color: ${({ $isMyMessage }) => ($isMyMessage ? "#00B895" : "#6a00c1")};
   text-transform: capitalize;
   padding: 12px 16px 0;
 `;
 
-export const Body = styled.p`
+export const Body = styled.div`
   font-weight: 300;
   font-size: 14px;
   line-height: 20px;
