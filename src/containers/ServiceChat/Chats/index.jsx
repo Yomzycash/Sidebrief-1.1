@@ -26,6 +26,7 @@ export const Chats = ({ data, threadsRefetch }) => {
   const [selected, setSelected] = useState("filter");
   const [isActive, setIsActive] = useState(false);
   const [params, setParams] = useSearchParams();
+  const [search, setSearch] = useState("");
 
   const options = ["senderID", "serviceID"];
 
@@ -35,47 +36,18 @@ export const Chats = ({ data, threadsRefetch }) => {
     setParams({ serviceId: serviceId });
   };
 
-  const threadedMessages = getThreadedMessages(data);
+  const threadedMessages = getThreadedMessages(data).filter((el) =>
+    el?.subject?.toLowerCase()?.includes(search.toLowerCase())
+  );
 
   return (
     <Container>
       <TopContainer>
         <Head>
-          <Heading>Chats ({data?.length})</Heading>
-
-          <DropDown>
-            <DropDownBtn
-              onClick={() => {
-                setIsActive(!isActive);
-              }}
-            >
-              <TextContainer> {selected}</TextContainer>
-              <ArrowDown
-                onClick={() => setIsActive(!isActive)}
-                isActive={isActive}
-              >
-                <IoIosArrowDown />
-              </ArrowDown>
-            </DropDownBtn>
-            {isActive && (
-              <DropDownContent>
-                {options.map((option, index) => (
-                  <DropDownItems
-                    key={index}
-                    onClick={(e) => {
-                      setSelected(option);
-                      setIsActive(false);
-                    }}
-                  >
-                    {option}
-                  </DropDownItems>
-                ))}
-              </DropDownContent>
-            )}
-          </DropDown>
+          <Heading>Chats ({threadedMessages?.length})</Heading>
         </Head>
         <SearchContainer>
-          <Search />
+          <Search onChange={(e) => setSearch(e.target.value)} />
         </SearchContainer>
         <CommonButton text="New Conversation" action={handleNew} />
       </TopContainer>

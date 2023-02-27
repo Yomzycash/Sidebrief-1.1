@@ -5,7 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useUpdateNotificationMutation } from "services/chatService";
 import { Node } from "slate";
 import { checkStaffEmail } from "utils/globalFunctions";
-import { Message, MessageBody, MessageSubject, MessageTIme } from "./style";
+import {
+  ImageContainer,
+  Message,
+  MessageBody,
+  MessageSubject,
+  MessageTIme,
+  NotificationContainer,
+} from "./style";
 
 const SingleNotification = ({ item, handleBlur, refetch }) => {
   const [updateNotification] = useUpdateNotificationMutation();
@@ -16,6 +23,7 @@ const SingleNotification = ({ item, handleBlur, refetch }) => {
 
   const navigate = useNavigate();
 
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
@@ -59,17 +67,26 @@ const SingleNotification = ({ item, handleBlur, refetch }) => {
     console.log(response);
   };
 
-  return (
-    <Message onClick={handleClick} $read={item?.messageIsRead}>
-      <MessageSubject>{item.messageSubject}</MessageSubject>
+  let isMyMessage = staffEmail
+    ? item?.senderId === "Sidebrief"
+    : item?.senderId === userInfo?.username;
 
-      <MessageBody>{message}</MessageBody>
-      <MessageTIme>
-        {formatDistanceToNow(parseJSON(item.createdAt), {
-          addSuffix: true,
-        })}
-      </MessageTIme>
-    </Message>
+  return (
+    <NotificationContainer $read={item?.messageIsRead}>
+      <ImageContainer isMyMessage={isMyMessage}>
+        <span>{item?.senderId?.slice(0, 2)}</span>
+      </ImageContainer>
+      <Message onClick={handleClick}>
+        <MessageSubject>{item.messageSubject}</MessageSubject>
+
+        <MessageBody>{message}</MessageBody>
+        <MessageTIme>
+          {formatDistanceToNow(parseJSON(item.createdAt), {
+            addSuffix: true,
+          })}
+        </MessageTIme>
+      </Message>
+    </NotificationContainer>
   );
 };
 

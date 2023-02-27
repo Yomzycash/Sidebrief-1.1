@@ -91,29 +91,33 @@ const ChatCard = ({ messages, threadsRefetch }) => {
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
-  let isRead = messageIsRead
-    ? messageIsRead
-    : staffEmail
+  let isMyMessage = staffEmail
     ? senderId === "Sidebrief"
     : senderId === userInfo?.username;
 
+  console.log(messageIsRead);
+
   return (
-    <Container onClick={openChat} selected={isActive}>
+    <Container
+      onClick={openChat}
+      selected={isActive}
+      $read={messageIsRead || isMyMessage}
+    >
       <TopContainer>
         <InnerContainer>
-          <ImageContainer>
-            <Image src={profile} alt="" />
+          <ImageContainer isMyMessage={isMyMessage}>
+            <span>{senderId?.slice(0, 2)}</span>
           </ImageContainer>
           <NameContainer>
             {/* <UpperText>{serviceId}</UpperText> */}
-            <UpperText $read={isRead}>{messageSubject}</UpperText>
+            <UpperText>{messageSubject}</UpperText>
             {/* <LowerText>{messageSubject}</LowerText> */}
           </NameContainer>
         </InnerContainer>
         {/* <LowerText>{new Date(lastMessage(message)?.updatedAt)}</LowerText> */}
       </TopContainer>
 
-      <LowerWrapper $read={isRead}>{message}</LowerWrapper>
+      <LowerWrapper>{message}</LowerWrapper>
     </Container>
   );
 };

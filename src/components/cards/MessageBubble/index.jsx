@@ -106,7 +106,7 @@ export const MessageBubble = ({
   };
 
   let timeDiff = (Date.now() - new Date(createdAt).getTime()) / 1000;
-  let width = (timeDiff / 900) * 100;
+  let width = timeDiff < 900 ? (timeDiff / 900) * 100 : 100;
 
   let userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let userEmail = localStorage.getItem("userEmail");
@@ -121,9 +121,9 @@ export const MessageBubble = ({
 
   return (
     <Wrapper $isMyMessage={isMyMessage}>
-      <Title $staff={isStaff}>
+      <Title $isMyMessage={isMyMessage}>
         <span>{senderId}</span>
-        {timeDiff < 900 && (
+        {isMyMessage && timeDiff < 900 && (
           <Delete>
             <DeleteStatus width={width > 0 ? width : 0}>
               <div />

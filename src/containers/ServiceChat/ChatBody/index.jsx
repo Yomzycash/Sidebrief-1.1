@@ -19,34 +19,34 @@ export const ChatBody = ({ data, threadsRefetch }) => {
 
   const selectedThread = getSelectedThread(data, subject);
 
-  const { refreshNotifications } = useSelector(
-    (store) => store.UserDataReducer
-  );
+  // const { refreshNotifications } = useSelector(
+  //   (store) => store.UserDataReducer
+  // );
 
-  useEffect(() => {
-    handleRead();
-  }, [refreshNotifications]);
+  // useEffect(() => {
+  //   handleRead();
+  // }, [refreshNotifications]);
 
-  const handleRead = () => {
-    let unread = getUnReadNotifications(data);
-    unread?.forEach((el) => updateReadField(el));
-  };
+  // const handleRead = () => {
+  //   let unread = getUnReadNotifications(data);
+  //   unread?.forEach((el) => updateReadField(el));
+  // };
 
-  const updateReadField = async (notification) => {
-    let requiredData = {
-      notificationId: notification?.notificationId,
-      senderId: notification?.senderId,
-      serviceId: notification?.serviceId,
-      messageSubject: notification?.messageSubject,
-      messageBody: notification?.messageBody,
-      messageIsRead: true,
-      messageFiles: notification?.messageFiles,
-    };
-    const response = await updateNotification(requiredData);
-    if (response?.data) threadsRefetch();
+  // const updateReadField = async (notification) => {
+  //   let requiredData = {
+  //     notificationId: notification?.notificationId,
+  //     senderId: notification?.senderId,
+  //     serviceId: notification?.serviceId,
+  //     messageSubject: notification?.messageSubject,
+  //     messageBody: notification?.messageBody,
+  //     messageIsRead: true,
+  //     messageFiles: notification?.messageFiles,
+  //   };
+  //   const response = await updateNotification(requiredData);
+  //   if (response?.data) threadsRefetch();
 
-    console.log(response);
-  };
+  //   console.log(response);
+  // };
 
   return (
     <Container>

@@ -63,11 +63,12 @@ export const NotificationMessages = styled.div`
   // }
 `;
 
-export const Message = styled.div`
+export const NotificationContainer = styled.div`
   display: flex;
-  flex-flow: column;
+  gap: 12px;
+
   padding: 16px;
-  border-bottom: ${({ $last }) => (!$last ? "1px solid #edf1f6" : "")};
+  border-bottom: "1px solid #edf1f6";
   border-radius: 10px;
 
   opacity: ${({ $read }) => ($read ? 0.6 : 1)};
@@ -76,6 +77,30 @@ export const Message = styled.div`
     background-color: #00a2d419;
     cursor: pointer;
   }
+`;
+
+export const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 40px;
+  max-width: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  border-radius: 50%;
+  text-transform: uppercase;
+  font-weight: 700;
+
+  color: #fff;
+  background-color: ${({ theme, isMyMessage }) =>
+    isMyMessage ? "#00B895" : "#6a00c1"};
+`;
+
+export const Message = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 100%;
 
   h6 {
     color: #151717;

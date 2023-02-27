@@ -5,9 +5,10 @@ export const TextInputForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 24px 24px 50px;
+  padding: 24px 24px 0;
   filter: drop-shadow(-20px -5px 20px #c4c4c466);
   background: #fff;
+  border-right: 1px solid #edf1f7;
 `;
 export const TextBody = styled.div`
   width: 100%;
