@@ -153,15 +153,8 @@ const ShareHolderKYC = () => {
     const response = await viewMemberKYC(launchResponse);
     const MemberKYCInfo = [...response?.data?.businessMembersKYC];
 
-    // let check = await checkDocumentInfo(MemberKYCInfo, documentContainer);
-
-    // setSameData(check);
-    // return check;
-
     MemberKYCInfo?.forEach((member) => {
-      console.log("meme", member);
       documentContainer?.forEach((document) => {
-        console.log("docum", document);
         if (member?.memberCode === document?.code) {
           let newList = { ...member, ...document };
           console.log("issue", newList);
@@ -173,11 +166,9 @@ const ShareHolderKYC = () => {
     setSameData(newArr);
   };
 
-  console.log("fuccccckk", sameData);
   useEffect(() => {
     handleShareHolderCheck();
   }, [documentContainer]);
-  // console.log(documentContainer);
 
   const handleNext = () => {
     handleShareHolderCheck();
