@@ -43,9 +43,9 @@ const BeneficiaryReview = () => {
   const location = useLocation();
 
   const [submitLaunch] = useSubmitLaunchMutation();
-  const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode
-  );
+  // const generatedLaunchCode = useSelector(
+  //   (store) => store.LaunchReducer.generatedLaunchCode
+  // );
   // getting the beneficiary container from store
   const beneficiaryDocumentContainer = useSelector(
     (state) => state.LaunchReducer.beneficiaryDocs
@@ -58,7 +58,7 @@ const BeneficiaryReview = () => {
 
   const handleNext = async () => {
     const requiredData = {
-      launchCode: generatedLaunchCode,
+      launchCode: launchResponse.launchCode,
     };
     const response = await submitLaunch(requiredData);
     const error = response.error;
