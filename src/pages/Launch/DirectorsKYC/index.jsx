@@ -12,6 +12,7 @@ import {
   useAddMemberKYCMutation,
   useGetAllEntitiesQuery,
   useViewDirectorsMutation,
+  useViewMembersKYCMutation,
   useViewMembersMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
@@ -40,7 +41,7 @@ const DirectorKYC = () => {
   const [type, setType] = useState("");
   const [size, setSize] = useState(0);
   const [addMemberKYC] = useAddMemberKYCMutation();
-
+  const [sameData, setSameData] = useState([]);
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
   const launchResponse = useSelector(
@@ -51,7 +52,7 @@ const DirectorKYC = () => {
   const [viewMember, viewMembersState] = useViewMembersMutation();
   const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
   const [directorContainer, setDirectorContainer] = useState([]);
-
+  const [viewMemberKYC] = useViewMembersKYCMutation();
   const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
@@ -81,18 +82,48 @@ const DirectorKYC = () => {
   const generatedLaunchCode = useSelector(
     (store) => store.LaunchReducer.generatedLaunchCode
   );
+  const handleDirectorCheck = async () => {
+    const response = await viewMemberKYC(launchResponse);
+    const MemberKYCInfo = [...response?.data?.businessMembersKYC];
+    let newArr = [];
+    MemberKYCInfo?.forEach((member) => {
+      documentContainer.forEach((document) => {
+        if (member.memberCode === document.code) {
+          let newList = { ...member };
+          newArr.push(newList);
+        }
+      });
+    });
+
+    setSameData(newArr);
+  };
+
+  useEffect(() => {
+    handleDirectorCheck();
+  }, []);
 
   const handleNext = () => {
-    if (navigatedFrom) {
-      navigate(navigatedFrom);
-      localStorage.removeItem("navigatedFrom");
-    } else {
-      let beneficiaries = localStorage.getItem("beneficiaries");
+    let a = requiredDocuments.length;
+    let b = documentContainer.length;
+    let c = sameData.length;
+    let d = a * b;
 
-      if (beneficiaries === "false") {
-        navigate("/launch/review");
+    if (c === 0) {
+      toast.error("All documents are required");
+    } else if (d !== c) {
+      toast.error("All documents are required");
+    } else {
+      if (navigatedFrom) {
+        navigate(navigatedFrom);
+        localStorage.removeItem("navigatedFrom");
       } else {
-        navigate("/launch/beneficiaries-kyc");
+        let beneficiaries = localStorage.getItem("beneficiaries");
+
+        if (beneficiaries === "false") {
+          navigate("/launch/review");
+        } else {
+          navigate("/launch/beneficiaries-kyc");
+        }
       }
     }
   };
@@ -167,6 +198,7 @@ const DirectorKYC = () => {
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
+      handleDirectorCheck();
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
@@ -233,6 +265,7 @@ const DirectorKYC = () => {
                       }
                       handleRemove={() => handleRemove(document)}
                       BottomText={`Please provide your ${document}`}
+                      handleRefetch={handleDirectorCheck}
                     />
                   ))}
                   {/* <KYCFileUpload
