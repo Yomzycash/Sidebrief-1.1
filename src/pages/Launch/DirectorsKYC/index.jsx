@@ -100,7 +100,7 @@ const DirectorKYC = () => {
 
   useEffect(() => {
     handleDirectorCheck();
-  }, []);
+  }, [documentContainer]);
 
   const handleNext = () => {
     let a = requiredDocuments.length;
