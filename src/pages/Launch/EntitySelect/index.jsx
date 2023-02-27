@@ -88,7 +88,7 @@ const EntitySelect = () => {
       );
 
     if (error?.status === "FETCH_ERROR") {
-      toast.error("Please check your internet connection");
+      toast.error("Connection error");
     }
   }, [data, error?.status]);
 
@@ -174,7 +174,7 @@ const EntitySelect = () => {
       await handleBusinessInfo(info);
     } else {
       if (launchResponse?.error?.status === "FETCH_ERROR") {
-        toast.error("Please check your internet connection");
+        toast.error("Connection error");
       } else {
         toast.error(launchResponse?.error?.error);
       }

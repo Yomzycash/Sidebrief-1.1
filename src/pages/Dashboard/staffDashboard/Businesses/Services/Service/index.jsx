@@ -27,16 +27,9 @@ import {
   TopContent,
 } from "./styled";
 import ServicesModal from "components/modal/ServicesModal";
-import StaffServiceModal from "components/modal/StaffServiceModal";
+import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
+import { parseJSON, compareAsc } from "date-fns";
 
-// const countryCodes = {
-//   KEN: "Kenya",
-//   NGN: "Nigeria",
-// };
-
-// const DisplayCountry = ({ shortcode }) => {
-//   return <p>{countryCodes[shortcode]} </p>;
-// };
 const iconStyle = { width: "17px", height: "17px" };
 
 //
@@ -53,29 +46,63 @@ const ServicePage = () => {
 
   const navigate = useNavigate();
 
-  // const itemStyles = {
-  //   item1: { color: "red", backgroundColor: "yellow", category: "TAX" },
-  //   item2: { color: "blue", backgroundColor: "green", category: "MANAGE" },
-  // };
-
   // Add Service
   const handleAddButton = () => {
     setOpen(true);
     setCardAction("add");
   };
+
+  const servicesNotifications = data?.filter((service) => {
+    let serviceNots = notifications.data?.filter(
+      (not) => not?.serviceId === service?.serviceId
+    );
+    return serviceNots?.length > 0;
+  });
+
+  // All users messages
+  const usersMessages = getUsersMessages(notifications.data);
+  console.log(usersMessages);
+
+  let lastNotification = servicesNotifications?.map(
+    (nots) => nots[nots?.length - 1]
+  );
+
   // Table header information
-  const header = ["Notification ID", "Status", "Date", "Time"];
+  const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
 
   // Table body information
-  const dataBody = notifications.data?.map((notification) => [
-    notification?.notificationId,
-    <Status $read={notification.messageIsRead}>
-      {notification.messageIsRead === true ? "In Progress" : "New Request"}
+  const dataBody = usersMessages?.map((notifications) => [
+    notifications?.senderId,
+    notifications?.servicesMessages[0]?.serviceNotifications[0]?.notificationId,
+    <Status
+      $read={
+        notifications?.servicesMessages[0]?.serviceNotifications[0]
+          ?.messageIsRead
+      }
+    >
+      {notifications?.servicesMessages[0]?.serviceNotifications[0]
+        ?.messageIsRead === true
+        ? "Read"
+        : "New"}
     </Status>,
-    <div>{notification.updatedAt.split("T")[0]}</div>,
-    <div>{notification.updatedAt.split("T")[1].slice(0, 8)}</div>,
+    <div>
+      {
+        notifications?.servicesMessages[0]?.serviceNotifications[0]?.updatedAt?.split(
+          "T"
+        )[0]
+      }
+    </div>,
+    <div>
+      {notifications?.servicesMessages[0]?.serviceNotifications[0]?.updatedAt
+        ?.split("T")[1]
+        ?.slice(0, 8)}
+    </div>,
     <div
-      onClick={(e) => handleChat(notification.senderId)}
+      onClick={(e) =>
+        handleChat(
+          notifications?.servicesMessages[0]?.serviceNotifications[0]?.serviceId
+        )
+      }
       style={{ cursor: "pointer" }}
     >
       <ChatIcon size={20} />
@@ -83,12 +110,32 @@ const ServicePage = () => {
     </div>,
   ]);
 
+  // // Table body information
+  // const dataBody = notifications.data?.map((notification) => [
+  //   notification?.notificationId,
+  //   <Status $read={notification?.messageIsRead}>
+  //     {notification?.messageIsRead === true ? "In Progress" : "New Request"}
+  //   </Status>,
+  //   <div>{notification?.updatedAt?.split("T")[0]}</div>,
+  //   <div>{notification?.updatedAt?.split("T")[1]?.slice(0, 8)}</div>,
+  //   <div
+  //     onClick={(e) => handleChat(notification?.serviceId)}
+  //     style={{ cursor: "pointer" }}
+  //   >
+  //     <ChatIcon size={20} />
+  //     <span style={{ color: "#00A2D4" }}>Resolve</span>
+  //   </div>,
+  // ]);
+
   useEffect(() => {
     setServicesEnquiry(data);
   }, [data]);
 
-  const handleChat = (senderId) => {
-    navigate(`/staff-dashboard/businesses/services/chats?id=${senderId}`);
+  const handleChat = (serviceId) => {
+    console.log(serviceId);
+    navigate(
+      `/staff-dashboard/businesses/services/chats?serviceId=${serviceId}`
+    );
   };
 
   const handleViewAllServices = () => {
@@ -163,16 +210,7 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
-        {/* <StaffServiceModal
-          open={open}
-          setOpen={open}
-          cardAction={cardAction}
-        /> */}
-        <ServicesModal
-          open={open}
-          setOpen={open}
-          cardAction={cardAction}
-        />
+        <ServicesModal open={open} setOpen={open} cardAction={cardAction} />
       </FeatureSection>
     </Container>
   );

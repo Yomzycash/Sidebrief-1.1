@@ -11,6 +11,7 @@ export const ButtonContainer = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
+  max-width: max-content;
 
   span {
     font-weight: 500;

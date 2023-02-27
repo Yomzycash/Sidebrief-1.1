@@ -40,6 +40,7 @@ const iconStyle = { width: "17px", height: "17px" };
 const Business = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  let check = location.pathname.includes("chats");
 
   const drafts = useGetUserDraftQuery({
     refetchOnMountOrArgChange: true,
@@ -96,61 +97,65 @@ const Business = () => {
   }, []);
 
   return (
-    <Container>
-      <Header>
-        <MainHeader>
-          <TopContent>
-            <div>
-              <PageTitle>Businesses</PageTitle>
-              <SummaryCard
-                shown={businessesShown.shown}
-                total={businessesShown.total}
+    <>
+      <Container>
+        {!check && (
+          <Header>
+            <MainHeader>
+              <TopContent>
+                <div>
+                  <PageTitle>Businesses</PageTitle>
+                  <SummaryCard
+                    shown={businessesShown.shown}
+                    total={businessesShown.total}
+                  />
+                </div>
+                <Drop>
+                  <select>
+                    <option value="Sort">Sort</option>
+                    <option value="All">All</option>
+                  </select>
+                </Drop>
+              </TopContent>
+              <BottomContent>
+                <SearchWrapper>
+                  <Search style={searchStyle} iconStyle={iconStyle} />
+                </SearchWrapper>
+                <ButtonWrapper>
+                  <button onClick={handleLaunch}>
+                    <NoteIcon />
+                    Launch a Business
+                  </button>
+                </ButtonWrapper>
+              </BottomContent>
+            </MainHeader>
+            <SubHeader>
+              <ActiveNav
+                text="All"
+                total={
+                  submitted.isSuccess && drafts.isSuccess
+                    ? submittedTotal + draftTotal
+                    : 0
+                }
+                path={"/dashboard/businesses/all-businesses"}
               />
-            </div>
-            <Drop>
-              <select>
-                <option value="Sort">Sort</option>
-                <option value="All">All</option>
-              </select>
-            </Drop>
-          </TopContent>
-          <BottomContent>
-            <SearchWrapper>
-              <Search style={searchStyle} iconStyle={iconStyle} />
-            </SearchWrapper>
-            <ButtonWrapper>
-              <button onClick={handleLaunch}>
-                <NoteIcon />
-                Launch a Business
-              </button>
-            </ButtonWrapper>
-          </BottomContent>
-        </MainHeader>
-        <SubHeader>
-          <ActiveNav
-            text="All"
-            total={
-              submitted.isSuccess && drafts.isSuccess
-                ? submittedTotal + draftTotal
-                : 0
-            }
-            path={"/dashboard/businesses/all-businesses"}
-          />
-          <ActiveNav
-            text="Submitted"
-            total={submitted.isSuccess ? submittedTotal : 0}
-            path="/dashboard/businesses/submitted-applications"
-          />
-          <ActiveNav
-            text="Draft"
-            total={drafts.isSuccess ? draftTotal : 0}
-            path="/dashboard/businesses/draft-applications"
-          />
-        </SubHeader>
-      </Header>
-      <Outlet />
-      {/* <AppFeedback subProject="Businesses" /> */}
-    </Container>
+              <ActiveNav
+                text="Submitted"
+                total={submitted.isSuccess ? submittedTotal : 0}
+                path="/dashboard/businesses/submitted-applications"
+              />
+              <ActiveNav
+                text="Draft"
+                total={drafts.isSuccess ? draftTotal : 0}
+                path="/dashboard/businesses/draft-applications"
+              />
+            </SubHeader>
+          </Header>
+        )}
+        <Outlet />
+        {/* <AppFeedback subProject="Businesses" /> */}
+      </Container>
+    </>
   );
 };
 export default Business;

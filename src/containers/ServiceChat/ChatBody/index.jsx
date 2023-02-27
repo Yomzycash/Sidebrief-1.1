@@ -1,97 +1,75 @@
-import {
-  Container,
-  TextInput,
-  TextInputForm,
-  Messages,
-  SubjectInput,
-  TextBody,
-} from "./style";
-import { CommonButton } from "components/button";
-import { Send } from "asset/svg";
-import { messageSchema, mockMessages } from "./constants";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Container, Messages } from "./style";
 import { MessageBubble } from "components/cards";
-import { compareDesc, differenceInDays, isToday, isYesterday } from "date-fns";
-import {
-  useGetAllNotificationsByIdQuery,
-  useGetAllNotificationsQuery,
-  useGetNotificationsByServiceIdQuery,
-} from "services/chatService";
-import { getMessages } from "../Chats/actions";
+import { useLocation } from "react-router-dom";
+import { ChatInput } from "./chatInput";
+import { getSelectedThread } from "../Chats/actions";
+import EmptyChatRight from "components/texts/EmptyChat/EmptyChatRight";
+import { useUpdateNotificationMutation } from "services/chatService";
+import { useEffect } from "react";
+import { checkStaffEmail } from "utils/globalFunctions";
+import { getUnReadNotifications } from "components/navbar/actions";
+import { useSelector } from "react-redux";
 
-export const ChatBody = ({ paramsId }) => {
-  const serviceId = paramsId.get("serviceId");
+export const ChatBody = ({ data, threadsRefetch }) => {
+  const [updateNotification] = useUpdateNotificationMutation();
 
-  const { data, isLoading } = useGetNotificationsByServiceIdQuery(serviceId);
-  console.log(data);
+  const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let subject = params.get("subject");
 
-  const senderId = paramsId.get("senderId");
+  const selectedThread = getSelectedThread(data, subject);
 
-  const { handleSubmit, register, reset } = useForm({
-    resolver: yupResolver(messageSchema),
-  });
+  // const { refreshNotifications } = useSelector(
+  //   (store) => store.UserDataReducer
+  // );
 
-  const sendMessage = (data) => {
-    reset();
-  };
-  const messages = data?.filter(
-    (el) => el?.senderId === senderId || el?.senderID === senderId
-  );
-  console.log(messages);
-  // let ID = useParams().SenderID
+  // useEffect(() => {
+  //   handleRead();
+  // }, [refreshNotifications]);
 
-  // let messages = getMessages(data)
+  // const handleRead = () => {
+  //   let unread = getUnReadNotifications(data);
+  //   unread?.forEach((el) => updateReadField(el));
+  // };
 
-  // let clickedMessage = messages?.filter((message) => message?.senderID === ID)
+  // const updateReadField = async (notification) => {
+  //   let requiredData = {
+  //     notificationId: notification?.notificationId,
+  //     senderId: notification?.senderId,
+  //     serviceId: notification?.serviceId,
+  //     messageSubject: notification?.messageSubject,
+  //     messageBody: notification?.messageBody,
+  //     messageIsRead: true,
+  //     messageFiles: notification?.messageFiles,
+  //   };
+  //   const response = await updateNotification(requiredData);
+  //   if (response?.data) threadsRefetch();
 
-  // let messageContent =
-  //   clickedMessage?.length > 0 ? clickedMessage[0]?.notification : []
-  // console.log(messageContent);
-
-  const formatDate = (updatedAt) => {
-    let date = updatedAt.split("T").join("-");
-    let accDate = date.slice(0, 19).replace(/-0/g, "-");
-    if (isToday(new Date(accDate))) {
-      return "Today";
-    } else if (isYesterday(new Date(accDate))) {
-      return "Yesterday";
-    } else {
-      let date = new Date(accDate);
-      return date.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-    }
-  };
-
-  // let modifiedMessage = messageContent?.map((msg) => ({
-  //   ...msg,
-  //   formatedDate: formatDate(msg?.updatedAt),
-  // }))
+  //   console.log(response);
+  // };
 
   return (
     <Container>
       <Messages>
-        {messages
-          ?.sort((a, b) =>
-            compareDesc(new Date(a.formatedDate), new Date(b.formatedDate))
-          )
-          ?.map((el, index) => (
-            <>
-              <MessageBubble key={index} {...el} />
-            </>
-          ))}
+        {selectedThread?.messages?.length > 0 ? (
+          <>
+            {subject &&
+              selectedThread?.messages?.map((msg, index) => (
+                <MessageBubble
+                  {...msg}
+                  key={index}
+                  threadsRefetch={threadsRefetch}
+                />
+              ))}
+          </>
+        ) : (
+          <EmptyChatRight />
+        )}
       </Messages>
-      <TextInputForm onSubmit={handleSubmit(sendMessage)}>
-        <SubjectInput placeholder="Subject" />
-        <TextBody>
-          <TextInput placeholder="Send a message" {...register("message")} />
-
-          <CommonButton text={"Send"} RightIcon={Send} />
-        </TextBody>
-      </TextInputForm>
+      <ChatInput
+        message={selectedThread?.messages[0]}
+        threadsRefetch={threadsRefetch}
+      />
     </Container>
   );
 };

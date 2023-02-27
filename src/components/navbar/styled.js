@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const NavWrapper = styled(motion.div)`
   position: sticky;
   top: 0;
+  left: 0;
   align-items: center;
   justify-content: space-between;
   display: flex;
@@ -134,23 +135,22 @@ export const NotificationHeader = styled.div`
   }
 
   p {
-    color:${({ theme }) => theme.blue2}; 
+    color: ${({ theme }) => theme.blue2};
     font-size: 12px;
   }
 `;
 
 export const NotificationMessages = styled.div`
-  height:270px;
-  width:97%;
-  overflow-y:scroll;
+  height: 270px;
+  width: 97%;
+  overflow-y: scroll;
   ::-webkit-scrollbar {
-    width: 5px; 
+    width: 5px;
     height: 8px;
-    border-radius:10px; 
+    border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: #E6F6FB;
-
+    background-color: #e6f6fb;
   }
 
   // ::-webkit-scrollbar-thumb:hover {
@@ -199,126 +199,117 @@ export const NoMessage = styled.div`
 
 export const MessageSubject = styled.h5`
   line-height: 24px;
-  color:#4e5152;
+  color: #4e5152;
 
   span {
-    float:right;
+    float: right;
     color: #151717;
     font-size: 14px;
-    font-weight:300;
+    font-weight: 300;
   }
-`
+`;
 
 export const MessageBody = styled.p`
   font-size: 16px;
   line-height: 24px;
   color: #151717;
-`
+`;
 
-export const NotificationBadge = styled.div`
-  border-radius: 100%;
-  background-color: ${({ theme }) => theme.blue2};
-  padding: 2px 5px 2px;
+export const NotificationBadge = styled.p`
+  border-radius: 50%;
+  background-color: #ed4e3a;
+  padding: 2px 5px;
   display: flex;
   position: absolute;
   top: -10px;
   right: -10px;
   color: white;
-  p {
-    font-size: 12px;
-    font-weight: bold;
-  }
+  font-size: 12px;
+  font-weight: bold;
 `;
 
 export const ViewAllMessages = styled.div`
-  border-radius:0px 0px 20px 10px;
+  border-radius: 0px 0px 20px 10px;
   background-color: #fff;
 
   p {
-    cursor:pointer;
-    text-align:center;
-    padding:10px 5px;
-    color:${({ theme }) => theme.blue2}; 
+    cursor: pointer;
+    text-align: center;
+    padding: 10px 5px;
+    color: ${({ theme }) => theme.blue2};
   }
-`
+`;
 
-// export const Dropdown = styled.div`
-// display: flex;
-// border: 1px solid #f1f1f1;
-// border-radius: 12px;
-// background-color: #fafafa;
-// padding: 8px 16px;
-
-// select {
-//   border: none;
-//   outline: none;
-//   width: 60px;
-//   background: none;
-// }
-// `
 export const DropdownMenu = styled.div`
   display: flex;
   border: 1px solid #000;
   border-radius: 8px;
   padding: 14px 16px;
   margin: 0px 15px 15px 15px;
-  
+
   button {
-    width:100%;
+    width: 100%;
     border: none;
     outline: none;
     background: none;
-    text-align:left;
-    color:#000;
+    text-align: left;
+    color: #000;
+    font-family: "Br Firma", sans serif;
   }
-
-  
-`
-
-export const Dropdown = styled.div`
-display: flex;
-border: 1px solid #f1f1f1;
-border-radius: 12px;
-background-color: #fafafa;
-padding: 8px 16px;
-  // position: absolute;
-  // top: 100%;
-  // left: 0;
-  // width: 100%;
-  // background-color: white;
-  // padding: 1em;
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
-export const DropdownContent = styled.p`
-  margin: 0;
-  padding: 0.5em 0;
+export const Dropdown = styled.div`
+  position: absolute;
+  z-index: 100;
+  top: 30%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+`;
+
+export const DropdownContainer = styled.div`
+  // width:100%;
+`;
+
+export const DropdownList = styled.li`
+  list-style-type: none;
+  padding: 0.8em;
+  padding-left: 1em;
+  flex-direction: column;
+  color: #000;
+  font-size: 13px;
+
+  :hover {
+    background-color: #00a2d419;
+    cursor: pointer;
+  }
 `;
 
 export const ButtonContainer = styled.div`
-  display:flex;
+  display: flex;
   justify-content: fkex-start;
   align-items: center;
-  flex-direction:row;
-  padding-top:0.5em;
-  gap:15px;
-`
+  flex-direction: row;
+  padding-top: 0.5em;
+  gap: 15px;
+`;
 export const Button = styled.button`
   background-color: ${({ theme }) => theme.blue2};
   color: #fff;
   border: none;
   height: 32px;
-	padding-inline: 24px;
-	border-radius: 16px;
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 21px;
-	align-items: center;
-	text-align: center;
-	letter-spacing: -0.5px;
-	cursor: pointer;
+  padding-inline: 24px;
+  border-radius: 16px;
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.5px;
+  cursor: pointer;
 `;
 
 export const ReplyButton = styled.button`
@@ -332,7 +323,7 @@ export const ReplyButton = styled.button`
   line-height: 21px;
   letter-spacing: -0.5px;
   cursor: pointer;
-	background-color: transparent;
-	color: #9CA69C;
-  border:1px solid #9CA69C;
+  background-color: transparent;
+  color: #9ca69c;
+  border: 1px solid #9ca69c;
 `;

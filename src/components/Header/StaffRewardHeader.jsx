@@ -12,6 +12,7 @@ const StaffRewardHeader = ({
   placeholder = "Search for a reward",
   open,
   setOpen,
+  handleButton
 }) => {
   const searchStyle = {
     borderRadius: "12px",

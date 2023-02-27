@@ -1,13 +1,13 @@
-import { Container } from './style'
-import { ChatHead, ChatBody } from 'containers/ServiceChat'
+import { Container } from "./style";
+import { ChatHead, ChatBody } from "containers/ServiceChat";
 
-const SingleChat = ({ isUser, paramsId }) => {
+const SingleChat = ({ isUser, data, threadsRefetch }) => {
   return (
     <Container>
-      <ChatHead isUser={isUser} />
-      <ChatBody isUser={isUser} paramsId={paramsId} />
+      <ChatHead data={data} />
+      <ChatBody data={data} threadsRefetch={threadsRefetch} />
     </Container>
-  )
-}
+  );
+};
 
-export default SingleChat
+export default SingleChat;

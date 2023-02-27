@@ -9,6 +9,8 @@ import {
   RadioInput,
   RadioLabel,
   Paystack,
+  ButtonContainer,
+  FormData,
 } from "./styles";
 import numeral from "numeral";
 import { useActions } from "./actions";
@@ -17,12 +19,27 @@ import { useSelector } from "react-redux";
 import {
   useGetSingleEntityQuery,
   usePayLaunchMutation,
+  usePayWithStripeMutation,
 } from "services/launchService";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import { store } from "redux/Store";
 import { setLaunchPaid } from "redux/Slices";
+import Button from "components/button";
+import {
+  CardElement,
+  useStripe,
+  useElements,
+  PaymentElement,
+  LinkAuthenticationElement,
+} from "@stripe/react-stripe-js";
+import toast from "react-hot-toast";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import StripeForm from "./StripeForm";
+import StripePayment from "./stripePayment";
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
+  const [message, setMessage] = useState(null);
   const [isUSD, setIsUSD] = useState(false);
   const [entityInfo, setEntityInfo] = useState({
     entityCurrency: "",
@@ -95,7 +112,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     const requiredData = {
       launchCode: launchCode,
       paymentDetails: {
-        paymentAmount: entityInfo.entityFee,
+        paymentAmount: entityInfo?.entityFee,
         paymentCurrency: entityInfo?.entityCurrency,
         paymentTransactionId: reference.transaction_id,
         paymentProvider: "Flutterwave",
@@ -152,12 +169,9 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
           <FlutterWaveButton className="paystack-button" {...fwConfig} />
         </Paystack>
       )}
-      {/* {paymentProvider === "stripe" && (
-        <ButtonContainer onSubmit={handleSubmit(stripe, elements)}>
-          {/* <PaymentElement /> */}
-      {/* <Button title="Pay with Stripe" disabled={!stripe} />
-        </ButtonContainer>
-      )}  */}
+      {paymentProvider === "stripe" && entityInfo.entityCurrency === "USD" && (
+        <StripePayment amount={entityInfo.entityFee} />
+      )}
     </Container>
   );
 };

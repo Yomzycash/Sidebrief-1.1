@@ -1,46 +1,51 @@
 import { parseJSON, compareAsc } from "date-fns";
 
-// export const getMessages = (data) => {
-//   const uniqueSenders = [...new Set(data?.map((el) => el.serviceId))];
+export const getThreadedMessages = (data) => {
+  const uniqueSubjects = [...new Set(data?.map((el) => el?.messageSubject))];
 
-//   const uniqueData = uniqueSenders
-//     .map((el) => {
-//       const relatedData = data?.filter(
-//         (notification) => notification.senderID === el
-//       );
+  let threads = uniqueSubjects?.map((subject) => {
+    let messageThread = data?.filter((msg) => msg?.messageSubject === subject);
 
-//       return {
-//         senderID: el,
-//         notification: relatedData.sort((a, b) =>
-//           compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
-//         ),
-//       };
-//     })
-//     .filter((el) => {
-//       return el.notification.length > 0;
-//     });
+    messageThread = messageThread?.sort((a, b) =>
+      compareAsc(new Date(b.createdAt), new Date(a.createdAt))
+    );
 
-//   return uniqueData;
-// };
+    return {
+      subject: subject,
+      messages: messageThread,
+    };
+  });
+  return threads;
+};
 
-// Get all users messages
+export const getSelectedThread = (data, subject) => {
+  let threadedMessages = getThreadedMessages(data);
+  return threadedMessages?.find((thread) => thread?.subject === subject);
+};
+
+//
+
+//
+
 export const getUsersMessages = (data) => {
-  const uniqueSenders = [
-    ...new Set(data?.map((el) => el.senderId || el.senderID)),
-  ].filter((el) => el !== undefined);
+  const uniqueServicesId = [...new Set(data?.map((el) => el.serviceId))].filter(
+    (el) => el !== undefined
+  );
 
-  const uniqueData = uniqueSenders.map((el) => {
+  const uniqueData = uniqueServicesId.map((el) => {
     const relatedData = data?.filter(
-      (notification) =>
-        notification.senderID === el || notification.senderId === el
+      (notification) => notification.serviceId === el
     );
     let notifications = relatedData.sort((a, b) =>
-      compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
+      compareAsc(parseJSON(b.createdAt), parseJSON(a.createdAt))
     );
 
     let servicesMessages = getServicesMessages(notifications);
 
-    return { senderId: el, servicesMessages: servicesMessages };
+    return {
+      senderId: el,
+      servicesMessages: servicesMessages,
+    };
   });
 
   return uniqueData;
@@ -61,3 +66,54 @@ const getServicesMessages = (notifications) => {
 
   return servicesNotifications;
 };
+
+//
+
+//
+
+// DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
+// DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
+// DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
+// DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
+// DON NOT DELETE - MIGHT BE NEEDED IN THE FUTURE
+// Get all users messages
+// export const getUsersMessages = (data) => {
+//   const uniqueSenders = [
+//     ...new Set(data?.map((el) => el.senderId || el.senderID)),
+//   ].filter((el) => el !== undefined);
+
+//   const uniqueData = uniqueSenders.map((el) => {
+//     const relatedData = data?.filter(
+//       (notification) =>
+//         notification.senderID === el || notification.senderId === el
+//     );
+//     let notifications = relatedData.sort((a, b) =>
+//       compareAsc(parseJSON(a.createdAt), parseJSON(b.createdAt))
+//     );
+
+//     let servicesMessages = getServicesMessages(notifications);
+
+//     return {
+//       senderId: el,
+//       servicesMessages: servicesMessages,
+//     };
+//   });
+
+//   return uniqueData;
+// };
+
+// // Get a user's services messages
+// const getServicesMessages = (notifications) => {
+//   let uniqueServicesId = [
+//     ...new Set(notifications?.map((el) => el?.serviceID || el?.serviceId)),
+//   ];
+
+//   let servicesNotifications = uniqueServicesId?.map((id) => ({
+//     serviceId: id,
+//     serviceNotifications: notifications?.filter(
+//       (el) => el?.serviceId === id || el?.serviceID === id
+//     ),
+//   }));
+
+//   return servicesNotifications;
+// };

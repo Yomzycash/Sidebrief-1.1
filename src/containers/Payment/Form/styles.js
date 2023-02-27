@@ -158,4 +158,24 @@ export const Paystack = styled.div`
 
 export const ButtonContainer = styled.form`
   width: 80%;
+  display: flex;
+  flex-flow: column;
+  gap: 24px;
+`;
+export const FormData = styled.div`
+  border: solid red;
+  padding: 12px 24px;
+  border: 1.5px solid #edf1f7;
+  border-radius: 8px;
+`;
+
+export const ButtonHolder = styled.div`
+  margin-top: 24px;
+`;
+
+export const SPaymentButton = styled.button`
+  background-color: #00a2d4 !important;
+  color: white;
+  border-radius: 8px !important;
+  padding: 16px auto !important;
 `;

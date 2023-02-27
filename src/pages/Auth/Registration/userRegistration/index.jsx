@@ -24,7 +24,7 @@ import toast from "react-hot-toast";
 
 import { checkStaffEmail } from "utils/globalFunctions";
 import { useRegisterNewStaffMutation } from "services/staffService";
-
+import NumberInput from "components/input/phoneNumberInput";
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
   const [registerNewUser, { isLoading, isSuccess }] =
@@ -115,6 +115,10 @@ const UserRegistration = () => {
     setValue("date", value, { shouldValidate: true });
   };
 
+  const handleNumberChange = (value) => {
+    setValue("phone", value, { shouldValidate: true });
+  };
+
   return (
     <AuthLayout
       register={true}
@@ -185,11 +189,20 @@ const UserRegistration = () => {
                 onChange={handleGenderChange}
                 errorMessage={errors.gender?.message}
               /> */}
-              <InputWithLabel
+              {/* <InputWithLabel
                 placeholder="Phone number"
                 label="Phone Number"
                 name="phone"
                 type="number"
+                register={register}
+                errorMessage={errors.phone?.message}
+              /> */}
+              <NumberInput
+                placeholder="Phone number"
+                label="Phone Number"
+                name="phone"
+                type="number"
+                onChange={handleNumberChange}
                 register={register}
                 errorMessage={errors.phone?.message}
               />

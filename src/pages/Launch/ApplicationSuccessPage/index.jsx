@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import AppFeedback from "components/AppFeedback";
 const ApplicationSuccessPage = () => {
   const navigate = useNavigate();
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  console.log(launchInfo);
   const handleNavigate = () => {
-    navigate("/dashboard/businesses/submitted-applications");
+    navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
   };
   const timeline = JSON.parse(localStorage.getItem("entityTimeline"));
 

@@ -18,6 +18,7 @@ const Success = ({
   onClick,
   lastText,
   action,
+  loading,
 }) => {
   return (
     <>
@@ -34,7 +35,7 @@ const Success = ({
           <Title>{title}</Title>
           <BottomText>{description}</BottomText>
         </TextWrapper>
-        <Button title={buttonTitle} onClick={onClick} />
+        <Button title={buttonTitle} onClick={onClick} loading={loading} />
         {lastText && (
           <FinalText onClick={action}>Change Payment Method</FinalText>
         )}

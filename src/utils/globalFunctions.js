@@ -11,77 +11,76 @@ import { ChatApi } from "services/chatService";
 
 // handle error encountered in endpoints call
 export const handleError = (error) => {
-	if (error?.status === "FETCH_ERROR") {
-		toast.error("Please check your internet connection");
-	} else if (error?.originalStatus === "404") {
-		toast.error("Please check credentiaal");
-	} else if (error?.data?.message) {
-		toast.error(error?.data.message);
-	} else if (typeof error === "string") {
-		toast.error(error);
-	}
+  if (error?.status === "FETCH_ERROR") {
+    toast.error("Connection error");
+  } else if (error?.originalStatus === "404") {
+    toast.error("Please check credentiaal");
+  } else if (error?.data?.message) {
+    toast.error(error?.data.message);
+  } else if (typeof error?.data === "string") {
+    toast.error(error.data);
+  } else if (typeof error === "string") {
+    toast.error(error);
+  }
 };
 
 // Check if an email is a staff email
 export const checkStaffEmail = (email) => {
-	let emailArr = email?.split("");
-	let index = emailArr?.indexOf("@");
-	let check = email?.slice(index + 1, index + 10)?.toLowerCase();
-	let staff = check === "sidebrief" ? true : false;
-	return staff;
+  let emailArr = email?.split("");
+  let index = emailArr?.indexOf("@");
+  let check = email?.slice(index + 1, index + 10)?.toLowerCase();
+  let staff = check === "sidebrief" ? true : false;
+  return staff;
 };
 
 export const navigateToDetailPage = async (
-	navigate,
-	launchInfo,
-	viewPayLaunch
+  navigate,
+  launchInfo,
+  viewPayLaunch
 ) => {
-	let paymentInfo = await checkPaymentStatus({
-		...launchInfo,
-		viewPayLaunch,
-	});
+  let paymentInfo = await checkPaymentStatus({
+    ...launchInfo,
+    viewPayLaunch,
+  });
 
-	if (paymentInfo?.data) {
-		localStorage.setItem(
-			"paymentDetails",
-			JSON.stringify(paymentInfo?.data)
-		);
-		store.dispatch(setLaunchPaid(paymentInfo));
-	}
-	// set the launchInfo to store and localstorage
-	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-	localStorage.setItem("countryISO", launchInfo.registrationCountry);
-	// navigate
-	navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
+  if (paymentInfo?.data) {
+    localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo?.data));
+    store.dispatch(setLaunchPaid(paymentInfo));
+  }
+  // set the launchInfo to store and localstorage
+  store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
+  localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
+  localStorage.setItem("countryISO", launchInfo.registrationCountry);
+  // navigate
+  navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
 };
 
 export const staffNavigateToDetailPage = (navigate, launchInfo) => {
-	// set the launchInfo to store and localstorage
-	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-	localStorage.setItem("countryISO", launchInfo.registrationCountry);
-	// navigate
-	navigate(`/staff-dashboard/business/${launchInfo.launchCode}/detail`);
+  // set the launchInfo to store and localstorage
+  store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
+  localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
+  localStorage.setItem("countryISO", launchInfo.registrationCountry);
+  // navigate
+  navigate(`/staff-dashboard/business/${launchInfo.launchCode}/detail`);
 };
 
 export const getCurrencyInfo = (currency) => {
-	let currencyInfo = countriesInfo.filter(
-		(country) => country.currency === currency
-	)[0];
-	if (currency) return currencyInfo;
-	else return "";
+  let currencyInfo = countriesInfo.filter(
+    (country) => country.currency === currency
+  )[0];
+  if (currency) return currencyInfo;
+  else return "";
 };
 
 export const handleLogout = (navigate) => {
-	// clear localstorage
-	localStorage.clear();
-	// clear all cache
-	store.dispatch(ChatApi.util.resetApiState());
-	store.dispatch(RewardApi.util.resetApiState());
-	store.dispatch(authApi.util.resetApiState());
-	store.dispatch(launchApi.util.resetApiState());
-	store.dispatch(staffApi.util.resetApiState());
-	//navigate
-	navigate("/login");
+  // clear localstorage
+  localStorage.clear();
+  // clear all cache
+  store.dispatch(ChatApi.util.resetApiState());
+  store.dispatch(RewardApi.util.resetApiState());
+  store.dispatch(authApi.util.resetApiState());
+  store.dispatch(launchApi.util.resetApiState());
+  store.dispatch(staffApi.util.resetApiState());
+  //navigate
+  navigate("/login");
 };

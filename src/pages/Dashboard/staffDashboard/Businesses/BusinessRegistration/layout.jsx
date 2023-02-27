@@ -38,7 +38,11 @@ const Registrationlayout = () => {
   let pending = pendingLaunch?.currentData?.length;
   let approved = approvedLaunch?.currentData?.length;
 
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+  const { refreshApp, unreadLaunchNotifications } = useSelector(
+    (store) => store.UserDataReducer
+  );
+
+  console.log(awaitingLaunch);
 
   useEffect(() => {
     setAllReg(all ? all : []);
@@ -99,6 +103,7 @@ const Registrationlayout = () => {
           <ActiveNav
             text="All"
             total={allReg}
+            status={unreadLaunchNotifications?.length > 0}
             path={"/staff-dashboard/businesses/registration/all"}
             defaultActive={home}
           />
@@ -117,6 +122,7 @@ const Registrationlayout = () => {
           <ActiveNav
             text="Submitted"
             total={awaitingReg}
+            status={unreadLaunchNotifications?.length > 0}
             path="/staff-dashboard/businesses/registration/awaiting-approval"
           />
           <ActiveNav

@@ -2,7 +2,15 @@ import * as yup from "yup";
 import { sub } from "date-fns";
 
 export const messageSchema = yup.object().shape({
+	subject: yup.string().required(),
 	message: yup.string().required(),
+	files: yup.mixed().notRequired(),
+	// .test("file", "The file is too large", (file) => {
+	// 	if (!file) {
+	// 		return true;
+	// 	}
+	// 	return file && file.size > 2000000;
+	// }),
 });
 
 export const mockMessages = [

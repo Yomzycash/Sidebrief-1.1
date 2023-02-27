@@ -8,6 +8,8 @@ import { useGetAllServicesQuery } from "services/productService";
 import Paginator from "components/Paginator";
 import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
+import ServicesModal from "components/modal/ServicesModal";
+import { useRef } from "react";
 
 const AllServices = () => {
   const serviceCategory = [
@@ -27,6 +29,7 @@ const AllServices = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
   const [open, setOpen] = useState(false);
+  const [cardAction, setCardAction] = useState("");
   const [allServices, setAllServices] = useState([]);
   const [currentItems, setCurrentItems] = useState([]);
   const [pageCount, setPageCount] = useState(0);
@@ -35,12 +38,20 @@ const AllServices = () => {
 
   const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
-  const { data, isLoading } = useGetAllServicesQuery();
+  const { data, isLoading, isError, error, refetch } = useGetAllServicesQuery();
 
   const handlePageClick = (e) => {
     const newOffset = (e.selected * itemsPerPage) % data?.length;
     setItemOffset(newOffset);
   };
+
+  // This runs when add service button is clicked
+  const handleAddButton = () => {
+    setOpen(true);
+    setCardAction("add");
+  };
+
+  let errorRef = useRef(true)
 
   useEffect(() => {
     setAllServices(data);
@@ -53,13 +64,13 @@ const AllServices = () => {
     store.dispatch(setRefreshApp(!refreshApp));
   }, [itemOffset, itemsPerPage, allServices]);
 
-
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
         setOpen={setOpen}
-        Description="Add Service"
+        Description="Add New Service"
         title="Services"
+        handleButton={handleAddButton}
         placeholder="Search for a service"
       />
       {isLoading ? (
@@ -85,7 +96,13 @@ const AllServices = () => {
       open={open}
       submitAction={submitAction}
       loading={addState.isLoading}
+      
     /> */}
+    <ServicesModal
+      open={open}
+      cardAction={cardAction}
+
+    />
       {allServices?.length > itemsPerPage && (
         <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
       )}

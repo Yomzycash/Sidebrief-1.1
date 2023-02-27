@@ -12,6 +12,7 @@ import {
   useDeleteMemberKYCMutation,
   useGetAllEntitiesQuery,
   useGetUserDraftQuery,
+  useViewMembersKYCMutation,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
@@ -20,6 +21,7 @@ import toast from "react-hot-toast";
 import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 import {
+  checkDocumentInfo,
   convertToLink,
   isValidFileUploaded,
   mergeInfo,
@@ -36,6 +38,8 @@ const ShareHolderKYC = () => {
   const [type, setType] = useState("");
   const [size, setSize] = useState(0);
   const [addMemberKYC] = useAddMemberKYCMutation();
+  const [sameData, setSameData] = useState([]);
+  const [viewMemberKYC, { refetch }] = useViewMembersKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
   const [viewMember, viewMembersState] = useViewMembersMutation();
@@ -80,10 +84,10 @@ const ShareHolderKYC = () => {
 
   const handleMerge = async () => {
     let memberInfo = await viewMember(launchResponse);
-    let newMemberInfo = [...memberInfo.data.businessMembers];
+    let newMemberInfo = [...memberInfo?.data?.businessMembers];
 
     let shareholderInfo = await viewShareholders(launchResponse);
-    let newShareHolderInfo = [...shareholderInfo.data.businessShareholders];
+    let newShareHolderInfo = [...shareholderInfo?.data?.businessShareholders];
 
     let newMerge = mergeInfo(newShareHolderInfo, newMemberInfo);
     setShareholder(newMerge);
@@ -117,7 +121,7 @@ const ShareHolderKYC = () => {
     });
 
     const res = await convertToLink(files[0]);
-    console.log("linkkkkk", res.url);
+
     const formatType = type.split("_").join(" ");
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
@@ -133,6 +137,7 @@ const ShareHolderKYC = () => {
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
+      handleShareHolderCheck();
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
@@ -143,21 +148,56 @@ const ShareHolderKYC = () => {
     "localShareholderInfo",
     JSON.stringify(documentContainer)
   );
+  const handleShareHolderCheck = async () => {
+    let newArr = [];
+    const response = await viewMemberKYC(launchResponse);
+    const MemberKYCInfo = [...response?.data?.businessMembersKYC];
+
+    MemberKYCInfo?.forEach((member) => {
+      documentContainer?.forEach((document) => {
+        if (member?.memberCode === document?.code) {
+          let newList = { ...member, ...document };
+          console.log("issue", newList);
+          newArr.push(newList);
+        }
+      });
+    });
+
+    setSameData(newArr);
+  };
+
+  useEffect(() => {
+    handleShareHolderCheck();
+  }, [documentContainer]);
 
   const handleNext = () => {
-    if (navigatedFrom) {
-      navigate(navigatedFrom);
-      localStorage.removeItem("navigatedFrom");
+    handleShareHolderCheck();
+
+    let a = requiredDocuments.length;
+    let b = documentContainer.length;
+    let c = sameData?.length;
+    let d = a * b;
+    if (c === 0) {
+      toast.error("All documents are required");
+    } else if (d !== c) {
+      toast.error("All documents are required");
     } else {
-      let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-      let beneficiaries = localStorage.getItem("beneficiaries");
+      if (navigatedFrom) {
+        navigate(navigatedFrom);
+        localStorage.removeItem("navigatedFrom");
+      } else {
+        let useSidebriefDirectors = localStorage.getItem(
+          "useSidebriefDirectors"
+        );
+        let beneficiaries = localStorage.getItem("beneficiaries");
 
-      let navigateTo = "/launch/directors-kyc";
-      if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-      if (useSidebriefDirectors && beneficiaries === "false")
-        navigateTo = "/launch/review";
+        let navigateTo = "/launch/directors-kyc";
+        if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+        if (useSidebriefDirectors && beneficiaries === "false")
+          navigateTo = "/launch/review";
 
-      navigate(navigateTo);
+        navigate(navigateTo);
+      }
     }
   };
 
@@ -222,6 +262,7 @@ const ShareHolderKYC = () => {
                       }
                       handleRemove={() => handleRemove(document)}
                       BottomText={`Please provide your ${document}`}
+                      handleRefetch={handleShareHolderCheck}
                     />
                   ))}
                 </ContentWrapper>

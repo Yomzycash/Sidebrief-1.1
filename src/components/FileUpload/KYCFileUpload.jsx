@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import { FiUpload } from "react-icons/fi";
 import { imageTypeImage } from "utils/config";
 import { ReactComponent as DeleteIcon } from "asset/svg/delete.svg";
+import { ReactComponent as DownloadIcon } from "asset/svg/downloadp.svg";
 import { ReactComponent as PdfIcon } from "asset/svg/pdf.svg";
 import toast from "react-hot-toast";
 import {
@@ -27,6 +28,8 @@ const KYCFileUpload = ({
   style,
   detailsPage,
   documentName,
+  downloadPage,
+  handleRefetch,
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
@@ -36,6 +39,17 @@ const KYCFileUpload = ({
   const [deleted, setDeleted] = useState(false);
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+
+  const nameLengthValidator = (file) => {
+    if (file.name.length <= 0) {
+      return {
+        code: "no file",
+        message: `Please upload a document`,
+      };
+    }
+
+    return null;
+  };
 
   const handleView = async () => {
     const response = await viewMemberKYC(launchInfo);
@@ -83,6 +97,7 @@ const KYCFileUpload = ({
         toast.success(response?.data[0].message);
         setDeleted(!deleted);
         setDocumentInfo({});
+        handleRefetch();
       } else if (response.error) {
         // console.log(response.error?.data.message);
         toast.error(response.error?.data.message);
@@ -98,6 +113,7 @@ const KYCFileUpload = ({
         toast.success(response?.data[0].message);
         setDeleted(!deleted);
         setDocumentInfo({});
+        handleRefetch();
       } else if (response.error) {
         toast.error(response.error?.data.message);
       }
@@ -106,6 +122,7 @@ const KYCFileUpload = ({
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop,
+    validator: nameLengthValidator,
   });
   return (
     <Container style={{ ...style }} width="100%">
@@ -115,7 +132,14 @@ const KYCFileUpload = ({
           <ErrorWrapper>{errorMsg}</ErrorWrapper>
         </Top>
         <FileZone
-          border={detailsPage ? "1px solid #edf1f7" : "1px dashed #edf1f7"}
+          padding={downloadPage && "5px 16px"}
+          border={
+            detailsPage
+              ? "1.5px solid #edf1f7"
+              : downloadPage
+              ? "1.5px solid #edf1f7"
+              : "1.5px dashed #edf1f7"
+          }
           borderRadius={detailsPage ? "50px" : "8px"}
           {...getRootProps({
             className: "dropzone",
@@ -174,6 +198,18 @@ const KYCFileUpload = ({
                   {" "}
                   <PdfIcon /> Please Upload {documentName}
                 </Details>
+              ) : downloadPage ? (
+                <DownLoadPageTextWrapper>
+                  <DownLoadLeftHold>
+                    <PdfIcon />
+                    <DownLoadPageText>
+                      Required form_7865290
+                      <DownloadSize>567KB</DownloadSize>
+                    </DownLoadPageText>
+                  </DownLoadLeftHold>
+
+                  <DownloadIcon />
+                </DownLoadPageTextWrapper>
               ) : (
                 <>
                   {" "}
@@ -215,7 +251,7 @@ const FileZone = styled.div`
   border-radius: ${(props) => props.borderRadius};
   width: 100%;
   background-color: ${(props) => props.backgroundColor};
-  padding: 10.5px 16px;
+  padding: ${(props) => (props.padding ? props.padding : "10.5px 16px")};
 `;
 
 const FileSection = styled.div`
@@ -270,6 +306,42 @@ const Details = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+`;
+const DownLoadPageTextWrapper = styled.div`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  padding-inline: 24px;
+  display: flex;
+  align-items: center;
+`;
+
+const DownLoadLeftHold = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+const DownLoadPageText = styled.div`
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: #242627;
+  flex-direction: column;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+const DownloadSize = styled.p`
+  font-family: "BR Firma";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: #4e5152;
+  margin-top: -10px;
 `;
 
 const DetailsPage = styled.p`
