@@ -29,6 +29,7 @@ const ServicesModal = ({
   const [servicesCountries, setServicesCountries] = useState([
     { value: "", label: "" },
   ]);
+
   const [servicesCategories, setServicesCategories] = useState([
     { value: "", label: "" },
   ]);
@@ -37,6 +38,7 @@ const ServicesModal = ({
   ]);
 
   const countries = useGetAllCountriesQuery();
+  const { data } = useGetAllServicesQuery();
   const categories = useGetAllServicesQuery();
 
   const {
@@ -51,15 +53,6 @@ const ServicesModal = ({
   // Update entity countries
   useEffect(() => {
     let allCountries = countries.data;
-    let allCategories = categories.data;
-
-    setServicesCategories(
-      allCategories &&
-        allCategories.map((category) => ({
-          value: category.serviceCategory,
-          label: category.serviceCategory,
-        }))
-    );
 
     setServicesCountries(
       allCountries &&
@@ -73,6 +66,7 @@ const ServicesModal = ({
   // This is attached to category dropdown onChange
   const handleCategoryChange = (value) => {
     var string = Object.values(value)[0];
+    console.log("category", string)
     setValue("category", string, { shouldValidate: true });
   };
 
@@ -92,6 +86,21 @@ const ServicesModal = ({
     var string = Object.values(value)[0];
     setValue("currency", string, { shouldValidate: true });
   };
+
+  useEffect(() => {
+    const categoryResponse = data?.map((serviceCats) => serviceCats.serviceCategory);
+    // Filter out duplicate entries
+    console.log("response", categoryResponse)
+    const eachResponse = categoryResponse?.filter((option, index, self) => {
+      return index === self.indexOf(option);
+    });
+    console.log("each", eachResponse)
+    let newCategory = eachResponse?.map((servicesCategory) => ({
+      value: servicesCategory,
+      label:servicesCategory
+    }))
+    setServicesCategories(newCategory)
+  }, [data])
 
   return (
     <Modal1

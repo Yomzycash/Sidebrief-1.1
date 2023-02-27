@@ -178,7 +178,7 @@ const StaffEntityModal = ({
           containerStyle="input-container-class"
           register={register}
           errorMessage={errors.code?.message}
-          disable={disable}
+          disable={disable || cardAction === "edit"}
         />
         <InputWithLabel
           label="Entity Type"

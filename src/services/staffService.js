@@ -303,6 +303,19 @@ export const staffApi = createApi({
 			query: () => "/services/all",
 		}),
 
+		// add a service
+		addService: builder.mutation({
+			query: (data) => ({
+				url:"/services/create",
+				method:"POST",
+				body:data,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+			invalidatesTags: ["User"],
+		}),
+
 		// Get services by category
 		getServicesByCategory: builder.query({
 			query: (serviceCategory) => `/services/category/${serviceCategory}`,

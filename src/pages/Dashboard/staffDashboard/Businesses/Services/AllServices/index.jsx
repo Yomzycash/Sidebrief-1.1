@@ -4,13 +4,19 @@ import { useSelector } from "react-redux";
 import { Puff } from "react-loading-icons";
 import { BodyRight, Loading, ServiceContainer } from "./style";
 import PetalsCard from "components/cards/RewardCard/PetalsCard";
-import { useGetAllServicesQuery } from "services/productService";
+import { 
+  useAddServiceMutation,
+	useUpdateServiceMutation,
+	useDeleteServiceMutation,
+  useGetAllServicesQuery 
+ } from "services/staffService";
 import Paginator from "components/Paginator";
 import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
 import ServicesModal from "components/modal/ServicesModal";
 import { useRef } from "react";
-
+import { toast } from "react-hot-toast";
+import { handleError } from "utils/globalFunctions";
 const AllServices = () => {
   const serviceCategory = [
     {
@@ -39,7 +45,8 @@ const AllServices = () => {
   const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   const { data, isLoading, isError, error, refetch } = useGetAllServicesQuery();
-
+  const [ addService, addState ] = useAddServiceMutation();
+  //const [ deleteService, deleteState] = useDeleteServiceMutation();
   const handlePageClick = (e) => {
     const newOffset = (e.selected * itemsPerPage) % data?.length;
     setItemOffset(newOffset);
@@ -63,6 +70,34 @@ const AllServices = () => {
     setPageCount(Math.ceil(allServices?.length / itemsPerPage));
     store.dispatch(setRefreshApp(!refreshApp));
   }, [itemOffset, itemsPerPage, allServices]);
+
+  const getRequired = (formData) => {
+    return {
+      serviceName: formData.name,
+      serviceDescription: formData.description,
+      serviceId: formData.id,
+      serviceCategory: formData.category,
+      serviceCountry: formData.country,
+      servicePrice: formData.price, 
+      serviceTimeline: formData.timeline, 
+    }
+  }
+
+
+  const handleServiceAdd = async (formData) => {
+    let requiredService = getRequired(formData);
+    let response = await addService(requiredService);
+    let data = response?.data;
+    let error = response?.error;
+    
+    if (data) {
+      toast.success("Service addedd successfully");
+    } else {
+      handleError(error)
+    }
+    refetch()
+    console.log("required service", requiredService)
+  }
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
@@ -99,8 +134,11 @@ const AllServices = () => {
       
     /> */}
     <ServicesModal
-      open={open}
-      cardAction={cardAction}
+      disableAll={false}
+      open={open} 
+      setOpen={setOpen} 
+      cardAction={cardAction} 
+      submitAction={handleServiceAdd}
 
     />
       {allServices?.length > itemsPerPage && (

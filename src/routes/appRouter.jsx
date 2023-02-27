@@ -45,6 +45,7 @@ import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDeta
 import { useViewPayLaunchMutation } from "services/launchService";
 import PaidDraft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft";
 import ServiceDownload from "pages/Dashboard/User/Manage/Download";
+import StripePaymentSuccess from "pages/Launch/StripePaymentSuccess/StripePaymentSuccess";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -475,6 +476,10 @@ const AppRouter = () => {
                   <PaymentPage />
                 </Protected>
               }
+            />
+            <Route
+              path="payment-confirmation"
+              element={<StripePaymentSuccess />}
             />
             <Route
               path="address"

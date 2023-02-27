@@ -14,7 +14,7 @@ export const Messages = styled.div`
 
   display: flex;
   flex-direction: column-reverse;
-  gap: 8px;
+  gap: 12px;
 
   padding-block: 24px;
 

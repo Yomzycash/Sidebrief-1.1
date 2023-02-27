@@ -6,11 +6,16 @@ import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
 
-import { useGetAllServicesQuery } from "services/staffService";
+import { 
+  useAddServiceMutation,
+	useUpdateServiceMutation,
+	useDeleteServiceMutation,
+  useGetAllServicesQuery 
+} from "services/staffService";
 
 import FeatureSection from "containers/Feature/FeatureSection";
 import FeatureTable from "components/Tables/FeatureTable";
-
+import { toast } from "react-hot-toast";
 // import lookup from "country-code-lookup"
 import PetalsCard from "components/cards/RewardCard/PetalsCard";
 import { ScrollBox } from "containers";
@@ -28,6 +33,7 @@ import {
 } from "./styled";
 import ServicesModal from "components/modal/ServicesModal";
 import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
+import { handleError } from "utils/globalFunctions";
 
 const iconStyle = { width: "17px", height: "17px" };
 
@@ -38,9 +44,10 @@ const iconStyle = { width: "17px", height: "17px" };
 const ServicePage = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
-  const { data, isLoading } = useGetAllServicesQuery();
+  const { data, isLoading , refetch} = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
-
+  const [ addService, addState ] = useAddServiceMutation();
+  // const [ deleteService, deleteState] = useDeleteServiceMutation();
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
   const navigate = useNavigate();
@@ -72,7 +79,7 @@ const ServicePage = () => {
   // Table body information
   const dataBody = usersMessages?.map((notifications) => [
     notifications?.senderId,
-    notifications?.servicesMessages[0]?.notificationId,
+    notifications?.servicesMessages[0]?.serviceNotifications[0]?.notificationId,
     <Status
       $read={
         notifications?.servicesMessages[0]?.serviceNotifications[0]
@@ -147,6 +154,32 @@ const ServicePage = () => {
 
   let totalServices = servicesEnquiry?.length > 0 ? servicesEnquiry.length : 0;
 
+  const getRequired = (formData) => {
+    return {
+      serviceName: formData.name,
+      serviceDescription: formData.description,
+      serviceId: formData.id,
+      serviceCategory: formData.category,
+      serviceCountry: formData.country,
+      servicePrice: formData.price, 
+      serviceTimeline: formData.timeline, 
+    }
+  }
+
+  const handleServiceAdd = async (formData) => {
+    let requiredService = getRequired(formData);
+    let response = await addService(requiredService);
+    let data = response?.data;
+    let error = response?.error;
+
+    if(data) {
+      toast.success("Service addedd successfully");
+    } else {
+      handleError(error)
+    }
+    refetch()
+     console.log("required service", requiredService)
+  }
   return (
     <Container>
       <Header>
@@ -209,7 +242,16 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
-        <ServicesModal open={open} setOpen={open} cardAction={cardAction} />
+
+
+        <ServicesModal
+            disableAll={cardAction === "edit" ? true : false}
+            open={open} 
+            setOpen={setOpen} 
+            cardAction={cardAction} 
+            submitAction={handleServiceAdd}
+            loading={addState.isLoading}
+          />
       </FeatureSection>
     </Container>
   );

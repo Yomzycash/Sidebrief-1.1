@@ -6,26 +6,29 @@ import {
   FileBeforeUpload,
   Close,
   Files,
-} from './style'
-import { CommonButton } from 'components/button'
-import { Send } from 'asset/svg'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { messageSchema } from '../constants'
-import { SlateEditor } from 'components/input'
-import { useState, useMemo, useEffect } from 'react'
-import { useLocation, useSearchParams } from 'react-router-dom'
-import { useAddNotificationMutation } from 'services/chatService'
-import { convertToLink } from 'utils/LaunchHelper'
-import { toast } from 'react-hot-toast'
+} from "./style";
+import { CommonButton } from "components/button";
+import { Send } from "asset/svg";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { messageSchema } from "../constants";
+import { SlateEditor } from "components/input";
+import { useState, useMemo, useEffect } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useAddNotificationMutation } from "services/chatService";
+import { convertToLink } from "utils/LaunchHelper";
+import { toast } from "react-hot-toast";
+import { getSubject } from "./actions";
+import { handleResponse } from "pages/Launch/actions";
+import { checkStaffEmail, handleError } from "utils/globalFunctions";
 
 export const ChatInput = ({ message, threadsRefetch }) => {
-  const [addNotification, addState] = useAddNotificationMutation()
-  const [files, setFiles] = useState([])
-  const [urlParams, setUrlParams] = useSearchParams()
+  const [addNotification, addState] = useAddNotificationMutation();
+  const [files, setFiles] = useState([]);
+  const [urlParams, setUrlParams] = useSearchParams();
 
-  const [clearSlate, setClearSlate] = useState(false)
-  const folder = useMemo(() => new DataTransfer(), [])
+  const [clearSlate, setClearSlate] = useState(false);
+  const folder = useMemo(() => new DataTransfer(), []);
 
   const {
     handleSubmit,
@@ -36,77 +39,88 @@ export const ChatInput = ({ message, threadsRefetch }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(messageSchema),
-  })
+  });
 
-  const location = useLocation()
-  let params = new URLSearchParams(location.search)
-  let serviceId = params.get('serviceId')
-  let subject = params.get('subject')
-  const username = JSON.parse(localStorage.getItem('userInfo'))
+  const location = useLocation();
+  let params = new URLSearchParams(location.search);
+  let serviceId = params.get("serviceId");
+  let subject = params.get("subject");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const handleGetRequiredChat = (formData, files) => {
+    let userEmail = localStorage.getItem("userEmail");
+    let staffEmail = checkStaffEmail(userEmail);
+
     return {
       serviceId: serviceId,
-      senderId: username?.username,
-      messageSubject: subject,
+      senderId: staffEmail ? "Sidebrief" : userInfo?.username,
+      messageSubject: getSubject(formData.subject),
       messageBody: formData.message,
       messageIsRead: false,
       messageFiles: files,
-    }
-  }
+    };
+  };
 
   const sendMessage = async (formData) => {
-    setUrlParams({ serviceId: serviceId, subject: formData?.subject })
-    setFiles([])
-    setClearSlate(true)
-    reset()
-
     const docArray = await Promise.all(
       files.map(async (el) => {
-        const toLink = await convertToLink(el)
+        const toLink = await convertToLink(el);
         return {
           fileUrl: toLink.url,
           fileName: toLink.original_filename,
           fileType: toLink.format,
-        }
-      }),
-    )
+        };
+      })
+    );
 
-    await addNotification(handleGetRequiredChat(formData, docArray))
+    let response = await addNotification(
+      handleGetRequiredChat(formData, docArray)
+    );
+
+    if (response?.data)
+      handleResponse(response, "Message sent", () => handleSuccess(formData));
+    else handleError(response?.error);
     // clear data
-    console.log(folder.items)
-    folder.items.clear()
 
-    setValue('subject', `Re: ${subject}`)
-    toast.success('Message sent')
-    threadsRefetch()
-  }
+    threadsRefetch();
+  };
+
+  const handleSuccess = (formData) => {
+    if (!subject)
+      setUrlParams({ serviceId: serviceId, subject: formData?.subject });
+    setClearSlate(true);
+    reset();
+    setFiles([]);
+    folder.items.clear();
+
+    setValue("subject", `Re: ${getSubject(formData.subject)}`);
+  };
 
   const fileCollector = (files) => {
     Array.from(files).forEach((file) => {
-      folder.items.add(file)
-    })
-    setFiles(Array.from(folder.files))
-    setValue('files', folder.files)
-  }
+      folder.items.add(file);
+    });
+    setFiles(Array.from(folder.files));
+    setValue("files", folder.files);
+  };
 
   const removeFile = (index) => {
-    folder.items.remove(index)
-    setFiles(Array.from(folder.files))
-    setValue('files', folder.files)
-  }
+    folder.items.remove(index);
+    setFiles(Array.from(folder.files));
+    setValue("files", folder.files);
+  };
 
   useEffect(() => {
-    if (subject) setValue('subject', `Re: ${subject}`)
-    else setValue('subject', '')
-  }, [subject])
+    if (subject) setValue("subject", `Re: ${subject}`);
+    else setValue("subject", "");
+  }, [subject]);
 
   return (
     <TextInputForm onSubmit={handleSubmit(sendMessage)}>
       <SubjectInput
         placeholder="Subject"
-        {...register('subject')}
-        disabled={message?.messageSubject}
+        {...register("subject")}
+        disabled={subject}
       />
       <TextBody>
         <Wrapper>
@@ -123,13 +137,13 @@ export const ChatInput = ({ message, threadsRefetch }) => {
                   {file.name}
                   <Close onClick={() => removeFile(index)}>X</Close>
                 </FileBeforeUpload>
-              )
+              );
             })}
           </Files>
         </Wrapper>
         <CommonButton
-          type={'submit'}
-          text={'Send'}
+          type={"submit"}
+          text={"Send"}
           RightIcon={Send}
           loading={addState.isLoading}
         />
@@ -138,10 +152,10 @@ export const ChatInput = ({ message, threadsRefetch }) => {
         id="files"
         name="files"
         type="file"
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         multiple
         onChange={(event) => fileCollector(event.target.files)}
       />
     </TextInputForm>
-  )
-}
+  );
+};

@@ -39,7 +39,6 @@ export const ChatHead = ({ data }) => {
 
   const lastMessage = selectedThread?.messages[0];
 
-  console.log(data);
   return (
     <Container>
       <TextAndImage>

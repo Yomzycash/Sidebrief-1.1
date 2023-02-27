@@ -9,7 +9,7 @@ const DeleteIcon = ({ color, onClick }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: "pointer", minWidth: "20px" }}
     >
       <path
         fillRule="evenodd"

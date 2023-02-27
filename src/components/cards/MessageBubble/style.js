@@ -9,6 +9,9 @@ export const Wrapper = styled.div`
   border: 1px solid #d1d1d1;
   border-radius: 8px;
   background: #fafafa;
+
+  align-self: ${({ $isMyMessage }) =>
+    $isMyMessage ? "flex-end" : "flex-start"};
 `;
 
 export const Container = styled.div`
@@ -17,18 +20,16 @@ export const Container = styled.div`
   gap: 16px;
 
   max-width: 95%;
-  padding: 24px 16px;
+  padding: 16px;
   border-radius: 10px;
 `;
 
 export const Title = styled.p`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  letter-spacing: -0.5px;
-  color: ${({ theme }) => theme.grey1};
+  font-weight: 400;
+  font-size: 12px;
+  color: ${({ $staff }) => ($staff ? "#5DDBB0" : "#6a00c1")};
   text-transform: capitalize;
-  margin-bottom: 10px;
+  padding: 12px 16px 0;
 `;
 
 export const Body = styled.p`
@@ -69,6 +70,30 @@ export const Body = styled.p`
     padding-inline-start: 40px;
   }
 `;
+
+export const Delete = styled.div`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+export const DeleteStatus = styled.div`
+  width: 30px;
+  min-width: 30px;
+  height: 5px;
+  background-color: #ffb59caa;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  opacity: 0.8;
+
+  div {
+    width: ${({ width }) => width + "%"};
+    height: 100%;
+    background-color: #bd1c1caa;
+    border-radius: 10px;
+  }
+`;
+
 export const CardContainer = styled.div`
   width: 100%;
   padding: 24px 16px;
