@@ -39,7 +39,7 @@ const ShareHolderKYC = () => {
   const [size, setSize] = useState(0);
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [sameData, setSameData] = useState([]);
-  const [viewMemberKYC] = useViewMembersKYCMutation();
+  const [viewMemberKYC, { refetch }] = useViewMembersKYCMutation();
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
   const [viewMember, viewMembersState] = useViewMembersMutation();
@@ -153,16 +153,11 @@ const ShareHolderKYC = () => {
     const response = await viewMemberKYC(launchResponse);
     const MemberKYCInfo = [...response?.data?.businessMembersKYC];
 
-    // let check = await checkDocumentInfo(MemberKYCInfo, documentContainer);
-
-    // setSameData(check);
-    // return check;
-
     MemberKYCInfo?.forEach((member) => {
       documentContainer?.forEach((document) => {
         if (member?.memberCode === document?.code) {
           let newList = { ...member, ...document };
-
+          console.log("issue", newList);
           newArr.push(newList);
         }
       });
@@ -173,13 +168,14 @@ const ShareHolderKYC = () => {
 
   useEffect(() => {
     handleShareHolderCheck();
-  }, []);
-  // console.log(documentContainer);
+  }, [documentContainer]);
 
   const handleNext = () => {
+    handleShareHolderCheck();
+
     let a = requiredDocuments.length;
     let b = documentContainer.length;
-    let c = sameData.length;
+    let c = sameData?.length;
     let d = a * b;
     if (c === 0) {
       toast.error("All documents are required");
