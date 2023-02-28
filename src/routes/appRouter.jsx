@@ -528,7 +528,7 @@ const AppRouter = () => {
 								</Route>
 							</Route>
 							<Route
-								path="business/:code"
+								path="business"
 								element={<StaffBusinessDetailLayout />}
 							>
 								<Route
