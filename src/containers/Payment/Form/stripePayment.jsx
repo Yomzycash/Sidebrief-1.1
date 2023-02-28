@@ -16,9 +16,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { usePayWithStripeMutation } from "services/launchService";
 
-const stripePromise = loadStripe(
-  "pk_test_51HeX6TIfUU2kDtjPErnZWbbWJ0o68xZNSFm5448kvxfyCR7Hz0wfoU9eO035HGbA7KrYSYEXIxQJ0DLsrPUEaIHJ00KBYIckOc"
-);
+const PUBLIC_KEY =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY
+    : process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+
+const stripePromise = loadStripe(PUBLIC_KEY);
+
+// const stripePromise = loadStripe(
+//   "pk_test_51HeX6TIfUU2kDtjPErnZWbbWJ0o68xZNSFm5448kvxfyCR7Hz0wfoU9eO035HGbA7KrYSYEXIxQJ0DLsrPUEaIHJ00KBYIckOc"
+// );
 
 const StripePayment = ({ amount }) => {
   const [clientSecret, setClientSecret] = useState("");
