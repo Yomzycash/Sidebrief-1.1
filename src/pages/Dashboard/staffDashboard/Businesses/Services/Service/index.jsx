@@ -17,7 +17,7 @@ import FeatureSection from "containers/Feature/FeatureSection";
 import FeatureTable from "components/Tables/FeatureTable";
 import { toast } from "react-hot-toast";
 // import lookup from "country-code-lookup"
-import PetalsCard from "components/cards/RewardCard/PetalsCard";
+import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import {
@@ -45,10 +45,12 @@ const iconStyle = { width: "17px", height: "17px" };
 const ServicePage = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
+  const [clickedService, setClickedService] = useState({});
   const { data, isLoading , refetch} = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
   const [ addService, addState ] = useAddServiceMutation();
-  // const [ deleteService, deleteState] = useDeleteServiceMutation();
+  const [ updateService, updateState ] = useUpdateServiceMutation();
+  const [ deleteService, deleteState] = useDeleteServiceMutation();
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
   const navigate = useNavigate();
@@ -167,20 +169,61 @@ const ServicePage = () => {
     }
   }
 
+  const handleClickEachService = (servicesvalue) => {
+    setCardAction("edit");
+    setOpen(true);
+    setClickedService(servicesvalue)
+
+  }
+
   const handleServiceAdd = async (formData) => {
     let requiredService = getRequired(formData);
     let response = await addService(requiredService);
+    // let data = response?.data;
+    // let error = response?.error;
+
+    // if(data) {
+    //   toast.success("Service addedd successfully");
+    // } else {
+    //   handleError(error)
+    // }
+    // refetch()
+    console.log("required service", requiredService)
+    console.log("response", response);
+  }
+
+  // Update service 
+  const handleServiceUpdate = async (formData) => {
+    let requiredService = getRequired(formData);
+    let response = await updateService(requiredService);
     let data = response?.data;
     let error = response?.error;
-
-    if(data) {
-      toast.success("Service addedd successfully");
+    
+    if (data) {
+      toast.success("Service updated successfully");
     } else {
       handleError(error)
     }
-    refetch()
-     console.log("required service", requiredService)
+    refetch();
   }
+
+    // delete service
+    const handleServiceDelete = async (serviceInfo) => {
+      let requiredService = getRequired(serviceInfo);
+      let response = await deleteService(requiredService);
+      let data = response?.data;
+      let error = response?.error;
+      
+      if (data) {
+        toast.success("Service deleted successfully");
+        setOpen(false);
+      } else {
+        handleError(error)
+      }
+      refetch();
+    }
+  
+
   return (
     <Container>
       <Header>
@@ -221,11 +264,12 @@ const ServicePage = () => {
                 servicesEnquiry.map((service, index) => (
                   <PetalsCard
                     key={index}
+                    title={service.serviceName}
+                    subText={service.serviceCountry}
+                    categoryName={service.serviceCategory}
                     service
-                    message={service?.serviceName}
-                    badge={service?.serviceCategory}
-                    subText={service?.serviceCountry}
-                    // subText={lookup.byIso.name("NGN")}
+                    clickHandle={() => handleClickEachService(service)}
+                    //action = {() => handleAddButton(service)}
                   />
                 ))}
             </ScrollBox>
@@ -246,13 +290,19 @@ const ServicePage = () => {
 
 
         <ServicesModal
-            disableAll={cardAction === "edit" ? true : false}
-            open={open} 
-            setOpen={setOpen} 
-            cardAction={cardAction} 
-            submitAction={handleServiceAdd}
-            loading={addState.isLoading}
-          />
+          disableAll={cardAction === "edit" ? true : false}
+          open={open}
+          title={
+            cardAction === "edit" ? "Update Service" : "Add New Service"
+          }
+          loading={updateState.isLoading || addState.isLoading}
+          setOpen={setOpen} 
+          cardAction={cardAction} 
+          submitAction={ cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
+          serviceInfo={clickedService}
+          deleteState={deleteState}
+          handleServiceDelete={handleServiceDelete}
+        />
       </FeatureSection>
     </Container>
   );

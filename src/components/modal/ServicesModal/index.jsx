@@ -63,10 +63,10 @@ const ServicesModal = ({
     );
   }, [countries.data]);
 
+
   // This is attached to category dropdown onChange
   const handleCategoryChange = (value) => {
     var string = Object.values(value)[0];
-    console.log("category", string)
     setValue("category", string, { shouldValidate: true });
   };
 
@@ -90,17 +90,37 @@ const ServicesModal = ({
   useEffect(() => {
     const categoryResponse = data?.map((serviceCats) => serviceCats.serviceCategory);
     // Filter out duplicate entries
-    console.log("response", categoryResponse)
     const eachResponse = categoryResponse?.filter((option, index, self) => {
       return index === self.indexOf(option);
     });
-    console.log("each", eachResponse)
     let newCategory = eachResponse?.map((servicesCategory) => ({
       value: servicesCategory,
       label:servicesCategory
     }))
     setServicesCategories(newCategory)
   }, [data])
+
+  // 
+  useEffect(() => {
+    if(serviceInfo && cardAction === "edit"){
+      setValue("name", serviceInfo.serviceName,  { shouldValidate: true });
+      setValue("description", serviceInfo.serviceDescription,  { shouldValidate: true });
+      setValue("id", serviceInfo.serviceId,  { shouldValidate: true });
+      setValue("category", serviceInfo.serviceCategory,  { shouldValidate: true });
+      setValue("country", serviceInfo.serviceCountry,  { shouldValidate: true });
+      setValue("price", serviceInfo.servicePrice,  { shouldValidate: true });
+      setValue("timeline", serviceInfo.serviceTimeline,  { shouldValidate: true });
+    } else {
+      setValue("serviceName", "");
+      setValue("description", "");
+      setValue("serviceId", "");
+      setValue("category", "");
+      setValue("country", "");
+      setValue("price", "");
+      setValue("timeline", "");
+    }
+    setDisable(disableAll);
+  }, [serviceInfo, cardAction])
 
   return (
     <Modal1
@@ -161,7 +181,8 @@ const ServicesModal = ({
           options={servicesCategories}
           onChange={handleCategoryChange}
           errorMessage={errors.category?.message}
-          // defaultValue={entityInfo?.entityType}
+          placeholder="Select Service Category"
+          defaultValue={ serviceInfo ? serviceInfo?.serviceCategory : ""}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable}
@@ -174,26 +195,24 @@ const ServicesModal = ({
           labelStyle="input-label"
           options={servicesCountries}
           onChange={handleCountryChange}
+          placeholder="Select Service Country"
           errorMessage={errors.country?.message}
-          // defaultValue={entityInfo?.entityType}
+          defaultValue={ serviceInfo ? serviceInfo?.serviceCountry : ""}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable}
         />
-        <DropDown
+        {/* <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Currency"
           labelStyle="input-label"
           options={serviceCurrencies}
           onChange={handleCurrencyChange}
           errorMessage={errors.currency?.message}
-          // defaultValue={
-          //   entityInfo?.entityCurrency || countryInfo?.countryCurrency
-          // }
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable || countryInfo?.countryCurrency}
-        />
+        /> */}
       </DetailedSection>
       <DetailedSection>
         <InputWithLabel
