@@ -1,6 +1,6 @@
-import React from "react";
-import { ReactComponent as PhoneIcon } from "asset/svg/phone.svg";
-import { ReactComponent as EmailIcon } from "asset/svg/email.svg";
+import React from 'react'
+import { ReactComponent as PhoneIcon } from 'asset/svg/phone.svg'
+import { ReactComponent as EmailIcon } from 'asset/svg/email.svg'
 
 import {
   DetailWrapper,
@@ -15,22 +15,22 @@ import {
   TitleWrapper,
   Top,
   Wrapper,
-} from "./styles";
+} from './styles'
 import {
   useAddBeneficialKYCMutation,
   useAddMemberKYCMutation,
   useGetAllEntitiesQuery,
-} from "services/launchService";
-import { useEffect } from "react";
-import { useState } from "react";
-import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-import { convertToLink } from "utils/LaunchHelper";
-import toast from "react-hot-toast";
+} from 'services/launchService'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import KYCFileUpload from 'components/FileUpload/KYCFileUpload'
+import { convertToLink } from 'utils/LaunchHelper'
+import toast from 'react-hot-toast'
 const PdfCards = ({
-  name = "",
-  title = "",
-  email = "",
-  phone = "",
+  name = '',
+  title = '',
+  email = '',
+  phone = '',
   code,
   beneCode,
   nin,
@@ -40,30 +40,30 @@ const PdfCards = ({
   page,
   type,
 }) => {
-  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-  const countryISO = localStorage.getItem("countryISO");
-  const [addMemberKYC] = useAddMemberKYCMutation();
-  const [addBeneficialKYC] = useAddBeneficialKYCMutation();
-  const [isChanged, setIsChanged] = useState(false);
-  const [requiredDocuments, setRequiredDocuments] = useState([]);
+  const launchInfo = JSON.parse(localStorage.getItem('launchInfo'))
+  const countryISO = localStorage.getItem('countryISO')
+  const [addMemberKYC] = useAddMemberKYCMutation()
+  const [addBeneficialKYC] = useAddBeneficialKYCMutation()
+  const [isChanged, setIsChanged] = useState(false)
+  const [requiredDocuments, setRequiredDocuments] = useState([])
 
-  const { data } = useGetAllEntitiesQuery(countryISO);
-  console.log("data", data);
+  const { data } = useGetAllEntitiesQuery(countryISO)
+  console.log('data', data)
 
-  const checkE = useGetAllEntitiesQuery(countryISO);
-  console.log("dcheckEata", checkE);
+  const checkE = useGetAllEntitiesQuery(countryISO)
+  console.log('dcheckEata', checkE)
 
   useEffect(() => {
-    console.log("data", data);
+    console.log('data', data)
     const check = data?.find(
-      (entity) => entity.entityCode === launchInfo.registrationType
-    );
-    setRequiredDocuments(check?.entityRequiredDocuments);
-  }, [data, launchInfo]);
+      (entity) => entity.entityCode === launchInfo.registrationType,
+    )
+    setRequiredDocuments(check?.entityRequiredDocuments)
+  }, [data, launchInfo])
 
   const handleChange = async (files, shareholder, beneficiary, type) => {
-    const res = await convertToLink(files[0]);
-    const formatType = type.split("_").join(" ");
+    const res = await convertToLink(files[0])
+    const formatType = type.split('_').join(' ')
 
     if (shareholder) {
       const requiredAddMemberData = {
@@ -75,13 +75,13 @@ const PdfCards = ({
           fileName: files[0].name,
           fileType: files[0].type,
         },
-      };
-      const response = await addMemberKYC(requiredAddMemberData);
+      }
+      const response = await addMemberKYC(requiredAddMemberData)
       if (response.data) {
-        toast.success("Document uploaded successfully");
-        setIsChanged(!isChanged);
+        toast.success('Document uploaded successfully')
+        setIsChanged(!isChanged)
       } else if (response.error) {
-        toast.error(response.error?.data.message);
+        toast.error(response.error?.data.message)
       }
     }
 
@@ -95,22 +95,22 @@ const PdfCards = ({
           fileName: files[0].name,
           fileType: files[0].type,
         },
-      };
+      }
 
       const beneficialResult = await addBeneficialKYC(
-        requiredBeneficialOwnerKYCData
-      );
+        requiredBeneficialOwnerKYCData,
+      )
       if (beneficialResult.data) {
-        let returnedArray = beneficialResult.data.beneficialOwnersKYC;
-        let lastElememt = returnedArray[returnedArray.length - 1];
+        let returnedArray = beneficialResult.data.beneficialOwnersKYC
+        let lastElememt = returnedArray[returnedArray.length - 1]
 
-        toast.success("Document uploaded successfully");
-        setIsChanged(!isChanged);
+        toast.success('Document uploaded successfully')
+        setIsChanged(!isChanged)
       } else if (beneficialResult.error) {
-        toast.error(beneficialResult.error?.data.message);
+        toast.error(beneficialResult.error?.data.message)
       }
     }
-  };
+  }
 
   return (
     <>
@@ -150,10 +150,11 @@ const PdfCards = ({
               onDrop={(files) => handleChange(files, code, beneCode, document)}
             />
           ))}
+          {}
         </LowerContainer>
       </Wrapper>
     </>
-  );
-};
+  )
+}
 
-export default PdfCards;
+export default PdfCards

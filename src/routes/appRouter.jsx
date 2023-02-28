@@ -1,243 +1,240 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
+import React, { Suspense, lazy, useState, useEffect } from 'react'
+import { Toaster } from 'react-hot-toast'
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Outlet,
-} from "react-router-dom";
-import Loader from "../components/loader/loader";
-import { useSelector } from "react-redux";
-import Protected from "./Protected";
-import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
-import ComingSoon from "pages/Dashboard/User/Settings/comingsoon";
-import Resources from "pages/Dashboard/User/Resources";
-import Business from "pages/Dashboard/User/Business";
-import BankAccount from "pages/Dashboard/User/BankAccount";
-import Application from "pages/Dashboard/User/Application";
-import AllBusinesses from "pages/Dashboard/User/Business/AllBusinesses";
-import Test from "pages/Test";
-import DraftApplications from "pages/Dashboard/User/Business/DraftApplications";
-import PendingApplications from "pages/Dashboard/User/Business/PendingApplications";
-import StaffBusinesses from "pages/Dashboard/staffDashboard/Businesses";
-import CountryDetailLayout from "pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/layout";
-import CountryDetails from "pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryDetails";
-import CountryEntities from "pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryEntities";
-import Countries from "pages/Dashboard/staffDashboard/Businesses/Countries/Countries";
-import Registrationlayout from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/layout";
-import All from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/All";
-import Awaiting from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/AwaitingApproval";
-import InProgress from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/InProgress";
-import Completed from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed";
-import StaffEntities from "pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities";
-import StaffReward from "pages/Dashboard/staffDashboard/Reward";
-import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Analytics";
-import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
-import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
-import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All";
-import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
-import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
-import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
-import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
-import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
-import { checkStaffEmail } from "utils/globalFunctions";
-import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
-import { useViewPayLaunchMutation } from "services/launchService";
-import PaidDraft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft";
-import ServiceDownload from "pages/Dashboard/User/Manage/Download";
-import StripePaymentSuccess from "pages/Launch/StripePaymentSuccess/StripePaymentSuccess";
+} from 'react-router-dom'
+import Loader from '../components/loader/loader'
+import { useSelector } from 'react-redux'
+import Protected from './Protected'
+import ApplicationSuccessPage from 'pages/Launch/ApplicationSuccessPage'
+import ComingSoon from 'pages/Dashboard/User/Settings/comingsoon'
+import Resources from 'pages/Dashboard/User/Resources'
+import Business from 'pages/Dashboard/User/Business'
+import BankAccount from 'pages/Dashboard/User/BankAccount'
+import Application from 'pages/Dashboard/User/Application'
+import AllBusinesses from 'pages/Dashboard/User/Business/AllBusinesses'
+import Test from 'pages/Test'
+import DraftApplications from 'pages/Dashboard/User/Business/DraftApplications'
+import PendingApplications from 'pages/Dashboard/User/Business/PendingApplications'
+import StaffBusinesses from 'pages/Dashboard/staffDashboard/Businesses'
+import CountryDetailLayout from 'pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/layout'
+import CountryDetails from 'pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryDetails'
+import CountryEntities from 'pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryEntities'
+import Countries from 'pages/Dashboard/staffDashboard/Businesses/Countries/Countries'
+import Registrationlayout from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/layout'
+import All from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/All'
+import Awaiting from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/AwaitingApproval'
+import InProgress from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/InProgress'
+import Completed from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed'
+import StaffEntities from 'pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities'
+import StaffReward from 'pages/Dashboard/staffDashboard/Reward'
+import StaffRewardAnalyticsPage from 'pages/Dashboard/staffDashboard/Reward/Analytics'
+import StaffRewardDetailsPage from 'pages/Dashboard/staffDashboard/Reward/Details'
+import StaffAllRewards from 'pages/Dashboard/staffDashboard/Reward/AllRewards'
+import AllBusinessesSummary from 'pages/Dashboard/staffDashboard/Businesses/All'
+import InProgressBusinessesSummary from 'pages/Dashboard/staffDashboard/Businesses/InProgress'
+import AwaitingBusinessesSummary from 'pages/Dashboard/staffDashboard/Businesses/Awaiting'
+import CompletedBusinessesSummary from 'pages/Dashboard/staffDashboard/Businesses/Completed'
+import Draft from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft'
+import StaffComingSoon from 'pages/Dashboard/staffDashboard/comingSoonPage'
+import { checkStaffEmail } from 'utils/globalFunctions'
+import BankAccountDetails from 'pages/Dashboard/User/BankAccount/BankAccountDetails'
+import { useViewPayLaunchMutation } from 'services/launchService'
+import PaidDraft from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft'
+import ServiceDownload from 'pages/Dashboard/User/Manage/Download'
+import StripePaymentSuccess from 'pages/Launch/StripePaymentSuccess/StripePaymentSuccess'
+import Review from 'pages/Dashboard/User/Manage/Review'
+import ManageDownload from 'pages/Dashboard/User/Manage/Review/ManageDownload'
+import ManageInfo from 'pages/Dashboard/User/Manage/Review/ManageInfo'
+import FormInfo from 'pages/Dashboard/User/Manage/Review/FormInfo'
 
-const Home = lazy(() => import("../pages/Home"));
+const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
-  import("pages/Auth/Registration/EmailVerify/success")
-);
+  import('pages/Auth/Registration/EmailVerify/success'),
+)
 const EmailVerify = lazy(() =>
-  import("pages/Auth/Registration/EmailVerify/verify")
-);
-const ResetSuccess = lazy(() =>
-  import("pages/Auth/SignIn/resetVerify/success")
-);
-const ResetVerify = lazy(() => import("pages/Auth/SignIn/resetVerify/verify"));
+  import('pages/Auth/Registration/EmailVerify/verify'),
+)
+const ResetSuccess = lazy(() => import('pages/Auth/SignIn/resetVerify/success'))
+const ResetVerify = lazy(() => import('pages/Auth/SignIn/resetVerify/verify'))
 const AccountType = lazy(() =>
-  import("pages/Auth/Registration/accountType/accountType")
-);
+  import('pages/Auth/Registration/accountType/accountType'),
+)
 const PartnerRegistration = lazy(() =>
-  import("pages/Auth/Registration/partnerRegistration")
-);
+  import('pages/Auth/Registration/partnerRegistration'),
+)
 const ForgotPassword = lazy(() =>
-  import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
-);
+  import('pages/Auth/SignIn/forgotPassword/forgotpassword.jsx'),
+)
 const ResetPassword = lazy(() =>
-  import("pages/Auth/SignIn/resetPassword/resetPassword.jsx")
-);
-const SignIn = lazy(() => import("pages/Auth/SignIn/SignIn"));
+  import('pages/Auth/SignIn/resetPassword/resetPassword.jsx'),
+)
+const SignIn = lazy(() => import('pages/Auth/SignIn/SignIn'))
 const UserRegistration = lazy(() =>
-  import("../pages/Auth/Registration/userRegistration")
-);
+  import('../pages/Auth/Registration/userRegistration'),
+)
 const ResellerRegistration = lazy(() =>
-  import("../pages/Auth/Registration/ResellerRegister")
-);
-const UserDashboard = lazy(() => import("pages/Dashboard/User"));
+  import('../pages/Auth/Registration/ResellerRegister'),
+)
+const UserDashboard = lazy(() => import('pages/Dashboard/User'))
 const BusinessRegistration = lazy(() =>
-  import("pages/Dashboard/User/Home/BusinessRegistration")
-);
-const Manage = lazy(() => import("pages/Dashboard/User/Manage"));
-const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
-const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
-const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
-const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
-const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
-const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
-const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
-const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
-const AllRewards = lazy(() =>
-  import("pages/Dashboard/User/Rewards/AllRewards")
-);
-const MyRewards = lazy(() => import("pages/Dashboard/User/Rewards/MyRewards"));
+  import('pages/Dashboard/User/Home/BusinessRegistration'),
+)
+const Manage = lazy(() => import('pages/Dashboard/User/Manage'))
+const StaffDashboard = lazy(() => import('pages/Dashboard/staffDashboard'))
+const BusinessAddress = lazy(() => import('pages/Launch/BusinessAddress'))
+const BusinessInfo = lazy(() => import('pages/Launch/BusinessInfo'))
+const EntitySelect = lazy(() => import('pages/Launch/EntitySelect'))
+const ShareHoldersInfo = lazy(() => import('pages/Launch/ShareHoldersInfo'))
+const DirectorsInfo = lazy(() => import('pages/Launch/DirectorsInfo'))
+const BeneficiariesInfo = lazy(() => import('pages/Launch/BeneficiariesInfo'))
+const BeneficiariesKYC = lazy(() => import('pages/Launch/BeneficiariesKYC'))
+const AllRewards = lazy(() => import('pages/Dashboard/User/Rewards/AllRewards'))
+const MyRewards = lazy(() => import('pages/Dashboard/User/Rewards/MyRewards'))
 const RewardDetails = lazy(() =>
-  import("pages/Dashboard/User/Rewards/RewardDetails")
-);
-const ShareHolderKYC = lazy(() => import("pages/Launch/ShareHolderKYC"));
-const Compliance = lazy(() => import("pages/Dashboard/User/Home/Compliance"));
+  import('pages/Dashboard/User/Rewards/RewardDetails'),
+)
+const ShareHolderKYC = lazy(() => import('pages/Launch/ShareHolderKYC'))
+const Compliance = lazy(() => import('pages/Dashboard/User/Home/Compliance'))
 const HiringAndPayroll = lazy(() =>
-  import("pages/Dashboard/User/Home/HiringAndPayroll")
-);
+  import('pages/Dashboard/User/Home/HiringAndPayroll'),
+)
 const InetellectualAssets = lazy(() =>
-  import("pages/Dashboard/User/Home/IntellectualAssets")
-);
-const Taxes = lazy(() => import("pages/Dashboard/User/Home/Taxes"));
-const Rewards = lazy(() => import("pages/Dashboard/User/Rewards"));
-const PaymentPage = lazy(() => import("pages/Launch/PaymentPage"));
+  import('pages/Dashboard/User/Home/IntellectualAssets'),
+)
+const Taxes = lazy(() => import('pages/Dashboard/User/Home/Taxes'))
+const Rewards = lazy(() => import('pages/Dashboard/User/Rewards'))
+const PaymentPage = lazy(() => import('pages/Launch/PaymentPage'))
 const BeneficiaryReview = lazy(() =>
-  import("pages/Launch/Review/BeneficiaryReview")
-);
+  import('pages/Launch/Review/BeneficiaryReview'),
+)
 const BusinessInformationReview = lazy(() =>
-  import("pages/Launch/Review/BusinessInformationReview/Index")
-);
+  import('pages/Launch/Review/BusinessInformationReview/Index'),
+)
 const DirectorReview = lazy(() =>
-  import("pages/Launch/Review/DirectorReview/Index")
-);
+  import('pages/Launch/Review/DirectorReview/Index'),
+)
 const ShareholderReview = lazy(() =>
-  import("pages/Launch/Review/ShareholderReview/Index")
-);
-const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
+  import('pages/Launch/Review/ShareholderReview/Index'),
+)
+const DirectorKYC = lazy(() => import('pages/Launch/DirectorsKYC'))
 const BusinessDetailLayout = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/layout")
-);
+  import('pages/Dashboard/User/Business/Detail/layout'),
+)
 const StaffBusinessDetailLayout = lazy(() =>
   import(
-    "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout"
-  )
-);
+    'pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout'
+  ),
+)
 const BusinessDetail = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail")
-);
+  import('pages/Dashboard/User/Business/Detail'),
+)
 const DetailShareholders = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/shareholders")
-);
+  import('pages/Dashboard/User/Business/Detail/shareholders'),
+)
 const DetailDirectors = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/directors")
-);
+  import('pages/Dashboard/User/Business/Detail/directors'),
+)
 const DetailBeneficiaries = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/beneficiaries")
-);
+  import('pages/Dashboard/User/Business/Detail/beneficiaries'),
+)
 const UserSettingsLayout = lazy(() =>
-  import("pages/Dashboard/User/Settings/layout")
-);
+  import('pages/Dashboard/User/Settings/layout'),
+)
 const PersonalSettings = lazy(() =>
-  import("pages/Dashboard/User/Settings/personal")
-);
+  import('pages/Dashboard/User/Settings/personal'),
+)
 const PaymentSetting = lazy(() =>
-  import("pages/Dashboard/User/Settings/payment")
-);
-const Stafflayout = lazy(() => import("pages/Dashboard/staffDashboard/layout"));
-const SettingLayout = lazy(() =>
-  import("pages/Dashboard/User/Settings/layout")
-);
+  import('pages/Dashboard/User/Settings/payment'),
+)
+const Stafflayout = lazy(() => import('pages/Dashboard/staffDashboard/layout'))
+const SettingLayout = lazy(() => import('pages/Dashboard/User/Settings/layout'))
 const StaffSettingLayout = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/layout")
-);
+  import('pages/Dashboard/staffDashboard/Settings/layout'),
+)
 const NotificationSettings = lazy(() =>
-  import("pages/Dashboard/User/Settings/notification")
-);
+  import('pages/Dashboard/User/Settings/notification'),
+)
 const StaffNotificationSettings = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/notification")
-);
+  import('pages/Dashboard/staffDashboard/Settings/notification'),
+)
 const StaffGeneralSettings = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/general")
-);
+  import('pages/Dashboard/staffDashboard/Settings/general'),
+)
 
 const SidebriefTeam = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/team")
-);
+  import('pages/Dashboard/staffDashboard/Settings/team'),
+)
 
 const Services = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/Service")
-);
+  import('pages/Dashboard/staffDashboard/Businesses/Services/Service'),
+)
 const AllServices = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/AllServices")
-);
+  import('pages/Dashboard/staffDashboard/Businesses/Services/AllServices'),
+)
 const ChatLayout = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/Chat")
-);
+  import('pages/Dashboard/staffDashboard/Businesses/Services/Chat'),
+)
 const SingleChat = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/Chat/SingleChat")
-);
+  import('pages/Dashboard/staffDashboard/Businesses/Services/Chat/SingleChat'),
+)
 
 const AppRouter = () => {
-  const userData = useSelector((store) => store.UserDataReducer);
+  const userData = useSelector((store) => store.UserDataReducer)
   const { launchResponse, launchPaid } = useSelector(
-    (store) => store.LaunchReducer
-  );
+    (store) => store.LaunchReducer,
+  )
 
   // Get user information from local storage
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  let token = userInfo?.token;
-  let user_token = userInfo?.user_token;
-  let userEmail = localStorage.getItem("userEmail");
-  const loggedIn = token?.length > 0 || user_token > 0;
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+  let token = userInfo?.token
+  let user_token = userInfo?.user_token
+  let userEmail = localStorage.getItem('userEmail')
+  const loggedIn = token?.length > 0 || user_token > 0
 
   //
 
   // Get launch information from local storage
-  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-  const entityLaunchCode = launchInfo?.launchCode;
-  const selectedCountryISO = localStorage.getItem("countryISO");
-  const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
-  let paidStatus =
-    paymentDetails?.paymentStatus === "successful" ? true : false;
+  const launchInfo = JSON.parse(localStorage.getItem('launchInfo'))
+  const entityLaunchCode = launchInfo?.launchCode
+  const selectedCountryISO = localStorage.getItem('countryISO')
+  const paymentDetails = JSON.parse(localStorage.getItem('paymentDetails'))
+  let paidStatus = paymentDetails?.paymentStatus === 'successful' ? true : false
 
   //
 
   const [isLoggedIn, setisLoggedIn] = useState(
-    token?.length > 0 || user_token > 0
-  );
-  const [launchCode, setLaunchCode] = useState(entityLaunchCode);
-  const [countryISO, setCountryISO] = useState(selectedCountryISO);
-  const [paid, setPaid] = useState(paidStatus);
+    token?.length > 0 || user_token > 0,
+  )
+  const [launchCode, setLaunchCode] = useState(entityLaunchCode)
+  const [countryISO, setCountryISO] = useState(selectedCountryISO)
+  const [paid, setPaid] = useState(paidStatus)
   const [staff, setStaff] = useState(
-    userEmail?.includes("@sidebrief.com") ? true : false
-  );
+    userEmail?.includes('@sidebrief.com') ? true : false,
+  )
 
-  const allowLaunch = launchCode && countryISO;
-
-  //
-
-  useEffect(() => {
-    setisLoggedIn(loggedIn);
-    let staffEmail = checkStaffEmail(userEmail);
-    setStaff(staffEmail);
-  }, [loggedIn, userData.refreshApp, userData.userInfo]);
-
-  //
+  const allowLaunch = launchCode && countryISO
 
   //
 
   useEffect(() => {
-    setLaunchCode(entityLaunchCode);
-    setCountryISO(selectedCountryISO);
-    setPaid(paidStatus);
-  }, [launchResponse, launchPaid]);
+    setisLoggedIn(loggedIn)
+    let staffEmail = checkStaffEmail(userEmail)
+    setStaff(staffEmail)
+  }, [loggedIn, userData.refreshApp, userData.userInfo])
+
+  //
+
+  //
+
+  useEffect(() => {
+    setLaunchCode(entityLaunchCode)
+    setCountryISO(selectedCountryISO)
+    setPaid(paidStatus)
+  }, [launchResponse, launchPaid])
 
   return (
     <Suspense fallback={<Loader />}>
@@ -454,9 +451,19 @@ const AppRouter = () => {
           </Route>
 
           {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
-          <Route path="manage" element={<Manage />} />
-          <Route path="download-manage" element={<ServiceDownload />} />
-
+          <Route path="manage" element={<Outlet />}>
+            <Route index element={<Manage />} />
+            <Route element={<Review />}>
+              <Route
+                path="review-business-information"
+                index
+                element={<ManageInfo />}
+              />
+              <Route path="review-form" element={<FormInfo />} />
+              <Route path="review-documents" element={<ManageDownload />} />
+            </Route>
+            <Route path="download" element={<ServiceDownload />} />
+          </Route>
           {/* Launch pages routes */}
           <Route
             path="launch"
@@ -607,40 +614,40 @@ const AppRouter = () => {
         <Toaster
           position="top-right"
           toastOptions={{
-            className: "",
+            className: '',
             style: {
-              margin: "10px",
-              padding: "10px",
-              display: "inline-flex",
-              fontSize: "14px",
+              margin: '10px',
+              padding: '10px',
+              display: 'inline-flex',
+              fontSize: '14px',
               zIndex: 999999,
             },
             duration: 4000,
             error: {
               style: {
-                background: "#ff6363",
-                color: "white",
+                background: '#ff6363',
+                color: 'white',
               },
               iconTheme: {
-                primary: "white",
-                secondary: "red",
+                primary: 'white',
+                secondary: 'red',
               },
             },
             success: {
               style: {
-                background: "green",
-                color: "white",
+                background: 'green',
+                color: 'white',
               },
               iconTheme: {
-                primary: "white",
-                secondary: "green",
+                primary: 'white',
+                secondary: 'green',
               },
             },
           }}
         />
       </Router>
     </Suspense>
-  );
-};
+  )
+}
 
-export default AppRouter;
+export default AppRouter
