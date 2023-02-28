@@ -16,10 +16,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { usePayWithStripeMutation } from "services/launchService";
 
-const PUBLIC_KEY =
-  process.env.NODE_ENV === "production"
-    ? `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`
-    : `${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`;
+const PUBLIC_KEY = `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`;
+// process.env.NODE_ENV === "production"
+//   ? `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`
+//   : `${process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY}`;
 
 const stripePromise = loadStripe(PUBLIC_KEY);
 
