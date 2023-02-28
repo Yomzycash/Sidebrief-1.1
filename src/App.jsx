@@ -50,7 +50,12 @@ function App() {
   }, [country]);
 
   const PUBLIC_KEY =
-    "pk_test_51HeX6TIfUU2kDtjPErnZWbbWJ0o68xZNSFm5448kvxfyCR7Hz0wfoU9eO035HGbA7KrYSYEXIxQJ0DLsrPUEaIHJ00KBYIckOc";
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY
+      : process.env.REACT_APP_STRIPE_PUBLIC_KEY;
+
+  // const PUBLIC_KEY =
+  //   "pk_test_51HeX6TIfUU2kDtjPErnZWbbWJ0o68xZNSFm5448kvxfyCR7Hz0wfoU9eO035HGbA7KrYSYEXIxQJ0DLsrPUEaIHJ00KBYIckOc";
 
   const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
