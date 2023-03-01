@@ -202,7 +202,7 @@ const ServicePage = () => {
       <br />
       <br />
 
-      <FeatureSection
+      {/* <FeatureSection
         title="Service Requests"
         subText="View recent registered businesses service request"
         btnText="View all"
@@ -211,7 +211,7 @@ const ServicePage = () => {
       >
         <FeatureTable header={header} body={dataBody} />
         <ServicesModal open={open} setOpen={open} cardAction={cardAction} />
-      </FeatureSection>
+      </FeatureSection> */}
     </Container>
   );
 };

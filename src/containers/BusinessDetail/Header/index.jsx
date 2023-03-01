@@ -243,12 +243,12 @@ export const Header = ({ isStaff }) => {
               <UserName>{`${first_name} ${last_name}`}</UserName>
               <DotSeperator />
               <DateText>
-                {launchRequest?.isLoading
-                  ? `--`
-                  : format(
+                {launchRequest?.isSuccess
+                  ? format(
                       new Date(launchRequest?.data?.createdAt),
                       "do MMMM yyyy"
-                    )}
+                    )
+                  : `--`}
               </DateText>
             </BottomInfo>
           </LHS>

@@ -11,13 +11,16 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import Button from "components/button";
-import { useViewPayLaunchMutation } from "services/launchService";
-import { checkPaymentStatus } from "pages/Launch/actions";
-import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
-import { useNavigate } from "react-router-dom";
 import { ButtonHolder, SPaymentButton } from "./styles";
+import { toast } from "react-hot-toast";
+import { Oval } from "react-loading-icons";
+import {
+  useGetSingleEntityQuery,
+  usePayLaunchMutation,
+} from "services/launchService";
+import { store } from "redux/Store";
+import { setLaunchPaid } from "redux/Slices";
+import { useNavigate } from "react-router-dom";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -26,11 +29,17 @@ import { ButtonHolder, SPaymentButton } from "./styles";
 // Sign in to see your own test API key embedded in code samples.
 
 export default function StripeForm() {
+  const [payLaunch] = usePayLaunchMutation();
+
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+
+  const navigate = useNavigate();
+
   const stripe = useStripe();
   const elements = useElements("card");
-  console.log("checking my location", window.location.origin);
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,13 +52,22 @@ export default function StripeForm() {
 
     setIsLoading(true);
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/launch/payment-confirmation`,
-      },
-    });
+    const { error } = await stripe
+      .confirmPayment({
+        elements,
+        confirmParams: {
+          receipt_email: localStorage.getItem("userEmail"),
+        },
+        redirect: "if_required",
+      })
+      .then((result) => {
+        console.log(result);
+        if (result?.error) {
+          toast.error(result.error?.message);
+          setIsLoading(false);
+        } else if (result?.paymentIntent)
+          sendRefToBackend(result?.paymentIntent);
+      });
 
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
@@ -66,8 +84,33 @@ export default function StripeForm() {
       setMessage(error.message);
     }
 
-    // console.log("confirmStripe", confirmStripe);
     setIsLoading(false);
+  };
+
+  const sendRefToBackend = async (paymentIntent) => {
+    const requiredData = {
+      launchCode: launchInfo.launchCode,
+      paymentDetails: {
+        paymentAmount: paymentIntent.amount,
+        paymentCurrency: paymentIntent.currency,
+        paymentTransactionId: paymentIntent.id,
+        paymentProvider: "Stripe",
+        paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
+      },
+    };
+
+    store.dispatch(setLaunchPaid(requiredData));
+    localStorage.setItem(
+      "paymentDetails",
+      JSON.stringify(requiredData.paymentDetails)
+    );
+
+    const payResponse = await payLaunch(requiredData);
+    setIsLoading(false);
+    setSuccess(true);
+    toast.success("Payment successful");
+    console.log("payResponse", payResponse);
+    navigate("/launch/address");
   };
 
   return (
@@ -87,9 +130,16 @@ export default function StripeForm() {
             color="white"
             title="Pay Now"
             type="submit"
-            disabled={isLoading || !stripe || !elements}
+            disabled={isLoading || !stripe || !elements || success}
+            $success={success}
           >
-            Pay Now
+            {isLoading ? (
+              <Oval stroke="#ffffff" fill="white" width={22} height={22} />
+            ) : success ? (
+              "Successful"
+            ) : (
+              "Pay Now"
+            )}
           </SPaymentButton>
         </ButtonHolder>
 
@@ -109,3 +159,5 @@ export default function StripeForm() {
 //
 
 //
+// Make sure to change this to your payment completion page
+// return_url: `${window.location.origin}/launch/payment-confirmation`,

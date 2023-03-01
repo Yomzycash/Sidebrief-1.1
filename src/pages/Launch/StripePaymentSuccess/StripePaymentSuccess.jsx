@@ -25,9 +25,7 @@ const StripePaymentSuccess = () => {
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const { data } = useGetSingleEntityQuery(launchInfo?.registrationType);
-  console.log(launchInfo);
 
-  console.log("entityyyy", data);
   //   useEffect(() => {
   //     console.log("entityyyy", data);
   //     if (data) setEntityInfo(data);
@@ -39,32 +37,31 @@ const StripePaymentSuccess = () => {
 
   const paymentTransactionId = queryParams.get("payment_intent");
 
-  console.log(status);
   //   Send the payment reference information to the backend
-  const sendRefToBackend = async () => {
-    const requiredData = {
-      launchCode: launchInfo.launchCode,
-      paymentDetails: {
-        paymentAmount: data?.entityFee,
-        paymentCurrency: data?.entityCurrency,
-        paymentTransactionId: paymentTransactionId,
-        paymentProvider: "Stripe",
-        paymentStatus: paymentStatus === "succeeded" && "successful",
-      },
-    };
-    localStorage.setItem(
-      "paymentDetails",
-      JSON.stringify(requiredData.paymentDetails)
-    );
-    store.dispatch(setLaunchPaid(status));
-    const payResponse = await payLaunch(requiredData);
-    console.log("payResponse", payResponse);
-    navigate("/launch/address");
-  };
+  // const sendRefToBackend = async () => {
+  //   const requiredData = {
+  //     launchCode: launchInfo.launchCode,
+  //     paymentDetails: {
+  //       paymentAmount: data?.entityFee,
+  //       paymentCurrency: data?.entityCurrency,
+  //       paymentTransactionId: paymentTransactionId,
+  //       paymentProvider: "Stripe",
+  //       paymentStatus: paymentStatus === "succeeded" && "successful",
+  //     },
+  //   };
+  //   localStorage.setItem(
+  //     "paymentDetails",
+  //     JSON.stringify(requiredData.paymentDetails)
+  //   );
+  //   store.dispatch(setLaunchPaid(status));
+  //   const payResponse = await payLaunch(requiredData);
+  //   console.log("payResponse", payResponse);
+  //   navigate("/launch/address");
+  // };
 
   return (
     <MainWrapper>
-      <Success image={image} onClick={sendRefToBackend} />
+      <Success image={image} />
     </MainWrapper>
   );
 };

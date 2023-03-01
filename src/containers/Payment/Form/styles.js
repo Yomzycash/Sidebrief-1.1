@@ -178,4 +178,7 @@ export const SPaymentButton = styled.button`
   color: white;
   border-radius: 8px !important;
   padding: 16px auto !important;
+  transition: 0.3s ease all;
+
+  background-color: ${({ $success }) => ($success ? "#28FF9D" : "")} !important;
 `;

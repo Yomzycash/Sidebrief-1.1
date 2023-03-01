@@ -9,19 +9,25 @@ import { store } from "redux/Store";
 import { setRefreshApp, setUnreadLaunchNotifications } from "redux/Slices";
 import { useGetAllServicesQuery } from "services/staffService";
 import { useMemo } from "react";
+import { getUnReadNotifications } from "components/navbar/actions";
 
 const SidebarItem = ({ item, expanded, homePath }) => {
   const [iconHovered, setIconHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const [unreadLaunchNots, setUnreadLaunchNots] = useState([]);
-  const [unreadServicesNots, setUnreadServicesNots] = useState([]);
 
   const { refreshNotifications } = useSelector(
     (store) => store.UserDataReducer
   );
 
   const notifications = useGetAllNotificationsQuery();
-  const services = useGetAllServicesQuery();
+  // const services = useGetAllServicesQuery();
+
+  const location = useLocation();
+  const locationPath = location?.pathname;
+
+  let isActive = locationPath?.includes(item.path);
+
+  let homePathActive = homePath && item.id === 1;
 
   // useMemo(() => {
   //   if (!notifications.data || !services.data) return;
@@ -42,22 +48,11 @@ const SidebarItem = ({ item, expanded, homePath }) => {
   //   store.dispatch(setUnreadLaunchNotifications(newNotifications));
   // }, [services.data]);
 
-  // useMemo(() => {
-  //   notifications.refetch();
-  //   services.refetch();
-  // }, [refreshNotifications]);
+  useEffect(() => {
+    notifications.refetch();
+  }, [refreshNotifications]);
 
-  const location = useLocation();
-  const locationPath = location?.pathname;
-
-  let isActive = locationPath?.includes(item.path);
-
-  const ActiveStyle = {
-    background: "#00a2d419",
-    color: "#00a2d4",
-  };
-
-  let homePathActive = homePath && item.id === 1;
+  let newNotifications = getUnReadNotifications(notifications.data);
 
   return (
     <SidebarItemContainer>
@@ -113,13 +108,13 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   </span>
                   <span>{each.title}</span>
                 </NavLink>
-                {notifications.data?.length > 0 &&
+                {/* {notifications.data?.length > 0 &&
                   each.path === "/staff-dashboard/businesses/services" && (
                     <Badge to={each.path}>{notifications.data?.length}</Badge>
-                  )}
-                {unreadLaunchNots > 0 &&
+                  )} */}
+                {newNotifications?.length > 0 &&
                   each.path === "/staff-dashboard/businesses/registration" && (
-                    <Badge to={each.path}>{unreadLaunchNots}</Badge>
+                    <Badge to={each.path}>{newNotifications?.length}</Badge>
                   )}
               </ListItem>
             ))}
@@ -241,3 +236,7 @@ const ArrowDown = styled.div`
   transition: 0.3s transform ease;
   padding: 0 5px;
 `;
+const ActiveStyle = {
+  background: "#00a2d419",
+  color: "#00a2d4",
+};
