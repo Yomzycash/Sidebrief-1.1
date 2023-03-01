@@ -281,6 +281,7 @@ export const Header = ({ isStaff }) => {
 					</LHS>
 					<RHS>
 						{/* <CommonButton
+
 							text={"Messages"}
 							classname="transbutton"
 							LeftIcon={Mail}

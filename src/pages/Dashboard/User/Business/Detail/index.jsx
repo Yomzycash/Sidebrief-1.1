@@ -123,6 +123,7 @@ const BusinessDetail = () => {
 			)}
 		</>
 	);
+
 };
 
 export default BusinessDetail;
