@@ -39,9 +39,9 @@ export const PaymentSelector = ({ providers, activate }) => {
         </>
       ) : (
         <>
-          {providers.map((el, index) => (
-            <>
-              {el.name === "flutterwave" && (
+          {providers.map(
+            (el, index) =>
+              el.name === "flutterwave" && (
                 <PayProvide
                   key={index}
                   active={el.active}
@@ -49,9 +49,8 @@ export const PaymentSelector = ({ providers, activate }) => {
                 >
                   <img src={el.image} alt={el.name} />
                 </PayProvide>
-              )}
-            </>
-          ))}
+              )
+          )}
         </>
       )}
     </Container>
