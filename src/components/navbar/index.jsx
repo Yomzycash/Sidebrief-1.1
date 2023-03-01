@@ -77,6 +77,7 @@ const Navbar = ({
 	//   return getUnReadNotifications(data);
 	// }, [refreshNotifications]);
 	let newNotifications = getUnReadNotifications(data);
+	console.log(getUnReadNotifications(data));
 
 	return (
 		<>

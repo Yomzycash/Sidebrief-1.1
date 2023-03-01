@@ -188,7 +188,7 @@ const ServicePage = () => {
     //   handleError(error)
     // }
     // refetch()
-    console.log("required service", formData)
+    console.log("required service", requiredService)
     console.log("response", response);
   }
 
@@ -295,22 +295,14 @@ const ServicePage = () => {
           title={
             cardAction === "edit" ? "Update Service" : "Add New Service"
           }
-          loading={addState.isLoading}
+          loading={updateState.isLoading || addState.isLoading}
           setOpen={setOpen} 
           cardAction={cardAction} 
-          submitAction={handleServiceAdd}
+          submitAction={ cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
           serviceInfo={clickedService}
           deleteState={deleteState}
           handleServiceDelete={handleServiceDelete}
         />
-         {/* <ServicesModal
-            disableAll={cardAction === "edit" ? true : false}
-            open={open} 
-            setOpen={setOpen} 
-            cardAction={cardAction} 
-            submitAction={handleServiceAdd}
-            loading={addState.isLoading}
-          /> */}
       </FeatureSection>
     </Container>
   );

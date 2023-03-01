@@ -100,13 +100,12 @@ const AllServices = () => {
     
     // if (data) {
     //   toast.success("Service addedd successfully");
-    //   setOpen(false)
     // } else {
     //   handleError(error)
     // }
     // refetch()
-    console.log("required service", formData)
-    //console.log("required service", response)
+    console.log("required service", requiredService)
+    console.log("required service", response)
   }
 
   // Update service 
@@ -184,22 +183,14 @@ const AllServices = () => {
       title={
         cardAction === "edit" ? "Update Service" : "Add New Service"
       }
-      loading={addState.isLoading}
+      loading={updateState.isLoading || addState.isLoading}
       setOpen={setOpen} 
       cardAction={cardAction} 
-      submitAction={handleServiceAdd}
+      submitAction={ cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
       serviceInfo={clickedService}
       deleteState={deleteState}
       handleServiceDelete={handleServiceDelete}
     />
-          {/* <ServicesModal
-            disableAll={cardAction === "edit" ? true : false}
-            open={open} 
-            setOpen={setOpen} 
-            cardAction={cardAction} 
-            submitAction={handleServiceAdd}
-            loading={addState.isLoading}
-          /> */}
       {allServices?.length > itemsPerPage && (
         <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
       )}
