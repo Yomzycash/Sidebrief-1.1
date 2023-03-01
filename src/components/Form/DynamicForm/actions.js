@@ -5,7 +5,7 @@ import * as yup from "yup";
 export const getSchema = (array) => {
   let schema = {};
   array.forEach((el) => {
-    if (el.importance === "required") {
+    if (el.required === true) {
       if (el.type === "text")
         schema[el.name] = yup.string().required(`required`);
       else if (el.type === "number")
