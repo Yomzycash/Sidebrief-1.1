@@ -28,13 +28,14 @@ const stripePromise = loadStripe(PUBLIC_KEY);
 // );
 
 const StripePayment = ({ amount }) => {
+  console.log(amount);
+
   const [clientSecret, setClientSecret] = useState("");
   const [payWithStripe, payWithStripeState] = usePayWithStripeMutation();
 
   useEffect(() => {
     (async () => {
       const paymentResponse = await payWithStripe({ amount: amount });
-      console.log(paymentResponse);
       if (paymentResponse?.data?.clientSecret)
         setClientSecret(paymentResponse?.data?.clientSecret);
     })();

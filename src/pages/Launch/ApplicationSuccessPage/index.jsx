@@ -5,6 +5,7 @@ import styled from "styled-components";
 import SuccessImage from "asset/svg/SuccessImage.svg";
 import { useNavigate } from "react-router-dom";
 import AppFeedback from "components/AppFeedback";
+
 const ApplicationSuccessPage = () => {
   const navigate = useNavigate();
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
@@ -24,7 +25,7 @@ const ApplicationSuccessPage = () => {
           description={`Thank you for your patience, your application would take ${timeline} `}
           image={SuccessImage}
           buttonTitle="View Application"
-          onClick={handleNavigate}
+          onButtonClick={handleNavigate}
         />
       </Body>
       {/* <AppFeedback subProject="Application success page" /> */}
