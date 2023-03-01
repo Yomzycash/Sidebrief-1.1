@@ -98,11 +98,13 @@ export default function StripeForm() {
         paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
       },
     };
+
+    store.dispatch(setLaunchPaid(requiredData));
     localStorage.setItem(
       "paymentDetails",
       JSON.stringify(requiredData.paymentDetails)
     );
-    console.log(requiredData);
+
     const payResponse = await payLaunch(requiredData);
     setIsLoading(false);
     setSuccess(true);
