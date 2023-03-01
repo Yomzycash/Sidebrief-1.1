@@ -57,8 +57,8 @@ const AllServices = () => {
 
   // This runs when add service button is clicked
   const handleAddButton = () => {
-    setOpen(true);
     setCardAction("add");
+    setOpen(true);
   };
 
   let errorRef = useRef(true)
@@ -78,7 +78,6 @@ const AllServices = () => {
     return {
       serviceName: formData.name,
       serviceDescription: formData.description,
-      serviceId: formData.id,
       serviceCategory: formData.category,
       serviceCountry: formData.country,
       servicePrice: formData.price, 
@@ -95,49 +94,47 @@ const AllServices = () => {
   const handleServiceAdd = async (formData) => {
     let requiredService = getRequired(formData);
     let response = await addService(requiredService);
-    // let data = response?.data;
-    // let error = response?.error;
+    let data = response?.data;
+    let error = response?.error;
     
-    // if (data) {
-    //   toast.success("Service addedd successfully");
-    // } else {
-    //   handleError(error)
-    // }
-    // refetch()
-    console.log("required service", requiredService)
-    console.log("required service", response)
+    if (data) {
+      toast.success("Service added successfully");
+    } else {
+      handleError(error)
+    }
+    refetch()
   }
 
-  // Update service 
+  // Update service  
   const handleServiceUpdate = async (formData) => {
     let requiredService = getRequired(formData);
-    let response = await updateService(requiredService);
+    let response = await updateService({...requiredService, serviceId:clickedService.serviceId});
     let data = response?.data;
     let error = response?.error;
     
     if (data) {
       toast.success("Service updated successfully");
+      setOpen(false)
     } else {
       handleError(error)
     }
     refetch();
   }
 
-  // delete service
-  const handleServiceDelete = async (serviceInfo) => {
-    let requiredService = getRequired(serviceInfo);
-    let response = await deleteService(requiredService);
-    let data = response?.data;
-    let error = response?.error;
-    
-    if (data) {
-      toast.success("Service deleted successfully");
-      setOpen(false);
-    } else {
-      handleError(error)
+    // delete service
+    const handleServiceDelete = async () => {
+      let response = await deleteService(clickedService.serviceId);
+      let data = response?.data;
+      let error = response?.error;
+      
+      if (data) {
+        toast.success("Service deleted successfully.");
+        setOpen(false);
+      } else {
+        handleError(error)
+      }
+      refetch();
     }
-    refetch();
-  }
 
   
 
@@ -165,7 +162,7 @@ const AllServices = () => {
                 categoryName={service.serviceCategory}
                 service
                 clickHandle={() => handleClickEachService(service)}
-                // action = {() => handleAddButton(service)}
+                //action = {() => handleAddButton(service)}
               />
             ))}
         </ServiceContainer>

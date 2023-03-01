@@ -105,7 +105,6 @@ const ServicesModal = ({
     if(serviceInfo && cardAction === "edit"){
       setValue("name", serviceInfo.serviceName,  { shouldValidate: true });
       setValue("description", serviceInfo.serviceDescription,  { shouldValidate: true });
-      setValue("id", serviceInfo.serviceId,  { shouldValidate: true });
       setValue("category", serviceInfo.serviceCategory,  { shouldValidate: true });
       setValue("country", serviceInfo.serviceCountry,  { shouldValidate: true });
       setValue("price", serviceInfo.servicePrice,  { shouldValidate: true });
@@ -113,7 +112,6 @@ const ServicesModal = ({
     } else {
       setValue("serviceName", "");
       setValue("description", "");
-      setValue("serviceId", "");
       setValue("category", "");
       setValue("country", "");
       setValue("price", "");
@@ -162,7 +160,7 @@ const ServicesModal = ({
         disable={disable}
       />
       <DetailedSection>
-        <InputWithLabel
+        {/* <InputWithLabel
           label="Service ID"
           labelStyle="input-label"
           placeholder="Enter Service ID"
@@ -173,7 +171,7 @@ const ServicesModal = ({
           register={register}
           errorMessage={errors.id?.message}
           disable={disable}
-        />
+        /> */}
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Category"
@@ -202,7 +200,7 @@ const ServicesModal = ({
           height="40px"
           disable={disable}
         />
-        {/* <DropDown
+        <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Currency"
           labelStyle="input-label"
@@ -212,7 +210,7 @@ const ServicesModal = ({
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable || countryInfo?.countryCurrency}
-        /> */}
+        />
       </DetailedSection>
       <DetailedSection>
         <InputWithLabel

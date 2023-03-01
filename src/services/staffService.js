@@ -318,8 +318,8 @@ export const staffApi = createApi({
 
 		// update a service
 		updateService: builder.mutation({
-			query: (data) => ({
-				url:`/services/update/${data}`,
+			query: (serviceId) => ({
+				url:`/services/update/${serviceId}`,
 				method: "PUT",
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",
@@ -329,10 +329,9 @@ export const staffApi = createApi({
 
 		// delete a service
 		deleteService: builder.mutation({
-			query: (data) => ({
-				url:"/services",
+			query: (serviceId) => ({
+				url:`/services/delete/${serviceId}`,
 				method: "DELETE",
-				body: data,
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",
 				},

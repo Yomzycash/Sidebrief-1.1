@@ -57,8 +57,8 @@ const ServicePage = () => {
 
   // Add Service
   const handleAddButton = () => {
-    setOpen(true);
     setCardAction("add");
+    setOpen(true);
   };
 
   const servicesNotifications = data?.filter((service) => {
@@ -161,7 +161,7 @@ const ServicePage = () => {
     return {
       serviceName: formData.name,
       serviceDescription: formData.description,
-      serviceId: formData.id,
+     // serviceId: formData.id,
       serviceCategory: formData.category,
       serviceCountry: formData.country,
       servicePrice: formData.price, 
@@ -179,15 +179,16 @@ const ServicePage = () => {
   const handleServiceAdd = async (formData) => {
     let requiredService = getRequired(formData);
     let response = await addService(requiredService);
-    // let data = response?.data;
-    // let error = response?.error;
+    let data = response?.data;
+    let error = response?.error;
 
-    // if(data) {
-    //   toast.success("Service addedd successfully");
-    // } else {
-    //   handleError(error)
-    // }
-    // refetch()
+    if(data) {
+      toast.success("Service added successfully");
+      setOpen(false)
+    } else {
+      handleError(error)
+    }
+    refetch()
     console.log("required service", requiredService)
     console.log("response", response);
   }
@@ -195,12 +196,13 @@ const ServicePage = () => {
   // Update service 
   const handleServiceUpdate = async (formData) => {
     let requiredService = getRequired(formData);
-    let response = await updateService(requiredService);
+    let response = await updateService({...requiredService, serviceId:clickedService.serviceId});
     let data = response?.data;
     let error = response?.error;
     
     if (data) {
       toast.success("Service updated successfully");
+      setOpen(false)
     } else {
       handleError(error)
     }
@@ -208,9 +210,8 @@ const ServicePage = () => {
   }
 
     // delete service
-    const handleServiceDelete = async (serviceInfo) => {
-      let requiredService = getRequired(serviceInfo);
-      let response = await deleteService(requiredService);
+    const handleServiceDelete = async () => {
+      let response = await deleteService(clickedService.serviceId);
       let data = response?.data;
       let error = response?.error;
       
