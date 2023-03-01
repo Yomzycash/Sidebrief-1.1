@@ -62,6 +62,8 @@ const BusinessDetail = () => {
 
   const isPending = isLoading ? false : data?.registrationStatus === "pending";
 
+  console.log(data);
+
   return (
     <>
       {isLoading ? (

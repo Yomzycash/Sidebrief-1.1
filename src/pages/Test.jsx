@@ -1,12 +1,12 @@
 import React from "react";
-import { ChatInput } from "containers/ServiceChat/ChatBody/chatInput";
+import DynamicForm from "components/Form/DynamicForm";
 
 const Test = () => {
-	return (
-		<div style={{}}>
-			<ChatInput />
-		</div>
-	);
+  return (
+    <div style={{}}>
+      <DynamicForm />
+    </div>
+  );
 };
 
 export default Test;
