@@ -3,7 +3,7 @@ import { Header } from "containers/BusinessDetail";
 import { Body, Container } from "./styles";
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 const BusinessDetailLayout = () => {
   const [searchParams] = useSearchParams();
