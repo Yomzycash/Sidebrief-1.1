@@ -28,7 +28,7 @@ const stripePromise = loadStripe(PUBLIC_KEY);
 // );
 
 const StripePayment = ({ amount }) => {
-  console.log(amount);
+  console.log(amount * 100);
 
   const [clientSecret, setClientSecret] = useState("");
   const [payWithStripe, payWithStripeState] = usePayWithStripeMutation();
