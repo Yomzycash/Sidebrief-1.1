@@ -2,70 +2,87 @@ import { PdfCard } from "components/cards";
 import { CardContainer, Loader } from "./styles";
 import { useViewLaunchRequestQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const DetailBeneficiaries = () => {
-  const launchResponse = useSelector(
-    (store) => store.LaunchReducer.launchResponse
-  );
-  const { data, isLoading, isSuccess, refetch } =
-    useViewLaunchRequestQuery(launchResponse);
+	const { search } = useLocation();
 
-  if (isSuccess) {
-  }
+	const searchParams = new URLSearchParams(search);
 
-  const beneficiaryKYC = isSuccess ? data.beneficialOwnersKYC : [];
+	const launchResponse = {
+		launchCode: searchParams.get("launchCode"),
+		registrationCountry: searchParams.get("registrationCountry"),
+		registrationType: searchParams.get("registrationType"),
+	};
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+	const { data, isLoading, isSuccess, refetch } =
+		useViewLaunchRequestQuery(launchResponse);
 
-  return (
-    <>
-      {isLoading ? (
-        <Loader>
-          <Puff stroke="#00A2D4" fill="white" />
-        </Loader>
-      ) : (
-        <CardContainer>
-          {data.businessBeneficialOwners.map((beneficiary) => {
-            const currentmemberKYC = beneficiaryKYC.filter(
-              (el) => el.beneficialOwnerCode === beneficiary.beneficialOwnerCode
-            );
+	if (isSuccess) {
+	}
 
-            const NINSlip = currentmemberKYC
-              .filter((el) => el.documentType.includes("NIN Slip"))
-              .slice(-1)[0];
-            const proofFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("Proof of address"))
-              .slice(-1)[0];
-            const eSignature = currentmemberKYC
-              .filter((el) => el.documentType.includes("E-signature"))
-              .slice(-1)[0];
-            const passportFile = currentmemberKYC
-              .filter((el) => el.documentType.includes("Passport Photograph"))
-              .slice(-1)[0];
+	const beneficiaryKYC = isSuccess ? data.beneficialOwnersKYC : [];
 
-            return (
-              <PdfCard
-                name={beneficiary.beneficialOwnerName}
-                email={beneficiary.beneficialOwnerEmail}
-                phone={`+${beneficiary.beneficialOwnerPhone}`}
-                title={`${beneficiary.beneficialOwnerOccupation}`}
-                beneCode={beneficiary.beneficialOwnerCode}
-                nin={NINSlip}
-                proof={proofFile}
-                signature={eSignature}
-                passport={passportFile}
-                page={"beneficiaries"}
-              />
-            );
-          })}
-        </CardContainer>
-      )}
-    </>
-  );
+	useEffect(() => {
+		refetch();
+	}, [refetch]);
+
+	return (
+		<>
+			{isLoading ? (
+				<Loader>
+					<Puff stroke="#00A2D4" fill="white" />
+				</Loader>
+			) : (
+				<CardContainer>
+					{data.businessBeneficialOwners.map((beneficiary) => {
+						const currentmemberKYC = beneficiaryKYC.filter(
+							(el) =>
+								el.beneficialOwnerCode ===
+								beneficiary.beneficialOwnerCode
+						);
+
+						const NINSlip = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("NIN Slip")
+							)
+							.slice(-1)[0];
+						const proofFile = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("Proof of address")
+							)
+							.slice(-1)[0];
+						const eSignature = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("E-signature")
+							)
+							.slice(-1)[0];
+						const passportFile = currentmemberKYC
+							.filter((el) =>
+								el.documentType.includes("Passport Photograph")
+							)
+							.slice(-1)[0];
+
+						return (
+							<PdfCard
+								name={beneficiary.beneficialOwnerName}
+								email={beneficiary.beneficialOwnerEmail}
+								phone={`+${beneficiary.beneficialOwnerPhone}`}
+								title={`${beneficiary.beneficialOwnerOccupation}`}
+								beneCode={beneficiary.beneficialOwnerCode}
+								nin={NINSlip}
+								proof={proofFile}
+								signature={eSignature}
+								passport={passportFile}
+								page={"beneficiaries"}
+							/>
+						);
+					})}
+				</CardContainer>
+			)}
+		</>
+	);
 };
 
 export default DetailBeneficiaries;

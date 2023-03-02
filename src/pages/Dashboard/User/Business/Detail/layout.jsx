@@ -1,20 +1,25 @@
-import { Outlet, useParams, useNavigate } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 import { Header } from "containers/BusinessDetail";
 import { Body, Container } from "./styles";
-import { useSelector } from "react-redux";
+import { store } from "redux/Store";
+import { setLaunchResponse } from "redux/Slices";
 import { useEffect } from "react";
 
 const BusinessDetailLayout = () => {
-  const navigate = useNavigate();
-  const { code } = useParams();
-  const launchData = useSelector((store) => store.LaunchReducer.launchResponse);
+  const [searchParams] = useSearchParams();
 
-  // might need some more work
+  const launchResponse = {
+    launchCode: searchParams.get("launchCode"),
+    registrationCountry: searchParams.get("registrationCountry"),
+    registrationType: searchParams.get("registrationType"),
+  };
+
+  localStorage.setItem("launchInfo", JSON.stringify(launchResponse));
+  localStorage.setItem("countryISO", launchResponse.registrationCountry);
+
   useEffect(() => {
-    if (code !== launchData.launchCode) {
-      navigate(-1);
-    }
-  }, [code, launchData, navigate]);
+    store.dispatch(setLaunchResponse(launchResponse));
+  }, []);
 
   return (
     <Container>

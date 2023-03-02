@@ -180,9 +180,6 @@ const AllServices = lazy(() =>
 const ChatLayout = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/Chat")
 );
-const SingleChat = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/Chat/SingleChat")
-);
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -330,7 +327,7 @@ const AppRouter = () => {
                 ></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
-              <Route path="business/:code" element={<BusinessDetailLayout />}>
+              <Route path="business" element={<BusinessDetailLayout />}>
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
@@ -414,10 +411,7 @@ const AppRouter = () => {
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
               </Route>
-              <Route
-                path="business/:code"
-                element={<StaffBusinessDetailLayout />}
-              >
+              <Route path="business" element={<StaffBusinessDetailLayout />}>
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
