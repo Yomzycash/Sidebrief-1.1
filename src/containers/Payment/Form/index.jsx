@@ -100,11 +100,14 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     ...config,
     text: "Pay with Flutterwave",
     callback: (response) => {
-      console.log(response);
+      if (response?.status === "successful")
+        toast.success("Payment successful");
       sendRefToBackend(response);
       closePaymentModal(); // this will close the modal programmatically
     },
-    onClose: () => {},
+    onClose: () => {
+      toast.error("Payment failed");
+    },
   };
 
   // Send the payment reference information to the backend
