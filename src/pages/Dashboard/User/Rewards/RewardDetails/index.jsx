@@ -54,6 +54,7 @@ const RewardDetails = (props) => {
     store.dispatch(setRewardsPageHeader(false))
   }, [])
 
+
   const { rewardID } = useParams()
 
   useEffect(() => {
@@ -63,7 +64,6 @@ const RewardDetails = (props) => {
       (reward) => reward.rewardID === rewardID,
     )
     setSelectedReward(rewardDetails)
-    // console.log(rewardDetails);
   }, [data])
 
   const handleClickOpen = () => {
@@ -76,7 +76,8 @@ const RewardDetails = (props) => {
 
   const handleRewardClick = (reward) => {
     setSelectedReward(reward)
-    // console.log(reward);
+    navigate(`/dashboard/rewards/${reward.rewardID}`)
+    
   }
 
   return (
