@@ -93,24 +93,25 @@ const DynamicForm = ({ formInfo, formMode, loading, disable }) => {
 
 export default DynamicForm;
 
+// name uniqueness has to be validated
 const array = [
   {
     question: "When did you register your company",
     type: "text",
     name: "registration",
-    importance: "required",
+    required: true,
   },
   {
     question: "Who is your favourite artist",
     type: "text",
     options: ["davido", "wizkid", "burna"],
     name: "artist",
-    importance: "optional",
+    required: false,
   },
   {
     question: "How many shareholders do you have",
     type: "number",
     name: "shareholders",
-    importance: "required",
+    required: true,
   },
 ];

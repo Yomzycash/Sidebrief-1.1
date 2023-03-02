@@ -1,23 +1,26 @@
-import { Container, Messages } from "./style";
-import { MessageBubble } from "components/cards";
-import { useLocation } from "react-router-dom";
-import { ChatInput } from "./chatInput";
-import { getSelectedThread } from "../Chats/actions";
-import EmptyChatRight from "components/texts/EmptyChat/EmptyChatRight";
-import { useUpdateNotificationMutation } from "services/chatService";
-import { useEffect } from "react";
-import { checkStaffEmail } from "utils/globalFunctions";
-import { getUnReadNotifications } from "components/navbar/actions";
-import { useSelector } from "react-redux";
+import { Container, Messages } from './style'
+import { MessageBubble } from 'components/cards'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { ChatInput } from './chatInput'
+import { getSelectedThread } from '../Chats/actions'
+import EmptyChatRight from 'components/texts/EmptyChat/EmptyChatRight'
+import { useUpdateNotificationMutation } from 'services/chatService'
+import { useEffect } from 'react'
+import { checkStaffEmail } from 'utils/globalFunctions'
+import { getUnReadNotifications } from 'components/navbar/actions'
+import { useSelector } from 'react-redux'
 
 export const ChatBody = ({ data, threadsRefetch }) => {
-  const [updateNotification] = useUpdateNotificationMutation();
+  const [updateNotification] = useUpdateNotificationMutation()
 
-  const location = useLocation();
-  let params = new URLSearchParams(location.search);
-  let subject = params.get("subject");
+  const location = useLocation()
+  let params = new URLSearchParams(location.search)
+  let subject = params.get('subject')
 
-  const selectedThread = getSelectedThread(data, subject);
+  const selectedThread = getSelectedThread(data, subject)
+  const [category] = useSearchParams()
+  const femi = category.get('serviceId')
+  console.log(femi)
 
   // const { refreshNotifications } = useSelector(
   //   (store) => store.UserDataReducer
@@ -71,5 +74,5 @@ export const ChatBody = ({ data, threadsRefetch }) => {
         threadsRefetch={threadsRefetch}
       />
     </Container>
-  );
-};
+  )
+}
