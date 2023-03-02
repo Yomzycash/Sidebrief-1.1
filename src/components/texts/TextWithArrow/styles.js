@@ -7,7 +7,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  cursor: pointer;
+  cursor: ${({ $disable }) => (!$disable ? "pointer" : "not-allowed")};
   transition: all 0.3s ease-out;
 
   ${({ hover }) => hover && `gap: 16px;`}
