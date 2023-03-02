@@ -1,18 +1,18 @@
-import { Outlet, useParams, useNavigate } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 import { Header } from "containers/BusinessDetail";
 import { Body, Container } from "./styled";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const StaffBusinessDetailLayout = () => {
-  return (
-    <Container>
-      <Header isStaff />
-      <Body>
-        <Outlet />
-      </Body>
-    </Container>
-  );
+	const [searchParams] = useSearchParams();
+
+	return (
+		<Container>
+			<Header isStaff code={searchParams.get("launchCode")} />
+			<Body>
+				<Outlet />
+			</Body>
+		</Container>
+	);
 };
 
 export default StaffBusinessDetailLayout;
