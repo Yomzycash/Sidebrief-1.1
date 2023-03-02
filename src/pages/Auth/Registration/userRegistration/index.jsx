@@ -76,6 +76,14 @@ const UserRegistration = () => {
     };
   }, []);
 
+  let kd = {
+    first_name: "Sidebrief",
+    last_name: "Dev Team",
+    email: "usxmacnsotunde@sidebrief.com",
+    password: "12341234",
+    phone: "2347066539444",
+    referral_code: "facebook",
+  };
   // Sign up function block
   const submitForm = async (formData) => {
     console.log(formData);
@@ -126,7 +134,11 @@ const UserRegistration = () => {
   };
 
   // Handle supported referral fetch
-  const handleReferral = (value) => console.log(value);
+  const handleReferral = (value) => {
+    var string = Object.values(value)[0];
+    console.log(string);
+    setValue("referral", string, { shouldValidate: true });
+  };
 
   return (
     <AuthLayout
@@ -230,8 +242,10 @@ const UserRegistration = () => {
                 options={referralOptions}
                 name="referral"
                 register={register}
-                onChange={handleGenderChange}
+                onChange={handleReferral}
                 errorMessage={errors.referral?.message}
+                fontSize="clamp(12px, 1.2vw, 14px)"
+                height="40px"
               />
               {/* <TagInputWithSearch
                 label="How did you find us?"
