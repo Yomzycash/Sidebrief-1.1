@@ -41,12 +41,9 @@ export const userRegistrationSchema = yup.object().shape({
     .required("Enter a password")
     .matches(/^(?=.*[A-Z])/, " Must Contain One Uppercase Character")
     .matches(/^(?=.*[a-z])/, " Must Contain One Lowercase Character")
-    .matches(/^(?=.*[0-9])/, "  Must Contain One Number")
-    .matches(
-      /^(?=.*[!@#\$%\^&\*])/,
-      "  Must Contain  One Special Case Character"
-    ),
-  referral: yup.string().required("Please select an option"),
+    .matches(/^(?=.*[0-9])/, "  Must Contain One Number"),
+
+  referral_code: yup.string().required("Please select an option"),
 });
 
 export const loginSchema = yup.object().shape({
@@ -91,8 +88,7 @@ export const partnerRegistrationSchema = yup.object().shape({
     .matches(/^(?=.*[A-Z])/, "Must contain an uppercase character")
     .matches(/^(?=.*[a-z])/, " Must contain a lowercase character")
 
-    .matches(/^(?=.*[0-9])/, "  Must contain a number")
-    .matches(/^(?=.*[!@#\$%\^&\*])/, "  Must contain a special case character"),
+    .matches(/^(?=.*[0-9])/, "  Must contain a number"),
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Enter your corporate name"),
 });
@@ -110,8 +106,7 @@ export const resellerRegistrationSchema = yup.object().shape({
     .matches(/^(?=.*[A-Z])/, " Must contain an uppercase character")
     .matches(/^(?=.*[a-z])/, " Must contain a lowercase character")
 
-    .matches(/^(?=.*[0-9])/, "  Must contain a number")
-    .matches(/^(?=.*[!@#\$%\^&\*])/, "  Must contain a special case character"),
+    .matches(/^(?=.*[0-9])/, "  Must contain a number"),
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });

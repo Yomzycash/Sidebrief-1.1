@@ -76,29 +76,36 @@ const UserRegistration = () => {
     };
   }, []);
 
+  let kd = {
+    first_name: "Sidebrief",
+    last_name: "Dev Team",
+    email: "usxmacnsotunde@sidebrief.com",
+    password: "12341234",
+    phone: "2347066539444",
+    referral_code: "facebook",
+  };
   // Sign up function block
   const submitForm = async (formData) => {
-    console.log(formData);
-    // let staffCheck = checkStaffEmail(formData.email);
-    // let response = staffCheck
-    //   ? await registerNewStaff(JSON.stringify(formData))
-    //   : await registerNewUser(JSON.stringify(formData));
+    let staffCheck = checkStaffEmail(formData.email);
+    let response = staffCheck
+      ? await registerNewStaff(JSON.stringify(formData))
+      : await registerNewUser(JSON.stringify(formData));
 
-    // let data = response?.data;
-    // let error = response?.error;
-    // if (data) {
-    //   store.dispatch(saveUserInfo(data));
-    //   localStorage.setItem(
-    //     "userInfo",
-    //     JSON.stringify({ ...data, newUser: true })
-    //   );
-    //   localStorage.setItem("userEmail", formData.email);
-    //   toast.success(data.message);
-    //   navigate(`${location.pathname}/success`);
-    // } else if (error) {
-    //   // console.log(error.data.message);
-    //   toast.error(error.data.message);
-    // }
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      store.dispatch(saveUserInfo(data));
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ ...data, newUser: true })
+      );
+      localStorage.setItem("userEmail", formData.email);
+      toast.success(data.message);
+      navigate(`${location.pathname}/success`);
+    } else if (error) {
+      // console.log(error.data.message);
+      toast.error(error.data.message);
+    }
   };
 
   // const correctFormDate = (formData) => {
@@ -126,7 +133,10 @@ const UserRegistration = () => {
   };
 
   // Handle supported referral fetch
-  const handleReferral = (value) => console.log(value);
+  const handleReferral = (value) => {
+    var string = Object.values(value)[0];
+    setValue("referral_code", string, { shouldValidate: true });
+  };
 
   return (
     <AuthLayout
@@ -228,10 +238,12 @@ const UserRegistration = () => {
               <DropDown
                 label="How did you find us?"
                 options={referralOptions}
-                name="referral"
+                name="referral_code"
                 register={register}
-                onChange={handleGenderChange}
-                errorMessage={errors.referral?.message}
+                onChange={handleReferral}
+                errorMessage={errors.referral_code?.message}
+                fontSize="clamp(12px, 1.2vw, 14px)"
+                height="40px"
               />
               {/* <TagInputWithSearch
                 label="How did you find us?"
