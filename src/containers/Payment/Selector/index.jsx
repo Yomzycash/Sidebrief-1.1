@@ -33,7 +33,7 @@ export const PaymentSelector = ({ providers, activate }) => {
               active={el.active}
               onClick={() => activate(el.id)}
             >
-              <img src={el.image} alt={el.name} />
+              <p>{el.text}</p>
             </PayProvide>
           ))}
         </>
@@ -47,7 +47,7 @@ export const PaymentSelector = ({ providers, activate }) => {
                   active={el.active}
                   onClick={() => activate(el.id)}
                 >
-                  <img src={el.image} alt={el.name} />
+                  <p>{el.text}</p>
                 </PayProvide>
               )
           )}
