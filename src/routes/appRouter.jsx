@@ -47,9 +47,9 @@ import PaidDraft from 'pages/Dashboard/staffDashboard/Businesses/BusinessRegistr
 import ServiceDownload from 'pages/Dashboard/User/Manage/Download'
 import StripePaymentSuccess from 'pages/Launch/StripePaymentSuccess/StripePaymentSuccess'
 import Review from 'pages/Dashboard/User/Manage/Review'
-import ManageDownload from 'pages/Dashboard/User/Manage/Review/ManageDownload'
 import ManageInfo from 'pages/Dashboard/User/Manage/Review/ManageInfo'
 import FormInfo from 'pages/Dashboard/User/Manage/Review/FormInfo'
+import ManageDownload from 'pages/Dashboard/User/Manage/Review/ManageDownload'
 
 const Home = lazy(() => import('../pages/Home'))
 const EmailSuccess = lazy(() =>
@@ -327,7 +327,7 @@ const AppRouter = () => {
                 ></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
-              <Route path="business/:code" element={<BusinessDetailLayout />}>
+              <Route path="business" element={<BusinessDetailLayout />}>
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
@@ -411,10 +411,7 @@ const AppRouter = () => {
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
               </Route>
-              <Route
-                path="business/:code"
-                element={<StaffBusinessDetailLayout />}
-              >
+              <Route path="business" element={<StaffBusinessDetailLayout />}>
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
@@ -450,6 +447,7 @@ const AppRouter = () => {
             </Route>
           </Route>
 
+          {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
           {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
           <Route path="manage" element={<Outlet />}>
             <Route index element={<Manage />} />

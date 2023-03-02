@@ -1,13 +1,12 @@
 import React from "react";
-import { ChatInput } from "containers/ServiceChat/ChatBody/chatInput";
-import ManageCard from "components/cards/ManageCard";
+import DynamicForm from "components/Form/DynamicForm";
 
 const Test = () => {
-	return (
-		
-			<ManageCard/>
-		
-	);
+  return (
+    <div style={{}}>
+      <DynamicForm />
+    </div>
+  );
 };
 
 export default Test;

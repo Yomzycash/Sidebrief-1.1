@@ -3,7 +3,6 @@ import {
   Image,
   BellIcon,
   UserIcon,
-  DownIcon,
   NavWrapper,
   RightIcons,
   BellContainer,
@@ -14,21 +13,18 @@ import LogoNav from "./LogoNav";
 import logo from "../../asset/images/SidebriefLogo.png";
 import bell from "../../asset/images/bell.png";
 import user from "../../asset/images/user.png";
-import down from "../../asset/images/down.png";
 import Search from "./Search";
 import { Link } from "react-router-dom";
 import Profile from "components/Profile";
 import {
   checkStaffEmail,
-  getReceivedNotifications,
+  // getReceivedNotifications,
 } from "utils/globalFunctions";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import Notification from "components/notification";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
-import { useRef } from "react";
 import { useSelector } from "react-redux";
-import { getReadNotifications, getUnReadNotifications } from "./actions";
-import { useMemo } from "react";
+import { getUnReadNotifications } from "./actions";
 
 const Navbar = ({
   dashboard,
@@ -77,11 +73,12 @@ const Navbar = ({
     refetch();
   }, [refreshNotifications]);
 
-  // let newNotifications = useMemo(() => {
-  //   return getUnReadNotifications(data);
-  // }, [refreshNotifications]);
-  let newNotifications = getUnReadNotifications(data);
-  console.log(getUnReadNotifications(data));
+	// let newNotifications = useMemo(() => {
+	//   return getUnReadNotifications(data);
+	// }, [refreshNotifications]);
+	let newNotifications = getUnReadNotifications(data);
+	// console.log(getUnReadNotifications(data));
+
 
   return (
     <>
