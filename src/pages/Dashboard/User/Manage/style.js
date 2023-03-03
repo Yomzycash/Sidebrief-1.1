@@ -110,7 +110,7 @@ export const InfoFrame = styled.div`
 		background: ${({ theme }) => theme.grey5};
 		position: absolute;
 		right: 10%;
-		top: 10%;
+		top: 20%;
 	}
 
 	&:last-child {

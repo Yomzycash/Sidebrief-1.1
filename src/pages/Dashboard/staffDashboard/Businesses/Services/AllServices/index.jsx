@@ -99,6 +99,7 @@ const AllServices = () => {
     
     if (data) {
       toast.success("Service added successfully");
+      setOpen(false);
     } else {
       handleError(error)
     }

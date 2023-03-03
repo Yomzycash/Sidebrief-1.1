@@ -61,6 +61,13 @@ const ServicesModal = ({
           label: country.countryISO,
         }))
     );
+    setServiceCurrencies(
+      allCountries &&
+        allCountries.map((currency) => ({
+          value: currency.countryCurrency,
+          label: currency.countryCurrency,
+        }))
+    );
   }, [countries.data]);
 
 
@@ -73,12 +80,7 @@ const ServicesModal = ({
   // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
-    let currency = countries?.data?.filter(
-      (country) => country.countryISO === selectedCountry
-    )[0]?.countryCurrency;
-    setServiceCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
-    setValue("currency", "", { shouldValidate: true });
   };
 
   // This is attached to currency dropdown onChange
@@ -107,6 +109,7 @@ const ServicesModal = ({
       setValue("description", serviceInfo.serviceDescription,  { shouldValidate: true });
       setValue("category", serviceInfo.serviceCategory,  { shouldValidate: true });
       setValue("country", serviceInfo.serviceCountry,  { shouldValidate: true });
+      setValue("currency", serviceInfo.serviceCurrency, { shouldValidate: true });
       setValue("price", serviceInfo.servicePrice,  { shouldValidate: true });
       setValue("timeline", serviceInfo.serviceTimeline,  { shouldValidate: true });
     } else {
@@ -114,6 +117,7 @@ const ServicesModal = ({
       setValue("description", "");
       setValue("category", "");
       setValue("country", "");
+      setValue("currency", "");
       setValue("price", "");
       setValue("timeline", "");
     }
@@ -207,6 +211,7 @@ const ServicesModal = ({
           options={serviceCurrencies}
           onChange={handleCurrencyChange}
           errorMessage={errors.currency?.message}
+          defaultValue={cardAction === "edit" && serviceInfo?.serviceCurrency}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable || countryInfo?.countryCurrency}

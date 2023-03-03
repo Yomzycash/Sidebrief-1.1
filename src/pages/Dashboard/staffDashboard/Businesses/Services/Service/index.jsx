@@ -188,9 +188,7 @@ const ServicePage = () => {
     } else {
       handleError(error)
     }
-    refetch()
-    console.log("required service", requiredService)
-    console.log("response", response);
+    refetch();
   }
 
   // Update service 
