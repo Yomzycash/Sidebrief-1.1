@@ -7,19 +7,20 @@ import {
   CardContainer,
   Delete,
   DeleteStatus,
-} from "./style";
-import { format, isToday, isYesterday, parseJSON } from "date-fns";
-import ChatFileCard from "../ChatFileCard";
-import escapeHtml from "escape-html";
-import { Text } from "slate";
-import parse from "html-react-parser";
-import DeleteIcon from "asset/Icons/DeleteIcon";
-import { useDeleteNotificationMutation } from "services/chatService";
-import { SpinningCircles } from "react-loading-icons";
-import { handleResponse } from "pages/Launch/actions";
-import { checkStaffEmail, handleError } from "utils/globalFunctions";
-import { useState, useEffect } from "react";
-import { Node } from "slate";
+} from './style'
+import { format, isToday, isYesterday, parseJSON } from 'date-fns'
+import ChatFileCard from '../ChatFileCard'
+import escapeHtml from 'escape-html'
+import { Text } from 'slate'
+import parse from 'html-react-parser'
+import DeleteIcon from 'asset/Icons/DeleteIcon'
+import { useDeleteNotificationMutation } from 'services/chatService'
+import { SpinningCircles } from 'react-loading-icons'
+import { handleResponse } from 'pages/Launch/actions'
+import { checkStaffEmail, handleError } from 'utils/globalFunctions'
+import { useState, useEffect } from 'react'
+import { Node } from 'slate'
+import { ThreeDotMenu } from 'components/Menu'
 
 export const MessageBubble = ({
   senderId,
@@ -30,115 +31,124 @@ export const MessageBubble = ({
   notificationId,
   threadsRefetch,
 }) => {
-  const [selectedToDelete, setSelectedToDelete] = useState("");
+  const [selectedToDelete, setSelectedToDelete] = useState('')
 
-  const [deleteNotification, deleteState] = useDeleteNotificationMutation();
+  const [deleteNotification, deleteState] = useDeleteNotificationMutation()
 
   const formatDate = (createdAt) => {
     if (isToday(new Date(createdAt))) {
-      return "Today";
+      return 'Today'
     } else if (isYesterday(new Date(createdAt))) {
-      return "Yesterday";
+      return 'Yesterday'
     } else {
-      let date = new Date(createdAt);
-      return date.toLocaleString("default", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
+      let date = new Date(createdAt)
+      return date.toLocaleString('default', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      })
     }
-  };
+  }
 
   const serializeToHtml = (node) => {
     if (Text.isText(node)) {
-      let string = escapeHtml(node.text);
+      let string = escapeHtml(node.text)
       if (node.bold) {
-        string = `<strong>${string}</strong>`;
+        string = `<strong>${string}</strong>`
       }
       if (node.italic) {
-        string = `<i>${string}</i>`;
+        string = `<i>${string}</i>`
       }
       if (node.underline) {
-        string = `<u>${string}</u>`;
+        string = `<u>${string}</u>`
       }
-      return string;
+      return string
     }
 
-    const children = node.children.map((n) => serializeToHtml(n)).join("");
+    const children = node.children.map((n) => serializeToHtml(n)).join('')
 
     switch (node.type) {
-      case "block-quote":
-        return `<blockquote><p>${children}</p></blockquote>`;
-      case "paragraph":
-        return `<p>${children}</p>`;
-      case "heading-one":
-        return `<h1>${children}</h1>`;
-      case "heading-two":
-        return `<h2>${children}</h2>`;
-      case "numbered-list":
-        return `<ol>${children}</ol>`;
-      case "bulleted-list":
-        return `<ul>${children}</ul>`;
-      case "list-item":
-        return `<li>${children}</li>`;
+      case 'block-quote':
+        return `<blockquote><p>${children}</p></blockquote>`
+      case 'paragraph':
+        return `<p>${children}</p>`
+      case 'heading-one':
+        return `<h1>${children}</h1>`
+      case 'heading-two':
+        return `<h2>${children}</h2>`
+      case 'numbered-list':
+        return `<ol>${children}</ol>`
+      case 'bulleted-list':
+        return `<ul>${children}</ul>`
+      case 'list-item':
+        return `<li>${children}</li>`
       // case "link":
       // 	return `<a href="${escapeHtml(node.url)}">${children}</a>`;
       default:
-        return children;
+        return children
     }
-  };
+  }
 
   const parseMessage = (messageBody) => {
     try {
-      return serializeToHtml({ children: JSON.parse(messageBody) });
+      return serializeToHtml({ children: JSON.parse(messageBody) })
     } catch (err) {
-      return messageBody;
+      return messageBody
     }
-  };
+  }
 
-  const message = parse(parseMessage(messageBody));
+  const message = parse(parseMessage(messageBody))
 
   const handleDelete = async () => {
-    setSelectedToDelete(notificationId);
-    const response = await deleteNotification(notificationId);
-    if (response?.data) handleResponse(response, "Deleted", threadsRefetch);
-    else handleError(response?.error);
-  };
+    setSelectedToDelete(notificationId)
+    const response = await deleteNotification(notificationId)
+    if (response?.data) handleResponse(response, 'Deleted', threadsRefetch)
+    else handleError(response?.error)
+  }
 
-  let timeDiff = (Date.now() - new Date(createdAt).getTime()) / 1000;
-  let width = timeDiff < 900 ? (timeDiff / 900) * 100 : 100;
+  let timeDiff = (Date.now() - new Date(createdAt).getTime()) / 1000
+  let width = timeDiff < 900 ? (timeDiff / 900) * 100 : 100
 
-  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  let userEmail = localStorage.getItem("userEmail");
+  let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+  let userEmail = localStorage.getItem('userEmail')
 
-  let staffEmail = checkStaffEmail(userEmail);
-  let username = userInfo.username;
+  let staffEmail = checkStaffEmail(userEmail)
+  let username = userInfo.username
 
-  let isStaff = senderId === "Sidebrief" ? true : false;
+  let isStaff = senderId === 'Sidebrief' ? true : false
 
   let isMyMessage =
-    senderId === username || (isStaff && staffEmail) ? true : false;
+    senderId === username || (isStaff && staffEmail) ? true : false
+
+  const contextContent = [
+    {
+      text: 'Delete',
+      Icon: DeleteIcon,
+      action: handleDelete,
+    },
+  ]
 
   return (
     <Wrapper $isMyMessage={isMyMessage}>
       <Title $isMyMessage={isMyMessage}>
         <span>{senderId}</span>
         {isMyMessage && timeDiff < 900 && (
-          <Delete>
-            <DeleteStatus width={width > 0 ? width : 0}>
-              <div />
-            </DeleteStatus>
-            {deleteState.isLoading && notificationId === selectedToDelete ? (
-              <SpinningCircles
-                stroke="#BD1C1C"
-                fill="#BD1C1C"
-                width={24}
-                height={24}
-              />
-            ) : (
-              <DeleteIcon color="#c20000ce" onClick={handleDelete} />
-            )}
-          </Delete>
+          <ThreeDotMenu contextContent={contextContent} position="-100px" />
+          // <Delete>
+          //   <DeleteStatus width={width > 0 ? width : 0}>
+          //     <div />
+          //   </DeleteStatus>
+          //   {deleteState.isLoading && notificationId === selectedToDelete ? (
+          //     <SpinningCircles
+          //       stroke="#BD1C1C"
+          //       fill="#BD1C1C"
+          //       width={24}
+          //       height={24}
+          //     />
+          //   ) : (
+          //     <DeleteIcon color="#c20000ce" onClick={handleDelete} />
+          //   )}
+          // </Delete>
         )}
       </Title>
       {messageBody ? (
@@ -161,10 +171,10 @@ export const MessageBubble = ({
       {createdAt && (
         <TimeStamp>
           <span>{formatDate(createdAt)}</span>
-          <span>{format(parseJSON(createdAt), "hh:mm aaa")}</span>
+          <span>{format(parseJSON(createdAt), 'hh:mm aaa')}</span>
         </TimeStamp>
       )}
     </Wrapper>
-  );
-};
+  )
+}
 // createdAt?.slice(11, 16);
