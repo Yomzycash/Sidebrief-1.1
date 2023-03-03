@@ -62,14 +62,6 @@ export const SearchBar = styled.input`
 		font-weight: 400;
 		color: ${({ style }) => style?.placeholder?.color};
 	}
-
-	/* &:not(&:focus-within) {
-		border: 1px solid green;
-	} */
-
-	/* &:not(&:focus-within) + ${Container} {
-		display: none;
-	} */
 `;
 export const SearchIconWrapper = styled.div`
 	width: 5%;

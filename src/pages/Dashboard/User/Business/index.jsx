@@ -26,9 +26,11 @@ import { store } from "redux/Store";
 import {
 	useGetUserDraftQuery,
 	useGetUserSubmittedQuery,
+	useViewPayLaunchMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
 import Fuse from "fuse.js";
+import { navigateToDetailPage } from "utils/globalFunctions";
 
 const searchStyle = {
 	borderRadius: "12px",
@@ -45,6 +47,8 @@ const Business = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	let check = location.pathname.includes("chats");
+
+	const [viewPayLaunch] = useViewPayLaunchMutation();
 
 	const drafts = useGetUserDraftQuery({
 		refetchOnMountOrArgChange: true,
@@ -69,8 +73,13 @@ const Business = () => {
 	const fuse = new Fuse(allData, fuseOptions);
 
 	const onItemClick = (item) => {
-		console.log(item);
 		setSearchFocused(false);
+		const launchInfo = {
+			launchCode: item.launchCode,
+			registrationCountry: item.registrationCountry,
+			registrationType: item.registrationType,
+		};
+		navigateToDetailPage(navigate, launchInfo, viewPayLaunch);
 	};
 
 	const businessesShown = useSelector(
@@ -168,6 +177,12 @@ const Business = () => {
 														"no name",
 													launchCode:
 														el.item.launchCode,
+													registrationCountry:
+														el.item
+															.registrationCountry,
+													registrationType:
+														el.item
+															.registrationType,
 												};
 											})}
 										show={searchFocused}
