@@ -132,19 +132,22 @@ const Registrationlayout = () => {
 								className={"searchbox"}
 							/>
 							<SearchResult
-								items={fuse.search(searchValue).map((el) => {
-									return {
-										id: el.item.launchCode,
-										name:
-											el.item.businessNames
-												.businessName1 || "no name",
-										launchCode: el.item.launchCode,
-										registrationCountry:
-											el.item.registrationCountry,
-										registrationType:
-											el.item.registrationType,
-									};
-								})}
+								items={fuse
+									.search(searchValue)
+									.slice(0, 5)
+									.map((el) => {
+										return {
+											id: el.item.launchCode,
+											name:
+												el.item.businessNames
+													.businessName1 || "no name",
+											launchCode: el.item.launchCode,
+											registrationCountry:
+												el.item.registrationCountry,
+											registrationType:
+												el.item.registrationType,
+										};
+									})}
 								show={searchFocused}
 								unShow={() => setSearchFocused(false)}
 								onItemClick={onItemClick}

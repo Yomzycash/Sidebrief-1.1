@@ -168,6 +168,7 @@ const Business = () => {
 									<SearchResult
 										items={fuse
 											.search(searchValue)
+											.slice(0, 5)
 											.map((el) => {
 												return {
 													id: el.item.launchCode,
