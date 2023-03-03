@@ -73,10 +73,12 @@ const Navbar = ({
     refetch();
   }, [refreshNotifications]);
 
-  // let newNotifications = useMemo(() => {
-  //   return getUnReadNotifications(data);
-  // }, [refreshNotifications]);
-  let newNotifications = getUnReadNotifications(data);
+	// let newNotifications = useMemo(() => {
+	//   return getUnReadNotifications(data);
+	// }, [refreshNotifications]);
+	let newNotifications = getUnReadNotifications(data);
+	// console.log(getUnReadNotifications(data));
+
 
   return (
     <>
