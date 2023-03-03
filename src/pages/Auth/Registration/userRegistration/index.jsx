@@ -86,7 +86,6 @@ const UserRegistration = () => {
   };
   // Sign up function block
   const submitForm = async (formData) => {
-
     let staffCheck = checkStaffEmail(formData.email);
     let response = staffCheck
       ? await registerNewStaff(JSON.stringify(formData))
@@ -136,7 +135,6 @@ const UserRegistration = () => {
   // Handle supported referral fetch
   const handleReferral = (value) => {
     var string = Object.values(value)[0];
-    console.log(string);
     setValue("referral_code", string, { shouldValidate: true });
   };
 
