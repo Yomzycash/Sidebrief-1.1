@@ -42,7 +42,7 @@ import { Mail } from "asset/svg";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { getUnReadNotifications } from "components/navbar/actions";
 
-export const Header = ({ isStaff }) => {
+export const Header = ({ isStaff, code }) => {
 	const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
 
@@ -50,7 +50,6 @@ export const Header = ({ isStaff }) => {
 	const [deleteLaunchStaff, deleteLaunchStaffState] =
 		useDeleteLaunchRequestStaffMutation();
 
-	const { code } = useParams();
 	const { pathname, search } = useLocation();
 	const navigate = useNavigate();
 

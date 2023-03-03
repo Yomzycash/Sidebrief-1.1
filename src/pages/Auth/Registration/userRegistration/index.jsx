@@ -19,12 +19,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewUserMutation } from "services/authService";
 import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
-import { referOptions, userRegistrationSchema } from "utils/config";
+import { referralOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
 
 import { checkStaffEmail } from "utils/globalFunctions";
 import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
+import TagInputWithSearch from "components/input/TagInputWithSearch";
+import { useCallback } from "react";
+
+//
+
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
   const [registerNewUser, { isLoading, isSuccess }] =
@@ -71,6 +76,14 @@ const UserRegistration = () => {
     };
   }, []);
 
+  let kd = {
+    first_name: "Sidebrief",
+    last_name: "Dev Team",
+    email: "usxmacnsotunde@sidebrief.com",
+    password: "12341234",
+    phone: "2347066539444",
+    referral_code: "facebook",
+  };
   // Sign up function block
   const submitForm = async (formData) => {
     let staffCheck = checkStaffEmail(formData.email);
@@ -117,6 +130,12 @@ const UserRegistration = () => {
 
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
+  };
+
+  // Handle supported referral fetch
+  const handleReferral = (value) => {
+    var string = Object.values(value)[0];
+    setValue("referral_code", string, { shouldValidate: true });
   };
 
   return (
@@ -218,12 +237,20 @@ const UserRegistration = () => {
 
               <DropDown
                 label="How did you find us?"
-                options={referOptions}
-                name="referrer"
+                options={referralOptions}
+                name="referral_code"
                 register={register}
-                onChange={handleGenderChange}
-                errorMessage={errors.referrer?.message}
+                onChange={handleReferral}
+                errorMessage={errors.referral_code?.message}
+                fontSize="clamp(12px, 1.2vw, 14px)"
+                height="40px"
               />
+              {/* <TagInputWithSearch
+                label="How did you find us?"
+                list={referralOptions}
+                getValue={handleReferral}
+                initialValue=""
+              /> */}
             </div>
             <TextsWithLink
               text={[

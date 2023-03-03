@@ -6,12 +6,7 @@ import "./stripe.css";
 
 //
 
-import {
-  PaymentElement,
-  LinkAuthenticationElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useEffect } from "react";
 import { useState } from "react";
 import { usePayWithStripeMutation } from "services/launchService";
@@ -28,14 +23,12 @@ const stripePromise = loadStripe(PUBLIC_KEY);
 // );
 
 const StripePayment = ({ amount }) => {
-  console.log(amount);
-
   const [clientSecret, setClientSecret] = useState("");
   const [payWithStripe, payWithStripeState] = usePayWithStripeMutation();
 
   useEffect(() => {
     (async () => {
-      const paymentResponse = await payWithStripe({ amount: amount });
+      const paymentResponse = await payWithStripe({ amount: amount * 100 });
       if (paymentResponse?.data?.clientSecret)
         setClientSecret(paymentResponse?.data?.clientSecret);
     })();
@@ -49,9 +42,6 @@ const StripePayment = ({ amount }) => {
     // appearance,
   };
 
-  //
-  console.log(amount);
-  console.log(clientSecret);
   //
 
   const stripe = useStripe(clientSecret);

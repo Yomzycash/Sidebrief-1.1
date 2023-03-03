@@ -27,35 +27,34 @@ import profile from "../asset/images/profile.svg";
 import ServicesIcon from "asset/Icons/ServicesIcon";
 
 export const userRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
+  first_name: yup.string().required("Enter your first name"),
+  last_name: yup.string().required("Enter your last name"),
+  email: yup
+    .string()
+    .email("Enter a valid email address")
+    .required("Enter your email"),
+  phone: yup.string().required("Enter your phone number"),
   password: yup
     .string()
     .min(6)
     .max(15)
-    .required("Password is a required field")
+    .required("Enter a password")
     .matches(/^(?=.*[A-Z])/, " Must Contain One Uppercase Character")
     .matches(/^(?=.*[a-z])/, " Must Contain One Lowercase Character")
+    .matches(/^(?=.*[0-9])/, "  Must Contain One Number"),
 
-    .matches(/^(?=.*[0-9])/, "  Must Contain One Number")
-    .matches(
-      /^(?=.*[!@#\$%\^&\*])/,
-      "  Must Contain  One Special Case Character"
-    ),
-  referrer: yup.string().notRequired(),
+  referral_code: yup.string().required("Please select an option"),
 });
 
 export const loginSchema = yup.object().shape({
   email: yup
     .string()
     .email("Enter a valid email address")
-    .required("Email is a required field"),
-  password: yup.string().required("Password is a required field"),
+    .required("Enter your email"),
+  password: yup.string().required("Enter your password"),
 });
 
-export const referOptions = [
+export const referralOptions = [
   { value: "Facebook", label: "Facebook" },
   { value: "Instagram", label: "Instagram" },
   { value: "Twitter", label: "Twitter" },
@@ -77,39 +76,37 @@ export const directorRoleOptions = [
 ];
 
 export const partnerRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
-  email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
+  first_name: yup.string().required("Enter your first name"),
+  last_name: yup.string().required("Enter your last name"),
+  email: yup.string().email("Enter your email address").required(),
+  phone: yup.string().required("Enter your phone number"),
   password: yup
     .string()
     .min(6)
     .max(15)
-    .required("Password is a required field")
+    .required("Enter a password")
     .matches(/^(?=.*[A-Z])/, "Must contain an uppercase character")
     .matches(/^(?=.*[a-z])/, " Must contain a lowercase character")
 
-    .matches(/^(?=.*[0-9])/, "  Must contain a number")
-    .matches(/^(?=.*[!@#\$%\^&\*])/, "  Must contain a special case character"),
+    .matches(/^(?=.*[0-9])/, "  Must contain a number"),
   operational_country: yup.string().required(),
-  corporate_name: yup.string().required("Corporate name is a required field"),
+  corporate_name: yup.string().required("Enter your corporate name"),
 });
 
 export const resellerRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("First name is a required field"),
-  last_name: yup.string().required("Last name is a required field"),
+  first_name: yup.string().required("Enter your first name"),
+  last_name: yup.string().required("Enter your last name"),
   email: yup.string().email("Enter a valid email address").required(),
-  phone: yup.string().required("Phone number is a required field"),
+  phone: yup.string().required("Enter your phone number"),
   password: yup
     .string()
     .min(6)
     .max(15)
-    .required("Password is a required field")
+    .required("Enter a password")
     .matches(/^(?=.*[A-Z])/, " Must contain an uppercase character")
     .matches(/^(?=.*[a-z])/, " Must contain a lowercase character")
 
-    .matches(/^(?=.*[0-9])/, "  Must contain a number")
-    .matches(/^(?=.*[!@#\$%\^&\*])/, "  Must contain a special case character"),
+    .matches(/^(?=.*[0-9])/, "  Must contain a number"),
   operational_country: yup.string().required(),
   corporate_name: yup.string().required("Corporate name is a required field"),
 });
