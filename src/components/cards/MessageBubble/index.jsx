@@ -133,7 +133,7 @@ export const MessageBubble = ({
       <Title $isMyMessage={isMyMessage}>
         <span>{senderId}</span>
         {isMyMessage && timeDiff < 900 && (
-          <ThreeDotMenu contextContent={contextContent} position="-100px" />
+          <ThreeDotMenu contextContent={contextContent} position="-160px" />
           // <Delete>
           //   <DeleteStatus width={width > 0 ? width : 0}>
           //     <div />
