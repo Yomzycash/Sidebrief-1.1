@@ -14,9 +14,10 @@ const Search = ({
 	placeholder = "Search something...",
 	onChange,
 	value,
+	className,
 }) => {
 	return (
-		<SearchBarWrapper style={style}>
+		<SearchBarWrapper style={style} className={className}>
 			<SearchIconWrapper>
 				<SearchIcon src={search} alt="logo" style={iconStyle} />
 			</SearchIconWrapper>

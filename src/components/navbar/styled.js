@@ -63,9 +63,9 @@ export const SearchBar = styled.input`
 		color: ${({ style }) => style?.placeholder?.color};
 	}
 
-	&:not(&:focus-within) {
+	/* &:not(&:focus-within) {
 		border: 1px solid green;
-	}
+	} */
 
 	/* &:not(&:focus-within) + ${Container} {
 		display: none;

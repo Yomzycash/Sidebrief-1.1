@@ -9,6 +9,7 @@ import {
 	BottomContent,
 	MainHeader,
 	Drop,
+	SearchWrapper,
 } from "./styled";
 import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
@@ -27,7 +28,6 @@ import {
 	useGetUserSubmittedQuery,
 } from "services/launchService";
 import { useSelector } from "react-redux";
-import styled from "styled-components";
 import Fuse from "fuse.js";
 
 const searchStyle = {
@@ -41,6 +41,7 @@ const iconStyle = { width: "17px", height: "17px" };
 
 const Business = () => {
 	const [searchValue, setSearchValue] = useState("");
+	const [searchFocused, setSearchFocused] = useState(false);
 	const location = useLocation();
 	const navigate = useNavigate();
 	let check = location.pathname.includes("chats");
@@ -66,6 +67,11 @@ const Business = () => {
 	const allData = [...(drafts.data || []), ...(submitted.data || [])];
 
 	const fuse = new Fuse(allData, fuseOptions);
+
+	const onItemClick = (item) => {
+		console.log(item);
+		setSearchFocused(false);
+	};
 
 	const businessesShown = useSelector(
 		(store) => store.BusinessesInfo.businessesShown
@@ -138,7 +144,9 @@ const Business = () => {
 								</Drop>
 							</TopContent>
 							<BottomContent>
-								<SearchWrapper>
+								<SearchWrapper
+									onFocus={() => setSearchFocused(true)}
+								>
 									<Search
 										style={searchStyle}
 										iconStyle={iconStyle}
@@ -146,18 +154,25 @@ const Business = () => {
 											setSearchValue(value)
 										}
 										value={searchValue}
+										className={"searchbox"}
 									/>
 									<SearchResult
 										items={fuse
 											.search(searchValue)
 											.map((el) => {
 												return {
+													id: el.item.launchCode,
 													name:
 														el.item.businessNames
 															.businessName1 ||
 														"no name",
+													launchCode:
+														el.item.launchCode,
 												};
 											})}
+										show={searchFocused}
+										unShow={() => setSearchFocused(false)}
+										onItemClick={onItemClick}
 									/>
 								</SearchWrapper>
 								<ButtonWrapper>
@@ -198,15 +213,3 @@ const Business = () => {
 	);
 };
 export default Business;
-
-const SearchWrapper = styled.div`
-	max-width: 384px;
-	height: 40px;
-	width: 100%;
-	position: relative;
-
-	@media screen and (max-width: 700px) {
-		max-width: 100%;
-		width: 100%;
-	}
-`;
