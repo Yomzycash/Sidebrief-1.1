@@ -52,6 +52,22 @@ export const SubHeader = styled.div`
 
 	//TODO: maybe hide scroll bar
 `;
+export const SearchWrapper = styled.div`
+	max-width: 384px;
+	height: 40px;
+	width: 100%;
+	position: relative;
+
+	@media screen and (max-width: 700px) {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.searchbox {
+		position: absolute;
+		z-index: 5;
+	}
+`;
 
 export const TopContent = styled.div`
 	display: flex;
@@ -88,14 +104,6 @@ export const BottomContent = styled.div`
 	gap: 60px;
 	flex: 1;
 	justify-content: space-between;
-
-	@media screen and (max-width: 700px) {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 16px;
-		width: 100%;
-		padding-inline: 0px !important;
-	}
 `;
 
 export const Drop = styled.div`
@@ -112,8 +120,43 @@ export const Drop = styled.div`
 		background: none;
 	}
 `;
+export const Flex = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 16px;
+`;
+export const ExportWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 10px 24px;
+	gap: 8px;
+
+	width: max-content;
+	height: 44px;
+
+	border: 1px solid #00a2d4;
+	border-radius: 8px;
+	cursor: pointer;
+`;
+export const TitleWrapper = styled.h3`
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 21px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	letter-spacing: -0.5px;
+	color: #00a2d4;
+`;
 export const ButtonWrapper = styled.div`
-	width: 200px;
+	width: 255px;
+	height: 44px;
+	cursor: pointer;
+
+	background: #00a2d4;
+	border-radius: 8px;
 	@media screen and (max-width: 700px) {
 		width: 100%;
 	}
@@ -139,71 +182,4 @@ export const ButtonWrapper = styled.div`
 			justify-content: center !important;
 		}
 	}
-`;
-
-export const SearchWrapper = styled.div`
-	max-width: 384px;
-	height: 40px;
-	width: 100%;
-	position: relative;
-
-	@media screen and (max-width: 700px) {
-		max-width: 100%;
-		width: 100%;
-	}
-
-	.searchbox {
-		position: absolute;
-		z-index: 5;
-	}
-`;
-
-export const searchStyle = styled.div`
-	border-radius: 12px;
-	background-color: "white";
-	max-width: 384px;
-	height: 40px;
-	@media screen and (max-width: 700px) {
-		width: 100%;
-	}
-`;
-
-export const HeadText = styled.h5`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 131%;
-	letter-spacing: 0.02em;
-	padding-inline: ${({ nopadding }) => (nopadding ? `0` : `24px`)};
-
-	color: #151717;
-`;
-
-export const BodyText = styled.p`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 131%;
-	letter-spacing: 0.02em;
-	padding-inline: 24px;
-
-	color: #151717;
-`;
-
-export const Checkbox = styled.input`
-	cursor: pointer;
-	width: 20px;
-	height: 20px;
-	margin-right: 30px;
-`;
-
-export const Clickable = styled.button`
-	height: 56px;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	border: none;
-	background-color: transparent;
 `;

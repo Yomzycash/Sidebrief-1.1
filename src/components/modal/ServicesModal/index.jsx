@@ -29,6 +29,7 @@ const ServicesModal = ({
   const [servicesCountries, setServicesCountries] = useState([
     { value: "", label: "" },
   ]);
+
   const [servicesCategories, setServicesCategories] = useState([
     { value: "", label: "" },
   ]);
@@ -37,6 +38,7 @@ const ServicesModal = ({
   ]);
 
   const countries = useGetAllCountriesQuery();
+  const { data } = useGetAllServicesQuery();
   const categories = useGetAllServicesQuery();
 
   const {
@@ -51,15 +53,6 @@ const ServicesModal = ({
   // Update entity countries
   useEffect(() => {
     let allCountries = countries.data;
-    let allCategories = categories.data;
-
-    setServicesCategories(
-      allCategories &&
-        allCategories.map((category) => ({
-          value: category.serviceCategory,
-          label: category.serviceCategory,
-        }))
-    );
 
     setServicesCountries(
       allCountries &&
@@ -68,7 +61,15 @@ const ServicesModal = ({
           label: country.countryISO,
         }))
     );
+    setServiceCurrencies(
+      allCountries &&
+        allCountries.map((currency) => ({
+          value: currency.countryCurrency,
+          label: currency.countryCurrency,
+        }))
+    );
   }, [countries.data]);
+
 
   // This is attached to category dropdown onChange
   const handleCategoryChange = (value) => {
@@ -79,12 +80,7 @@ const ServicesModal = ({
   // This is attached to country dropdown onChange
   const handleCountryChange = (value) => {
     let selectedCountry = Object.values(value)[0];
-    let currency = countries?.data?.filter(
-      (country) => country.countryISO === selectedCountry
-    )[0]?.countryCurrency;
-    setServiceCurrencies([{ value: currency, label: currency }]);
     setValue("country", selectedCountry, { shouldValidate: true });
-    setValue("currency", "", { shouldValidate: true });
   };
 
   // This is attached to currency dropdown onChange
@@ -92,6 +88,41 @@ const ServicesModal = ({
     var string = Object.values(value)[0];
     setValue("currency", string, { shouldValidate: true });
   };
+
+  useEffect(() => {
+    const categoryResponse = data?.map((serviceCats) => serviceCats.serviceCategory);
+    // Filter out duplicate entries
+    const eachResponse = categoryResponse?.filter((option, index, self) => {
+      return index === self.indexOf(option);
+    });
+    let newCategory = eachResponse?.map((servicesCategory) => ({
+      value: servicesCategory,
+      label:servicesCategory
+    }))
+    setServicesCategories(newCategory)
+  }, [data])
+
+  // 
+  useEffect(() => {
+    if(serviceInfo && cardAction === "edit"){
+      setValue("name", serviceInfo.serviceName,  { shouldValidate: true });
+      setValue("description", serviceInfo.serviceDescription,  { shouldValidate: true });
+      setValue("category", serviceInfo.serviceCategory,  { shouldValidate: true });
+      setValue("country", serviceInfo.serviceCountry,  { shouldValidate: true });
+      setValue("currency", serviceInfo.serviceCurrency, { shouldValidate: true });
+      setValue("price", serviceInfo.servicePrice,  { shouldValidate: true });
+      setValue("timeline", serviceInfo.serviceTimeline,  { shouldValidate: true });
+    } else {
+      setValue("serviceName", "");
+      setValue("description", "");
+      setValue("category", "");
+      setValue("country", "");
+      setValue("currency", "");
+      setValue("price", "");
+      setValue("timeline", "");
+    }
+    setDisable(disableAll);
+  }, [serviceInfo, cardAction])
 
   return (
     <Modal1
@@ -133,7 +164,7 @@ const ServicesModal = ({
         disable={disable}
       />
       <DetailedSection>
-        <InputWithLabel
+        {/* <InputWithLabel
           label="Service ID"
           labelStyle="input-label"
           placeholder="Enter Service ID"
@@ -144,7 +175,7 @@ const ServicesModal = ({
           register={register}
           errorMessage={errors.id?.message}
           disable={disable}
-        />
+        /> */}
         <DropDown
           containerStyle={{ margin: 0, marginBottom: "24px" }}
           label="Category"
@@ -152,7 +183,8 @@ const ServicesModal = ({
           options={servicesCategories}
           onChange={handleCategoryChange}
           errorMessage={errors.category?.message}
-          // defaultValue={entityInfo?.entityType}
+          placeholder="Select Service Category"
+          defaultValue={ serviceInfo ? serviceInfo?.serviceCategory : ""}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable}
@@ -165,8 +197,9 @@ const ServicesModal = ({
           labelStyle="input-label"
           options={servicesCountries}
           onChange={handleCountryChange}
+          placeholder="Select Service Country"
           errorMessage={errors.country?.message}
-          // defaultValue={entityInfo?.entityType}
+          defaultValue={ serviceInfo ? serviceInfo?.serviceCountry : ""}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable}
@@ -178,9 +211,7 @@ const ServicesModal = ({
           options={serviceCurrencies}
           onChange={handleCurrencyChange}
           errorMessage={errors.currency?.message}
-          // defaultValue={
-          //   entityInfo?.entityCurrency || countryInfo?.countryCurrency
-          // }
+          defaultValue={cardAction === "edit" && serviceInfo?.serviceCurrency}
           fontSize="clamp(12px, 1.2vw, 14px)"
           height="40px"
           disable={disable || countryInfo?.countryCurrency}

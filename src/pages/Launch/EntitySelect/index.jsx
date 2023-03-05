@@ -93,7 +93,7 @@ const EntitySelect = () => {
   }, [data, error?.status]);
 
   //
-  console.log(entities);
+  // console.log(entities);
   //
 
   // This fires off when an entity is selected
