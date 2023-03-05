@@ -61,6 +61,7 @@ const Countries = () => {
       countryFlag: formData.flag,
     };
   };
+ 
 
   // This adds a new country
   const handleCountryAdd = async (formData) => {
@@ -76,6 +77,8 @@ const Countries = () => {
     }
     refetch();
   };
+
+  
 
   return (
     <Container SidebarWidth={sidebarWidth}>

@@ -44,4 +44,20 @@ export const PayProvide = styled.button`
 		width: 100%;
 		object-fit: contain;
 	}
+
+	p {
+		font-family: BR Firma;
+		font-size: clamp(18px, 1.8vw, 20px);
+		font-weight: 600;
+		line-height: 21px;
+		text-align: center;
+		color: #151717;
+		height:50px;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
 `;
+
+
