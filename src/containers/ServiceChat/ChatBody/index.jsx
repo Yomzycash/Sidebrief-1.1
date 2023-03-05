@@ -18,9 +18,9 @@ export const ChatBody = ({ data, threadsRefetch }) => {
   let subject = params.get('subject')
 
   const selectedThread = getSelectedThread(data, subject)
-  const [category] = useSearchParams()
-  const femi = category.get('serviceId')
-  console.log(femi)
+  // const [category] = useSearchParams()
+  // const femi = category.get('serviceId')
+  // console.log(femi)
 
   // const { refreshNotifications } = useSelector(
   //   (store) => store.UserDataReducer
