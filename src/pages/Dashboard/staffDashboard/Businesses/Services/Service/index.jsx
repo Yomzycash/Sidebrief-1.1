@@ -6,13 +6,18 @@ import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
 
-import { useGetAllServicesQuery } from "services/staffService";
+import { 
+  useAddServiceMutation,
+	useUpdateServiceMutation,
+	useDeleteServiceMutation,
+  useGetAllServicesQuery 
+} from "services/staffService";
 
 import FeatureSection from "containers/Feature/FeatureSection";
 import FeatureTable from "components/Tables/FeatureTable";
-
+import { toast } from "react-hot-toast";
 // import lookup from "country-code-lookup"
-import PetalsCard from "components/cards/RewardCard/PetalsCard";
+import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import {
@@ -28,6 +33,7 @@ import {
 } from "./styled";
 import ServicesModal from "components/modal/ServicesModal";
 import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
+import { handleError } from "utils/globalFunctions";
 import { parseJSON, compareAsc } from "date-fns";
 
 const iconStyle = { width: "17px", height: "17px" };
@@ -39,17 +45,20 @@ const iconStyle = { width: "17px", height: "17px" };
 const ServicePage = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
-  const { data, isLoading } = useGetAllServicesQuery();
+  const [clickedService, setClickedService] = useState({});
+  const { data, isLoading , refetch} = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
-
+  const [ addService, addState ] = useAddServiceMutation();
+  const [ updateService, updateState ] = useUpdateServiceMutation();
+  const [ deleteService, deleteState] = useDeleteServiceMutation();
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
   const navigate = useNavigate();
 
   // Add Service
   const handleAddButton = () => {
-    setOpen(true);
     setCardAction("add");
+    setOpen(true);
   };
 
   const servicesNotifications = data?.filter((service) => {
@@ -148,6 +157,72 @@ const ServicePage = () => {
 
   let totalServices = servicesEnquiry?.length > 0 ? servicesEnquiry.length : 0;
 
+  const getRequired = (formData) => {
+    return {
+      serviceName: formData.name,
+      serviceDescription: formData.description,
+     // serviceId: formData.id,
+      serviceCategory: formData.category,
+      serviceCountry: formData.country,
+      servicePrice: formData.price, 
+      serviceTimeline: formData.timeline, 
+    }
+  }
+
+  const handleClickEachService = (servicesvalue) => {
+    setCardAction("edit");
+    setOpen(true);
+    setClickedService(servicesvalue)
+
+  }
+
+  const handleServiceAdd = async (formData) => {
+    let requiredService = getRequired(formData);
+    let response = await addService(requiredService);
+    let data = response?.data;
+    let error = response?.error;
+
+    if(data) {
+      toast.success("Service added successfully");
+      setOpen(false)
+    } else {
+      handleError(error)
+    }
+    refetch();
+  }
+
+  // Update service 
+  const handleServiceUpdate = async (formData) => {
+    let requiredService = getRequired(formData);
+    let response = await updateService({...requiredService, serviceId:clickedService.serviceId});
+    let data = response?.data;
+    let error = response?.error;
+    
+    if (data) {
+      toast.success("Service updated successfully");
+      setOpen(false)
+    } else {
+      handleError(error)
+    }
+    refetch();
+  }
+
+    // delete service
+    const handleServiceDelete = async () => {
+      let response = await deleteService(clickedService.serviceId);
+      let data = response?.data;
+      let error = response?.error;
+      
+      if (data) {
+        toast.success("Service deleted successfully");
+        setOpen(false);
+      } else {
+        handleError(error)
+      }
+      refetch();
+    }
+  
+
   return (
     <Container>
       <Header>
@@ -188,11 +263,12 @@ const ServicePage = () => {
                 servicesEnquiry.map((service, index) => (
                   <PetalsCard
                     key={index}
+                    title={service.serviceName}
+                    subText={service.serviceCountry}
+                    categoryName={service.serviceCategory}
                     service
-                    message={service?.serviceName}
-                    badge={service?.serviceCategory}
-                    subText={service?.serviceCountry}
-                    // subText={lookup.byIso.name("NGN")}
+                    clickHandle={() => handleClickEachService(service)}
+                    //action = {() => handleAddButton(service)}
                   />
                 ))}
             </ScrollBox>
@@ -202,7 +278,7 @@ const ServicePage = () => {
       <br />
       <br />
 
-      {/* <FeatureSection
+      <FeatureSection
         title="Service Requests"
         subText="View recent registered businesses service request"
         btnText="View all"
@@ -210,8 +286,23 @@ const ServicePage = () => {
         btnAction={handleViewAllNotifications}
       >
         <FeatureTable header={header} body={dataBody} />
-        <ServicesModal open={open} setOpen={open} cardAction={cardAction} />
-      </FeatureSection> */}
+
+
+        <ServicesModal
+          disableAll={cardAction === "edit" ? true : false}
+          open={open}
+          title={
+            cardAction === "edit" ? "Update Service" : "Add New Service"
+          }
+          loading={updateState.isLoading || addState.isLoading}
+          setOpen={setOpen} 
+          cardAction={cardAction} 
+          submitAction={ cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
+          serviceInfo={clickedService}
+          deleteState={deleteState}
+          handleServiceDelete={handleServiceDelete}
+        />
+      </FeatureSection>
     </Container>
   );
 };

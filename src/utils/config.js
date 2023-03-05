@@ -234,7 +234,7 @@ export const StaffRewardSchema = yup.object().shape({
 export const ServicesSchema = yup.object().shape({
   name: yup.string().required("Service name is a required field"),
   description: yup.string().required("Service description is a required field"),
-  id: yup.string().required("Service ID is a required field"),
+  //id: yup.string().required("Service ID is a required field"),
   category: yup.string().required("Category is a required field"),
   country: yup.string().required("Operational Country is a required field"),
   currency: yup.string().required("Currency is a required field"),

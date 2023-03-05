@@ -303,6 +303,42 @@ export const staffApi = createApi({
 			query: () => "/services/all",
 		}),
 
+		// add a service
+		addService: builder.mutation({
+			query: (data) => ({
+				url:"/services/create",
+				method:"POST",
+				body:data,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+			invalidatesTags: ["User"],
+		}),
+
+		// update a service
+		updateService: builder.mutation({
+			query: (serviceId) => ({
+				url:`/services/update/${serviceId}`,
+				method: "PUT",
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			})
+		}),
+
+		// delete a service
+		deleteService: builder.mutation({
+			query: (serviceId) => ({
+				url:`/services/delete/${serviceId}`,
+				method: "DELETE",
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			})
+		}),
+
+
 		// Get services by category
 		getServicesByCategory: builder.query({
 			query: (serviceCategory) => `/services/category/${serviceCategory}`,

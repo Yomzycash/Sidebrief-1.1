@@ -16,7 +16,9 @@ import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { useGetAllCountriesQuery } from "services/launchService";
+import { useNavigate } from "react-router-dom";
 import { resources } from "utils/config";
+import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
@@ -24,10 +26,18 @@ import { FaMoneyCheckAlt } from "react-icons/fa";
 const ManageProduct = () => {
 	const [selectedResource, setselectedResource] = useState("");
 	const [countries, setCountries] = useState([]);
+
+
 	const [selectedCountry, setSelectedCountry] = useState("");
 
 	const { data, isLoading } = useGetAllCountriesQuery();
+	const navigate = useNavigate();
 
+	const handleNext = async () => {
+		// store.dispatch();
+		navigate("/launch/entity")
+
+	}
 	// Handle supported countries fetch
 	const handleCountry = useCallback(
 		async (value) => {
@@ -127,9 +137,10 @@ const ManageProduct = () => {
 						</InfoContainer>
 						<Bottom>
 							<CheckoutController
-								forwardText={"Submit"}
+								forwardText={"Next"}
 								forwardSubmit
 								hidePrev
+								forwardAction={handleNext}
 							/>
 						</Bottom>
 					</LaunchPrimaryContainer>
