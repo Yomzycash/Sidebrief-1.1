@@ -18,7 +18,6 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import { useGetAllCountriesQuery } from "services/launchService";
 import { useNavigate } from "react-router-dom";
 import { resources } from "utils/config";
-import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
@@ -27,7 +26,6 @@ const ManageProduct = () => {
 	const [selectedResource, setselectedResource] = useState("");
 	const [countries, setCountries] = useState([]);
 
-
 	const [selectedCountry, setSelectedCountry] = useState("");
 
 	const { data, isLoading } = useGetAllCountriesQuery();
@@ -35,9 +33,9 @@ const ManageProduct = () => {
 
 	const handleNext = async () => {
 		// store.dispatch();
-		navigate("/launch/entity")
+		navigate("/launch/entity");
+	};
 
-	}
 	// Handle supported countries fetch
 	const handleCountry = useCallback(
 		async (value) => {
