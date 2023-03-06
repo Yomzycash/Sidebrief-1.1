@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ export const Body = styled.div`
 `;
 
 export const Inputs = styled.div`
-width: 100%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(2, minmax(350px, 1fr));
   gap: 20px;
@@ -43,7 +43,7 @@ width: 100%;
   @media screen and (max-width: 900px) {
     grid-template-columns: 1fr;
   }
-`
+`;
 
 export const buttonStyles = {
   maxWidth: "197px",

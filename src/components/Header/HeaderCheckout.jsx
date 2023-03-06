@@ -7,7 +7,17 @@ import { Dialog } from "@mui/material";
 import toast from "react-hot-toast";
 import { CheckoutController } from "containers";
 import { HiX } from "react-icons/hi";
-import { BackContainer, CloseWrapper, ModalButton, ModalWrapper, ProgressWrapper, Question, Text, Top, Wrapper } from "./styled";
+import {
+  BackContainer,
+  CloseWrapper,
+  ModalButton,
+  ModalWrapper,
+  ProgressWrapper,
+  Question,
+  Text,
+  Top,
+  Wrapper,
+} from "./styled";
 
 const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);

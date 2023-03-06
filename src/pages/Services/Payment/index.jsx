@@ -15,8 +15,9 @@ import { paymentProviders } from "./constants";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
-import { setCheckoutProgress } from "redux/Slices";
+import { setCheckoutProgress, setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
+import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
 
 const ServicePayment = () => {
   const [providers, dispatch] = useReducer(
@@ -54,13 +55,13 @@ const ServicePayment = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setCheckoutProgress({ total: 13, current: 4 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 2 })); // total- total pages and current - current page
   }, []);
 
   return (
     <Container>
       <Header>
-        <HeaderCheckout />
+        <ServicesCheckoutHeader />
       </Header>
 
       <Body>
@@ -90,8 +91,8 @@ const ServicePayment = () => {
             backText={"Previous"}
             // hideForward
             backAction={handlePrev}
-            forwardAction={()=> navigate('/services/form')}
-            forwardText='Next'
+            forwardAction={() => navigate("/services/form")}
+            forwardText="Next"
           />
         </Bottom>
       </Body>

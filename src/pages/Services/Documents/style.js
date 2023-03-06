@@ -38,7 +38,6 @@ export const Bottom = styled.div`
   width: 100%;
   padding: 32px clamp(24px, 3.4vw, 40px);
 `;
-
 export const ContentWrapper = styled.div`
   width: 100%;
   display: grid;

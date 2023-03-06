@@ -80,14 +80,20 @@ const LayoutInfo = createSlice({
       state.rewardsPageHeader = action.payload;
     },
     setServiceCheckoutProgress: (state, action) => {
-      state.serviceCheckoutProgress = action.payload;
+      const { total, current } = action.payload;
+      let progress = (current / total) * 100;
+      state.serviceCheckoutProgress = progress;
     },
   },
 });
 
 export const LayoutInfoReducer = LayoutInfo.reducer;
-export const { setSidebarWidth, setCheckoutProgress,setServiceCheckoutProgress, setRewardsPageHeader } =
-  LayoutInfo.actions;
+export const {
+  setSidebarWidth,
+  setCheckoutProgress,
+  setServiceCheckoutProgress,
+  setRewardsPageHeader,
+} = LayoutInfo.actions;
 
 const NotificationInfo = createSlice({
   name: "Notification",

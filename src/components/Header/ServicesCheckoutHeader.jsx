@@ -6,7 +6,17 @@ import { Dialog } from "@mui/material";
 import toast from "react-hot-toast";
 import { CheckoutController } from "containers";
 import { HiX } from "react-icons/hi";
-import { BackContainer, CloseWrapper, ModalButton, ModalWrapper, ProgressWrapper, Question, Text, Top, Wrapper } from "./styled";
+import {
+  BackContainer,
+  CloseWrapper,
+  ModalButton,
+  ModalWrapper,
+  ProgressWrapper,
+  Question,
+  Text,
+  Top,
+  Wrapper,
+} from "./styled";
 import ServicesProgressBar from "components/Indicators/progressbar/ServicesProgressBar";
 
 const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
@@ -59,9 +69,9 @@ const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
           </BackContainer>
         ) : null}
 
-          <ProgressWrapper style={{ left: getStarted && 0 }}>
-            <ServicesProgressBar progress={serviceCheckoutProgress} />
-          </ProgressWrapper>
+        <ProgressWrapper style={{ left: getStarted && 0 }}>
+          <ServicesProgressBar progress={serviceCheckoutProgress} />
+        </ProgressWrapper>
       </Wrapper>
 
       <Dialog open={openModal} fullWidth maxWidth="sm">
@@ -87,4 +97,4 @@ const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
   );
 };
 
-export default ServicesCheckoutHeader
+export default ServicesCheckoutHeader;

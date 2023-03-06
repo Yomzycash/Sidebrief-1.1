@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import {
-	Container,
-	Body,
-	Bottom,
-	InfoContainer,
-	Bullet,
-	Content,
-	InfoFrame,
-	InfoFrameHead,
-	BigContent,
+  Container,
+  Body,
+  Bottom,
+  InfoContainer,
+  Bullet,
+  Content,
+  InfoFrame,
+  InfoFrameHead,
+  BigContent,
 } from "./style";
 import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
@@ -22,132 +22,136 @@ import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
+import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
+import { setServiceCheckoutProgress } from "redux/Slices";
 
 const ServiceInfo = () => {
-	const [selectedResource, setselectedResource] = useState("");
-	const [countries, setCountries] = useState([]);
+  const [selectedResource, setselectedResource] = useState("");
+  const [countries, setCountries] = useState([]);
 
+  const [selectedCountry, setSelectedCountry] = useState("");
 
-	const [selectedCountry, setSelectedCountry] = useState("");
+  const { data, isLoading } = useGetAllCountriesQuery();
+  const navigate = useNavigate();
 
-	const { data, isLoading } = useGetAllCountriesQuery();
-	const navigate = useNavigate();
+  const handleNext = async () => {
+    // store.dispatch();
+    navigate("/services/payment");
+  };
+  // Handle supported countries fetch
+  const handleCountry = useCallback(
+    async (value) => {
+      let responseData = data;
+      let countries = [];
+      responseData?.forEach((data) => {
+        countries = [...countries, data?.countryName];
+      });
+      if (responseData) {
+        setCountries([...countries]);
+        setSelectedCountry(value);
+      }
+    },
+    [data]
+  );
 
-	const handleNext = async () => {
-		// store.dispatch();
-		navigate("/services/payment")
+  const selectCountry = (value) => {
+    setSelectedCountry(value);
+  };
 
-	}
-	// Handle supported countries fetch
-	const handleCountry = useCallback(
-		async (value) => {
-			let responseData = data;
-			let countries = [];
-			responseData?.forEach((data) => {
-				countries = [...countries, data?.countryName];
-			});
-			if (responseData) {
-				setCountries([...countries]);
-				setSelectedCountry(value);
-			}
-		},
-		[data]
-	);
+  // Update the supported countries when data changes
+  useEffect(() => {
+    handleCountry();
+  }, [handleCountry]);
 
-	const selectCountry = (value) => {
-		setSelectedCountry(value);
-	};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
 
-	// Update the supported countries when data changes
-	useEffect(() => {
-		handleCountry();
-	}, [handleCountry]);
+  const handleResourceSelect = (valuesSelected) => {
+    setselectedResource(valuesSelected);
+  };
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
-	};
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 1 })); // total- total pages and current - current page
+  }, []);
+  return (
+    <>
+      <Container>
+        <ServicesCheckoutHeader />
 
-	const handleResourceSelect = (valuesSelected) => {
-		setselectedResource(valuesSelected);
-	};
-
-	return (
-		<>
-			<Container>
-				<HeaderCheckout getStarted noProgress backToDashBoard />
-
-				<Body onSubmit={handleSubmit}>
-					<CheckoutSection
-						title="Manage your business"
-						HeaderParagraph="Make changes to already registered companies"
-					/>
-					<LaunchPrimaryContainer>
-						<LaunchFormContainer>
-							<div style={{ maxWidth: "450px" }}>
-								<TagInputWithSearch
-									label="Operational Country"
-									list={countries}
-									getValue={selectCountry}
-									initialValue={selectedCountry}
-									suggestionLoading={isLoading}
-								/>
-							</div>
-							<TagInputWithSearch
-								label="Resource"
-								list={resources
-									.filter(
-										(el) =>
-											el.country?.toLowerCase() ===
-											selectedCountry?.toLowerCase()
-									)
-									.map((el) => el.resource)
-									.sort()}
-								getValue={handleResourceSelect}
-								initialValue={selectedResource}
-								MatchError="Please select resource from the list"
-								EmptyError="Please select at least one resources"
-							/>
-						</LaunchFormContainer>
-						<InfoContainer>
-							<InfoFrame space>
-								<InfoFrameHead>Requirements</InfoFrameHead>
-								<Bullet>
-									<Mark />
-									<Content>Passport</Content>
-								</Bullet>
-								<Bullet>
-									<Mark />
-									<Content>Proof of address</Content>
-								</Bullet>
-							</InfoFrame>
-							<InfoFrame>
-								<InfoFrameHead>Timeline</InfoFrameHead>
-								<Bullet>
-									<FiClock />
-									<BigContent>20-30 days</BigContent>
-								</Bullet>
-							</InfoFrame>
-							<InfoFrame>
-								<InfoFrameHead>Pricing</InfoFrameHead>
-								<Bullet>
-									<FaMoneyCheckAlt />
-									<BigContent>N22,000</BigContent>
-								</Bullet>
-							</InfoFrame>
-						</InfoContainer>
-						<Bottom>
-							<CheckoutController
-								forwardText={"Next"}
-								forwardSubmit
-								hidePrev
-								forwardAction={handleNext}
-							/>
-						</Bottom>
-					</LaunchPrimaryContainer>
-				</Body>
-			</Container>
-		</>
-	);
+        <Body onSubmit={handleSubmit}>
+          <CheckoutSection
+            title="Manage your business"
+            HeaderParagraph="Make changes to already registered companies"
+          />
+          <LaunchPrimaryContainer>
+            <LaunchFormContainer>
+              <div style={{ maxWidth: "450px" }}>
+                <TagInputWithSearch
+                  label="Operational Country"
+                  list={countries}
+                  getValue={selectCountry}
+                  initialValue={selectedCountry}
+                  suggestionLoading={isLoading}
+                />
+              </div>
+              <TagInputWithSearch
+                label="Resource"
+                list={resources
+                  .filter(
+                    (el) =>
+                      el.country?.toLowerCase() ===
+                      selectedCountry?.toLowerCase()
+                  )
+                  .map((el) => el.resource)
+                  .sort()}
+                getValue={handleResourceSelect}
+                initialValue={selectedResource}
+                MatchError="Please select resource from the list"
+                EmptyError="Please select at least one resources"
+              />
+            </LaunchFormContainer>
+            <InfoContainer>
+              <InfoFrame space>
+                <InfoFrameHead>Requirements</InfoFrameHead>
+                <Bullet>
+                  <Mark />
+                  <Content>Passport</Content>
+                </Bullet>
+                <Bullet>
+                  <Mark />
+                  <Content>Proof of address</Content>
+                </Bullet>
+              </InfoFrame>
+              <InfoFrame>
+                <InfoFrameHead>Timeline</InfoFrameHead>
+                <Bullet>
+                  <FiClock />
+                  <BigContent>20-30 days</BigContent>
+                </Bullet>
+              </InfoFrame>
+              <InfoFrame>
+                <InfoFrameHead>Pricing</InfoFrameHead>
+                <Bullet>
+                  <FaMoneyCheckAlt />
+                  <BigContent>N22,000</BigContent>
+                </Bullet>
+              </InfoFrame>
+            </InfoContainer>
+            <Bottom>
+              <CheckoutController
+                forwardText={"Next"}
+                forwardSubmit
+                hidePrev
+                forwardAction={handleNext}
+              />
+            </Bottom>
+          </LaunchPrimaryContainer>
+        </Body>
+      </Container>
+    </>
+  );
 };
 
 export default ServiceInfo;

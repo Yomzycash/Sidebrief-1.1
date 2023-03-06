@@ -6,7 +6,7 @@ import ServiceInfo from "./Services/ServiceInfo";
 const Test = () => {
   return (
     <div style={{}}>
-      <DynamicForm/>
+      <DynamicForm />
     </div>
   );
 };
