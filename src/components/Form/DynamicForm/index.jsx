@@ -6,12 +6,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { getSchema } from "./actions";
-import { buttonStyles, DynamicFormWrapper } from "./styled";
+import { ButtonContainer, buttonStyles, DynamicFormWrapper, Inputs } from "./styled";
 
-const DynamicForm = ({ formInfo, formMode, loading, disable }) => {
+const DynamicForm = ({ formInfo, formMode, previewInfo, loading, disable, style, inputsStyle }) => {
   const navigate = useNavigate();
 
-  let schema = getSchema(array);
+  let schema = getSchema(formInfo);
 
   const {
     handleSubmit,
@@ -35,14 +35,15 @@ const DynamicForm = ({ formInfo, formMode, loading, disable }) => {
 
   useEffect(() => {
     if (formMode === "edit")
-      formInfo.map((el) =>
-        setValue(el.name, formInfo.entityName, { shouldValidate: true })
+      previewInfo.map((el) =>
+        setValue(el.name, previewInfo.entityName, { shouldValidate: true })
       );
   }, []);
 
   return (
-    <DynamicFormWrapper onSubmit={handleSubmit(submitForm)}>
-      {array.map((el, index) =>
+    <DynamicFormWrapper onSubmit={handleSubmit(submitForm)} style={style} >
+      <Inputs style={inputsStyle} >
+      {formInfo.map((el, index) =>
         el.options ? (
           <DropDown
             key={index}
@@ -68,13 +69,16 @@ const DynamicForm = ({ formInfo, formMode, loading, disable }) => {
             placeholder=""
             type={el.type}
             name={el.name}
-            inputClass="input-class"
+            inputClass="service-form-input"
             containerStyle="input-container-class"
             register={register}
             errorMessage={errors[el.name]?.message}
           />
         )
       )}
+      </Inputs>
+      <ButtonContainer>
+
       <CheckoutController
         backAction={() => navigate(-1)}
         backText={"Previous"}
@@ -87,31 +91,9 @@ const DynamicForm = ({ formInfo, formMode, loading, disable }) => {
         forwardDisable={disable}
         $modal
       />
+      </ButtonContainer>
     </DynamicFormWrapper>
   );
 };
 
 export default DynamicForm;
-
-// name uniqueness has to be validated
-const array = [
-  {
-    question: "When did you register your company",
-    type: "text",
-    name: "registration",
-    required: true,
-  },
-  {
-    question: "Who is your favourite artist",
-    type: "text",
-    options: ["davido", "wizkid", "burna"],
-    name: "artist",
-    required: false,
-  },
-  {
-    question: "How many shareholders do you have",
-    type: "number",
-    name: "shareholders",
-    required: true,
-  },
-];

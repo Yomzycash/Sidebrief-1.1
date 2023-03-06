@@ -46,6 +46,9 @@ import { useViewPayLaunchMutation } from "services/launchService";
 import PaidDraft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft";
 import ServiceDownload from "pages/Dashboard/User/Manage/Download";
 import StripePaymentSuccess from "pages/Launch/StripePaymentSuccess/StripePaymentSuccess";
+import ServiceInfo from "pages/Services/ServiceInfo";
+import ServiceForm from "pages/Services/ServiceForm";
+import ServicePayment from "pages/Services/Payment";
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() =>
@@ -600,6 +603,13 @@ const AppRouter = () => {
 					</Route>
 
 					{/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
+					<Route path="services" element={<Outlet/>} >
+<Route index element={<ServiceInfo/>} />
+<Route path="payment" element={<ServicePayment/>} />
+<Route path="form" element={<ServiceForm/>} />
+<Route path="documents" element={<Outlet/>}/>
+<Route path="review" element={<Outlet/>}/>
+					</Route>
 					<Route path="manage" element={<Manage />} />
 					<Route
 						path="download-manage"

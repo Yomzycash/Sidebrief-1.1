@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ProgressBar } from "components/Indicators";
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +7,11 @@ import toast from "react-hot-toast";
 import { CheckoutController } from "containers";
 import { HiX } from "react-icons/hi";
 import { BackContainer, CloseWrapper, ModalButton, ModalWrapper, ProgressWrapper, Question, Text, Top, Wrapper } from "./styled";
+import ServicesProgressBar from "components/Indicators/progressbar/ServicesProgressBar";
 
-const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
+const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
-  const { checkoutProgress } = LayoutInfo;
+  const { serviceCheckoutProgress } = LayoutInfo;
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [headerShadow, setHeaderShadow] = useState(false);
@@ -28,8 +28,7 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
 
   const handleNext = () => {
     setOpenModal(false);
-    localStorage.removeItem("launchInfo");
-    localStorage.removeItem("countryISO");
+    localStorage.removeItem("serviceInfo");
     localStorage.removeItem("paymentDetails");
     toast.success("Saved");
     navigate("/dashboard");
@@ -60,11 +59,9 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
           </BackContainer>
         ) : null}
 
-        {!noProgress ? (
           <ProgressWrapper style={{ left: getStarted && 0 }}>
-            <ProgressBar progress={checkoutProgress} />
+            <ServicesProgressBar progress={serviceCheckoutProgress} />
           </ProgressWrapper>
-        ) : null}
       </Wrapper>
 
       <Dialog open={openModal} fullWidth maxWidth="sm">
@@ -75,7 +72,7 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
             </CloseWrapper>
           </Top>
 
-          <Question>Save and continue later ?</Question>
+          <Question>Save and continue later?</Question>
           <ModalButton>
             <CheckoutController
               backAction={handlePrev}
@@ -90,4 +87,4 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
   );
 };
 
-export default HeaderCheckout;
+export default ServicesCheckoutHeader
