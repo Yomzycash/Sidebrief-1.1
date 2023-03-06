@@ -156,6 +156,10 @@ export const ListItem = styled.li`
 export const Item = styled.p`
   font-size: 14px;
 `;
+export const DefaultItem = styled.p`
+  font-size: 14px;
+  color: #727474;
+`;
 export const ErrMsg = styled.div`
   color: red;
   font-size: 12px;

@@ -13,6 +13,7 @@ import {
   ListItem,
   ListItems,
   ShowList,
+  DefaultItem,
   ShowListIcon,
   Item,
   Label,
@@ -307,8 +308,10 @@ const UserRegistration = () => {
                     }}
                   >
                     <ShowList>
-                      {value !== "" && value !== "Other" && (
+                      {value !== "" && value !== "Other" ? (
                         <Item>{value}</Item>
+                      ) : (
+                        <DefaultItem>Select an Option</DefaultItem>
                       )}
                       {/* {value === "Other" && <Item>Other: </Item>} */}
                       {openInput && (
