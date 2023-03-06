@@ -1,25 +1,31 @@
-import React from "react";
-import pdf from "../../../asset/images/pdf.png";
+import React from 'react'
+import pdf from '../../../asset/images/pdf.png'
 
-import { Container, FileContainer, FileText, InnerContainer } from "./style";
-import { ThreeDotMenu } from "components/Menu";
+import {
+  Container,
+  ContextContainer,
+  FileContainer,
+  FileText,
+  InnerContainer,
+} from './style'
+import { ThreeDotMenu } from 'components/Menu'
 
-import { imageTypeImage } from "./constant";
-import { ViewSvg, DownloadSvg } from "../../../asset/svg";
-import { useActions } from "./actions";
+import { imageTypeImage } from './constant'
+import { ViewSvg, DownloadSvg } from '../../../asset/svg'
+import { useActions } from './actions'
 
 const ChatFileCard = ({
-  fileName = "CAC-Registration.pdf",
+  fileName = 'CAC-Registration.pdf',
   fileType,
   fileUrl,
 }) => {
-  const link = fileUrl;
-  const documentType = fileType;
+  const link = fileUrl
+  const documentType = fileType
 
   const { downloadFileAction } = useActions({
     link,
     documentType,
-  });
+  })
 
   const contextContent = [
     // {
@@ -30,12 +36,12 @@ const ChatFileCard = ({
     // },
 
     {
-      text: "Download",
+      text: 'Download',
       Icon: DownloadSvg,
       action: downloadFileAction,
-      style: "normal",
+      style: 'normal',
     },
-  ];
+  ]
 
   return (
     <Container>
@@ -45,9 +51,9 @@ const ChatFileCard = ({
           alt={fileType}
           style={{
             margin: 0,
-            height: "25px",
-            width: "25px",
-            marginRight: "8px",
+            height: '25px',
+            width: '25px',
+            marginRight: '8px',
           }}
         />
 
@@ -56,9 +62,11 @@ const ChatFileCard = ({
           {/* <FileSize>{fileSize}</FileSize> */}
         </FileContainer>
       </InnerContainer>
-      <ThreeDotMenu contextContent={contextContent} position="10px" />
+      <ContextContainer>
+        <ThreeDotMenu contextContent={contextContent} position="-150px" />
+      </ContextContainer>
     </Container>
-  );
-};
+  )
+}
 
-export default ChatFileCard;
+export default ChatFileCard

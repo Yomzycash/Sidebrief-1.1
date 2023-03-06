@@ -44,6 +44,7 @@ const AllRewards = () => {
       const categories = data
         ? data.map((element) => element.rewardCategory)
         : []
+      console.log('cat', categories)
 
       return [...new Set([...prev, ...categories])]
     })
