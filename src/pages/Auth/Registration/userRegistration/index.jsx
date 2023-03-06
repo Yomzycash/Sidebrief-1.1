@@ -40,6 +40,7 @@ import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { useCallback } from "react";
+import DropOther from "components/input/dropOther";
 
 //
 
@@ -63,29 +64,7 @@ const UserRegistration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const [openInput, setOpenInput] = useState(false);
-
   const [dValue, setDValue] = useState("");
-
-  const handleOpenDropdown = () => {
-    setOpen(!open);
-  };
-  const handleOptionClick = (value) => {
-    setOpen(false);
-    setDValue(value);
-    setValue("referral_code", value, { shouldValidate: true });
-    if (value === "Other") {
-      setOpenInput(true);
-    } else {
-      setOpenInput(false);
-      setErrorMessage("");
-    }
-  };
-  const handleChange = (e) => {
-    let input = e.target.value;
-    setValue("referral_code", input, { shouldValidate: true });
-  };
 
   useEffect(() => {
     var observer = new IntersectionObserver((e) => {
@@ -127,27 +106,31 @@ const UserRegistration = () => {
     if (!dValue) {
       setErrorMessage("This field is required");
     } else {
-      console.log(formData);
-      // let staffCheck = checkStaffEmail(formData.email);
-      // let response = staffCheck
-      //   ? await registerNewStaff(JSON.stringify(formData))
-      //   : await registerNewUser(JSON.stringify(formData));
+      let newData = {
+        ...formData,
+        referral_code: dValue,
+      };
 
-      // let data = response?.data;
-      // let error = response?.error;
-      // if (data) {
-      //   store.dispatch(saveUserInfo(data));
-      //   localStorage.setItem(
-      //     "userInfo",
-      //     JSON.stringify({ ...data, newUser: true })
-      //   );
-      //   localStorage.setItem("userEmail", formData.email);
-      //   toast.success(data.message);
-      //   navigate(`${location.pathname}/success`);
-      // } else if (error) {
-      //   // console.log(error.data.message);
-      //   toast.error(error.data.message);
-      // }
+      let staffCheck = checkStaffEmail(formData.email);
+      let response = staffCheck
+        ? await registerNewStaff(JSON.stringify(newData))
+        : await registerNewUser(JSON.stringify(newData));
+
+      let data = response?.data;
+      let error = response?.error;
+      if (data) {
+        store.dispatch(saveUserInfo(data));
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify({ ...data, newUser: true })
+        );
+        localStorage.setItem("userEmail", formData.email);
+        toast.success(data.message);
+        navigate(`${location.pathname}/success`);
+      } else if (error) {
+        // console.log(error.data.message);
+        toast.error(error.data.message);
+      }
     }
   };
 
@@ -162,28 +145,10 @@ const UserRegistration = () => {
   //   return newData;
   // };
 
-  const handleGenderChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("gender", string, { shouldValidate: true });
-    // console.log(string);
-  };
-  const handleDateChange = (value) => {
-    setValue("date", value, { shouldValidate: true });
-  };
-
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
   };
 
-  // Handle supported referral fetch
-  const handleReferral = (value) => {
-    var string = Object.values(value)[0];
-    setValue("referral_code", string, { shouldValidate: true });
-  };
-
-  const handleClick = (value) => {
-    console.log("value", value);
-  };
   return (
     <AuthLayout
       register={true}
@@ -239,29 +204,6 @@ const UserRegistration = () => {
                 register={register}
                 errorMessage={errors.password?.message}
               />
-              {/* <DateInput
-                label={"Date of birth"}
-                name="date"
-                register={register}
-                selectDate={handleDateChange}
-                errorMessage={errors.date?.message}
-              /> */}
-              {/* <DropDown
-                label="Gender"
-                options={genderOptions}
-                name="gender"
-                register={register}
-                onChange={handleGenderChange}
-                errorMessage={errors.gender?.message}
-              /> */}
-              {/* <InputWithLabel
-                placeholder="Phone number"
-                label="Phone Number"
-                name="phone"
-                type="number"
-                register={register}
-                errorMessage={errors.phone?.message}
-              /> */}
               <NumberInput
                 placeholder="Phone number"
                 label="Phone Number"
@@ -272,91 +214,12 @@ const UserRegistration = () => {
                 errorMessage={errors.phone?.message}
               />
 
-              {/* <InputWithLabel
-								placeholder="How did you find us?"
-								label="Referred by"
-								name="referrer"
-								type="text"
-								register={register}
-								errorMessage={errors.referrer?.message}
-							/> */}
-
-              {/* <DropDown
-                label="How did you find us?"
-                options={referralOptions}
-                name="referral_code"
-                register={register}
-                onChange={handleReferral}
-                errorMessage={errors.referral_code?.message}
-                fontSize="clamp(12px, 1.2vw, 14px)"
-                height="40px"
-              /> */}
-
-              <>
-                <Top>
-                  <Label>How did you find us ?</Label>
-
-                  {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
-                </Top>
-                <DropDownWrapper
-                  border={errorMessage ? "1px solid red" : "1px solid #e1e1de"}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      height: "100%",
-                    }}
-                  >
-                    <ShowList>
-                      {dValue !== "" && dValue !== "Other" ? (
-                        <Item>{dValue}</Item>
-                      ) : (
-                        <DefaultItem>Select an Option</DefaultItem>
-                      )}
-                      {/* {value === "Other" && <Item>Other: </Item>} */}
-                      {openInput && (
-                        <OtherInput
-                          name="referral_code"
-                          onChange={handleChange}
-                          placeholder="Please enter the option"
-                        />
-                      )}
-                    </ShowList>
-                    <ShowListIcon onClick={handleOpenDropdown}>
-                      {" "}
-                      {open ? (
-                        <HiChevronUp size={24} color="#4E5152" />
-                      ) : (
-                        <HiChevronDown size={24} color="#4E5152" />
-                      )}
-                    </ShowListIcon>
-                  </div>
-                  {open && (
-                    <>
-                      <InvisibleBackDrop onClick={() => setOpen(false)} />
-                      <DropDown>
-                        <ListItems>
-                          {referralOptions.map((option, index) => (
-                            <ListItem
-                              key={index}
-                              onClick={() => handleOptionClick(option.value)}
-                            >
-                              <>{option.label}</>
-                            </ListItem>
-                          ))}
-                        </ListItems>
-                      </DropDown>
-                    </>
-                  )}
-                </DropDownWrapper>
-              </>
-              {/* <TagInputWithSearch
-                label="How did you find us?"
-                list={referralOptions}
-                getValue={handleReferral}
-                initialValue=""
-              /> */}
+              <DropOther
+                referralOptions={referralOptions}
+                setValue={setDValue}
+                errorMessage={errorMessage}
+                setErrorMessage={setErrorMessage}
+              />
             </div>
             <TextsWithLink
               text={[
