@@ -164,7 +164,18 @@ export const ErrMsg = styled.div`
 `;
 export const OtherInput = styled.input`
   height: 80%;
+  width: 80%;
   border: none;
   font-size: 14px;
   outline: none;
+`;
+
+export const InvisibleBackDrop = styled.div`
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 3;
 `;

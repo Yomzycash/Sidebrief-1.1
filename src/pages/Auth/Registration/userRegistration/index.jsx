@@ -19,6 +19,7 @@ import {
   OtherInput,
   ErrMsg,
   Top,
+  InvisibleBackDrop,
 } from "./styles";
 import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -328,18 +329,21 @@ const UserRegistration = () => {
                     </ShowListIcon>
                   </div>
                   {open && (
-                    <DropDown>
-                      <ListItems>
-                        {referralOptions.map((option, index) => (
-                          <ListItem
-                            key={index}
-                            onClick={() => handleOptionClick(option.value)}
-                          >
-                            <>{option.label}</>
-                          </ListItem>
-                        ))}
-                      </ListItems>
-                    </DropDown>
+                    <>
+                      <InvisibleBackDrop onClick={() => setOpen(false)} />
+                      <DropDown>
+                        <ListItems>
+                          {referralOptions.map((option, index) => (
+                            <ListItem
+                              key={index}
+                              onClick={() => handleOptionClick(option.value)}
+                            >
+                              <>{option.label}</>
+                            </ListItem>
+                          ))}
+                        </ListItems>
+                      </DropDown>
+                    </>
                   )}
                 </DropDownWrapper>
               </>
