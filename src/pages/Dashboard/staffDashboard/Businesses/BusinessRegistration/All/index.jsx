@@ -1,14 +1,17 @@
 import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState, useMemo } from "react";
 import { useGetAllLaunchQuery } from "services/staffService";
-import { Body, Container, Loading } from "./styled";
+import { Body, Container, Loading, MobileContainer } from "./styled";
 import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
 import { columns } from "../tableColumn";
 import Paginator from "components/Paginator";
-import { useSelector } from "react-redux";
+import { useMediaQuery } from "@mui/material";
+import BusinessesCard from "components/cards/BusinessAddressCard";
+import { staffNavigateToDetailPage } from "utils/globalFunctions";
+import { useNavigate } from "react-router-dom";
 
 const All = () => {
 	const [tableArr, setTableArr] = useState([]);
@@ -19,9 +22,9 @@ const All = () => {
 
 	const countries = useGetAllCountriesQuery();
 
-	const { unreadLaunchNotifications } = useSelector(
-		(store) => store.UserDataReducer
-	);
+	const navigate = useNavigate();
+
+	const matches = useMediaQuery("(max-width:700px)");
 
 	useEffect(() => {
 		if (allLaunch.isSuccess && countries.isSuccess) {
@@ -58,7 +61,7 @@ const All = () => {
 					</Loading>
 				)}
 
-				{sortedArr.length > 0 && (
+				{!matches && sortedArr.length > 0 ? (
 					<GeneralTable
 						data={currentItems.map((element) => {
 							return {
@@ -77,6 +80,31 @@ const All = () => {
 						})}
 						columns={columns}
 					/>
+				) : (
+					<MobileContainer>
+						{currentItems.map((element) => {
+							return (
+								<BusinessesCard
+									key={element.launchCode}
+									name={
+										element.businessNames
+											? element.businessNames
+													.businessName1
+											: "No name "
+									}
+									type={element?.registrationType}
+									code={element?.launchCode}
+									countryISO={element?.registrationCountry}
+									navigate={(launchInfo) =>
+										staffNavigateToDetailPage(
+											navigate,
+											launchInfo
+										)
+									}
+								/>
+							);
+						})}
+					</MobileContainer>
 				)}
 				{sortedArr?.length > itemsPerPage && (
 					<Paginator
