@@ -1,49 +1,50 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import StaffHeader from "components/Header/StaffHeader";
-import StaffEntityCard from "components/cards/StaffEntityCard";
-import { useGetAllTheEntitiesQuery } from "services/launchService";
-import { Puff } from "react-loading-icons";
-import StaffEntityModal from "components/modal/StaffEntityModal";
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import StaffHeader from 'components/Header/StaffHeader'
+import StaffEntityCard from 'components/cards/StaffEntityCard'
+import { useGetAllTheEntitiesQuery } from 'services/launchService'
+import { Puff } from 'react-loading-icons'
+import StaffEntityModal from 'components/modal/StaffEntityModal'
 import {
   useAddEntityMutation,
   useDeleteEntityMutation,
   useUpdateEntityMutation,
-} from "services/staffService";
-import { handleError } from "utils/globalFunctions";
-import { toast } from "react-hot-toast";
-import { useSelector } from "react-redux";
-import { store } from "redux/Store";
-import { setRefreshApp } from "redux/Slices";
+} from 'services/staffService'
+import { handleError } from 'utils/globalFunctions'
+import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+import { store } from 'redux/Store'
+import { setRefreshApp } from 'redux/Slices'
 
 const StaffEntities = () => {
-  const [entities, setEntities] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [clickedEntity, setClickedEntity] = useState({});
-  const [cardAction, setCardAction] = useState("");
-  const [features, setFeatures] = useState([]);
-  const [documents, setDocuments] = useState([]);
+  const [entities, setEntities] = useState([])
+  const [open, setOpen] = useState(false)
+  const [clickedEntity, setClickedEntity] = useState({})
+  const [cardAction, setCardAction] = useState('')
+  const [features, setFeatures] = useState([])
+  const [documents, setDocuments] = useState([])
 
   // These communicate with the backend
-  const { data, isLoading, refetch } = useGetAllTheEntitiesQuery();
-  const [updateEntity, updateState] = useUpdateEntityMutation();
-  const [addEntity, addState] = useAddEntityMutation();
-  const [deleteEntity, deleteState] = useDeleteEntityMutation();
+  const { data, isLoading, refetch } = useGetAllTheEntitiesQuery()
+  const [updateEntity, updateState] = useUpdateEntityMutation()
+  const [addEntity, addState] = useAddEntityMutation()
+  const [deleteEntity, deleteState] = useDeleteEntityMutation()
 
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+  const { refreshApp } = useSelector((store) => store.UserDataReducer)
 
   useEffect(() => {
     if (data) {
-      setEntities(data);
+      setEntities(data)
     }
-    store.dispatch(setRefreshApp(!refreshApp));
-  }, [data]);
+    store.dispatch(setRefreshApp(!refreshApp))
+  }, [data])
 
   const handleCardClick = (entity) => {
-    setCardAction("edit");
-    setOpen(true);
-    setClickedEntity(entity);
-  };
+    setCardAction('edit')
+    setOpen(true)
+    setClickedEntity(entity)
+  }
+  console.log(clickedEntity)
 
   // Returns the data to be sent to the backend
   const getRequired = (formData) => {
@@ -59,60 +60,60 @@ const StaffEntities = () => {
       entityTimeline: formData?.timeline,
       entityRequirements: formData?.requirements,
       entityShares: formData?.shares,
-      entityFeatures: features.join(", "),
-      entityRequiredDocuments: documents.join(", "),
-    };
-  };
+      entityFeatures: features.join(', '),
+      entityRequiredDocuments: documents.join(', '),
+    }
+  }
 
   // This runs when add entity button is clicked
   const handleAddButton = () => {
-    setOpen(true);
-    setCardAction("add");
-  };
+    setOpen(true)
+    setCardAction('add')
+  }
 
   // This adds a new entity
   const handleEntityAdd = async (formData) => {
-    let requiredData = getRequired(formData);
-    let response = await addEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
+    let requiredData = getRequired(formData)
+    let response = await addEntity(requiredData)
+    let data = response?.data
+    let error = response?.error
     if (data) {
-      toast.success("Entity added successfully");
-      setOpen(false);
+      toast.success('Entity added successfully')
+      setOpen(false)
     } else {
-      handleError(error);
+      handleError(error)
     }
-    refetch();
-  };
+    refetch()
+  }
 
   // This updates an existing entity
   const handleEntityUpdate = async (formData) => {
-    let requiredData = getRequired(formData);
-    let response = await updateEntity(requiredData);
-    let data = response?.data;
-    let error = response?.error;
+    let requiredData = getRequired(formData)
+    let response = await updateEntity(requiredData)
+    let data = response?.data
+    let error = response?.error
     if (data) {
-      toast.success("Entity updated successfully");
-      setOpen(false);
+      toast.success('Entity updated successfully')
+      setOpen(false)
     } else {
-      handleError(error);
+      handleError(error)
     }
-    refetch();
-  };
+    refetch()
+  }
 
   // This runs when the delete icon is pressed
   const handleEntityDelete = async (entityInfo) => {
-    let response = await deleteEntity(entityInfo);
-    let data = response?.data;
-    let error = response?.error;
+    let response = await deleteEntity(entityInfo)
+    let data = response?.data
+    let error = response?.error
     if (data) {
-      toast.success("Entity deleted successfully");
-      setOpen(false);
+      toast.success('Entity deleted successfully')
+      setOpen(false)
     } else {
-      handleError(error);
+      handleError(error)
     }
-    refetch();
-  };
+    refetch()
+  }
 
   return (
     <Container>
@@ -137,7 +138,7 @@ const StaffEntities = () => {
             [...entities]
               .sort(
                 (a, b) =>
-                  a.entityCountry.charCodeAt(0) - b.entityCountry.charCodeAt(0)
+                  a.entityCountry.charCodeAt(0) - b.entityCountry.charCodeAt(0),
               )
               .map((entity, index) => (
                 <StaffEntityCard
@@ -153,16 +154,16 @@ const StaffEntities = () => {
                 />
               ))}
           <StaffEntityModal
-            disableAll={cardAction === "edit" ? true : false}
+            disableAll={cardAction === 'edit' ? true : false}
             open={open}
             setOpen={setOpen}
             cardAction={cardAction}
             title={
-              cardAction === "edit" ? "Entity Information" : "Add New Entity"
+              cardAction === 'edit' ? 'Entity Information' : 'Add New Entity'
             }
             entityInfo={clickedEntity}
             submitAction={
-              cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
+              cardAction === 'edit' ? handleEntityUpdate : handleEntityAdd
             }
             loading={updateState.isLoading || addState.isLoading}
             deleteState={deleteState}
@@ -175,17 +176,17 @@ const StaffEntities = () => {
         </CardWrapper>
       </CardContainer>
     </Container>
-  );
-};
+  )
+}
 
-export default StaffEntities;
+export default StaffEntities
 
 const Container = styled.div`
   display: flex;
   flex-flow: column;
   width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
   padding-bottom: 40px;
-`;
+`
 const CardContainer = styled.div`
   border: 1px solid #edf1f7;
   border-top: 0;
@@ -194,7 +195,7 @@ const CardContainer = styled.div`
   height: 100%;
   padding-inline: 24px;
   padding-block: 40px;
-`;
+`
 const CardWrapper = styled.div`
   width: 100%;
   display: grid;
@@ -204,7 +205,7 @@ const CardWrapper = styled.div`
     grid-template-columns: auto auto auto;
     gap: 24px;
   }
-`;
+`
 const Loading = styled.div`
   display: flex;
   justify-content: center;
@@ -212,4 +213,4 @@ const Loading = styled.div`
   width: 100%;
   padding: 40px;
   height: ${({ height }) => height && height};
-`;
+`
