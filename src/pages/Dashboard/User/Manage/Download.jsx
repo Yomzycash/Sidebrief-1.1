@@ -14,6 +14,20 @@ import {
 } from "./style";
 
 const ServiceDownload = () => {
+  const requiredDocumet = [
+    "NIN Document",
+    "Registration Document",
+    "Passport Photograph",
+    "E-signature",
+  ];
+
+  const requiredDownloadDocumet = [
+    " Required form_7812520",
+    " Required form_7869890",
+    " Required form_7965292",
+    " Required form_7863490",
+  ];
+
   return (
     <Container>
       <HeaderCheckout getStarted noProgress backToDashBoard />
@@ -26,14 +40,16 @@ const ServiceDownload = () => {
           <LaunchFormContainer>
             <FileContainer>
               <ContentWrapper>
-                <KYCFileUpload downloadPage />
-                <KYCFileUpload downloadPage />
-                <KYCFileUpload downloadPage />
-                <KYCFileUpload downloadPage />
+                {requiredDownloadDocumet.map((document) => (
+                  <KYCFileUpload downloadPage downloadDocumentName={document} />
+                ))}
               </ContentWrapper>
               <DownLoadText>Upload the required forms</DownLoadText>
               <ContentWrapper>
-                <KYCFileUpload
+                {requiredDocumet.map((document) => (
+                  <KYCFileUpload TopText={document} BottomText={document} />
+                ))}
+                {/* <KYCFileUpload
                   TopText="Required Form"
                   BottomText="National ID Crd"
                 />
@@ -48,7 +64,7 @@ const ServiceDownload = () => {
                 <KYCFileUpload
                   TopText="Required Form"
                   BottomText="National ID Crd"
-                />
+                /> */}
               </ContentWrapper>
             </FileContainer>
           </LaunchFormContainer>

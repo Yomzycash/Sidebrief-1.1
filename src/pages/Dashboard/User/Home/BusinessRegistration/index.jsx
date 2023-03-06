@@ -223,6 +223,7 @@ const BusinessRegistration = (props) => {
                   key={index}
                   title={reward?.rewardPartner}
                   body={reward?.rewardName}
+                  imageAlt={reward?.rewardName}
                   image={reward?.rewardImage}
                   action={() => handleRewardClick(reward.rewardID)}
                 />

@@ -8,9 +8,22 @@ import {
   OrWrapper,
   QuestionWrap,
   Registration,
+  DropDown,
+  DropDownWrapper,
+  ListItem,
+  ListItems,
+  ShowList,
+  DefaultItem,
+  ShowListIcon,
+  Item,
+  Label,
+  OtherInput,
+  ErrMsg,
+  Top,
+  InvisibleBackDrop,
 } from "./styles";
 import MainButton from "components/button";
-import { DropDown, InputWithLabel } from "components/input";
+import { InputWithLabel } from "components/input";
 import { HeadText, TextsWithLink } from "components/texts";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
@@ -21,7 +34,7 @@ import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { referralOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
-
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { checkStaffEmail } from "utils/globalFunctions";
 import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
@@ -32,6 +45,7 @@ import { useCallback } from "react";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [registerNewUser, { isLoading, isSuccess }] =
     useRegisterNewUserMutation();
   const [registerNewStaff, staffState] = useRegisterNewStaffMutation();
@@ -48,6 +62,35 @@ const UserRegistration = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [openInput, setOpenInput] = useState(false);
+
+  const [value, setDValue] = useState("");
+
+  const handleOpenDropdown = () => {
+    setOpen(!open);
+  };
+  const handleOptionClick = (value) => {
+    setOpen(false);
+    setDValue(value);
+    setValue("referral_code", value, { shouldValidate: true });
+    // console.log("value", value);
+    if (value === "Other") {
+      setOpenInput(true);
+    } else {
+      setOpenInput(false);
+    }
+  };
+  const handleChange = (e) => {
+    let input = e.target.value;
+
+    setValue("referral_code", input, { shouldValidate: true });
+
+    // console.log("input", input);
+  };
+
+  // console.log("valueyyyyyyyyyy", value);
 
   useEffect(() => {
     var observer = new IntersectionObserver((e) => {
@@ -86,6 +129,7 @@ const UserRegistration = () => {
   };
   // Sign up function block
   const submitForm = async (formData) => {
+    console.log(formData);
     let staffCheck = checkStaffEmail(formData.email);
     let response = staffCheck
       ? await registerNewStaff(JSON.stringify(formData))
@@ -138,6 +182,9 @@ const UserRegistration = () => {
     setValue("referral_code", string, { shouldValidate: true });
   };
 
+  const handleClick = (value) => {
+    console.log("value", value);
+  };
   return (
     <AuthLayout
       register={true}
@@ -235,7 +282,7 @@ const UserRegistration = () => {
 								errorMessage={errors.referrer?.message}
 							/> */}
 
-              <DropDown
+              {/* <DropDown
                 label="How did you find us?"
                 options={referralOptions}
                 name="referral_code"
@@ -244,7 +291,65 @@ const UserRegistration = () => {
                 errorMessage={errors.referral_code?.message}
                 fontSize="clamp(12px, 1.2vw, 14px)"
                 height="40px"
-              />
+              /> */}
+
+              <>
+                <Top>
+                  <Label>How did you find us ?</Label>
+
+                  {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
+                </Top>
+                <DropDownWrapper>
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      height: "100%",
+                    }}
+                  >
+                    <ShowList>
+                      {value !== "" && value !== "Other" ? (
+                        <Item>{value}</Item>
+                      ) : (
+                        <DefaultItem>Select an Option</DefaultItem>
+                      )}
+                      {/* {value === "Other" && <Item>Other: </Item>} */}
+                      {openInput && (
+                        <OtherInput
+                          name="referral_code"
+                          onChange={handleChange}
+                          placeholder="Please enter the option"
+                        />
+                      )}
+                    </ShowList>
+                    <ShowListIcon onClick={handleOpenDropdown}>
+                      {" "}
+                      {open ? (
+                        <HiChevronUp size={24} color="#4E5152" />
+                      ) : (
+                        <HiChevronDown size={24} color="#4E5152" />
+                      )}
+                    </ShowListIcon>
+                  </div>
+                  {open && (
+                    <>
+                      <InvisibleBackDrop onClick={() => setOpen(false)} />
+                      <DropDown>
+                        <ListItems>
+                          {referralOptions.map((option, index) => (
+                            <ListItem
+                              key={index}
+                              onClick={() => handleOptionClick(option.value)}
+                            >
+                              <>{option.label}</>
+                            </ListItem>
+                          ))}
+                        </ListItems>
+                      </DropDown>
+                    </>
+                  )}
+                </DropDownWrapper>
+              </>
               {/* <TagInputWithSearch
                 label="How did you find us?"
                 list={referralOptions}

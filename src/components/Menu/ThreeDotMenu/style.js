@@ -1,15 +1,15 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-`
+`;
 
-export const ThreeDotContainer = styled.button`
+export const ThreeDotContainer = styled.div`
   border-radius: 2px;
   background: transparent;
   border: none;
   cursor: pointer;
-`
+`;
 
 export const ContextMenu = styled.div`
   position: absolute;
@@ -18,7 +18,7 @@ export const ContextMenu = styled.div`
   // height: 150px;
   top: 34px;
   right: 0px;
-  left: ${({ position }) => (position ? position : '')};
+  left: ${({ position }) => (position ? position : "")};
 
   background: #ffffff;
   border: 1px solid #edf1f7;
@@ -27,7 +27,7 @@ export const ContextMenu = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-`
+`;
 
 export const ContextButton = styled.button`
   /* flex: 1; */
@@ -47,15 +47,15 @@ export const ContextButton = styled.button`
     background-color: #fafafa;
   }
 
-  font-family: 'BR Firma';
+  font-family: "BR Firma";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
   letter-spacing: -0.01em;
-  display: ${({ hide }) => (hide ? 'none' : 'flex')};
+  display: ${({ hide }) => (hide ? "none" : "flex")};
 
-  color: ${({ look }) => (!(look === 'danger') ? `#727474` : '#ed4e3a')};
+  color: ${({ look }) => (!(look === "danger") ? `#727474` : "#ed4e3a")};
 
   svg {
     height: 16px;
@@ -65,7 +65,7 @@ export const ContextButton = styled.button`
       fill: currentColor;
     }
   }
-`
+`;
 
 export const InvisibleBackDrop = styled.div`
   background-color: transparent;
@@ -75,4 +75,4 @@ export const InvisibleBackDrop = styled.div`
   height: 100%;
   width: 100%;
   z-index: 3;
-`
+`;
