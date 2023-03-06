@@ -85,8 +85,7 @@ export const DropDownWrapper = styled.div`
   margin-top: 10px;
   height: 50px;
   border-radius: 8px;
-
-  border: 1px solid #e1e1de;
+  border: ${(props) => props.border};
 `;
 
 export const CheckInputBox = styled.input`

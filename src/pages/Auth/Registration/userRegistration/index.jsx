@@ -66,7 +66,7 @@ const UserRegistration = () => {
   const [open, setOpen] = useState(false);
   const [openInput, setOpenInput] = useState(false);
 
-  const [value, setDValue] = useState("");
+  const [dValue, setDValue] = useState("");
 
   const handleOpenDropdown = () => {
     setOpen(!open);
@@ -75,22 +75,17 @@ const UserRegistration = () => {
     setOpen(false);
     setDValue(value);
     setValue("referral_code", value, { shouldValidate: true });
-    // console.log("value", value);
     if (value === "Other") {
       setOpenInput(true);
     } else {
       setOpenInput(false);
+      setErrorMessage("");
     }
   };
   const handleChange = (e) => {
     let input = e.target.value;
-
     setValue("referral_code", input, { shouldValidate: true });
-
-    // console.log("input", input);
   };
-
-  // console.log("valueyyyyyyyyyy", value);
 
   useEffect(() => {
     var observer = new IntersectionObserver((e) => {
@@ -129,26 +124,30 @@ const UserRegistration = () => {
   };
   // Sign up function block
   const submitForm = async (formData) => {
-    console.log(formData);
-    let staffCheck = checkStaffEmail(formData.email);
-    let response = staffCheck
-      ? await registerNewStaff(JSON.stringify(formData))
-      : await registerNewUser(JSON.stringify(formData));
+    if (!dValue) {
+      setErrorMessage("This field is required");
+    } else {
+      console.log(formData);
+      // let staffCheck = checkStaffEmail(formData.email);
+      // let response = staffCheck
+      //   ? await registerNewStaff(JSON.stringify(formData))
+      //   : await registerNewUser(JSON.stringify(formData));
 
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      store.dispatch(saveUserInfo(data));
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify({ ...data, newUser: true })
-      );
-      localStorage.setItem("userEmail", formData.email);
-      toast.success(data.message);
-      navigate(`${location.pathname}/success`);
-    } else if (error) {
-      // console.log(error.data.message);
-      toast.error(error.data.message);
+      // let data = response?.data;
+      // let error = response?.error;
+      // if (data) {
+      //   store.dispatch(saveUserInfo(data));
+      //   localStorage.setItem(
+      //     "userInfo",
+      //     JSON.stringify({ ...data, newUser: true })
+      //   );
+      //   localStorage.setItem("userEmail", formData.email);
+      //   toast.success(data.message);
+      //   navigate(`${location.pathname}/success`);
+      // } else if (error) {
+      //   // console.log(error.data.message);
+      //   toast.error(error.data.message);
+      // }
     }
   };
 
@@ -299,7 +298,9 @@ const UserRegistration = () => {
 
                   {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
                 </Top>
-                <DropDownWrapper>
+                <DropDownWrapper
+                  border={errorMessage ? "1px solid red" : "1px solid #e1e1de"}
+                >
                   <div
                     style={{
                       width: "100%",
@@ -308,8 +309,8 @@ const UserRegistration = () => {
                     }}
                   >
                     <ShowList>
-                      {value !== "" && value !== "Other" ? (
-                        <Item>{value}</Item>
+                      {dValue !== "" && dValue !== "Other" ? (
+                        <Item>{dValue}</Item>
                       ) : (
                         <DefaultItem>Select an Option</DefaultItem>
                       )}

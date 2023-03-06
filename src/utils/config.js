@@ -43,7 +43,7 @@ export const userRegistrationSchema = yup.object().shape({
     .matches(/^(?=.*[a-z])/, " Must Contain One Lowercase Character")
     .matches(/^(?=.*[0-9])/, "  Must Contain One Number"),
 
-  referral_code: yup.string().required("Please select an option"),
+  // referral_code: yup.string().required("Please select an option"),
 });
 
 export const loginSchema = yup.object().shape({
