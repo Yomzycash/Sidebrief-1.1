@@ -1,5 +1,4 @@
 import React from "react";
-import { StaffStatusCardInfo } from "utils/config";
 import {
 	BottomWrapper,
 	Container,
@@ -29,18 +28,6 @@ const StatusCard = ({
 
 	return (
 		<Wrapper>
-			{/* {StaffStatusCardInfo.map((item, index) => (
-        <Container key={index} border={item.id === 1 && "16px 0px 0px 16px"}>
-          <Top>{item.title}</Top>
-          <Middle>{item.number}</Middle>
-          <BottomWrapper>
-            <IconWrapper
-              color={(item.id === 2 || item.id === 5) && "#ED4E3A"}
-            ></IconWrapper>
-            <div>{item.description}</div>
-          </BottomWrapper>
-        </Container>
-      ))} */}
 			<Container border="none">
 				<Top>Total</Top>
 				<Middle>{numberOrNull(total)}</Middle>
