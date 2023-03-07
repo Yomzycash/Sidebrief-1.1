@@ -8,9 +8,22 @@ import {
   OrWrapper,
   QuestionWrap,
   Registration,
+  DropDown,
+  DropDownWrapper,
+  ListItem,
+  ListItems,
+  ShowList,
+  DefaultItem,
+  ShowListIcon,
+  Item,
+  Label,
+  OtherInput,
+  ErrMsg,
+  Top,
+  InvisibleBackDrop,
 } from "./styles";
 import MainButton from "components/button";
-import { DropDown, InputWithLabel } from "components/input";
+import { InputWithLabel } from "components/input";
 import { HeadText, TextsWithLink } from "components/texts";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
@@ -21,17 +34,19 @@ import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { referralOptions, userRegistrationSchema } from "utils/config";
 import toast from "react-hot-toast";
-
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { checkStaffEmail } from "utils/globalFunctions";
 import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { useCallback } from "react";
+import DropOther from "components/input/dropOther";
 
 //
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [registerNewUser, { isLoading, isSuccess }] =
     useRegisterNewUserMutation();
   const [registerNewStaff, staffState] = useRegisterNewStaffMutation();
@@ -48,6 +63,8 @@ const UserRegistration = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [dValue, setDValue] = useState("");
 
   useEffect(() => {
     var observer = new IntersectionObserver((e) => {
@@ -107,7 +124,6 @@ const UserRegistration = () => {
       toast.error(error.data.message);
     }
   };
-
   // const correctFormDate = (formData) => {
   //   let data = formData;
   //   let dateArray = [...data.date];
@@ -119,23 +135,12 @@ const UserRegistration = () => {
   //   return newData;
   // };
 
-  const handleGenderChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("gender", string, { shouldValidate: true });
-    // console.log(string);
-  };
-  const handleDateChange = (value) => {
-    setValue("date", value, { shouldValidate: true });
-  };
-
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
   };
 
-  // Handle supported referral fetch
-  const handleReferral = (value) => {
-    var string = Object.values(value)[0];
-    setValue("referral_code", string, { shouldValidate: true });
+  const handleReferralChange = (value) => {
+    setValue("referral_code", value, { shouldValidate: true });
   };
 
   return (
@@ -193,29 +198,6 @@ const UserRegistration = () => {
                 register={register}
                 errorMessage={errors.password?.message}
               />
-              {/* <DateInput
-                label={"Date of birth"}
-                name="date"
-                register={register}
-                selectDate={handleDateChange}
-                errorMessage={errors.date?.message}
-              /> */}
-              {/* <DropDown
-                label="Gender"
-                options={genderOptions}
-                name="gender"
-                register={register}
-                onChange={handleGenderChange}
-                errorMessage={errors.gender?.message}
-              /> */}
-              {/* <InputWithLabel
-                placeholder="Phone number"
-                label="Phone Number"
-                name="phone"
-                type="number"
-                register={register}
-                errorMessage={errors.phone?.message}
-              /> */}
               <NumberInput
                 placeholder="Phone number"
                 label="Phone Number"
@@ -226,31 +208,17 @@ const UserRegistration = () => {
                 errorMessage={errors.phone?.message}
               />
 
-              {/* <InputWithLabel
-								placeholder="How did you find us?"
-								label="Referred by"
-								name="referrer"
-								type="text"
-								register={register}
-								errorMessage={errors.referrer?.message}
-							/> */}
-
-              <DropDown
-                label="How did you find us?"
-                options={referralOptions}
+              <DropOther
+                referralOptions={referralOptions}
+                setValue={setDValue}
+                value={dValue}
+                setErrorMessage={setErrorMessage}
+                label="How did you find us ?"
                 name="referral_code"
                 register={register}
-                onChange={handleReferral}
                 errorMessage={errors.referral_code?.message}
-                fontSize="clamp(12px, 1.2vw, 14px)"
-                height="40px"
+                handleReferralChange={handleReferralChange}
               />
-              {/* <TagInputWithSearch
-                label="How did you find us?"
-                list={referralOptions}
-                getValue={handleReferral}
-                initialValue=""
-              /> */}
             </div>
             <TextsWithLink
               text={[

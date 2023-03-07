@@ -56,7 +56,7 @@ const Registrationlayout = () => {
 	let rejected = rejectedLaunch?.currentData?.length;
 	let pending = pendingLaunch?.currentData?.length;
 	let approved = approvedLaunch?.currentData?.length;
-	let paid = pendingLaunch.currentData.filter((el) => el.paid).length;
+	let paid = pendingLaunch?.currentData?.filter((el) => el.paid).length;
 
 	const { refreshApp, unreadLaunchNotifications } = useSelector(
 		(store) => store.UserDataReducer
