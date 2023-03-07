@@ -8,8 +8,7 @@ export const Registration = styled.div`
   background-color: white;
   padding: 59px;
   border: 1px solid #edf1f7;
-  box-shadow: -10px -10px 10px -5px #9596970a,
-    10px 10px 10px -5px #9596970a;
+  box-shadow: -10px -10px 10px -5px #9596970a, 10px 10px 10px -5px #9596970a;
   border-radius: 12px;
 
   @media screen and (max-width: 700px) {

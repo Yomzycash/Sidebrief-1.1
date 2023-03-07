@@ -303,3 +303,93 @@ export const TextArea = styled.textarea`
     border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #00A2D4")};
   }
 `;
+
+export const DropDownWrapper = styled.div`
+  background: #ffffff;
+  width: 100%;
+  position: relative;
+  padding: 4px;
+  margin-top: 10px;
+  height: 50px;
+  border-radius: 8px;
+  border: ${(props) => props.border};
+`;
+
+export const CheckInputBox = styled.input`
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.46);
+`;
+
+export const ShowList = styled.div`
+  background: #ffffff;
+  width: 90%;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  padding-inline: 24px;
+`;
+
+export const ShowListIcon = styled.div`
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  cursor: pointer;
+`;
+
+export const DropDown = styled.div`
+  background: #ffffff;
+  border: 1px solid #e1e1de;
+  position: absolute;
+  width: 100%;
+  height: 200px;
+  top: 50px;
+  overflow-y: auto;
+  right: 1px;
+  z-index: 5;
+  padding: 10px 0px;
+`;
+
+export const ListItems = styled.ul`
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const ListItem = styled.li`
+  display: flex;
+  gap: 10px;
+  padding: 14px 10px;
+  align-items: center;
+
+  &:hover {
+    background-color: rgba(0, 162, 212, 0.1);
+    cursor: pointer;
+  }
+`;
+
+export const Item = styled.p`
+  font-size: 14px;
+`;
+export const DefaultItem = styled.p`
+  font-size: 14px;
+  color: #727474;
+`;
+export const OtherInput = styled.input`
+  height: 80%;
+  width: 80%;
+  border: none;
+  font-size: 14px;
+  outline: none;
+`;
+
+export const InvisibleBackDrop = styled.div`
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 3;
+`;

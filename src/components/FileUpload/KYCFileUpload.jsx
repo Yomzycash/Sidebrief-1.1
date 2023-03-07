@@ -30,6 +30,7 @@ const KYCFileUpload = ({
   documentName,
   downloadPage,
   handleRefetch,
+  downloadDocumentName,
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
@@ -203,7 +204,7 @@ const KYCFileUpload = ({
                   <DownLoadLeftHold>
                     <PdfIcon />
                     <DownLoadPageText>
-                      Required form_7865290
+                      {downloadDocumentName}
                       <DownloadSize>567KB</DownloadSize>
                     </DownLoadPageText>
                   </DownLoadLeftHold>
