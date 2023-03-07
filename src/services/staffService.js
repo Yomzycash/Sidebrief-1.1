@@ -123,6 +123,42 @@ export const staffApi = createApi({
 			invalidatesTags: ["User"],
 		}),
 
+		// Reset password - send code
+		sendResetPasswordCodeStaff: builder.mutation({
+			query: (data) => ({
+				url: "/teamspace/sendresetpasswordcode",
+				method: "POST",
+				body: data,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
+
+		// validate reset code
+		validateResetCodeStaff: builder.mutation({
+			query: (data) => ({
+				url: "/teamspace/validateresetcode",
+				method: "POST",
+				body: data,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
+
+		// change password
+		changePasswordStaff: builder.mutation({
+			query: (data) => ({
+				url: "/teamspace/changepassword/",
+				method: "POST",
+				body: data,
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
+
 		// Add an entity
 		addEntity: builder.mutation({
 			query: (data) => ({
@@ -306,9 +342,9 @@ export const staffApi = createApi({
 		// add a service
 		addService: builder.mutation({
 			query: (data) => ({
-				url:"/services/create",
-				method:"POST",
-				body:data,
+				url: "/services/create",
+				method: "POST",
+				body: data,
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",
 				},
@@ -319,25 +355,24 @@ export const staffApi = createApi({
 		// update a service
 		updateService: builder.mutation({
 			query: (serviceId) => ({
-				url:`/services/update/${serviceId}`,
+				url: `/services/update/${serviceId}`,
 				method: "PUT",
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",
 				},
-			})
+			}),
 		}),
 
 		// delete a service
 		deleteService: builder.mutation({
 			query: (serviceId) => ({
-				url:`/services/delete/${serviceId}`,
+				url: `/services/delete/${serviceId}`,
 				method: "DELETE",
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",
 				},
-			})
+			}),
 		}),
-
 
 		// Get services by category
 		getServicesByCategory: builder.query({
@@ -365,6 +400,9 @@ export const {
 	useRegisterNewStaffMutation,
 	useLoginStaffMutation,
 	useActivateStaffMutation,
+	useSendResetPasswordCodeStaffMutation,
+	useValidateResetCodeStaffMutation,
+	useChangePasswordStaffMutation,
 
 	useGetAllLaunchQuery,
 	useGetApprovedLaunchQuery,

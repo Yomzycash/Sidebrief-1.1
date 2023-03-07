@@ -12,5 +12,9 @@
     "jsx": "react-jsx",
     "compilerOptions": {
         "baseUrl": "src"
-    }
+    },
+    "exclude": [
+        "**/node_modules/*",
+        ".git",
+    ]
 }
