@@ -103,37 +103,27 @@ const UserRegistration = () => {
   };
   // Sign up function block
   const submitForm = async (formData) => {
-    if (!dValue) {
-      setErrorMessage("This field is required");
-    } else {
-      let newData = {
-        ...formData,
-        referral_code: dValue,
-      };
+    let staffCheck = checkStaffEmail(formData.email);
+    let response = staffCheck
+      ? await registerNewStaff(JSON.stringify(formData))
+      : await registerNewUser(JSON.stringify(formData));
 
-      let staffCheck = checkStaffEmail(formData.email);
-      let response = staffCheck
-        ? await registerNewStaff(JSON.stringify(newData))
-        : await registerNewUser(JSON.stringify(newData));
-
-      let data = response?.data;
-      let error = response?.error;
-      if (data) {
-        store.dispatch(saveUserInfo(data));
-        localStorage.setItem(
-          "userInfo",
-          JSON.stringify({ ...data, newUser: true })
-        );
-        localStorage.setItem("userEmail", formData.email);
-        toast.success(data.message);
-        navigate(`${location.pathname}/success`);
-      } else if (error) {
-        // console.log(error.data.message);
-        toast.error(error.data.message);
-      }
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      store.dispatch(saveUserInfo(data));
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ ...data, newUser: true })
+      );
+      localStorage.setItem("userEmail", formData.email);
+      toast.success(data.message);
+      navigate(`${location.pathname}/success`);
+    } else if (error) {
+      // console.log(error.data.message);
+      toast.error(error.data.message);
     }
   };
-
   // const correctFormDate = (formData) => {
   //   let data = formData;
   //   let dateArray = [...data.date];
@@ -147,6 +137,10 @@ const UserRegistration = () => {
 
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
+  };
+
+  const handleReferralChange = (value) => {
+    setValue("referral_code", value, { shouldValidate: true });
   };
 
   return (
@@ -217,8 +211,13 @@ const UserRegistration = () => {
               <DropOther
                 referralOptions={referralOptions}
                 setValue={setDValue}
-                errorMessage={errorMessage}
+                value={dValue}
                 setErrorMessage={setErrorMessage}
+                label="How did you find us ?"
+                name="referral_code"
+                register={register}
+                errorMessage={errors.referral_code?.message}
+                handleReferralChange={handleReferralChange}
               />
             </div>
             <TextsWithLink

@@ -349,6 +349,8 @@ export const DropDown = styled.div`
   right: 1px;
   z-index: 5;
   padding: 10px 0px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 15px 15px #00000011;
 `;
 
 export const ListItems = styled.ul`
@@ -362,6 +364,7 @@ export const ListItem = styled.li`
   gap: 10px;
   padding: 14px 10px;
   align-items: center;
+  font-size: 14px;
 
   &:hover {
     background-color: rgba(0, 162, 212, 0.1);
