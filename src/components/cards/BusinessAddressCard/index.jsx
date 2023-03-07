@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { navigateToDetailPage } from "utils/globalFunctions";
-import { useNavigate } from "react-router-dom";
 
-const BusinessesCard = ({ name, type, code, countryISO }) => {
-	const navigate = useNavigate();
+const BusinessesCard = ({ name, type, code, countryISO, navigate }) => {
 	const launchInfo = {
 		launchCode: code,
 		registrationCountry: countryISO,
@@ -12,7 +10,7 @@ const BusinessesCard = ({ name, type, code, countryISO }) => {
 	};
 
 	return (
-		<Wrapper onClick={() => navigateToDetailPage(navigate, launchInfo)}>
+		<Wrapper onClick={() => navigate(launchInfo)}>
 			<InnerContainer>
 				<Name>{name}</Name>
 				<TypeWrapper>
