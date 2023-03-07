@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from 'asset/images'
+//import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from 'asset/images'
 
 import pdf from '../asset/images/pdf.png'
 import png from '../asset/images/png.png'

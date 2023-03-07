@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import styled from "styled-components";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Search from "components/navbar/Search";

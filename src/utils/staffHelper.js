@@ -2,7 +2,7 @@ import { subMonths, isWithinInterval, subWeeks } from "date-fns";
 import numeral from "numeral";
 import { saveAs } from "file-saver";
 
-export const downLoadImage = async (link, documentType) => {
+export const downLoadImage = async (link, documentType,) => {
   let httpsLink = link.split("");
   httpsLink.splice(4, 0, "s");
   httpsLink = httpsLink.join("");

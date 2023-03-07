@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import { setLaunchPaid,  } from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -33,12 +33,7 @@ export const checkStaffEmail = (email) => {
 	return staff;
 };
 
-const setInfoToLocalStorageAndStore = (launchInfo) => {
-	// set the launchInfo to store and localstorage
-	store.dispatch(setLaunchResponse(launchInfo)); // !important DO NOT DELETE
-	localStorage.setItem("launchInfo", JSON.stringify(launchInfo));
-	localStorage.setItem("countryISO", launchInfo.registrationCountry);
-};
+//  
 
 export const navigateToDetailPage = async (
 	navigate,
