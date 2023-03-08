@@ -7,9 +7,9 @@ import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
-import { loginSchema } from "utils/config";
+import { loginSchema } from "./schema";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { store } from "redux/Store";
@@ -30,7 +30,6 @@ const SignIn = () => {
 	const [loginStaff, staffState] = useLoginStaffMutation();
 
 	const navigate = useNavigate();
-	const location = useLocation();
 
 	const TestRef = useRef();
 

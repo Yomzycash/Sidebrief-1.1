@@ -19,12 +19,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewUserMutation } from "services/authService";
 import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
-import { referralOptions, userRegistrationSchema } from "utils/config";
+import { referralOptions } from "utils/config";
 import toast from "react-hot-toast";
 import { checkStaffEmail } from "utils/globalFunctions";
 import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
 import DropOther from "components/input/dropOther";
+import { userRegistrationSchema } from "./schema";
 
 const UserRegistration = () => {
 	const [navSticked, setNavSticked] = useState("");

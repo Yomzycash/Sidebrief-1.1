@@ -1,3 +1,5 @@
+import ServicesIcon from "./ServicesIcon";
+
 export { HomeIcon } from "./HomeIcon";
 export { BankAccountIcon } from "./BankAccountIcon";
 export { BusinessesIcon } from "./BusinessesIcon";
@@ -11,3 +13,5 @@ export { TaxesIcon } from "./TaxesIcon";
 export { PaymentIcon } from "./PaymentIcon";
 export { EntityIcon } from "./EntityIcon";
 export { CountryIcon } from "./CountryIcon";
+export { ReactComponent as ArrowDownIcon } from "./ArrowDownIcon.svg";
+export { ServicesIcon };
