@@ -1,12 +1,9 @@
 import * as yup from "yup";
-import { GladeLogo, lendhaLogo, OkraLogo, SterlingLogo } from "asset/images";
-
 import pdf from "../asset/images/pdf.png";
 import png from "../asset/images/png.png";
 import jpg from "../asset/images/jpg.png";
 import doc from "../asset/images/doc.png";
 import NigeriaFlag from "../asset/images/NigeriaFlag.png";
-
 import {
   BankAccountIcon,
   BusinessesIcon,
@@ -21,32 +18,11 @@ import {
   PaymentIcon,
   EntityIcon,
   CountryIcon,
+  ArrowDownIcon,
+  ServicesIcon,
 } from "asset/Icons";
-import ArrowDownIcon from "../asset/Icons/ArrowDownIcon.svg";
-import profile from "../asset/images/profile.svg";
-import ServicesIcon from "asset/Icons/ServicesIcon";
-
-export const userRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("Enter your first name"),
-  last_name: yup.string().required("Enter your last name"),
-  email: yup.string().email("Enter a valid email address").required("Enter your email"),
-  phone: yup.string().required("Enter your phone number"),
-  password: yup
-    .string()
-    .min(6)
-    .max(15)
-    .required("Enter a password")
-    .matches(/^(?=.*[A-Z])/, " Must Contain One Uppercase Character")
-    .matches(/^(?=.*[a-z])/, " Must Contain One Lowercase Character")
-    .matches(/^(?=.*[0-9])/, "  Must Contain One Number"),
-
-  referral_code: yup.string().required("Please select an option"),
-});
-
-export const loginSchema = yup.object().shape({
-  email: yup.string().email("Enter a valid email address").required("Enter your email"),
-  password: yup.string().required("Enter your password"),
-});
+// import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
+// import  from "asset/Icons/ServicesIcon";
 
 export const referralOptions = [
   { value: "Facebook", label: "Facebook" },
@@ -1269,78 +1245,4 @@ export const entityTypes = [
 export const entityRequirements = [
   { value: "Standard", label: "Standard" },
   { value: "Non-Standard", label: "Non-Standard" },
-];
-export const chatArray = [
-  {
-    id: "1",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "2",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "3",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "4",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "5",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "6",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "7",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
-  {
-    id: "8",
-    image: profile,
-    name: "Ayomide Olabisi",
-    serviceName: "Service Name",
-    time: " 15min ago",
-    message:
-      "We have a couple of banks we have partnered with to ease your business creation process. With these partners, you...",
-  },
 ];

@@ -1,128 +1,125 @@
-import React from 'react'
+import React from "react";
 import {
-  Container,
-  TopContainer,
-  ImageContainer,
-  Image,
-  NameContainer,
-  UpperText,
-  LowerText,
-  LowerWrapper,
-  InnerContainer,
-} from './styled.js'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import profile from 'asset/images/profile.svg'
-import { Node } from 'slate'
-import { checkStaffEmail } from 'utils/globalFunctions.js'
-import { useEffect } from 'react'
-import { useUpdateNotificationMutation } from 'services/chatService.js'
-import { getUnReadNotifications } from 'components/navbar/actions.js'
-import { store } from 'redux/Store.js'
-import { setRefreshNotifications } from 'redux/Slices.js'
-import { useSelector } from 'react-redux'
+	Container,
+	TopContainer,
+	ImageContainer,
+	Image,
+	NameContainer,
+	UpperText,
+	LowerText,
+	LowerWrapper,
+	InnerContainer,
+} from "./styled.js";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+// import profile from 'asset/images/profile.svg'
+import { Node } from "slate";
+import { checkStaffEmail } from "utils/globalFunctions.js";
+import { useEffect } from "react";
+import { useUpdateNotificationMutation } from "services/chatService.js";
+import { getUnReadNotifications } from "components/navbar/actions.js";
+import { store } from "redux/Store.js";
+import { setRefreshNotifications } from "redux/Slices.js";
+import { useSelector } from "react-redux";
 
 //
 
 const ChatCard = ({ messages, threadsRefetch }) => {
-  const [updateNotification, updateState] = useUpdateNotificationMutation()
+	const [updateNotification, updateState] = useUpdateNotificationMutation();
 
-  const [searchParams, setSearchParams] = useSearchParams()
+	const [searchParams, setSearchParams] = useSearchParams();
 
-  const location = useLocation()
-  let params = new URLSearchParams(location.search)
-  let subject = params.get('subject')
+	const location = useLocation();
+	let params = new URLSearchParams(location.search);
+	let subject = params.get("subject");
 
-  const { refreshNotifications } = useSelector((store) => store.UserDataReducer)
+	const { refreshNotifications } = useSelector(
+		(store) => store.UserDataReducer
+	);
 
-  const {
-    senderId,
-    messageBody,
-    messageSubject,
-    serviceId,
-    messageIsRead,
-  } = messages[0]
+	const { senderId, messageBody, messageSubject, serviceId, messageIsRead } =
+		messages[0];
 
-  let isActive = messageSubject === subject
+	let isActive = messageSubject === subject;
 
-  const handleRead = () => {
-    let unread = getUnReadNotifications(messages)
-    unread?.forEach((el) => updateReadField(el))
-  }
+	const handleRead = () => {
+		let unread = getUnReadNotifications(messages);
+		unread?.forEach((el) => updateReadField(el));
+	};
 
-  const updateReadField = async (notification) => {
-    let requiredData = {
-      notificationId: notification?.notificationId,
-      senderId: notification?.senderId,
-      serviceId: notification?.serviceId,
-      messageSubject: notification?.messageSubject,
-      messageBody: notification?.messageBody,
-      messageIsRead: true,
-      messageFiles: notification?.messageFiles,
-    }
-    const response = await updateNotification(requiredData)
-    if (response?.data) threadsRefetch()
+	const updateReadField = async (notification) => {
+		let requiredData = {
+			notificationId: notification?.notificationId,
+			senderId: notification?.senderId,
+			serviceId: notification?.serviceId,
+			messageSubject: notification?.messageSubject,
+			messageBody: notification?.messageBody,
+			messageIsRead: true,
+			messageFiles: notification?.messageFiles,
+		};
+		const response = await updateNotification(requiredData);
+		if (response?.data) threadsRefetch();
 
-    store.dispatch(setRefreshNotifications(!refreshNotifications))
+		store.dispatch(setRefreshNotifications(!refreshNotifications));
 
-    console.log(response)
-  }
+		console.log(response);
+	};
 
-  const openChat = () => {
-    let newParams = {
-      serviceId: serviceId,
-      subject: messageSubject,
-    }
-    setSearchParams(newParams)
-    handleRead()
-  }
+	const openChat = () => {
+		let newParams = {
+			serviceId: serviceId,
+			subject: messageSubject,
+		};
+		setSearchParams(newParams);
+		handleRead();
+	};
 
-  const serializeToText = (nodes) => {
-    return nodes.map((n) => Node.string(n)).join('\n')
-  }
+	const serializeToText = (nodes) => {
+		return nodes.map((n) => Node.string(n)).join("\n");
+	};
 
-  const parse = (messageBody) => {
-    try {
-      return serializeToText(JSON.parse(messageBody))
-    } catch (err) {
-      return messageBody
-    }
-  }
+	const parse = (messageBody) => {
+		try {
+			return serializeToText(JSON.parse(messageBody));
+		} catch (err) {
+			return messageBody;
+		}
+	};
 
-  const message = parse(messageBody)
+	const message = parse(messageBody);
 
-  let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-  let userEmail = localStorage.getItem('userEmail')
-  let staffEmail = checkStaffEmail(userEmail)
+	let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+	let userEmail = localStorage.getItem("userEmail");
+	let staffEmail = checkStaffEmail(userEmail);
 
-  let isMyMessage = staffEmail
-    ? senderId === 'Sidebrief'
-    : senderId === userInfo?.username
+	let isMyMessage = staffEmail
+		? senderId === "Sidebrief"
+		: senderId === userInfo?.username;
 
-  console.log(messageIsRead)
+	console.log(messageIsRead);
 
-  return (
-    <Container
-      onClick={openChat}
-      selected={isActive}
-      $read={messageIsRead || isMyMessage}
-    >
-      <TopContainer>
-        <InnerContainer>
-          <ImageContainer isMyMessage={isMyMessage}>
-            <span>{senderId?.slice(0, 2)}</span>
-          </ImageContainer>
-          <NameContainer>
-            {/* <UpperText>{serviceId}</UpperText> */}
-            <UpperText>{messageSubject}</UpperText>
-            {/* <LowerText>{messageSubject}</LowerText> */}
-          </NameContainer>
-        </InnerContainer>
-        {/* <LowerText>{new Date(lastMessage(message)?.updatedAt)}</LowerText> */}
-      </TopContainer>
+	return (
+		<Container
+			onClick={openChat}
+			selected={isActive}
+			$read={messageIsRead || isMyMessage}
+		>
+			<TopContainer>
+				<InnerContainer>
+					<ImageContainer isMyMessage={isMyMessage}>
+						<span>{senderId?.slice(0, 2)}</span>
+					</ImageContainer>
+					<NameContainer>
+						{/* <UpperText>{serviceId}</UpperText> */}
+						<UpperText>{messageSubject}</UpperText>
+						{/* <LowerText>{messageSubject}</LowerText> */}
+					</NameContainer>
+				</InnerContainer>
+				{/* <LowerText>{new Date(lastMessage(message)?.updatedAt)}</LowerText> */}
+			</TopContainer>
 
-      <LowerWrapper>{message}</LowerWrapper>
-    </Container>
-  )
-}
+			<LowerWrapper>{message}</LowerWrapper>
+		</Container>
+	);
+};
 
-export default ChatCard
+export default ChatCard;
