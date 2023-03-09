@@ -19,7 +19,7 @@ const BusinessInformationReview = () => {
   };
   const navigate = useNavigate();
   const handleNext = () => {
-    navigate("/launch/review-shareholders");
+    navigate("/launch/review/shareholders");
   };
   const handlePrev = () => {
     navigate(-1);
@@ -42,10 +42,7 @@ const BusinessInformationReview = () => {
           <Nav>
             {ReviewTab.map((item, index) => (
               <ReviweTabWrapper to={item.path} key={index}>
-                <NavLink
-                  to={item.path}
-                  style={({ isActive }) => (isActive ? ActiveStyles : {})}
-                >
+                <NavLink to={item.path} style={({ isActive }) => (isActive ? ActiveStyles : {})}>
                   {item.title}
                 </NavLink>
               </ReviweTabWrapper>

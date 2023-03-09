@@ -3,12 +3,7 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import { Body } from "./styles.js";
 
-import {
-  CheckoutController,
-  CheckoutSection,
-  PaymentForm,
-  PaymentSelector,
-} from "containers";
+import { CheckoutController, CheckoutSection, PaymentForm, PaymentSelector } from "containers";
 import { Bottom, Container, Header } from "pages/Launch/styled";
 import { providerReducer, actions } from "./reducer";
 import { paymentProviders } from "./constants";
@@ -39,14 +34,12 @@ const ServicePayment = () => {
   const getActive = () => {
     return providers.find((el) => el.active === true).name.toLowerCase();
   };
-  const selectedEntity = useSelector(
-    (state) => state.LaunchReducer.selectedEntity
-  );
+  const selectedEntity = useSelector((state) => state.LaunchReducer.selectedEntity);
 
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate("/launch/entity");
+    navigate("/services/form");
   };
 
   const handlePrev = () => {
@@ -55,7 +48,7 @@ const ServicePayment = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 2 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 1 })); // total- total pages and current - current page
   }, []);
 
   return (
@@ -91,7 +84,7 @@ const ServicePayment = () => {
             backText={"Previous"}
             // hideForward
             backAction={handlePrev}
-            forwardAction={() => navigate("/services/form")}
+            forwardAction={handleNext}
             forwardText="Next"
           />
         </Bottom>

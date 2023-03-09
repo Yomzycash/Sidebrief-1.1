@@ -17,19 +17,13 @@ import {
 } from "services/launchService";
 import { useEffect } from "react";
 import { Puff } from "react-loading-icons";
-import {
-  handleCheckDocument,
-  handleMemberCodeMerge,
-  handleMembersCodeMerge,
-} from "../action";
+import { handleCheckDocument, handleMemberCodeMerge, handleMembersCodeMerge } from "../action";
 
 const ShareholderReview = () => {
   const [mergedResponse, setMergedResponse] = useState([]);
   const [mergedDocuments, setMergedDocuments] = useState([]);
   // getting the shareholder container from store
-  const shareholderDocumentContainer = useSelector(
-    (state) => state.LaunchReducer.shareholderDocs
-  );
+  const shareholderDocumentContainer = useSelector((state) => state.LaunchReducer.shareholderDocs);
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   const countryISO = localStorage.getItem("countryISO");
 
@@ -37,7 +31,7 @@ const ShareholderReview = () => {
   const location = useLocation();
 
   const handleNext = () => {
-    navigate("/launch/review-directors");
+    navigate("/launch/review/directors");
     store.dispatch(setCheckoutProgress({ total: 13, current: 11 })); // total- total pages and current - current page
   };
   const handlePrev = () => {
@@ -45,8 +39,7 @@ const ShareholderReview = () => {
   };
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
-  const [viewShareholders, viewShareholderState] =
-    useViewShareholdersMutation();
+  const [viewShareholders, viewShareholderState] = useViewShareholdersMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const { data } = useGetAllEntitiesQuery(countryISO);
@@ -61,17 +54,12 @@ const ShareholderReview = () => {
     let membersUpdatedData = [...memberInfo.data.businessMembers];
 
     let shareholderInfo = await viewShareholders(launchResponse);
-    let shareholdersUpdatedData = [
-      ...shareholderInfo.data.businessShareholders,
-    ];
+    let shareholdersUpdatedData = [...shareholderInfo.data.businessShareholders];
 
     // let viewResponse = await viewMemberKYC(launchInfo);
     // let MemberUploadedKYCInfo = [...viewResponse?.data.businessMembersKYC];
 
-    let finalMerge = handleMembersCodeMerge(
-      shareholdersUpdatedData,
-      membersUpdatedData
-    );
+    let finalMerge = handleMembersCodeMerge(shareholdersUpdatedData, membersUpdatedData);
     // let fileInfo = MemberUploadedKYCInfo.filter(
     //   (member) => member.memberCode === memberCode
     // );
@@ -124,10 +112,7 @@ const ShareholderReview = () => {
         <Nav>
           {ReviewTab.map((item, index) => (
             <ReviweTabWrapper to={item.path} key={index}>
-              <NavLink
-                to={item.path}
-                style={({ isActive }) => (isActive ? ActiveStyles : {})}
-              >
+              <NavLink to={item.path} style={({ isActive }) => (isActive ? ActiveStyles : {})}>
                 {item.title}
               </NavLink>
             </ReviweTabWrapper>
@@ -147,11 +132,7 @@ const ShareholderReview = () => {
               key={index}
               number={index + 1}
               name={shareholder?.memberName}
-              shares={
-                shareholder?.shareholderRegistrationNumber
-                  ? "company"
-                  : "individual"
-              }
+              shares={shareholder?.shareholderRegistrationNumber ? "company" : "individual"}
               email={shareholder?.memberEmail}
               phone={shareholder?.memberPhone}
               sharesPercentage={shareholder?.shareholderOwnershipPercentage}
