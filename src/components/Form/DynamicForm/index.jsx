@@ -1,17 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DropDown, InputWithLabel } from "components/input";
-import { CheckoutController } from "containers";
 import React from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { getSchema } from "./actions";
-import {
-  ButtonContainer,
-  buttonStyles,
-  DynamicFormWrapper,
-  Inputs,
-} from "./styled";
+import { DynamicFormWrapper, Inputs } from "./styled";
 
 const DynamicForm = ({
   formInfo,
@@ -23,8 +16,6 @@ const DynamicForm = ({
   inputsStyle,
   submitAction,
 }) => {
-  const navigate = useNavigate();
-
   let schema = getSchema(formInfo);
 
   const {
@@ -41,13 +32,9 @@ const DynamicForm = ({
     setValue(el?.name, category, { shouldValidate: true });
   };
 
-  const handleNext = () => {};
-
   useEffect(() => {
     if (formMode === "edit")
-      previewInfo.map((el) =>
-        setValue(el.name, previewInfo.entityName, { shouldValidate: true })
-      );
+      previewInfo.map((el) => setValue(el.name, previewInfo.entityName, { shouldValidate: true }));
   }, []);
 
   return (
@@ -90,20 +77,6 @@ const DynamicForm = ({
           )
         )}
       </Inputs>
-      <ButtonContainer>
-        <CheckoutController
-          backAction={() => navigate(-1)}
-          backText={"Previous"}
-          forwardAction={handleNext}
-          forwardText={"Proceed"}
-          backBottonStyle={buttonStyles}
-          forwardButtonStyle={buttonStyles}
-          forwardSubmit
-          forwardLoading={loading}
-          forwardDisable={disable}
-          $modal
-        />
-      </ButtonContainer>
     </DynamicFormWrapper>
   );
 };

@@ -29,10 +29,7 @@ import ServicesIcon from "asset/Icons/ServicesIcon";
 export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("Enter your first name"),
   last_name: yup.string().required("Enter your last name"),
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Enter your email"),
+  email: yup.string().email("Enter a valid email address").required("Enter your email"),
   phone: yup.string().required("Enter your phone number"),
   password: yup
     .string()
@@ -47,10 +44,7 @@ export const userRegistrationSchema = yup.object().shape({
 });
 
 export const loginSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Enter your email"),
+  email: yup.string().email("Enter a valid email address").required("Enter your email"),
   password: yup.string().required("Enter your password"),
 });
 
@@ -131,10 +125,7 @@ export const checkInfoShareholderSchema = yup.object().shape({
     .number()
     .typeError("Enter shareholder's phone number")
     .required("Enter shareholder's phone number"),
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Enter shareholder's email"),
+  email: yup.string().email("Enter a valid email address").required("Enter shareholder's email"),
   sharePercentage: yup
     .number("Must be a number")
     .typeError("Enter share percentage")
@@ -153,10 +144,7 @@ export const checkInfoShareCompSchema = yup.object().shape({
     .number()
     .typeError("Enter shareholder's phone number")
     .required("Enter shareholder's phone number"),
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Enter shareholder's email"),
+  email: yup.string().email("Enter a valid email address").required("Enter shareholder's email"),
   sharePercentage: yup
     .number("Must be a number")
     .typeError("Enter share percentage")
@@ -183,10 +171,7 @@ export const checkInfoDirectorSchema = yup.object().shape({
 export const checkInfoBeneficiarySchema = yup.object().shape({
   fullName: yup.string().required("Enter beneficiary's full name"),
   phone: yup.string().required("Enter beneficiary's phone number"),
-  email: yup
-    .string()
-    .email("Enter a valid email address")
-    .required("Enter beneficiary's email"),
+  email: yup.string().email("Enter a valid email address").required("Enter beneficiary's email"),
   stake: yup
     .number()
     .typeError("Enter beneficiary's stake pecentage")
@@ -215,10 +200,7 @@ export const StaffEntitySchema = yup.object().shape({
   currency: yup.string().required("Select entity currency"),
   fee: yup.number().typeError("Enter entity fee").required("Enter entity fee"),
   timeline: yup.string().required("Enter entity timeline"),
-  shares: yup
-    .number()
-    .typeError("Enter entity shares")
-    .required("Enter entity shares"),
+  shares: yup.number().typeError("Enter entity shares").required("Enter entity shares"),
 });
 
 export const StaffRewardSchema = yup.object().shape({
@@ -573,8 +555,7 @@ export const Entities = [
 export const Messages = [
   {
     id: 1,
-    message:
-      "Your business, Ayomide Construction & Sons has been registered successfully.",
+    message: "Your business, Ayomide Construction & Sons has been registered successfully.",
     time: "2hrs ago",
   },
 
@@ -587,8 +568,7 @@ export const Messages = [
 
   {
     id: 3,
-    message:
-      "Hi there! You have an incomplete business registration. Continue now.",
+    message: "Hi there! You have an incomplete business registration. Continue now.",
     time: "2hrs ago",
   },
 ];
@@ -890,17 +870,17 @@ export const ReviewTab = [
   {
     id: 2,
     title: "Shareholders Information",
-    path: "/launch/review-shareholders",
+    path: "/launch/review/shareholders",
   },
   {
     id: 3,
     title: "Directors Information",
-    path: "/launch/review-directors",
+    path: "/launch/review/directors",
   },
   {
     id: 4,
     title: "Beneficiaries Information",
-    path: "/launch/review-beneficiaries",
+    path: "/launch/review/beneficiaries",
   },
 ];
 export const imageTypeImage = [

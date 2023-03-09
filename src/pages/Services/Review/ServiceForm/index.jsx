@@ -1,19 +1,33 @@
 import QuestionCard from "components/cards/QuestionCard";
 import React from "react";
-import { useEffect } from "react";
-import { setServiceCheckoutProgress } from "redux/Slices";
-import { store } from "redux/Store";
 import { Wrapper } from "./style";
+import { useNavigate } from "react-router-dom";
+import { CheckoutController } from "containers";
+import { Bottom } from "../style";
 
 const ServiceFormReview = () => {
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 5 })); // total- total pages and current - current page
-  }, []);
+  const navigate = useNavigate();
+
+  const handlePrev = () => {
+    navigate(-1);
+  };
+
+  const handleNext = async () => {
+    navigate("/services/review/documents");
+  };
 
   return (
     <Wrapper>
       <QuestionCard />
+      <Bottom>
+        <CheckoutController
+          backText={"Previous"}
+          forwardSubmit
+          backAction={handlePrev}
+          forwardAction={handleNext}
+          forwardText="Next"
+        />
+      </Bottom>
     </Wrapper>
   );
 };

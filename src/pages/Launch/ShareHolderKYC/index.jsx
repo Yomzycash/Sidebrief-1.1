@@ -9,9 +9,7 @@ import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import {
   useAddMemberKYCMutation,
-  useDeleteMemberKYCMutation,
   useGetAllEntitiesQuery,
-  useGetUserDraftQuery,
   useViewMembersKYCMutation,
   useViewMembersMutation,
   useViewShareholdersMutation,
@@ -19,51 +17,32 @@ import {
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
-import FileUpload from "components/FileUpload";
-import {
-  checkDocumentInfo,
-  convertToLink,
-  isValidFileUploaded,
-  mergeInfo,
-} from "utils/LaunchHelper";
+import { convertToLink, mergeInfo } from "utils/LaunchHelper";
 
 import { Puff } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 
 const ShareHolderKYC = () => {
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
-  const [fileName, setFileName] = useState("");
-  const [type, setType] = useState("");
-  const [size, setSize] = useState(0);
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [sameData, setSameData] = useState([]);
-  const [viewMemberKYC, { refetch }] = useViewMembersKYCMutation();
-  const [error, setError] = useState("");
-  const [uploadedFileDetails, setUploadedFileDetails] = useState("");
+  const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewMember, viewMembersState] = useViewMembersMutation();
-  const [deleteMemberKYC] = useDeleteMemberKYCMutation();
-  const [viewShareholders, viewShareholderState] =
-    useViewShareholdersMutation();
+  const [viewShareholders, viewShareholderState] = useViewShareholdersMutation();
   const [shareholderContainer, setShareholder] = useState([]);
   const [requiredDocuments, setRequiredDocuments] = useState([]);
 
   let navigatedFrom = localStorage.getItem("navigatedFrom");
 
-  const launchResponse = useSelector(
-    (state) => state.LaunchReducer.launchResponse
-  );
+  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
   const countryISO = localStorage.getItem("countryISO");
 
   const [documentContainer, setDocumentContainer] = useState([]);
-  const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
-  const drafts = useGetUserDraftQuery();
+  const { data } = useGetAllEntitiesQuery(countryISO);
 
   useEffect(() => {
-    const check = data?.find(
-      (entity) => entity.entityCode === launchResponse.registrationType
-    );
+    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -144,10 +123,7 @@ const ShareHolderKYC = () => {
   };
 
   store.dispatch(setShareholderDocs(documentContainer));
-  localStorage.setItem(
-    "localShareholderInfo",
-    JSON.stringify(documentContainer)
-  );
+  localStorage.setItem("localShareholderInfo", JSON.stringify(documentContainer));
   const handleShareHolderCheck = async () => {
     let newArr = [];
     const response = await viewMemberKYC(launchResponse);
@@ -186,15 +162,12 @@ const ShareHolderKYC = () => {
         navigate(navigatedFrom);
         localStorage.removeItem("navigatedFrom");
       } else {
-        let useSidebriefDirectors = localStorage.getItem(
-          "useSidebriefDirectors"
-        );
+        let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
         let beneficiaries = localStorage.getItem("beneficiaries");
 
         let navigateTo = "/launch/directors-kyc";
         if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-        if (useSidebriefDirectors && beneficiaries === "false")
-          navigateTo = "/launch/review";
+        if (useSidebriefDirectors && beneficiaries === "false") navigateTo = "/launch/review";
 
         navigate(navigateTo);
       }
@@ -223,9 +196,7 @@ const ShareHolderKYC = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 8.5 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 8.5 })); // total- total pages and current - current page
   }, []);
 
   return (
@@ -234,9 +205,7 @@ const ShareHolderKYC = () => {
       <Body>
         <CheckoutSection
           title={"Shareholder KYC Documentation:"}
-          HeaderParagraph={
-            "Please attach the necessary documents for all shareholders"
-          }
+          HeaderParagraph={"Please attach the necessary documents for all shareholders"}
         />
         <LaunchPrimaryContainer>
           {viewShareholderState.isLoading ||
@@ -257,9 +226,7 @@ const ShareHolderKYC = () => {
                       documentComponentType={document}
                       TopText={document}
                       memberCode={shareholder.code}
-                      onDrop={(files) =>
-                        handleChange(files, shareholder.code, document)
-                      }
+                      onDrop={(files) => handleChange(files, shareholder.code, document)}
                       handleRemove={() => handleRemove(document)}
                       BottomText={`Please provide your ${document}`}
                       handleRefetch={handleShareHolderCheck}

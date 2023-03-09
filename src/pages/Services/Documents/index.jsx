@@ -1,22 +1,34 @@
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-import HeaderCheckout from "components/Header/HeaderCheckout";
+import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
-import React from "react";
-import {
-  Body,
-  Bottom,
-  Container,
-  ContentWrapper,
-  DownLoadText,
-  FileContainer,
-} from "./style";
+import React, { useEffect } from "react";
+import { Body, Bottom, Container, ContentWrapper, DownLoadText, FileContainer } from "./style";
+import { useNavigate } from "react-router-dom";
+import { store } from "redux/Store";
+import { setServiceCheckoutProgress } from "redux/Slices";
 
 const ServiceDocuments = () => {
+  const navigate = useNavigate();
+
+  const handlePrev = () => {
+    navigate(-1);
+  };
+
+  const handleNext = () => {
+    navigate("/services/review/info");
+  };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 3 })); // total- total pages and current - current page
+  }, []);
+
   return (
     <Container>
-      <HeaderCheckout getStarted noProgress backToDashBoard />
+      <ServicesCheckoutHeader />
+
       <Body>
         <CheckoutSection
           title="Download and fill out the required forms then upload below"
@@ -33,30 +45,18 @@ const ServiceDocuments = () => {
               </ContentWrapper>
               <DownLoadText>Upload the required forms</DownLoadText>
               <ContentWrapper>
-                <KYCFileUpload
-                  TopText="Required Form"
-                  BottomText="National ID Crd"
-                />
-                <KYCFileUpload
-                  TopText="Required Form"
-                  BottomText="National ID Crd"
-                />
-                <KYCFileUpload
-                  TopText="Required Form"
-                  BottomText="National ID Crd"
-                />
-                <KYCFileUpload
-                  TopText="Required Form"
-                  BottomText="National ID Crd"
-                />
+                <KYCFileUpload TopText="Required Form" BottomText="National ID Crd" />
+                <KYCFileUpload TopText="Required Form" BottomText="National ID Crd" />
+                <KYCFileUpload TopText="Required Form" BottomText="National ID Crd" />
+                <KYCFileUpload TopText="Required Form" BottomText="National ID Crd" />
               </ContentWrapper>
             </FileContainer>
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
-              //   backAction={handlePrev}
+              backAction={handlePrev}
               backText={"Previous"}
-              //   forwardAction={handleNext}
+              forwardAction={handleNext}
               forwardText={"Proceed"}
             />
           </Bottom>

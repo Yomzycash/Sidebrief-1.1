@@ -73,8 +73,9 @@ const ServiceInfo = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 1 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 0.01 })); // total- total pages and current - current page
   }, []);
+
   return (
     <>
       <Container>
@@ -99,11 +100,7 @@ const ServiceInfo = () => {
               <TagInputWithSearch
                 label="Resource"
                 list={resources
-                  .filter(
-                    (el) =>
-                      el.country?.toLowerCase() ===
-                      selectedCountry?.toLowerCase()
-                  )
+                  .filter((el) => el.country?.toLowerCase() === selectedCountry?.toLowerCase())
                   .map((el) => el.resource)
                   .sort()}
                 getValue={handleResourceSelect}
