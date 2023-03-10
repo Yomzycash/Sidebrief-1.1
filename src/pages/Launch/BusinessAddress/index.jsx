@@ -6,7 +6,7 @@ import { Page, Inputs, Bottom, Body, Container } from "../styled";
 import { Country, State, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setBusinessAddress, setCheckoutProgress } from "redux/Slices";
+import { setBusinessAddress, setCheckoutProgress, setCurrentPage } from "redux/Slices";
 import { defaultLocation, addressSchema } from "../constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,25 +34,12 @@ const BusinessAddress = () => {
 
   const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
   const [updateBusinessAddress, updateAddressState] = useUpdateBusinessAddressMutation();
-  const [viewPayLaunch] = useViewPayLaunchMutation();
 
-  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
+  const { launchResponse, currentPage } = useSelector((state) => state.LaunchReducer);
 
   const address = useViewBusinessAddressQuery(launchResponse, {
     refetchOnMountOrArgChange: true,
   });
-
-  const generatedLaunchCode = useSelector((store) => store.LaunchReducer.launchResponse.launchCode);
-
-  // const loading = addAddressState.isLoading || updateAddressState.isLoading;
-
-  // useEffect(() => {
-  // 	loading
-  // 		? Loading.pulse({
-  // 				svgColor: "#fff",
-  // 		  })
-  // 		: Loading.remove();
-  // }, [loading]);
 
   const {
     register,
@@ -91,9 +78,10 @@ const BusinessAddress = () => {
     [setValue]
   );
 
+  // Submit form information
   const SubmitForm = async (data) => {
     const requiredAddressData = {
-      launchCode: generatedLaunchCode,
+      launchCode: launchResponse.launchCode,
 
       businessAddress: {
         addressCountry: data.country,
@@ -109,16 +97,15 @@ const BusinessAddress = () => {
     const response = (await address.currentData.businessAddress)
       ? await updateBusinessAddress(requiredAddressData)
       : await addBusinessAddress(requiredAddressData);
-    // console.log(address.currentData.businessAddress ? 'true' : 'false')
 
     if (response.data) {
       store.dispatch(setBusinessAddress(requiredAddressData));
       handleNext();
     } else if (response.error) {
-      // console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
   };
+
   let countries = useRef([defaultLocation]);
 
   useEffect(() => {

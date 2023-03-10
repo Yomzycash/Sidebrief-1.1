@@ -4,7 +4,7 @@ import { CheckoutSection, MembersBasicInfo } from "containers/Checkout";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import React, { useEffect, useState } from "react";
-import { setCheckoutProgress, setShareHoldersLaunchInfo } from "redux/Slices";
+import { setCheckoutProgress } from "redux/Slices";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { AddMore, Body, Bottom, Container, Loading, modalStyle } from "../styled";
@@ -259,7 +259,6 @@ const ShareHoldersInfo = () => {
     // VIEW ALL SHAREHOLDERS
     let shareholderResponse = await handleShareholdersView(actionInfo);
     if (shareholderResponse.data) {
-      store.dispatch(setShareHoldersLaunchInfo(shareholderResponse.data));
       setShareholdersInfo(shareholderResponse.data);
       // Get all share percentage and set the percentage left
       let totalSharePerc = shareholderResponse.data.reduce(

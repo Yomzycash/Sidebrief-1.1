@@ -41,6 +41,9 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
     localStorage.removeItem("launchInfo");
     localStorage.removeItem("countryISO");
     localStorage.removeItem("paymentDetails");
+    localStorage.removeItem("useSidebriefShareholders");
+    localStorage.removeItem("useSidebriefDirectors");
+    localStorage.removeItem("beneficiaries");
     toast.success("Saved");
     navigate("/dashboard");
   };

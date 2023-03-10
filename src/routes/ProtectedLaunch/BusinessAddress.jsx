@@ -1,6 +1,7 @@
 import BusinessAddress from "pages/Launch/BusinessAddress";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation, useN, useNavigate } from "react-router-dom";
 import Protected from "routes/Protected";
 
 const ProtectedBusinessAddress = () => {
@@ -30,7 +31,9 @@ const ProtectedBusinessAddress = () => {
   return (
     <Protected isVerified={allowLaunch} path="/launch">
       <Protected isVerified={paid} path="/launch/payment">
+        {/* <Protected isVerified={isCurrentPage} path="/lauch/payment"> */}
         <BusinessAddress />
+        {/* </Protected> */}
       </Protected>
     </Protected>
   );

@@ -67,11 +67,6 @@ const DirectorsInfo = () => {
   const [updateShareholder, shareholderUpdateState] = useUpdateShareholderMutation();
   const [viewShareholders, shareholderViewState] = useViewShareholdersMutation();
 
-  // // This gets the directors information from the store
-  // const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  // const { directorsLaunchInfo, shareholdersLaunchInfo, launchResponse } =
-  //   LaunchApplicationInfo;
-
   const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
 
   // ADD A DIRECTOR
