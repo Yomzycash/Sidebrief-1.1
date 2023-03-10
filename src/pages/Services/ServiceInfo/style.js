@@ -69,7 +69,7 @@ export const FileContainer = styled.div`
 `;
 
 export const InfoContainer = styled.div`
-  min-height: 200px;
+  min-height: 150px;
   width: calc(100% - 32px clamp(24px, 3.4vw, 40px));
   margin-inline: 32px clamp(24px, 3.4vw, 40px);
   margin-block: clamp(20px, 2vw, 24px);

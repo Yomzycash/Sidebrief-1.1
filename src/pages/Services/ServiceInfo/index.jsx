@@ -17,20 +17,22 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { useNavigate } from "react-router-dom";
-import { resources } from "utils/config";
 import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { setServiceCheckoutProgress } from "redux/Slices";
+import { useLazyGetServicesByCountryQuery } from "services/complyService";
+import numeral from "numeral";
 
 const ServiceInfo = () => {
-  const [selectedResource, setselectedResource] = useState("");
+  const [selectedResource, setselectedResource] = useState({});
   const [countries, setCountries] = useState([]);
 
   const [selectedCountry, setSelectedCountry] = useState("");
 
+  const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
   const { data, isLoading } = useGetAllCountriesQuery();
   const navigate = useNavigate();
 
@@ -56,6 +58,9 @@ const ServiceInfo = () => {
 
   const selectCountry = (value) => {
     setSelectedCountry(value);
+    // get country ISO
+    const countryISO = data?.find((el) => el.countryName === value).countryISO || "";
+    countryISO && servicesByCountry(countryISO);
   };
 
   // Update the supported countries when data changes
@@ -68,7 +73,9 @@ const ServiceInfo = () => {
   };
 
   const handleResourceSelect = (valuesSelected) => {
-    setselectedResource(valuesSelected);
+    setselectedResource(
+      getServicesState?.data?.find((el) => el.serviceName === valuesSelected) || {}
+    );
   };
 
   // Set the progress of the application
@@ -99,43 +106,41 @@ const ServiceInfo = () => {
               </div>
               <TagInputWithSearch
                 label="Resource"
-                list={resources
-                  .filter((el) => el.country?.toLowerCase() === selectedCountry?.toLowerCase())
-                  .map((el) => el.resource)
-                  .sort()}
+                list={getServicesState?.data?.map((el) => el.serviceName) || []}
                 getValue={handleResourceSelect}
-                initialValue={selectedResource}
+                initialValue={selectedResource.serviceName || "--"}
                 MatchError="Please select resource from the list"
                 EmptyError="Please select at least one resources"
+                suggestionLoading={getServicesState.isLoading}
               />
             </LaunchFormContainer>
-            <InfoContainer>
-              <InfoFrame space>
-                <InfoFrameHead>Requirements</InfoFrameHead>
-                <Bullet>
-                  <Mark />
-                  <Content>Passport</Content>
-                </Bullet>
-                <Bullet>
-                  <Mark />
-                  <Content>Proof of address</Content>
-                </Bullet>
-              </InfoFrame>
-              <InfoFrame>
-                <InfoFrameHead>Timeline</InfoFrameHead>
-                <Bullet>
-                  <FiClock />
-                  <BigContent>20-30 days</BigContent>
-                </Bullet>
-              </InfoFrame>
-              <InfoFrame>
-                <InfoFrameHead>Pricing</InfoFrameHead>
-                <Bullet>
-                  <FaMoneyCheckAlt />
-                  <BigContent>N22,000</BigContent>
-                </Bullet>
-              </InfoFrame>
-            </InfoContainer>
+            {selectedResource.serviceName && (
+              <InfoContainer>
+                <InfoFrame space>
+                  <InfoFrameHead>Requirements</InfoFrameHead>
+                  {selectedResource.serviceRequirements.map((el, index) => (
+                    <Bullet key={index}>
+                      <Mark />
+                      <Content>{el.requirementName}</Content>
+                    </Bullet>
+                  ))}
+                </InfoFrame>
+                <InfoFrame>
+                  <InfoFrameHead>Timeline</InfoFrameHead>
+                  <Bullet>
+                    <FiClock />
+                    <BigContent>{selectedResource.serviceTimeline} days</BigContent>
+                  </Bullet>
+                </InfoFrame>
+                <InfoFrame>
+                  <InfoFrameHead>Pricing</InfoFrameHead>
+                  <Bullet>
+                    <FaMoneyCheckAlt />
+                    <BigContent>N{numeral(selectedResource.servicePrice).format("0,0")}</BigContent>
+                  </Bullet>
+                </InfoFrame>
+              </InfoContainer>
+            )}
             <Bottom>
               <CheckoutController
                 forwardText={"Next"}

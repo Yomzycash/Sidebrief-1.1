@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const ComplyApi = createApi({
-  reducerPath: "chatApi",
+  reducerPath: "complyApi",
   baseQuery: fetchBaseQuery({
     // the base query used by each endpoint to request data.
     baseUrl: process.env.REACT_APP_DEV_BASE_URL,
@@ -16,7 +16,22 @@ export const ComplyApi = createApi({
     },
   }),
   tagTypes: [""],
-  endpoints: (builder) => ({}),
+  endpoints: (builder) => ({
+    getServicesByCountry: builder.query({
+      query: (countryCode) => {
+        if (!countryCode) {
+          return;
+        }
+        return {
+          url: `/services/country/${countryCode}`,
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        };
+      },
+    }),
+  }),
 });
 
-export const {} = ComplyApi;
+export const { useLazyGetServicesByCountryQuery } = ComplyApi;
