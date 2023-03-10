@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { useDropzone } from "react-dropzone";
 import { FiUpload } from "react-icons/fi";
 import { imageTypeImage } from "utils/config";
@@ -14,13 +13,35 @@ import {
   useViewMembersKYCMutation,
 } from "services/launchService";
 import { downLoadImage } from "utils/staffHelper";
+import {
+  useDeleteServiceDocumentMutation,
+  useViewServiceDocumentMutation,
+} from "services/complyService";
+import {
+  Container,
+  FileTitle,
+  FileZone,
+  FileSection,
+  DeleteWrapper,
+  NameWrapper,
+  Top,
+  DocTitle,
+  ErrorWrapper,
+  Bottom,
+  Details,
+  DownLoadPageTextWrapper,
+  DownLoadLeftHold,
+  DownLoadPageText,
+  DownloadSize,
+  DetailsPage,
+  KYCPage,
+} from "./styled";
 
 const KYCFileUpload = ({
   TopText,
   errorMsg,
   BottomText,
   onDrop,
-  fileDataName,
   isChanged,
   memberCode,
   beneficiaryCode,
@@ -31,6 +52,8 @@ const KYCFileUpload = ({
   downloadPage,
   handleRefetch,
   downloadDocumentName,
+  downloadDocumentLink,
+  complyCode,
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
@@ -38,6 +61,8 @@ const KYCFileUpload = ({
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
   const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
+  const [viewServiceDocument] = useViewServiceDocumentMutation();
+  const [deleteServiceDocument] = useDeleteServiceDocumentMutation();
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
 
@@ -52,12 +77,23 @@ const KYCFileUpload = ({
     return null;
   };
 
+  const handleServiceDocumentView = async () => {
+    const requiredData = {
+      complyCode: complyCode,
+    };
+    const response = await viewServiceDocument(requiredData);
+    let fileInfo = [...response?.data?.complyDocuments] || [];
+    fileInfo.forEach((info) => {
+      if (info.documentType === documentComponentType) {
+        setDocumentInfo(info);
+      }
+    });
+  };
+
   const handleView = async () => {
     const response = await viewMemberKYC(launchInfo);
-    const MemberKYCInfo = [...response.data.businessMembersKYC];
-    let fileInfo = MemberKYCInfo.filter(
-      (member) => member.memberCode === memberCode
-    );
+    const MemberKYCInfo = [...response?.data?.businessMembersKYC] || [];
+    let fileInfo = MemberKYCInfo.filter((member) => member.memberCode === memberCode);
     fileInfo.forEach((info) => {
       if (info.documentType === documentComponentType) {
         setDocumentInfo(info);
@@ -67,7 +103,7 @@ const KYCFileUpload = ({
 
   const handleBeneficiary = async () => {
     const response = await viewBeneficialsKYC(launchInfo);
-    const BeneficialKYCInfo = [...response.data.beneficialOwnersKYC];
+    const BeneficialKYCInfo = [...response?.data?.beneficialOwnersKYC] || [];
     let fileInfo = BeneficialKYCInfo.filter(
       (beneficiary) => beneficiary.beneficialOwnerCode === beneficiaryCode
     );
@@ -77,14 +113,17 @@ const KYCFileUpload = ({
       }
     });
   };
+  useEffect(() => {
+    handleServiceDocumentView();
+  }, [isChanged, deleted, Object.keys(documentInfo).length >= 6]);
 
   useEffect(() => {
     handleView();
-  }, [isChanged, deleted, Object.keys(documentInfo).length == 7]);
+  }, [isChanged, deleted, Object.keys(documentInfo).length >= 6]);
 
   useEffect(() => {
     handleBeneficiary();
-  }, [isChanged, deleted, Object.keys(documentInfo).length == 7]);
+  }, [isChanged, deleted, Object.keys(documentInfo).length >= 6]);
 
   const handleRemove = async () => {
     if (beneficiaryCode) {
@@ -99,6 +138,21 @@ const KYCFileUpload = ({
         setDeleted(!deleted);
         setDocumentInfo({});
         handleRefetch();
+      } else if (response.error) {
+        // console.log(response.error?.data.message);
+        toast.error(response.error?.data.message);
+      }
+    } else if (complyCode) {
+      const requiredData = {
+        complyCode: complyCode,
+        documentCode: documentInfo.documentCode,
+      };
+      const response = await deleteServiceDocument(requiredData);
+      if (response.data) {
+        console.log(response.data);
+        toast.success("document deleted successfully"); //no message from the server
+        setDeleted(!deleted);
+        setDocumentInfo({});
       } else if (response.error) {
         // console.log(response.error?.data.message);
         toast.error(response.error?.data.message);
@@ -125,6 +179,7 @@ const KYCFileUpload = ({
     onDrop,
     validator: nameLengthValidator,
   });
+
   return (
     <Container style={{ ...style }} width="100%">
       <FileSection className="container" width="100%">
@@ -145,18 +200,14 @@ const KYCFileUpload = ({
           {...getRootProps({
             className: "dropzone",
             onClick: (event) => {
-              if (Object.keys(documentInfo).length === 7) {
+              if (Object.keys(documentInfo).length >= 6) {
                 event.stopPropagation();
                 // toast.custom("delete the uploaded file");
               }
             },
           })}
           backgroundColor={
-            Object.keys(documentInfo).length === 7
-              ? detailsPage
-                ? "ffffff"
-                : "#FAFAFA"
-              : "ffffff"
+            Object.keys(documentInfo).length >= 6 ? (detailsPage ? "ffffff" : "#FAFAFA") : "ffffff"
           }
         >
           <input {...getInputProps()} />
@@ -180,10 +231,7 @@ const KYCFileUpload = ({
               {detailsPage ? (
                 <DetailsPage
                   onClick={() =>
-                    downLoadImage(
-                      documentInfo.documentLink,
-                      documentInfo.documentType
-                    )
+                    downLoadImage(documentInfo.documentLink, documentInfo.documentType)
                   }
                 >
                   {documentInfo.documentType}
@@ -209,7 +257,9 @@ const KYCFileUpload = ({
                     </DownLoadPageText>
                   </DownLoadLeftHold>
 
-                  <DownloadIcon />
+                  <DownloadIcon
+                    onClick={() => downLoadImage(downloadDocumentLink, downloadDocumentName)}
+                  />
                 </DownLoadPageTextWrapper>
               ) : (
                 <>
@@ -220,7 +270,7 @@ const KYCFileUpload = ({
             </FileTitle>
           )}
         </FileZone>
-        {Object.keys(documentInfo).length === 7 && !detailsPage && (
+        {Object.keys(documentInfo).length >= 6 && !detailsPage && (
           <DeleteWrapper onClick={handleRemove}>
             <DeleteIcon />
           </DeleteWrapper>
@@ -234,129 +284,3 @@ const KYCFileUpload = ({
 };
 
 export default KYCFileUpload;
-
-const Container = styled.div`
-  width: ${(props) => (props.width ? props.width : "")};
-`;
-
-const FileTitle = styled.p`
-  font-size: 14px;
-  line-height: 27px;
-  align-items: center;
-  color: #959697;
-  text-align: center;
-`;
-
-const FileZone = styled.div`
-  border: ${(props) => props.border};
-  border-radius: ${(props) => props.borderRadius};
-  width: 100%;
-  background-color: ${(props) => props.backgroundColor};
-  padding: ${(props) => (props.padding ? props.padding : "10.5px 16px")};
-`;
-
-const FileSection = styled.div`
-  width: ${(props) => (props.width ? props.width : "")};
-  position: relative;
-`;
-const DeleteWrapper = styled.div`
-  position: absolute;
-  right: 30px;
-  bottom: 25px;
-`;
-
-const NameWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-  align-items: center;
-  width: 90%;
-  background-color: ${(props) => props.backgroundColor};
-  padding: 0px 10px;
-  /* border: 2px solid red; */
-  position: relative;
-`;
-const Top = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-`;
-const DocTitle = styled.p`
-  font-weight: 500;
-  font-size: clamp(12px, 1.5vw, 14px);
-  color: #4e5152;
-`;
-const ErrorWrapper = styled.p`
-  color: red;
-  font-size: clamp(10px, 1.5vw, 12px); ;
-`;
-const Bottom = styled.div`
-  font-size: clamp(11px, 1.5vw, 12px);
-  color: #959697;
-`;
-const Details = styled.div`
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 500;
-  font-size: clamp(14px, 1.6vw, 16px);
-  line-height: 27px;
-  text-decoration-line: underline;
-  color: #151717;
-  gap: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-`;
-const DownLoadPageTextWrapper = styled.div`
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  cursor: pointer;
-  padding-inline: 24px;
-  display: flex;
-  align-items: center;
-`;
-
-const DownLoadLeftHold = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-
-const DownLoadPageText = styled.div`
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 400;
-  font-size: clamp(14px, 1.6vw, 16px);
-  color: #242627;
-  flex-direction: column;
-  cursor: pointer;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-`;
-const DownloadSize = styled.p`
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  color: #4e5152;
-  margin-top: -10px;
-`;
-
-const DetailsPage = styled.p`
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #151717;
-  text-decoration-line: underline;
-  cursor: pointer;
-`;
-
-const KYCPage = styled.p`
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  color: #959697;
-`;

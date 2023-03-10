@@ -123,7 +123,6 @@ const ShareHolderKYC = () => {
   };
 
   store.dispatch(setShareholderDocs(documentContainer));
-  localStorage.setItem("localShareholderInfo", JSON.stringify(documentContainer));
   const handleShareHolderCheck = async () => {
     let newArr = [];
     const response = await viewMemberKYC(launchResponse);

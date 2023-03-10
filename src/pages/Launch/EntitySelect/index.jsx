@@ -81,9 +81,8 @@ const EntitySelect = () => {
         data.map((el) => ({
           ...el,
           usdRate:
-            currencyRate?.filter(
-              (each) => each?.currency === el?.entityCurrency
-            )[0]?.usdRate * el?.entityFee,
+            currencyRate?.filter((each) => each?.currency === el?.entityCurrency)[0]?.usdRate *
+            el?.entityFee,
         }))
       );
 
@@ -100,10 +99,7 @@ const EntitySelect = () => {
   const handleNext = async (selectedItem) => {
     store.dispatch(setSelectedEntity(selectedItem));
     // console.log(checkIsString(entities.entityFee) ? 'true' : 'false')
-    localStorage.setItem(
-      "entityTimeline",
-      JSON.stringify(selectedItem.entityTimeline)
-    );
+    localStorage.setItem("entityTimeline", JSON.stringify(selectedItem.entityTimeline));
 
     // To be sent to the backend to create a launch
     const requiredLaunchData = {
@@ -126,19 +122,14 @@ const EntitySelect = () => {
     if (existingLaunchInfo) {
       // An array is returned, if update response
       store.dispatch(setLaunchResponse(launchResponse.data[0])); // !important DO NOT DELETE
-      localStorage.setItem(
-        "launchInfo",
-        JSON.stringify(launchResponse.data[0])
-      );
+      localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data[0]));
     } else {
       // An object is returned, if getStarted response
       store.dispatch(setLaunchResponse(launchResponse.data)); // !important DO NOT DELETE
       localStorage.setItem("launchInfo", JSON.stringify(launchResponse.data));
     }
 
-    let responseData = existingLaunchInfo
-      ? launchResponse?.data[0]
-      : launchResponse?.data;
+    let responseData = existingLaunchInfo ? launchResponse?.data[0] : launchResponse?.data;
 
     handleResponse(responseData, requiredLaunchUpdateData);
   };
@@ -156,8 +147,7 @@ const EntitySelect = () => {
       }
 
       // Navigate if business names and objectives exist in the store
-      if (businessNames.length > 0 && selectedObjectives.length > 0)
-        navigate("/launch/payment");
+      if (businessNames.length > 0 && selectedObjectives.length > 0) navigate("/launch/payment");
 
       const info = {
         businessNames: businessNames,
@@ -205,8 +195,7 @@ const EntitySelect = () => {
         <CheckoutSection>
           {selectedCountry && (
             <EntityTitle>
-              {selectedCountry}:
-              <span> Please select a business type to get started</span>{" "}
+              {selectedCountry}:<span> Please select a business type to get started</span>{" "}
             </EntityTitle>
           )}
           {isLoading && (
@@ -223,15 +212,15 @@ const EntitySelect = () => {
                   <EntityCard
                     key={index}
                     name={item?.entityName}
-                    shares={parseInt(item?.entityShares).toLocaleString(
-                      "en-US"
-                    )}
-                    description={item?.entityDescription}
+                    shares={parseInt(item?.entityShares).toLocaleString("en-US")}
+                    description={
+                      item?.entityDescription === "N15000" ? "Free" : item?.entityDescription
+                    }
                     type={item?.entityType}
                     timeline={item?.entityTimeline}
                     features={item?.entityFeatures}
                     requirement={item?.entityRequirements}
-                    price={parseInt(item?.entityFee).toLocaleString("en-US")}
+                    // price={parseInt(item?.entityFee).toLocaleString("en-US")}
                     currency={item?.entityCurrency}
                     action={() => handleNext(item)}
                   />

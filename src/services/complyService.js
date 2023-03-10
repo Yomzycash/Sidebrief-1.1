@@ -15,9 +15,8 @@ export const ComplyApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["comply"],
+  tagTypes: ["CountryService"],
   endpoints: (builder) => ({
-    //view endpoint
     viewComply: builder.mutation({
       query: (data) => ({
         url: "comply/view",
@@ -29,7 +28,81 @@ export const ComplyApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    // get available services by country
+    getServicesByCountry: builder.query({
+      query: (countryCode) => {
+        if (!countryCode) {
+          return;
+        }
+        return {
+          url: `/services/country/${countryCode}`,
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        };
+      },
+      providesTags: ["CountryService"],
+      invalidatesTags: "CountryService",
+    }),
+
+    // create new compliance / service
+    createCompliance: builder.mutation({
+      query: (serviceId) => ({
+        url: `/comply/start`,
+        method: "POST",
+        body: {
+          serviceId,
+        },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+      tagTypes: [""],
+    }),
+    //get user reward
+    viewService: builder.query({
+      query: () => "services/view/9031415997",
+    }),
+
+    //view reward
+    addServiceDocument: builder.mutation({
+      query: (values) => ({
+        url: "/comply/add/document",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
+    }),
+
+    //view service document
+    viewServiceDocument: builder.mutation({
+      query: (values) => ({
+        url: "/comply/view",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
+    }),
+
+    //delete service document
+    deleteServiceDocument: builder.mutation({
+      query: (values) => ({
+        url: "/comply/delete/document",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
+    }),
   }),
 });
 
-export const { useViewComplyMutation } = ComplyApi;
+export const {
+  useViewComplyMutation,
+  useLazyGetServicesByCountryQuery,
+  useCreateComplianceMutation,
+  useViewServiceQuery,
+  useAddServiceDocumentMutation,
+  useViewServiceDocumentMutation,
+  useDeleteServiceDocumentMutation,
+} = ComplyApi;

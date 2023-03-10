@@ -1,5 +1,5 @@
 import { GeneralTable } from "components/Tables";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useMemo} from "react";
 import { useGetApprovedLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
 import { format } from "date-fns";
@@ -13,6 +13,7 @@ const InProgress = () => {
 	const approvedLaunch = useGetApprovedLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
+	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
 
 	useEffect(() => {
 		if (approvedLaunch.isSuccess && countries.isSuccess) {
@@ -25,6 +26,7 @@ const InProgress = () => {
 
 	const loadingData = approvedLaunch.isLoading;
 
+	
 	return (
 		<Container>
 			<Body>
@@ -35,7 +37,7 @@ const InProgress = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<GeneralTable
+					<MemoisedGeneralTable
 						data={sortedArr.map((element) => {
 							return {
 								name: element.businessNames

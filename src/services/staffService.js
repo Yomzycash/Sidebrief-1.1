@@ -352,16 +352,18 @@ export const staffApi = createApi({
       invalidatesTags: ["User"],
     }),
 
-    // update a service
-    updateService: builder.mutation({
-      query: (serviceId) => ({
-        url: `/services/update/${serviceId}`,
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-    }),
+		// update a service
+		updateService: builder.mutation({
+			// query: (serviceId) => ({
+			// 	url: `/services/update/${serviceId}`,
+			query: (data) => ({
+				url:`/services/update/${data}`,
+				method: "PUT",
+				headers: {
+					"Content-type": "application/json; charset=UTF-8",
+				},
+			}),
+		}),
 
     // delete a service
     deleteService: builder.mutation({
