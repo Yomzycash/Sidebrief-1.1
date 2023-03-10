@@ -310,7 +310,7 @@ export const DropDownWrapper = styled.div`
   position: relative;
   padding: 4px;
   margin-top: 10px;
-  height: 50px;
+  height: 48px;
   border-radius: 8px;
   border: ${(props) => props.border};
 `;
