@@ -5,6 +5,7 @@ import { launchApi } from "services/launchService";
 import { RewardApi } from "services/RewardService";
 import { staffApi } from "services/staffService";
 import { ChatApi } from "services/chatService";
+import { ComplyApi } from "services/complyService";
 
 import { serviceApi } from "services/productService";
 

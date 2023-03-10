@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const ComplyApi = createApi({
-  reducerPath: "ComplyApi",
+  reducerPath: "complyApi",
   baseQuery: fetchBaseQuery({
     // the base query used by each endpoint to request data.
     baseUrl: process.env.REACT_APP_DEV_BASE_URL,
@@ -15,6 +15,38 @@ export const ComplyApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["CountryService"],
+  endpoints: (builder) => ({
+    // get available services by country
+    getServicesByCountry: builder.query({
+      query: (countryCode) => {
+        if (!countryCode) {
+          return;
+        }
+        return {
+          url: `/services/country/${countryCode}`,
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        };
+      },
+      providesTags: ["CountryService"],
+      invalidatesTags: "CountryService",
+    }),
+
+    // create new compliance / service
+    createCompliance: builder.mutation({
+      query: (serviceId) => ({
+        url: `/comply/start`,
+        method: "POST",
+        body: {
+          serviceId,
+        },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
   tagTypes: [""],
   endpoints: (builder) => ({
     //get user reward
@@ -55,6 +87,8 @@ export const ComplyApi = createApi({
 });
 
 export const {
+useLazyGetServicesByCountryQuery,
+useCreateComplianceMutation,
   useViewServiceQuery,
   useAddServiceDocumentMutation,
   useViewServiceDocumentMutation,
