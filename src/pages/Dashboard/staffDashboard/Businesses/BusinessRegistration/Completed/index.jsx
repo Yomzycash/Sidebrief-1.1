@@ -1,5 +1,5 @@
 import { GeneralTable } from "components/Tables";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useGetRejectedLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
 import { format } from "date-fns";
@@ -25,6 +25,9 @@ const Completed = () => {
 
 	const loadingData = rejectedLaunch.isLoading;
 
+	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
+	
+
 	return (
 		<Container>
 			<Body>
@@ -35,7 +38,7 @@ const Completed = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<GeneralTable
+					<MemoisedGeneralTable
 						data={sortedArr.map((element) => {
 							return {
 								name: element.businessNames
