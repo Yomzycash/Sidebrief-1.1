@@ -82,6 +82,7 @@ const AllServices = () => {
       serviceCountry: formData.country,
       servicePrice: formData.price, 
       serviceTimeline: formData.timeline, 
+      serviceCurrency: formData.currency
     }
   }
 
@@ -96,14 +97,15 @@ const AllServices = () => {
     let response = await addService(requiredService);
     let data = response?.data;
     let error = response?.error;
-    
-    if (data) {
+
+    if(data) {
       toast.success("Service added successfully");
-      setOpen(false);
+      setOpen(false)
     } else {
       handleError(error)
     }
-    refetch()
+    refetch();
+    console.log("formdata", formData);
   }
 
   // Update service  
@@ -120,6 +122,7 @@ const AllServices = () => {
       handleError(error)
     }
     refetch();
+    console.log(response);
   }
 
     // delete service

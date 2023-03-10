@@ -113,7 +113,7 @@ const ServicesModal = ({
       setValue("price", serviceInfo.servicePrice,  { shouldValidate: true });
       setValue("timeline", serviceInfo.serviceTimeline,  { shouldValidate: true });
     } else {
-      setValue("serviceName", "");
+      setValue("name", "");
       setValue("description", "");
       setValue("category", "");
       setValue("country", "");

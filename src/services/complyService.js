@@ -47,8 +47,50 @@ export const ComplyApi = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
+  tagTypes: [""],
+  endpoints: (builder) => ({
+    //get user reward
+    viewService: builder.query({
+      query: () => "services/view/9031415997",
+    }),
+
+    //view reward
+    addServiceDocument: builder.mutation({
+      query: (values) => ({
+        url: "/comply/add/document",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
+    }),
+
+    //view service document
+    viewServiceDocument: builder.mutation({
+      query: (values) => ({
+        url: "/comply/view",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
+    }),
+
+    //delete service document
+    deleteServiceDocument: builder.mutation({
+      query: (values) => ({
+        url: "/comply/delete/document",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
     }),
   }),
 });
 
-export const { useLazyGetServicesByCountryQuery, useCreateComplianceMutation } = ComplyApi;
+export const {
+useLazyGetServicesByCountryQuery,
+useCreateComplianceMutation,
+  useViewServiceQuery,
+  useAddServiceDocumentMutation,
+  useViewServiceDocumentMutation,
+  useDeleteServiceDocumentMutation,
+} = ComplyApi;

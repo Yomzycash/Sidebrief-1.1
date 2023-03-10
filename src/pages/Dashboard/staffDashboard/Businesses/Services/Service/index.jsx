@@ -70,7 +70,6 @@ const ServicePage = () => {
 
   // All users messages
   const usersMessages = getUsersMessages(notifications.data);
-  console.log(usersMessages);
 
   let lastNotification = servicesNotifications?.map(
     (nots) => nots[nots?.length - 1]
@@ -161,11 +160,11 @@ const ServicePage = () => {
     return {
       serviceName: formData.name,
       serviceDescription: formData.description,
-     // serviceId: formData.id,
       serviceCategory: formData.category,
       serviceCountry: formData.country,
       servicePrice: formData.price, 
       serviceTimeline: formData.timeline, 
+      serviceCurrency: formData.currency
     }
   }
 

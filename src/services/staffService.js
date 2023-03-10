@@ -354,8 +354,10 @@ export const staffApi = createApi({
 
 		// update a service
 		updateService: builder.mutation({
-			query: (serviceId) => ({
-				url: `/services/update/${serviceId}`,
+			// query: (serviceId) => ({
+			// 	url: `/services/update/${serviceId}`,
+			query: (data) => ({
+				url:`/services/update/${data}`,
 				method: "PUT",
 				headers: {
 					"Content-type": "application/json; charset=UTF-8",

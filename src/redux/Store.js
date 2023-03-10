@@ -18,6 +18,7 @@ import {
   UserDataReducer,
   ServiceReducer,
 } from "./Slices";
+import { ComplyApi } from "services/complyService";
 
 export const store = configureStore({
   reducer: {
