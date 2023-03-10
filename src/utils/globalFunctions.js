@@ -27,6 +27,7 @@ export const handleError = (error) => {
 // Check if an email is a staff email
 export const checkStaffEmail = (email) => {
 	let emailArr = email?.split("");
+
 	let index = emailArr?.indexOf("@");
 	let check = email?.slice(index + 1, index + 10)?.toLowerCase();
 	let staff = check === "sidebrief" ? true : false;

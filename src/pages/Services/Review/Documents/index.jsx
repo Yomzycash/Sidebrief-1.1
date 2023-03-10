@@ -1,19 +1,33 @@
 import ManageCard from "components/cards/ManageCard";
+import { CheckoutController } from "containers";
 import React from "react";
-import { useEffect } from "react";
-import { setServiceCheckoutProgress } from "redux/Slices";
-import { store } from "redux/Store";
+import { useNavigate } from "react-router-dom";
+import { Bottom } from "../style";
 import { Wrapper } from "./style";
 
 const ServiceDocumentsReview = () => {
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 5 })); // total- total pages and current - current page
-  }, []);
+  const navigate = useNavigate();
+
+  const handlePrev = () => {
+    navigate(-1);
+  };
+
+  const handleNext = async (formData) => {
+    navigate("");
+  };
 
   return (
     <Wrapper>
       <ManageCard />
+      <Bottom>
+        <CheckoutController
+          backText={"Previous"}
+          forwardSubmit
+          backAction={handlePrev}
+          forwardAction={handleNext}
+          forwardText="Next"
+        />
+      </Bottom>
     </Wrapper>
   );
 };

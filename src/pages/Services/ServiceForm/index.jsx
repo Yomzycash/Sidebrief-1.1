@@ -1,13 +1,12 @@
 import DynamicForm from "components/Form/DynamicForm";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
-import { ServiceID } from "containers/ServiceChat/ChatHead/style";
 import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
-import { Body, Container, Inputs } from "../styled";
+import { Body, Container } from "../styled";
 import { Bottom, FormContainer, formInputsStyle, formStyle } from "./style";
 
 const ServiceForm = () => {
@@ -51,7 +50,7 @@ const ServiceForm = () => {
   const handleSubmit = async (formData) => {
     console.log(formData);
     // store.dispatch();
-    navigate("/services/review");
+    navigate("/services/documents");
   };
 
   const handlePrev = () => {
@@ -60,17 +59,14 @@ const ServiceForm = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 3 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 2 })); // total- total pages and current - current page
   }, []);
 
   return (
     <Container>
       <ServicesCheckoutHeader />
       <Body>
-        <CheckoutSection
-          title="Service Form"
-          HeaderParagraph="Please answer the questions below"
-        />
+        <CheckoutSection title="Service Form" HeaderParagraph="Please answer the questions below" />
         <FormContainer>
           <DynamicForm
             formInfo={formInfo}
@@ -83,7 +79,7 @@ const ServiceForm = () => {
         <Bottom>
           <CheckoutController
             backText={"Previous"}
-            // hideForward
+            forwardSubmit
             backAction={handlePrev}
             forwardAction={handleSubmit}
             forwardText="Next"

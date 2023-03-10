@@ -1,20 +1,32 @@
-import { PdfCard } from "components/cards";
 import InfoCard from "components/cards/InfoCard";
-import ManageCard from "components/cards/ManageCard";
+import { CheckoutController } from "containers";
 import React from "react";
-import { useEffect } from "react";
-import { setServiceCheckoutProgress } from "redux/Slices";
-import { store } from "redux/Store";
+import { useNavigate } from "react-router-dom";
+import { Bottom } from "../style";
 import { Wrapper } from "./style";
 
 const ServiceInfoReview = () => {
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 5 })); // total- total pages and current - current page
-  }, []);
+  const navigate = useNavigate();
+
+  const handlePrev = () => {
+    navigate(-1);
+  };
+
+  const handleNext = async () => {
+    navigate("/services/review/form");
+  };
   return (
     <Wrapper>
       <InfoCard />
+      <Bottom>
+        <CheckoutController
+          backText={"Previous"}
+          forwardSubmit
+          backAction={handlePrev}
+          forwardAction={handleNext}
+          forwardText="Next"
+        />
+      </Bottom>
     </Wrapper>
   );
 };

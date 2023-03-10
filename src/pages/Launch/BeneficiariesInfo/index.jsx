@@ -5,16 +5,9 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setCheckoutProgress } from "redux/Slices";
+import { setBeneficiariesLaunchInfo, setCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
-import {
-  AddMore,
-  Body,
-  Bottom,
-  Container,
-  Loading,
-  modalStyle,
-} from "../styled";
+import { AddMore, Body, Bottom, Container, Loading, modalStyle } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
@@ -39,7 +32,7 @@ import { handleResponse } from "../actions";
 
 //
 
-const DirectorsInfo = () => {
+const BeneficiariesInfo = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [cardAction, setCardAction] = useState("");
@@ -71,19 +64,15 @@ const DirectorsInfo = () => {
       localStorage.setItem("beneficiaries", false);
     }
 
-    let useSidebriefShareholders = localStorage.getItem(
-      "useSidebriefShareholders"
-    );
+    let useSidebriefShareholders = localStorage.getItem("useSidebriefShareholders");
     let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
 
     let navigateTo = "";
 
     if (!useSidebriefShareholders) navigateTo = "/launch/shareholders-kyc";
     if (useSidebriefShareholders) navigateTo = "/launch/directors-kyc";
-    if (useSidebriefDirectors && useSidebriefShareholders)
-      navigateTo = "/launch/beneficiaries-kyc";
-    if (beneficiariesInfo.length === 0 && useSidebriefShareholders)
-      navigateTo = "/launch/review";
+    if (useSidebriefDirectors && useSidebriefShareholders) navigateTo = "/launch/beneficiaries-kyc";
+    if (beneficiariesInfo.length === 0 && useSidebriefShareholders) navigateTo = "/launch/review";
 
     navigate(navigateTo ? navigateTo : "/launch/shareholders-kyc");
   };
@@ -151,6 +140,7 @@ const DirectorsInfo = () => {
     // VIEW ALL DIRECTORS
     let viewResponse = await handleBeneficiariesView(actionInfo);
     if (viewResponse.data) {
+      store.dispatch(setBeneficiariesLaunchInfo(viewResponse.data));
       setBeneficiariesInfo(viewResponse.data);
       // Get all share percentage and set the percentage left
       let totalStakePerc = viewResponse.data.reduce(
@@ -221,22 +211,16 @@ const DirectorsInfo = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 7.5 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 7.5 })); // total- total pages and current - current page
   }, []);
 
-  let loading =
-    !deleteState.isLoading && !addState && !updateState && viewState.isLoading;
+  let loading = !deleteState.isLoading && !addState && !updateState && viewState.isLoading;
 
   return (
     <Container>
       <HeaderCheckout />
       <Body>
-        <CheckoutSection
-          title={"Beneficiaries Information (Optional)"}
-          hideCheckbox={true}
-        />
+        <CheckoutSection title={"Beneficiaries Information (Optional)"} hideCheckbox={true} />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
             {beneficiariesInfo.map((beneficiary, index) => (
@@ -251,8 +235,8 @@ const DirectorsInfo = () => {
                 editAction={() => handleEditButton(beneficiary)}
                 deleteAction={() => handleDelete(beneficiary)}
                 isLoading={
-                  selectedToDelete?.beneficialOwnerCode ===
-                    beneficiary?.beneficialOwnerCode && deleteState?.isLoading
+                  selectedToDelete?.beneficialOwnerCode === beneficiary?.beneficialOwnerCode &&
+                  deleteState?.isLoading
                     ? true
                     : false
                 }
@@ -299,4 +283,4 @@ const DirectorsInfo = () => {
   );
 };
 
-export default DirectorsInfo;
+export default BeneficiariesInfo;

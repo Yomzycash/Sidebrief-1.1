@@ -1,6 +1,6 @@
-import { question } from 'pages/Dashboard/User/Manage/Review/constant'
-import React from 'react'
-import { Answer, Container, InnerContainer, Question, Wrapper } from './style'
+import { question } from "pages/Services/Review/constant";
+import React from "react";
+import { Answer, Container, InnerContainer, Question, Wrapper } from "./style";
 
 const QuestionCard = () => {
   return (
@@ -16,7 +16,7 @@ const QuestionCard = () => {
         </Container>
       </Wrapper>
     </div>
-  )
-}
+  );
+};
 
-export default QuestionCard
+export default QuestionCard;

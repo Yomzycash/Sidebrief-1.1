@@ -55,7 +55,10 @@ const TagInput = ({
     }
 
     for (let i = 0; i < tags.length; i++) {
-      if (value.toLowerCase().trim() === tags[i].toLowerCase()) {
+      if (
+        value.toLowerCase().trim().split("-").join(" ") ===
+        tags[i].toLowerCase().split("-").join(" ")
+      ) {
         resultToReturn = true;
       }
     }
@@ -75,6 +78,7 @@ const TagInput = ({
     setCurrentInput(noTrailingComma);
     setInputValue(value.trim());
   };
+
   useEffect(() => {
     let lastChar = inputValue.charAt(inputValue.length - 1);
     if (lastChar === ",") {

@@ -23,7 +23,6 @@ export const Body = styled.form`
   border-top: none;
 `;
 
-
 export const Nav = styled.nav`
   background: #ffffff;
   width: 100%;
@@ -36,9 +35,7 @@ export const Nav = styled.nav`
   gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
-
 `;
-
 
 export const ReviweTabWrapper = styled.div`
   display: flex;
@@ -63,4 +60,10 @@ export const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
-  `
+`;
+
+export const Bottom = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 32px clamp(24px, 3.4vw, 40px);
+`;
