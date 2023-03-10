@@ -26,7 +26,7 @@ const ServiceReview = () => {
       <ServicesCheckoutHeader />
       <Body>
         <CheckoutSection
-          title={"ServiceReview Information"}
+          title={"Service Review Information"}
           HeaderParagraph="Please ensure all information provided for this business are correct"
         />
         <Nav>

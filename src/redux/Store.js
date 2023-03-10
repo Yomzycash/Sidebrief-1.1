@@ -5,6 +5,7 @@ import { launchApi } from "services/launchService";
 import { RewardApi } from "services/RewardService";
 import { staffApi } from "services/staffService";
 import { ChatApi } from "services/chatService";
+import { ComplyApi } from "services/complyService";
 
 import { serviceApi } from "services/productService";
 
@@ -26,6 +27,7 @@ export const store = configureStore({
 		[staffApi.reducerPath]: staffApi.reducer,
 		[ChatApi.reducerPath]: ChatApi.reducer,
 		[serviceApi.reducerPath]: serviceApi.reducer,
+		[ComplyApi.reducerPath]: ComplyApi.reducer,
 		UserDataReducer: UserDataReducer,
 		LayoutInfo: LayoutInfoReducer,
 		BusinessesInfo: BusinessesReducers,
@@ -42,6 +44,7 @@ export const store = configureStore({
 			RewardApi.middleware,
 			staffApi.middleware,
 			ChatApi.middleware,
+			ComplyApi.middleware,
 		]),
 });
 

@@ -1,19 +1,20 @@
-import React from 'react'
-import { Answer, Heading, LowerContainer, Span, SubContainer } from './style'
+import React from "react";
+import { useViewServicesByServiceIdQuery } from "services/staffService";
+import { Answer, Heading, LowerContainer, Span, SubContainer } from "./style";
 
-const InfoCard = ({
-  location = 'Nigeria',
-  resource = 'Change of business names',
-}) => {
+const InfoCard = () => {
+  const data = useViewServicesByServiceIdQuery();
+  console.log(data);
+
   return (
     <LowerContainer>
       <SubContainer>
         <Heading>
-          Company's Location :<Span> {location}</Span>
+          Company's Location :<Span> {data?.currentData?.serviceCountry}</Span>
         </Heading>
         <Heading>
-          {' '}
-          Resource : <Span>{resource}</Span>
+          {" "}
+          Resource : <Span>{data?.currentData?.serviceCategory}</Span>
         </Heading>
       </SubContainer>
       <SubContainer>
@@ -37,7 +38,8 @@ const InfoCard = ({
         </Answer> */}
       </SubContainer>
     </LowerContainer>
-  )
-}
+  );
+};
 
-export default InfoCard
+export default InfoCard;
+
