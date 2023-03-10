@@ -15,7 +15,7 @@ export const ComplyApi = createApi({
       return headers;
     },
   }),
-  tagTypes: [""],
+  tagTypes: ["CountryService"],
   endpoints: (builder) => ({
     getServicesByCountry: builder.query({
       query: (countryCode) => {
@@ -30,6 +30,8 @@ export const ComplyApi = createApi({
           },
         };
       },
+      providesTags: ["CountryService"],
+      invalidatesTags: "CountryService",
     }),
   }),
 });

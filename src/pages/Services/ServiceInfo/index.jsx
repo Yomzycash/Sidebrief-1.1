@@ -29,6 +29,7 @@ import numeral from "numeral";
 const ServiceInfo = () => {
   const [selectedResource, setselectedResource] = useState({});
   const [countries, setCountries] = useState([]);
+  const [serviceResources, setServiceresources] = useState([]);
 
   const [selectedCountry, setSelectedCountry] = useState("");
 
@@ -56,11 +57,12 @@ const ServiceInfo = () => {
     [data]
   );
 
-  const selectCountry = (value) => {
+  const selectCountry = async (value) => {
     setSelectedCountry(value);
     // get country ISO
-    const countryISO = data?.find((el) => el.countryName === value).countryISO || "";
-    countryISO && servicesByCountry(countryISO);
+    const countryISO = data?.find((el) => el.countryName === value)?.countryISO || "";
+    const response = countryISO && (await servicesByCountry(countryISO));
+    setServiceresources(response.data);
   };
 
   // Update the supported countries when data changes
@@ -106,7 +108,7 @@ const ServiceInfo = () => {
               </div>
               <TagInputWithSearch
                 label="Resource"
-                list={getServicesState?.data?.map((el) => el.serviceName) || []}
+                list={serviceResources?.map((el) => el.serviceName) || []}
                 getValue={handleResourceSelect}
                 initialValue={selectedResource.serviceName || "--"}
                 MatchError="Please select resource from the list"
@@ -136,7 +138,10 @@ const ServiceInfo = () => {
                   <InfoFrameHead>Pricing</InfoFrameHead>
                   <Bullet>
                     <FaMoneyCheckAlt />
-                    <BigContent>N{numeral(selectedResource.servicePrice).format("0,0")}</BigContent>
+                    <BigContent>
+                      {selectedResource.serviceCurrency}{" "}
+                      {numeral(selectedResource.servicePrice).format("0,0")}
+                    </BigContent>
                   </Bullet>
                 </InfoFrame>
               </InfoContainer>
@@ -147,6 +152,7 @@ const ServiceInfo = () => {
                 forwardSubmit
                 hidePrev
                 forwardAction={handleNext}
+                forwardDisable={!selectedResource.serviceName}
               />
             </Bottom>
           </LaunchPrimaryContainer>
