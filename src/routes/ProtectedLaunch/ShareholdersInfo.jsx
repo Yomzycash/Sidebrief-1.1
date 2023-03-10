@@ -1,6 +1,7 @@
 import ShareHoldersInfo from "pages/Launch/ShareHoldersInfo";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import Protected from "routes/Protected";
 
 const ProtectedShareholdersInfo = () => {
@@ -18,7 +19,6 @@ const ProtectedShareholdersInfo = () => {
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
 
   const [paid, setPaid] = useState(paidStatus);
-  const [filledAddress, setFilledAddress] = useState(false);
 
   const allowLaunch = launchCode && countryISO;
 

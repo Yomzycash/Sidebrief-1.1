@@ -18,6 +18,7 @@ import {
   Top,
   Wrapper,
 } from "./styled";
+import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
 
 const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
@@ -38,9 +39,7 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
 
   const handleNext = () => {
     setOpenModal(false);
-    localStorage.removeItem("launchInfo");
-    localStorage.removeItem("countryISO");
-    localStorage.removeItem("paymentDetails");
+    removeLaunchFromLocalStorage();
     toast.success("Saved");
     navigate("/dashboard");
   };

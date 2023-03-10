@@ -72,7 +72,8 @@ const BeneficiariesInfo = () => {
     if (!useSidebriefShareholders) navigateTo = "/launch/shareholders-kyc";
     if (useSidebriefShareholders) navigateTo = "/launch/directors-kyc";
     if (useSidebriefDirectors && useSidebriefShareholders) navigateTo = "/launch/beneficiaries-kyc";
-    if (beneficiariesInfo.length === 0 && useSidebriefShareholders) navigateTo = "/launch/review";
+    if (beneficiariesInfo.length === 0 && useSidebriefShareholders && useSidebriefDirectors)
+      navigateTo = "/launch/review";
 
     navigate(navigateTo ? navigateTo : "/launch/shareholders-kyc");
   };
