@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import HeaderCheckout from "components/Header/HeaderCheckout";
+// import HeaderCheckout from "components/Header/HeaderCheckout";
 import {
   Container,
   Body,
@@ -23,7 +23,10 @@ import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { setServiceCheckoutProgress } from "redux/Slices";
-import { useLazyGetServicesByCountryQuery } from "services/complyService";
+import {
+  useLazyGetServicesByCountryQuery,
+  useCreateComplianceMutation,
+} from "services/complyService";
 import numeral from "numeral";
 
 const ServiceInfo = () => {
@@ -34,11 +37,19 @@ const ServiceInfo = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
+  const [createCompliance, createComplianceState] = useCreateComplianceMutation();
   const { data, isLoading } = useGetAllCountriesQuery();
   const navigate = useNavigate();
 
   const handleNext = async () => {
-    // store.dispatch();
+    const response = await createCompliance(selectedResource.serviceId);
+    localStorage.setItem(
+      "complyData",
+      JSON.stringify({
+        complyCode: response.data.complyCode,
+        serviceId: response.data.serviceId,
+      })
+    );
     navigate("/services/payment");
   };
   // Handle supported countries fetch
@@ -104,6 +115,7 @@ const ServiceInfo = () => {
                   getValue={selectCountry}
                   initialValue={selectedCountry}
                   suggestionLoading={isLoading}
+                  fetchingText={"Fetching countries..."}
                 />
               </div>
               <TagInputWithSearch
@@ -113,19 +125,24 @@ const ServiceInfo = () => {
                 initialValue={selectedResource.serviceName || "--"}
                 MatchError="Please select resource from the list"
                 EmptyError="Please select at least one resources"
-                suggestionLoading={getServicesState.isLoading}
+                suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
+                fetchingText={"Fetching resources..."}
               />
             </LaunchFormContainer>
             {selectedResource.serviceName && (
               <InfoContainer>
                 <InfoFrame space>
                   <InfoFrameHead>Requirements</InfoFrameHead>
-                  {selectedResource.serviceRequirements.map((el, index) => (
-                    <Bullet key={index}>
-                      <Mark />
-                      <Content>{el.requirementName}</Content>
-                    </Bullet>
-                  ))}
+                  {selectedResource.serviceRequirements.length < 1 ? (
+                    <Content>{`--`}</Content>
+                  ) : (
+                    selectedResource.serviceRequirements.map((el, index) => (
+                      <Bullet key={index}>
+                        <Mark />
+                        <Content>{el.requirementName}</Content>
+                      </Bullet>
+                    ))
+                  )}
                 </InfoFrame>
                 <InfoFrame>
                   <InfoFrameHead>Timeline</InfoFrameHead>
@@ -139,7 +156,7 @@ const ServiceInfo = () => {
                   <Bullet>
                     <FaMoneyCheckAlt />
                     <BigContent>
-                      {selectedResource.serviceCurrency}{" "}
+                      {selectedResource.serviceCurrency || "--"}{" "}
                       {numeral(selectedResource.servicePrice).format("0,0")}
                     </BigContent>
                   </Bullet>
@@ -153,6 +170,7 @@ const ServiceInfo = () => {
                 hidePrev
                 forwardAction={handleNext}
                 forwardDisable={!selectedResource.serviceName}
+                forwardLoading={createComplianceState.isLoading}
               />
             </Bottom>
           </LaunchPrimaryContainer>
