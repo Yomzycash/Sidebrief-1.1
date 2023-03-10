@@ -1,5 +1,5 @@
 import { GeneralTable } from "components/Tables";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo , useCallback} from "react";
 import { useGetAllLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
 import { format } from "date-fns";
@@ -43,12 +43,16 @@ const All = () => {
     setItemOffset(newOffset);
   };
 
+
+
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(sortedArr?.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(sortedArr?.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, sortedArr]);
 
+  const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
+  
   return (
     <Container>
       <Body>
@@ -59,7 +63,7 @@ const All = () => {
         )}
 
         {sortedArr.length > 0 && (
-          <GeneralTable
+          <MemoisedGeneralTable
             data={currentItems.map((element) => {
               return {
                 name: element.businessNames

@@ -1,5 +1,5 @@
 import { GeneralTable } from "components/Tables";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useMemo} from "react";
 import { useGetDraftLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styles";
 import { format } from "date-fns";
@@ -25,7 +25,8 @@ const Draft = () => {
 	let sortedArr = sortArr.sort(sortTableData);
 
 	const loadingData = pendingLaunch.isLoading;
-
+	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
+	
 	return (
 		<Container>
 			<Body>
@@ -36,7 +37,7 @@ const Draft = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<GeneralTable
+					<MemoisedGeneralTable
 						data={sortedArr.map((element) => {
 							return {
 								name: element.businessNames
