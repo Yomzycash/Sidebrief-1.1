@@ -2,7 +2,6 @@ import "./App.css";
 import AppRouter from "./routes/appRouter";
 import { createGlobalStyle } from "styled-components";
 import { AnimatePresence } from "framer-motion";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   saveUserInfo,
@@ -15,7 +14,6 @@ import {
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { store } from "redux/Store";
-import { Country } from "country-state-city";
 
 // Added style reset
 const GlobalStyle = createGlobalStyle`

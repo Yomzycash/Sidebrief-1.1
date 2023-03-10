@@ -1,191 +1,170 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Outlet,
-} from "react-router-dom";
-import Loader from "../components/loader/loader";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Loader from "../components/loader/loader";
 import Protected from "./Protected";
-import ApplicationSuccessPage from "pages/Launch/ApplicationSuccessPage";
-import ComingSoon from "pages/Dashboard/User/Settings/comingsoon";
-import Resources from "pages/Dashboard/User/Resources";
-import Business from "pages/Dashboard/User/Business";
-import BankAccount from "pages/Dashboard/User/BankAccount";
-import Application from "pages/Dashboard/User/Application";
-import AllBusinesses from "pages/Dashboard/User/Business/AllBusinesses";
-import Test from "pages/Test";
-import DraftApplications from "pages/Dashboard/User/Business/DraftApplications";
-import PendingApplications from "pages/Dashboard/User/Business/PendingApplications";
-import StaffBusinesses from "pages/Dashboard/staffDashboard/Businesses";
-import CountryDetailLayout from "pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/layout";
-import CountryDetails from "pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryDetails";
-import CountryEntities from "pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryEntities";
-import Countries from "pages/Dashboard/staffDashboard/Businesses/Countries/Countries";
-import Registrationlayout from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/layout";
-import All from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/All";
-import Awaiting from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/AwaitingApproval";
-import InProgress from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/InProgress";
-import Completed from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed";
-import StaffEntities from "pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities";
-import StaffReward from "pages/Dashboard/staffDashboard/Reward";
-import StaffRewardAnalyticsPage from "pages/Dashboard/staffDashboard/Reward/Analytics";
-import StaffRewardDetailsPage from "pages/Dashboard/staffDashboard/Reward/Details";
-import StaffAllRewards from "pages/Dashboard/staffDashboard/Reward/AllRewards";
-import AllBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/All";
-import InProgressBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/InProgress";
-import AwaitingBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Awaiting";
-import CompletedBusinessesSummary from "pages/Dashboard/staffDashboard/Businesses/Completed";
-import Draft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft";
-import StaffComingSoon from "pages/Dashboard/staffDashboard/comingSoonPage";
 import { checkStaffEmail } from "utils/globalFunctions";
-import BankAccountDetails from "pages/Dashboard/User/BankAccount/BankAccountDetails";
-import { useViewPayLaunchMutation } from "services/launchService";
-import PaidDraft from "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft";
-import ServiceDownload from "pages/Dashboard/User/Manage/Download";
-import StripePaymentSuccess from "pages/Launch/StripePaymentSuccess/StripePaymentSuccess";
+import Test from "pages/Test";
+
+const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
+const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
+const Business = lazy(() => import("pages/Dashboard/User/Business"));
+const Application = lazy(() => import("pages/Dashboard/User/Application"));
+const BankAccountDetails = lazy(() =>
+  import("pages/Dashboard/User/BankAccount/BankAccountDetails")
+);
+const AllBusinesses = lazy(() => import("pages/Dashboard/User/Business/AllBusinesses"));
+const DraftApplications = lazy(() => import("pages/Dashboard/User/Business/DraftApplications"));
+const PendingApplications = lazy(() => import("pages/Dashboard/User/Business/PendingApplications"));
+const StaffBusinesses = lazy(() => import("pages/Dashboard/staffDashboard/Businesses"));
+const CountryDetailLayout = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/layout")
+);
+const CountryDetails = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryDetails")
+);
+const CountryEntities = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/CountryEntities")
+);
+const Countries = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Countries/Countries")
+);
+const Registrationlayout = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/layout")
+);
+const All = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/All")
+);
+const Awaiting = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/AwaitingApproval")
+);
+const InProgress = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/InProgress")
+);
+const Completed = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Completed")
+);
+const StaffEntities = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities")
+);
+const StaffReward = lazy(() => import("pages/Dashboard/staffDashboard/Reward"));
+const StaffRewardAnalyticsPage = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Reward/Analytics")
+);
+const StaffRewardDetailsPage = lazy(() => import("pages/Dashboard/staffDashboard/Reward/Details"));
+const StaffAllRewards = lazy(() => import("pages/Dashboard/staffDashboard/Reward/AllRewards"));
+const AllBusinessesSummary = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/All"));
+const InProgressBusinessesSummary = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/InProgress")
+);
+const AwaitingBusinessesSummary = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Awaiting")
+);
+const CompletedBusinessesSummary = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Completed")
+);
+const Draft = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft")
+);
+const StaffComingSoon = lazy(() => import("pages/Dashboard/staffDashboard/comingSoonPage"));
+const PaidDraft = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/PaidDraft")
+);
+
+const StripePaymentSuccess = lazy(() =>
+  import("pages/Launch/StripePaymentSuccess/StripePaymentSuccess")
+);
+const ServiceInfo = lazy(() => import("pages/Services/ServiceInfo"));
+const ServiceForm = lazy(() => import("pages/Services/ServiceForm"));
+const ServicePayment = lazy(() => import("pages/Services/Payment"));
+const ServiceDocuments = lazy(() => import("pages/Services/Documents"));
+const ServiceReview = lazy(() => import("pages/Services/Review"));
+const ServiceInfoReview = lazy(() => import("pages/Services/Review/ServiceInfo"));
+const ServiceFormReview = lazy(() => import("pages/Services/Review/ServiceForm"));
+const ServiceDocumentsReview = lazy(() => import("pages/Services/Review/Documents"));
 
 const Home = lazy(() => import("../pages/Home"));
-const EmailSuccess = lazy(() =>
-  import("pages/Auth/Registration/EmailVerify/success")
-);
-const EmailVerify = lazy(() =>
-  import("pages/Auth/Registration/EmailVerify/verify")
-);
-const ResetSuccess = lazy(() =>
-  import("pages/Auth/SignIn/resetVerify/success")
-);
+const EmailSuccess = lazy(() => import("pages/Auth/Registration/EmailVerify/success"));
+const EmailVerify = lazy(() => import("pages/Auth/Registration/EmailVerify/verify"));
+const ResetSuccess = lazy(() => import("pages/Auth/SignIn/resetVerify/success"));
 const ResetVerify = lazy(() => import("pages/Auth/SignIn/resetVerify/verify"));
-const AccountType = lazy(() =>
-  import("pages/Auth/Registration/accountType/accountType")
-);
-const PartnerRegistration = lazy(() =>
-  import("pages/Auth/Registration/partnerRegistration")
-);
-const ForgotPassword = lazy(() =>
-  import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx")
-);
-const ResetPassword = lazy(() =>
-  import("pages/Auth/SignIn/resetPassword/resetPassword.jsx")
-);
+const AccountType = lazy(() => import("pages/Auth/Registration/accountType/accountType"));
+const PartnerRegistration = lazy(() => import("pages/Auth/Registration/partnerRegistration"));
+const ForgotPassword = lazy(() => import("pages/Auth/SignIn/forgotPassword/forgotpassword.jsx"));
+const ResetPassword = lazy(() => import("pages/Auth/SignIn/resetPassword/resetPassword.jsx"));
 const SignIn = lazy(() => import("pages/Auth/SignIn/SignIn"));
-const UserRegistration = lazy(() =>
-  import("../pages/Auth/Registration/userRegistration")
-);
-const ResellerRegistration = lazy(() =>
-  import("../pages/Auth/Registration/ResellerRegister")
-);
+const UserRegistration = lazy(() => import("../pages/Auth/Registration/userRegistration"));
+const ResellerRegistration = lazy(() => import("../pages/Auth/Registration/ResellerRegister"));
 const UserDashboard = lazy(() => import("pages/Dashboard/User"));
-const BusinessRegistration = lazy(() =>
-  import("pages/Dashboard/User/Home/BusinessRegistration")
-);
-const Manage = lazy(() => import("pages/Dashboard/User/Manage"));
+const BusinessRegistration = lazy(() => import("pages/Dashboard/User/Home/BusinessRegistration"));
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
-const BusinessAddress = lazy(() => import("pages/Launch/BusinessAddress"));
 const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
+
 const EntitySelect = lazy(() => import("pages/Launch/EntitySelect"));
-const ShareHoldersInfo = lazy(() => import("pages/Launch/ShareHoldersInfo"));
-const DirectorsInfo = lazy(() => import("pages/Launch/DirectorsInfo"));
-const BeneficiariesInfo = lazy(() => import("pages/Launch/BeneficiariesInfo"));
-const BeneficiariesKYC = lazy(() => import("pages/Launch/BeneficiariesKYC"));
-const AllRewards = lazy(() =>
-  import("pages/Dashboard/User/Rewards/AllRewards")
-);
+const ProtectedShareholdersInfo = lazy(() => import("./ProtectedLaunch/ShareholdersInfo"));
+const ProtectedDirectorsInfo = lazy(() => import("./ProtectedLaunch/DirectorsInfo"));
+const ProtectedBeneficiariesInfo = lazy(() => import("./ProtectedLaunch/BeneficiariesInfo"));
+const ProtectedBeneficiariesKyc = lazy(() => import("./ProtectedLaunch/BeneficiariesKyc"));
+const ProtectedShareholdersKyc = lazy(() => import("./ProtectedLaunch/ShareholdersKyc"));
+const ProtectedDirectorsKyc = lazy(() => import("./ProtectedLaunch/DirectorsKyc"));
+const ProtectedReview = lazy(() => import("./ProtectedLaunch/Review"));
+const ProtectedBusinessAddress = lazy(() => import("./ProtectedLaunch/BusinessAddress"));
+const ProtectedApplicationSuccess = lazy(() => import("./ProtectedLaunch/ApplicationSuccess"));
+
+const AllRewards = lazy(() => import("pages/Dashboard/User/Rewards/AllRewards"));
 const MyRewards = lazy(() => import("pages/Dashboard/User/Rewards/MyRewards"));
-const RewardDetails = lazy(() =>
-  import("pages/Dashboard/User/Rewards/RewardDetails")
-);
-const ShareHolderKYC = lazy(() => import("pages/Launch/ShareHolderKYC"));
+const RewardDetails = lazy(() => import("pages/Dashboard/User/Rewards/RewardDetails"));
 const Compliance = lazy(() => import("pages/Dashboard/User/Home/Compliance"));
-const HiringAndPayroll = lazy(() =>
-  import("pages/Dashboard/User/Home/HiringAndPayroll")
-);
-const InetellectualAssets = lazy(() =>
-  import("pages/Dashboard/User/Home/IntellectualAssets")
-);
+const HiringAndPayroll = lazy(() => import("pages/Dashboard/User/Home/HiringAndPayroll"));
+const InetellectualAssets = lazy(() => import("pages/Dashboard/User/Home/IntellectualAssets"));
 const Taxes = lazy(() => import("pages/Dashboard/User/Home/Taxes"));
 const Rewards = lazy(() => import("pages/Dashboard/User/Rewards"));
 const PaymentPage = lazy(() => import("pages/Launch/PaymentPage"));
-const BeneficiaryReview = lazy(() =>
-  import("pages/Launch/Review/BeneficiaryReview")
-);
+const BeneficiaryReview = lazy(() => import("pages/Launch/Review/BeneficiaryReview"));
 const BusinessInformationReview = lazy(() =>
   import("pages/Launch/Review/BusinessInformationReview/Index")
 );
-const DirectorReview = lazy(() =>
-  import("pages/Launch/Review/DirectorReview/Index")
-);
-const ShareholderReview = lazy(() =>
-  import("pages/Launch/Review/ShareholderReview/Index")
-);
-const DirectorKYC = lazy(() => import("pages/Launch/DirectorsKYC"));
-const BusinessDetailLayout = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/layout")
-);
+const DirectorReview = lazy(() => import("pages/Launch/Review/DirectorReview/Index"));
+const ShareholderReview = lazy(() => import("pages/Launch/Review/ShareholderReview/Index"));
+const BusinessDetailLayout = lazy(() => import("pages/Dashboard/User/Business/Detail/layout"));
 const StaffBusinessDetailLayout = lazy(() =>
-  import(
-    "pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout"
-  )
+  import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout")
 );
-const BusinessDetail = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail")
-);
-const DetailShareholders = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/shareholders")
-);
-const DetailDirectors = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/directors")
-);
+const BusinessDetail = lazy(() => import("pages/Dashboard/User/Business/Detail"));
+const DetailShareholders = lazy(() => import("pages/Dashboard/User/Business/Detail/shareholders"));
+const DetailDirectors = lazy(() => import("pages/Dashboard/User/Business/Detail/directors"));
 const DetailBeneficiaries = lazy(() =>
   import("pages/Dashboard/User/Business/Detail/beneficiaries")
 );
-const UserSettingsLayout = lazy(() =>
-  import("pages/Dashboard/User/Settings/layout")
-);
-const PersonalSettings = lazy(() =>
-  import("pages/Dashboard/User/Settings/personal")
-);
-const PaymentSetting = lazy(() =>
-  import("pages/Dashboard/User/Settings/payment")
-);
+const UserSettingsLayout = lazy(() => import("pages/Dashboard/User/Settings/layout"));
+const PersonalSettings = lazy(() => import("pages/Dashboard/User/Settings/personal"));
+const PaymentSetting = lazy(() => import("pages/Dashboard/User/Settings/payment"));
 const Stafflayout = lazy(() => import("pages/Dashboard/staffDashboard/layout"));
-const SettingLayout = lazy(() =>
-  import("pages/Dashboard/User/Settings/layout")
-);
-const StaffSettingLayout = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/layout")
-);
-const NotificationSettings = lazy(() =>
-  import("pages/Dashboard/User/Settings/notification")
-);
+const StaffSettingLayout = lazy(() => import("pages/Dashboard/staffDashboard/Settings/layout"));
+const NotificationSettings = lazy(() => import("pages/Dashboard/User/Settings/notification"));
 const StaffNotificationSettings = lazy(() =>
   import("pages/Dashboard/staffDashboard/Settings/notification")
 );
-const StaffGeneralSettings = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/general")
-);
+const StaffGeneralSettings = lazy(() => import("pages/Dashboard/staffDashboard/Settings/general"));
 
-const SidebriefTeam = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Settings/team")
-);
+const SidebriefTeam = lazy(() => import("pages/Dashboard/staffDashboard/Settings/team"));
 
-const Services = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/Service")
-);
+const Services = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/Services/Service"));
 const AllServices = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllServices")
 );
-const ChatLayout = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Services/Chat")
-);
+const ChatLayout = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/Services/Chat"));
+
+//
+
+//
+
+//
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
-  const { launchResponse, launchPaid } = useSelector(
-    (store) => store.LaunchReducer
-  );
+  const { launchResponse, launchPaid } = useSelector((store) => store.LaunchReducer);
 
   // Get user information from local storage
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -201,22 +180,15 @@ const AppRouter = () => {
   const entityLaunchCode = launchInfo?.launchCode;
   const selectedCountryISO = localStorage.getItem("countryISO");
   const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
-  let paidStatus =
-    paymentDetails?.paymentStatus === "successful" ? true : false;
+  let paidStatus = paymentDetails?.paymentStatus === "successful" ? true : false;
 
   //
 
-  const [isLoggedIn, setisLoggedIn] = useState(
-    token?.length > 0 || user_token > 0
-  );
+  const [isLoggedIn, setisLoggedIn] = useState(token?.length > 0 || user_token > 0);
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
   const [paid, setPaid] = useState(paidStatus);
-  const [staff, setStaff] = useState(
-    userEmail?.includes("@sidebrief.com") ? true : false
-  );
-
-  const allowLaunch = launchCode && countryISO;
+  const [staff, setStaff] = useState(userEmail?.includes("@sidebrief.com") ? true : false);
 
   //
 
@@ -229,7 +201,6 @@ const AppRouter = () => {
   //
 
   //
-
   useEffect(() => {
     setLaunchCode(entityLaunchCode);
     setCountryISO(selectedCountryISO);
@@ -292,19 +263,13 @@ const AppRouter = () => {
               }
             >
               <Route index element={<BusinessRegistration />} />
-              <Route
-                path="business-registration"
-                element={<BusinessRegistration />}
-              />
+              <Route path="business-registration" element={<BusinessRegistration />} />
               <Route path="application" element={<Application />}></Route>
               <Route path="bank-account" element={<Outlet />}>
                 <Route index element={<BankAccount />} />
                 <Route path=":bankCode" element={<BankAccountDetails />} />
               </Route>
-              <Route
-                path="business-registration"
-                element={<BusinessRegistration />}
-              />
+              <Route path="business-registration" element={<BusinessRegistration />} />
               <Route path="settings" element={<UserSettingsLayout />}>
                 <Route index element={<PersonalSettings />} />
                 <Route path="personal" element={<PersonalSettings />} />
@@ -313,18 +278,9 @@ const AppRouter = () => {
               <Route path="resources" element={<Resources />}></Route>
               <Route path="businesses" element={<Business />}>
                 <Route index element={<AllBusinesses />} />
-                <Route
-                  path="all-businesses"
-                  element={<AllBusinesses />}
-                ></Route>
-                <Route
-                  path="submitted-applications"
-                  element={<PendingApplications />}
-                ></Route>
-                <Route
-                  path="draft-applications"
-                  element={<DraftApplications />}
-                ></Route>
+                <Route path="all-businesses" element={<AllBusinesses />}></Route>
+                <Route path="submitted-applications" element={<PendingApplications />}></Route>
+                <Route path="draft-applications" element={<DraftApplications />}></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
               <Route path="business" element={<BusinessDetailLayout />}>
@@ -334,14 +290,8 @@ const AppRouter = () => {
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
               <Route path="compliance" element={<Compliance />}></Route>
-              <Route
-                path="hiring-and-payroll"
-                element={<HiringAndPayroll />}
-              ></Route>
-              <Route
-                path="intellectualAssets"
-                element={<InetellectualAssets />}
-              ></Route>
+              <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
+              <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
               <Route path="taxes" element={<Taxes />}></Route>
               <Route path="rewards" element={<Rewards />}>
                 <Route index element={<AllRewards />} />
@@ -371,18 +321,9 @@ const AppRouter = () => {
                 <Route element={<StaffBusinesses />}>
                   <Route index element={<AllBusinessesSummary />} />
                   <Route path="all" element={<AllBusinessesSummary />} />
-                  <Route
-                    path="awaiting-approval"
-                    element={<AwaitingBusinessesSummary />}
-                  />
-                  <Route
-                    path="in-progress"
-                    element={<InProgressBusinessesSummary />}
-                  />
-                  <Route
-                    path="completed"
-                    element={<CompletedBusinessesSummary />}
-                  />
+                  <Route path="awaiting-approval" element={<AwaitingBusinessesSummary />} />
+                  <Route path="in-progress" element={<InProgressBusinessesSummary />} />
+                  <Route path="completed" element={<CompletedBusinessesSummary />} />
                 </Route>
                 <Route path="registration" element={<Registrationlayout />}>
                   <Route index element={<All />} />
@@ -420,14 +361,8 @@ const AppRouter = () => {
               <Route path="all-rewards" element={<Outlet />}>
                 <Route index element={<StaffAllRewards />} />
                 <Route path="reward" element={<StaffReward />}>
-                  <Route
-                    path=":rewardID"
-                    element={<StaffRewardDetailsPage />}
-                  />
-                  <Route
-                    path="analytics"
-                    element={<StaffRewardAnalyticsPage />}
-                  />
+                  <Route path=":rewardID" element={<StaffRewardDetailsPage />} />
+                  <Route path="analytics" element={<StaffRewardAnalyticsPage />} />
                 </Route>
               </Route>
               <Route path="taxes" element={<StaffComingSoon />} />
@@ -437,10 +372,7 @@ const AppRouter = () => {
               <Route path="resources" element={<StaffComingSoon />} />
               <Route path="settings" element={<StaffSettingLayout />}>
                 <Route path="general" element={<StaffGeneralSettings />} />
-                <Route
-                  path="notification"
-                  element={<StaffNotificationSettings />}
-                />
+                <Route path="notification" element={<StaffNotificationSettings />} />
                 <Route path="user-permissions" element={<StaffComingSoon />} />
                 <Route path="team" element={<SidebriefTeam />} />
               </Route>
@@ -448,8 +380,17 @@ const AppRouter = () => {
           </Route>
 
           {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
-          <Route path="manage" element={<Manage />} />
-          <Route path="download-manage" element={<ServiceDownload />} />
+          <Route path="services" element={<Outlet />}>
+            <Route index element={<ServiceInfo />} />
+            <Route path="payment" element={<ServicePayment />} />
+            <Route path="form" element={<ServiceForm />} />
+            <Route path="documents" element={<ServiceDocuments />} />
+            <Route path="review" element={<ServiceReview />}>
+              <Route path="info" element={<ServiceInfoReview />} />
+              <Route path="form" element={<ServiceFormReview />} />
+              <Route path="documents" element={<ServiceDocumentsReview />} />
+            </Route>
+          </Route>
 
           {/* Launch pages routes */}
           <Route
@@ -471,131 +412,22 @@ const AppRouter = () => {
                 </Protected>
               }
             />
-            <Route
-              path="payment-confirmation"
-              element={<StripePaymentSuccess />}
-            />
-            <Route
-              path="address"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <BusinessAddress />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="shareholders-info"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <ShareHoldersInfo />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="directors-info"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <DirectorsInfo />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="beneficiaries-info"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <BeneficiariesInfo />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="beneficiaries-kyc"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <BeneficiariesKYC />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="shareholders-kyc"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <ShareHolderKYC />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="directors-kyc"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <DirectorKYC />
-                  </Protected>
-                </Protected>
-              }
-            />
+            <Route path="payment-confirmation" element={<StripePaymentSuccess />} />
+            <Route path="address" element={<ProtectedBusinessAddress />} />
+            <Route path="shareholders-info" element={<ProtectedShareholdersInfo />} />
+            <Route path="directors-info" element={<ProtectedDirectorsInfo />} />
+            <Route path="beneficiaries-info" element={<ProtectedBeneficiariesInfo />} />
+            <Route path="beneficiaries-kyc" element={<ProtectedBeneficiariesKyc />} />
+            <Route path="shareholders-kyc" element={<ProtectedShareholdersKyc />} />
+            <Route path="directors-kyc" element={<ProtectedDirectorsKyc />} />
 
-            <Route
-              path="review-beneficiaries"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <BeneficiaryReview />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="review"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <BusinessInformationReview />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="review-directors"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <DirectorReview />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="review-shareholders"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <ShareholderReview />
-                  </Protected>
-                </Protected>
-              }
-            />
-            <Route
-              path="success"
-              element={
-                <Protected isVerified={allowLaunch} path="/launch">
-                  <Protected isVerified={paid} path="/launch/payment">
-                    <ApplicationSuccessPage />
-                  </Protected>
-                </Protected>
-              }
-            />
+            <Route path="review" element={<ProtectedReview />}>
+              <Route index element={<BusinessInformationReview />} />
+              <Route path="shareholders" element={<ShareholderReview />} />
+              <Route path="directors" element={<DirectorReview />} />
+              <Route path="beneficiaries" element={<BeneficiaryReview />} />
+            </Route>
+            <Route path="success" element={<ProtectedApplicationSuccess />} />
           </Route>
         </Routes>
         <Toaster

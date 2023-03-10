@@ -13,6 +13,7 @@ const InProgress = () => {
 	const approvedLaunch = useGetApprovedLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
+	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
 
 	useEffect(() => {
 		if (approvedLaunch.isSuccess && countries.isSuccess) {
@@ -25,8 +26,7 @@ const InProgress = () => {
 
 	const loadingData = approvedLaunch.isLoading;
 
-	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
-
+	
 	return (
 		<Container>
 			<Body>

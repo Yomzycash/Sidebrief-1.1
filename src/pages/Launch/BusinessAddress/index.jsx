@@ -30,25 +30,19 @@ const BusinessAddress = () => {
   // const [paid, setPaid] = useState(false);
 
   const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
-  let paidStatus =
-    paymentDetails?.paymentStatus === "successful" ? true : false;
+  let paidStatus = paymentDetails?.paymentStatus === "successful" ? true : false;
 
   const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
-  const [updateBusinessAddress, updateAddressState] =
-    useUpdateBusinessAddressMutation();
+  const [updateBusinessAddress, updateAddressState] = useUpdateBusinessAddressMutation();
   const [viewPayLaunch] = useViewPayLaunchMutation();
 
-  const launchResponse = useSelector(
-    (state) => state.LaunchReducer.launchResponse
-  );
+  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
 
   const address = useViewBusinessAddressQuery(launchResponse, {
     refetchOnMountOrArgChange: true,
   });
 
-  const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.launchResponse.launchCode
-  );
+  const generatedLaunchCode = useSelector((store) => store.LaunchReducer.launchResponse.launchCode);
 
   // const loading = addAddressState.isLoading || updateAddressState.isLoading;
 
@@ -173,9 +167,7 @@ const BusinessAddress = () => {
       const addressData = address.currentData.businessAddress;
       // console.log(addressData);
       const theCountry = addressData
-        ? countries.current.find(
-            (country) => country.name === addressData.addressCountry
-          )
+        ? countries.current.find((country) => country.name === addressData.addressCountry)
         : defaultLocation;
       const theState = addressData
         ? State.getStatesOfCountry(theCountry.isoCode).find(
@@ -212,9 +204,7 @@ const BusinessAddress = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 5.5 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 5.5 })); // total- total pages and current - current page
   }, []);
 
   return (
