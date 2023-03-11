@@ -15,39 +15,8 @@ export const ComplyApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["CountryService"],
-  endpoints: (builder) => ({
-    // get available services by country
-    getServicesByCountry: builder.query({
-      query: (countryCode) => {
-        if (!countryCode) {
-          return;
-        }
-        return {
-          url: `/services/country/${countryCode}`,
-          method: "GET",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        };
-      },
-      providesTags: ["CountryService"],
-      invalidatesTags: "CountryService",
-    }),
+  tagTypes: ["CountryService", "Services"],
 
-    // create new compliance / service
-    createCompliance: builder.mutation({
-      query: (serviceId) => ({
-        url: `/comply/start`,
-        method: "POST",
-        body: {
-          serviceId,
-        },
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-  tagTypes: [""],
   endpoints: (builder) => ({
     //get user reward
     viewService: builder.query({
@@ -83,12 +52,42 @@ export const ComplyApi = createApi({
       }),
       invalidatesTags: ["Services"],
     }),
+    // get available services by country
+    getServicesByCountry: builder.query({
+      query: (countryCode) => {
+        if (!countryCode) {
+          return;
+        }
+        return {
+          url: `/services/country/${countryCode}`,
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        };
+      },
+    }),
+
+    // create new compliance / service
+    createCompliance: builder.mutation({
+      query: (serviceId) => ({
+        url: `/comply/start`,
+        method: "POST",
+        body: {
+          serviceId,
+        },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+        invalidatesTags: "CountryService",
+      }),
+    }),
   }),
 });
 
 export const {
-useLazyGetServicesByCountryQuery,
-useCreateComplianceMutation,
+  useLazyGetServicesByCountryQuery,
+  useCreateComplianceMutation,
   useViewServiceQuery,
   useAddServiceDocumentMutation,
   useViewServiceDocumentMutation,
