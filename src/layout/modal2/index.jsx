@@ -19,23 +19,20 @@ import { SpinningCircles } from "react-loading-icons";
 import DeleteIcon from "asset/Icons/DeleteIcon";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Modal2 = ({
-  handleSubmit,
-  submitAction,
-  title,
-  cardAction,
-  setCardAction,
   children,
+  title,
   open,
+  mode,
   setOpen,
-  disable,
   setDisable,
-  loading,
   handleDelete,
   deleteState,
   $hideIcons,
   ProgressBarComponent,
+  parentRef,
 }) => {
   const [confirm, setConfirm] = useState(false);
   const [value, setValue] = useState("");
@@ -43,7 +40,6 @@ const Modal2 = ({
   // Called when closed button is clicked
   const handleClose = () => {
     setOpen && setOpen(false);
-    setCardAction && setCardAction("");
   };
 
   // This enables the inputs. Called when the edit (pen) icon is clicked.
@@ -58,19 +54,17 @@ const Modal2 = ({
   useEffect(() => {
     setConfirm(false);
     setValue("");
-  }, [cardAction]);
+  }, [mode]);
 
   return (
     <Dialog open={open}>
-      <DialogContent style={modalStyle}>
+      <DialogContent style={modalStyle} ref={parentRef}>
         <Top>
           <Title>
             <p>{title}</p>
             <TopIcons>
-              {!$hideIcons && cardAction === "edit" && (
-                <EditIcon width={20} onClick={handleDisable} />
-              )}
-              {!$hideIcons && cardAction === "edit" && (
+              {!$hideIcons && mode === "edit" && <EditIcon width={20} onClick={handleDisable} />}
+              {!$hideIcons && mode === "edit" && (
                 <DeleteWrapper>
                   {confirm && (
                     <input

@@ -18,19 +18,22 @@ export const ServiceForms = styled.div`
   position: relative;
   display: flex;
   flex-flow: row nowrap;
-  gap: 0 clamp(20px, 3vw, 40px);
+  max-width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
 
-  /* left: ${({ progress }) =>
-    progress === 1 ? 0 : progress === 2 ? "100%" : progress === 3 ? "200%" : ""}; */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const InputsWrapper = styled.div``;
 
 export const Form = styled.form`
-  padding: 0 clamp(20px, 3vw, 40px);
   min-width: 100%;
   width: 100%;
   max-width: 962px;
+  overflow-y: hidden;
 
   .input-container-class {
     gap: clamp(6px, 0.6vw, 12px);
@@ -47,9 +50,6 @@ export const Form = styled.form`
 
     input {
       font-size: clamp(12px, 1.2vw, 14px);
-      ::placeholder {
-        font-size: clamp(12px, 1.2vw, 14px);
-      }
     }
   }
 

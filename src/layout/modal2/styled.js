@@ -40,8 +40,7 @@ export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: clamp(20px, 5%, 40px) 0;
-  max-width: 100%;
-  overflow-x: auto;
+
   position: relative;
 `;
 

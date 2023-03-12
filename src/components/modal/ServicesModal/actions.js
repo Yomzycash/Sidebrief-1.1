@@ -1,7 +1,28 @@
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 
-export const useActions = (addService, updateService, clickedService, refetch, setOpen) => {
+export const useActions = ({
+  addService,
+  updateService,
+  clickedService,
+  refetch,
+  setOpen,
+  setValue,
+  dialogRef,
+  parentRef,
+}) => {
+  const getRequired = (formData) => {
+    return {
+      serviceName: formData.name,
+      serviceDescription: formData.description,
+      serviceCategory: formData.category,
+      serviceCountry: formData.country,
+      servicePrice: formData.price,
+      serviceTimeline: formData.timeline,
+      serviceCurrency: formData.currency,
+    };
+  };
+
   // Add service
   const handleServiceAdd = async (formData) => {
     let requiredService = getRequired(formData);
@@ -36,20 +57,38 @@ export const useActions = (addService, updateService, clickedService, refetch, s
     console.log(response);
   };
 
+  // This is attached to category dropdown onChange
+  const handleCategoryChange = (value) => {
+    var string = Object.values(value)[0];
+    setValue("category", string, { shouldValidate: true });
+  };
+
+  // This is attached to country dropdown onChange
+  const handleCountryChange = (value) => {
+    let selectedCountry = Object.values(value)[0];
+    setValue("country", selectedCountry, { shouldValidate: true });
+  };
+
+  // This is attached to currency dropdown onChange
+  const handleCurrencyChange = (value) => {
+    var string = Object.values(value)[0];
+    setValue("currency", string, { shouldValidate: true });
+  };
+
+  const scrollToNext = () => {
+    dialogRef.current.scrollLeft += dialogRef.current.offsetWidth;
+    parentRef.current.scrollTo({
+      top: 0,
+      behaviour: "smooth",
+    });
+  };
+
   return {
     handleServiceAdd,
     handleServiceUpdate,
-  };
-};
-
-const getRequired = (formData) => {
-  return {
-    serviceName: formData.name,
-    serviceDescription: formData.description,
-    serviceCategory: formData.category,
-    serviceCountry: formData.country,
-    servicePrice: formData.price,
-    serviceTimeline: formData.timeline,
-    serviceCurrency: formData.currency,
+    handleCategoryChange,
+    handleCountryChange,
+    handleCurrencyChange,
+    scrollToNext,
   };
 };

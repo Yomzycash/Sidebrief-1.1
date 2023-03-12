@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { DropDown, InputWithLabel } from "components/input";
-import { DetailedSection, Form } from "containers/Checkout/InfoSection/style";
+import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { ServicesSchema } from "utils/config";
@@ -11,33 +11,19 @@ import {
   useUpdateServiceMutation,
 } from "services/staffService";
 import { CheckoutController } from "containers";
-import { buttonContainerStyles, buttonStyles, InputsWrapper } from "./styled";
-import { useSearchParams } from "react-router-dom";
+import { buttonContainerStyles, buttonStyles, InputsWrapper, Form } from "./styled";
 import { useActions } from "./actions";
 
-const InfoSection = ({ clickedService, disableAll, refetch, setOpen, dialogRef }) => {
+const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, setOpen, mode }) => {
   const [servicesCountries, setServicesCountries] = useState([{ value: "", label: "" }]);
   const [servicesCategories, setServicesCategories] = useState([{ value: "", label: "" }]);
   const [serviceCurrencies, setServiceCurrencies] = useState([{ value: "", label: "" }]);
-  const [disable, setDisable] = useState(disableAll);
 
   const [addService, addState] = useAddServiceMutation();
   const [updateService, updateState] = useUpdateServiceMutation();
 
-  const { handleServiceAdd, handleServiceUpdate } = useActions(
-    addService,
-    updateService,
-    clickedService,
-    refetch,
-    setOpen
-  );
-
   const countries = useGetAllCountriesQuery();
   const { data } = useGetAllServicesQuery();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  let mode = searchParams.get("mode");
 
   const {
     handleSubmit,
@@ -48,23 +34,23 @@ const InfoSection = ({ clickedService, disableAll, refetch, setOpen, dialogRef }
     resolver: yupResolver(ServicesSchema),
   });
 
-  // This is attached to category dropdown onChange
-  const handleCategoryChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("category", string, { shouldValidate: true });
-  };
-
-  // This is attached to country dropdown onChange
-  const handleCountryChange = (value) => {
-    let selectedCountry = Object.values(value)[0];
-    setValue("country", selectedCountry, { shouldValidate: true });
-  };
-
-  // This is attached to currency dropdown onChange
-  const handleCurrencyChange = (value) => {
-    var string = Object.values(value)[0];
-    setValue("currency", string, { shouldValidate: true });
-  };
+  const {
+    handleServiceAdd,
+    handleServiceUpdate,
+    handleCategoryChange,
+    handleCountryChange,
+    handleCurrencyChange,
+    scrollToNext,
+  } = useActions({
+    addService,
+    updateService,
+    clickedService,
+    refetch,
+    setOpen,
+    setValue,
+    dialogRef,
+    parentRef,
+  });
 
   // Update entity countries and currencies
   useEffect(() => {
@@ -88,16 +74,16 @@ const InfoSection = ({ clickedService, disableAll, refetch, setOpen, dialogRef }
 
   //
   useEffect(() => {
-    const categoryResponse = data?.map((serviceCats) => serviceCats.serviceCategory);
-    // Filter out duplicate entries
-    const eachResponse = categoryResponse?.filter((option, index, self) => {
-      return index === self.indexOf(option);
-    });
-    let newCategory = eachResponse?.map((servicesCategory) => ({
-      value: servicesCategory,
-      label: servicesCategory,
-    }));
-    setServicesCategories(newCategory);
+    const categoryResponse = data?.map((service) => service.serviceCategory);
+    const categories = [...new Set(categoryResponse)];
+
+    setServicesCategories(
+      categories &&
+        categories?.map((category) => ({
+          value: category,
+          label: category,
+        }))
+    );
   }, [data]);
 
   //
@@ -119,12 +105,12 @@ const InfoSection = ({ clickedService, disableAll, refetch, setOpen, dialogRef }
       setValue("price", "");
       setValue("timeline", "");
     }
-    setDisable(disableAll);
   }, [clickedService, mode]);
 
   const submitForm = (formData) => {
-    dialogRef.current.scrollLeft += 60;
-    console.log(formData);
+    scrollToNext();
+    if (mode === "add") handleServiceAdd(formData);
+    else if (mode === "edit") handleServiceUpdate(formData);
   };
 
   const handleClose = () => {};
@@ -229,14 +215,14 @@ const InfoSection = ({ clickedService, disableAll, refetch, setOpen, dialogRef }
       <CheckoutController
         backAction={handleClose}
         forwardAction={() => {}}
-        backText={"Cancel"}
+        backText="Cancel"
         containerStyle={buttonContainerStyles}
         backBottonStyle={buttonStyles}
         forwardButtonStyle={buttonStyles}
         forwardSubmit
         forwardLoading={addState.isLoading || updateState.isLoading}
         // forwardText={mode === "edit" ? "Update" : "Save"}
-        forwardText={mode === "edit" ? "Update" : "Save"}
+        forwardText="Next"
         forwardDisable={disable}
         $modal
       />

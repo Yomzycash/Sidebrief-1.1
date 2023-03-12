@@ -24,6 +24,12 @@ const StaffRewardHeader = ({
   const localTotal = localStorage.getItem("totalStaffRewards");
 
   const iconStyle = { width: "17px", height: "17px" };
+
+  const buttonAction = () => {
+    if (setOpen) setOpen(true);
+    if (handleButton) handleButton();
+  };
+
   return (
     <Container>
       <Header>
@@ -38,7 +44,7 @@ const StaffRewardHeader = ({
             <SearchWrapper>
               <Search style={searchStyle} iconStyle={iconStyle} placeholder={placeholder} />
             </SearchWrapper>
-            <ButtonWrapper onClick={() => setOpen(true, "add")}>
+            <ButtonWrapper onClick={buttonAction}>
               <button>
                 <AddIcon />
                 {Description}

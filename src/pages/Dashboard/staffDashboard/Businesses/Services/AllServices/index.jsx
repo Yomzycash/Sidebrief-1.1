@@ -16,54 +16,29 @@ import { setRefreshApp } from "redux/Slices";
 import ServicesModal from "components/modal/ServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
+import { useSearchParams } from "react-router-dom";
 
 const AllServices = () => {
-  const layoutInfo = useSelector((store) => store.LayoutInfo);
-  const { sidebarWidth } = layoutInfo;
-  const [cardAction, setCardAction] = useState("");
   const [clickedService, setClickedService] = useState({});
-  const [allServices, setAllServices] = useState([]);
-  const [currentItems, setCurrentItems] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [itemOffset, setItemOffset] = useState(0);
 
-  const [searchParams, setSearchParams] = useState(false);
-
-  let open = searchParams.get("openDialog");
-
-  const itemsPerPage = 12;
-
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+  const [searchParams, setSearchParams] = useSearchParams(false);
+  let open = searchParams.get("mode") ? true : false;
+  let mode = searchParams.get("mode");
 
   const { data, isLoading, isError, error, refetch } = useGetAllServicesQuery();
-
   const [deleteService, deleteState] = useDeleteServiceMutation();
 
-  const handlePageClick = (e) => {
-    const newOffset = (e.selected * itemsPerPage) % data?.length;
-    setItemOffset(newOffset);
-  };
+  const { refreshApp } = useSelector((store) => store.UserDataReducer);
+  const layoutInfo = useSelector((store) => store.LayoutInfo);
+  const { sidebarWidth } = layoutInfo;
 
   // This runs when add service button is clicked
   const handleAddButton = () => {
-    // setCardAction("add");
-    setOpen(true, "add");
+    setOpen("add");
   };
 
-  useEffect(() => {
-    setAllServices(data);
-  }, [data]);
-
-  useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(allServices?.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(allServices?.length / itemsPerPage));
-    store.dispatch(setRefreshApp(!refreshApp));
-  }, [itemOffset, itemsPerPage, allServices]);
-
   const handleClickEachService = (servicesvalue) => {
-    // setCardAction("edit");
-    setOpen(true, "edit");
+    setOpen("edit");
     setClickedService(servicesvalue);
   };
 
@@ -75,26 +50,24 @@ const AllServices = () => {
 
     if (data) {
       toast.success("Service deleted successfully.");
-      setOpen(false);
+      setOpen("");
     } else {
       handleError(error);
     }
     refetch();
   };
 
-  const setOpen = (value, mode) => {
-    // if (value === false) setSearchParams({});
-    // else
-    //   setSearchParams({
-    //     openDialog: value,
-    //     mode: mode || "",
-    //   });
+  const setOpen = (mode) => {
+    if (!mode) setSearchParams({});
+    else
+      setSearchParams({
+        mode: mode,
+      });
   };
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
-        setOpen={setOpen}
         Description="Add New Service"
         title="Services"
         handleButton={handleAddButton}
@@ -106,37 +79,50 @@ const AllServices = () => {
         </Loading>
       ) : (
         <ServiceContainer>
-          {currentItems &&
-            currentItems?.map((service, index) => (
-              <PetalsCard
-                key={index}
-                title={service.serviceName}
-                subText={service.serviceCountry}
-                categoryName={service.serviceCategory}
-                service
-                clickHandle={() => handleClickEachService(service)}
-                //action = {() => handleAddButton(service)}
-              />
-            ))}
+          {data?.map((service, index) => (
+            <PetalsCard
+              key={index}
+              title={service.serviceName}
+              subText={service.serviceCountry}
+              categoryName={service.serviceCategory}
+              service
+              clickHandle={() => handleClickEachService(service)}
+              //action = {() => handleAddButton(service)}
+            />
+          ))}
         </ServiceContainer>
       )}
       <ServicesModal
-        disableAll={cardAction === "edit" ? true : false}
-        open={open}
-        setOpen={setOpen}
-        title={cardAction === "edit" ? "Update Service" : "Add New Service"}
-        // loading={updateState.isLoading || addState.isLoading}
-        cardAction={cardAction}
-        // submitAction={cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
-        serviceInfo={clickedService}
+        disableAll={mode === "edit" ? true : false}
+        clickedService={clickedService}
         deleteState={deleteState}
         handleServiceDelete={handleServiceDelete}
+        refetch={refetch}
+        setOpen={setOpen}
       />
-      {allServices?.length > itemsPerPage && (
+      {/* {data?.length > itemsPerPage && (
         <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
-      )}
+      )} */}
     </BodyRight>
   );
 };
 
 export default AllServices;
+
+// const [currentItems, setCurrentItems] = useState([]);
+// const [pageCount, setPageCount] = useState(0);
+// const [itemOffset, setItemOffset] = useState(0);
+
+// const itemsPerPage = 12;
+
+// useEffect(() => {
+//   const endOffset = itemOffset + itemsPerPage;
+//   setCurrentItems(allServices?.slice(itemOffset, endOffset));
+//   setPageCount(Math.ceil(allServices?.length / itemsPerPage));
+//   store.dispatch(setRefreshApp(!refreshApp));
+// }, [itemOffset, itemsPerPage, allServices]);
+
+// const handlePageClick = (e) => {
+//   const newOffset = (e.selected * itemsPerPage) % data?.length;
+//   setItemOffset(newOffset);
+// };
