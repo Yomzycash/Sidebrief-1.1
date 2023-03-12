@@ -1,12 +1,8 @@
 import React from "react";
 import { Dialog, DialogContent } from "@mui/material";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
-import { CheckoutController } from "containers";
 import {
-  buttonContainerStyles,
-  buttonStyles,
   DeleteWrapper,
-  Form,
   InputsWrapper,
   modalStyle,
   ProgressWrapper,
@@ -19,7 +15,6 @@ import { SpinningCircles } from "react-loading-icons";
 import DeleteIcon from "asset/Icons/DeleteIcon";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 
 const Modal2 = ({
   children,
