@@ -16,6 +16,7 @@ export const ComplyApi = createApi({
     },
   }),
   tagTypes: ["CountryService"],
+
   endpoints: (builder) => ({
     // get available services by country
     getServicesByCountry: builder.query({
@@ -47,8 +48,9 @@ export const ComplyApi = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-  tagTypes: [""],
-  endpoints: (builder) => ({
+      tagTypes: [""],
+    }),
+
     //get user reward
     viewService: builder.query({
       query: () => "services/view/9031415997",
@@ -86,9 +88,10 @@ export const ComplyApi = createApi({
   }),
 });
 
+
 export const {
-useLazyGetServicesByCountryQuery,
-useCreateComplianceMutation,
+  useLazyGetServicesByCountryQuery,
+  useCreateComplianceMutation,
   useViewServiceQuery,
   useAddServiceDocumentMutation,
   useViewServiceDocumentMutation,
