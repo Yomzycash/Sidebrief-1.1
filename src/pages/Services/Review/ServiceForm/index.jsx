@@ -1,12 +1,30 @@
 import QuestionCard from "components/cards/QuestionCard";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Wrapper } from "./style";
 import { useNavigate } from "react-router-dom";
 import { CheckoutController } from "containers";
 import { Bottom } from "../style";
+import { useViewServiceDocumentMutation } from "services/complyService";
 
 const ServiceFormReview = () => {
+  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+  let complyCode = complyCodeData.complyCode;
+
   const navigate = useNavigate();
+  const [viewServiceDocument, viewServiceDocumentState] = useViewServiceDocumentMutation();
+  const [questionContainer, setQuestionContainer] = useState([]);
+
+  const handleViewDocument = async () => {
+    const requiredData = {
+      complyCode: complyCode,
+    };
+    const response = await viewServiceDocument(requiredData);
+    setQuestionContainer(response?.data?.complyData);
+  };
+
+  useEffect(() => {
+    handleViewDocument();
+  }, []);
 
   const handlePrev = () => {
     navigate(-1);
@@ -18,7 +36,7 @@ const ServiceFormReview = () => {
 
   return (
     <Wrapper>
-      <QuestionCard />
+      <QuestionCard question={questionContainer} loadingState={viewServiceDocumentState} />
       <Bottom>
         <CheckoutController
           backText={"Previous"}

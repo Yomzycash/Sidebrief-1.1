@@ -6,6 +6,7 @@ import Loader from "../components/loader/loader";
 import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
+import ServiceSuccessPage from "../pages/Services/ServiceSuccessPage";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -382,7 +383,7 @@ const AppRouter = () => {
           {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
           <Route path="services" element={<Outlet />}>
             <Route index element={<ServiceInfo />} />
-            <Route path="payment" element={<ServicePayment />} />
+            <Route path="payment" element={<PaymentPage />} />
             <Route path="form" element={<ServiceForm />} />
             <Route path="documents" element={<ServiceDocuments />} />
             <Route path="review" element={<ServiceReview />}>
@@ -390,6 +391,7 @@ const AppRouter = () => {
               <Route path="form" element={<ServiceFormReview />} />
               <Route path="documents" element={<ServiceDocumentsReview />} />
             </Route>
+            <Route path="success" element={<ServiceSuccessPage />} />
           </Route>
 
           {/* Launch pages routes */}

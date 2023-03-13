@@ -1,19 +1,29 @@
-import React from 'react'
-import { Answer, Heading, LowerContainer, Span, SubContainer } from './style'
+import React, { useEffect, useState } from "react";
+import { useGetAllCountriesQuery, useViewServiceQuery } from "services/complyService";
+import { Answer, Heading, LowerContainer, Span, SubContainer } from "./style";
 
-const InfoCard = ({
-  location = 'Nigeria',
-  resource = 'Change of business names',
-}) => {
+const InfoCard = () => {
+  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+
+  let serviceId = complyCodeData.serviceId;
+  const viewService = useViewServiceQuery(serviceId);
+
+  const countries = useGetAllCountriesQuery();
+
+  console.log(countries);
+  let getCountry = countries?.data?.find(
+    (country) => country?.countryISO === viewService?.data?.serviceCountry
+  );
+
   return (
     <LowerContainer>
       <SubContainer>
         <Heading>
-          Company's Location :<Span> {location}</Span>
+          Company's Location :<Span> {getCountry?.countryName}</Span>
         </Heading>
         <Heading>
-          {' '}
-          Resource : <Span>{resource}</Span>
+          {" "}
+          Resource : <Span>{viewService?.data?.serviceName}</Span>
         </Heading>
       </SubContainer>
       <SubContainer>
@@ -37,7 +47,7 @@ const InfoCard = ({
         </Answer> */}
       </SubContainer>
     </LowerContainer>
-  )
-}
+  );
+};
 
-export default InfoCard
+export default InfoCard;
