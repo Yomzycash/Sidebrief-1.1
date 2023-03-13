@@ -1,20 +1,24 @@
 import React from "react";
+import { useGetAllCountriesQuery } from "services/launchService";
 import { useViewServicesByServiceIdQuery } from "services/staffService";
 import { Answer, Heading, LowerContainer, Span, SubContainer } from "./style";
 
 const InfoCard = () => {
-  const data = useViewServicesByServiceIdQuery();
-  console.log(data);
+  const { data } = useGetAllCountriesQuery();
+  const dataService = useViewServicesByServiceIdQuery();
+  const Countryname = data?.find(
+    (el) => el?.countryCurrency === dataService?.currentData?.serviceCountry
+  )?.countryName;
 
   return (
     <LowerContainer>
       <SubContainer>
         <Heading>
-          Company's Location :<Span> {data?.currentData?.serviceCountry}</Span>
+          Company's Location :<Span> {Countryname}</Span>                                                   
         </Heading>
         <Heading>
           {" "}
-          Resource : <Span>{data?.currentData?.serviceCategory}</Span>
+          Resource : <Span>{dataService?.currentData?.serviceCategory}</Span>
         </Heading>
       </SubContainer>
       <SubContainer>
@@ -42,4 +46,3 @@ const InfoCard = () => {
 };
 
 export default InfoCard;
-

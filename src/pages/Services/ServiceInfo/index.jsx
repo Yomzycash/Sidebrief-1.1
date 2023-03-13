@@ -52,6 +52,7 @@ const ServiceInfo = () => {
     );
     navigate("/services/payment");
   };
+  console.log(getServicesState)
   // Handle supported countries fetch
   const handleCountry = useCallback(
     async (value) => {
