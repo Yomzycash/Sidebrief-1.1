@@ -31,7 +31,8 @@ import {
   Status,
   TopContent,
 } from "./styled";
-import ServicesModal from "components/modal/ServicesModal";
+// import ServicesModal from "components/modal/ServicesModal";
+import ServicesModal from "components/modal/StaffServiceModal";
 import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
 import { handleError } from "utils/globalFunctions";
 import { parseJSON, compareAsc } from "date-fns";
