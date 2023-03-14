@@ -179,6 +179,7 @@ export const DeleteWrapper = styled.div`
   justify-content: flex-end;
   position:relative;
   bottom:20px;
+  
 `
 export const DeleteEachContainer = styled.button`
   display: flex;
@@ -187,7 +188,7 @@ export const DeleteEachContainer = styled.button`
   border:transparent;
   background:none;
   float: right;
-  // margin: 5px;
+  cursor:pointer;
 `
 
 export const IconWrapper = styled.div`
