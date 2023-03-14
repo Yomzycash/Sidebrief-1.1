@@ -16,6 +16,7 @@ export const ComplyApi = createApi({
     },
   }),
   tagTypes: ["CountryService"],
+
   endpoints: (builder) => ({
     viewComply: builder.mutation({
       query: (data) => ({
@@ -96,6 +97,7 @@ export const ComplyApi = createApi({
     }),
   }),
 });
+
 
 export const {
   useViewComplyMutation,
