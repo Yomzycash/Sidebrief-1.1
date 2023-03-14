@@ -12,12 +12,11 @@ import {
 } from "./styles";
 import numeral from "numeral";
 import { useActions } from "./actions";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useGetSingleEntityQuery, usePayLaunchMutation } from "services/launchService";
+// import { useNavigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
+// import { useGetSingleEntityQuery, usePayLaunchMutation } from "services/launchService";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
-import { store } from "redux/Store";
-import { setLaunchPaid } from "redux/Slices";
+// import { store } from "redux/Store";
 // import {
 //   CardElement,
 //   useStripe,
@@ -27,42 +26,26 @@ import { setLaunchPaid } from "redux/Slices";
 // } from "@stripe/react-stripe-js";
 import toast from "react-hot-toast";
 import StripePayment from "./stripePayment";
-import { useAddServicePaymentMutation } from "services/complyService";
 
-export const PaymentForm = ({ USDprice, paymentProvider }) => {
-  const serviceData = JSON.parse(localStorage.getItem("serviceData"));
-  const complyData = JSON.parse(localStorage.getItem("complyData"));
+export const PaymentForm = ({
+  USDprice,
+  paymentProvider,
+  amount,
+  onPaymentComplete,
+  title,
+  description,
+  currency,
+}) => {
   // console.log(serviceData);
   // const [message, setMessage] = useState(null);
   const [isUSD, setIsUSD] = useState(false);
-  const [entityInfo, setEntityInfo] = useState({
-    entityCurrency: "",
-    entityFee: "",
-  });
-
-  const [payLaunch, payState] = usePayLaunchMutation();
-
-  const [addServicePayment] = useAddServicePaymentMutation();
-
-  const navigate = useNavigate();
-
-  const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
-
-  const { launchCode, registrationType } = launchResponse;
-
-  const { data } = useGetSingleEntityQuery(registrationType);
 
   const { symbol, onSelectCurrencyType } = useActions({
     isUSD,
     setIsUSD,
-    currency: entityInfo ? entityInfo.entityCurrency : "",
+    currency,
     // setValue,
   });
-
-  useEffect(() => {
-    // console.log(data);
-    if (data) setEntityInfo(data);
-  }, [data]);
 
   let userEmail = localStorage.getItem("userEmail");
   let userInfo = localStorage.getItem("userInfo");
@@ -74,9 +57,9 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
         ? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
         : process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
     tx_ref: Date.now(),
-    amount: serviceData ? `${serviceData.servicePrice}` : `${entityInfo.entityFee}`,
+    amount: amount,
 
-    currency: entityInfo?.entityCurrency,
+    currency: currency,
     payment_options: "card, mobilemoney, ussd",
     customer: {
       email: userEmail,
@@ -84,10 +67,8 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
       name: `${userInfo.first_name + userInfo.last_name}`,
     },
     customizations: {
-      title: serviceData ? "service payment" : "Business registration",
-      description: serviceData
-        ? `Payment for business registration in ${serviceData.serviceCountry}`
-        : `Payment for business registration in ${entityInfo.entityCountry}`,
+      title: title,
+      description: description,
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },
   };
@@ -97,11 +78,12 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     text: "Pay with Flutterwave",
     callback: (response) => {
       if (response?.status === "successful") toast.success("Payment successful");
-      if (serviceData) {
-        sendServiceRefToBackend(response);
-      } else {
-        sendRefToBackend(response);
-      }
+      onPaymentComplete(response);
+      // if (serviceData) {
+      //   sendServiceRefToBackend(response);
+      // } else {
+      //   sendRefToBackend(response);
+      // }
       closePaymentModal(); // this will close the modal programmatically
     },
     onClose: () => {
@@ -109,59 +91,19 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     },
   };
 
-  // Send the payment reference information to the backend
-  const sendRefToBackend = async (reference) => {
-    const requiredData = {
-      launchCode: launchCode,
-      paymentDetails: {
-        paymentAmount: entityInfo?.entityFee,
-        paymentCurrency: entityInfo?.entityCurrency,
-        paymentTransactionId: reference.transaction_id,
-        paymentProvider: "Flutterwave",
-        paymentStatus: reference.status,
-      },
-    };
-    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
-    store.dispatch(setLaunchPaid(reference.status));
-    await payLaunch(requiredData);
-
-    navigate("/launch/address");
-  };
-
-  const sendServiceRefToBackend = async (reference) => {
-    const requiredData = {
-      complyCode: complyData.complyCode,
-      complyPayment: {
-        paymentAmount: serviceData?.servicePrice,
-        paymentCurrency: "NGN",
-        paymentTransactionId: reference.transaction_id,
-        paymentProvider: "Flutterwave",
-        paymentStatus: reference.status,
-      },
-    };
-    localStorage.setItem("servicePaymentDetails", JSON.stringify(requiredData.complyPayment));
-    store.dispatch(setLaunchPaid(reference.status));
-    const payResponse = await addServicePayment(requiredData);
-    // console.log("laptop", payResponse);
-    if (payResponse.data) {
-      localStorage.removeItem("serviceData");
-    }
-    navigate("/services/form");
-  };
-
   return (
     <Container>
       <RadioButtons>
         <Radio>
           <RadioInput
-            id={entityInfo?.entityCurrency}
+            id={currency}
             type="radio"
-            value={serviceData ? serviceData.serviceData : entityInfo?.entityCurrency}
+            value={currency}
             name="currency"
             onChange={onSelectCurrencyType}
             checked={!isUSD}
           />
-          <RadioLabel htmlFor={entityInfo.entityCurrency}>{entityInfo.entityCurrency}</RadioLabel>
+          <RadioLabel htmlFor={currency}>{currency}</RadioLabel>
         </Radio>
         {/* <Radio>
 					<RadioInput
@@ -177,15 +119,8 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
       </RadioButtons>
       <TextContainer>
         <Price>
-          {serviceData ? (
-            <>{numeral(serviceData.servicePrice).format("0,0.00")}</>
-          ) : (
-            <>
-              {" "}
-              {symbol ? symbol : "??"}
-              {numeral(isUSD ? USDprice : entityInfo.entityFee).format("0,0.00")}
-            </>
-          )}
+          {symbol ? symbol : "??"}
+          {numeral(amount).format("0,0.00")}
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
@@ -194,9 +129,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
           <FlutterWaveButton className="paystack-button" {...fwConfig} />
         </Paystack>
       )}
-      {paymentProvider === "stripe" && entityInfo.entityCurrency === "USD" && (
-        <StripePayment amount={entityInfo.entityFee} />
-      )}
+      {paymentProvider === "stripe" && currency === "USD" && <StripePayment amount={amount} />}
     </Container>
   );
 };

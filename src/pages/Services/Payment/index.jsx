@@ -1,8 +1,5 @@
 import React, { useReducer } from "react";
-import HeaderCheckout from "components/Header/HeaderCheckout";
-// import DropDownWithSearch from "components/input/DropDownWithSearch";
 import { Body } from "./styles.js";
-
 import { CheckoutController, CheckoutSection, PaymentForm, PaymentSelector } from "containers";
 import { Bottom, Container, Header } from "pages/Launch/styled";
 import { providerReducer, actions } from "./reducer";
@@ -10,11 +7,17 @@ import { paymentProviders } from "./constants";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
-import { setCheckoutProgress, setServiceCheckoutProgress } from "redux/Slices";
+import { setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
+import { useAddServicePaymentMutation } from "services/complyService";
+import { setLaunchPaid } from "redux/Slices";
 
 const ServicePayment = () => {
+  const serviceData = JSON.parse(localStorage.getItem("serviceData"));
+  const complyData = JSON.parse(localStorage.getItem("complyData"));
+  const [addServicePayment] = useAddServicePaymentMutation();
+
   const [providers, dispatch] = useReducer(
     providerReducer,
     paymentProviders.map((provider, index) => {
@@ -34,7 +37,6 @@ const ServicePayment = () => {
   const getActive = () => {
     return providers.find((el) => el.active === true).name.toLowerCase();
   };
-  const selectedEntity = useSelector((state) => state.LaunchReducer.selectedEntity);
 
   const navigate = useNavigate();
 
@@ -50,6 +52,27 @@ const ServicePayment = () => {
   useEffect(() => {
     store.dispatch(setServiceCheckoutProgress({ total: 4, current: 1 })); // total- total pages and current - current page
   }, []);
+
+  const sendServiceRefToBackend = async (reference) => {
+    const requiredData = {
+      complyCode: complyData.complyCode,
+      complyPayment: {
+        paymentAmount: serviceData?.servicePrice,
+        paymentCurrency: "NGN",
+        paymentTransactionId: reference.transaction_id,
+        paymentProvider: "Flutterwave",
+        paymentStatus: reference.status,
+      },
+    };
+    localStorage.setItem("servicePaymentDetails", JSON.stringify(requiredData.complyPayment));
+    store.dispatch(setLaunchPaid(reference.status));
+    const payResponse = await addServicePayment(requiredData);
+    // console.log("laptop", payResponse);
+    if (payResponse.data) {
+      localStorage.removeItem("serviceData");
+    }
+    navigate("/services/form");
+  };
 
   return (
     <Container>
@@ -74,9 +97,12 @@ const ServicePayment = () => {
           }}
         >
           <PaymentForm
-            currency={selectedEntity.entityCurrency}
-            amount={selectedEntity.entityFee}
+            currency={serviceData.serviceCurrency}
+            amount={serviceData.servicePrice}
             paymentProvider={getActive()}
+            onPaymentComplete={sendServiceRefToBackend}
+            title={"service payment"}
+            description={`Payment for business registration in ${serviceData.serviceCountry}`}
           />
         </div>
         <Bottom>
