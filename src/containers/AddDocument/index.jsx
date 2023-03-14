@@ -43,7 +43,9 @@ const AddDocument = () => {
     setFileArr(fileArr.filter((el, i) => i !== index));
   };
   const handleDocumentAdd = () => {
-    setDocumentList([...documentList, { documentName: "" }]);
+      setDocumentList([...documentList, { documentName: "" }]);
+    //   let emptyArr = []
+    // setFileArr(emptyArr)
   };
 
   return (
@@ -51,13 +53,11 @@ const AddDocument = () => {
       {documentList?.map((single, index) => (
         <Wrapper key={index}>
           <TopWrapper>
-                  <Label>Document {index+1}</Label>
+            <Label>Document {index + 1}</Label>
             <LowerWrapper>
               <InputTagWrapper>
                 <TagWrapper>
-                              {
-                                  fileArr?.map((el, i) =>  (
-                                      
+                  {fileArr?.map((el, i) => (
                     <TagTextWrapper key={index}>
                       <TagText>{el}</TagText>
                       <CancelWrapper onClick={() => removeTags(index)}>X</CancelWrapper>
