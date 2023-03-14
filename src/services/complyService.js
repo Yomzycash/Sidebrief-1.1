@@ -16,6 +16,7 @@ export const ComplyApi = createApi({
     },
   }),
   tagTypes: ["CountryService"],
+
   endpoints: (builder) => ({
     // get available services by country
     getServicesByCountry: builder.query({
@@ -53,6 +54,7 @@ export const ComplyApi = createApi({
         },
       }),
     }),
+
     //get user reward
     viewService: builder.query({
       query: (serviceId) => `services/view/${serviceId}`,
@@ -99,6 +101,7 @@ export const ComplyApi = createApi({
     }),
   }),
 });
+
 
 export const {
   useLazyGetServicesByCountryQuery,
