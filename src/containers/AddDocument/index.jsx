@@ -17,12 +17,21 @@ import {
   TextWrapper,
   TopWrapper,
   Wrapper,
+  AddWrapper, 
+  Addcontainer, 
+  ImgContainer, 
+  TextContainer,  
+  DeleteEachContainer, 
+  IconWrapper, 
+  DeleteText, 
+  DoneWrapper
 } from "./style";
 import Add from "../../../src/asset/svg/Blueadd.svg";
+import DeleteIcon from "../../../src/asset/svg/deleteRed.svg";
 
 const AddDocument = () => {
-  const [fileArr, setFileArr] = useState([]);
-  const [documentList, setDocumentList] = useState([{ documentName: "" }]);
+  // const [fileArr, setFileArr] = useState([]);
+  const [documentList, setDocumentList] = useState([{ documentName: "" , InputFileTypes:[] }]);
 
   const FileType = [
     {
@@ -39,28 +48,77 @@ const AddDocument = () => {
     },
   ];
 
-  const removeTags = (index) => {
-    setFileArr(fileArr.filter((el, i) => i !== index));
+  const removeTags = (documentIndex, fileTypeIndex) => {
+    const updatedDocumentList = documentList.map((doc, index) => {
+      if(documentIndex === index) {
+        return {
+          ...doc,
+          InputFileTypes: doc.InputFileTypes.filter((_, i) => i !== fileTypeIndex),
+        };
+      }
+      return doc;
+    })
+    setDocumentList(updatedDocumentList)
+
   };
+
   const handleDocumentAdd = () => {
-      setDocumentList([...documentList, { documentName: "" }]);
+      setDocumentList([
+        ...documentList, 
+        { 
+          documentName: "" , 
+          InputFileTypes: [] 
+        }
+      ]);
     //   let emptyArr = []
     // setFileArr(emptyArr)
   };
+  
+ 
+  const HandleFileType = (documentIndex, format) => {
+    const updatedDocumentList = documentList.map((doc, index) => {
+      if( documentIndex === index) {
+        if(doc.InputFileTypes.includes(format)) {
+          return doc;
+        }
+        return { 
+          ...doc, 
+          InputFileTypes: [...doc.InputFileTypes, format]
+        };
+      }
+      return doc;
+    })
+    setDocumentList(updatedDocumentList)
+  }
+
+  const deleteEachDoc = (index) => {
+    setDocumentList(documentList.filter((_, i) => i !== index ))
+  }
 
   return (
     <div>
-      {documentList?.map((single, index) => (
+      {documentList?.map((doc, index) => (
         <Wrapper key={index}>
           <TopWrapper>
             <Label>Document {index + 1}</Label>
+            {documentList.length > 1 && (
+              <div style={{justifyContent: "flex-end", position:"relative", bottom:"20px"}}>
+                <DeleteEachContainer onClick={() => deleteEachDoc(index)}> 
+                <IconWrapper>
+                  <img src={DeleteIcon} alt="" />
+                </IconWrapper>
+                <DeleteText>Delete</DeleteText>
+              </DeleteEachContainer>
+              </div>
+              
+            )}
             <LowerWrapper>
               <InputTagWrapper>
                 <TagWrapper>
-                  {fileArr?.map((el, i) => (
-                    <TagTextWrapper key={index}>
-                      <TagText>{el}</TagText>
-                      <CancelWrapper onClick={() => removeTags(index)}>X</CancelWrapper>
+                  {doc.InputFileTypes.map((fileType, fileTypeIndex) => (
+                    <TagTextWrapper key={fileTypeIndex}>
+                      <TagText>{fileType}</TagText>
+                      <CancelWrapper onClick={() => removeTags(index, fileTypeIndex)}>X</CancelWrapper>
                     </TagTextWrapper>
                   ))}
                 </TagWrapper>
@@ -71,31 +129,29 @@ const AddDocument = () => {
               </InputTagWrapper>
               <TextBtnWrapper>
                 <TextWrapper>Choose acceptable document format(s)</TextWrapper>
+                
                 <ButtonWrapper>
-                  {FileType?.map((el, i) => (
+                  {FileType.map((fileType) => (
                     <FileButton
-                      key={el.id}
-                      onClick={() => setFileArr((oldArray) => [...oldArray, el?.format])}
-                      disabled={
-                        fileArr[0] === el?.format ||
-                        fileArr[1] === el?.format ||
-                        fileArr[2] === el?.format
-                      }
+                      key={fileType.id}
+                      onClick={() => HandleFileType(index, fileType.format)}
+                      disabled={doc.InputFileTypes.includes(fileType.format)}
                     >
-                      <Text>{el?.format}</Text>
+                      <Text>{fileType.format}</Text>
                     </FileButton>
                   ))}
                 </ButtonWrapper>
               </TextBtnWrapper>
             </LowerWrapper>
           </TopWrapper>
+
           {documentList?.length - 1 === index && (
             <AddWrapper>
               <Addcontainer onClick={handleDocumentAdd}>
                 <ImgContainer>
                   <img src={Add} alt="" />
                 </ImgContainer>
-                <TextContainer>Add new document</TextContainer>
+                <TextContainer>Add New document</TextContainer>
               </Addcontainer>
               <DoneWrapper> Done</DoneWrapper>
             </AddWrapper>
@@ -108,43 +164,3 @@ const AddDocument = () => {
 
 export default AddDocument;
 
-const AddWrapper = styled.div`
-  max-width: 410px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 33px;
-`;
-const Addcontainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0px;
-  gap: 8px;
-  cursor: pointer;
-`;
-const ImgContainer = styled.div``;
-const TextContainer = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 27px;
-
-  display: flex;
-  align-items: center;
-
-  color: #00a2d4;
-`;
-
-const DoneWrapper = styled.button`
-  width: 132px;
-  height: 34px;
-  left: 278px;
-  top: 249px;
-
-  background: #f8f8f8;
-  /* Blue 2 */
-
-  border: 1px dashed #00a2d4;
-  border-radius: 5px;
-`;

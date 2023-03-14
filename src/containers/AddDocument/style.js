@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 export const TopWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: space-between;
   gap: 8px;
   width: 100%;
 
@@ -17,11 +17,11 @@ export const TopWrapper = styled.div`
 
 export const Label = styled.h4`
   width: 100%;
-
+  position:relative;
+  top:5px;
   font-weight: 500;
   font-size: 14px;
   line-height: 21px;
-
   color: #4e5152;
 `;
 export const LowerWrapper = styled.div`
@@ -145,3 +145,71 @@ export const Text = styled.h3`
   display: flex;
   align-items: center;
 `;
+
+
+export const AddWrapper = styled.div`
+  max-width: 410px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 33px;
+`;
+export const Addcontainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  cursor: pointer;
+`;
+export const ImgContainer = styled.div``;
+
+export const TextContainer = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+
+  display: flex;
+  align-items: center;
+
+  color: #00a2d4;
+`;
+
+export const DeleteEachContainer = styled.button`
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  border:transparent;
+  background:none;
+  float: right;
+  // margin: 5px;
+`
+
+export const IconWrapper = styled.div`
+  margin-right: 5px;
+`;
+
+export const DeleteText = styled.div`
+  float:right
+  font-size: 14px;
+  font-weight:light;
+  color: #ED4E3A;
+`;
+
+export const DoneWrapper = styled.button`
+  width: 132px;
+  height: 34px;
+  left: 278px;
+  top: 249px;
+
+  background: #f8f8f8;
+  /* Blue 2 */
+
+  border: 1px dashed #00a2d4;
+  border-radius: 5px;
+
+  
+`;
+
+
