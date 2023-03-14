@@ -3,12 +3,7 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import { Body } from "./styles.js";
 
-import {
-  CheckoutController,
-  CheckoutSection,
-  PaymentForm,
-  PaymentSelector,
-} from "containers";
+import { CheckoutController, CheckoutSection, PaymentForm, PaymentSelector } from "containers";
 import { Bottom, Container, Header } from "../styled";
 import { providerReducer, actions } from "./reducer";
 import { paymentProviders } from "./constants";
@@ -38,9 +33,7 @@ const PaymentPage = () => {
   const getActive = () => {
     return providers.find((el) => el.active === true).name.toLowerCase();
   };
-  const selectedEntity = useSelector(
-    (state) => state.LaunchReducer.selectedEntity
-  );
+  const selectedEntity = useSelector((state) => state.LaunchReducer.selectedEntity);
 
   const navigate = useNavigate();
 
@@ -91,6 +84,7 @@ const PaymentPage = () => {
             backText={"Previous"}
             hideForward
             backAction={handlePrev}
+            forwardAction={handleNext}
           />
         </Bottom>
       </Body>

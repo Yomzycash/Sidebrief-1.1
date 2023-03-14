@@ -36,6 +36,11 @@ export const ComplyApi = createApi({
       invalidatesTags: "CountryService",
     }),
 
+        // get all countries
+        getAllCountries: builder.query({
+          query: () => "/countries",
+        }),
+
     // create new compliance / service
     createCompliance: builder.mutation({
       query: (serviceId) => ({
@@ -48,12 +53,11 @@ export const ComplyApi = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-      tagTypes: [""],
     }),
 
     //get user reward
     viewService: builder.query({
-      query: () => "services/view/9031415997",
+      query: (serviceId) => `services/view/${serviceId}`,
     }),
 
     //view reward
@@ -85,6 +89,16 @@ export const ComplyApi = createApi({
       }),
       invalidatesTags: ["Services"],
     }),
+
+    //add comply payment
+    addServicePayment: builder.mutation({
+      query: (values) => ({
+        url: "/comply/add/payment",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["Services"],
+    }),
   }),
 });
 
@@ -93,7 +107,9 @@ export const {
   useLazyGetServicesByCountryQuery,
   useCreateComplianceMutation,
   useViewServiceQuery,
+  useGetAllCountriesQuery,
   useAddServiceDocumentMutation,
   useViewServiceDocumentMutation,
   useDeleteServiceDocumentMutation,
+  useAddServicePaymentMutation,
 } = ComplyApi;

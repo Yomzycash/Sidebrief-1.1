@@ -15,7 +15,7 @@ import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { useGetAllCountriesQuery } from "services/launchService";
+import { useGetAllCountriesQuery } from "services/complyService";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
@@ -26,10 +26,16 @@ import { setServiceCheckoutProgress } from "redux/Slices";
 import {
   useLazyGetServicesByCountryQuery,
   useCreateComplianceMutation,
+  useViewServiceQuery,
 } from "services/complyService";
 import numeral from "numeral";
 
 const ServiceInfo = () => {
+  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+  let serviceId = complyCodeData.serviceId;
+  const viewService = useViewServiceQuery(serviceId);
+  const countriesData = useGetAllCountriesQuery();
+
   const [selectedResource, setselectedResource] = useState({});
   const [countries, setCountries] = useState([]);
   const [serviceResources, setServiceresources] = useState([]);
@@ -42,15 +48,20 @@ const ServiceInfo = () => {
   const navigate = useNavigate();
 
   const handleNext = async () => {
-    const response = await createCompliance(selectedResource.serviceId);
-    localStorage.setItem(
-      "complyData",
-      JSON.stringify({
-        complyCode: response.data.complyCode,
-        serviceId: response.data.serviceId,
-      })
-    );
-    navigate("/services/payment");
+    const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
+    if (servicePaymentDetails) {
+      navigate("/services/form");
+    } else {
+      const response = await createCompliance(selectedResource.serviceId);
+      localStorage.setItem(
+        "complyData",
+        JSON.stringify({
+          complyCode: response.data.complyCode,
+          serviceId: response.data.serviceId,
+        })
+      );
+      navigate("/services/payment");
+    }
   };
   // Handle supported countries fetch
   const handleCountry = useCallback(
@@ -86,15 +97,32 @@ const ServiceInfo = () => {
   };
 
   const handleResourceSelect = (valuesSelected) => {
-    setselectedResource(
-      getServicesState?.data?.find((el) => el.serviceName === valuesSelected) || {}
-    );
+    let serviceData =
+      getServicesState?.data?.find((el) => el?.serviceName === valuesSelected) || {};
+    setselectedResource(serviceData);
+
+    localStorage.setItem("serviceData", JSON.stringify(serviceData));
   };
 
   // Set the progress of the application
   useEffect(() => {
     store.dispatch(setServiceCheckoutProgress({ total: 4, current: 0.01 })); // total- total pages and current - current page
   }, []);
+
+  // populate
+
+  useEffect(() => {
+    setselectedResource(viewService?.data);
+  }, [viewService]);
+
+  useEffect(() => {
+    let getCountry = countriesData?.data?.find(
+      (country) => country?.countryISO === viewService?.data?.serviceCountry
+    );
+    setSelectedCountry(getCountry?.countryName);
+  }, [countriesData, viewService]);
+
+  console.log("vv", viewService?.data);
 
   return (
     <>
@@ -120,16 +148,20 @@ const ServiceInfo = () => {
               </div>
               <TagInputWithSearch
                 label="Resource"
-                list={serviceResources?.map((el) => el.serviceName) || []}
+                list={serviceResources?.map((el) => el?.serviceName) || []}
                 getValue={handleResourceSelect}
-                initialValue={selectedResource.serviceName || "--"}
+                initialValue={
+                  viewService?.data
+                    ? viewService?.data?.serviceName
+                    : selectedResource?.serviceName || "--"
+                }
                 MatchError="Please select resource from the list"
                 EmptyError="Please select at least one resources"
                 suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
                 fetchingText={"Fetching resources..."}
               />
             </LaunchFormContainer>
-            {selectedResource.serviceName && (
+            {selectedResource?.serviceName && (
               <InfoContainer>
                 <InfoFrame space>
                   <InfoFrameHead>Requirements</InfoFrameHead>
@@ -148,7 +180,7 @@ const ServiceInfo = () => {
                   <InfoFrameHead>Timeline</InfoFrameHead>
                   <Bullet>
                     <FiClock />
-                    <BigContent>{selectedResource.serviceTimeline} days</BigContent>
+                    <BigContent>{selectedResource?.serviceTimeline} days</BigContent>
                   </Bullet>
                 </InfoFrame>
                 <InfoFrame>
@@ -156,8 +188,8 @@ const ServiceInfo = () => {
                   <Bullet>
                     <FaMoneyCheckAlt />
                     <BigContent>
-                      {selectedResource.serviceCurrency || "--"}{" "}
-                      {numeral(selectedResource.servicePrice).format("0,0")}
+                      {selectedResource?.serviceCurrency || "--"}{" "}
+                      {numeral(selectedResource?.servicePrice).format("0,0")}
                     </BigContent>
                   </Bullet>
                 </InfoFrame>
@@ -169,7 +201,7 @@ const ServiceInfo = () => {
                 forwardSubmit
                 hidePrev
                 forwardAction={handleNext}
-                forwardDisable={!selectedResource.serviceName}
+                forwardDisable={!selectedResource?.serviceName}
                 forwardLoading={createComplianceState.isLoading}
               />
             </Bottom>
