@@ -13,7 +13,9 @@ import { ServicesSchema } from "utils/config";
 import { Switch } from "components/switch";
 import styled from "styled-components";
 import QuestionnaireInput from "components/input/QuestionnaireInput";
-import TemplateHeader  from "components/tabbedDocument"
+import ServiceTabbedNavigation  from "components/tabbedDocument"
+import AddDocument from "containers/AddDocument";
+import AddTemplate from "../../containers/AddTemplate";
 
 const ServicesModal = ({
   cardAction,
@@ -143,7 +145,7 @@ const ServicesModal = ({
       handleDelete={() => handleServiceDelete(serviceInfo)}
       deleteState={deleteState}
     >
-      <TemplateHeader />
+      <ServiceTabbedNavigation />
     </Modal1>
   );
 };
