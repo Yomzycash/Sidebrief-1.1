@@ -54,7 +54,12 @@ const ServiceForm = () => {
   };
 
   const handlePrev = () => {
-    navigate(-1);
+    const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
+    if (servicePaymentDetails) {
+      navigate("/services");
+    } else {
+      navigate("/services/payment");
+    }
   };
 
   // Set the progress of the application

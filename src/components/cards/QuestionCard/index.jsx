@@ -1,36 +1,23 @@
-import { question } from "pages/Services/Review/constant";
-import React, { useEffect, useState } from "react";
-import { useViewComplyMutation } from "services/complyService";
-import { Answer, Container, InnerContainer, Question, Wrapper } from "./style";
-
-const QuestionCard = () => {
-  const [viewComply] = useViewComplyMutation();
-  const [complyData, setComplyData] = useState([]);
-
-  const handleData = async () => {
-    let response = await viewComply({
-      complyCode: "335928451015517734",
-    });
-
-    setComplyData(response?.data?.complyData);
-  };
-  useEffect(() => {
-    handleData();
-  }, []);
-
-  console.log(complyData);
+import React from "react";
+import { Answer, Container, InnerContainer, Loading, Question, Wrapper } from "./style";
+import { Puff } from "react-loading-icons";
+const QuestionCard = ({ question, loadingState }) => {
   return (
     <div>
       <Wrapper>
+        {loadingState?.isLoading && (
+          <Loading height="50vh">
+            <Puff stroke="#00A2D4" fill="white" />
+          </Loading>
+        )}
+
         <Container>
-          {complyData?.map((el, index) => {
-            return (
-              <InnerContainer key={index}>
-                <Question>{el.complyQuestion}</Question>
-                <Answer>{el.complyAnswer}</Answer>
-              </InnerContainer>
-            );
-          })}
+          {question?.map((el, index) => (
+            <InnerContainer key={index}>
+              <Question>{el.complyQuestion}</Question>
+              <Answer>{el.complyAnswer}</Answer>
+            </InnerContainer>
+          ))}
         </Container>
       </Wrapper>
     </div>

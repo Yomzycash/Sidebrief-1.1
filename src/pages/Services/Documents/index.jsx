@@ -1,4 +1,5 @@
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
+import DownLoadDoc from "components/FileUpload/downLoadDoc";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
@@ -13,9 +14,12 @@ import { convertToLink } from "utils/LaunchHelper";
 import toast from "react-hot-toast";
 
 const ServiceDocuments = () => {
+  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+  let serviceId = complyCodeData.serviceId;
   // let code = 9031415997;
   const navigate = useNavigate();
-  const viewService = useViewServiceQuery();
+  const viewService = useViewServiceQuery(serviceId);
+
   const [addServiceDocument, { isLoading, isSuccess }] = useAddServiceDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
   const handlePrev = () => {
@@ -31,7 +35,8 @@ const ServiceDocuments = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 4, current: 3 })); // total- total pages and current - current page
   }, []);
 
-  let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
+  let complyCode = complyCodeData.complyCode;
+  // let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
 
   const handleChange = async (file, fileName) => {
     const res = await convertToLink(file[0]);
@@ -71,9 +76,8 @@ const ServiceDocuments = () => {
             <FileContainer>
               <ContentWrapper>
                 {viewService?.data?.serviceTemplates.map((document, index) => (
-                  <KYCFileUpload
+                  <DownLoadDoc
                     key={index}
-                    downloadPage
                     downloadDocumentName={document.fileName}
                     downloadDocumentLink={document.templateLink}
                   />

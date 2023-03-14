@@ -1,24 +1,29 @@
-import React from "react";
-import { useGetAllCountriesQuery } from "services/launchService";
-import { useViewServicesByServiceIdQuery } from "services/staffService";
+import React, { useEffect, useState } from "react";
+import { useGetAllCountriesQuery, useViewServiceQuery } from "services/complyService";
 import { Answer, Heading, LowerContainer, Span, SubContainer } from "./style";
 
 const InfoCard = () => {
-  const { data } = useGetAllCountriesQuery();
-  const dataService = useViewServicesByServiceIdQuery();
-  const Countryname = data?.find(
-    (el) => el?.countryCurrency === dataService?.currentData?.serviceCountry
-  )?.countryName;
+  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+
+  let serviceId = complyCodeData.serviceId;
+  const viewService = useViewServiceQuery(serviceId);
+
+  const countries = useGetAllCountriesQuery();
+
+  console.log(countries);
+  let getCountry = countries?.data?.find(
+    (country) => country?.countryISO === viewService?.data?.serviceCountry
+  );
 
   return (
     <LowerContainer>
       <SubContainer>
         <Heading>
-          Company's Location :<Span> {Countryname}</Span>                                                   
+          Company's Location :<Span> {getCountry?.countryName}</Span>
         </Heading>
         <Heading>
           {" "}
-          Resource : <Span>{dataService?.currentData?.serviceCategory}</Span>
+          Resource : <Span>{viewService?.data?.serviceName}</Span>
         </Heading>
       </SubContainer>
       <SubContainer>
