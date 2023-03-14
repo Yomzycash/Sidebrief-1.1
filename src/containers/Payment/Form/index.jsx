@@ -9,41 +9,31 @@ import {
   RadioInput,
   RadioLabel,
   Paystack,
-  ButtonContainer,
-  FormData,
 } from "./styles";
 import numeral from "numeral";
 import { useActions } from "./actions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  useGetSingleEntityQuery,
-  usePayLaunchMutation,
-  usePayWithStripeMutation,
-} from "services/launchService";
+import { useGetSingleEntityQuery, usePayLaunchMutation } from "services/launchService";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import { store } from "redux/Store";
 import { setLaunchPaid } from "redux/Slices";
-import Button from "components/button";
-import {
-  CardElement,
-  useStripe,
-  useElements,
-  PaymentElement,
-  LinkAuthenticationElement,
-} from "@stripe/react-stripe-js";
+// import {
+//   CardElement,
+//   useStripe,
+//   useElements,
+//   PaymentElement,
+//   LinkAuthenticationElement,
+// } from "@stripe/react-stripe-js";
 import toast from "react-hot-toast";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import StripeForm from "./StripeForm";
 import StripePayment from "./stripePayment";
 import { useAddServicePaymentMutation } from "services/complyService";
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
   const serviceData = JSON.parse(localStorage.getItem("serviceData"));
-  const complyCode = JSON.parse(localStorage.getItem("complyData"));
-  console.log(serviceData);
-  const [message, setMessage] = useState(null);
+  const complyData = JSON.parse(localStorage.getItem("complyData"));
+  // console.log(serviceData);
+  // const [message, setMessage] = useState(null);
   const [isUSD, setIsUSD] = useState(false);
   const [entityInfo, setEntityInfo] = useState({
     entityCurrency: "",
@@ -133,14 +123,14 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     };
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
     store.dispatch(setLaunchPaid(reference.status));
-    const payResponse = await payLaunch(requiredData);
+    await payLaunch(requiredData);
 
     navigate("/launch/address");
   };
 
   const sendServiceRefToBackend = async (reference) => {
     const requiredData = {
-      complyCode: complyCode.complyCode,
+      complyCode: complyData.complyCode,
       complyPayment: {
         paymentAmount: serviceData?.servicePrice,
         paymentCurrency: "NGN",
@@ -152,7 +142,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
     localStorage.setItem("servicePaymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await addServicePayment(requiredData);
-    console.log("laptop", payResponse);
+    // console.log("laptop", payResponse);
     if (payResponse.data) {
       localStorage.removeItem("serviceData");
     }
