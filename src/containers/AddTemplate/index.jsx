@@ -9,19 +9,14 @@ import {
   InputWrapper,
   Label,
   LowerWrapper,
-  TagText,
-  TagTextWrapper,
-  TagWrapper,
-  Text,
-  TextBtnWrapper,
-  TextWrapper,
   TopWrapper,
   Wrapper,
   AddWrapper, 
   Addcontainer, 
   ImgContainer, 
-  TextContainer, 
-   DeleteEachContainer, 
+  TextContainer,
+  DeleteWrapper, 
+  DeleteEachContainer, 
   IconWrapper, 
   DeleteText,
   DoneWrapper
@@ -53,14 +48,14 @@ const AddTemplate = () => {
           <TopWrapper>
             <Label>Template Details {index + 1}</Label>
             {templates.length > 1 && (
-              <div style={{justifyContent: "flex-end", position:"relative", bottom:"20px"}}>
+              <DeleteWrapper>
                 <DeleteEachContainer onClick={() => deleteEachDoc(index)}> 
                 <IconWrapper>
                   <img src={DeleteIcon} alt="" />
                 </IconWrapper>
                 <DeleteText>Delete</DeleteText>
               </DeleteEachContainer>
-              </div> 
+              </DeleteWrapper> 
             )}
             <LowerWrapper>
               <InputTagWrapper>

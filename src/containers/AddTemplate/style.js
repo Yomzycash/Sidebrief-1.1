@@ -174,6 +174,11 @@ export const TextContainer = styled.div`
 
   color: #00a2d4;
 `;
+export const DeleteWrapper = styled.div`
+  justify-content: flex-end;
+  position:relative;
+  bottom:20px;
+`
 
 export const DeleteEachContainer = styled.button`
   display: flex;

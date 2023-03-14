@@ -22,6 +22,7 @@ import {
   ImgContainer, 
   TextContainer,  
   DeleteEachContainer, 
+  DeleteWrapper,
   IconWrapper, 
   DeleteText, 
   DoneWrapper
@@ -102,14 +103,14 @@ const AddDocument = () => {
           <TopWrapper>
             <Label>Document {index + 1}</Label>
             {documentList.length > 1 && (
-              <div style={{justifyContent: "flex-end", position:"relative", bottom:"20px"}}>
-                <DeleteEachContainer onClick={() => deleteEachDoc(index)}> 
-                <IconWrapper>
-                  <img src={DeleteIcon} alt="" />
-                </IconWrapper>
-                <DeleteText>Delete</DeleteText>
-              </DeleteEachContainer>
-              </div>
+              <DeleteWrapper>
+                  <DeleteEachContainer onClick={() => deleteEachDoc(index)}> 
+                    <IconWrapper>
+                      <img src={DeleteIcon} alt="" />
+                    </IconWrapper>
+                    <DeleteText>Delete</DeleteText>
+                  </DeleteEachContainer>
+              </DeleteWrapper>
               
             )}
             <LowerWrapper>
