@@ -45,7 +45,7 @@ const containerStyle = {
 };
 
 const progressLineStyle = {
-  left: "2%",
+  left: "8px",
   top: "5px",
   maxWidth: "93%",
 };

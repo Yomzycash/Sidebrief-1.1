@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { handleError } from "utils/globalFunctions";
+import { handleError, handleResponse } from "utils/globalFunctions";
 
 export const useActions = ({
   addService,
@@ -27,17 +27,14 @@ export const useActions = ({
   const handleServiceAdd = async (formData) => {
     let requiredService = getRequired(formData);
     let response = await addService(requiredService);
-    let data = response?.data;
     let error = response?.error;
-
-    if (data) {
-      toast.success("Service added successfully");
-      setOpen(false);
+    if (response?.data) {
+      scrollToNext();
+      setOpen("add", response.data?.serviceId, 50);
     } else {
       handleError(error);
     }
     refetch();
-    console.log("formdata", formData);
   };
 
   // Update service
@@ -83,6 +80,14 @@ export const useActions = ({
     });
   };
 
+  const scrollToPrev = () => {
+    dialogRef.current.scrollLeft -= dialogRef.current.offsetWidth;
+    parentRef.current.scrollTo({
+      top: 0,
+      behaviour: "smooth",
+    });
+  };
+
   return {
     handleServiceAdd,
     handleServiceUpdate,
@@ -90,5 +95,6 @@ export const useActions = ({
     handleCountryChange,
     handleCurrencyChange,
     scrollToNext,
+    scrollToPrev,
   };
 };

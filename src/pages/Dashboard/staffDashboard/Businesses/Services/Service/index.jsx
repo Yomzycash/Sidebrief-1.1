@@ -100,11 +100,13 @@ const ServicePage = () => {
     refetch();
   };
 
-  const setOpen = (mode) => {
+  const setOpen = (mode, serviceId, progress) => {
     if (!mode) setSearchParams({});
     else
       setSearchParams({
         mode: mode,
+        serviceId: serviceId || "",
+        progress: progress || 0,
       });
   };
 

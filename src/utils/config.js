@@ -195,7 +195,7 @@ export const ServicesSchema = yup.object().shape({
   category: yup.string().required("Select service category"),
   country: yup.string().required("Select operational country"),
   currency: yup.string().required("Select currency"),
-  price: yup.string().required("Emter service price"),
+  price: yup.number().typeError("Enter service price").required("Emter service price"),
   timeline: yup.string().required("Enter service timeline"),
 });
 

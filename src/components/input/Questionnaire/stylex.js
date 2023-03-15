@@ -96,18 +96,20 @@ export const SubmitButtons = styled.div`
     font-size: 16px;
     line-height: 27px;
     color: #00a2d4;
+  }
 
-    :nth-of-type(1) {
-      background-color: transparent;
-      padding: 0;
-    }
-    :nth-of-type(2) {
-      background-color: #f8f8f8;
-      border: 1px dashed #00a2d4;
-      border-radius: 5px;
-      height: 34px;
-      width: 132px;
-    }
+  #review-submit,
+  #done-submit {
+    background-color: #f8f8f8;
+    border: 1px dashed #00a2d4;
+    border-radius: 5px;
+    height: 34px;
+    width: 132px;
+  }
+
+  #addnew-submit {
+    background-color: transparent;
+    padding: 0;
   }
 
   svg {

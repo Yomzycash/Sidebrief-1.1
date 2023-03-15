@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import InputWithLabel from "../inputWithLabel";
 import ToggleButton from "../ToggleButton";
 import {
@@ -19,12 +19,14 @@ import { useActions } from "./actions";
 import { initialState, reducer } from "./reducer";
 import { ErrMsg } from "../styled";
 
-const QuestionEdit = ({ disable }) => {
+const QuestionEdit = ({ questionNumber, review, info, setDisabled, handleQuestionSubmit }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const optionsRef = useRef(null);
 
   const { selectedType, optionsArray, questionError, optionsError, done } = state;
 
-  const optionsRef = useRef(null);
+  // const { fieldCode, fieldName, fieldOptions, fieldQuestion, fieldRequired, fieldType } = info;
 
   const {
     otherClicked,
@@ -37,13 +39,13 @@ const QuestionEdit = ({ disable }) => {
     handleToggle,
     handleSubmit,
     handleDone,
-  } = useActions({ state, dispatch });
+  } = useActions({ state, dispatch, handleQuestionSubmit, review });
 
   // Focuses the last option
   useEffect(() => {
     let lastIndex = optionsArray.length - 1;
     if (lastIndex < 0) return;
-    if (selectedType === "checkbox || selectype === radio")
+    if (selectedType === "checkbox" || selectedType === "radio")
       optionsRef.current?.childNodes[lastIndex + 1]?.childNodes[1].focus();
   }, [optionsArray, selectedType]);
 
@@ -55,7 +57,7 @@ const QuestionEdit = ({ disable }) => {
         <QuestionInfoWrapper>
           <Question>
             <InputWithLabel
-              label={`Question 1`}
+              label={`Question ${questionNumber}`}
               placeholder="Enter question here"
               labelStyle="input-label"
               type="text"
@@ -64,7 +66,6 @@ const QuestionEdit = ({ disable }) => {
               containerStyle="input-container-class"
               onChange={handleQuestion}
               errorMessage={questionError}
-              disable={disable}
             />
             <ToggleWrapper>
               <ToggleButton rightText="Compulsory" name="toggle-button" onChange={handleToggle} />
@@ -152,13 +153,20 @@ const QuestionEdit = ({ disable }) => {
       )}
 
       <SubmitButtons>
-        <CommonButton
-          text="Add New Question"
-          LeftIcon={AddIcon}
-          type={done ? "button" : "submit"}
-          action={() => dispatch({ type: "setDone", payload: false })}
-        />
-        {hideFormView && <CommonButton text="Done" type="submit" action={handleDone} />}
+        {review ? (
+          <CommonButton text="Update" type="submit" id="review-submit" />
+        ) : (
+          <>
+            <CommonButton
+              text="Add New Question"
+              LeftIcon={AddIcon}
+              type={done ? "button" : "submit"}
+              action={() => dispatch({ type: "setDone", payload: false })}
+              id="addnew-submit"
+            />
+            {hideFormView && <CommonButton text="Done" type="submit" id="done-submit" />}
+          </>
+        )}
       </SubmitButtons>
     </QuestionForm>
   );

@@ -15,29 +15,24 @@ import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
 import { SpinningCircles } from "react-loading-icons";
 import { useDeleteServiceFormFieldMutation } from "services/staffService";
 
-const QuestionReview = ({
-  setDisabled,
-  questionType = "checkbox",
-  optionsArray = [
-    "What is your name?",
-    "What is your DOB?",
-    "What service do you want",
-    "Are you a womanizer?",
-  ],
-}) => {
+const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction }) => {
   const [confirm, setConfirm] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
 
   const [deleteFormField, deleteState] = useDeleteServiceFormFieldMutation();
 
-  const handleDeleteQuestion = () => {};
+  let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
+
+  const handleDeleteQuestion = () => {
+    deleteAction(info?.fieldCode);
+  };
 
   return (
     <ReviewContainer>
       <ReviewTop>
         <ReviewTopLeft>
-          <span>Question</span>
-          <span>Compulsory</span>
+          <span>Question {questionNumber}</span>
+          {info?.fieldRequired && <span>Compulsory</span>}
         </ReviewTopLeft>
         <ReviewTopRight>
           {confirm === false && (
@@ -72,19 +67,19 @@ const QuestionReview = ({
         </ReviewTopRight>
       </ReviewTop>
 
-      <ReviewQuestion>Which of these is the largest in Nigeria?</ReviewQuestion>
+      <ReviewQuestion>{info?.fieldQuestion + questionMark}</ReviewQuestion>
 
-      {questionType === "checkbox" && (
+      {info?.fieldType === "checkbox" && (
         <QuestionOptions>
-          {optionsArray?.map((text, index) => (
+          {info?.fieldOptions?.map((text, index) => (
             <Option key={index} type="checkbox" text={text} disable={true} />
           ))}
         </QuestionOptions>
       )}
 
-      {questionType === "radio" && (
+      {info?.fieldType === "radio" && (
         <QuestionOptions>
-          {optionsArray?.map((text, index) => (
+          {info?.fieldOptions?.map((text, index) => (
             <Option key={index} type="radio" text={text} disable={true} />
           ))}
         </QuestionOptions>

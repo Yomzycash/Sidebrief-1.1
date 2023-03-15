@@ -108,7 +108,6 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
   }, [clickedService, mode]);
 
   const submitForm = (formData) => {
-    scrollToNext();
     if (mode === "add") handleServiceAdd(formData);
     else if (mode === "edit") handleServiceUpdate(formData);
   };
@@ -153,7 +152,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             onChange={handleCategoryChange}
             errorMessage={errors.category?.message}
             placeholder="Select Service Category"
-            defaultValue={clickedService ? clickedService?.serviceCategory : ""}
+            defaultValue={mode === "edit" ? clickedService?.serviceCategory : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -168,7 +167,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             onChange={handleCountryChange}
             placeholder="Select Service Country"
             errorMessage={errors.country?.message}
-            defaultValue={clickedService ? clickedService?.serviceCountry : ""}
+            defaultValue={mode === "edit" ? clickedService?.serviceCountry : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -180,7 +179,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             options={serviceCurrencies}
             onChange={handleCurrencyChange}
             errorMessage={errors.currency?.message}
-            defaultValue={mode === "edit" && clickedService?.serviceCurrency}
+            defaultValue={mode === "edit" ? clickedService?.serviceCurrency : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -201,7 +200,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             disable={disable}
           />
           <InputWithLabel
-            label="Service Timeline"
+            label="Service Timeline (days)"
             labelStyle="input-label"
             placeholder="Enter Service Timeline"
             type="text"

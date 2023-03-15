@@ -1,5 +1,5 @@
-export const useActions = ({ state, dispatch }) => {
-  const { question, required, selectedType, optionsArray, questionError, optionsError } = state;
+export const useActions = ({ state, dispatch, handleQuestionSubmit, review }) => {
+  const { question, selectedType, optionsArray } = state;
 
   const applyActive = (type) => {
     if (type !== selectedType) return;
@@ -42,13 +42,15 @@ export const useActions = ({ state, dispatch }) => {
 
   // Validates the length of each option
   const validateEmptyOptions = () => {
-    if (optionsArray.some((el) => el.trim() === "")) {
-      dispatch({ type: "setOptionsError", payload: "Option cannot be empty" });
-      return false;
-    } else {
-      dispatch({ type: "setOptionsError", payload: "" });
-      return true;
-    }
+    if ((selectedType === "checkbox" || selectedType === "radio") && optionsArray.length < 2) {
+      if (optionsArray.some((el) => el.trim() === "")) {
+        dispatch({ type: "setOptionsError", payload: "Option cannot be empty" });
+        return false;
+      } else {
+        dispatch({ type: "setOptionsError", payload: "" });
+        return true;
+      }
+    } else return true;
   };
 
   // Adds an option
@@ -97,7 +99,9 @@ export const useActions = ({ state, dispatch }) => {
     let questionValid = validateQuestion(question);
     let optionsValid = validateOptions() && validateEmptyOptions();
     if (!questionValid || !optionsValid) return;
-    console.log(state);
+    let response = review ? "Update" : "Add";
+    console.log(response);
+    handleQuestionSubmit(state);
   };
 
   // Hides form

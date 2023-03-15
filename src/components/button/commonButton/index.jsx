@@ -12,6 +12,7 @@ const CommonButton = ({
   leftIconColor,
   rightIconColor,
   puffColor,
+  id,
   classname,
   component,
   type,
@@ -21,6 +22,7 @@ const CommonButton = ({
     <ButtonContainer
       onClick={action}
       style={style}
+      id={id}
       className={"button__effect" || classname}
       type={type || "button"}
     >

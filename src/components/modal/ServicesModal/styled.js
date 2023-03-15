@@ -61,6 +61,9 @@ export const Form = styled.form`
 `;
 
 export const FormSectionContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
   min-width: 100%;
   width: 100%;
   max-width: 962px;

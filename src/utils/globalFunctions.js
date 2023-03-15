@@ -24,6 +24,17 @@ export const handleError = (error) => {
   }
 };
 
+// handle response received from endpoints call
+export const handleResponse = (response, successMessage, successAction, errorAction) => {
+  if (response.data) {
+    toast.success(successMessage);
+    if (successAction) successAction();
+  } else {
+    if (errorAction) errorAction();
+    handleError(response?.error);
+  }
+};
+
 // Check if an email is a staff email
 export const checkStaffEmail = (email) => {
   let emailArr = email?.split("");

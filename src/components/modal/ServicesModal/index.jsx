@@ -28,6 +28,11 @@ const ServicesModal = ({
   const parentRef = useRef();
   const dialogRef = useRef();
 
+  useEffect(() => {
+    let mult = progress === "50" ? 1 : progress === "100" ? 2 : 0;
+    // dialogRef.current.scrollLeft = dialogRef.current?.offsetWidth * mult;
+  }, []);
+
   return (
     <Modal2
       title={customTitle || title}
@@ -37,7 +42,7 @@ const ServicesModal = ({
       setDisable={setDisable}
       handleDelete={() => handleServiceDelete(clickedService)}
       deleteState={deleteState}
-      ProgressBarComponent={<StaffServicesModalProgressBar progress={0.1} />}
+      ProgressBarComponent={<StaffServicesModalProgressBar progress={progress || 0.1} />}
       parentRef={parentRef}
     >
       <ServiceForms progress={progress} ref={dialogRef}>
@@ -50,7 +55,7 @@ const ServicesModal = ({
           setOpen={setOpen}
           mode={mode}
         />
-        <FormSection dialogRef={dialogRef} />
+        <FormSection const parentRef={parentRef} dialogRef={dialogRef} />
         <DocsSection dialogRef={dialogRef} />
       </ServiceForms>
     </Modal2>
