@@ -5,10 +5,11 @@ import ServiceInfo from "./Services/ServiceInfo";
 import QuestionnaireInput from "components/input/QuestionnaireInput";
 import AddDocument from "containers/AddDocument";
 import ServiceTabbedNavigation from "components/tabbedDocument";
+import TemplateCard from "components/cards/TemplateCard";
 const Test = () => {
   return (
     <div >
-      <ServiceTabbedNavigation />
+      <ServiceTabbedNavigation/>
     </div>
   );
 };
