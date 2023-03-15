@@ -14,6 +14,7 @@ import {
   useViewMembersKYCMutation,
 } from "services/launchService";
 import { downLoadImage } from "utils/staffHelper";
+import { useLocation } from "react-router-dom";
 
 const KYCFileUpload = ({
   TopText,
@@ -39,7 +40,15 @@ const KYCFileUpload = ({
   const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
 
-  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const { search } = useLocation();
+
+  const searchParams = new URLSearchParams(search);
+
+  const launchResponse = {
+    launchCode: searchParams.get("launchCode"),
+    registrationCountry: searchParams.get("registrationCountry"),
+    registrationType: searchParams.get("registrationType"),
+  };
 
   const nameLengthValidator = (file) => {
     if (file.name.length <= 0) {
@@ -53,7 +62,7 @@ const KYCFileUpload = ({
   };
 
   const handleView = async () => {
-    const response = await viewMemberKYC(launchInfo);
+    const response = await viewMemberKYC(launchResponse);
     const MemberKYCInfo = [...response.data.businessMembersKYC];
     let fileInfo = MemberKYCInfo.filter(
       (member) => member.memberCode === memberCode
@@ -66,7 +75,7 @@ const KYCFileUpload = ({
   };
 
   const handleBeneficiary = async () => {
-    const response = await viewBeneficialsKYC(launchInfo);
+    const response = await viewBeneficialsKYC(launchResponse);
     const BeneficialKYCInfo = [...response.data.beneficialOwnersKYC];
     let fileInfo = BeneficialKYCInfo.filter(
       (beneficiary) => beneficiary.beneficialOwnerCode === beneficiaryCode
@@ -89,7 +98,7 @@ const KYCFileUpload = ({
   const handleRemove = async () => {
     if (beneficiaryCode) {
       const requiredDeleteData = {
-        launchCode: launchInfo.launchCode,
+        launchCode: launchResponse.launchCode,
         beneficialOwnerCode: beneficiaryCode,
         documentCode: documentInfo.documentCode,
       };
@@ -105,7 +114,7 @@ const KYCFileUpload = ({
       }
     } else {
       const requiredDeleteData = {
-        launchCode: launchInfo.launchCode,
+        launchCode: launchResponse.launchCode,
         memberCode: memberCode,
         documentCode: documentInfo.documentCode,
       };
