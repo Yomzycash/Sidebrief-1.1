@@ -41,12 +41,13 @@ const StaffServicesModalProgressBar = ({
 export default StaffServicesModalProgressBar;
 
 const containerStyle = {
-  maxWidth: "469px",
+  maxWidth: "100%",
 };
 
 const progressLineStyle = {
   left: "2%",
   top: "5px",
+  maxWidth: "93%",
 };
 
 const progressCircleStyle = {

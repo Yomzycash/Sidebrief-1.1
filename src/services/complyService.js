@@ -52,6 +52,7 @@ export const ComplyApi = createApi({
       }),
       invalidatesTags: ["Services"],
     }),
+
     // get available services by country
     getServicesByCountry: builder.query({
       query: (countryCode) => {

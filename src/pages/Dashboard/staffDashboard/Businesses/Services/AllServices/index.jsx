@@ -72,6 +72,7 @@ const AllServices = () => {
         title="Services"
         handleButton={handleAddButton}
         placeholder="Search for a service"
+        totalShown={data?.length}
       />
       {isLoading ? (
         <Loading height="300px">

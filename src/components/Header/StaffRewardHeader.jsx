@@ -13,6 +13,7 @@ const StaffRewardHeader = ({
   open,
   setOpen,
   handleButton,
+  totalShown,
 }) => {
   const searchStyle = {
     borderRadius: "12px",
@@ -20,8 +21,6 @@ const StaffRewardHeader = ({
     width: "100%",
     height: "100%",
   };
-
-  const localTotal = localStorage.getItem("totalStaffRewards");
 
   const iconStyle = { width: "17px", height: "17px" };
 
@@ -37,7 +36,7 @@ const StaffRewardHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <SummaryCard shown={localTotal} total={localTotal} />
+              <SummaryCard shown={totalShown} total={totalShown} />
             </div>
           </TopContent>
           <BottomContent>

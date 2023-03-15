@@ -1,8 +1,13 @@
 import React from "react";
-import { Form } from "./styled";
+import { Form, FormSectionContainer } from "./styled";
+import Questionnaire from "components/input/Questeionnaire";
 
 const FormSection = () => {
-  return <Form>Hello from form section</Form>;
+  return (
+    <FormSectionContainer>
+      <Questionnaire />
+    </FormSectionContainer>
+  );
 };
 
 export default FormSection;

@@ -34,6 +34,38 @@ export const Form = styled.form`
   width: 100%;
   max-width: 962px;
   overflow-y: hidden;
+  padding: clamp(20px, 3vw, 40px);
+
+  .input-container-class {
+    gap: clamp(6px, 0.6vw, 12px);
+  }
+
+  .input-label {
+    font-size: clamp(12px, 1.2vw, 14px);
+  }
+
+  .input-class {
+    height: clamp(40px, 3vw, 48px);
+    margin-top: clamp(0, 0.4vw, 8px);
+    padding: 0 clamp(12px, 1.2vw, 24px);
+
+    input {
+      font-size: clamp(12px, 1.2vw, 14px);
+    }
+  }
+
+  .bottom-text-class {
+    font-size: clamp(10px, 1.2vw, 12px);
+    line-height: clamp(12px, 1.2vw, 21px);
+  }
+`;
+
+export const FormSectionContainer = styled.div`
+  min-width: 100%;
+  width: 100%;
+  max-width: 962px;
+  overflow-y: hidden;
+  padding: clamp(20px, 3vw, 40px);
 
   .input-container-class {
     gap: clamp(6px, 0.6vw, 12px);

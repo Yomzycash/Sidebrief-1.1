@@ -1,5 +1,5 @@
 import Modal2 from "layout/modal2";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import StaffServicesModalProgressBar from "components/Indicators/progressbar/StaffServicesModalPregressBar";
 import { ServiceForms } from "./styled";

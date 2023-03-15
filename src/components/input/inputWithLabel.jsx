@@ -36,6 +36,7 @@ const InputWithLabel = ({
   onChange,
   maxNumber,
   defaultValue,
+  ref,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -66,13 +67,7 @@ const InputWithLabel = ({
       </Top>
 
       <InputWrapper
-        border={
-          errorMessage
-            ? "1px solid red"
-            : active
-            ? "1px solid #00A2D4"
-            : "1px solid #ececec"
-        }
+        border={errorMessage ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
         className={inputClass}
         ref={inputRef}
         onFocus={() => handleBorder(true)}
@@ -95,6 +90,7 @@ const InputWithLabel = ({
           />
         ) : (
           <Input
+            ref={ref}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             edit={edit}
@@ -115,9 +111,7 @@ const InputWithLabel = ({
         ) : null}
       </InputWrapper>
 
-      {bottomText ? (
-        <BottomText className={bottomTextClass}>{bottomText}</BottomText>
-      ) : null}
+      {bottomText ? <BottomText className={bottomTextClass}>{bottomText}</BottomText> : null}
     </Wrapper>
   );
 };
