@@ -1,6 +1,6 @@
 import ManageCard from "components/cards/ManageCard";
 import { CheckoutController } from "containers";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useViewServiceDocumentMutation } from "services/complyService";
 import { Bottom } from "../style";
@@ -14,17 +14,17 @@ const ServiceDocumentsReview = () => {
   const [viewServiceDocument, viewServiceDocumentState] = useViewServiceDocumentMutation();
   const [documentContainer, setDocumentContainer] = useState([]);
 
-  const handleViewDocument = async () => {
+  const handleViewDocument = useCallback(async () => {
     const requiredData = {
       complyCode: complyCode,
     };
     const response = await viewServiceDocument(requiredData);
     setDocumentContainer(response?.data?.complyDocuments);
-  };
+  }, [complyCode, viewServiceDocument]);
 
   useEffect(() => {
     handleViewDocument();
-  }, []);
+  }, [handleViewDocument]);
 
   const handlePrev = () => {
     navigate(-1);
@@ -34,7 +34,7 @@ const ServiceDocumentsReview = () => {
     navigate("/services/success");
     localStorage.removeItem("complyData");
     localStorage.removeItem("servicePaymentDetails");
-    localStorage.removeItem("serviceData");
+    // localStorage.removeItem("serviceData");
   };
 
   return (
