@@ -39,12 +39,12 @@ const ServiceInfo = () => {
   const [selectedResource, setselectedResource] = useState({});
   const [countries, setCountries] = useState([]);
   const [serviceResources, setServiceresources] = useState([]);
-
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
   const [createCompliance, createComplianceState] = useCreateComplianceMutation();
   const { data, isLoading } = useGetAllCountriesQuery();
+
   const navigate = useNavigate();
 
   const handleNext = async () => {
@@ -74,19 +74,23 @@ const ServiceInfo = () => {
       });
       if (responseData) {
         setCountries([...countries]);
-        setSelectedCountry(value);
+        value && setSelectedCountry(value);
       }
     },
     [data]
   );
 
-  const selectCountry = async (value) => {
-    setSelectedCountry(value);
-    // get country ISO
-    const countryISO = data?.find((el) => el.countryName === value)?.countryISO || "";
-    const response = countryISO && (await servicesByCountry(countryISO));
-    setServiceresources(response.data);
-  };
+  const selectCountry = useCallback(
+    async (value) => {
+      setSelectedCountry(value);
+      setServiceresources([]);
+      // get country ISO
+      const countryISO = data?.find((el) => el.countryName === value)?.countryISO || "";
+      const response = countryISO && (await servicesByCountry(countryISO));
+      setServiceresources(response.data);
+    },
+    [data, servicesByCountry]
+  );
 
   // Update the supported countries when data changes
   useEffect(() => {
@@ -111,13 +115,17 @@ const ServiceInfo = () => {
   // populate
 
   useEffect(() => {
-    let getCountry = countriesData?.data?.find(
-      (country) => country?.countryISO === viewService?.data?.serviceCountry
-    );
-    setSelectedCountry(getCountry?.countryName);
+    if (viewService?.data !== {}) {
+      let getCountry = countriesData?.data?.find(
+        (country) => country?.countryISO === viewService?.data?.serviceCountry
+      );
+      setSelectedCountry(getCountry?.countryName);
 
-    setselectedResource(viewService?.data);
+      setselectedResource(viewService?.data);
+    }
   }, [countriesData, viewService]);
+
+  // console.log(selectedResource);
 
   return (
     <>
