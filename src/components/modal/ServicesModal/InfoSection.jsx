@@ -109,8 +109,8 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
 
   const submitForm = (formData) => {
     scrollToNext();
-    // if (mode === "add") handleServiceAdd(formData);
-    // else if (mode === "edit") handleServiceUpdate(formData);
+    if (mode === "add") handleServiceAdd(formData);
+    else if (mode === "edit") handleServiceUpdate(formData);
   };
 
   const handleClose = () => {
