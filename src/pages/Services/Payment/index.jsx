@@ -1,48 +1,32 @@
-import React, { useReducer } from "react";
-import { Body } from "./styles.js";
+import React from "react";
+import { Body, Loading } from "./styles.js";
 import { CheckoutController, CheckoutSection, PaymentForm, PaymentSelector } from "containers";
 import { Bottom, Container, Header } from "pages/Launch/styled";
-import { providerReducer, actions } from "./reducer";
-import { paymentProviders } from "./constants";
+import { usePaymentReducer } from "./reducer";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { useSelector } from "react-redux";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
-import { useAddServicePaymentMutation } from "services/complyService";
+import { useAddServicePaymentMutation, useViewServiceQuery } from "services/complyService";
 import { setLaunchPaid } from "redux/Slices";
+import { Puff } from "react-loading-icons";
 
 const ServicePayment = () => {
-  const serviceData = JSON.parse(localStorage.getItem("serviceData"));
+  // const serviceData = JSON.parse(localStorage.getItem("serviceData"));
   const complyData = JSON.parse(localStorage.getItem("complyData"));
   const [addServicePayment] = useAddServicePaymentMutation();
-
-  const [providers, dispatch] = useReducer(
-    providerReducer,
-    paymentProviders.map((provider, index) => {
-      return {
-        ...provider,
-        id: index + 1,
-        active: index === 0,
-      };
-    })
-  );
-
-  const activateProvider = (id) => {
-    dispatch({ type: actions.ACTIVATE, id: id });
-  };
-
-  // get current active
-  const getActive = () => {
-    return providers.find((el) => el.active === true).name.toLowerCase();
-  };
+  let serviceId = complyData.serviceId;
+  const viewService = useViewServiceQuery(serviceId);
+  const serviceData = viewService.data;
 
   const navigate = useNavigate();
 
   const handleNext = () => {
     navigate("/services/form");
   };
+
+  const { activateProvider, getActive, providers } = usePaymentReducer();
 
   const handlePrev = () => {
     navigate(-1);
@@ -67,7 +51,6 @@ const ServicePayment = () => {
     localStorage.setItem("servicePaymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await addServicePayment(requiredData);
-    // console.log("laptop", payResponse);
     if (payResponse.data) {
       localStorage.removeItem("serviceData");
     }
@@ -96,14 +79,22 @@ const ServicePayment = () => {
             paddingTop: "40px",
           }}
         >
-          <PaymentForm
-            currency={serviceData.serviceCurrency}
-            amount={serviceData.servicePrice}
-            paymentProvider={getActive()}
-            onPaymentComplete={sendServiceRefToBackend}
-            title={"service payment"}
-            description={`Payment for business registration in ${serviceData.serviceCountry}`}
-          />
+          {viewService.isLoading ? (
+            <Loading>
+              <Puff stroke="#00A2D4" />
+            </Loading>
+          ) : (
+            <PaymentForm
+              currency={serviceData?.serviceCurrency || "--"}
+              amount={serviceData?.servicePrice || 0}
+              paymentProvider={getActive()}
+              onPaymentComplete={sendServiceRefToBackend}
+              title={"service payment"}
+              description={`Payment for business registration in ${
+                serviceData?.serviceCountry || "country"
+              }`}
+            />
+          )}
         </div>
         <Bottom>
           <CheckoutController

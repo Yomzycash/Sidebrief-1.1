@@ -60,7 +60,7 @@ const ServiceInfo = () => {
           serviceId: response.data.serviceId,
         })
       );
-      localStorage.setItem("serviceData", JSON.stringify(selectedResource));
+      // localStorage.setItem("serviceData", JSON.stringify(selectedResource));
       navigate("/services/payment");
     }
   };
