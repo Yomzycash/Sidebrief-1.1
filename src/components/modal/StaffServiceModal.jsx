@@ -13,6 +13,9 @@ import { ServicesSchema } from "utils/config";
 import { Switch } from "components/switch";
 import styled from "styled-components";
 import QuestionnaireInput from "components/input/QuestionnaireInput";
+import ServiceTabbedNavigation  from "components/tabbedDocument"
+import AddDocument from "containers/AddDocument";
+import AddTemplate from "../../containers/AddTemplate";
 
 const ServicesModal = ({
   cardAction,
@@ -142,40 +145,9 @@ const ServicesModal = ({
       handleDelete={() => handleServiceDelete(serviceInfo)}
       deleteState={deleteState}
     >
-      {/* Question 1 */}
-      <DetailedSection>
-        <InputWithLabel
-          label="Question 1"
-          labelStyle="input-label"
-          placeholder="Enter your question here"
-          type="text"
-          name="name"
-          inputClass="input-class"
-          containerStyle="input-container-class"
-          register={register}
-          errorMessage={errors.name?.message}
-          disable={disable}
-        />
-        <SwitchContainer>
-          <Switch/>
-          <span style={{color: '#959697'}}>Compulsory</span>
-        </SwitchContainer> 
-      </DetailedSection>
-      
-    
-      <QuestionnaireInput />
-
-
+      <ServiceTabbedNavigation />
     </Modal1>
   );
 };
 
 export default ServicesModal;
-
-const SwitchContainer = styled.div`
-  display:flex;
-  flex-direction:row;
-  justify-content: center;
-  align-items: center;
-
-`

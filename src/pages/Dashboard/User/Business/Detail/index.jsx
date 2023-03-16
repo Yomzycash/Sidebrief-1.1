@@ -22,7 +22,7 @@ const BusinessDetail = () => {
   const searchParams = new URLSearchParams(search);
   const countries = useGetAllCountriesQuery();
 
-  let getC = countries?.data.find(
+  let getC = countries?.data?.find(
     (country) => country.countryISO === searchParams.get("registrationCountry")
   );
 

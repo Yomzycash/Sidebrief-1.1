@@ -1,5 +1,4 @@
 import React from 'react'
-import pdf from '../../../asset/images/pdf.png'
 
 import {
   Container,
@@ -11,7 +10,7 @@ import {
 import { ThreeDotMenu } from 'components/Menu'
 
 import { imageTypeImage } from './constant'
-import { ViewSvg, DownloadSvg } from '../../../asset/svg'
+import { DownloadSvg } from '../../../asset/svg'
 import { useActions } from './actions'
 
 const ChatFileCard = ({
@@ -20,7 +19,7 @@ const ChatFileCard = ({
   fileUrl,
 }) => {
   const link = fileUrl
-  const documentType = fileType
+  const documentType = fileName
 
   const { downloadFileAction } = useActions({
     link,
