@@ -15,7 +15,7 @@ export const ComplyApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["CountryService"],
+  tagTypes: ["CountryService", "Services"],
 
   endpoints: (builder) => ({
     // get available services by country
@@ -33,13 +33,13 @@ export const ComplyApi = createApi({
         };
       },
       providesTags: ["CountryService"],
-      invalidatesTags: "CountryService",
+      invalidatesTags: ["CountryService"],
     }),
 
-        // get all countries
-        getAllCountries: builder.query({
-          query: () => "/countries",
-        }),
+    // get all countries
+    getAllCountries: builder.query({
+      query: () => "/countries",
+    }),
 
     // create new compliance / service
     createCompliance: builder.mutation({
@@ -101,7 +101,6 @@ export const ComplyApi = createApi({
     }),
   }),
 });
-
 
 export const {
   useLazyGetServicesByCountryQuery,

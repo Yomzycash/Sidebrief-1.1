@@ -8,43 +8,9 @@ import { setServiceCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
 import { Body, Container } from "../styled";
 import { Bottom, FormContainer, formInputsStyle, formStyle } from "./style";
+import { formInfo } from "./constants.js";
 
 const ServiceForm = () => {
-  // name uniqueness has to be validated
-  const formInfo = [
-    {
-      question: "When did you register your company",
-      type: "number",
-      name: "registration",
-      required: true,
-    },
-    {
-      question: "Who is your favourite artist",
-      type: "text",
-      options: ["davido", "wizkid", "burna"],
-      name: "artist",
-      required: true,
-    },
-    {
-      question: "How many shareholders do you have",
-      type: "number",
-      name: "shareholders",
-      required: true,
-    },
-    {
-      question: "How many directors do you have",
-      type: "number",
-      name: "directors",
-      required: true,
-    },
-    {
-      question: "How many beneficiaries do you have",
-      type: "number",
-      name: "beneficiaries",
-      required: true,
-    },
-  ];
-
   const navigate = useNavigate();
 
   const handleSubmit = async (formData) => {

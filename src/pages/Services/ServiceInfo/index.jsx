@@ -26,12 +26,12 @@ const ServiceInfo = () => {
   const [selectedResource, setselectedResource] = useState({});
   const [countries, setCountries] = useState([]);
   const [serviceResources, setServiceresources] = useState([]);
-
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
   const [createCompliance, createComplianceState] = useCreateComplianceMutation();
   const { data, isLoading } = useGetAllCountriesQuery();
+
   const navigate = useNavigate();
 
   const handleNext = async () => {
@@ -47,6 +47,7 @@ const ServiceInfo = () => {
           serviceId: response.data.serviceId,
         })
       );
+      // localStorage.setItem("serviceData", JSON.stringify(selectedResource));
       navigate("/services/payment");
     }
   };
@@ -60,19 +61,23 @@ const ServiceInfo = () => {
       });
       if (responseData) {
         setCountries([...countries]);
-        setSelectedCountry(value);
+        value && setSelectedCountry(value);
       }
     },
     [data]
   );
 
-  const selectCountry = async (value) => {
-    setSelectedCountry(value);
-    // get country ISO
-    const countryISO = data?.find((el) => el.countryName === value)?.countryISO || "";
-    const response = countryISO && (await servicesByCountry(countryISO));
-    setServiceresources(response.data);
-  };
+  const selectCountry = useCallback(
+    async (value) => {
+      setSelectedCountry(value);
+      setServiceresources([]);
+      // get country ISO
+      const countryISO = data?.find((el) => el.countryName === value)?.countryISO || "";
+      const response = countryISO && (await servicesByCountry(countryISO));
+      setServiceresources(response.data);
+    },
+    [data, servicesByCountry]
+  );
 
   // Update the supported countries when data changes
   useEffect(() => {
@@ -87,8 +92,6 @@ const ServiceInfo = () => {
     let serviceData =
       getServicesState?.data?.find((el) => el?.serviceName === valuesSelected) || {};
     setselectedResource(serviceData);
-
-    localStorage.setItem("serviceData", JSON.stringify(serviceData));
   };
 
   // Set the progress of the application
@@ -99,17 +102,17 @@ const ServiceInfo = () => {
   // populate
 
   useEffect(() => {
-    setselectedResource(viewService?.data);
-  }, [viewService]);
+    if (viewService?.data !== {}) {
+      let getCountry = countriesData?.data?.find(
+        (country) => country?.countryISO === viewService?.data?.serviceCountry
+      );
+      setSelectedCountry(getCountry?.countryName);
 
-  useEffect(() => {
-    let getCountry = countriesData?.data?.find(
-      (country) => country?.countryISO === viewService?.data?.serviceCountry
-    );
-    setSelectedCountry(getCountry?.countryName);
+      setselectedResource(viewService?.data);
+    }
   }, [countriesData, viewService]);
 
-  // console.log("vv", viewService?.data);
+  // console.log(selectedResource);
 
   return (
     <>
@@ -133,20 +136,22 @@ const ServiceInfo = () => {
                   fetchingText={"Fetching countries..."}
                 />
               </div>
-              <TagInputWithSearch
-                label="Resource"
-                list={serviceResources?.map((el) => el?.serviceName) || []}
-                getValue={handleResourceSelect}
-                initialValue={
-                  viewService?.data
-                    ? viewService?.data?.serviceName
-                    : selectedResource?.serviceName || "--"
-                }
-                MatchError="Please select resource from the list"
-                EmptyError="Please select at least one resources"
-                suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
-                fetchingText={"Fetching resources..."}
-              />
+              <div style={{ maxWidth: "450px" }}>
+                <TagInputWithSearch
+                  label="Resource"
+                  list={serviceResources?.map((el) => el?.serviceName) || []}
+                  getValue={handleResourceSelect}
+                  initialValue={
+                    viewService?.data
+                      ? viewService?.data?.serviceName
+                      : selectedResource?.serviceName || "--"
+                  }
+                  MatchError="Please select resource from the list"
+                  EmptyError="Please select at least one resources"
+                  suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
+                  fetchingText={"Fetching resources..."}
+                />
+              </div>
             </LaunchFormContainer>
             {selectedResource?.serviceName && (
               <InfoContainer
