@@ -17,6 +17,8 @@ export const handleError = (error) => {
     toast.error("Please check credentiaal");
   } else if (error?.data?.message) {
     toast.error(error?.data.message);
+  } else if (error?.data?.error) {
+    toast.error(error?.data.error);
   } else if (typeof error?.data === "string") {
     toast.error(error.data);
   } else if (typeof error === "string") {

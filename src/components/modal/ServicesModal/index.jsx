@@ -6,6 +6,7 @@ import { ServiceForms } from "./styled";
 import InfoSection from "./InfoSection";
 import FormSection from "./FormSection";
 import DocsSection from "./DocsSection";
+import { useGetSingleServiceQuery } from "services/staffService";
 
 const ServicesModal = ({
   disableAll,
@@ -22,16 +23,11 @@ const ServicesModal = ({
   let progress = searchParams.get("progress");
   let open = searchParams.get("mode") ? true : false;
   let mode = searchParams.get("mode");
+  let serviceId = searchParams.get("serviceId");
+
+  const service = useGetSingleServiceQuery(serviceId);
 
   let title = mode === "edit" ? "Update Service" : "Add New Service";
-
-  const parentRef = useRef();
-  const dialogRef = useRef();
-
-  useEffect(() => {
-    let mult = progress === "50" ? 1 : progress === "100" ? 2 : 0;
-    // dialogRef.current.scrollLeft = dialogRef.current?.offsetWidth * mult;
-  }, []);
 
   return (
     <Modal2
@@ -42,21 +38,20 @@ const ServicesModal = ({
       setDisable={setDisable}
       handleDelete={() => handleServiceDelete(clickedService)}
       deleteState={deleteState}
-      ProgressBarComponent={<StaffServicesModalProgressBar progress={progress || 0.1} />}
-      parentRef={parentRef}
+      ProgressBarComponent={<StaffServicesModalProgressBar progress={parseInt(progress) + 0.1} />}
     >
-      <ServiceForms progress={progress} ref={dialogRef}>
+      <ServiceForms progress={progress}>
         <InfoSection
           clickedService={clickedService}
-          dialogRef={dialogRef}
-          parentRef={parentRef}
           refetch={refetch}
           disable={disable}
           setOpen={setOpen}
           mode={mode}
+          serviceId={serviceId}
+          service={service}
         />
-        <FormSection const parentRef={parentRef} dialogRef={dialogRef} />
-        <DocsSection dialogRef={dialogRef} />
+        <FormSection setOpen={setOpen} service={service} />
+        <DocsSection />
       </ServiceForms>
     </Modal2>
   );

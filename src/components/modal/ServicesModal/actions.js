@@ -4,12 +4,13 @@ import { handleError, handleResponse } from "utils/globalFunctions";
 export const useActions = ({
   addService,
   updateService,
-  clickedService,
+  addFormField,
+  updateFormField,
+  service,
   refetch,
   setOpen,
   setValue,
-  dialogRef,
-  parentRef,
+  mode,
 }) => {
   const getRequired = (formData) => {
     return {
@@ -23,14 +24,41 @@ export const useActions = ({
     };
   };
 
+  const getFormPayload = (formData) => {
+    let hasOptions = formData.selectedType === "checkbox" || formData.selectedType === "radio";
+    if (hasOptions) {
+      return {
+        serviceId: service.data?.serviceId,
+        serviceFormField: {
+          fieldQuestion: formData.question,
+          fieldType: formData.selectedType,
+          fieldRequired: formData.required.toString(),
+          fieldOptions: formData.optionsArray,
+        },
+      };
+    } else {
+      return {
+        serviceId: service.data?.serviceId,
+        serviceFormField: {
+          fieldQuestion: formData.question,
+          fieldType: formData.selectedType,
+          fieldRequired: formData.required.toString(),
+        },
+      };
+    }
+  };
+
+  let formRef = document.getElementById("staff-service-form");
+
   // Add service
   const handleServiceAdd = async (formData) => {
-    let requiredService = getRequired(formData);
-    let response = await addService(requiredService);
+    let payload = getRequired(formData);
+    let response = await addService(payload);
+    let data = response?.data;
     let error = response?.error;
-    if (response?.data) {
-      scrollToNext();
+    if (data) {
       setOpen("add", response.data?.serviceId, 50);
+      scrollTo(formRef);
     } else {
       handleError(error);
     }
@@ -39,19 +67,38 @@ export const useActions = ({
 
   // Update service
   const handleServiceUpdate = async (formData) => {
-    let requiredService = getRequired(formData);
-    let response = await updateService({ ...requiredService, serviceId: clickedService.serviceId });
+    let payload = getRequired(formData);
+    let response = await updateService({ ...payload, serviceId: service.data?.serviceId });
     let data = response?.data;
     let error = response?.error;
-
     if (data) {
-      toast.success("Service updated successfully");
-      setOpen(false);
+      setOpen(mode, response.data?.serviceId, 50);
+      scrollTo(formRef);
     } else {
       handleError(error);
     }
     refetch();
-    console.log(response);
+  };
+
+  // Add form question
+  const handleServiceFormFieldAdd = async (formData) => {
+    let payload = getFormPayload(formData);
+    let response = await addFormField({ ...payload });
+    let error = response?.error;
+    if (error) handleError(error);
+  };
+
+  // Update form question
+  const handleServiceFormFieldUpdate = async (formData) => {
+    let payload = getFormPayload(formData);
+    let response = await updateFormField(payload);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      console.log(data);
+    } else {
+      handleError(error);
+    }
   };
 
   // This is attached to category dropdown onChange
@@ -72,18 +119,8 @@ export const useActions = ({
     setValue("currency", string, { shouldValidate: true });
   };
 
-  const scrollToNext = () => {
-    dialogRef.current.scrollLeft += dialogRef.current.offsetWidth;
-    parentRef.current.scrollTo({
-      top: 0,
-      behaviour: "smooth",
-    });
-  };
-
-  const scrollToPrev = () => {
-    dialogRef.current.scrollLeft -= dialogRef.current.offsetWidth;
-    parentRef.current.scrollTo({
-      top: 0,
+  const scrollTo = (element) => {
+    element.scrollIntoView({
       behaviour: "smooth",
     });
   };
@@ -91,10 +128,10 @@ export const useActions = ({
   return {
     handleServiceAdd,
     handleServiceUpdate,
+    handleServiceFormFieldAdd,
     handleCategoryChange,
     handleCountryChange,
     handleCurrencyChange,
-    scrollToNext,
-    scrollToPrev,
+    scrollTo,
   };
 };

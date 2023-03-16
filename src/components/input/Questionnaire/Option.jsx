@@ -10,7 +10,16 @@ import {
 import { MdClear } from "react-icons/md";
 import { InvisibleBackDrop } from "../styled";
 
-const Option = ({ text, type, removeAction, placeholder, index, updateOptionValue, disable }) => {
+const Option = ({
+  text,
+  type,
+  removeAction,
+  placeholder,
+  index,
+  updateOptionValue,
+  disable,
+  focusLastOption,
+}) => {
   let other = text === "Other" || text === "Other (allowed to type)";
 
   const [openOther, setOpenOther] = useState(other ? true : false);
@@ -30,6 +39,10 @@ const Option = ({ text, type, removeAction, placeholder, index, updateOptionValu
     setOpenOther(true);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") focusLastOption();
+  };
+
   return (
     <OptionContainer>
       {type === "checkbox" && <CheckBullet />}
@@ -41,6 +54,7 @@ const Option = ({ text, type, removeAction, placeholder, index, updateOptionValu
         placeholder={placeholder}
         onClick={handleInputClick}
         disabled={(other && openOther) || disable}
+        onKeyDown={handleKeyDown}
       />
 
       {other && openOther && (

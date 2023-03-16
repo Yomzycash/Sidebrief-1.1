@@ -27,7 +27,6 @@ const Modal2 = ({
   deleteState,
   $hideIcons,
   ProgressBarComponent,
-  parentRef,
 }) => {
   const [confirm, setConfirm] = useState(false);
   const [value, setValue] = useState("");
@@ -53,7 +52,7 @@ const Modal2 = ({
 
   return (
     <Dialog open={open}>
-      <DialogContent style={modalStyle} ref={parentRef}>
+      <DialogContent style={modalStyle} id="staff-service-dialog">
         <Top>
           <Title>
             <p>{title}</p>

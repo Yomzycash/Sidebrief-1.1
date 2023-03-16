@@ -13,8 +13,9 @@ import {
 import { CheckoutController } from "containers";
 import { buttonContainerStyles, buttonStyles, InputsWrapper, Form } from "./styled";
 import { useActions } from "./actions";
+import { useGetSingleServiceQuery } from "services/staffService";
 
-const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, setOpen, mode }) => {
+const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
   const [servicesCountries, setServicesCountries] = useState([{ value: "", label: "" }]);
   const [servicesCategories, setServicesCategories] = useState([{ value: "", label: "" }]);
   const [serviceCurrencies, setServiceCurrencies] = useState([{ value: "", label: "" }]);
@@ -40,16 +41,14 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
     handleCategoryChange,
     handleCountryChange,
     handleCurrencyChange,
-    scrollToNext,
   } = useActions({
     addService,
     updateService,
-    clickedService,
+    service,
     refetch,
     setOpen,
     setValue,
-    dialogRef,
-    parentRef,
+    mode,
   });
 
   // Update entity countries and currencies
@@ -88,14 +87,14 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
 
   //
   useEffect(() => {
-    if (clickedService && mode === "edit") {
-      setValue("name", clickedService.serviceName, { shouldValidate: true });
-      setValue("description", clickedService.serviceDescription, { shouldValidate: true });
-      setValue("category", clickedService.serviceCategory, { shouldValidate: true });
-      setValue("country", clickedService.serviceCountry, { shouldValidate: true });
-      setValue("currency", clickedService.serviceCurrency, { shouldValidate: true });
-      setValue("price", clickedService.servicePrice, { shouldValidate: true });
-      setValue("timeline", clickedService.serviceTimeline, { shouldValidate: true });
+    if (service.data) {
+      setValue("name", service.data.serviceName, { shouldValidate: true });
+      setValue("description", service.data.serviceDescription, { shouldValidate: true });
+      setValue("category", service.data.serviceCategory, { shouldValidate: true });
+      setValue("country", service.data.serviceCountry, { shouldValidate: true });
+      setValue("currency", service.data.serviceCurrency, { shouldValidate: true });
+      setValue("price", service.data.servicePrice, { shouldValidate: true });
+      setValue("timeline", service.data.serviceTimeline, { shouldValidate: true });
     } else {
       setValue("name", "");
       setValue("description", "");
@@ -105,11 +104,11 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
       setValue("price", "");
       setValue("timeline", "");
     }
-  }, [clickedService, mode]);
+  }, [service.data, mode]);
 
   const submitForm = (formData) => {
-    if (mode === "add") handleServiceAdd(formData);
-    else if (mode === "edit") handleServiceUpdate(formData);
+    if (service.data?.serviceId) handleServiceUpdate(formData);
+    else handleServiceAdd(formData);
   };
 
   const handleClose = () => {
@@ -117,7 +116,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
   };
 
   return (
-    <Form onSubmit={handleSubmit(submitForm)}>
+    <Form onSubmit={handleSubmit(submitForm)} id="staff-service-info">
       <InputsWrapper>
         <InputWithLabel
           label="Service Name"
@@ -152,7 +151,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             onChange={handleCategoryChange}
             errorMessage={errors.category?.message}
             placeholder="Select Service Category"
-            defaultValue={mode === "edit" ? clickedService?.serviceCategory : "--"}
+            defaultValue={service.data ? service.data?.serviceCategory : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -167,7 +166,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             onChange={handleCountryChange}
             placeholder="Select Service Country"
             errorMessage={errors.country?.message}
-            defaultValue={mode === "edit" ? clickedService?.serviceCountry : "--"}
+            defaultValue={service.data ? service.data?.serviceCountry : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -179,7 +178,7 @@ const InfoSection = ({ clickedService, dialogRef, parentRef, disable, refetch, s
             options={serviceCurrencies}
             onChange={handleCurrencyChange}
             errorMessage={errors.currency?.message}
-            defaultValue={mode === "edit" ? clickedService?.serviceCurrency : "--"}
+            defaultValue={service.data ? service.data?.serviceCurrency : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}

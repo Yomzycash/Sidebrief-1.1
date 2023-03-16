@@ -11,7 +11,7 @@ import {
 import CommonButton from "components/button/commonButton";
 import Option from "./Option";
 import DeleteIcon from "asset/Icons/DeleteIcon";
-import { ReactComponent as EditIcon } from "asset/svg/Edit.svg";
+import EditIcon from "asset/Icons/EditIcon";
 import { SpinningCircles } from "react-loading-icons";
 import { useDeleteServiceFormFieldMutation } from "services/staffService";
 
@@ -36,7 +36,12 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction }) => 
         </ReviewTopLeft>
         <ReviewTopRight>
           {confirm === false && (
-            <CommonButton text="Edit" LeftIcon={EditIcon} action={() => setDisabled(false)} />
+            <CommonButton
+              text="Edit"
+              LeftIcon={EditIcon}
+              leftIconColor="#0082AA"
+              action={() => setDisabled(false)}
+            />
           )}
           {confirm === false && (
             <CommonButton

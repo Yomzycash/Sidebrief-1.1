@@ -20,7 +20,7 @@ export const ComplyApi = createApi({
   endpoints: (builder) => ({
     //get user reward
     viewService: builder.query({
-      query: () => "services/view/9031415997",
+      query: (serviceId) => `services/view/${serviceId}`,
     }),
 
     //view reward

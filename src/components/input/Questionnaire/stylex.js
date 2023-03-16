@@ -233,17 +233,18 @@ export const ReviewTop = styled.div`
 
 export const ReviewTopLeft = styled.div`
   display: flex;
+  align-items: center;
   gap: 8px;
 
   span {
     :nth-of-type(2) {
       font-size: 8px;
-      color: black;
+      color: #242627;
       background: #2acdff;
-      opacity: 0.3;
+      opacity: 0.5;
       border-radius: 10px;
       padding-inline: 5px;
-      height: max-content;
+      line-height: 12px;
     }
   }
 `;
@@ -301,4 +302,8 @@ export const ReviewQuestion = styled.div`
   color: #242627;
   font-size: 14px;
   line-height: 27px;
+
+  ::first-letter {
+    text-transform: capitalize;
+  }
 `;

@@ -10,6 +10,7 @@ const Questionnaire = ({
   review,
   handleQuestionSubmit,
   handleDeleteQuestion,
+  handleUpdateQuestion,
 }) => {
   const [disabled, setDisabled] = useState(review);
 
@@ -25,6 +26,7 @@ const Questionnaire = ({
       ) : (
         <QuestionEdit
           handleQuestionSubmit={handleQuestionSubmit}
+          handleUpdateQuestion={handleUpdateQuestion}
           info={info}
           review={review}
           setDisabled={setDisabled}

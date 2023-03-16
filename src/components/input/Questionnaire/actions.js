@@ -1,4 +1,13 @@
-export const useActions = ({ state, dispatch, handleQuestionSubmit, review }) => {
+import { handleError } from "utils/globalFunctions";
+
+export const useActions = ({
+  state,
+  dispatch,
+  handleQuestionSubmit,
+  handleUpdateQuestion,
+  review,
+  optionsRef,
+}) => {
   const { question, selectedType, optionsArray } = state;
 
   const applyActive = (type) => {
@@ -75,6 +84,13 @@ export const useActions = ({ state, dispatch, handleQuestionSubmit, review }) =>
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
   };
 
+  const focusLastOption = () => {
+    let lastIndex = optionsArray.length - 1;
+    if (lastIndex < 0) return;
+    if (selectedType === "checkbox" || selectedType === "radio")
+      optionsRef.current?.childNodes[lastIndex + 1]?.childNodes[1].focus();
+  };
+
   // Removes an existing option
   const handleOptionRemove = (index) => {
     let optionsArrayCopy = optionsArray.filter((el, elIndex) => elIndex !== index);
@@ -99,9 +115,10 @@ export const useActions = ({ state, dispatch, handleQuestionSubmit, review }) =>
     let questionValid = validateQuestion(question);
     let optionsValid = validateOptions() && validateEmptyOptions();
     if (!questionValid || !optionsValid) return;
-    let response = review ? "Update" : "Add";
-    console.log(response);
-    handleQuestionSubmit(state);
+    let response = review ? handleUpdateQuestion(state) : handleQuestionSubmit(state);
+    if (response?.error) {
+      handleError(response.error);
+    }
   };
 
   // Hides form
@@ -115,6 +132,7 @@ export const useActions = ({ state, dispatch, handleQuestionSubmit, review }) =>
     handleQuestion,
     handleOptionAdd,
     handleOtherAdd,
+    focusLastOption,
     handleOptionRemove,
     updateOptionValue,
     handleToggle,

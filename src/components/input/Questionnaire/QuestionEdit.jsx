@@ -19,14 +19,19 @@ import { useActions } from "./actions";
 import { initialState, reducer } from "./reducer";
 import { ErrMsg } from "../styled";
 
-const QuestionEdit = ({ questionNumber, review, info, setDisabled, handleQuestionSubmit }) => {
+const QuestionEdit = ({
+  questionNumber,
+  review,
+  info,
+  setDisabled,
+  handleQuestionSubmit,
+  handleUpdateQuestion,
+}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const optionsRef = useRef(null);
 
   const { selectedType, optionsArray, questionError, optionsError, done } = state;
-
-  // const { fieldCode, fieldName, fieldOptions, fieldQuestion, fieldRequired, fieldType } = info;
 
   const {
     otherClicked,
@@ -34,20 +39,27 @@ const QuestionEdit = ({ questionNumber, review, info, setDisabled, handleQuestio
     handleQuestion,
     handleOptionAdd,
     handleOtherAdd,
+    focusLastOption,
     handleOptionRemove,
     updateOptionValue,
     handleToggle,
     handleSubmit,
     handleDone,
-  } = useActions({ state, dispatch, handleQuestionSubmit, review });
+  } = useActions({
+    state,
+    dispatch,
+    handleQuestionSubmit,
+    handleUpdateQuestion,
+    review,
+    optionsRef,
+  });
 
   // Focuses the last option
   useEffect(() => {
-    let lastIndex = optionsArray.length - 1;
-    if (lastIndex < 0) return;
-    if (selectedType === "checkbox" || selectedType === "radio")
-      optionsRef.current?.childNodes[lastIndex + 1]?.childNodes[1].focus();
-  }, [optionsArray, selectedType]);
+    focusLastOption();
+  }, [selectedType]);
+
+  useEffect(() => {}, []);
 
   let hideFormView = !done || questionError || optionsError;
 
@@ -130,6 +142,7 @@ const QuestionEdit = ({ questionNumber, review, info, setDisabled, handleQuestio
                   removeAction={() => handleOptionRemove(index)}
                   placeholder={`Enter option ${index + 1}`}
                   updateOptionValue={updateOptionValue}
+                  focusLastOption={focusLastOption}
                 />
               ))}
             </QuestionOptions>
@@ -154,7 +167,12 @@ const QuestionEdit = ({ questionNumber, review, info, setDisabled, handleQuestio
 
       <SubmitButtons>
         {review ? (
-          <CommonButton text="Update" type="submit" id="review-submit" />
+          <CommonButton
+            text="Update"
+            type="submit"
+            id="review-submit"
+            action={() => setDisabled(true)}
+          />
         ) : (
           <>
             <CommonButton
