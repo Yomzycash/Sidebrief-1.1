@@ -1,16 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 // import HeaderCheckout from "components/Header/HeaderCheckout";
-import {
-  Container,
-  Body,
-  Bottom,
-  InfoContainer,
-  Bullet,
-  Content,
-  InfoFrame,
-  InfoFrameHead,
-  BigContent,
-} from "./style";
+import { Container, Body, Bottom } from "./style";
 import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
@@ -18,9 +8,6 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import { useGetAllCountriesQuery } from "services/complyService";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { ReactComponent as Mark } from "asset/svg/mark.svg";
-import { FiClock } from "react-icons/fi";
-import { FaMoneyCheckAlt } from "react-icons/fa";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import {
@@ -28,7 +15,7 @@ import {
   useCreateComplianceMutation,
   useViewServiceQuery,
 } from "services/complyService";
-import numeral from "numeral";
+import { InfoContainer } from "containers/Services";
 
 const ServiceInfo = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
@@ -122,7 +109,7 @@ const ServiceInfo = () => {
     setSelectedCountry(getCountry?.countryName);
   }, [countriesData, viewService]);
 
-  console.log("vv", viewService?.data);
+  // console.log("vv", viewService?.data);
 
   return (
     <>
@@ -162,38 +149,13 @@ const ServiceInfo = () => {
               />
             </LaunchFormContainer>
             {selectedResource?.serviceName && (
-              <InfoContainer>
-                <InfoFrame space>
-                  <InfoFrameHead>Requirements</InfoFrameHead>
-                  {selectedResource.serviceRequirements.length < 1 ? (
-                    <Content>{`--`}</Content>
-                  ) : (
-                    selectedResource.serviceRequirements.map((el, index) => (
-                      <Bullet key={index}>
-                        <Mark />
-                        <Content>{el.requirementName}</Content>
-                      </Bullet>
-                    ))
-                  )}
-                </InfoFrame>
-                <InfoFrame>
-                  <InfoFrameHead>Timeline</InfoFrameHead>
-                  <Bullet>
-                    <FiClock />
-                    <BigContent>{selectedResource?.serviceTimeline} days</BigContent>
-                  </Bullet>
-                </InfoFrame>
-                <InfoFrame>
-                  <InfoFrameHead>Pricing</InfoFrameHead>
-                  <Bullet>
-                    <FaMoneyCheckAlt />
-                    <BigContent>
-                      {selectedResource?.serviceCurrency || "--"}{" "}
-                      {numeral(selectedResource?.servicePrice).format("0,0")}
-                    </BigContent>
-                  </Bullet>
-                </InfoFrame>
-              </InfoContainer>
+              <InfoContainer
+                country={data?.find((el) => el.countryName === selectedCountry) || {}}
+                requiredDocuments={selectedResource.serviceRequirements}
+                amount={selectedResource.servicePrice}
+                currency={selectedResource.serviceCurrency}
+                timeline={selectedResource.serviceTimeline}
+              />
             )}
             <Bottom>
               <CheckoutController
