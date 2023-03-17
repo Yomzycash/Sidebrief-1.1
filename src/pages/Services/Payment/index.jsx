@@ -99,7 +99,7 @@ const ServicePayment = () => {
         <Bottom>
           <CheckoutController
             backText={"Previous"}
-            // hideForward
+            hideForward
             backAction={handlePrev}
             forwardAction={handleNext}
             forwardText="Next"

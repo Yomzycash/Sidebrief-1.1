@@ -36,11 +36,10 @@ const ServiceInfo = () => {
 
   const handleNext = async () => {
     const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
-    const complyCode = JSON.parse(localStorage.getItem("complyData")).complyCode;
     if (servicePaymentDetails) {
       navigate("/services/form");
     } else {
-      if (!complyCode) {
+      if (serviceId !== selectedResource.serviceId) {
         const response = await createCompliance(selectedResource.serviceId);
         localStorage.setItem(
           "complyData",
