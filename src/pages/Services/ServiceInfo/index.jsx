@@ -36,17 +36,20 @@ const ServiceInfo = () => {
 
   const handleNext = async () => {
     const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
+    const complyCode = JSON.parse(localStorage.getItem("complyData")).complyCode;
     if (servicePaymentDetails) {
       navigate("/services/form");
     } else {
-      const response = await createCompliance(selectedResource.serviceId);
-      localStorage.setItem(
-        "complyData",
-        JSON.stringify({
-          complyCode: response.data.complyCode,
-          serviceId: response.data.serviceId,
-        })
-      );
+      if (!complyCode) {
+        const response = await createCompliance(selectedResource.serviceId);
+        localStorage.setItem(
+          "complyData",
+          JSON.stringify({
+            complyCode: response.data.complyCode,
+            serviceId: response.data.serviceId,
+          })
+        );
+      }
       // localStorage.setItem("serviceData", JSON.stringify(selectedResource));
       navigate("/services/payment");
     }
@@ -109,6 +112,8 @@ const ServiceInfo = () => {
       setSelectedCountry(getCountry?.countryName);
 
       setselectedResource(viewService?.data);
+    } else {
+      console.log("empty");
     }
   }, [countriesData, viewService]);
 
@@ -136,22 +141,20 @@ const ServiceInfo = () => {
                   fetchingText={"Fetching countries..."}
                 />
               </div>
-              <div style={{ maxWidth: "450px" }}>
-                <TagInputWithSearch
-                  label="Resource"
-                  list={serviceResources?.map((el) => el?.serviceName) || []}
-                  getValue={handleResourceSelect}
-                  initialValue={
-                    viewService?.data
-                      ? viewService?.data?.serviceName
-                      : selectedResource?.serviceName || "--"
-                  }
-                  MatchError="Please select resource from the list"
-                  EmptyError="Please select at least one resources"
-                  suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
-                  fetchingText={"Fetching resources..."}
-                />
-              </div>
+              <TagInputWithSearch
+                label="Resource"
+                list={serviceResources?.map((el) => el?.serviceName) || []}
+                getValue={handleResourceSelect}
+                initialValue={
+                  viewService?.data
+                    ? viewService?.data?.serviceName
+                    : selectedResource?.serviceName || "--"
+                }
+                MatchError="Please select resource from the list"
+                EmptyError="Please select at least one resources"
+                suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
+                fetchingText={"Fetching resources..."}
+              />
             </LaunchFormContainer>
             {selectedResource?.serviceName && (
               <InfoContainer
