@@ -31,7 +31,8 @@ import {
   Status,
   TopContent,
 } from "./styled";
-import ServicesModal from "components/modal/ServicesModal";
+// import ServicesModal from "components/modal/ServicesModal";
+import ServicesModal from "components/modal/StaffServiceModal";
 import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
 import { handleError } from "utils/globalFunctions";
 import { parseJSON, compareAsc } from "date-fns";
@@ -70,7 +71,6 @@ const ServicePage = () => {
 
   // All users messages
   const usersMessages = getUsersMessages(notifications.data);
-  console.log(usersMessages);
 
   let lastNotification = servicesNotifications?.map(
     (nots) => nots[nots?.length - 1]
@@ -161,11 +161,11 @@ const ServicePage = () => {
     return {
       serviceName: formData.name,
       serviceDescription: formData.description,
-     // serviceId: formData.id,
       serviceCategory: formData.category,
       serviceCountry: formData.country,
       servicePrice: formData.price, 
       serviceTimeline: formData.timeline, 
+      serviceCurrency: formData.currency
     }
   }
 

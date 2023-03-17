@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import HeaderCheckout from "components/Header/HeaderCheckout";
+// import HeaderCheckout from "components/Header/HeaderCheckout";
 import {
   Container,
   Body,
@@ -15,29 +15,55 @@ import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { useGetAllCountriesQuery } from "services/launchService";
+import { useGetAllCountriesQuery } from "services/complyService";
 import { useNavigate } from "react-router-dom";
-import { resources } from "utils/config";
 import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
 import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { setServiceCheckoutProgress } from "redux/Slices";
+import {
+  useLazyGetServicesByCountryQuery,
+  useCreateComplianceMutation,
+  useViewServiceQuery,
+} from "services/complyService";
+import numeral from "numeral";
 
 const ServiceInfo = () => {
-  const [selectedResource, setselectedResource] = useState("");
+  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+  let serviceId = complyCodeData?.serviceId;
+  const viewService = useViewServiceQuery(serviceId);
+  const countriesData = useGetAllCountriesQuery();
+
+  const [selectedResource, setselectedResource] = useState({});
   const [countries, setCountries] = useState([]);
+  const [serviceResources, setServiceresources] = useState([]);
 
   const [selectedCountry, setSelectedCountry] = useState("");
 
+  const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
+  const [createCompliance, createComplianceState] = useCreateComplianceMutation();
   const { data, isLoading } = useGetAllCountriesQuery();
   const navigate = useNavigate();
 
   const handleNext = async () => {
-    // store.dispatch();
-    navigate("/services/payment");
+    const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
+    if (servicePaymentDetails) {
+      navigate("/services/form");
+    } else {
+      const response = await createCompliance(selectedResource.serviceId);
+      localStorage.setItem(
+        "complyData",
+        JSON.stringify({
+          complyCode: response.data.complyCode,
+          serviceId: response.data.serviceId,
+        })
+      );
+      navigate("/services/payment");
+    }
   };
+  console.log(getServicesState);
   // Handle supported countries fetch
   const handleCountry = useCallback(
     async (value) => {
@@ -54,8 +80,12 @@ const ServiceInfo = () => {
     [data]
   );
 
-  const selectCountry = (value) => {
+  const selectCountry = async (value) => {
     setSelectedCountry(value);
+    // get country ISO
+    const countryISO = data?.find((el) => el.countryName === value)?.countryISO || "";
+    const response = countryISO && (await servicesByCountry(countryISO));
+    setServiceresources(response.data);
   };
 
   // Update the supported countries when data changes
@@ -68,13 +98,33 @@ const ServiceInfo = () => {
   };
 
   const handleResourceSelect = (valuesSelected) => {
-    setselectedResource(valuesSelected);
+    let serviceData =
+      getServicesState?.data?.find((el) => el?.serviceName === valuesSelected) || {};
+    setselectedResource(serviceData);
+
+    localStorage.setItem("serviceData", JSON.stringify(serviceData));
   };
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 1 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 0.01 })); // total- total pages and current - current page
   }, []);
+
+  // populate
+
+  useEffect(() => {
+    setselectedResource(viewService?.data);
+  }, [viewService]);
+
+  useEffect(() => {
+    let getCountry = countriesData?.data?.find(
+      (country) => country?.countryISO === viewService?.data?.serviceCountry
+    );
+    setSelectedCountry(getCountry?.countryName);
+  }, [countriesData, viewService]);
+
+  console.log("vv", viewService?.data);
+
   return (
     <>
       <Container>
@@ -94,57 +144,66 @@ const ServiceInfo = () => {
                   getValue={selectCountry}
                   initialValue={selectedCountry}
                   suggestionLoading={isLoading}
+                  fetchingText={"Fetching countries..."}
                 />
               </div>
               <TagInputWithSearch
                 label="Resource"
-                list={resources
-                  .filter(
-                    (el) =>
-                      el.country?.toLowerCase() ===
-                      selectedCountry?.toLowerCase()
-                  )
-                  .map((el) => el.resource)
-                  .sort()}
+                list={serviceResources?.map((el) => el?.serviceName) || []}
                 getValue={handleResourceSelect}
-                initialValue={selectedResource}
+                initialValue={
+                  viewService?.data
+                    ? viewService?.data?.serviceName
+                    : selectedResource?.serviceName || "--"
+                }
                 MatchError="Please select resource from the list"
                 EmptyError="Please select at least one resources"
+                suggestionLoading={getServicesState.isLoading || getServicesState.isFetching}
+                fetchingText={"Fetching resources..."}
               />
             </LaunchFormContainer>
-            <InfoContainer>
-              <InfoFrame space>
-                <InfoFrameHead>Requirements</InfoFrameHead>
-                <Bullet>
-                  <Mark />
-                  <Content>Passport</Content>
-                </Bullet>
-                <Bullet>
-                  <Mark />
-                  <Content>Proof of address</Content>
-                </Bullet>
-              </InfoFrame>
-              <InfoFrame>
-                <InfoFrameHead>Timeline</InfoFrameHead>
-                <Bullet>
-                  <FiClock />
-                  <BigContent>20-30 days</BigContent>
-                </Bullet>
-              </InfoFrame>
-              <InfoFrame>
-                <InfoFrameHead>Pricing</InfoFrameHead>
-                <Bullet>
-                  <FaMoneyCheckAlt />
-                  <BigContent>N22,000</BigContent>
-                </Bullet>
-              </InfoFrame>
-            </InfoContainer>
+            {selectedResource?.serviceName && (
+              <InfoContainer>
+                <InfoFrame space>
+                  <InfoFrameHead>Requirements</InfoFrameHead>
+                  {selectedResource.serviceRequirements.length < 1 ? (
+                    <Content>{`--`}</Content>
+                  ) : (
+                    selectedResource.serviceRequirements.map((el, index) => (
+                      <Bullet key={index}>
+                        <Mark />
+                        <Content>{el.requirementName}</Content>
+                      </Bullet>
+                    ))
+                  )}
+                </InfoFrame>
+                <InfoFrame>
+                  <InfoFrameHead>Timeline</InfoFrameHead>
+                  <Bullet>
+                    <FiClock />
+                    <BigContent>{selectedResource?.serviceTimeline} days</BigContent>
+                  </Bullet>
+                </InfoFrame>
+                <InfoFrame>
+                  <InfoFrameHead>Pricing</InfoFrameHead>
+                  <Bullet>
+                    <FaMoneyCheckAlt />
+                    <BigContent>
+                      {selectedResource?.serviceCurrency || "--"}{" "}
+                      {numeral(selectedResource?.servicePrice).format("0,0")}
+                    </BigContent>
+                  </Bullet>
+                </InfoFrame>
+              </InfoContainer>
+            )}
             <Bottom>
               <CheckoutController
                 forwardText={"Next"}
                 forwardSubmit
                 hidePrev
                 forwardAction={handleNext}
+                forwardDisable={!selectedResource?.serviceName}
+                forwardLoading={createComplianceState.isLoading}
               />
             </Bottom>
           </LaunchPrimaryContainer>

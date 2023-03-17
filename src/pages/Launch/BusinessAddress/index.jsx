@@ -6,7 +6,7 @@ import { Page, Inputs, Bottom, Body, Container } from "../styled";
 import { Country, State, City } from "country-state-city";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import { setBusinessAddress, setCheckoutProgress } from "redux/Slices";
+import { setBusinessAddress, setCheckoutProgress, setCurrentPage } from "redux/Slices";
 import { defaultLocation, addressSchema } from "../constants";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -30,35 +30,16 @@ const BusinessAddress = () => {
   // const [paid, setPaid] = useState(false);
 
   const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
-  let paidStatus =
-    paymentDetails?.paymentStatus === "successful" ? true : false;
+  let paidStatus = paymentDetails?.paymentStatus === "successful" ? true : false;
 
   const [addBusinessAddress, addAddressState] = useAddBusinessAddressMutation();
-  const [updateBusinessAddress, updateAddressState] =
-    useUpdateBusinessAddressMutation();
-  const [viewPayLaunch] = useViewPayLaunchMutation();
+  const [updateBusinessAddress, updateAddressState] = useUpdateBusinessAddressMutation();
 
-  const launchResponse = useSelector(
-    (state) => state.LaunchReducer.launchResponse
-  );
+  const { launchResponse, currentPage } = useSelector((state) => state.LaunchReducer);
 
   const address = useViewBusinessAddressQuery(launchResponse, {
     refetchOnMountOrArgChange: true,
   });
-
-  const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.launchResponse.launchCode
-  );
-
-  // const loading = addAddressState.isLoading || updateAddressState.isLoading;
-
-  // useEffect(() => {
-  // 	loading
-  // 		? Loading.pulse({
-  // 				svgColor: "#fff",
-  // 		  })
-  // 		: Loading.remove();
-  // }, [loading]);
 
   const {
     register,
@@ -97,9 +78,10 @@ const BusinessAddress = () => {
     [setValue]
   );
 
+  // Submit form information
   const SubmitForm = async (data) => {
     const requiredAddressData = {
-      launchCode: generatedLaunchCode,
+      launchCode: launchResponse.launchCode,
 
       businessAddress: {
         addressCountry: data.country,
@@ -115,16 +97,15 @@ const BusinessAddress = () => {
     const response = (await address.currentData.businessAddress)
       ? await updateBusinessAddress(requiredAddressData)
       : await addBusinessAddress(requiredAddressData);
-    // console.log(address.currentData.businessAddress ? 'true' : 'false')
 
     if (response.data) {
       store.dispatch(setBusinessAddress(requiredAddressData));
       handleNext();
     } else if (response.error) {
-      // console.log(response.error?.data.message);
       toast.error(response.error?.data.message);
     }
   };
+
   let countries = useRef([defaultLocation]);
 
   useEffect(() => {
@@ -173,9 +154,7 @@ const BusinessAddress = () => {
       const addressData = address.currentData.businessAddress;
       // console.log(addressData);
       const theCountry = addressData
-        ? countries.current.find(
-            (country) => country.name === addressData.addressCountry
-          )
+        ? countries.current.find((country) => country.name === addressData.addressCountry)
         : defaultLocation;
       const theState = addressData
         ? State.getStatesOfCountry(theCountry.isoCode).find(
@@ -212,9 +191,7 @@ const BusinessAddress = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 5.5 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 5.5 })); // total- total pages and current - current page
   }, []);
 
   return (

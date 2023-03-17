@@ -8,10 +8,7 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
-import {
-  useViewDirectorsMutation,
-  useViewMembersMutation,
-} from "services/launchService";
+import { useViewDirectorsMutation, useViewMembersMutation } from "services/launchService";
 import ReviewCard from "components/cards/ReviewCard";
 import { Puff } from "react-loading-icons";
 
@@ -23,15 +20,11 @@ const DirectorReview = () => {
   };
   const [mergedResponse, setMergedResponse] = useState([]);
 
-  const launchResponse = useSelector(
-    (store) => store.LaunchReducer.launchResponse
-  );
+  const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
   // console.log(launchResponse)
 
   // getting the director container from store
-  const directorDocumentContainer = useSelector(
-    (state) => state.LaunchReducer.directorDocs
-  );
+  const directorDocumentContainer = useSelector((state) => state.LaunchReducer.directorDocs);
   const [viewDirectors, viewDirectorState] = useViewDirectorsMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
 
@@ -62,7 +55,7 @@ const DirectorReview = () => {
   const location = useLocation();
 
   const handleNext = () => {
-    navigate("/launch/review-beneficiaries");
+    navigate("/launch/review/beneficiaries");
     localStorage.setItem("navigatedFrom", location.pathname);
   };
 
@@ -92,10 +85,7 @@ const DirectorReview = () => {
           <Nav>
             {ReviewTab.map((item, index) => (
               <ReviweTabWrapper to={item.path} key={index}>
-                <NavLink
-                  to={item.path}
-                  style={({ isActive }) => (isActive ? ActiveStyles : {})}
-                >
+                <NavLink to={item.path} style={({ isActive }) => (isActive ? ActiveStyles : {})}>
                   {item.title}
                 </NavLink>
               </ReviweTabWrapper>

@@ -34,6 +34,7 @@ const ApplicationSuccessPage = () => {
 };
 
 export default ApplicationSuccessPage;
+
 const Body = styled.div`
   position: fixed;
   bottom: 0px;

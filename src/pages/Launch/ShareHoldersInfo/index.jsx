@@ -7,21 +7,11 @@ import React, { useEffect, useState } from "react";
 import { setCheckoutProgress } from "redux/Slices";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
-import {
-  AddMore,
-  Body,
-  Bottom,
-  Container,
-  Loading,
-  modalStyle,
-} from "../styled";
+import { AddMore, Body, Bottom, Container, Loading, modalStyle } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
-import {
-  checkInfoShareCompSchema,
-  checkInfoShareholderSchema,
-} from "utils/config";
+import { checkInfoShareCompSchema, checkInfoShareholderSchema } from "utils/config";
 import {
   useAddDirectorMutation,
   useAddMemberMutation,
@@ -39,7 +29,6 @@ import {
 import toast from "react-hot-toast";
 import { Puff } from "react-loading-icons";
 import {
-  checkMemberExistence,
   handleMemberAdd,
   handleMemberDelete,
   handleMemberUpdate,
@@ -92,7 +81,7 @@ const ShareHoldersInfo = () => {
   const [updateDirector, dirUpdateState] = useUpdateDirectorMutation();
   const [viewShareholders, viewState] = useViewShareholdersMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
-  const [viewDirectors, viewDirectorsState] = useViewDirectorsMutation();
+  const [viewDirectors] = useViewDirectorsMutation();
 
   const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
 
@@ -199,9 +188,7 @@ const ShareHoldersInfo = () => {
       let directorResponse = directorCode
         ? await handleDirectorUpdate(actionInfo_D)
         : await handleDirectorAdd(actionInfo_D);
-      let message = directorCode
-        ? "Director updated successfully"
-        : "Director added successfully";
+      let message = directorCode ? "Director updated successfully" : "Director added successfully";
       handleResponse(directorResponse, message);
     } else {
       // DELETE DIRECTOR, IF EXTSTS
@@ -238,11 +225,7 @@ const ShareHoldersInfo = () => {
 
     // DELETE SHAREHOLDER
     let shareholderResponse = await handleShareholderDelete(actionInfo_S);
-    handleResponse(
-      shareholderResponse,
-      "Shareholder deleted successfully",
-      handleView
-    );
+    handleResponse(shareholderResponse, "Shareholder deleted successfully", handleView);
 
     // IF DIRECTOR, RETURN, ELSE DELETE MEMBER
     let actionInfo_D = {
@@ -300,10 +283,7 @@ const ShareHoldersInfo = () => {
       setValue("fullName", selectedToEdit?.memberName);
       setValue("email", selectedToEdit?.memberEmail);
       setValue("phone", selectedToEdit?.memberPhone);
-      setValue(
-        "sharePercentage",
-        selectedToEdit?.shareholderOwnershipPercentage
-      );
+      setValue("sharePercentage", selectedToEdit?.shareholderOwnershipPercentage);
       setValue("nin", selectedToEdit.shareholderIdentificationNumber);
       setValue("regNo", selectedToEdit.shareholderRegistrationNumber);
     } else {
@@ -367,9 +347,7 @@ const ShareHoldersInfo = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 6.5 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 6.5 })); // total- total pages and current - current page
   }, []);
 
   let loading =
@@ -404,19 +382,14 @@ const ShareHoldersInfo = () => {
                 key={index}
                 number={index + 1}
                 name={shareholder?.memberName}
-                shares={
-                  shareholder?.shareholderRegistrationNumber
-                    ? "company"
-                    : "individual"
-                }
+                shares={shareholder?.shareholderRegistrationNumber ? "company" : "individual"}
                 email={shareholder?.memberEmail}
                 phone={shareholder?.memberPhone}
                 sharesPercentage={shareholder?.shareholderOwnershipPercentage}
                 editAction={() => handleEditButton(shareholder)}
                 deleteAction={() => handleDelete(shareholder)}
                 isLoading={
-                  selectedToDelete?.shareholdingCode ===
-                    shareholder?.shareholdingCode &&
+                  selectedToDelete?.shareholdingCode === shareholder?.shareholdingCode &&
                   (deleteState.isLoading || memberDelState?.isLoading)
                     ? true
                     : false
@@ -465,9 +438,7 @@ const ShareHoldersInfo = () => {
               backText={"Previous"}
               forwardAction={handleNext}
               forwardText={"Proceed"}
-              forwardDisable={
-                shareholdersInfo.length === 0 && !useSidebriefShareholders
-              }
+              forwardDisable={shareholdersInfo.length === 0 && !useSidebriefShareholders}
             />
           </Bottom>
         </LaunchPrimaryContainer>

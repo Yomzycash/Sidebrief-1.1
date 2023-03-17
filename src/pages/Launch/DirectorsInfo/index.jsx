@@ -8,14 +8,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCheckoutProgress, setDirectorsLaunchInfo } from "redux/Slices";
 import { store } from "redux/Store";
-import {
-  AddMore,
-  Body,
-  Bottom,
-  Container,
-  Loading,
-  modalStyle,
-} from "../styled";
+import { AddMore, Body, Bottom, Container, Loading, modalStyle } from "../styled";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { Dialog, DialogContent } from "@mui/material";
 import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
@@ -49,10 +42,7 @@ import {
   handleSingleDirectorView,
 } from "./actions";
 import { handleError } from "utils/globalFunctions";
-import {
-  handleShareholderUpdate,
-  handleSingleShareholderView,
-} from "../ShareHoldersInfo/actions";
+import { handleShareholderUpdate, handleSingleShareholderView } from "../ShareHoldersInfo/actions";
 
 const DirectorsInfo = () => {
   const navigate = useNavigate();
@@ -74,15 +64,8 @@ const DirectorsInfo = () => {
   const [deleteMember, memberDelState] = useDeleteMemberMutation();
   const [updateMember, memberUpdateState] = useUpdateMemberMutation();
   const [viewMembers, viewMembersState] = useViewMembersMutation();
-  const [updateShareholder, shareholderUpdateState] =
-    useUpdateShareholderMutation();
-  const [viewShareholders, shareholderViewState] =
-    useViewShareholdersMutation();
-
-  // // This gets the directors information from the store
-  // const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-  // const { directorsLaunchInfo, shareholdersLaunchInfo, launchResponse } =
-  //   LaunchApplicationInfo;
+  const [updateShareholder, shareholderUpdateState] = useUpdateShareholderMutation();
+  const [viewShareholders, shareholderViewState] = useViewShareholdersMutation();
 
   const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
 
@@ -187,11 +170,7 @@ const DirectorsInfo = () => {
       deleteMember: deleteMember,
     };
     let directorResponse = await handleDirectorDelete(actionInfo_D);
-    handleResponse(
-      directorResponse,
-      "Director deleted successfuly",
-      handleView
-    );
+    handleResponse(directorResponse, "Director deleted successfuly", handleView);
     // DELETE MEMBER
     let actionInfo_S = {
       launchCode: actionInfo_D.launchCode,
@@ -222,6 +201,7 @@ const DirectorsInfo = () => {
     // VIEW ALL DIRECTORS
     let directorResponse = await handleDirectorsView(actionInfo);
     if (directorResponse.data) {
+      store.dispatch(setDirectorsLaunchInfo(directorResponse.data));
       setDirectorsInfo(directorResponse.data);
     } else {
       handleError(directorResponse?.error);
@@ -303,9 +283,7 @@ const DirectorsInfo = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 7 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 7 })); // total- total pages and current - current page
   }, []);
 
   let loading =
@@ -389,9 +367,7 @@ const DirectorsInfo = () => {
               backText={"Previous"}
               forwardAction={handleNext}
               forwardText={"Proceed"}
-              forwardDisable={
-                directorsInfo.length === 0 && !useSidebriefDirectors
-              }
+              forwardDisable={directorsInfo.length === 0 && !useSidebriefDirectors}
             />
           </Bottom>
         </LaunchPrimaryContainer>

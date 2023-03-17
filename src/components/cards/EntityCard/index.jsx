@@ -45,8 +45,8 @@ export const EntityCard = ({
       <Container
         onClick={action}
         gap={"24px"}
-        content={"space-between"}
-        height={"clamp(400px, 30vw, 450px)"}
+        // content={"space-between"}
+        height={"clamp(450px, 30vw, 500px)"}
       >
         <Corner>
           <CornerPetal />
@@ -56,13 +56,13 @@ export const EntityCard = ({
           <Title>{name}</Title>
           <TimeLine>{timeline}</TimeLine>
         </Top>
-        <Description>{description}</Description>
-        <Mid>
+        <Price>{description}</Price>
+        {/* <Mid>
           <Price>
             {getCurrencyInfo(currency)?.symbol}
             {numeral(price).format("0,0")}
           </Price>
-        </Mid>
+        </Mid> */}
         <Bottom>
           <Bullet>
             <Mark /> <Content>{type} Company</Content>
