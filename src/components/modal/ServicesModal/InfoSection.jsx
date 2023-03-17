@@ -85,16 +85,18 @@ const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
     );
   }, [data]);
 
+  let editMode = service && mode === "edit";
+
   //
   useEffect(() => {
-    if (service.data) {
-      setValue("name", service.data.serviceName, { shouldValidate: true });
-      setValue("description", service.data.serviceDescription, { shouldValidate: true });
-      setValue("category", service.data.serviceCategory, { shouldValidate: true });
-      setValue("country", service.data.serviceCountry, { shouldValidate: true });
-      setValue("currency", service.data.serviceCurrency, { shouldValidate: true });
-      setValue("price", service.data.servicePrice, { shouldValidate: true });
-      setValue("timeline", service.data.serviceTimeline, { shouldValidate: true });
+    if (editMode) {
+      setValue("name", service.serviceName, { shouldValidate: true });
+      setValue("description", service.serviceDescription, { shouldValidate: true });
+      setValue("category", service.serviceCategory, { shouldValidate: true });
+      setValue("country", service.serviceCountry, { shouldValidate: true });
+      setValue("currency", service.serviceCurrency, { shouldValidate: true });
+      setValue("price", service.servicePrice, { shouldValidate: true });
+      setValue("timeline", service.serviceTimeline, { shouldValidate: true });
     } else {
       setValue("name", "");
       setValue("description", "");
@@ -104,10 +106,10 @@ const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
       setValue("price", "");
       setValue("timeline", "");
     }
-  }, [service.data, mode]);
+  }, [service, mode]);
 
   const submitForm = (formData) => {
-    if (service.data?.serviceId) handleServiceUpdate(formData);
+    if (service?.serviceId) handleServiceUpdate(formData);
     else handleServiceAdd(formData);
   };
 
@@ -151,7 +153,7 @@ const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
             onChange={handleCategoryChange}
             errorMessage={errors.category?.message}
             placeholder="Select Service Category"
-            defaultValue={service.data ? service.data?.serviceCategory : "--"}
+            defaultValue={editMode ? service?.serviceCategory : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -166,7 +168,7 @@ const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
             onChange={handleCountryChange}
             placeholder="Select Service Country"
             errorMessage={errors.country?.message}
-            defaultValue={service.data ? service.data?.serviceCountry : "--"}
+            defaultValue={editMode ? service?.serviceCountry : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}
@@ -178,7 +180,7 @@ const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
             options={serviceCurrencies}
             onChange={handleCurrencyChange}
             errorMessage={errors.currency?.message}
-            defaultValue={service.data ? service.data?.serviceCurrency : "--"}
+            defaultValue={editMode ? service?.serviceCurrency : "--"}
             fontSize="clamp(12px, 1.2vw, 14px)"
             height="40px"
             disable={disable}

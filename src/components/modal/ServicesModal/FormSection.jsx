@@ -5,20 +5,24 @@ import { CheckoutController } from "containers";
 import { useActions } from "./actions";
 import { useSearchParams } from "react-router-dom";
 import { useViewServiceQuery } from "services/complyService";
-import { useAddServiceFormFieldMutation } from "services/staffService";
+import {
+  useAddServiceFormFieldMutation,
+  useDeleteServiceFormFieldMutation,
+} from "services/staffService";
 
-const FormSection = ({ service, setOpen }) => {
-  const [searchParams] = useSearchParams();
-  const serviceId = searchParams.get("serviceId");
-  const mode = searchParams.get("mode");
-
+const FormSection = ({ service, setOpen, serviceId, mode }) => {
   const { data, refetch } = useViewServiceQuery(serviceId);
   const [addFormField, addState] = useAddServiceFormFieldMutation();
+  const [deleteFormField, deleteState] = useDeleteServiceFormFieldMutation();
 
-  const { scrollTo, handleServiceFormFieldAdd } = useActions({ service, addFormField });
+  const { scrollTo, handleServiceFormFieldAdd, handleServiceFormFieldDelete } = useActions({
+    service,
+    addFormField,
+    deleteFormField,
+  });
 
-  const handleQuestionSubmit = (formData) => {
-    handleServiceFormFieldAdd(formData);
+  const handleQuestionSubmit = async (formData) => {
+    await handleServiceFormFieldAdd(formData);
     refetch();
   };
 
@@ -33,7 +37,7 @@ const FormSection = ({ service, setOpen }) => {
   const handlePrev = () => {
     let infoRef = document.getElementById("staff-service-info");
     scrollTo(infoRef);
-    setOpen(mode, serviceId, 0);
+    setOpen(mode, serviceId);
   };
 
   const handleNext = () => {
@@ -52,6 +56,8 @@ const FormSection = ({ service, setOpen }) => {
           handleQuestionSubmit={handleQuestionSubmit}
           handleDeleteQuestion={handleDeleteQuestion}
           handleUpdateQuestion={handleUpdateQuestion}
+          handleServiceFormFieldDelete={handleServiceFormFieldDelete}
+          deleteState={deleteState}
         />
       ))}
 

@@ -21,9 +21,7 @@ import { useSearchParams } from "react-router-dom";
 const AllServices = () => {
   const [clickedService, setClickedService] = useState({});
 
-  const [searchParams, setSearchParams] = useSearchParams(false);
-  let open = searchParams.get("mode") ? true : false;
-  let mode = searchParams.get("mode");
+  const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
   const { data, isLoading, isError, error, refetch } = useGetAllServicesQuery();
   const [deleteService, deleteState] = useDeleteServiceMutation();
@@ -37,9 +35,9 @@ const AllServices = () => {
     setOpen("add");
   };
 
-  const handleClickEachService = (servicesvalue) => {
-    setOpen("edit");
-    setClickedService(servicesvalue);
+  const handleServiceClick = (clickedInfo) => {
+    setOpen("edit", clickedInfo.serviceId);
+    setClickedService(clickedInfo);
   };
 
   // delete service
@@ -58,9 +56,9 @@ const AllServices = () => {
   };
 
   const setOpen = (mode, serviceId, progress) => {
-    if (!mode) setSearchParams({});
+    if (!mode) setDialog({});
     else
-      setSearchParams({
+      setDialog({
         mode: mode,
         serviceId: serviceId || "",
         progress: progress || 0,
@@ -89,19 +87,20 @@ const AllServices = () => {
               subText={service.serviceCountry}
               categoryName={service.serviceCategory}
               service
-              clickHandle={() => handleClickEachService(service)}
+              clickHandle={() => handleServiceClick(service)}
               //action = {() => handleAddButton(service)}
             />
           ))}
         </ServiceContainer>
       )}
       <ServicesModal
-        disableAll={mode === "edit" ? true : false}
+        disableAll={dialog.mode === "edit" ? true : false}
         clickedService={clickedService}
         deleteState={deleteState}
         handleServiceDelete={handleServiceDelete}
         refetch={refetch}
         setOpen={setOpen}
+        dialog={dialog}
       />
       {/* {data?.length > itemsPerPage && (
         <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />

@@ -28,7 +28,7 @@ export const useActions = ({
     let hasOptions = formData.selectedType === "checkbox" || formData.selectedType === "radio";
     if (hasOptions) {
       return {
-        serviceId: service.data?.serviceId,
+        serviceId: service?.serviceId,
         serviceFormField: {
           fieldQuestion: formData.question,
           fieldType: formData.selectedType,
@@ -38,7 +38,7 @@ export const useActions = ({
       };
     } else {
       return {
-        serviceId: service.data?.serviceId,
+        serviceId: service?.serviceId,
         serviceFormField: {
           fieldQuestion: formData.question,
           fieldType: formData.selectedType,
@@ -59,25 +59,25 @@ export const useActions = ({
     if (data) {
       setOpen("add", response.data?.serviceId, 50);
       scrollTo(formRef);
+      refetch();
     } else {
       handleError(error);
     }
-    refetch();
   };
 
   // Update service
   const handleServiceUpdate = async (formData) => {
     let payload = getRequired(formData);
-    let response = await updateService({ ...payload, serviceId: service.data?.serviceId });
+    let response = await updateService({ ...payload, serviceId: service?.serviceId });
     let data = response?.data;
     let error = response?.error;
     if (data) {
       setOpen(mode, response.data?.serviceId, 50);
       scrollTo(formRef);
+      refetch();
     } else {
       handleError(error);
     }
-    refetch();
   };
 
   // Add form question
@@ -99,6 +99,10 @@ export const useActions = ({
     } else {
       handleError(error);
     }
+  };
+
+  const handleServiceFormFieldDelete = async (formInfo) => {
+    console.log(formInfo);
   };
 
   // This is attached to category dropdown onChange
@@ -129,6 +133,7 @@ export const useActions = ({
     handleServiceAdd,
     handleServiceUpdate,
     handleServiceFormFieldAdd,
+    handleServiceFormFieldDelete,
     handleCategoryChange,
     handleCountryChange,
     handleCurrencyChange,

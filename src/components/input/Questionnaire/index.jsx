@@ -11,6 +11,7 @@ const Questionnaire = ({
   handleQuestionSubmit,
   handleDeleteQuestion,
   handleUpdateQuestion,
+  deleteState,
 }) => {
   const [disabled, setDisabled] = useState(review);
 
@@ -21,7 +22,8 @@ const Questionnaire = ({
           setDisabled={setDisabled}
           info={info}
           questionNumber={index + 1}
-          handleDeleteQuestion={handleDeleteQuestion}
+          deleteAction={handleDeleteQuestion}
+          deleteState={deleteState}
         />
       ) : (
         <QuestionEdit

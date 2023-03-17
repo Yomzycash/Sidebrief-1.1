@@ -16,16 +16,18 @@ const ServicesModal = ({
   deleteState,
   refetch,
   setOpen,
+  dialog,
 }) => {
   const [disable, setDisable] = useState(disableAll);
-  const [searchParams] = useSearchParams();
 
-  let progress = searchParams.get("progress");
-  let open = searchParams.get("mode") ? true : false;
-  let mode = searchParams.get("mode");
-  let serviceId = searchParams.get("serviceId");
+  let progress = dialog.progress;
+  let open = dialog.mode ? true : false;
+  let mode = dialog.mode;
+  let serviceId = dialog.serviceId;
 
-  const service = useGetSingleServiceQuery(serviceId);
+  // const service = useGetSingleServiceQuery(serviceId, {
+  //   skip: !serviceId ? true : false,
+  // });
 
   let title = mode === "edit" ? "Update Service" : "Add New Service";
 
@@ -48,9 +50,9 @@ const ServicesModal = ({
           setOpen={setOpen}
           mode={mode}
           serviceId={serviceId}
-          service={service}
+          service={clickedService}
         />
-        <FormSection setOpen={setOpen} service={service} />
+        <FormSection setOpen={setOpen} service={clickedService} serviceId={serviceId} mode={mode} />
         <DocsSection />
       </ServiceForms>
     </Modal2>

@@ -116,8 +116,10 @@ export const useActions = ({
     let optionsValid = validateOptions() && validateEmptyOptions();
     if (!questionValid || !optionsValid) return;
     let response = review ? handleUpdateQuestion(state) : handleQuestionSubmit(state);
-    if (response?.error) {
-      handleError(response.error);
+    if (response?.data) {
+      dispatch({ type: "setQuestion", payload: "" });
+    } else {
+      handleError(response?.error);
     }
   };
 

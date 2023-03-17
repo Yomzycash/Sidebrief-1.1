@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Dialog, DialogContent } from "@mui/material";
 import { ReactComponent as CloseIcon } from "asset/images/close.svg";
 import {
@@ -31,6 +31,8 @@ const Modal2 = ({
   const [confirm, setConfirm] = useState(false);
   const [value, setValue] = useState("");
 
+  let inputRef = useRef(null);
+
   // Called when closed button is clicked
   const handleClose = () => {
     setOpen && setOpen(false);
@@ -50,6 +52,11 @@ const Modal2 = ({
     setValue("");
   }, [mode]);
 
+  // Focuses confirmation input when delete icon is clicked
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+  }, [confirm]);
+
   return (
     <Dialog open={open}>
       <DialogContent style={modalStyle} id="staff-service-dialog">
@@ -62,9 +69,11 @@ const Modal2 = ({
                 <DeleteWrapper>
                   {confirm && (
                     <input
+                      ref={inputRef}
                       type="text"
                       placeholder="Type DELETE to confirm"
                       onChange={(e) => setValue(e.target.value.toLowerCase())}
+                      onKeyDown={(e) => (e.key === "Enter" ? handleDeleteSelected() : "")}
                     />
                   )}
                   {deleteState?.isLoading ? (

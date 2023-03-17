@@ -291,6 +291,7 @@ export const DeleteWrapper = styled.div`
   input {
     border: none;
     outline: none;
+    height: 21px;
 
     ::placeholder {
       font-size: 10px;

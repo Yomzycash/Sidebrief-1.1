@@ -24,8 +24,7 @@ import {
   SearchWrapper,
   TopContent,
 } from "./styled";
-// import ServicesModal from "components/modal/ServicesModal";
-import ServicesModal from "components/modal/StaffServiceModal";
+import ServicesModal from "components/modal/ServicesModal";
 import { handleError } from "utils/globalFunctions";
 import { useActions } from "./actions";
 
@@ -44,9 +43,7 @@ const ServicePage = () => {
   const [deleteService, deleteState] = useDeleteServiceMutation();
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
-  const [searchParams, setSearchParams] = useSearchParams(false);
-  let open = searchParams.get("mode") ? true : false;
-  let mode = searchParams.get("mode");
+  const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
   const navigate = useNavigate();
 
@@ -81,11 +78,10 @@ const ServicePage = () => {
 
   let totalServices = servicesEnquiry?.length > 0 ? servicesEnquiry.length : 0;
 
-  const handleClickEachService = (servicesvalue) => {
-    setOpen("edit");
-    setClickedService(servicesvalue);
+  const handleServiceClick = (clickedInfo) => {
+    setOpen("edit", clickedInfo.serviceId);
+    setClickedService(clickedInfo);
   };
-
   // delete service
   const handleServiceDelete = async () => {
     let response = await deleteService(clickedService.serviceId);
@@ -102,9 +98,9 @@ const ServicePage = () => {
   };
 
   const setOpen = (mode, serviceId, progress) => {
-    if (!mode) setSearchParams({});
+    if (!mode) setDialog({});
     else
-      setSearchParams({
+      setDialog({
         mode: mode,
         serviceId: serviceId || "",
         progress: progress || 0,
@@ -155,7 +151,7 @@ const ServicePage = () => {
                     subText={service.serviceCountry}
                     categoryName={service.serviceCategory}
                     service
-                    clickHandle={() => handleClickEachService(service)}
+                    clickHandle={() => handleServiceClick(service)}
                     //action = {() => handleAddButton(service)}
                   />
                 ))}
@@ -176,12 +172,13 @@ const ServicePage = () => {
         <FeatureTable header={header} body={dataBody} />
 
         <ServicesModal
-          disableAll={mode === "edit" ? true : false}
+          disableAll={dialog.mode === "edit" ? true : false}
           clickedService={clickedService}
           deleteState={deleteState}
           handleServiceDelete={handleServiceDelete}
           refetch={refetch}
           setOpen={setOpen}
+          dialog={dialog}
         />
       </FeatureSection>
     </Container>

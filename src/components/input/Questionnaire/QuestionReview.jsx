@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   DeleteWrapper,
   QuestionOptions,
@@ -15,17 +15,21 @@ import EditIcon from "asset/Icons/EditIcon";
 import { SpinningCircles } from "react-loading-icons";
 import { useDeleteServiceFormFieldMutation } from "services/staffService";
 
-const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction }) => {
+const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, deleteState }) => {
   const [confirm, setConfirm] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
 
-  const [deleteFormField, deleteState] = useDeleteServiceFormFieldMutation();
+  const deleteInputRef = useRef();
 
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
   const handleDeleteQuestion = () => {
     deleteAction(info?.fieldCode);
   };
+
+  useEffect(() => {
+    if (confirm) deleteInputRef.current.focus();
+  }, [confirm]);
 
   return (
     <ReviewContainer>
@@ -54,9 +58,11 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction }) => 
           {confirm && (
             <DeleteWrapper>
               <input
+                ref={deleteInputRef}
                 type="text"
                 placeholder="Type DELETE to confirm"
                 onChange={(e) => setConfirmValue(e.target.value.toLowerCase())}
+                onBlur={() => setConfirm(false)}
               />
               {deleteState?.isLoading ? (
                 <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />

@@ -34,7 +34,7 @@ export const Title = styled.div`
 export const TopIcons = styled.div`
   display: flex;
   align-items: center;
-  gap: clamp(16px, 2.5vw, 30px);
+  gap: clamp(35px, 3.5vw, 45px);
 `;
 
 export const InputsWrapper = styled.div`

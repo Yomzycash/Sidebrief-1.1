@@ -19,8 +19,10 @@ export const ServiceForms = styled.div`
   display: flex;
   flex-flow: row nowrap;
   max-width: 100%;
-  overflow-x: auto;
+  overflow: auto;
   scroll-behavior: smooth;
+
+  max-height: 500px;
 
   ::-webkit-scrollbar {
     display: none;
@@ -32,8 +34,8 @@ export const InputsWrapper = styled.div``;
 export const Form = styled.form`
   min-width: 100%;
   width: 100%;
+  overflow-y: auto;
   max-width: 962px;
-  overflow-y: hidden;
   padding: clamp(20px, 3vw, 40px);
 
   .input-container-class {
@@ -70,7 +72,7 @@ export const FormSectionContainer = styled.div`
   min-width: 100%;
   width: 100%;
   max-width: 962px;
-  overflow-y: hidden;
+  overflow-y: auto;
   padding: clamp(20px, 3vw, 40px);
 
   .input-container-class {
