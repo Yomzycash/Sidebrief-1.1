@@ -36,6 +36,7 @@ const InputWithLabel = ({
   onChange,
   maxNumber,
   defaultValue,
+  value,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -89,6 +90,7 @@ const InputWithLabel = ({
             name={name}
             disabled={disable}
             max={maxNumber}
+            value={value}
             defaultValue={defaultValue}
             {...register(name)}
             {...rest}
@@ -102,7 +104,8 @@ const InputWithLabel = ({
             name={name}
             disabled={disable}
             max={maxNumber}
-            defaultValue={defaultValue}
+              defaultValue={defaultValue}
+              value={value}
             onChange={onChange}
             {...rest}
           />

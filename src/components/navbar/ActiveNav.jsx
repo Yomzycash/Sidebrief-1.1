@@ -1,14 +1,12 @@
-import React, { useEffect } from "react";
-import { AiTwotoneAlert } from "react-icons/ai";
-import { NavLink, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import { NavLink } from 'react-router-dom'
+import styled from 'styled-components'
 
 const ActiveNav = ({ text, total, path, defaultActive, status }) => {
   const ActiveStyles = {
-    color: "#151717",
-    borderBottom: "4px solid #00A2D4",
+    color: '#151717',
+    borderBottom: '4px solid #00A2D4',
     borderRadius: 0,
-  };
+  }
 
   return (
     <Container>
@@ -18,18 +16,18 @@ const ActiveNav = ({ text, total, path, defaultActive, status }) => {
           isActive || defaultActive ? ActiveStyles : {}
         }
       >
-        <p>{text}</p>{" "}
-        {typeof total === "number" ? (
+        <p>{text}</p>{' '}
+        {typeof total === 'number' ? (
           <span>
             {total} {status && <span />}
           </span>
         ) : null}
       </NavLink>
     </Container>
-  );
-};
+  )
+}
 
-export default ActiveNav;
+export default ActiveNav
 
 export const Container = styled.div`
   display: flex;
@@ -78,5 +76,5 @@ export const Container = styled.div`
     border: none;
     padding: 16px;
   }
-`;
-const StyledLink = styled(NavLink)``;
+`
+//const StyledLink = styled(NavLink)``;

@@ -19,7 +19,7 @@ import { InfoContainer } from "containers/Services";
 
 const ServiceInfo = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let serviceId = complyCodeData.serviceId;
+  let serviceId = complyCodeData?.serviceId;
   const viewService = useViewServiceQuery(serviceId);
   const countriesData = useGetAllCountriesQuery();
 
@@ -53,6 +53,7 @@ const ServiceInfo = () => {
       navigate("/services/payment");
     }
   };
+  console.log(getServicesState);
   // Handle supported countries fetch
   const handleCountry = useCallback(
     async (value) => {
