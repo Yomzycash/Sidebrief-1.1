@@ -329,14 +329,40 @@ export const staffApi = createApi({
       query: () => "/banks",
     }),
 
-    // Get a single service
-    getSingleService: builder.query({
-      query: (serviceId) => `/services/view/${serviceId}`,
+    // Add service form field
+    addServiceFormField: builder.mutation({
+      query: (values) => ({
+        url: `/services/add/formfield`,
+        method: "POST",
+        body: values,
+      }),
     }),
 
-    // Get all Services
-    getAllServices: builder.query({
-      query: () => "/services/all",
+    // Delete service form field
+    deleteServiceFormField: builder.mutation({
+      query: (values) => ({
+        url: `/services/delete/formfield`,
+        method: "POST",
+        body: values,
+      }),
+    }),
+
+    // Add service document template
+    addServiceDocTemplate: builder.mutation({
+      query: (values) => ({
+        url: `/services/add/template`,
+        method: "POST",
+        body: values,
+      }),
+    }),
+
+    // delete service document template
+    deleteServiceDocTemplate: builder.mutation({
+      query: (values) => ({
+        url: `/services/delete/template`,
+        method: "POST",
+        body: values,
+      }),
     }),
 
     // add a service
@@ -352,18 +378,17 @@ export const staffApi = createApi({
       invalidatesTags: ["User"],
     }),
 
-		// update a service
-		updateService: builder.mutation({
-			// query: (serviceId) => ({
-			// 	url: `/services/update/${serviceId}`,
-			query: (data) => ({
-				url:`/services/update/${data}`,
-				method: "PUT",
-				headers: {
-					"Content-type": "application/json; charset=UTF-8",
-				},
-			}),
-		}),
+    // update a service
+    updateService: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/${data.serviceId}`,
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
 
     // delete a service
     deleteService: builder.mutation({
@@ -374,6 +399,16 @@ export const staffApi = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
+    }),
+
+    // Get a single service
+    getSingleService: builder.query({
+      query: (serviceId) => `/services/view/${serviceId}`,
+    }),
+
+    // Get all Services
+    getAllServices: builder.query({
+      query: () => "/services/all",
     }),
 
     // Get services by category
@@ -390,9 +425,6 @@ export const staffApi = createApi({
     getServicesByCountryandCategory: builder.query({
       query: (data) =>
         `/services/category/${data.serviceCategory}/country/KEN${data.serviceCountry}`,
-    }),
-    viewServicesByServiceId: builder.query({
-      query: () => `/services/view/${9336232137}`,
     }),
   }),
 });
@@ -436,6 +468,12 @@ export const {
   useGetSingleBankQuery,
   useGetAllBanksQuery,
 
+  useAddServiceFormFieldMutation,
+  useDeleteServiceFormFieldMutation,
+
+  useAddServiceDocTemplateMutation,
+  useDeleteServiceDocTemplateMutation,
+
   useAddServiceMutation,
   useUpdateServiceMutation,
   useDeleteServiceMutation,
@@ -444,5 +482,4 @@ export const {
   useGetServicesByCategoryQuery,
   useGetServicesByCountryQuery,
   useGetServicesByCountryandCategoryQuery,
-  useViewServicesByServiceIdQuery,
 } = staffApi;

@@ -119,6 +119,7 @@ export const Iconwrapper = styled.div`
 `;
 
 export const ErrMsg = styled.div`
+  position: relative;
   color: red;
   font-size: 12px;
   justify-content: center;

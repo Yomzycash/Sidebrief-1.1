@@ -11,6 +11,8 @@ const CommonButton = ({
   textStyle,
   leftIconColor,
   rightIconColor,
+  puffColor,
+  id,
   classname,
   component,
   type,
@@ -20,18 +22,17 @@ const CommonButton = ({
     <ButtonContainer
       onClick={action}
       style={style}
+      id={id}
       className={"button__effect" || classname}
       type={type || "button"}
     >
       {loading ? (
-        <Puff stroke="#ffffff" fill="white" width={24} height={24} />
+        <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
       ) : (
         <>
           {LeftIcon && <LeftIcon size={20} color={leftIconColor || "white"} />}
           {text && <span style={textStyle}>{text}</span>}
-          {RightIcon && (
-            <RightIcon size={24} color={rightIconColor || "white"} />
-          )}
+          {RightIcon && <RightIcon size={24} color={rightIconColor || "white"} />}
           {component && <>{component}</>}
         </>
       )}
