@@ -9,9 +9,15 @@ import { store } from "redux/Store";
 import { Body, Container } from "../styled";
 import { Bottom, FormContainer, formInputsStyle, formStyle } from "./style";
 import { formInfo } from "./constants.js";
+import { useViewComplianceQuery } from "services/complyService";
 
 const ServiceForm = () => {
   const navigate = useNavigate();
+  // const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+
+  // const { data } = useViewComplianceQuery(complyCodeData.complyCode);
+
+  // console.log(data);
 
   const handleSubmit = async (formData) => {
     console.log(formData);

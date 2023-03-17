@@ -8,6 +8,7 @@ export const ComplyApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
       headers.set("Access-Control-Allow-Origin", "*");
+      headers.set("Content-type", "application/json; charset=UTF-8");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -51,6 +52,17 @@ export const ComplyApi = createApi({
         },
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // view compliance
+    viewCompliance: builder.query({
+      query: (complyCode) => ({
+        url: "/comply/view",
+        method: "POST",
+        body: {
+          complyCode,
         },
       }),
     }),
@@ -111,4 +123,5 @@ export const {
   useViewServiceDocumentMutation,
   useDeleteServiceDocumentMutation,
   useAddServicePaymentMutation,
+  useViewComplianceQuery,
 } = ComplyApi;
