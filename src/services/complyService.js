@@ -66,7 +66,6 @@ export const ComplyApi = createApi({
         },
       }),
     }),
-<<<<<<< HEAD
 
     // view compliance
     viewCompliance: builder.query({
@@ -79,8 +78,6 @@ export const ComplyApi = createApi({
       }),
     }),
 
-=======
->>>>>>> staging
     //get user reward
     viewService: builder.query({
       query: (serviceId) => `services/view/${serviceId}`,
