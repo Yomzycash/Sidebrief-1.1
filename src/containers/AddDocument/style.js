@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.form`
   width: 100%;
   height: max-content;
   padding: 20px;
@@ -196,7 +196,7 @@ export const IconWrapper = styled.div`
 `;
 
 export const DeleteText = styled.div`
-  float:right
+  float:right;
   font-size: 14px;
   font-weight:light;
   color: #ED4E3A;
