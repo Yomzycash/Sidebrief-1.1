@@ -40,6 +40,7 @@ const AddDocument = () => {
     handleSubmit,
     register,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: yupResolver(DocSchema),
   });
@@ -76,6 +77,7 @@ const AddDocument = () => {
   };
 
   const handleDocumentAdd = () => {
+    setValue("title", "");
     setDocumentList([
       ...documentList,
       {
@@ -83,10 +85,7 @@ const AddDocument = () => {
         InputFileTypes: [],
       },
     ]);
-    //   let emptyArr = []
-    // setFileArr(emptyArr)
-    };
-    
+  };
 
   const HandleFileType = (documentIndex, format) => {
     const updatedDocumentList = documentList.map((doc, index) => {
@@ -106,22 +105,20 @@ const AddDocument = () => {
 
   const deleteEachDoc = (index) => {
     setDocumentList(documentList.filter((_, i) => i !== index));
-    };
+  };
 
-//     const handleDocumentNameChange = (e, index)=>{
-//         const { name, value } = e.target;
-//         const list = [...documentList.documentName];
-//         list[index][name] = value;
-//         setDocumentList(...documentList, documentName : list)
-    
-// }
-    
+  //     const handleDocumentNameChange = (e, index)=>{
+  //         const { name, value } = e.target;
+  //         const list = [...documentList.documentName];
+  //         list[index][name] = value;
+  //         setDocumentList(...documentList, documentName : list)
+
+  // }
 
   return (
     <div>
       {documentList?.map((doc, index) => (
-          <Wrapper key={index}
-          onSubmit = {handleSubmit(submitForm)}>
+        <Wrapper key={index} onSubmit={handleSubmit(submitForm)}>
           <TopWrapper>
             <Label>Document {index + 1}</Label>
             {documentList.length > 1 && (
@@ -153,8 +150,7 @@ const AddDocument = () => {
                     type="text"
                     name="title"
                     register={register}
-                                  errorMessage={errors.title?.message}
-                                  value
+                    errorMessage={errors.title?.message}
                   />
                 </InputWrapper>
               </InputTagWrapper>
@@ -184,7 +180,7 @@ const AddDocument = () => {
                 </ImgContainer>
                 <TextContainer>Add New document</TextContainer>
               </Addcontainer>
-              <DoneWrapper type ='submit'> Done</DoneWrapper>
+              <DoneWrapper type="submit"> Done</DoneWrapper>
             </AddWrapper>
           )}
         </Wrapper>

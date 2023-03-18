@@ -8,7 +8,8 @@ import ServiceTabbedNavigation from "components/tabbedDocument";
 import TemplateCard from "components/cards/TemplateCard";
 const Test = () => {
   return (
-    <div >
+    <div>
+      <TemplateCard />
       <ServiceTabbedNavigation/>
     </div>
   );
