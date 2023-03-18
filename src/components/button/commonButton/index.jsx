@@ -17,6 +17,7 @@ const CommonButton = ({
   component,
   type,
   loading,
+  LoadingIcon,
 }) => {
   return (
     <ButtonContainer
@@ -27,7 +28,7 @@ const CommonButton = ({
       type={type || "button"}
     >
       {loading ? (
-        <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
+        LoadingIcon || <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
       ) : (
         <>
           {LeftIcon && <LeftIcon size={20} color={leftIconColor || "white"} />}

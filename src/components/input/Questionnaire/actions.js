@@ -51,7 +51,7 @@ export const useActions = ({
 
   // Validates the length of each option
   const validateEmptyOptions = () => {
-    if ((selectedType === "checkbox" || selectedType === "radio") && optionsArray.length < 2) {
+    if (selectedType === "checkbox" || selectedType === "radio") {
       if (optionsArray.some((el) => el.trim() === "")) {
         dispatch({ type: "setOptionsError", payload: "Option cannot be empty" });
         return false;
@@ -97,11 +97,15 @@ export const useActions = ({
     dispatch({ type: "setOptionsArray", payload: optionsArrayCopy });
   };
 
-  // Updates options valule when selected question type is checkbox or radio
+  // Updates options values when selected question type is checkbox or radio
   const updateOptionValue = (index, value) => {
     let optionsCopy = [...optionsArray];
     optionsCopy[index] = value;
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
+    if (value !== "") {
+      if (!validateOptions()) return;
+      dispatch({ type: "setOptionsError", payload: "" });
+    }
   };
 
   // Toggles compulsory
@@ -110,17 +114,26 @@ export const useActions = ({
   };
 
   // Submits the form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let questionValid = validateQuestion(question);
     let optionsValid = validateOptions() && validateEmptyOptions();
     if (!questionValid || !optionsValid) return;
-    let response = review ? handleUpdateQuestion(state) : handleQuestionSubmit(state);
+    let response = review ? await handleUpdateQuestion(state) : await handleQuestionSubmit(state);
     if (response?.data) {
-      dispatch({ type: "setQuestion", payload: "" });
+      resetFields();
     } else {
       handleError(response?.error);
     }
+  };
+
+  const resetFields = () => {
+    dispatch({ type: "setQuestion", payload: "" });
+    dispatch({ type: "setOptionsArray", payload: [""] });
+    dispatch({ type: "setSelectedType", payload: "input" });
+    dispatch({ type: "setRequired", payload: false });
+    dispatch({ type: "setQuestionError", payload: "" });
+    dispatch({ type: "setOptionsError", payload: "" });
   };
 
   // Hides form

@@ -31,6 +31,7 @@ const Questionnaire = ({
           handleUpdateQuestion={handleUpdateQuestion}
           info={info}
           review={review}
+          disabled={disabled}
           setDisabled={setDisabled}
           questionNumber={review ? index + 1 : lastQuestion}
         />

@@ -45,14 +45,20 @@ const ServicesModal = ({
       <ServiceForms progress={progress}>
         <InfoSection
           clickedService={clickedService}
-          refetch={refetch}
+          refetchServices={refetch}
           disable={disable}
           setOpen={setOpen}
           mode={mode}
           serviceId={serviceId}
           service={clickedService}
         />
-        <FormSection setOpen={setOpen} service={clickedService} serviceId={serviceId} mode={mode} />
+        <FormSection
+          setOpen={setOpen}
+          service={clickedService}
+          refetchServices={refetch}
+          serviceId={serviceId}
+          mode={mode}
+        />
         <DocsSection />
       </ServiceForms>
     </Modal2>

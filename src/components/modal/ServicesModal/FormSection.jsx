@@ -10,7 +10,7 @@ import {
   useDeleteServiceFormFieldMutation,
 } from "services/staffService";
 
-const FormSection = ({ service, setOpen, serviceId, mode }) => {
+const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => {
   const { data, refetch } = useViewServiceQuery(serviceId);
   const [addFormField, addState] = useAddServiceFormFieldMutation();
   const [deleteFormField, deleteState] = useDeleteServiceFormFieldMutation();
@@ -19,15 +19,16 @@ const FormSection = ({ service, setOpen, serviceId, mode }) => {
     service,
     addFormField,
     deleteFormField,
+    refetchServices,
+    refetchService: refetch,
   });
 
   const handleQuestionSubmit = async (formData) => {
-    await handleServiceFormFieldAdd(formData);
-    refetch();
+    return await handleServiceFormFieldAdd(formData);
   };
 
-  const handleDeleteQuestion = (formData) => {
-    console.log("Question Deleted", formData);
+  const handleDeleteQuestion = async (info) => {
+    return await handleServiceFormFieldDelete(info);
   };
 
   const handleUpdateQuestion = (formData) => {
@@ -56,7 +57,6 @@ const FormSection = ({ service, setOpen, serviceId, mode }) => {
           handleQuestionSubmit={handleQuestionSubmit}
           handleDeleteQuestion={handleDeleteQuestion}
           handleUpdateQuestion={handleUpdateQuestion}
-          handleServiceFormFieldDelete={handleServiceFormFieldDelete}
           deleteState={deleteState}
         />
       ))}

@@ -23,6 +23,7 @@ const QuestionEdit = ({
   questionNumber,
   review,
   info,
+  disabled,
   setDisabled,
   handleQuestionSubmit,
   handleUpdateQuestion,
@@ -31,7 +32,7 @@ const QuestionEdit = ({
 
   const optionsRef = useRef(null);
 
-  const { selectedType, optionsArray, questionError, optionsError, done } = state;
+  const { question, selectedType, optionsArray, questionError, optionsError, done } = state;
 
   const {
     otherClicked,
@@ -59,13 +60,19 @@ const QuestionEdit = ({
     focusLastOption();
   }, [selectedType]);
 
-  useEffect(() => {}, []);
-
-  let hideFormView = !done || questionError || optionsError;
+  // Populates the Question info
+  useEffect(() => {
+    if (review && !disabled) {
+      dispatch({ type: "setQuestion", payload: info?.fieldQuestion });
+      dispatch({ type: "setRequired", payload: info?.fieldRequired });
+      dispatch({ type: "setSelectedType", payload: info?.fieldType });
+      dispatch({ type: "setOptionsArray", payload: info?.fieldOptions });
+    }
+  }, [disabled]);
 
   return (
     <QuestionForm onSubmit={handleSubmit}>
-      {hideFormView && (
+      {!done && (
         <QuestionInfoWrapper>
           <Question>
             <InputWithLabel
@@ -76,6 +83,7 @@ const QuestionEdit = ({
               name="name"
               inputClass="input-class"
               containerStyle="input-container-class"
+              value={state.question}
               onChange={handleQuestion}
               errorMessage={questionError}
             />
@@ -114,7 +122,7 @@ const QuestionEdit = ({
 
           {selectedType === "checkbox" && (optionsArray.length > 0 || optionsError) && (
             <QuestionOptions ref={optionsRef}>
-              <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>
+              {optionsError && <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>}
               {optionsArray?.map((text, index) => (
                 <Option
                   type="checkbox"
@@ -182,7 +190,14 @@ const QuestionEdit = ({
               action={() => dispatch({ type: "setDone", payload: false })}
               id="addnew-submit"
             />
-            {hideFormView && <CommonButton text="Done" type="submit" id="done-submit" />}
+            {!done && (
+              <CommonButton
+                text="Done"
+                type={question ? "submit" : "button"}
+                action={() => (question ? "" : handleDone())}
+                id="done-submit"
+              />
+            )}
           </>
         )}
       </SubmitButtons>

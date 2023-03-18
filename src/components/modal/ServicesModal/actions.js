@@ -6,8 +6,10 @@ export const useActions = ({
   updateService,
   addFormField,
   updateFormField,
+  deleteFormField,
   service,
-  refetch,
+  refetchServices,
+  refetchService,
   setOpen,
   setValue,
   mode,
@@ -59,7 +61,7 @@ export const useActions = ({
     if (data) {
       setOpen("add", response.data?.serviceId, 50);
       scrollTo(formRef);
-      refetch();
+      refetchServices();
     } else {
       handleError(error);
     }
@@ -74,7 +76,7 @@ export const useActions = ({
     if (data) {
       setOpen(mode, response.data?.serviceId, 50);
       scrollTo(formRef);
-      refetch();
+      refetchServices();
     } else {
       handleError(error);
     }
@@ -84,8 +86,12 @@ export const useActions = ({
   const handleServiceFormFieldAdd = async (formData) => {
     let payload = getFormPayload(formData);
     let response = await addFormField({ ...payload });
+    let data = response?.data;
     let error = response?.error;
-    if (error) handleError(error);
+    if (data) {
+      refetchService();
+      return response;
+    } else handleError(error);
   };
 
   // Update form question
@@ -101,8 +107,19 @@ export const useActions = ({
     }
   };
 
-  const handleServiceFormFieldDelete = async (formInfo) => {
-    console.log(formInfo);
+  const handleServiceFormFieldDelete = async (info) => {
+    let payload = {
+      serviceId: service.serviceId,
+      fieldCode: info.fieldCode,
+    };
+    let response = await deleteFormField(payload);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      refetchService();
+    } else {
+      handleError(error);
+    }
   };
 
   // This is attached to category dropdown onChange

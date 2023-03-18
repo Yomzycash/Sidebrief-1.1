@@ -15,7 +15,7 @@ import { buttonContainerStyles, buttonStyles, InputsWrapper, Form } from "./styl
 import { useActions } from "./actions";
 import { useGetSingleServiceQuery } from "services/staffService";
 
-const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
+const InfoSection = ({ disable, refetchServices, setOpen, mode, service }) => {
   const [servicesCountries, setServicesCountries] = useState([{ value: "", label: "" }]);
   const [servicesCategories, setServicesCategories] = useState([{ value: "", label: "" }]);
   const [serviceCurrencies, setServiceCurrencies] = useState([{ value: "", label: "" }]);
@@ -45,7 +45,7 @@ const InfoSection = ({ disable, refetch, setOpen, mode, service }) => {
     addService,
     updateService,
     service,
-    refetch,
+    refetchServices,
     setOpen,
     setValue,
     mode,

@@ -23,8 +23,17 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, delet
 
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
+  let confirmed = confirmValue === "delete";
+
   const handleDeleteQuestion = () => {
-    deleteAction(info?.fieldCode);
+    if (confirmed) {
+      deleteAction(info);
+      deleteInputRef.current.blur();
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleDeleteQuestion();
   };
 
   useEffect(() => {
@@ -53,6 +62,10 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, delet
               LeftIcon={DeleteIcon}
               leftIconColor="#ed4e3a"
               action={() => setConfirm(true)}
+              loading={deleteState.isLoading}
+              LoadingIcon={
+                <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
+              }
             />
           )}
           {confirm && (
@@ -61,18 +74,16 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, delet
                 ref={deleteInputRef}
                 type="text"
                 placeholder="Type DELETE to confirm"
+                value={confirmValue}
                 onChange={(e) => setConfirmValue(e.target.value.toLowerCase())}
                 onBlur={() => setConfirm(false)}
+                onKeyDown={handleKeyDown}
               />
-              {deleteState?.isLoading ? (
-                <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
-              ) : (
-                <DeleteIcon
-                  width={11}
-                  color={confirmValue === "delete" || confirm === false ? "#ed4e3a" : "#c68181"}
-                  onClick={handleDeleteQuestion}
-                />
-              )}
+              <DeleteIcon
+                width={11}
+                color={confirmed ? "#ed4e3a" : "#c68181"}
+                onMouseDown={handleDeleteQuestion}
+              />
             </DeleteWrapper>
           )}
         </ReviewTopRight>
