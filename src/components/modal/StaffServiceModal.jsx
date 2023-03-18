@@ -16,6 +16,8 @@ import QuestionnaireInput from "components/input/QuestionnaireInput";
 import ServiceTabbedNavigation  from "components/tabbedDocument"
 import AddDocument from "containers/AddDocument";
 import AddTemplate from "../../containers/AddTemplate";
+import Download from "components/File/Download"
+import Upload from "components/File/Upload"
 
 const ServicesModal = ({
   cardAction,
@@ -145,7 +147,9 @@ const ServicesModal = ({
       handleDelete={() => handleServiceDelete(serviceInfo)}
       deleteState={deleteState}
     >
-      <ServiceTabbedNavigation />
+      {/* <ServiceTabbedNavigation /> */}
+      <Download/>
+      <Upload/>
     </Modal1>
   );
 };

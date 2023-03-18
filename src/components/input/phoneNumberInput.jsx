@@ -87,12 +87,18 @@ const NumberInput = ({
       >
         <PhoneInput
           country={"ng"}
+          // countryCallingCodeEditable={false}
           value={value}
           onChange={onChange}
           containerStyle={{
             height: "100%",
             borderRadius: "20px",
           }}
+          // inputProps={{
+          //   name: 'phone',
+          //   required: true,
+          //   type: 'tel',
+          // }}
           inputStyle={{
             paddingLeft: "clamp(60px, 4vw, 65px)",
             width: "100%",
