@@ -187,7 +187,10 @@ const QuestionEdit = ({
               text="Add New Question"
               LeftIcon={AddIcon}
               type={done ? "button" : "submit"}
-              action={() => dispatch({ type: "setDone", payload: false })}
+              action={() => {
+                dispatch({ type: "setDone", payload: false });
+                dispatch({ type: "setQuestionError", payload: "" });
+              }}
               id="addnew-submit"
             />
             {!done && (
