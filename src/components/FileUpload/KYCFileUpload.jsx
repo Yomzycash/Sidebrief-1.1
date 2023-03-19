@@ -37,7 +37,6 @@ import {
   DetailsPage,
   KYCPage,
 } from "./styled";
-import { useLocation } from "react-router-dom";
 
 const KYCFileUpload = ({
   TopText,
