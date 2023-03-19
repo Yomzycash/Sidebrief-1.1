@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import QuestionReview from "./QuestionReview";
+import QuestionView from "./QuestionView";
 import QuestionEdit from "./QuestionEdit";
 
 const Questionnaire = ({
@@ -18,7 +18,7 @@ const Questionnaire = ({
   return (
     <>
       {disabled ? (
-        <QuestionReview
+        <QuestionView
           setDisabled={setDisabled}
           info={info}
           questionNumber={index + 1}

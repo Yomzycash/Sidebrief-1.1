@@ -59,7 +59,13 @@ const ServicesModal = ({
           serviceId={serviceId}
           mode={mode}
         />
-        <DocsSection />
+        <DocsSection
+          setOpen={setOpen}
+          service={clickedService}
+          refetchServices={refetch}
+          serviceId={serviceId}
+          mode={mode}
+        />
       </ServiceForms>
     </Modal2>
   );

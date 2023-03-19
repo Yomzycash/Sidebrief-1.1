@@ -6,7 +6,7 @@ import {
   OtherOption,
   OtherSelect,
   RadioBullet,
-} from "./stylex";
+} from "./styled";
 import { MdClear } from "react-icons/md";
 import { InvisibleBackDrop } from "../styled";
 

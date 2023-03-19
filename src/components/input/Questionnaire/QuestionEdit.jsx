@@ -11,7 +11,7 @@ import {
   ToggleWrapper,
   QuestionInfoWrapper,
   SubmitButtons,
-} from "./stylex";
+} from "./styled";
 import CommonButton from "components/button/commonButton";
 import Option from "./Option";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
@@ -80,7 +80,6 @@ const QuestionEdit = ({
               placeholder="Enter question here"
               labelStyle="input-label"
               type="text"
-              name="name"
               inputClass="input-class"
               containerStyle="input-container-class"
               value={state.question}

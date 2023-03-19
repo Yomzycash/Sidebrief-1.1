@@ -65,7 +65,7 @@ export const Form = styled.form`
   }
 `;
 
-export const FormSectionContainer = styled.div`
+export const SectionContainer = styled.div`
   display: flex;
   flex-flow: column;
   gap: 12px;

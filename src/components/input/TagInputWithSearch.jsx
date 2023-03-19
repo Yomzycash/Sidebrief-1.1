@@ -19,7 +19,7 @@ const TagInputWithSearch = ({
   noSuggestionText,
   fetchingText,
   fetchFailedText,
-  disabled
+  disabled,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -71,9 +71,7 @@ const TagInputWithSearch = ({
     setError("");
     setValue(value);
     setShowSuggestions(true);
-    let match = list.filter((element) =>
-      element.toLowerCase().includes(value.toLowerCase())
-    );
+    let match = list.filter((element) => element.toLowerCase().includes(value.toLowerCase()));
     setFilteredList(match);
   };
 
@@ -123,8 +121,7 @@ const TagInputWithSearch = ({
         let res = setSelected(value);
         if (res === "error") return;
         let valueCheck = list.filter(
-          (element) =>
-            element.trim().toLowerCase() === value.trim().toLowerCase()
+          (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
         );
         if (valueCheck.length !== 0) {
           setTags([...tags, ...valueCheck]);
@@ -156,7 +153,7 @@ const TagInputWithSearch = ({
       let res = setSelected(value);
       if (res === "error") return;
       setError("");
-      setValue('')
+      setValue("");
       setTags([...tags, value]);
       return;
     }
@@ -193,8 +190,7 @@ const TagInputWithSearch = ({
       <Tags>
         {tags.map((tag, index) => (
           <Tag key={index}>
-            <span>{tag}</span>{" "}
-            <MdClear size={20} onClick={() => handleTagDelete(tag)} />
+            <span>{tag}</span> <MdClear size={20} onClick={() => handleTagDelete(tag)} />
           </Tag>
         ))}
       </Tags>
@@ -208,13 +204,10 @@ const TagInputWithSearch = ({
             onBlur={() => setShowSuggestions(false)}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            disabled ={disabled}
+            disabled={disabled}
           />
           <div>
-            <IoIosArrowDown
-              size={16}
-              style={{ backgroundColor: "white", padding: "" }}
-            />
+            <IoIosArrowDown size={16} style={{ backgroundColor: "white", padding: "" }} />
           </div>
         </Input>
         {showSuggestions && (
@@ -308,6 +301,10 @@ const Input = styled.div`
     &:focus {
       border: 1px solid #00c3ff;
       /* box-shadow: -2px -2px 4px 2px #00c3ff28, 2px 2px 4px 2px #00c3ff28; */
+    }
+
+    &::placeholder {
+      opacity: 0.7;
     }
   }
   > div {

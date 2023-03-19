@@ -1,5 +1,5 @@
 import React from "react";
-import { buttonContainerStyles, buttonStyles, FormSectionContainer } from "./styled";
+import { buttonContainerStyles, buttonStyles, SectionContainer } from "./styled";
 import Questionnaire from "components/input/Questionnaire";
 import { CheckoutController } from "containers";
 import { useActions } from "./actions";
@@ -38,7 +38,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
   const handlePrev = () => {
     let infoRef = document.getElementById("staff-service-info");
     scrollTo(infoRef);
-    setOpen(mode, serviceId);
+    setOpen(mode, serviceId, 50);
   };
 
   const handleNext = () => {
@@ -47,7 +47,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
   };
 
   return (
-    <FormSectionContainer id="staff-service-form">
+    <SectionContainer id="staff-service-form">
       {data?.serviceForm?.map((el, index) => (
         <Questionnaire
           key={index}
@@ -78,7 +78,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
         // forwardDisable={disable}
         $modal
       />
-    </FormSectionContainer>
+    </SectionContainer>
   );
 };
 

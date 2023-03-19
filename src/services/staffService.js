@@ -331,37 +331,82 @@ export const staffApi = createApi({
 
     // Add service form field
     addServiceFormField: builder.mutation({
-      query: (values) => ({
+      query: (data) => ({
         url: `/services/add/formfield`,
         method: "POST",
-        body: values,
+        body: data,
+      }),
+    }),
+
+    // Update service form field
+    updateServiceFormField: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/formfield`,
+        method: "POST",
+        body: data,
       }),
     }),
 
     // Delete service form field
     deleteServiceFormField: builder.mutation({
-      query: (values) => ({
+      query: (data) => ({
         url: `/services/delete/formfield`,
         method: "POST",
-        body: values,
+        body: data,
+      }),
+    }),
+
+    // Add service required document
+    addServiceRequiredDoc: builder.mutation({
+      query: (data) => ({
+        url: `/services/add/requirement`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Update service required document
+    updateServiceRequiredDoc: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/requirement`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Delete service required document
+    deleteServiceRequiredDoc: builder.mutation({
+      query: (data) => ({
+        url: `/services/delete/requirement`,
+        method: "POST",
+        body: data,
       }),
     }),
 
     // Add service document template
     addServiceDocTemplate: builder.mutation({
-      query: (values) => ({
+      query: (data) => ({
         url: `/services/add/template`,
         method: "POST",
-        body: values,
+        body: data,
+      }),
+    }),
+
+    // Update service document template
+    updateServiceDocTemplate: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/template`,
+        method: "POST",
+        body: data,
       }),
     }),
 
     // delete service document template
     deleteServiceDocTemplate: builder.mutation({
-      query: (values) => ({
+      query: (data) => ({
         url: `/services/delete/template`,
         method: "POST",
-        body: values,
+        body: data,
       }),
     }),
 
@@ -469,14 +514,21 @@ export const {
   useGetAllBanksQuery,
 
   useAddServiceFormFieldMutation,
+  useUpdateServiceFormFieldMutation,
   useDeleteServiceFormFieldMutation,
 
+  useAddServiceRequiredDocMutation,
+  useUpdateServiceRequiredDocMutation,
+  useDeleteServiceRequiredDocMutation,
+
   useAddServiceDocTemplateMutation,
+  useUpdateServiceDocTemplateMutation,
   useDeleteServiceDocTemplateMutation,
 
   useAddServiceMutation,
   useUpdateServiceMutation,
   useDeleteServiceMutation,
+
   useGetSingleServiceQuery,
   useGetAllServicesQuery,
   useGetServicesByCategoryQuery,
