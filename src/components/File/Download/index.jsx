@@ -35,11 +35,7 @@ const Download = ({ icon, docType, fileExtension , action }) => {
 
     return (
         <DocumentSection>
-            <h2>
-                Documents
-            </h2>
             
-            <Paragraph>Download the following documents’ template (it will be required in the upload section)</Paragraph>
             <Document>
                 {DocContent.map((doc, id) => (
                     <DocumentDownload key={id}>

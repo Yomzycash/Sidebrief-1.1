@@ -36,7 +36,7 @@ const Upload = ({ icon, docType, fileExtension , action }) => {
 
     return (
         <DocumentSection>
-            <Paragraph>Upload the following Documents</Paragraph>
+         
             <Document>
                 {DocContent.map((doc, id) => (
                     <DocumentDownload key={id}>
@@ -46,7 +46,7 @@ const Upload = ({ icon, docType, fileExtension , action }) => {
                            {action && (<CommonButton text={"Download"} LeftIcon={DownloadWhite} /> )}  */}
                             <DocumentIcon /> 
                             <DocumentText>{doc.doctype}</DocumentText> 
-                            <SmallText>fileType: pdf, png, jpeg</SmallText>
+                            <SmallText>file type: pdf, png, jpeg</SmallText>
                             <CommonButton text={"Upload"} LeftIcon={UploadIcon} />
                         </DocumentFrame>
                     </DocumentDownload>

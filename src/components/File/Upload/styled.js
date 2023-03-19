@@ -1,6 +1,11 @@
 import styled from "styled-components"
 
-export const DocumentSection = styled.div``
+export const DocumentSection = styled.div`
+padding:33px 40px;
+border-width: 1px 1px 1px 1px;
+border-style: solid;
+border-color: #EDF1F7;
+`
 
 export const Paragraph = styled.p`
     font-size: 14px;

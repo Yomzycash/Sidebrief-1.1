@@ -8,14 +8,18 @@ import ServiceInfo from "./Services/ServiceInfo";
 import TemplateCard from "components/cards/TemplateCard";
 import Download from "../components/File/Download"
 import Upload from "../components/File/Upload"
+import ServiceDocument from "./Services/ServiceDocuments";
+import ReviewDocuments from "./Services/Review/ReviewDocuments";
 const Test = () => {
   return (
     <div>
-      <TemplateCard />
-      <ServiceTabbedNavigation/>
+     {/* <TemplateCard /> */}
+     
 
-      <Download />
-      <Upload/>
+      {/* <Download /> */}
+      {/* <Upload/>  */}
+    <ReviewDocuments/>
+
     </div>
   );
 };
