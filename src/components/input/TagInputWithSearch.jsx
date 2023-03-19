@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdClear } from "react-icons/md";
-import { ThreeDots } from "react-loading-icons";
 
 const TagInputWithSearch = ({
   label, // The input label
@@ -19,7 +18,7 @@ const TagInputWithSearch = ({
   noSuggestionText,
   fetchingText,
   fetchFailedText,
-  disabled
+  disabled,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -36,22 +35,24 @@ const TagInputWithSearch = ({
     if (initialValues) {
       setTags([...initialValues]);
     }
-  }, [initialValues?.length]);
+  }, [initialValues]);
 
   // This sets the select value (if available) on mounth
   useEffect(() => {
     if (initialValue) {
       setValue(initialValue);
     }
-  }, [initialValue?.length]);
+  }, [initialValue]);
 
   // console.log(initialValue);
   // console.log(initialValues);
 
   // Update list when it chages
+  const theList = useMemo(() => list, [list]);
+
   useEffect(() => {
-    setFilteredList(list);
-  }, [list.length]);
+    setFilteredList(theList);
+  }, [theList]);
 
   useEffect(() => {
     if (keyPressed === "ArrowDown") {
@@ -63,7 +64,7 @@ const TagInputWithSearch = ({
         suggestionContainer.current.scrollBy(0, -56);
       }
     }
-  }, [selectedIndex]);
+  }, [selectedIndex, filteredList.length, keyPressed]);
 
   // This function handles the input tag change event
   const handleChange = (e) => {
@@ -71,9 +72,7 @@ const TagInputWithSearch = ({
     setError("");
     setValue(value);
     setShowSuggestions(true);
-    let match = list.filter((element) =>
-      element.toLowerCase().includes(value.toLowerCase())
-    );
+    let match = list.filter((element) => element.toLowerCase().includes(value.toLowerCase()));
     setFilteredList(match);
   };
 
@@ -123,8 +122,7 @@ const TagInputWithSearch = ({
         let res = setSelected(value);
         if (res === "error") return;
         let valueCheck = list.filter(
-          (element) =>
-            element.trim().toLowerCase() === value.trim().toLowerCase()
+          (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
         );
         if (valueCheck.length !== 0) {
           setTags([...tags, ...valueCheck]);
@@ -156,7 +154,7 @@ const TagInputWithSearch = ({
       let res = setSelected(value);
       if (res === "error") return;
       setError("");
-      setValue('')
+      setValue("");
       setTags([...tags, value]);
       return;
     }
@@ -182,7 +180,7 @@ const TagInputWithSearch = ({
     if (getValue) {
       getValue(MultiSelect ? tags : value);
     }
-  }, [tags, value]);
+  }, [tags, value, MultiSelect, getValue]);
 
   return (
     <Container>
@@ -193,8 +191,7 @@ const TagInputWithSearch = ({
       <Tags>
         {tags.map((tag, index) => (
           <Tag key={index}>
-            <span>{tag}</span>{" "}
-            <MdClear size={20} onClick={() => handleTagDelete(tag)} />
+            <span>{tag}</span> <MdClear size={20} onClick={() => handleTagDelete(tag)} />
           </Tag>
         ))}
       </Tags>
@@ -208,13 +205,10 @@ const TagInputWithSearch = ({
             onBlur={() => setShowSuggestions(false)}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            disabled ={disabled}
+            disabled={disabled}
           />
           <div>
-            <IoIosArrowDown
-              size={16}
-              style={{ backgroundColor: "white", padding: "" }}
-            />
+            <IoIosArrowDown size={16} style={{ backgroundColor: "white", padding: "" }} />
           </div>
         </Input>
         {showSuggestions && (

@@ -8,6 +8,7 @@ export const ComplyApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().UserDataReducer.userInfo.token;
       headers.set("Access-Control-Allow-Origin", "*");
+      headers.set("Content-type", "application/json; charset=UTF-8");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -15,7 +16,7 @@ export const ComplyApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["CountryService"],
+  tagTypes: ["CountryService", "Services"],
 
   endpoints: (builder) => ({
     viewComply: builder.mutation({
@@ -44,13 +45,13 @@ export const ComplyApi = createApi({
         };
       },
       providesTags: ["CountryService"],
-      invalidatesTags: "CountryService",
+      invalidatesTags: ["CountryService"],
     }),
 
-        // get all countries
-        getAllCountries: builder.query({
-          query: () => "/countries",
-        }),
+    // get all countries
+    getAllCountries: builder.query({
+      query: () => "/countries",
+    }),
 
     // create new compliance / service
     createCompliance: builder.mutation({
@@ -65,6 +66,18 @@ export const ComplyApi = createApi({
         },
       }),
     }),
+
+    // view compliance
+    viewCompliance: builder.query({
+      query: (complyCode) => ({
+        url: "/comply/view",
+        method: "POST",
+        body: {
+          complyCode,
+        },
+      }),
+    }),
+
     //get user reward
     viewService: builder.query({
       query: (serviceId) => `services/view/${serviceId}`,
@@ -112,7 +125,6 @@ export const ComplyApi = createApi({
   }),
 });
 
-
 export const {
   useViewComplyMutation,
   useLazyGetServicesByCountryQuery,
@@ -123,4 +135,5 @@ export const {
   useViewServiceDocumentMutation,
   useDeleteServiceDocumentMutation,
   useAddServicePaymentMutation,
+  useViewComplianceQuery,
 } = ComplyApi;
