@@ -1,60 +1,28 @@
-import React from 'react'
-import { 
-    Document,
-    DocumentSection,
-    DocumentDownload,
-    DocumentFrame,
-    DocumentText,
-    Divider,
-    Paragraph,
-} from "./styled"
+import React from "react";
+import { DocumentDownload, DocumentFrame, DocumentText } from "./styled";
 import { CommonButton } from "components/button";
-import { ReactComponent as DownloadWhite } from "../../../../src/asset/svg/DownloadWhite.svg"
-import { ReactComponent as DocumentIcon } from "../../../../src/asset/svg/Document.svg"
+import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
+import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
+import { downLoadImage } from "utils/staffHelper";
 
-const Download = ({ icon, docType, fileExtension , action }) => {
-    const DocContent = [
-       { 
-            "id":"1",
-            "doctype": "National Identification Number"
-        },
-        {
-            "id":"2",
-            "doctype": "Voter's Card"
-        },
-        {
-            "id":"3",
-            "doctype": "Passport"
-        },
-        {
-            "id":"4",
-            "doctype": "Court Affidavit"
-        }
-    
-    ]
+const Download = ({ icon, docType, fileUrl, fileExtension }) => {
+  const download = () => {
+    console.log(fileUrl);
+    downLoadImage(fileUrl, docType);
+  };
 
-    return (
-        <DocumentSection>
-            
-            <Document>
-                {DocContent.map((doc, id) => (
-                    <DocumentDownload key={id}>
-                        <DocumentFrame>
-                           {/* { icon && <DocumentIcon /> } 
-                           { docType && <DocumentText>{doc.doctype}</DocumentText> }  
-                           {action && <CommonButton text={"Download"} LeftIcon={DownloadWhite} />} */}
-                            <DocumentIcon /> 
-                            <DocumentText>{doc.doctype}</DocumentText>
-                            <CommonButton text={"Download"} LeftIcon={DownloadWhite} />
-                        </DocumentFrame>
-                    </DocumentDownload>
-                ))}
-                
-            </Document>
-            
-        
-        </DocumentSection>
-    )
-}
+  return (
+    <DocumentDownload>
+      <DocumentFrame>
+        {/* { icon && <DocumentIcon /> } 
+            { docType && <DocumentText>{doc.doctype}</DocumentText> }  
+            {action && <CommonButton text={"Download"} LeftIcon={DownloadWhite} />} */}
+        <DocumentIcon />
+        <DocumentText>{docType}</DocumentText>
+        <CommonButton text={"Download"} LeftIcon={DownloadWhite} action={download} />
+      </DocumentFrame>
+    </DocumentDownload>
+  );
+};
 
 export default Download;

@@ -5,19 +5,18 @@ import Modal1 from "layout/modal1";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  useGetAllCountriesQuery,
-  useGetAllServicesQuery,
-} from "services/staffService";
+import { useGetAllCountriesQuery, useGetAllServicesQuery } from "services/staffService";
 import { ServicesSchema } from "utils/config";
 import { Switch } from "components/switch";
 import styled from "styled-components";
 import QuestionnaireInput from "components/input/QuestionnaireInput";
-import ServiceTabbedNavigation  from "components/tabbedDocument"
+import ServiceTabbedNavigation from "components/tabbedDocument";
 import AddDocument from "containers/AddDocument";
-import AddTemplate from "../../containers/AddTemplate";
-import Download from "components/File/Download"
-import Upload from "components/File/Upload"
+import AddTemplate from "containers/AddTemplate";
+import Download from "components/File/Download";
+import Upload from "components/File/Upload";
+import { DocumentSection, Document } from "./styles";
+import { DocContentDownload } from "./constants";
 
 const ServicesModal = ({
   cardAction,
@@ -34,16 +33,10 @@ const ServicesModal = ({
   deleteState,
 }) => {
   const [disable, setDisable] = useState(disableAll);
-  const [servicesCountries, setServicesCountries] = useState([
-    { value: "", label: "" },
-  ]);
+  const [servicesCountries, setServicesCountries] = useState([{ value: "", label: "" }]);
 
-  const [servicesCategories, setServicesCategories] = useState([
-    { value: "", label: "" },
-  ]);
-  const [serviceCurrencies, setServiceCurrencies] = useState([
-    { value: "", label: "" },
-  ]);
+  const [servicesCategories, setServicesCategories] = useState([{ value: "", label: "" }]);
+  const [serviceCurrencies, setServiceCurrencies] = useState([{ value: "", label: "" }]);
 
   const countries = useGetAllCountriesQuery();
   const { data } = useGetAllServicesQuery();
@@ -78,7 +71,6 @@ const ServicesModal = ({
     );
   }, [countries.data]);
 
-
   // This is attached to category dropdown onChange
   const handleCategoryChange = (value) => {
     var string = Object.values(value)[0];
@@ -105,21 +97,21 @@ const ServicesModal = ({
     });
     let newCategory = eachResponse?.map((servicesCategory) => ({
       value: servicesCategory,
-      label:servicesCategory
-    }))
-    setServicesCategories(newCategory)
-  }, [data])
+      label: servicesCategory,
+    }));
+    setServicesCategories(newCategory);
+  }, [data]);
 
-  // 
+  //
   useEffect(() => {
-    if(serviceInfo && cardAction === "edit"){
-      setValue("name", serviceInfo.serviceName,  { shouldValidate: true });
-      setValue("description", serviceInfo.serviceDescription,  { shouldValidate: true });
-      setValue("category", serviceInfo.serviceCategory,  { shouldValidate: true });
-      setValue("country", serviceInfo.serviceCountry,  { shouldValidate: true });
+    if (serviceInfo && cardAction === "edit") {
+      setValue("name", serviceInfo.serviceName, { shouldValidate: true });
+      setValue("description", serviceInfo.serviceDescription, { shouldValidate: true });
+      setValue("category", serviceInfo.serviceCategory, { shouldValidate: true });
+      setValue("country", serviceInfo.serviceCountry, { shouldValidate: true });
       setValue("currency", serviceInfo.serviceCurrency, { shouldValidate: true });
-      setValue("price", serviceInfo.servicePrice,  { shouldValidate: true });
-      setValue("timeline", serviceInfo.serviceTimeline,  { shouldValidate: true });
+      setValue("price", serviceInfo.servicePrice, { shouldValidate: true });
+      setValue("timeline", serviceInfo.serviceTimeline, { shouldValidate: true });
     } else {
       setValue("name", "");
       setValue("description", "");
@@ -130,7 +122,7 @@ const ServicesModal = ({
       setValue("timeline", "");
     }
     setDisable(disableAll);
-  }, [serviceInfo, cardAction])
+  }, [serviceInfo, cardAction]);
 
   return (
     <Modal1
@@ -148,8 +140,14 @@ const ServicesModal = ({
       deleteState={deleteState}
     >
       {/* <ServiceTabbedNavigation /> */}
-      <Download/>
-      <Upload/>
+      <DocumentSection>
+        <Document>
+          {DocContentDownload.map((doc, id) => (
+            <Download key={id} docType={doc.doctype} fileUrl={doc.fileUrl} />
+          ))}
+        </Document>
+      </DocumentSection>
+      <Upload />
     </Modal1>
   );
 };
