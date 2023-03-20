@@ -18,7 +18,7 @@ const Test = () => {
 
       {/* <Download /> */}
       {/* <Upload/>  */}
-    <ReviewDocuments/>
+    <ServiceDocument/>
 
     </div>
   );

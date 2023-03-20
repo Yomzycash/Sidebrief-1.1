@@ -17,7 +17,7 @@ export const Document = styled.div`
 `
 export const DocumentDownload = styled.div`
     width: 100%;
-    /* max-width: 195px; */
+    max-width: 195px; 
     min-height: 120px;
     max-height: 238px;
     background: #ffffff;
