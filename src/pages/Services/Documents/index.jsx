@@ -20,7 +20,7 @@ const ServiceDocuments = () => {
   const navigate = useNavigate();
   const viewService = useViewServiceQuery(serviceId);
 
-  const [addServiceDocument, { isLoading, isSuccess }] = useAddServiceDocumentMutation();
+  const [addServiceDocument] = useAddServiceDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
   const handlePrev = () => {
     navigate(-1);

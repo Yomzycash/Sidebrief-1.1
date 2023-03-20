@@ -5,6 +5,7 @@ import svgrPlugin from "vite-plugin-svgr";
 import eslint from "vite-plugin-eslint";
 import legacy from "@vitejs/plugin-legacy";
 import EnvironmentPlugin from "vite-plugin-environment";
+import babel from "vite-plugin-babel";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +14,7 @@ export default defineConfig({
 		viteJsconfigPaths(),
 		svgrPlugin(),
 		eslint(),
+		babel(),
 		EnvironmentPlugin(
 			"all",
 			{
