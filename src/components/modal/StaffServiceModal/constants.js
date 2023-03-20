@@ -28,3 +28,22 @@ export const DocContentDownload = [
     fileExtension: "jpg",
   },
 ];
+
+export const DocContentUpload = [
+  {
+    id: "1",
+    doctype: "National Identification Number",
+  },
+  {
+    id: "2",
+    doctype: "Voter's Card",
+  },
+  {
+    id: "3",
+    doctype: "Passport",
+  },
+  {
+    id: "4",
+    doctype: "Court Affidavit",
+  },
+];

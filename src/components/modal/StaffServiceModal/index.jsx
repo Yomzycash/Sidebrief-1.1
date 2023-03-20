@@ -13,10 +13,9 @@ import QuestionnaireInput from "components/input/QuestionnaireInput";
 import ServiceTabbedNavigation from "components/tabbedDocument";
 import AddDocument from "containers/AddDocument";
 import AddTemplate from "containers/AddTemplate";
-import Download from "components/File/Download";
-import Upload from "components/File/Upload";
+import { Download, Upload } from "components/File";
 import { DocumentSection, Document } from "./styles";
-import { DocContentDownload } from "./constants";
+import { DocContentDownload, DocContentUpload } from "./constants";
 
 const ServicesModal = ({
   cardAction,
@@ -142,12 +141,18 @@ const ServicesModal = ({
       {/* <ServiceTabbedNavigation /> */}
       <DocumentSection>
         <Document>
-          {DocContentDownload.map((doc, id) => (
-            <Download key={id} docType={doc.doctype} fileUrl={doc.fileUrl} />
+          {DocContentDownload.map((doc) => (
+            <Download key={doc.id} docType={doc.doctype} fileUrl={doc.fileUrl} />
           ))}
         </Document>
       </DocumentSection>
-      <Upload />
+      <DocumentSection>
+        <Document>
+          {DocContentUpload.map((doc) => (
+            <Upload key={doc.id} docType={doc.doctype} />
+          ))}
+        </Document>
+      </DocumentSection>
     </Modal1>
   );
 };

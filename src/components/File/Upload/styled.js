@@ -1,31 +1,5 @@
 import styled from "styled-components";
 
-export const DocumentSection = styled.div`
-  padding: 33px 40px;
-  border-width: 1px 1px 1px 1px;
-  border-style: solid;
-  border-color: #edf1f7;
-`;
-
-export const Paragraph = styled.p`
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 21px;
-  letter-spacing: 0px;
-  text-align: left;
-  padding-top: 20px;
-`;
-export const Divider = styled.hr`
-  width: 100%;
-  color: #edf1f6;
-  // padding-top:5px;
-`;
-
-export const Document = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-`;
 export const DocumentDownload = styled.div`
   width: 100%;
   max-width: 195px;
@@ -43,6 +17,7 @@ export const DocumentDownload = styled.div`
   justify-content: center;
   gap: 17px;
 `;
+
 export const DocumentFrame = styled.div`
   display: flex;
   flex-direction: column;
@@ -57,6 +32,7 @@ export const DocumentText = styled.p`
   font-weight: 500;
   text-align: center;
 `;
+
 export const SmallText = styled.h5`
   font-size: 8px;
   color: #4e5152;

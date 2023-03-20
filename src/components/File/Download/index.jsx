@@ -5,7 +5,7 @@ import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
 import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
 import { downLoadImage } from "utils/staffHelper";
 
-const Download = ({ icon, docType, fileUrl, fileExtension }) => {
+export const Download = ({ icon, docType, fileUrl, fileExtension }) => {
   const download = () => {
     console.log(fileUrl);
     downLoadImage(fileUrl, docType);
@@ -24,5 +24,3 @@ const Download = ({ icon, docType, fileUrl, fileExtension }) => {
     </DocumentDownload>
   );
 };
-
-export default Download;
