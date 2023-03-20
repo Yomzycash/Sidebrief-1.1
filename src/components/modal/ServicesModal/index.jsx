@@ -25,10 +25,6 @@ const ServicesModal = ({
   let mode = dialog.mode;
   let serviceId = dialog.serviceId;
 
-  // const service = useGetSingleServiceQuery(serviceId, {
-  //   skip: !serviceId ? true : false,
-  // });
-
   let title = mode === "edit" ? "Update Service" : "Add New Service";
 
   return (

@@ -1,8 +1,8 @@
 export const initialState = {
-  documentName: "",
-  documentDescription: "",
+  templateName: "",
+  templateLink: "",
   nameError: "",
-  descriptionError: "",
+  linkError: "",
   done: false,
   doneClicked: false,
   updateClicked: false,
@@ -10,25 +10,25 @@ export const initialState = {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "setDocumentName":
+    case "setTemplateName":
       return {
         ...state,
-        documentName: action.payload,
+        templateName: action.payload,
       };
-    case "setDocumentDescription":
+    case "setTemplateLink":
       return {
         ...state,
-        documentDescription: action.payload,
+        templateLink: action.payload,
       };
     case "setNameError":
       return {
         ...state,
         nameError: action.payload,
       };
-    case "setDescriptionError":
+    case "setLinkError":
       return {
         ...state,
-        descriptionError: action.payload,
+        linkError: action.payload,
       };
     case "setDone":
       return {

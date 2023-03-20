@@ -1,39 +1,78 @@
-import React from "react";
-import { buttonContainerStyles, buttonStyles, SectionContainer } from "./styled";
-import AddDocument from "containers/AddDocument";
-import AddTemplate from "containers/AddTemplate";
+import React, { useMemo } from "react";
+import {
+  buttonContainerStyles,
+  buttonStyles,
+  SectionInfoContainer,
+  SectionContainer,
+} from "./styled";
 import SimpleTabNavBar from "components/TabNavBar/SimpleTabNavBar";
 import { CheckoutController } from "containers";
 import { useViewServiceQuery } from "services/complyService";
 import { useActions } from "./actions";
 import ServiceDocument from "components/input/ServiceDocuments";
-import { useDeleteServiceRequiredDocMutation } from "services/staffService";
+import {
+  useAddServiceRequiredDocMutation,
+  useUpdateServiceRequiredDocMutation,
+  useDeleteServiceRequiredDocMutation,
+  useAddServiceDocTemplateMutation,
+  useUpdateServiceDocTemplateMutation,
+  useDeleteServiceDocTemplateMutation,
+} from "services/staffService";
+import ServiceDocumentTemplate from "components/input/ServiceDocuments/Template";
 
 const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => {
   const { data, refetch } = useViewServiceQuery(serviceId);
-  const [deleteDocument, deleteState] = useDeleteServiceRequiredDocMutation();
 
-  const { scrollTo, handleServiceDocumentAdd, handleServiceDocumentDelete } = useActions({
+  const [addDocument, addDocumentState] = useAddServiceRequiredDocMutation();
+  const [updateDocument, updateDocumentState] = useUpdateServiceRequiredDocMutation();
+  const [deleteDocument, deleteDocumentState] = useDeleteServiceRequiredDocMutation();
+
+  const [addTemplate, addTemplateState] = useAddServiceDocTemplateMutation();
+  const [updateTemplate, updateTemplateState] = useUpdateServiceDocTemplateMutation();
+  const [deleteTemplate, deleteTemplateState] = useDeleteServiceDocTemplateMutation();
+
+  const {
+    scrollTo,
+    handleServiceDocumentAdd,
+    handleServiceDocumentUpdate,
+    handleServiceDocumentDelete,
+    handleServiceTemplateAdd,
+    handleServiceTemplateUpdate,
+    handleServiceTemplateDelete,
+  } = useActions({
     service,
+    addDocument,
+    updateDocument,
+    deleteDocument,
+    addTemplate,
+    updateTemplate,
+    deleteTemplate,
     refetchServices,
     refetchService: refetch,
   });
 
-  const tabs = [
-    { label: "Required Documents", content: <AddDocument /> },
-    { label: "Template Information", content: <AddTemplate /> },
-  ];
-
   const handleDocumentSubmit = async (formData) => {
     return await handleServiceDocumentAdd(formData);
+  };
+
+  const handleUpdateDocument = async (formData) => {
+    return await handleServiceDocumentUpdate(formData);
   };
 
   const handleDeleteDocument = async (info) => {
     return await handleServiceDocumentDelete(info);
   };
 
-  const handleUpdateDocument = (formData) => {
-    console.log("Document Updated", formData);
+  const handleTemplateSubmit = async (formData) => {
+    return await handleServiceTemplateAdd(formData);
+  };
+
+  const handleDeleteTemplate = async (info) => {
+    return await handleServiceTemplateDelete(info);
+  };
+
+  const handleUpdateTemplate = async (formData) => {
+    return await handleServiceTemplateUpdate(formData);
   };
 
   const handlePrev = () => {
@@ -47,6 +86,16 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
     scrollTo(docsRef);
   };
 
+  let serviceDocInfo = useMemo(
+    () =>
+      data?.serviceRequirements?.map((el) => ({
+        templateName: el?.requirementName,
+        templateLink:
+          data?.serviceTemplate?.find((each) => each?.templateName === el?.requirementName) || "",
+      })),
+    [data?.serviceRequirements]
+  );
+  console.log("Meo", serviceDocInfo);
   return (
     <SectionContainer id="staff-service-docs">
       <SimpleTabNavBar
@@ -54,7 +103,7 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
           {
             label: "Required Documents",
             content: (
-              <>
+              <SectionInfoContainer>
                 {data?.serviceRequirements?.map((el, index) => (
                   <ServiceDocument
                     key={index}
@@ -64,7 +113,8 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
                     handleDocumentSubmit={handleDocumentSubmit}
                     handleDeleteDocument={handleDeleteDocument}
                     handleUpdateDocument={handleUpdateDocument}
-                    deleteState={deleteState}
+                    deleteState={deleteDocumentState}
+                    updateState={updateDocumentState}
                   />
                 ))}
 
@@ -73,13 +123,37 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
                   handleUpdateDocument={handleUpdateDocument}
                   review={false}
                   lastDocument={data?.serviceRequirements?.length + 1}
+                  addState={addDocumentState}
                 />
-              </>
+              </SectionInfoContainer>
             ),
           },
           {
             label: "Template Document",
-            content: <></>,
+            content: (
+              <SectionInfoContainer>
+                {serviceDocInfo?.map((el, index) => (
+                  <ServiceDocumentTemplate
+                    key={index}
+                    index={index}
+                    info={el}
+                    review={false}
+                    handleTemplateSubmit={handleTemplateSubmit}
+                    handleDeleteTemplate={handleDeleteTemplate}
+                    handleUpdateTemplate={handleUpdateTemplate}
+                    deleteState={deleteTemplateState}
+                    updateState={updateTemplateState}
+                  />
+                ))}
+                {/* <ServiceDocumentTemplate
+                  handleTemplateSubmit={handleTemplateSubmit}
+                  handleUpdateTemplate={handleUpdateTemplate}
+                  review={false}
+                  lastDocument={data?.serviceRequirements?.length + 1}
+                  addState={addTemplateState}
+                /> */}
+              </SectionInfoContainer>
+            ),
           },
         ]}
       />

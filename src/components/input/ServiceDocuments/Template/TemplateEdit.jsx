@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from "react";
-import InputWithLabel from "../inputWithLabel";
+import InputWithLabel from "../../inputWithLabel";
 import CommonButton from "components/button/commonButton";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { useActions } from "./actions";
@@ -10,39 +10,40 @@ import {
   DocumentInfoWrapper,
   DocumentTitle,
   SubmitButtons,
-} from "./styled";
+} from "../styled";
 import { SpinningCircles } from "react-loading-icons";
 
-const DocumentEdit = ({
-  documentNumber,
+const TemplateEdit = ({
+  templateNumber,
   review,
   info,
   disabled,
   setDisabled,
-  handleDocumentSubmit,
-  handleUpdateDocument,
+  handleTemplateSubmit,
+  handleUpdateTemplate,
   addState,
   updateState,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { nameError, descriptionError, done, doneClicked, updateClicked } = state;
+  const { templateName, templateLink, nameError, linkError, done, doneClicked, updateClicked } =
+    state;
 
-  const { handleDocumentName, handleDocumentDescription, handleSubmit } = useActions({
+  const { handleTemplateName, handleTemplateLink, handleSubmit } = useActions({
     state,
     info,
     dispatch,
     setDisabled,
-    handleDocumentSubmit,
-    handleUpdateDocument,
+    handleTemplateSubmit,
+    handleUpdateTemplate,
     review,
   });
 
-  // Populates the Documents info
+  // Populates the Templates info
   useEffect(() => {
     if (review && !disabled) {
-      dispatch({ type: "setDocumentName", payload: info?.requirementName });
-      dispatch({ type: "setDocumentDescription", payload: info?.requirementDescription });
+      dispatch({ type: "setTemplateName", payload: info?.templateName });
+      dispatch({ type: "setTemplateLink", payload: info?.templateLink });
     }
   }, [disabled]);
 
@@ -50,29 +51,30 @@ const DocumentEdit = ({
     <DocumentForm onSubmit={handleSubmit}>
       {!done && (
         <DocumentInfoWrapper>
-          <DocumentTitle>Document {documentNumber}</DocumentTitle>
+          <DocumentTitle>Template {templateNumber}</DocumentTitle>
           <Document>
             <InputWithLabel
-              label={`Document Name`}
-              placeholder="Enter document name here"
+              label={`Template Name`}
+              placeholder="Enter template name here"
               labelStyle="input-label"
               type="text"
               inputClass="input-class"
               containerStyle="input-container-class"
-              value={state.documentName}
-              onChange={handleDocumentName}
+              value={state.templateName}
+              onChange={handleTemplateName}
               errorMessage={nameError}
+              disabled
             />{" "}
             <InputWithLabel
-              label="Document Description"
-              placeholder="Enter document description here"
+              label="Template Link"
+              placeholder="https://res.cloudinary.com/soss/image/upload/..."
               labelStyle="input-label"
               type="text"
               inputClass="input-class"
               containerStyle="input-container-class"
-              value={state.documentDescription}
-              onChange={handleDocumentDescription}
-              errorMessage={descriptionError}
+              value={state.templateLink}
+              onChange={handleTemplateLink}
+              errorMessage={linkError}
             />
           </Document>
         </DocumentInfoWrapper>
@@ -85,13 +87,13 @@ const DocumentEdit = ({
             type="submit"
             id="review-submit"
             action={() => dispatch({ type: "setUpdateClicked", payload: true })}
-            loading={updateState.isLoading && updateClicked}
+            loading={updateState?.isLoading && updateClicked}
             LoadingIcon={<SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />}
           />
         ) : (
           <>
             <CommonButton
-              text="Add New Document"
+              text="Add New Template"
               LeftIcon={AddIcon}
               type="submit"
               id="addnew-submit"
@@ -102,7 +104,7 @@ const DocumentEdit = ({
                 type="submit"
                 action={() => dispatch({ type: "setDoneClicked", payload: true })}
                 id="done-submit"
-                loading={addState.isLoading && doneClicked}
+                loading={addState?.isLoading && doneClicked}
                 LoadingIcon={
                   <SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />
                 }
@@ -115,4 +117,4 @@ const DocumentEdit = ({
   );
 };
 
-export default DocumentEdit;
+export default TemplateEdit;

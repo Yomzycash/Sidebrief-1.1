@@ -1,5 +1,10 @@
 import React from "react";
-import { buttonContainerStyles, buttonStyles, SectionContainer } from "./styled";
+import {
+  buttonContainerStyles,
+  buttonStyles,
+  SectionContainer,
+  SectionInfoContainer,
+} from "./styled";
 import Questionnaire from "components/input/Questionnaire";
 import { CheckoutController } from "containers";
 import { useActions } from "./actions";
@@ -7,17 +12,20 @@ import { useSearchParams } from "react-router-dom";
 import { useViewServiceQuery } from "services/complyService";
 import {
   useAddServiceFormFieldMutation,
+  useUpdateServiceFormFieldMutation,
   useDeleteServiceFormFieldMutation,
 } from "services/staffService";
 
 const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => {
   const { data, refetch } = useViewServiceQuery(serviceId);
   const [addFormField, addState] = useAddServiceFormFieldMutation();
+  const [updateFormField, updateState] = useUpdateServiceFormFieldMutation();
   const [deleteFormField, deleteState] = useDeleteServiceFormFieldMutation();
 
   const { scrollTo, handleServiceFormFieldAdd, handleServiceFormFieldDelete } = useActions({
     service,
     addFormField,
+    updateFormField,
     deleteFormField,
     refetchServices,
     refetchService: refetch,
@@ -48,25 +56,28 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
 
   return (
     <SectionContainer id="staff-service-form">
-      {data?.serviceForm?.map((el, index) => (
-        <Questionnaire
-          key={index}
-          index={index}
-          info={el}
-          review={true}
-          handleQuestionSubmit={handleQuestionSubmit}
-          handleDeleteQuestion={handleDeleteQuestion}
-          handleUpdateQuestion={handleUpdateQuestion}
-          deleteState={deleteState}
-        />
-      ))}
+      <SectionInfoContainer>
+        {data?.serviceForm?.map((el, index) => (
+          <Questionnaire
+            key={index}
+            index={index}
+            info={el}
+            review={true}
+            handleQuestionSubmit={handleQuestionSubmit}
+            handleDeleteQuestion={handleDeleteQuestion}
+            handleUpdateQuestion={handleUpdateQuestion}
+            deleteState={deleteState}
+          />
+        ))}
 
-      <Questionnaire
-        handleQuestionSubmit={handleQuestionSubmit}
-        handleUpdateQuestion={handleUpdateQuestion}
-        review={false}
-        lastQuestion={data?.serviceForm?.length + 1}
-      />
+        <Questionnaire
+          handleQuestionSubmit={handleQuestionSubmit}
+          handleUpdateQuestion={handleUpdateQuestion}
+          review={false}
+          lastQuestion={data?.serviceForm?.length + 1}
+        />
+      </SectionInfoContainer>
+
       <CheckoutController
         backAction={handlePrev}
         forwardAction={handleNext}

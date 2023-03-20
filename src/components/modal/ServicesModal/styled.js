@@ -68,6 +68,8 @@ export const Form = styled.form`
 export const SectionContainer = styled.div`
   display: flex;
   flex-flow: column;
+  flex: 1;
+  justify-content: space-between;
   gap: 12px;
   min-width: 100%;
   width: 100%;
@@ -97,4 +99,10 @@ export const SectionContainer = styled.div`
     font-size: clamp(10px, 1.2vw, 12px);
     line-height: clamp(12px, 1.2vw, 21px);
   }
+`;
+
+export const SectionInfoContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
 `;

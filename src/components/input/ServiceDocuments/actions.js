@@ -2,12 +2,14 @@ import { handleError } from "utils/globalFunctions";
 
 export const useActions = ({
   state,
+  info,
   dispatch,
+  setDisabled,
   handleDocumentSubmit,
   handleUpdateDocument,
   review,
 }) => {
-  const { documentName, documentDescription } = state;
+  const { documentName, documentDescription, done, doneClicked, updateClicked } = state;
 
   // Runs on document name change
   const handleDocumentName = (e) => {
@@ -16,12 +18,16 @@ export const useActions = ({
     validateName(value);
   };
 
+  //
+
   // Runs on document description change
   const handleDocumentDescription = (e) => {
     let value = e.target.value;
     dispatch({ type: "setDocumentDescription", payload: value });
     validateDescription(value);
   };
+
+  //
 
   // Validates document name input
   const validateName = (value) => {
@@ -34,6 +40,8 @@ export const useActions = ({
     }
   };
 
+  //
+
   // Validates document description input
   const validateDescription = (value) => {
     if (value.length === 0) {
@@ -45,19 +53,41 @@ export const useActions = ({
     }
   };
 
+  //
+
   // Submits the form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // let nameValid = validateName(documentName);
-    // let descriptionValid = validateDescription(documentDescription);
-    // if (!nameValid || !descriptionValid) return;
-    // let response = review ? await handleUpdateDocument(state) : await handleDocumentSubmit(state);
-    // if (response?.data) {
-    //   resetFields();
-    // } else {
-    //   handleError(response?.error);
-    // }
+    if (done) {
+      dispatch({ type: "setDone", payload: false });
+      dispatch({ type: "setDoneClicked", payload: false });
+      resetFields();
+      return;
+    }
+    if (doneClicked && !documentName && !documentDescription) {
+      dispatch({ type: "setDone", payload: true });
+      return;
+    }
+
+    let nameValid = validateName(documentName);
+    let descriptionValid = validateDescription(documentDescription);
+    if (!nameValid || !descriptionValid) return;
+
+    let response = review
+      ? await handleUpdateDocument({ ...state, requirementCode: info?.requirementCode })
+      : await handleDocumentSubmit(state);
+    if (response?.data) {
+      if (doneClicked) dispatch({ type: "setDone", payload: true });
+      else if (updateClicked) {
+        setDisabled(true);
+      }
+      resetFields();
+    } else {
+      handleError(response?.error);
+    }
   };
+
+  //
 
   const resetFields = () => {
     dispatch({ type: "setDocumentName", payload: "" });
@@ -66,16 +96,12 @@ export const useActions = ({
     dispatch({ type: "setDescriptionError", payload: "" });
   };
 
-  // Hides form
-  const handleDone = () => {
-    dispatch({ type: "setDone", payload: true });
-  };
+  //
 
   return {
     handleDocumentName,
     handleDocumentDescription,
     handleSubmit,
-    handleDone,
     resetFields,
   };
 };

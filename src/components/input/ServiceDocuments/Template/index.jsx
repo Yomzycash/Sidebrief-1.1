@@ -1,16 +1,16 @@
 import React from "react";
 import { useState } from "react";
-import DocumentView from "./DocumentView";
-import DocumentEdit from "./DocumentEdit";
+import TemplateView from "./TemplateView";
+import TemplateEdit from "./TemplateEdit";
 
-const ServiceDocument = ({
+const ServiceDocumentTemplate = ({
   index,
-  lastDocument,
+  lastTemplate,
   info,
   review,
-  handleDocumentSubmit,
-  handleDeleteDocument,
-  handleUpdateDocument,
+  handleTemplateSubmit,
+  handleDeleteTemplate,
+  handleUpdateTemplate,
   addState,
   updateState,
   deleteState,
@@ -20,22 +20,22 @@ const ServiceDocument = ({
   return (
     <>
       {disabled ? (
-        <DocumentView
+        <TemplateView
           setDisabled={setDisabled}
           info={info}
-          documentNumber={index + 1}
-          deleteAction={handleDeleteDocument}
+          templateNumber={index + 1}
+          deleteAction={handleDeleteTemplate}
           deleteState={deleteState}
         />
       ) : (
-        <DocumentEdit
-          handleDocumentSubmit={handleDocumentSubmit}
-          handleUpdateDocument={handleUpdateDocument}
+        <TemplateEdit
+          handleTemplateSubmit={handleTemplateSubmit}
+          handleUpdateTemplate={handleUpdateTemplate}
           info={info}
           review={review}
           disabled={disabled}
           setDisabled={setDisabled}
-          documentNumber={review ? index + 1 : lastDocument}
+          templateNumber={review ? index + 1 : lastTemplate}
           addState={addState}
           updateState={updateState}
         />
@@ -44,4 +44,4 @@ const ServiceDocument = ({
   );
 };
 
-export default ServiceDocument;
+export default ServiceDocumentTemplate;

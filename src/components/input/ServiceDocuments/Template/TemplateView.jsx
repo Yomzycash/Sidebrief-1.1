@@ -6,13 +6,13 @@ import {
   ReviewTopLeft,
   ReviewTopRight,
   ReviewDocumentName,
-} from "./styled";
+} from "../styled";
 import CommonButton from "components/button/commonButton";
 import DeleteIcon from "asset/Icons/DeleteIcon";
 import EditIcon from "asset/Icons/EditIcon";
 import { SpinningCircles } from "react-loading-icons";
 
-const DocumentView = ({ info, documentNumber, setDisabled, deleteAction, deleteState }) => {
+const TemplateView = ({ info, templateNumber, setDisabled, deleteAction, deleteState }) => {
   const [confirm, setConfirm] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
   const [selectedToDelete, setselectedToDelete] = useState();
@@ -20,8 +20,7 @@ const DocumentView = ({ info, documentNumber, setDisabled, deleteAction, deleteS
   const deleteInputRef = useRef();
 
   let confirmed = confirmValue === "delete";
-  let loading =
-    deleteState.isLoading && selectedToDelete?.requirementCode === info?.requirementCode;
+  let loading = deleteState.isLoading && selectedToDelete?.templateCode === info?.templateCode;
 
   const handleDeleteQuestion = () => {
     if (confirmed) {
@@ -43,7 +42,7 @@ const DocumentView = ({ info, documentNumber, setDisabled, deleteAction, deleteS
     <ReviewContainer>
       <ReviewTop>
         <ReviewTopLeft>
-          <span>Document {documentNumber}</span>
+          <span>Template {templateNumber}</span>
         </ReviewTopLeft>
         <ReviewTopRight>
           {confirm === false && (
@@ -60,7 +59,7 @@ const DocumentView = ({ info, documentNumber, setDisabled, deleteAction, deleteS
               LeftIcon={DeleteIcon}
               leftIconColor="#ed4e3a"
               action={() => setConfirm(true)}
-              loading={loading}
+              loading={deleteState.isLoading}
               LoadingIcon={
                 <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
               }
@@ -88,11 +87,11 @@ const DocumentView = ({ info, documentNumber, setDisabled, deleteAction, deleteS
       </ReviewTop>
 
       <ReviewDocumentName>
-        {info?.requirementName}
-        {info?.requirementDescription && <span>( {info?.requirementDescription} )</span>}
+        {info?.templateName}
+        {info?.templateLink && <span>( {info?.templateLink} )</span>}
       </ReviewDocumentName>
     </ReviewContainer>
   );
 };
 
-export default DocumentView;
+export default TemplateView;

@@ -24,7 +24,7 @@ const CommonButton = ({
       onClick={action}
       style={style}
       id={id}
-      className={"button__effect" || classname}
+      className={`button__effect ${classname}`}
       type={type || "button"}
     >
       {loading ? (
