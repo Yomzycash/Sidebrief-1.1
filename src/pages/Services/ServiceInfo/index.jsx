@@ -16,7 +16,6 @@ import {
   useGetSingleServiceQuery,
 } from "services/staffService";
 import { useCreateComplyMutation } from "services/complyService";
-import { InfoContainer } from "containers/Services";
 
 const ServiceInfo = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
