@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ErrMsg,
   QuestionOptions,
   ReviewContainer,
   ReviewQuestion,
@@ -8,7 +9,7 @@ import {
 } from "../styled";
 import Option from "./Option";
 
-const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSelect }) => {
+const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSelect, error }) => {
   const [checkList, setCheckList] = useState([]);
 
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
@@ -38,6 +39,7 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
           <span>Question {questionNumber}</span>
           {info?.fieldRequired && <span>Compulsory</span>}
         </ReviewTopLeft>
+        <ErrMsg>{error?.message}</ErrMsg>
       </ReviewTop>
 
       <ReviewQuestion>{info?.fieldQuestion + questionMark}</ReviewQuestion>

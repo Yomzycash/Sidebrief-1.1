@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div``;
 export const Top = styled.div``;
 
-export const ToggleWrapper = styled.label`
+export const ToggleWrapper = styled.div`
   display: flex;
   gap: 8px;
   cursor: pointer;
