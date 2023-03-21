@@ -12,10 +12,7 @@ const CommonButton = ({
   leftIconColor,
   rightIconColor,
   puffColor,
-<<<<<<< HEAD
   id,
-=======
->>>>>>> 912a7d2c (Service form Section implemented)
   classname,
   component,
   type,
@@ -31,11 +28,7 @@ const CommonButton = ({
       type={type || "button"}
     >
       {loading ? (
-<<<<<<< HEAD
         LoadingIcon || <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
-=======
-        <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
->>>>>>> 912a7d2c (Service form Section implemented)
       ) : (
         <>
           {LeftIcon && <LeftIcon size={20} color={leftIconColor || "white"} />}
