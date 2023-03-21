@@ -27,6 +27,7 @@ export const RHS = styled.div`
   display: flex;
   flex-direction: column;
   gap: 23px;
+  min-width: max-content;
 
   div {
     display: flex;
@@ -68,7 +69,7 @@ export const CountryName = styled(BigText)`
 
 export const Documents = styled.div`
   display: flex;
-  gap: 25px;
+  column-gap: 25px;
   flex-wrap: wrap;
 `;
 
