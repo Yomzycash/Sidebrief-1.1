@@ -109,10 +109,7 @@ const StaffReward = () => {
                 <DetailWrappper>
                   <LittleWrapper>
                     {" "}
-                    <TopText>
-                      {selected?.rewardName}
-                      {selected?.rewardPartner}
-                    </TopText>
+                    <TopText>{selected?.rewardName}</TopText>
                     <MiddleText>{selected?.rewardPartner}</MiddleText>
                   </LittleWrapper>
                   {/* Do not remove, it will be needed later */}

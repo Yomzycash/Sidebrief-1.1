@@ -13,10 +13,7 @@ import {
   useViewMembersKYCMutation,
 } from "services/launchService";
 import { downLoadImage } from "utils/staffHelper";
-import {
-  useDeleteServiceDocumentMutation,
-  useViewServiceDocumentMutation,
-} from "services/complyService";
+import { useLocation } from "react-router-dom";
 import {
   Container,
   FileTitle,
@@ -36,6 +33,7 @@ import {
   DetailsPage,
   KYCPage,
 } from "./styled";
+import { useDeleteComplyMutation, useViewComplyMutation } from "services/complyService";
 
 const KYCFileUpload = ({
   TopText,
@@ -61,10 +59,18 @@ const KYCFileUpload = ({
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
   const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
-  const [viewServiceDocument] = useViewServiceDocumentMutation();
-  const [deleteServiceDocument] = useDeleteServiceDocumentMutation();
+  const [viewServiceDocument] = useViewComplyMutation();
+  const [deleteServiceDocument] = useDeleteComplyMutation();
 
-  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  const { search } = useLocation();
+
+  const searchParams = new URLSearchParams(search);
+
+  const launchResponse = {
+    launchCode: searchParams.get("launchCode"),
+    registrationCountry: searchParams.get("registrationCountry"),
+    registrationType: searchParams.get("registrationType"),
+  };
 
   const nameLengthValidator = (file) => {
     if (file.name.length <= 0) {
@@ -91,8 +97,8 @@ const KYCFileUpload = ({
   };
 
   const handleView = async () => {
-    const response = await viewMemberKYC(launchInfo);
-    const MemberKYCInfo = [...response?.data?.businessMembersKYC] || [];
+    const response = await viewMemberKYC(launchResponse);
+    const MemberKYCInfo = [...response.data.businessMembersKYC];
     let fileInfo = MemberKYCInfo.filter((member) => member.memberCode === memberCode);
     fileInfo.forEach((info) => {
       if (info.documentType === documentComponentType) {
@@ -102,8 +108,8 @@ const KYCFileUpload = ({
   };
 
   const handleBeneficiary = async () => {
-    const response = await viewBeneficialsKYC(launchInfo);
-    const BeneficialKYCInfo = [...response?.data?.beneficialOwnersKYC] || [];
+    const response = await viewBeneficialsKYC(launchResponse);
+    const BeneficialKYCInfo = [...response.data.beneficialOwnersKYC];
     let fileInfo = BeneficialKYCInfo.filter(
       (beneficiary) => beneficiary.beneficialOwnerCode === beneficiaryCode
     );
@@ -128,7 +134,7 @@ const KYCFileUpload = ({
   const handleRemove = async () => {
     if (beneficiaryCode) {
       const requiredDeleteData = {
-        launchCode: launchInfo.launchCode,
+        launchCode: launchResponse.launchCode,
         beneficialOwnerCode: beneficiaryCode,
         documentCode: documentInfo.documentCode,
       };
@@ -159,7 +165,7 @@ const KYCFileUpload = ({
       }
     } else {
       const requiredDeleteData = {
-        launchCode: launchInfo.launchCode,
+        launchCode: launchResponse.launchCode,
         memberCode: memberCode,
         documentCode: documentInfo.documentCode,
       };

@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ReactComponent as ChatIcon } from "asset/Icons/ChatIcon.svg";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
 
-import {
-  useAddServiceMutation,
-  useUpdateServiceMutation,
-  useDeleteServiceMutation,
-  useGetAllServicesQuery,
-} from "services/staffService";
+import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
 
 import FeatureSection from "containers/Feature/FeatureSection";
 import FeatureTable from "components/Tables/FeatureTable";
@@ -28,33 +22,36 @@ import {
   PageTitle,
   searchStyle,
   SearchWrapper,
-  Status,
   TopContent,
 } from "./styled";
-// import ServicesModal from "components/modal/ServicesModal";
-import ServicesModal from "components/modal/StaffServiceModal";
-import { getUsersMessages } from "containers/ServiceChat/Chats/actions";
+import ServicesModal from "components/modal/ServicesModal";
 import { handleError } from "utils/globalFunctions";
+import { useActions } from "./actions";
 
 const iconStyle = { width: "17px", height: "17px" };
 
+//
+
+//
+
 const ServicePage = () => {
-  const [open, setOpen] = useState(false);
-  const [cardAction, setCardAction] = useState("");
+  // const [open, setOpen] = useState(false);
+  // const [cardAction, setCardAction] = useState("");
   const [clickedService, setClickedService] = useState({});
   const { data, isLoading, refetch } = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
-  const [addService, addState] = useAddServiceMutation();
-  const [updateService, updateState] = useUpdateServiceMutation();
   const [deleteService, deleteState] = useDeleteServiceMutation();
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
+  const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
+
   const navigate = useNavigate();
 
-  // Add Service
+  const { dataBody } = useActions({ notifications, navigate });
+
+  // This runs when add service button is clicked
   const handleAddButton = () => {
-    setCardAction("add");
-    setOpen(true);
+    setOpen("add");
   };
 
   const servicesNotifications = data?.filter((service) => {
@@ -62,67 +59,14 @@ const ServicePage = () => {
     return serviceNots?.length > 0;
   });
 
-  // All users messages
-  const usersMessages = getUsersMessages(notifications.data);
-
   let lastNotification = servicesNotifications?.map((nots) => nots[nots?.length - 1]);
 
   // Table header information
   const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
 
-  // Table body information
-  const dataBody = usersMessages?.map((notifications) => [
-    notifications?.senderId,
-    notifications?.servicesMessages[0]?.serviceNotifications[0]?.notificationId,
-    <Status $read={notifications?.servicesMessages[0]?.serviceNotifications[0]?.messageIsRead}>
-      {notifications?.servicesMessages[0]?.serviceNotifications[0]?.messageIsRead === true
-        ? "Read"
-        : "New"}
-    </Status>,
-    <div>
-      {notifications?.servicesMessages[0]?.serviceNotifications[0]?.updatedAt?.split("T")[0]}
-    </div>,
-    <div>
-      {notifications?.servicesMessages[0]?.serviceNotifications[0]?.updatedAt
-        ?.split("T")[1]
-        ?.slice(0, 8)}
-    </div>,
-    <div
-      onClick={(e) =>
-        handleChat(notifications?.servicesMessages[0]?.serviceNotifications[0]?.serviceId)
-      }
-      style={{ cursor: "pointer" }}
-    >
-      <ChatIcon size={20} />
-      <span style={{ color: "#00A2D4" }}>Resolve</span>
-    </div>,
-  ]);
-
-  // // Table body information
-  // const dataBody = notifications.data?.map((notification) => [
-  //   notification?.notificationId,
-  //   <Status $read={notification?.messageIsRead}>
-  //     {notification?.messageIsRead === true ? "In Progress" : "New Request"}
-  //   </Status>,
-  //   <div>{notification?.updatedAt?.split("T")[0]}</div>,
-  //   <div>{notification?.updatedAt?.split("T")[1]?.slice(0, 8)}</div>,
-  //   <div
-  //     onClick={(e) => handleChat(notification?.serviceId)}
-  //     style={{ cursor: "pointer" }}
-  //   >
-  //     <ChatIcon size={20} />
-  //     <span style={{ color: "#00A2D4" }}>Resolve</span>
-  //   </div>,
-  // ]);
-
   useEffect(() => {
     setServicesEnquiry(data);
   }, [data]);
-
-  const handleChat = (serviceId) => {
-    console.log(serviceId);
-    navigate(`/staff-dashboard/businesses/services/chats?serviceId=${serviceId}`);
-  };
 
   const handleViewAllServices = () => {
     navigate("/staff-dashboard/businesses/services/all");
@@ -134,55 +78,10 @@ const ServicePage = () => {
 
   let totalServices = servicesEnquiry?.length > 0 ? servicesEnquiry.length : 0;
 
-  const getRequired = (formData) => {
-    return {
-      serviceName: formData.name,
-      serviceDescription: formData.description,
-      serviceCategory: formData.category,
-      serviceCountry: formData.country,
-      servicePrice: formData.price,
-      serviceTimeline: formData.timeline,
-      serviceCurrency: formData.currency,
-    };
+  const handleServiceClick = (clickedInfo) => {
+    setOpen("edit", clickedInfo.serviceId);
+    setClickedService(clickedInfo);
   };
-
-  const handleClickEachService = (servicesvalue) => {
-    setCardAction("edit");
-    setOpen(true);
-    setClickedService(servicesvalue);
-  };
-
-  const handleServiceAdd = async (formData) => {
-    let requiredService = getRequired(formData);
-    let response = await addService(requiredService);
-    let data = response?.data;
-    let error = response?.error;
-
-    if (data) {
-      toast.success("Service added successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    refetch();
-  };
-
-  // Update service
-  const handleServiceUpdate = async (formData) => {
-    let requiredService = getRequired(formData);
-    let response = await updateService({ ...requiredService, serviceId: clickedService.serviceId });
-    let data = response?.data;
-    let error = response?.error;
-
-    if (data) {
-      toast.success("Service updated successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    refetch();
-  };
-
   // delete service
   const handleServiceDelete = async () => {
     let response = await deleteService(clickedService.serviceId);
@@ -196,6 +95,16 @@ const ServicePage = () => {
       handleError(error);
     }
     refetch();
+  };
+
+  const setOpen = (mode, serviceId, progress) => {
+    if (!mode) setDialog({});
+    else
+      setDialog({
+        mode: mode,
+        serviceId: serviceId || "",
+        progress: progress || 0,
+      });
   };
 
   return (
@@ -242,7 +151,7 @@ const ServicePage = () => {
                     subText={service.serviceCountry}
                     categoryName={service.serviceCategory}
                     service
-                    clickHandle={() => handleClickEachService(service)}
+                    clickHandle={() => handleServiceClick(service)}
                     //action = {() => handleAddButton(service)}
                   />
                 ))}
@@ -263,16 +172,13 @@ const ServicePage = () => {
         <FeatureTable header={header} body={dataBody} />
 
         <ServicesModal
-          disableAll={cardAction === "edit" ? true : false}
-          open={open}
-          title={cardAction === "edit" ? "Update Service" : "Add New Service"}
-          loading={updateState.isLoading || addState.isLoading}
-          setOpen={setOpen}
-          cardAction={cardAction}
-          submitAction={cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
-          serviceInfo={clickedService}
+          disableAll={dialog.mode === "edit" ? true : false}
+          clickedService={clickedService}
           deleteState={deleteState}
           handleServiceDelete={handleServiceDelete}
+          refetch={refetch}
+          setOpen={setOpen}
+          dialog={dialog}
         />
       </FeatureSection>
     </Container>

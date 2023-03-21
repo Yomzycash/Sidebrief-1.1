@@ -190,14 +190,13 @@ export const StaffRewardSchema = yup.object().shape({
 });
 
 export const ServicesSchema = yup.object().shape({
-  name: yup.string().required("Service name is a required field"),
-  description: yup.string().required("Service description is a required field"),
-  //id: yup.string().required("Service ID is a required field"),
-  category: yup.string().required("Category is a required field"),
-  country: yup.string().required("Operational Country is a required field"),
-  currency: yup.string().required("Currency is a required field"),
-  price: yup.string().required("Service price is a required field"),
-  timeline: yup.string().required("Service timeline is a required field"),
+  name: yup.string().required("Enter service name"),
+  description: yup.string().required("Enter service description"),
+  category: yup.string().required("Select service category"),
+  country: yup.string().required("Select operational country"),
+  currency: yup.string().required("Select currency"),
+  price: yup.number().typeError("Enter service price").required("Emter service price"),
+  timeline: yup.string().required("Enter service timeline"),
 });
 
 export const sidebarLink = [

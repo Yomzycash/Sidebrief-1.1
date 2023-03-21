@@ -12,7 +12,8 @@ const StaffRewardHeader = ({
   placeholder = "Search for a reward",
   open,
   setOpen,
-  handleButton
+  handleButton,
+  totalShown,
 }) => {
   const searchStyle = {
     borderRadius: "12px",
@@ -21,9 +22,13 @@ const StaffRewardHeader = ({
     height: "100%",
   };
 
-  const localTotal = localStorage.getItem("totalStaffRewards");
-
   const iconStyle = { width: "17px", height: "17px" };
+
+  const buttonAction = () => {
+    if (setOpen) setOpen(true);
+    if (handleButton) handleButton();
+  };
+
   return (
     <Container>
       <Header>
@@ -31,18 +36,14 @@ const StaffRewardHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <SummaryCard shown={localTotal} total={localTotal} />
+              <SummaryCard shown={totalShown} total={totalShown} />
             </div>
           </TopContent>
           <BottomContent>
             <SearchWrapper>
-              <Search
-                style={searchStyle}
-                iconStyle={iconStyle}
-                placeholder={placeholder}
-              />
+              <Search style={searchStyle} iconStyle={iconStyle} placeholder={placeholder} />
             </SearchWrapper>
-            <ButtonWrapper onClick={() => setOpen(true)}>
+            <ButtonWrapper onClick={buttonAction}>
               <button>
                 <AddIcon />
                 {Description}

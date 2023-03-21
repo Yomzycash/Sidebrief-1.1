@@ -70,6 +70,7 @@ export const Input = styled.input`
 
   &::placeholder {
     font-size: 14px;
+    opacity: 0.7;
   }
 
   @media screen and (max-width: 600px) {
@@ -119,6 +120,7 @@ export const Iconwrapper = styled.div`
 `;
 
 export const ErrMsg = styled.div`
+  position: relative;
   color: red;
   font-size: 12px;
   justify-content: center;
@@ -253,6 +255,9 @@ export const TagInputField = styled.input`
 
   &:focus {
     border: ${({ $error }) => ($error ? "1px solid red" : "1px solid #00c3ff")};
+  }
+  &::placeholder {
+    opacity: 0.7;
   }
 `;
 
