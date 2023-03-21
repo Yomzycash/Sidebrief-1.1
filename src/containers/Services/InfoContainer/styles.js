@@ -6,7 +6,7 @@ export const Container = styled.div`
   margin-block: clamp(10px, 2vw, 20px);
   min-height: 150px;
 
-  background: ${({ theme }) => theme.grey4};
+  background: ${({ theme }) => theme.blue2};
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 5px;
   padding: 55px 63px 52px;
