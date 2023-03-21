@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { setServiceCheckoutProgress } from "redux/Slices";
+import { InfoContainer } from "containers/Services";
 import {
   useGetAllCountriesQuery,
   useLazyGetServicesByCountryQuery,

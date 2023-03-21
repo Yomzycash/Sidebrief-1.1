@@ -249,6 +249,14 @@ export const ReviewTopLeft = styled.label`
   }
 `;
 
+export const ErrMsg = styled.div`
+  position: relative;
+  color: red;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const ReviewTopRight = styled.div`
   display: flex;
   gap: 30px;
@@ -316,12 +324,41 @@ export const ReviewQuestion = styled.label`
 // Uneditable styles
 export const UneditableOption = styled.div`
   display: flex;
-  gap: 8px;
   align-items: center;
+
+  label {
+    padding-left: 8px;
+  }
+  label,
+  input {
+    cursor: pointer;
+  }
 `;
 
-export const AnswerInput = styled.input``;
+export const AnswerInput = styled.input`
+  height: 40px;
+  border-radius: 8px;
+  padding-inline: 24px;
+  transition: 0.3s ease all;
+
+  border: ${({ error }) => (error ? "1px solid red" : "1px solid #ececec")};
+
+  :focus {
+    border: ${({ error }) => (error ? "1px solid red" : "1px solid #00A2D4")};
+  }
+`;
 
 export const AnswerTextArea = styled.textarea`
   resize: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  transition: 0.3s ease all;
+  height: 120px;
+  font-family: "BR Firma";
+
+  border: ${({ error }) => (error ? "1px solid red" : "1px solid #ececec")};
+
+  :focus {
+    border: ${({ error }) => (error ? "1px solid red" : "1px solid #00A2D4")};
+  }
 `;

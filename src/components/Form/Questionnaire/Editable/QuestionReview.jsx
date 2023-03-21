@@ -17,16 +17,19 @@ import { SpinningCircles } from "react-loading-icons";
 const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, deleteState }) => {
   const [confirm, setConfirm] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
+  const [selectedToDelete, setselectedToDelete] = useState();
 
   const deleteInputRef = useRef();
 
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
   let confirmed = confirmValue === "delete";
+  let loading = deleteState.isLoading && selectedToDelete?.fieldCode === info?.fieldCode;
 
   const handleDeleteQuestion = () => {
     if (confirmed) {
       deleteAction(info);
+      setselectedToDelete(info);
       deleteInputRef.current.blur();
     }
   };
@@ -61,7 +64,7 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, delet
               LeftIcon={DeleteIcon}
               leftIconColor="#ed4e3a"
               action={() => setConfirm(true)}
-              loading={deleteState.isLoading}
+              loading={loading}
               LoadingIcon={
                 <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
               }

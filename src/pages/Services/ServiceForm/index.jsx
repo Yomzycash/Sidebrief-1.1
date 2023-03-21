@@ -3,9 +3,11 @@ import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
+import { useAddComplyDataQAMutation } from "services/complyService";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
 import { Body, Container } from "../styled";
@@ -14,48 +16,38 @@ import { FormContainer, formInputsStyle, formStyle } from "./style";
 const ServiceForm = () => {
   const { data } = useGetSingleServiceQuery("2673756897");
   const [serviceInfo, setServiceInfo] = useState({});
-
-  // name uniqueness has to be validated
-  const formInfo = [
-    {
-      question: "When did you register your company",
-      questionType: "input",
-      name: "registration",
-      required: true,
-    },
-    {
-      question: "Who is your favourite artist",
-      questionType: "radio",
-      options: ["davido", "wizkid", "burna"],
-      name: "artist",
-      required: true,
-    },
-    {
-      question: "How many shareholders do you have",
-      questionType: "number",
-      name: "shareholders",
-      required: true,
-    },
-    {
-      question: "How many directors do you have",
-      questionType: "number",
-      name: "directors",
-      required: true,
-    },
-    {
-      question: "Select your favourite colors",
-      questionType: "checkbox",
-      options: ["black", "white", "green", "yellow"],
-      name: "beneficiaries",
-      required: true,
-    },
-  ];
+  const [addComplyData, addState] = useAddComplyDataQAMutation();
 
   const navigate = useNavigate();
 
   const handleSubmit = async (formData) => {
-    console.log(formData);
-    // store.dispatch();
+    let payload = data?.serviceForm?.map((el) => ({
+      complyCode: "302033545077050509",
+      complyData: {
+        complyQuestion: el.fieldQuestion,
+        complyAnswer: formData[el.fieldName],
+      },
+    }));
+
+    let addArray = payload.map((el, i) => addComplyData(el));
+    let responses = await Promise.all(addArray);
+
+    let error = responses.find((el) => el?.error);
+
+    if (error?.error) {
+      handleError(error);
+      return;
+    } else {
+      toast.success("Questions submitted successfully");
+      navigate("/services/documents");
+    }
+
+    console.log(responses);
+
+    // payload.forEach((el, i) => {
+    //   let response = await addComplyData(payload[i])
+    // });
+    // console.log(payload);
     // navigate("/services/documents");
   };
 

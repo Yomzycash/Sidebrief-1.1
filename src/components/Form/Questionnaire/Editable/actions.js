@@ -2,13 +2,15 @@ import { handleError } from "utils/globalFunctions";
 
 export const useActions = ({
   state,
+  info,
   dispatch,
+  setDisabled,
   handleQuestionSubmit,
   handleUpdateQuestion,
   review,
   optionsRef,
 }) => {
-  const { question, selectedType, optionsArray } = state;
+  const { question, selectedType, optionsArray, done, doneClicked, updateClicked } = state;
 
   const applyActive = (type) => {
     if (type !== selectedType) return;
@@ -109,18 +111,37 @@ export const useActions = ({
   };
 
   // Toggles compulsory
-  const handleToggle = (e) => {
-    dispatch({ type: "setRequired", payload: e.target.checked });
+  const handleToggle = (checkboxRef) => {
+    checkboxRef.checked = !state.required;
+    dispatch({ type: "setRequired", payload: checkboxRef.checked });
   };
 
   // Submits the form
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (done) {
+      dispatch({ type: "setDone", payload: false });
+      dispatch({ type: "setDoneClicked", payload: false });
+      resetFields();
+      return;
+    }
+    if (doneClicked && !question) {
+      dispatch({ type: "setDone", payload: true });
+      return;
+    }
+
     let questionValid = validateQuestion(question);
     let optionsValid = validateOptions() && validateEmptyOptions();
     if (!questionValid || !optionsValid) return;
-    let response = review ? await handleUpdateQuestion(state) : await handleQuestionSubmit(state);
+
+    let response = review
+      ? await handleUpdateQuestion({ ...state, fieldCode: info?.fieldCode })
+      : await handleQuestionSubmit(state);
     if (response?.data) {
+      if (doneClicked) dispatch({ type: "setDone", payload: true });
+      else if (updateClicked) {
+        setDisabled(true);
+      }
       resetFields();
     } else {
       handleError(response?.error);
@@ -136,11 +157,6 @@ export const useActions = ({
     dispatch({ type: "setOptionsError", payload: "" });
   };
 
-  // Hides form
-  const handleDone = () => {
-    dispatch({ type: "setDone", payload: true });
-  };
-
   return {
     otherClicked,
     applyActive,
@@ -152,6 +168,5 @@ export const useActions = ({
     updateOptionValue,
     handleToggle,
     handleSubmit,
-    handleDone,
   };
 };
