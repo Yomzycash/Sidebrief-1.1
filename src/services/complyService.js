@@ -46,7 +46,7 @@ export const ComplyApi = createApi({
       }),
     }),
 
-    viewComply: builder.mutation({
+    viewComply: builder.query({
       query: (data) => ({
         url: "/comply/view",
         method: "POST",
@@ -183,7 +183,8 @@ export const ComplyApi = createApi({
 export const {
   useCreateComplyMutation,
   useUpdateComplyMutation,
-  useViewComplyMutation,
+  useViewComplyQuery,
+  useLazyViewComplyQuery,
   useDeleteComplyMutation,
 
   useViewAllComplyMutation,

@@ -33,7 +33,7 @@ import {
   DetailsPage,
   KYCPage,
 } from "./styled";
-import { useDeleteComplyMutation, useViewComplyMutation } from "services/complyService";
+import { useDeleteComplyMutation, useLazyViewComplyQuery } from "services/complyService";
 
 const KYCFileUpload = ({
   TopText,
@@ -59,7 +59,7 @@ const KYCFileUpload = ({
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
   const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
-  const [viewServiceDocument] = useViewComplyMutation();
+  const [viewServiceDocument] = useLazyViewComplyQuery();
   const [deleteServiceDocument] = useDeleteComplyMutation();
 
   const { search } = useLocation();
