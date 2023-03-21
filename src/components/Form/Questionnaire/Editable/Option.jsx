@@ -6,9 +6,9 @@ import {
   OtherOption,
   OtherSelect,
   RadioBullet,
-} from "./styled";
+} from "../styled";
 import { MdClear } from "react-icons/md";
-import { InvisibleBackDrop } from "../styled";
+import { InvisibleBackDrop } from "components/input/styled";
 
 const Option = ({
   text,

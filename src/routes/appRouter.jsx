@@ -380,7 +380,7 @@ const AppRouter = () => {
             </Route>
           </Route>
 
-          {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
+          {/* Services pages Routes */}
           <Route path="services" element={<Outlet />}>
             <Route index element={<ServiceInfo />} />
             <Route path="payment" element={<PaymentPage />} />

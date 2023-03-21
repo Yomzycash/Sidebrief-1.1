@@ -15,7 +15,6 @@ import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { useGetAllCountriesQuery } from "services/complyService";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { ReactComponent as Mark } from "asset/svg/mark.svg";
@@ -23,17 +22,18 @@ import { FiClock } from "react-icons/fi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { setServiceCheckoutProgress } from "redux/Slices";
-import {
-  useLazyGetServicesByCountryQuery,
-  useCreateComplianceMutation,
-  useViewServiceQuery,
-} from "services/complyService";
 import numeral from "numeral";
+import {
+  useGetAllCountriesQuery,
+  useGetServicesByCategoryQuery,
+  useGetSingleServiceQuery,
+} from "services/staffService";
+import { useCreateComplyMutation } from "services/complyService";
 
 const ServiceInfo = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
   let serviceId = complyCodeData?.serviceId;
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
   const countriesData = useGetAllCountriesQuery();
 
   const [selectedResource, setselectedResource] = useState({});
@@ -42,8 +42,8 @@ const ServiceInfo = () => {
 
   const [selectedCountry, setSelectedCountry] = useState("");
 
-  const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
-  const [createCompliance, createComplianceState] = useCreateComplianceMutation();
+  const [servicesByCountry, getServicesState] = useGetServicesByCategoryQuery();
+  const [createCompliance, createComplianceState] = useCreateComplyMutation();
   const { data, isLoading } = useGetAllCountriesQuery();
   const navigate = useNavigate();
 

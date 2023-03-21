@@ -37,7 +37,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import StripeForm from "./StripeForm";
 import StripePayment from "./stripePayment";
-import { useAddServicePaymentMutation } from "services/complyService";
+import { useAddComplyPaymentMutation } from "services/complyService";
 
 export const PaymentForm = ({ USDprice, paymentProvider }) => {
   const serviceData = JSON.parse(localStorage.getItem("serviceData"));
@@ -52,7 +52,7 @@ export const PaymentForm = ({ USDprice, paymentProvider }) => {
 
   const [payLaunch, payState] = usePayLaunchMutation();
 
-  const [addServicePayment] = useAddServicePaymentMutation();
+  const [addServicePayment] = useAddComplyPaymentMutation();
 
   const navigate = useNavigate();
 

@@ -1,10 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DropDown, InputWithLabel } from "components/input";
+import { CheckoutController } from "containers";
 import React from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { getSchema } from "./actions";
-import { DynamicFormWrapper, Inputs } from "./styled";
+import { getSchema, getType } from "./actions";
+import { Bottom, DynamicFormWrapper, Inputs } from "./styled";
+import UneditableQuestionnaire from "components/Form/Questionnaire/Uneditable";
 
 const DynamicForm = ({
   formInfo,
@@ -15,6 +17,7 @@ const DynamicForm = ({
   style,
   inputsStyle,
   submitAction,
+  handlePrev,
 }) => {
   let schema = getSchema(formInfo);
 
@@ -32,6 +35,21 @@ const DynamicForm = ({
     setValue(el?.name, category, { shouldValidate: true });
   };
 
+  const handleTextChange = (value, name) => {
+    console.log(value, name);
+    setValue(name, value, { shouldValidate: true });
+  };
+
+  const handleRadioSelect = (selected, name) => {
+    console.log(selected, name);
+    setValue(name, selected, { shouldValidate: true });
+  };
+
+  const handleCheckboxSelect = (checkList, name) => {
+    console.log(checkList, name);
+    setValue(name, checkList, { shouldValidate: true });
+  };
+
   useEffect(() => {
     if (formMode === "edit")
       previewInfo.map((el) => setValue(el.name, previewInfo.entityName, { shouldValidate: true }));
@@ -39,44 +57,27 @@ const DynamicForm = ({
 
   return (
     <DynamicFormWrapper onSubmit={handleSubmit(submitAction)} style={style}>
-      <Inputs style={inputsStyle}>
-        {formInfo.map((el, index) =>
-          el.options ? (
-            <DropDown
-              key={index}
-              containerStyle={{ margin: 0, marginBottom: "24px" }}
-              label={el.question}
-              name={el.name}
-              type={el.type}
-              labelStyle="input-label"
-              placeholder=""
-              options={el?.options?.map((each) => ({
-                value: each,
-                label: each,
-              }))}
-              onChange={(e) => handleChange(e, el)}
-              errorMessage={errors[el.name]?.message}
-              // defaultValue={rewardInfo ? rewardInfo.rewardCategory : ""}
-              fontSize="clamp(12px, 1.2vw, 14px)"
-              height="40px"
-              // disable={disable}
-            />
-          ) : (
-            <InputWithLabel
-              key={index}
-              label={el.question}
-              labelStyle="input-label"
-              placeholder=""
-              type={el.type}
-              name={el.name}
-              inputClass="service-form-input"
-              containerStyle="input-container-class"
-              register={register}
-              errorMessage={errors[el.name]?.message}
-            />
-          )
-        )}
+      <Inputs>
+        {formInfo?.map((el, index) => (
+          <UneditableQuestionnaire
+            key={index}
+            index={index}
+            info={el}
+            handleTextChange={handleTextChange}
+            handleRadioSelect={handleRadioSelect}
+            handleCheckboxSelect={handleCheckboxSelect}
+          />
+        ))}
       </Inputs>
+      <Bottom>
+        <CheckoutController
+          backText={"Previous"}
+          forwardSubmit
+          backAction={handlePrev}
+          forwardAction={() => {}}
+          forwardText="Next"
+        />
+      </Bottom>
     </DynamicFormWrapper>
   );
 };

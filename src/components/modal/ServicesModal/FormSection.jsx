@@ -5,19 +5,19 @@ import {
   SectionContainer,
   SectionInfoContainer,
 } from "./styled";
-import Questionnaire from "components/input/Questionnaire";
+import EditableQuestionnaire from "components/Form/Questionnaire/Editable";
 import { CheckoutController } from "containers";
 import { useActions } from "./actions";
 import { useSearchParams } from "react-router-dom";
-import { useViewServiceQuery } from "services/complyService";
 import {
   useAddServiceFormFieldMutation,
   useUpdateServiceFormFieldMutation,
   useDeleteServiceFormFieldMutation,
 } from "services/staffService";
+import { useGetSingleServiceQuery } from "services/staffService";
 
 const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => {
-  const { data, refetch } = useViewServiceQuery(serviceId);
+  const { data, refetch } = useGetSingleServiceQuery(serviceId);
   const [addFormField, addState] = useAddServiceFormFieldMutation();
   const [updateFormField, updateState] = useUpdateServiceFormFieldMutation();
   const [deleteFormField, deleteState] = useDeleteServiceFormFieldMutation();
@@ -58,7 +58,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
     <SectionContainer id="staff-service-form">
       <SectionInfoContainer>
         {data?.serviceForm?.map((el, index) => (
-          <Questionnaire
+          <EditableQuestionnaire
             key={index}
             index={index}
             info={el}
@@ -70,7 +70,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
           />
         ))}
 
-        <Questionnaire
+        <EditableQuestionnaire
           handleQuestionSubmit={handleQuestionSubmit}
           handleUpdateQuestion={handleUpdateQuestion}
           review={false}

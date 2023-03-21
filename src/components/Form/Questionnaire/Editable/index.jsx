@@ -1,9 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import QuestionView from "./QuestionView";
+import QuestionReview from "./QuestionReview";
 import QuestionEdit from "./QuestionEdit";
 
-const Questionnaire = ({
+const EditableQuestionnaire = ({
   index,
   lastQuestion,
   info,
@@ -18,7 +18,7 @@ const Questionnaire = ({
   return (
     <>
       {disabled ? (
-        <QuestionView
+        <QuestionReview
           setDisabled={setDisabled}
           info={info}
           questionNumber={index + 1}
@@ -40,4 +40,4 @@ const Questionnaire = ({
   );
 };
 
-export default Questionnaire;
+export default EditableQuestionnaire;

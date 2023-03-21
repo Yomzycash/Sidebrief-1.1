@@ -18,42 +18,8 @@ export const ComplyApi = createApi({
   tagTypes: ["CountryService", "Services"],
 
   endpoints: (builder) => ({
-    viewComply: builder.mutation({
-      query: (data) => ({
-        url: "comply/view",
-        method: "POST",
-        body: data,
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }),
-      invalidatesTags: ["User"],
-    }),
-    // get available services by country
-    getServicesByCountry: builder.query({
-      query: (countryCode) => {
-        if (!countryCode) {
-          return;
-        }
-        return {
-          url: `/services/country/${countryCode}`,
-          method: "GET",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        };
-      },
-      providesTags: ["CountryService"],
-      invalidatesTags: "CountryService",
-    }),
-
-    // get all countries
-    getAllCountries: builder.query({
-      query: () => "/countries",
-    }),
-
-    // create new compliance / service
-    createCompliance: builder.mutation({
+    // Create new compliance / service request
+    createComply: builder.mutation({
       query: (serviceId) => ({
         url: `/comply/start`,
         method: "POST",
@@ -65,61 +31,172 @@ export const ComplyApi = createApi({
         },
       }),
     }),
-    //get user reward
-    viewService: builder.query({
-      query: (serviceId) => `services/view/${serviceId}`,
-    }),
 
-    //view reward
-    addServiceDocument: builder.mutation({
-      query: (values) => ({
-        url: "/comply/add/document",
+    // Update an existing compliance / service request
+    updateComply: builder.mutation({
+      query: (serviceId) => ({
+        url: `/comply/update`,
         method: "POST",
-        body: values,
+        body: {
+          serviceId,
+        },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       }),
-      invalidatesTags: ["Services"],
     }),
 
-    //view service document
-    viewServiceDocument: builder.mutation({
-      query: (values) => ({
+    viewComply: builder.mutation({
+      query: (data) => ({
         url: "/comply/view",
         method: "POST",
-        body: values,
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       }),
-      invalidatesTags: ["Services"],
     }),
 
-    //delete service document
-    deleteServiceDocument: builder.mutation({
-      query: (values) => ({
-        url: "/comply/delete/document",
+    deleteComply: builder.mutation({
+      query: (data) => ({
+        url: "/comply/delete",
         method: "POST",
-        body: values,
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       }),
-      invalidatesTags: ["Services"],
     }),
 
-    //add comply payment
-    addServicePayment: builder.mutation({
-      query: (values) => ({
+    viewAllComply: builder.mutation({
+      query: (data) => ({
+        url: "/comply/view/all",
+        method: "GET",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    viewAllComplyByServiceId: builder.mutation({
+      query: (data) => ({
+        url: "/comply/view/all/service",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    viewAllComplyByMeta: builder.mutation({
+      query: (data) => ({
+        url: "/comply/view/all/meta",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    deleteManyComplies: builder.mutation({
+      query: (data) => ({
+        url: "/comply/batch/delete",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    addComplyPayment: builder.mutation({
+      query: (data) => ({
         url: "/comply/add/payment",
         method: "POST",
-        body: values,
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
       }),
-      invalidatesTags: ["Services"],
+    }),
+
+    deleteComplyPayment: builder.mutation({
+      query: (data) => ({
+        url: "/comply/delete/payment",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    addComplyDataQA: builder.mutation({
+      query: (data) => ({
+        url: "/comply/add/data",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    deleteComplyDataQA: builder.mutation({
+      query: (data) => ({
+        url: "/comply/delete/data",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    addComplyDocument: builder.mutation({
+      query: (data) => ({
+        url: "/comply/add/document",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    deleteComplyDocument: builder.mutation({
+      query: (data) => ({
+        url: "/comply/delete/document",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
     }),
   }),
 });
 
 export const {
+  useCreateComplyMutation,
+  useUpdateComplyMutation,
   useViewComplyMutation,
-  useLazyGetServicesByCountryQuery,
-  useCreateComplianceMutation,
-  useViewServiceQuery,
-  useGetAllCountriesQuery,
-  useAddServiceDocumentMutation,
-  useViewServiceDocumentMutation,
-  useDeleteServiceDocumentMutation,
-  useAddServicePaymentMutation,
+  useDeleteComplyMutation,
+
+  useViewAllComplyMutation,
+  useViewAllComplyByServiceIdMutation,
+  useViewAllComplyByMetaMutation,
+  useDeleteManyCompliesMutation,
+
+  useAddComplyPaymentMutation,
+  useDeleteComplyPaymentMutation,
+
+  useAddComplyDataQAMutation,
+  useDeleteComplyDataQAMutation,
+
+  useAddComplyDocumentMutation,
+  useDeleteComplyDocumentMutation,
 } = ComplyApi;

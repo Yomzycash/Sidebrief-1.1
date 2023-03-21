@@ -231,7 +231,7 @@ export const ReviewTop = styled.div`
   gap: 24px;
 `;
 
-export const ReviewTopLeft = styled.div`
+export const ReviewTopLeft = styled.label`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -299,7 +299,7 @@ export const DeleteWrapper = styled.div`
   }
 `;
 
-export const ReviewQuestion = styled.div`
+export const ReviewQuestion = styled.label`
   color: #242627;
   font-size: 14px;
   line-height: 27px;
@@ -307,4 +307,21 @@ export const ReviewQuestion = styled.div`
   ::first-letter {
     text-transform: capitalize;
   }
+`;
+
+//
+
+//
+
+// Uneditable styles
+export const UneditableOption = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+export const AnswerInput = styled.input``;
+
+export const AnswerTextArea = styled.textarea`
+  resize: none;
 `;

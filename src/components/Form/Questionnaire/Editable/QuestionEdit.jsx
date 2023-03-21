@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef } from "react";
-import InputWithLabel from "../inputWithLabel";
-import ToggleButton from "../ToggleButton";
+import InputWithLabel from "components/input/inputWithLabel";
+import ToggleButton from "components/input/ToggleButton";
 import {
   AddOption,
   Question,
@@ -11,13 +11,13 @@ import {
   ToggleWrapper,
   QuestionInfoWrapper,
   SubmitButtons,
-} from "./styled";
+} from "../styled";
 import CommonButton from "components/button/commonButton";
 import Option from "./Option";
 import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { useActions } from "./actions";
 import { initialState, reducer } from "./reducer";
-import { ErrMsg } from "../styled";
+import { ErrMsg } from "components/input/styled";
 
 const QuestionEdit = ({
   questionNumber,
@@ -109,8 +109,8 @@ const QuestionEdit = ({
             />
             <CommonButton
               text="Paragraph"
-              style={applyActive("text-area")}
-              action={() => dispatch({ type: "setSelectedType", payload: "text-area" })}
+              style={applyActive("textarea")}
+              action={() => dispatch({ type: "setSelectedType", payload: "textarea" })}
             />
             <CommonButton
               text="Number"

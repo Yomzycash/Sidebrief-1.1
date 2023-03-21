@@ -7,9 +7,7 @@ import {
 } from "./styled";
 import SimpleTabNavBar from "components/TabNavBar/SimpleTabNavBar";
 import { CheckoutController } from "containers";
-import { useViewServiceQuery } from "services/complyService";
 import { useActions } from "./actions";
-import ServiceDocument from "components/input/ServiceDocuments";
 import {
   useAddServiceRequiredDocMutation,
   useUpdateServiceRequiredDocMutation,
@@ -18,10 +16,12 @@ import {
   useUpdateServiceDocTemplateMutation,
   useDeleteServiceDocTemplateMutation,
 } from "services/staffService";
-import ServiceDocumentTemplate from "components/input/ServiceDocuments/Template";
+import ServiceDocumentTemplate from "components/Form/ServiceDocument/Template";
+import ServiceDocument from "components/Form/ServiceDocument";
+import { useGetSingleServiceQuery } from "services/staffService";
 
 const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => {
-  const { data, refetch } = useViewServiceQuery(serviceId);
+  const { data, refetch } = useGetSingleServiceQuery(serviceId);
 
   const [addDocument, addDocumentState] = useAddServiceRequiredDocMutation();
   const [updateDocument, updateDocumentState] = useUpdateServiceRequiredDocMutation();
@@ -95,6 +95,7 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
       })),
     [data?.serviceRequirements]
   );
+
   console.log("Meo", serviceDocInfo);
   return (
     <SectionContainer id="staff-service-docs">

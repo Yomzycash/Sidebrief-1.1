@@ -7,14 +7,14 @@ import {
   ReviewTop,
   ReviewTopLeft,
   ReviewTopRight,
-} from "./styled";
+} from "../styled";
 import CommonButton from "components/button/commonButton";
 import Option from "./Option";
 import DeleteIcon from "asset/Icons/DeleteIcon";
 import EditIcon from "asset/Icons/EditIcon";
 import { SpinningCircles } from "react-loading-icons";
 
-const QuestionView = ({ info, questionNumber, setDisabled, deleteAction, deleteState }) => {
+const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, deleteState }) => {
   const [confirm, setConfirm] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
 
@@ -109,4 +109,4 @@ const QuestionView = ({ info, questionNumber, setDisabled, deleteAction, deleteS
   );
 };
 
-export default QuestionView;
+export default QuestionReview;

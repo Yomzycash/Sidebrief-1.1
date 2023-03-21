@@ -15,10 +15,6 @@ import {
 import { downLoadImage } from "utils/staffHelper";
 import { useLocation } from "react-router-dom";
 import {
-  useDeleteServiceDocumentMutation,
-  useViewServiceDocumentMutation,
-} from "services/complyService";
-import {
   Container,
   FileTitle,
   FileZone,
@@ -37,6 +33,7 @@ import {
   DetailsPage,
   KYCPage,
 } from "./styled";
+import { useDeleteComplyMutation, useViewComplyMutation } from "services/complyService";
 
 const KYCFileUpload = ({
   TopText,
@@ -62,8 +59,8 @@ const KYCFileUpload = ({
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
   const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
-  const [viewServiceDocument] = useViewServiceDocumentMutation();
-  const [deleteServiceDocument] = useDeleteServiceDocumentMutation();
+  const [viewServiceDocument] = useViewComplyMutation();
+  const [deleteServiceDocument] = useDeleteComplyMutation();
 
   const { search } = useLocation();
 
