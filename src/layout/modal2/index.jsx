@@ -15,6 +15,7 @@ import { SpinningCircles } from "react-loading-icons";
 import DeleteIcon from "asset/Icons/DeleteIcon";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Modal2 = ({
   children,
@@ -27,6 +28,7 @@ const Modal2 = ({
   deleteState,
   $hideIcons,
   ProgressBarComponent,
+  parentRef,
 }) => {
   const [confirm, setConfirm] = useState(false);
   const [value, setValue] = useState("");

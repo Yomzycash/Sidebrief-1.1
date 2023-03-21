@@ -53,9 +53,6 @@ export const Form = styled.form`
 
     input {
       font-size: clamp(12px, 1.2vw, 14px);
-      ::placeholder {
-        font-size: clamp(12px, 1.2vw, 14px);
-      }
     }
   }
 
