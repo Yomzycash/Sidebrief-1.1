@@ -44,10 +44,19 @@ const KYCFileUpload = ({
 
   const searchParams = new URLSearchParams(search);
 
+  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  console.log(launchInfo);
+  console.log("dddd", searchParams);
   const launchResponse = {
-    launchCode: searchParams.get("launchCode"),
-    registrationCountry: searchParams.get("registrationCountry"),
-    registrationType: searchParams.get("registrationType"),
+    launchCode: launchInfo
+      ? launchInfo.launchCode
+      : searchParams.get("launchCode"),
+    registrationCountry: launchInfo
+      ? launchInfo.registrationCountry
+      : searchParams.get("registrationCountry"),
+    registrationType: launchInfo
+      ? launchInfo.registrationType
+      : searchParams.get("registrationType"),
   };
 
   const nameLengthValidator = (file) => {
