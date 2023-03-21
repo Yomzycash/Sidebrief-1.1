@@ -12,10 +12,11 @@ import { setServiceCheckoutProgress } from "redux/Slices";
 import { InfoContainer } from "containers/Services";
 import {
   useGetAllCountriesQuery,
-  useGetServicesByCategoryQuery,
+  useLazyGetServicesByCountryQuery,
   useGetSingleServiceQuery,
 } from "services/staffService";
 import { useCreateComplyMutation } from "services/complyService";
+import { InfoContainer } from "containers/Services";
 
 const ServiceInfo = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
@@ -28,7 +29,7 @@ const ServiceInfo = () => {
   const [serviceResources, setServiceresources] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("");
 
-  const [servicesByCountry, getServicesState] = useGetServicesByCategoryQuery();
+  const [servicesByCountry, getServicesState] = useLazyGetServicesByCountryQuery();
   const [createCompliance, createComplianceState] = useCreateComplyMutation();
   const { data, isLoading } = useGetAllCountriesQuery();
 

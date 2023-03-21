@@ -23,8 +23,8 @@ export const InfoContainer = ({ country, requiredDocuments, amount, currency, ti
             <>
               <NormalText>You will be asked to upload the following documents</NormalText>
               <Documents>
-                {requiredDocuments.map((document) => (
-                  <Doc>{document.requirementName}</Doc>
+                {requiredDocuments.map((document, index) => (
+                  <Doc key={index}>{document.requirementName}</Doc>
                 ))}
               </Documents>
             </>
