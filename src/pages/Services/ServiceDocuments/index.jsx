@@ -2,9 +2,9 @@ import React from "react";
 import { Body, Bottom, Container, UploadWrapper, TextWrapper } from "./style";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
-import Download from "../../../components/File/Download";
-import Upload from "../../../components/File/Upload";
+import { Download, Upload } from "components/File";
 import { useNavigate } from "react-router-dom";
+
 const ServiceDocument = () => {
   const navigate = useNavigate();
   const handlePrev = () => {

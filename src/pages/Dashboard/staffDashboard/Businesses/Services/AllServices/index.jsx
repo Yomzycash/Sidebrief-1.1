@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { Puff } from "react-loading-icons";
 import { BodyRight, Loading, ServiceContainer } from "./style";
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
-import { 
+import {
   useAddServiceMutation,
-	useUpdateServiceMutation,
-	useDeleteServiceMutation,
-  useGetAllServicesQuery 
- } from "services/staffService";
+  useUpdateServiceMutation,
+  useDeleteServiceMutation,
+  useGetAllServicesQuery,
+} from "services/staffService";
 import Paginator from "components/Paginator";
 import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
@@ -17,21 +17,8 @@ import ServicesModal from "components/modal/ServicesModal";
 import { useRef } from "react";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
+
 const AllServices = () => {
-  const serviceCategory = [
-    {
-      id: 1,
-      category: "TAX",
-      backgroundColor: "#00d4480c",
-      color: "#00D448",
-    },
-    {
-      id: 2,
-      category: "MANAGE",
-      backgroundColor: "#00a2d40c",
-      color: "#00A2D4",
-    },
-  ];
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
   const [open, setOpen] = useState(false);
@@ -46,9 +33,9 @@ const AllServices = () => {
   const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   const { data, isLoading, isError, error, refetch } = useGetAllServicesQuery();
-  const [ addService, addState ] = useAddServiceMutation();
-  const [ deleteService, deleteState ] = useDeleteServiceMutation();
-  const [ updateService, updateState ] = useUpdateServiceMutation();
+  const [addService, addState] = useAddServiceMutation();
+  const [deleteService, deleteState] = useDeleteServiceMutation();
+  const [updateService, updateState] = useUpdateServiceMutation();
 
   const handlePageClick = (e) => {
     const newOffset = (e.selected * itemsPerPage) % data?.length;
@@ -61,7 +48,7 @@ const AllServices = () => {
     setOpen(true);
   };
 
-  let errorRef = useRef(true)
+  let errorRef = useRef(true);
 
   useEffect(() => {
     setAllServices(data);
@@ -80,67 +67,64 @@ const AllServices = () => {
       serviceDescription: formData.description,
       serviceCategory: formData.category,
       serviceCountry: formData.country,
-      servicePrice: formData.price, 
-      serviceTimeline: formData.timeline, 
-      serviceCurrency: formData.currency
-    }
-  }
+      servicePrice: formData.price,
+      serviceTimeline: formData.timeline,
+      serviceCurrency: formData.currency,
+    };
+  };
 
   const handleClickEachService = (servicesvalue) => {
     setCardAction("edit");
     setOpen(true);
-    setClickedService(servicesvalue)
-
-  }
+    setClickedService(servicesvalue);
+  };
   const handleServiceAdd = async (formData) => {
     let requiredService = getRequired(formData);
     let response = await addService(requiredService);
     let data = response?.data;
     let error = response?.error;
 
-    if(data) {
+    if (data) {
       toast.success("Service added successfully");
-      setOpen(false)
+      setOpen(false);
     } else {
-      handleError(error)
+      handleError(error);
     }
     refetch();
     console.log("formdata", formData);
-  }
+  };
 
-  // Update service  
+  // Update service
   const handleServiceUpdate = async (formData) => {
     let requiredService = getRequired(formData);
-    let response = await updateService({...requiredService, serviceId:clickedService.serviceId});
+    let response = await updateService({ ...requiredService, serviceId: clickedService.serviceId });
     let data = response?.data;
     let error = response?.error;
-    
+
     if (data) {
       toast.success("Service updated successfully");
-      setOpen(false)
+      setOpen(false);
     } else {
-      handleError(error)
+      handleError(error);
     }
     refetch();
     console.log(response);
-  }
+  };
 
-    // delete service
-    const handleServiceDelete = async () => {
-      let response = await deleteService(clickedService.serviceId);
-      let data = response?.data;
-      let error = response?.error;
-      
-      if (data) {
-        toast.success("Service deleted successfully.");
-        setOpen(false);
-      } else {
-        handleError(error)
-      }
-      refetch();
+  // delete service
+  const handleServiceDelete = async () => {
+    let response = await deleteService(clickedService.serviceId);
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Service deleted successfully.");
+      setOpen(false);
+    } else {
+      handleError(error);
     }
-
-  
+    refetch();
+  };
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
@@ -178,20 +162,18 @@ const AllServices = () => {
       loading={addState.isLoading}
       
     /> */}
-    <ServicesModal
-      disableAll={cardAction === "edit" ? true : false}
-      open={open}
-      title={
-        cardAction === "edit" ? "Update Service" : "Add New Service"
-      }
-      loading={updateState.isLoading || addState.isLoading}
-      setOpen={setOpen} 
-      cardAction={cardAction} 
-      submitAction={ cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
-      serviceInfo={clickedService}
-      deleteState={deleteState}
-      handleServiceDelete={handleServiceDelete}
-    />
+      <ServicesModal
+        disableAll={cardAction === "edit" ? true : false}
+        open={open}
+        title={cardAction === "edit" ? "Update Service" : "Add New Service"}
+        loading={updateState.isLoading || addState.isLoading}
+        setOpen={setOpen}
+        cardAction={cardAction}
+        submitAction={cardAction === "edit" ? handleServiceUpdate : handleServiceAdd}
+        serviceInfo={clickedService}
+        deleteState={deleteState}
+        handleServiceDelete={handleServiceDelete}
+      />
       {allServices?.length > itemsPerPage && (
         <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
       )}
