@@ -1,7 +1,7 @@
 import { DetailContainer, DetailWrapper, Loader, ContinueButton } from "./styles";
 import { StepBar } from "components/Indicators";
 import StaffBusinessInfoCard from "components/cards/StaffBusinessInfoCard";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import {
   useGetAllCountriesQuery,
   useViewLaunchRequestQuery,
@@ -22,15 +22,17 @@ const BusinessDetail = () => {
   const searchParams = new URLSearchParams(search);
   const countries = useGetAllCountriesQuery();
 
-  let getC = countries?.data?.find(
-    (country) => country.countryISO === searchParams.get("registrationCountry")
-  );
-
   const launchResponse = {
     launchCode: searchParams.get("launchCode"),
     registrationCountry: searchParams.get("registrationCountry"),
     registrationType: searchParams.get("registrationType"),
   };
+
+  let getC = countries.data
+    ? countries?.data.find((country) => country.countryISO === launchResponse.registrationCountry)
+    : {
+        countryName: "--",
+      };
 
   const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
   const [viewPayLaunch, viewPayState] = useViewPayLaunchMutation();

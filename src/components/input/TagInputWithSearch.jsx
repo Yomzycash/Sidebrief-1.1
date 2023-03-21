@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdClear } from "react-icons/md";
-import { ThreeDots } from "react-loading-icons";
 
 const TagInputWithSearch = ({
   label, // The input label
@@ -36,22 +35,24 @@ const TagInputWithSearch = ({
     if (initialValues) {
       setTags([...initialValues]);
     }
-  }, [initialValues?.length]);
+  }, [initialValues]);
 
   // This sets the select value (if available) on mounth
   useEffect(() => {
     if (initialValue) {
       setValue(initialValue);
     }
-  }, [initialValue?.length]);
+  }, [initialValue]);
 
   // console.log(initialValue);
   // console.log(initialValues);
 
   // Update list when it chages
+  const theList = useMemo(() => list, [list]);
+
   useEffect(() => {
-    setFilteredList(list);
-  }, [list.length]);
+    setFilteredList(theList);
+  }, [theList]);
 
   useEffect(() => {
     if (keyPressed === "ArrowDown") {
@@ -63,7 +64,7 @@ const TagInputWithSearch = ({
         suggestionContainer.current.scrollBy(0, -56);
       }
     }
-  }, [selectedIndex]);
+  }, [selectedIndex, filteredList.length, keyPressed]);
 
   // This function handles the input tag change event
   const handleChange = (e) => {
@@ -179,7 +180,7 @@ const TagInputWithSearch = ({
     if (getValue) {
       getValue(MultiSelect ? tags : value);
     }
-  }, [tags, value]);
+  }, [tags, value, MultiSelect, getValue]);
 
   return (
     <Container>

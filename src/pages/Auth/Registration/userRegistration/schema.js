@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 export const userRegistrationSchema = yup.object().shape({
 	first_name: yup.string().required("Enter your first name"),
@@ -7,7 +8,18 @@ export const userRegistrationSchema = yup.object().shape({
 		.string()
 		.email("Enter a valid email address")
 		.required("Enter your email"),
-	phone: yup.string().required("Enter your phone number"),
+	phone: yup.string()
+		.required("Enter your phone number"),
+		// .test('phone-test', 'Invalid phone number', function (value) {
+		//   const { country } = this.parent;
+		//   const phoneNumber = typeof value === 'string'
+        //   ? parsePhoneNumberFromString(value, country)
+        //   : null;
+		//   if (!phoneNumber) return false;
+		//   const validLengths = phoneNumber.getMetadata().possibleLengths;
+		//   return validLengths.includes(value.length);
+		// })
+		// .matches(/^[\d-+\s()]+$/, 'Phone number is invalid'),
 	password: yup
 		.string()
 		.min(6)

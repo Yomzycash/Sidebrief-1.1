@@ -86,6 +86,7 @@ const InputWithLabel = ({
             disabled={disable}
             max={maxNumber}
             value={value}
+            onChange={onChange}
             defaultValue={defaultValue}
             {...register(name)}
             {...rest}

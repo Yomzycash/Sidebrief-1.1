@@ -1,5 +1,5 @@
 import QuestionCard from "components/cards/QuestionCard";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Wrapper } from "./style";
 import { useNavigate } from "react-router-dom";
 import { CheckoutController } from "containers";
@@ -14,17 +14,17 @@ const ServiceFormReview = () => {
   const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
   const [questionContainer, setQuestionContainer] = useState([]);
 
-  const handleViewDocument = async () => {
+  const handleViewDocument = useCallback(async () => {
     const requiredData = {
       complyCode: complyCode,
     };
     const response = await viewServiceDocument(requiredData);
     setQuestionContainer(response?.data?.complyData);
-  };
+  }, [complyCode, viewServiceDocument]);
 
   useEffect(() => {
     handleViewDocument();
-  }, []);
+  }, [handleViewDocument]);
 
   const handlePrev = () => {
     navigate(-1);
