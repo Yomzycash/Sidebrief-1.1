@@ -284,6 +284,12 @@ const AppRouter = () => {
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
+              <Route path="services" element={<BusinessDetailLayout />}>
+                <Route path="detail" element={<BusinessDetail />} />
+                <Route path="form" element={<DetailShareholders />} />
+                <Route path="document" element={<DetailDirectors />} />
+               
+              </Route>
               <Route path="compliance" element={<Compliance />}></Route>
               <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
               <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
