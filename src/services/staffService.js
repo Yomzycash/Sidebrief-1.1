@@ -528,7 +528,6 @@ export const {
   useAddServiceMutation,
   useUpdateServiceMutation,
   useDeleteServiceMutation,
-
   useGetSingleServiceQuery,
   useGetAllServicesQuery,
   useGetServicesByCategoryQuery,
