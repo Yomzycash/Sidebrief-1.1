@@ -1,5 +1,7 @@
 import React from "react";
 import pdf from "../../../asset/svg/pdf.svg";
+import addc from "../../../asset/svg/addc.svg";
+import editc from "../../../asset/svg/editc.svg";
 import {
   Document,
   DocumentSection,
@@ -10,7 +12,39 @@ import {
   InnerDocument,
 } from "./style";
 
-const ServiceReviewCard = () => {
+const ServiceReviewCard = ({documents }) => {
+  const getFileIcon = (fileImage) => {
+    switch (fileImage) {
+      case "pdf":
+        return pdf;
+      case "jpg":
+        return addc;
+      case "png":
+        return editc;
+      default:
+        return null;
+    }
+  }
+
+  return (
+    <DocumentSection>
+      <Document>
+        {documents.map((doc, id) => (
+          <DocumentDownload key={id}>
+            <InnerDocument>
+              {/* <img src={getFileIcon(doc.fileImage)} alt="filetype" /> */}
+              <img src={(doc.fileImage)} alt="filetype" />
+              <DocumentText>{doc.doctype}</DocumentText>
+            </InnerDocument>
+          </DocumentDownload>
+        ))}
+      </Document>
+    </DocumentSection>
+  );
+};
+
+const DocumentCard = () => {
+  // documents on api consuption
   const DocContent = [
     {
       id: "1",
@@ -33,21 +67,12 @@ const ServiceReviewCard = () => {
       doctype: "Court Affidavit",
     },
   ];
-  return (
-    <DocumentSection>
-      <Document>
-        {DocContent.map((doc, id) => (
-          <DocumentDownload key={id}>
-            <InnerDocument>
-              <img src={doc.fileImage} alt="filetype" />
-              <DocumentText>{doc.doctype}</DocumentText>
-              <SmallText>file type: pdf, png, jpeg</SmallText>
-            </InnerDocument>
-          </DocumentDownload>
-        ))}
-      </Document>
-    </DocumentSection>
-  );
-};
 
-export default ServiceReviewCard;
+  return <ServiceReviewCard documents={DocContent}/>
+}
+
+
+export default DocumentCard;
+
+
+

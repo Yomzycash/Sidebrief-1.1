@@ -41,12 +41,8 @@ const Upload = ({ icon, docType, fileExtension , action }) => {
                 {DocContent.map((doc, id) => (
                     <DocumentDownload key={id}>
                         <DocumentFrame>
-                           {/* { icon && ( <DocumentIcon />) } 
-                           { docType && (<DocumentText>{doc.doctype}</DocumentText>) }  
-                           {action && (<CommonButton text={"Download"} LeftIcon={DownloadWhite} /> )}  */}
                             <DocumentIcon /> 
-                            <DocumentText>{doc.doctype}</DocumentText> 
-                            <SmallText>file type: pdf, png, jpeg</SmallText>
+                            <DocumentText>{doc.doctype}</DocumentText>
                             <CommonButton text={"Upload"} LeftIcon={UploadIcon} />
                         </DocumentFrame>
                     </DocumentDownload>

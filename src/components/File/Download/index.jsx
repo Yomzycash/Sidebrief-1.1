@@ -6,10 +6,11 @@ import {
     DocumentFrame,
     DocumentText,
     Divider,
+    SmallText,
     Paragraph,
 } from "./styled"
 import { CommonButton } from "components/button";
-import { ReactComponent as DownloadWhite } from "../../../../src/asset/svg/DownloadWhite.svg"
+import { ReactComponent as DownloadIcon } from "../../../../src/asset/svg/download.svg"
 import { ReactComponent as DocumentIcon } from "../../../../src/asset/svg/Document.svg"
 
 const Download = ({ icon, docType, fileExtension , action }) => {
@@ -35,21 +36,17 @@ const Download = ({ icon, docType, fileExtension , action }) => {
 
     return (
         <DocumentSection>
-            
+         
             <Document>
                 {DocContent.map((doc, id) => (
                     <DocumentDownload key={id}>
                         <DocumentFrame>
-                           {/* { icon && <DocumentIcon /> } 
-                           { docType && <DocumentText>{doc.doctype}</DocumentText> }  
-                           {action && <CommonButton text={"Download"} LeftIcon={DownloadWhite} />} */}
                             <DocumentIcon /> 
                             <DocumentText>{doc.doctype}</DocumentText>
-                            <CommonButton text={"Download"} LeftIcon={DownloadWhite} />
+                            <CommonButton text={"Download"} LeftIcon={DownloadIcon} />
                         </DocumentFrame>
                     </DocumentDownload>
-                ))}
-                
+                ))}   
             </Document>
             
         
