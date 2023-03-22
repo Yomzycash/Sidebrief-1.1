@@ -1,6 +1,6 @@
-import KYCFileUpload from "components/FileUpload/KYCFileUpload";
+// import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 // import DownLoadDoc from "components/FileUpload/downLoadDoc";
-import { Download } from "components/File";
+import { Download, Upload } from "components/File";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
@@ -18,7 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
-import { convertToLink } from "utils/LaunchHelper";
+// import { convertToLink } from "utils/LaunchHelper";
 import toast from "react-hot-toast";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useAddComplyDocumentMutation } from "services/complyService";
@@ -49,21 +49,42 @@ const ServiceDocuments = () => {
   // let complyCode = complyCodeData.complyCode;
   let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
 
-  const handleChange = async (file, fileName) => {
-    const res = await convertToLink(file[0]);
+  // const handleChange = async (file, fileName) => {
+  //   const res = await convertToLink(file[0]);
 
+  //   const requiredData = {
+  //     complyCode: complyCode,
+  //     complyDocument: {
+  //       documentName: fileName,
+  //       documentType: fileName,
+  //       documentLink: res.url,
+  //       fileName: file[0].name,
+  //       fileType: file[0].type,
+  //     },
+  //   };
+
+  //   console.log("ggg", requiredData);
+
+  //   const response = await addServiceDocument(requiredData);
+  //   if (response.data) {
+  //     toast.success("Document uploaded successfully");
+  //     setIsChanged(!isChanged);
+  //   } else if (response.error) {
+  //     toast.error(response.error?.data.message);
+  //   }
+  // };
+
+  const newHandleChange = async (uploadedFile, fileName, rawFile) => {
     const requiredData = {
       complyCode: complyCode,
       complyDocument: {
         documentName: fileName,
         documentType: fileName,
-        documentLink: res.url,
-        fileName: file[0].name,
-        fileType: file[0].type,
+        documentLink: uploadedFile.url,
+        fileName: rawFile.name,
+        fileType: rawFile.type,
       },
     };
-
-    console.log("ggg", requiredData);
 
     const response = await addServiceDocument(requiredData);
     if (response.data) {
@@ -73,6 +94,12 @@ const ServiceDocuments = () => {
       toast.error(response.error?.data.message);
     }
   };
+
+  const removeUploadedFile = () => {
+    console.log("removed");
+    // remove comply endpoint should be called here
+  };
+
   return (
     <Container>
       <ServicesCheckoutHeader />
@@ -102,15 +129,21 @@ const ServiceDocuments = () => {
               <DownLoadText>Upload the required forms</DownLoadText>
               <ContentWrapper>
                 {viewService?.data?.serviceRequirements.map((document, index) => (
-                  <KYCFileUpload
+                  // <KYCFileUpload
+                  //   key={index}
+                  //   TopText={document.requirementName}
+                  //   BottomText={document.requirementDescription}
+                  //   documentComponentType={document.requirementName}
+                  //   onDrop={(files) => handleChange(files, document.requirementName)}
+                  //   isChanged={isChanged}
+                  //   complyCode={complyCode}
+                  //   onPage="serviceDownLoadPage"
+                  // />
+                  <Upload
                     key={index}
-                    TopText={document.requirementName}
-                    BottomText={document.requirementDescription}
-                    documentComponentType={document.requirementName}
-                    onDrop={(files) => handleChange(files, document.requirementName)}
-                    isChanged={isChanged}
-                    complyCode={complyCode}
-                    onPage="serviceDownLoadPage"
+                    docType={document.requirementName}
+                    uploadAction={newHandleChange}
+                    deleteAction={removeUploadedFile}
                   />
                 ))}
               </ContentWrapper>

@@ -4,7 +4,6 @@ import { CommonButton } from "components/button";
 import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
 import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
 import { downLoadImage } from "utils/staffHelper";
-import { SpinningCircles } from "react-loading-icons";
 
 export const Download = ({ docType, fileUrl }) => {
   const [preparing, setPreparing] = useState(false);
@@ -26,7 +25,6 @@ export const Download = ({ docType, fileUrl }) => {
           LeftIcon={DownloadWhite}
           action={download}
           loading={preparing}
-          LoadingIcon={<SpinningCircles height={24} width={24} />}
         />
       </DocumentFrame>
     </DocumentDownload>
