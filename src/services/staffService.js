@@ -531,6 +531,8 @@ export const {
   useGetSingleServiceQuery,
   useGetAllServicesQuery,
   useGetServicesByCategoryQuery,
+  useLazyGetServicesByCategoryQuery,
   useGetServicesByCountryQuery,
+  useLazyGetServicesByCountryQuery,
   useGetServicesByCountryandCategoryQuery,
 } = staffApi;

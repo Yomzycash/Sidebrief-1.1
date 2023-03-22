@@ -20,9 +20,9 @@ const ServiceDocument = () => {
       <ServicesCheckoutHeader />
 
       <Body>
-        <CheckoutSection
+        {/* <CheckoutSection
           title="Documents "
-          HeaderParagraph="Download the following documents’ template (it will be required in the upload section)"
+          HeaderParagraph="Download the following documents template, fill, then upload back."
         />
         <Download />
         <UploadWrapper>
@@ -36,7 +36,7 @@ const ServiceDocument = () => {
             forwardAction={handleNext}
             forwardText={"Proceed"}
           />
-        </Bottom>
+        </Bottom> */}
       </Body>
     </Container>
   );

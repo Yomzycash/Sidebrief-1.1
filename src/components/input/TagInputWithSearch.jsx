@@ -60,11 +60,11 @@ const TagInputWithSearch = ({
         suggestionContainer.current.scrollBy(0, 56);
       }
     } else if (keyPressed === "ArrowUp") {
-      if (selectedIndex < filteredList.length - 5) {
+      if (selectedIndex < filteredList?.length - 5) {
         suggestionContainer.current.scrollBy(0, -56);
       }
     }
-  }, [selectedIndex, filteredList.length, keyPressed]);
+  }, [selectedIndex, filteredList?.length, keyPressed]);
 
   // This function handles the input tag change event
   const handleChange = (e) => {
@@ -78,14 +78,14 @@ const TagInputWithSearch = ({
 
   // This fires off when a value is selected
   const setSelected = (value) => {
-    if (tags.length > 3) {
+    if (tags?.length > 3) {
       setError(MaxError);
       return "error";
     }
     let tagAlreadyExists = tags.filter(
       (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
     );
-    if (tagAlreadyExists.length > 0) {
+    if (tagAlreadyExists?.length > 0) {
       setError(ExistsError);
       return "error";
     }
@@ -110,7 +110,7 @@ const TagInputWithSearch = ({
       // This runs if an arrow down key is pressed
       if (key === "ArrowDown") {
         setKeyPressed("ArrowDown");
-        if (selectedIndex < list.length - 1) {
+        if (selectedIndex < list?.length - 1) {
           setSelectedIndex(selectedIndex + 1);
           return;
         }
@@ -124,15 +124,15 @@ const TagInputWithSearch = ({
         let valueCheck = list.filter(
           (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
         );
-        if (valueCheck.length !== 0) {
+        if (valueCheck?.length !== 0) {
           setTags([...tags, ...valueCheck]);
           setError("");
           return;
-        } else if (valueCheck.length === 0) {
+        } else if (valueCheck?.length === 0) {
           setError(MatchError);
           return;
         }
-        if (tags.length === 0) {
+        if (tags?.length === 0) {
           setError(EmptyError);
           return;
         }
@@ -180,7 +180,7 @@ const TagInputWithSearch = ({
     if (getValue) {
       getValue(MultiSelect ? tags : value);
     }
-  }, [tags, value, MultiSelect, getValue]);
+  }, [tags, value]);
 
   return (
     <Container>
@@ -223,7 +223,7 @@ const TagInputWithSearch = ({
                 <span>{fetchFailedText || "Could not fetch suggestions"}</span>
               </NoSuggestion>
             )}
-            {MultiSelect && filteredList.length === 0 && list?.length > 0 && (
+            {MultiSelect && filteredList?.length === 0 && list?.length > 0 && (
               <NoSuggestion>
                 <span>{noSuggestionText}</span>
                 <button onMouseDown={handleNotExistAdd}>Add</button>

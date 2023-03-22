@@ -30,23 +30,15 @@ const DynamicForm = ({
     resolver: yupResolver(schema),
   });
 
-  const handleChange = (value, el) => {
-    let category = Object.values(value)[0];
-    setValue(el?.name, category, { shouldValidate: true });
-  };
-
   const handleTextChange = (value, name) => {
-    console.log(value, name);
     setValue(name, value, { shouldValidate: true });
   };
 
   const handleRadioSelect = (selected, name) => {
-    console.log(selected, name);
     setValue(name, selected, { shouldValidate: true });
   };
 
   const handleCheckboxSelect = (checkList, name) => {
-    console.log(checkList, name);
     setValue(name, checkList, { shouldValidate: true });
   };
 
@@ -66,6 +58,7 @@ const DynamicForm = ({
             handleTextChange={handleTextChange}
             handleRadioSelect={handleRadioSelect}
             handleCheckboxSelect={handleCheckboxSelect}
+            error={errors[el?.fieldName]}
           />
         ))}
       </Inputs>
