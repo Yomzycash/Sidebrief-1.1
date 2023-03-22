@@ -1,17 +1,22 @@
 import QuestionCard from "components/cards/QuestionCard";
+import FormContainer from "containers/FormContainer";
+
 import React, { useEffect, useState, useCallback } from "react";
-import { Wrapper } from "./style";
+import { Wrapper,Loading } from "./style";
 import { useNavigate } from "react-router-dom";
 import { CheckoutController } from "containers";
 import { Bottom } from "../style";
-import { useViewComplyQuery } from "services/complyService";
+import { useViewComplyMutation } from "services/complyService";
+import { Puff } from "react-loading-icons";
+import { useLazyViewComplyQuery } from "services/complyService";
 
 const ServiceFormReview = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = complyCodeData.complyCode;
+  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
+
+  let complyCode = complyCodeData?.complyCode;
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyQuery();
+  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [questionContainer, setQuestionContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {
@@ -36,7 +41,21 @@ const ServiceFormReview = () => {
 
   return (
     <Wrapper>
-      <QuestionCard question={questionContainer} loadingState={viewServiceDocumentState} />
+      {viewServiceDocumentState?.isLoading && (
+          <Loading height="50vh">
+            <Puff stroke="#00A2D4" fill="white" />
+          </Loading>
+      )}
+      {questionContainer?.map((el, index) => ( 
+        <div key ={index}>
+          <FormContainer
+            number={index + 1}
+            question={el?.complyQuestion}
+            answer={el?.complyAnswer}
+          />
+         </div>
+       ))}
+      
       <Bottom>
         <CheckoutController
           backText={"Previous"}

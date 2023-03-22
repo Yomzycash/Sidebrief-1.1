@@ -71,6 +71,7 @@ export const Header = ({ isStaff, code }) => {
 	);
 
 	const launchRequest = useViewLaunchRequestQuery(launchResponse);
+	console.log(launchRequest)
 	const page = pathname.split("/").pop();
 
 	const handleClick = () => {

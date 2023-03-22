@@ -5,22 +5,31 @@ import { CheckoutController, CheckoutSection } from "containers";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import React, { useEffect, useState } from "react";
-import { Body, Bottom, Container, ContentWrapper, DownLoadText, FileContainer } from "./style";
+import {
+  Body,
+  Bottom,
+  Container,
+  ContentWrapper,
+  DownLoadContentWrapper,
+  DownLoadText,
+  FileContainer,
+} from "./style";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { convertToLink } from "utils/LaunchHelper";
 import toast from "react-hot-toast";
 import { useGetSingleServiceQuery } from "services/staffService";
-import { useAddComplyDocumentMutation } from "services/complyService";
+import { useAddComplyDocumentMutation, useViewServiceQuery } from "services/complyService";
 
 const ServiceDocuments = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let serviceId = complyCodeData.serviceId;
-  // let code = 9031415997;
+  // const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
+  // let serviceId = complyCodeData.serviceId;
+  let serviceId = "7013107844";
+
   const navigate = useNavigate();
   const viewService = useGetSingleServiceQuery(serviceId);
-
+  console.log("dddd", viewService);
   const [addServiceDocument, { isLoading, isSuccess }] = useAddComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
   const handlePrev = () => {
@@ -76,15 +85,15 @@ const ServiceDocuments = () => {
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
             <FileContainer>
-              <ContentWrapper>
+              <DownLoadContentWrapper>
                 {viewService?.data?.serviceTemplates.map((document, index) => (
                   <DownLoadDoc
                     key={index}
-                    downloadDocumentName={document.fileName}
+                    downloadDocumentName={document.templateName}
                     downloadDocumentLink={document.templateLink}
                   />
                 ))}
-              </ContentWrapper>
+              </DownLoadContentWrapper>
               <DownLoadText>Upload the required forms</DownLoadText>
               <ContentWrapper>
                 {viewService?.data?.serviceRequirements.map((document, index) => (
@@ -96,6 +105,7 @@ const ServiceDocuments = () => {
                     onDrop={(files) => handleChange(files, document.requirementName)}
                     isChanged={isChanged}
                     complyCode={complyCode}
+                    onPage="serviceDownLoadPage"
                   />
                 ))}
               </ContentWrapper>
