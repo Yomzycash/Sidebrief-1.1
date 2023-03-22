@@ -130,10 +130,10 @@ const ServiceDetailHeader = ({
         <ActiveNav
           text={"Service Information"}
           // total={0}
-          path={"/services/detail"}
+          path={"/dashboard/services/details/ServiceInformation"}
         />
-        <ActiveNav text={"Form"} path={{}} />
-        <ActiveNav text={"Documents"} path={{}} />
+        <ActiveNav text={"Form"} path={"/dashboard/services/details/FormInformation"} />
+        <ActiveNav text={"Documents"} path={"/dashboard/services/details/DocumentInfo"} />
       </SubHeader>
     </Container>
   );

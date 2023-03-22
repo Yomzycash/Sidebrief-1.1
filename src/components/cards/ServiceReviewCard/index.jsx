@@ -12,8 +12,13 @@ import {
   InnerDocument,
 } from "./style";
 import { handleDownloadFile } from "utils/LaunchHelper";
+import { useLocation } from "react-router-dom";
+import { downLoadImage } from "utils/staffHelper";
 
 const ServiceReviewCard = ({ DocContent, action }) => {
+  const { pathname } = useLocation();
+  let details = pathname.includes("details");
+
   const imageTypeImage = {
     pdf: pdf,
 
@@ -25,12 +30,13 @@ const ServiceReviewCard = ({ DocContent, action }) => {
   return (
     <DocumentSection>
       <Document>
-        {DocContent?.map((doc, id) => (
-          <DocumentDownload
-            key={id}
-            onClick={handleDownloadFile(doc?.documentLink, doc?.documentName)}
-          >
-            <InnerDocument>
+        {DocContent?.map((doc, index) => (
+          <DocumentDownload key={index}>
+            <InnerDocument
+              onClick={() => {
+                details && downLoadImage(doc?.documentLink, doc?.documentName);
+              }}
+            >
               <img
                 src={imageTypeImage[doc?.documentLink.slice(-3)]}
                 alt="filetype"
