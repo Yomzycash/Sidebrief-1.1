@@ -207,7 +207,7 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
-            <Route path="test" element={<Test />} />
+            <Route path="test" element={<ServiceDocuments />} />
 
             {/* Protected home route */}
             <Route

@@ -46,6 +46,11 @@ export const ComplyApi = createApi({
       }),
     }),
 
+    // view service
+    viewService: builder.query({
+      query: (serviceId) => `/services/view/${serviceId}`,
+    }),
+
     viewComply: builder.mutation({
       query: (data) => ({
         url: "/comply/view",
@@ -190,6 +195,7 @@ export const {
   useViewAllComplyByServiceIdMutation,
   useViewAllComplyByMetaMutation,
   useDeleteManyCompliesMutation,
+  useViewServiceQuery,
 
   useAddComplyPaymentMutation,
   useDeleteComplyPaymentMutation,
