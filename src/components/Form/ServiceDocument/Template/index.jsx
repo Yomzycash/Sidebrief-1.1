@@ -15,7 +15,7 @@ const ServiceDocumentTemplate = ({
   updateState,
   deleteState,
 }) => {
-  const [disabled, setDisabled] = useState(review);
+  const [disabled, setDisabled] = useState(info?.templateLink);
 
   return (
     <>

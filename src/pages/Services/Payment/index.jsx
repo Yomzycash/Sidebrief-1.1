@@ -36,11 +36,6 @@ const ServicePayment = () => {
     navigate(-1);
   };
 
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 1 })); // total- total pages and current - current page
-  }, []);
-
   // Send the payment reference information to the backend
   const sendServiceRefToBackend = async (reference) => {
     const requiredData = {
@@ -68,6 +63,10 @@ const ServicePayment = () => {
     description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
   };
 
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1 })); // total- total pages and current - current page
+  }, []);
   return (
     <Container>
       <Header>

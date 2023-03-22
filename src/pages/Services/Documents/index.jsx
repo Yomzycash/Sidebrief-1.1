@@ -31,11 +31,6 @@ const ServiceDocuments = () => {
     navigate("/services/review/info");
   };
 
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 3 })); // total- total pages and current - current page
-  }, []);
-
   let complyCode = complyCodeData.complyCode;
   // let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
 
@@ -63,6 +58,12 @@ const ServiceDocuments = () => {
       toast.error(response.error?.data.message);
     }
   };
+
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.8 })); // total- total pages and current - current page
+  }, []);
+
   return (
     <Container>
       <ServicesCheckoutHeader />

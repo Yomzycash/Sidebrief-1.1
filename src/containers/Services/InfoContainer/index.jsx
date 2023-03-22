@@ -1,8 +1,18 @@
-import { Container, LHS, RHS, NormalText, BigText, CountryName, Documents, Doc } from "./styles";
+import {
+  Container,
+  LHS,
+  RHS,
+  NormalText,
+  BigText,
+  CountryName,
+  Documents,
+  Doc,
+  DocumentList,
+} from "./styles";
 import { Clock, Coin } from "asset/colorIcons";
 import numeral from "numeral";
 import { getCurrencyInfo } from "utils/globalFunctions";
-// import { useGetCountryInfoQuery } from "services/vendorService";
+import { BsCheck2All, BsCheckCircleFill } from "react-icons/bs";
 
 export const InfoContainer = ({ country, service }) => {
   let requiredDocuments = service?.serviceRequirements;
@@ -17,6 +27,7 @@ export const InfoContainer = ({ country, service }) => {
         <div>
           <NormalText>Operational Country</NormalText>
           <CountryName>
+            <BsCheckCircleFill size={16} />
             {country?.countryName}
             {/* <img src={`https://countryflagsapi.com/png/${country.countryISO}`} alt={"flag"} /> */}
           </CountryName>
@@ -27,7 +38,10 @@ export const InfoContainer = ({ country, service }) => {
               <NormalText>We will need the following documents</NormalText>
               <Documents>
                 {requiredDocuments?.map((document, index) => (
-                  <Doc key={index}>{document?.requirementName}</Doc>
+                  <DocumentList key={index}>
+                    <BsCheck2All color="#fff" />
+                    <Doc key={index}>{document?.requirementName}</Doc>
+                  </DocumentList>
                 ))}
               </Documents>
             </>
