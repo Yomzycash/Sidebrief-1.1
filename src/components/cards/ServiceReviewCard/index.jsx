@@ -11,8 +11,9 @@ import {
   SmallText,
   InnerDocument,
 } from "./style";
+import { handleDownloadFile } from "utils/LaunchHelper";
 
-const ServiceReviewCard = ({ DocContent }) => {
+const ServiceReviewCard = ({ DocContent, action }) => {
   const imageTypeImage = {
     pdf: pdf,
 
@@ -24,8 +25,11 @@ const ServiceReviewCard = ({ DocContent }) => {
   return (
     <DocumentSection>
       <Document>
-        {DocContent.map((doc, id) => (
-          <DocumentDownload key={id}>
+        {DocContent?.map((doc, id) => (
+          <DocumentDownload
+            key={id}
+            onClick={handleDownloadFile(doc?.documentLink, doc?.documentName)}
+          >
             <InnerDocument>
               <img
                 src={imageTypeImage[doc?.documentLink.slice(-3)]}

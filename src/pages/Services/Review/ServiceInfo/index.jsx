@@ -3,7 +3,7 @@ import { CheckoutController } from "containers";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useViewComplyMutation } from "services/complyService";
+import { useLazyViewComplyQuery } from "services/complyService";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Bottom } from "../style";
 import { Container,CountryInput, EditWrapper, FilledContainer, InnerContainer, Label, Loading, TopFlex, Wrapper } from "./style";
@@ -12,10 +12,10 @@ import { Puff } from "react-loading-icons";
 
 
 const ServiceInfoReview = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = "302033545077050509";
+  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
 
-  const [viewComplyData, viewComplyDataState] = useViewComplyMutation();
+  let complyCode = complyCodeData?.complyCode;
+  const [viewComplyData, viewComplyDataState] = useLazyViewComplyQuery();
   const [complyData, setComplyData] = useState([]);
 
   const handleViewData = useCallback(async () => {
@@ -23,6 +23,7 @@ const ServiceInfoReview = () => {
       complyCode: complyCode,
     };
     const response = await viewComplyData(requiredData);
+  
     setComplyData(response?.data?.serviceId);
   }, [complyCode, viewComplyData]);
 

@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useViewComplyMutation } from "services/complyService";
+import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import ServiceReviewCard from "components/cards/ServiceReviewCard";
 import { StepBar } from "components/Indicators";
 
 import styled from "styled-components";
 
-const DocumentInfo = () => {
+const DocumentInfoDetails = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
   let complyCode = "302033545077050509";
 
-  const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
+  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [documentContainer, setDocumentContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {
@@ -20,6 +19,7 @@ const DocumentInfo = () => {
       complyCode: complyCode,
     };
     const response = await viewServiceDocument(requiredData);
+    console.log(response);
     setDocumentContainer(response?.data?.complyDocuments);
   }, [complyCode, viewServiceDocument]);
 
@@ -42,7 +42,7 @@ const DocumentInfo = () => {
   );
 };
 
-export default DocumentInfo;
+export default DocumentInfoDetails;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ const DocumentWrapper = styled.div`
   max-width: 825px;
   width: 100%;
   background: #ffffff;
-  border: 1px solid #edf1f7;
+  border: 1px solid #EFF2F3;
   box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
 `;

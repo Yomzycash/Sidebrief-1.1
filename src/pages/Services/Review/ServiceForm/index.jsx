@@ -8,13 +8,15 @@ import { CheckoutController } from "containers";
 import { Bottom } from "../style";
 import { useViewComplyMutation } from "services/complyService";
 import { Puff } from "react-loading-icons";
+import { useLazyViewComplyQuery } from "services/complyService";
 
 const ServiceFormReview = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = "302033545077050509"
+  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
+
+  let complyCode = complyCodeData?.complyCode;
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
+  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [questionContainer, setQuestionContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {

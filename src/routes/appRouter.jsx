@@ -210,12 +210,6 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
-          <Route path="services" element={<ServicesDetailLayout />}>
-                <Route path="detail" element={<ServiceInformation />} />
-                <Route path="form" element={<DetailShareholders />} />
-                <Route path="document" element={<DetailDirectors />} />
-               
-              </Route>
             <Route path="test" element={<Test />} />
 
             {/* Protected home route */}

@@ -2,7 +2,7 @@ import { StepBar } from "components/Indicators";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useViewComplyMutation } from "services/complyService";
+import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import FormContainer from "containers/FormContainer";
@@ -13,7 +13,7 @@ const FormInformation = () => {
   let complyCode = "302033545077050509";
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
+  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [questionContainer, setQuestionContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {

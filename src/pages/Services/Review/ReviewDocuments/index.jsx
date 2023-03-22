@@ -2,16 +2,17 @@ import ServiceReviewCard from "components/cards/ServiceReviewCard";
 import { CheckoutController } from "containers";
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useViewComplyMutation } from "services/complyService";
+import { useLazyViewComplyQuery } from "services/complyService";
 import { Bottom,Loading } from "./style";
 import { Puff } from "react-loading-icons";
 
 const ReviewDocuments = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = "302033545077050509";
+  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
+
+  let complyCode = complyCodeData?.complyCode;
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
+  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [documentContainer, setDocumentContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {

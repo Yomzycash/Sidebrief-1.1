@@ -5,10 +5,10 @@ import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { useCallback } from "react";
 import { format } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
-import { useViewComplyMutation } from "services/complyService";
+import { useLazyViewComplyQuery } from "services/complyService";
 
 const ServicesDetailLayout = () => {
-  const [viewComply, viewComplyState] = useViewComplyMutation();
+  const [viewComply, viewComplyState] = useLazyViewComplyQuery();
   const [complyResponse, setComplyResponse] = useState([]);
 
   let complyCode = "302033545077050509";

@@ -6,11 +6,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { StepBar } from "components/Indicators";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
-import { useViewComplyMutation } from "services/complyService";
+import { useLazyViewComplyQuery } from "services/complyService";
 import ServiceInfoContainer from "containers/ServiceInfoContainer";
 
 const ServiceInformation = () => {
-  const [viewComply, viewComplyState] = useViewComplyMutation();
+  const [viewComply, viewComplyState] = useLazyViewComplyQuery();
     const [complyResponse, setComplyResponse] = useState([]);
     const countries = useGetAllCountriesQuery();
 
