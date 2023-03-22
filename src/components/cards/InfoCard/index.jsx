@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllCountriesQuery, useViewServiceQuery } from "services/complyService";
+import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Answer, Heading, LowerContainer, Span, SubContainer } from "./style";
 
 const InfoCard = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
 
   let serviceId = complyCodeData.serviceId;
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
 
   const countries = useGetAllCountriesQuery();
 

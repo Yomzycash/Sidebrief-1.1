@@ -329,14 +329,85 @@ export const staffApi = createApi({
       query: () => "/banks",
     }),
 
-    // Get a single service
-    getSingleService: builder.query({
-      query: (serviceId) => `/services/view/${serviceId}`,
+    // Add service form field
+    addServiceFormField: builder.mutation({
+      query: (data) => ({
+        url: `/services/add/formfield`,
+        method: "POST",
+        body: data,
+      }),
     }),
 
-    // Get all Services
-    getAllServices: builder.query({
-      query: () => "/services/all",
+    // Update service form field
+    updateServiceFormField: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/formfield`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Delete service form field
+    deleteServiceFormField: builder.mutation({
+      query: (data) => ({
+        url: `/services/delete/formfield`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Add service required document
+    addServiceRequiredDoc: builder.mutation({
+      query: (data) => ({
+        url: `/services/add/requirement`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Update service required document
+    updateServiceRequiredDoc: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/requirement`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Delete service required document
+    deleteServiceRequiredDoc: builder.mutation({
+      query: (data) => ({
+        url: `/services/delete/requirement`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Add service document template
+    addServiceDocTemplate: builder.mutation({
+      query: (data) => ({
+        url: `/services/add/template`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Update service document template
+    updateServiceDocTemplate: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/template`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // delete service document template
+    deleteServiceDocTemplate: builder.mutation({
+      query: (data) => ({
+        url: `/services/delete/template`,
+        method: "POST",
+        body: data,
+      }),
     }),
 
     // add a service
@@ -352,18 +423,17 @@ export const staffApi = createApi({
       invalidatesTags: ["User"],
     }),
 
-		// update a service
-		updateService: builder.mutation({
-			// query: (serviceId) => ({
-			// 	url: `/services/update/${serviceId}`,
-			query: (data) => ({
-				url:`/services/update/${data}`,
-				method: "PUT",
-				headers: {
-					"Content-type": "application/json; charset=UTF-8",
-				},
-			}),
-		}),
+    // update a service
+    updateService: builder.mutation({
+      query: (data) => ({
+        url: `/services/update/${data.serviceId}`,
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
 
     // delete a service
     deleteService: builder.mutation({
@@ -374,6 +444,16 @@ export const staffApi = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
+    }),
+
+    // Get a single service
+    getSingleService: builder.query({
+      query: (serviceId) => `/services/view/${serviceId}`,
+    }),
+
+    // Get all Services
+    getAllServices: builder.query({
+      query: () => "/services/all",
     }),
 
     // Get services by category
@@ -390,9 +470,6 @@ export const staffApi = createApi({
     getServicesByCountryandCategory: builder.query({
       query: (data) =>
         `/services/category/${data.serviceCategory}/country/KEN${data.serviceCountry}`,
-    }),
-    viewServicesByServiceId: builder.query({
-      query: () => `/services/view/${9336232137}`,
     }),
   }),
 });
@@ -436,6 +513,18 @@ export const {
   useGetSingleBankQuery,
   useGetAllBanksQuery,
 
+  useAddServiceFormFieldMutation,
+  useUpdateServiceFormFieldMutation,
+  useDeleteServiceFormFieldMutation,
+
+  useAddServiceRequiredDocMutation,
+  useUpdateServiceRequiredDocMutation,
+  useDeleteServiceRequiredDocMutation,
+
+  useAddServiceDocTemplateMutation,
+  useUpdateServiceDocTemplateMutation,
+  useDeleteServiceDocTemplateMutation,
+
   useAddServiceMutation,
   useUpdateServiceMutation,
   useDeleteServiceMutation,
@@ -444,5 +533,4 @@ export const {
   useGetServicesByCategoryQuery,
   useGetServicesByCountryQuery,
   useGetServicesByCountryandCategoryQuery,
-  useViewServicesByServiceIdQuery,
 } = staffApi;

@@ -20,10 +20,7 @@ const StaffRewardDetails = ({ selectedReward }) => {
             <TextWithLabel>
               <Label>name</Label>
               <TextWrapper>
-                <Text>
-                  {selected?.rewardName}
-                  {selected?.rewardPartner}
-                </Text>
+                <Text>{selected?.rewardName}</Text>
               </TextWrapper>
             </TextWithLabel>
             <TextWithLabel>

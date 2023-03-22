@@ -1,28 +1,62 @@
 import DynamicForm from "components/Form/DynamicForm";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
+import { useGetSingleServiceQuery } from "services/staffService";
+import { handleError } from "utils/globalFunctions";
 import { Body, Container } from "../styled";
-import { Bottom, FormContainer, formInputsStyle, formStyle } from "./style";
-import { formInfo } from "./constants.js";
-import { useViewComplianceQuery } from "services/complyService";
+import { FormContainer, formInputsStyle, formStyle } from "./style";
 
 const ServiceForm = () => {
+  const { data } = useGetSingleServiceQuery("2673756897");
+  const [serviceInfo, setServiceInfo] = useState({});
+
+  // name uniqueness has to be validated
+  const formInfo = [
+    {
+      question: "When did you register your company",
+      questionType: "input",
+      name: "registration",
+      required: true,
+    },
+    {
+      question: "Who is your favourite artist",
+      questionType: "radio",
+      options: ["davido", "wizkid", "burna"],
+      name: "artist",
+      required: true,
+    },
+    {
+      question: "How many shareholders do you have",
+      questionType: "number",
+      name: "shareholders",
+      required: true,
+    },
+    {
+      question: "How many directors do you have",
+      questionType: "number",
+      name: "directors",
+      required: true,
+    },
+    {
+      question: "Select your favourite colors",
+      questionType: "checkbox",
+      options: ["black", "white", "green", "yellow"],
+      name: "beneficiaries",
+      required: true,
+    },
+  ];
+
   const navigate = useNavigate();
-  // const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-
-  // const { data } = useViewComplianceQuery(complyCodeData.complyCode);
-
-  // console.log(data);
 
   const handleSubmit = async (formData) => {
     console.log(formData);
     // store.dispatch();
-    navigate("/services/documents");
+    // navigate("/services/documents");
   };
 
   const handlePrev = () => {
@@ -46,22 +80,12 @@ const ServiceForm = () => {
         <CheckoutSection title="Service Form" HeaderParagraph="Please answer the questions below" />
         <FormContainer>
           <DynamicForm
-            formInfo={formInfo}
+            formInfo={data?.serviceForm}
             style={formStyle}
             inputsStyle={formInputsStyle}
             submitAction={handleSubmit}
           />
         </FormContainer>
-
-        <Bottom>
-          <CheckoutController
-            backText={"Previous"}
-            forwardSubmit
-            backAction={handlePrev}
-            forwardAction={handleSubmit}
-            forwardText="Next"
-          />
-        </Bottom>
       </Body>
     </Container>
   );

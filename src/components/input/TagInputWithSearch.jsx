@@ -303,6 +303,10 @@ const Input = styled.div`
       border: 1px solid #00c3ff;
       /* box-shadow: -2px -2px 4px 2px #00c3ff28, 2px 2px 4px 2px #00c3ff28; */
     }
+
+    &::placeholder {
+      opacity: 0.7;
+    }
   }
   > div {
     position: absolute;

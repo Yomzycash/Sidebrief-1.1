@@ -17,10 +17,23 @@ export const handleError = (error) => {
     toast.error("Please check credentiaal");
   } else if (error?.data?.message) {
     toast.error(error?.data.message);
+  } else if (error?.data?.error) {
+    toast.error(error?.data.error);
   } else if (typeof error?.data === "string") {
     toast.error(error.data);
   } else if (typeof error === "string") {
     toast.error(error);
+  }
+};
+
+// handle response received from endpoints call
+export const handleResponse = (response, successMessage, successAction, errorAction) => {
+  if (response.data) {
+    toast.success(successMessage);
+    if (successAction) successAction();
+  } else {
+    if (errorAction) errorAction();
+    handleError(response?.error);
   }
 };
 
