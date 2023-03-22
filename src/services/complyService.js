@@ -187,6 +187,7 @@ export const {
   useViewAllComplyByServiceIdMutation,
   useViewAllComplyByMetaMutation,
   useDeleteManyCompliesMutation,
+  useViewServiceQuery,
 
   useAddComplyPaymentMutation,
   useDeleteComplyPaymentMutation,
