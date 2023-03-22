@@ -23,9 +23,8 @@ import { useGetSingleServiceQuery } from "services/staffService";
 import { useAddComplyDocumentMutation, useViewServiceQuery } from "services/complyService";
 
 const ServiceDocuments = () => {
-  // const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  // let serviceId = complyCodeData.serviceId;
-  let serviceId = "7013107844";
+  const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo?.serviceId;
 
   const navigate = useNavigate();
   const viewService = useGetSingleServiceQuery(serviceId);
@@ -40,7 +39,7 @@ const ServiceDocuments = () => {
     navigate("/services/review/info");
   };
 
-  let complyCode = complyCodeData.complyCode;
+  let complyCode = complyInfo.complyCode;
   // let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
 
   const handleChange = async (file, fileName) => {
