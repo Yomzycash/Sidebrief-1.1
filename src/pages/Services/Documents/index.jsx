@@ -1,5 +1,6 @@
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-import DownLoadDoc from "components/FileUpload/downLoadDoc";
+// import DownLoadDoc from "components/FileUpload/downLoadDoc";
+import { Download } from "components/File";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
@@ -20,7 +21,7 @@ import { setServiceCheckoutProgress } from "redux/Slices";
 import { convertToLink } from "utils/LaunchHelper";
 import toast from "react-hot-toast";
 import { useGetSingleServiceQuery } from "services/staffService";
-import { useAddComplyDocumentMutation, useViewServiceQuery } from "services/complyService";
+import { useAddComplyDocumentMutation } from "services/complyService";
 
 const ServiceDocuments = () => {
   // const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
@@ -28,7 +29,7 @@ const ServiceDocuments = () => {
   let serviceId = "7013107844";
 
   const navigate = useNavigate();
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
   console.log("dddd", viewService);
   const [addServiceDocument, { isLoading, isSuccess }] = useAddComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
@@ -86,10 +87,15 @@ const ServiceDocuments = () => {
             <FileContainer>
               <DownLoadContentWrapper>
                 {viewService?.data?.serviceTemplates.map((document, index) => (
-                  <DownLoadDoc
+                  // <DownLoadDoc
+                  //   key={index}
+                  //   downloadDocumentName={document.templateName}
+                  //   downloadDocumentLink={document.templateLink}
+                  // />
+                  <Download
                     key={index}
-                    downloadDocumentName={document.templateName}
-                    downloadDocumentLink={document.templateLink}
+                    docType={document.templateName}
+                    fileUrl={document.templateLink}
                   />
                 ))}
               </DownLoadContentWrapper>
