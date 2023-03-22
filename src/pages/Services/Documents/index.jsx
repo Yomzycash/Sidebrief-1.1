@@ -28,7 +28,7 @@ const ServiceDocuments = () => {
   let serviceId = "7013107844";
 
   const navigate = useNavigate();
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
   console.log("dddd", viewService);
   const [addServiceDocument, { isLoading, isSuccess }] = useAddComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);

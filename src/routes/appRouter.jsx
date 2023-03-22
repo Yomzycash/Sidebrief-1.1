@@ -7,6 +7,9 @@ import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
 import ServiceSuccessPage from "../pages/Services/ServiceSuccessPage";
+import ServicesDetailLayout from "pages/Services/Detail/layout";
+import ServiceInformation from "pages/Services/Detail/ServiceInformation";
+import ReviewDocuments from "pages/Services/Review/ReviewDocuments";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -207,7 +210,7 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
-            <Route path="test" element={<ServiceDocuments />} />
+            <Route path="test" element={<Test />} />
 
             {/* Protected home route */}
             <Route
@@ -284,6 +287,7 @@ const AppRouter = () => {
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
+              
               <Route path="compliance" element={<Compliance />}></Route>
               <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
               <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
@@ -383,7 +387,7 @@ const AppRouter = () => {
             <Route path="review" element={<ServiceReview />}>
               <Route path="info" element={<ServiceInfoReview />} />
               <Route path="form" element={<ServiceFormReview />} />
-              <Route path="documents" element={<ServiceDocumentsReview />} />
+              <Route path="documents" element={<ReviewDocuments />} />
             </Route>
             <Route path="success" element={<ServiceSuccessPage />} />
           </Route>

@@ -1,11 +1,46 @@
 import InfoCard from "components/cards/InfoCard";
 import { CheckoutController } from "containers";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLazyViewComplyQuery } from "services/complyService";
+import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Bottom } from "../style";
-import { Wrapper } from "./style";
+import { Container,CountryInput, EditWrapper, FilledContainer, InnerContainer, Label, Loading, TopFlex, Wrapper } from "./style";
+import { Puff } from "react-loading-icons";
+
+
 
 const ServiceInfoReview = () => {
+  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
+
+  let complyCode = complyCodeData?.complyCode;
+  const [viewComplyData, viewComplyDataState] = useLazyViewComplyQuery();
+  const [complyData, setComplyData] = useState([]);
+
+  const handleViewData = useCallback(async () => {
+    const requiredData = {
+      complyCode: complyCode,
+    };
+    const response = await viewComplyData(requiredData);
+  
+    setComplyData(response?.data?.serviceId);
+  }, [complyCode, viewComplyData]);
+
+  useEffect(() => {
+    handleViewData();
+  }, [handleViewData]);
+
+  //let serviceId = complyCodeData.serviceId;
+  const viewService = useGetSingleServiceQuery(complyData);
+
+  const countries = useGetAllCountriesQuery();
+
+  console.log(viewService);
+  let getCountry = countries?.data?.find(
+    (country) => country?.countryISO === viewService?.data?.serviceCountry
+  )?.countryName;
+
   const navigate = useNavigate();
 
   const handlePrev = () => {
@@ -17,7 +52,30 @@ const ServiceInfoReview = () => {
   };
   return (
     <Wrapper>
-      <InfoCard />
+      {viewComplyDataState?.isLoading && (
+          <Loading height="50vh">
+            <Puff stroke="#00A2D4" fill="white" />
+          </Loading>
+      )}
+      <Container>
+        <InnerContainer>
+          <TopFlex>
+            <Label>Operational Country</Label>
+            <EditWrapper></EditWrapper>
+          </TopFlex>
+          <FilledContainer>
+            <CountryInput>{getCountry}</CountryInput>
+          </FilledContainer>
+        </InnerContainer>
+        <InnerContainer>
+          <Label>Service Required</Label>
+
+          <FilledContainer>
+            <CountryInput>{viewService?.data?.serviceName}</CountryInput>
+          </FilledContainer>
+        </InnerContainer>
+      </Container>
+
       <Bottom>
         <CheckoutController
           backText={"Previous"}
@@ -32,3 +90,4 @@ const ServiceInfoReview = () => {
 };
 
 export default ServiceInfoReview;
+
