@@ -103,7 +103,7 @@ const ServicePage = () => {
       setDialog({
         mode: mode,
         serviceId: serviceId || "",
-        progress: progress || dialog.progress,
+        progress: (dialog.progress > progress ? dialog.progress : progress) || dialog.progress,
       });
   };
 

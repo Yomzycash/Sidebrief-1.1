@@ -17,13 +17,10 @@ const ServiceForm = () => {
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
   let serviceId = complyInfo?.serviceId;
 
-  const { data } = useGetSingleServiceQuery("2673756897");
-  const [serviceInfo, setServiceInfo] = useState({});
+  const { data } = useGetSingleServiceQuery(serviceId);
   const [addComplyData, addState] = useAddComplyDataQAMutation();
 
   const navigate = useNavigate();
-
-  console.log(complyInfo);
 
   const handleSubmit = async (formData) => {
     let payload = data?.serviceForm?.map((el) => ({
@@ -34,6 +31,7 @@ const ServiceForm = () => {
       },
     }));
 
+    console.log(payload);
     let addArray = payload.map((el, i) => addComplyData(el));
     let responses = await Promise.all(addArray);
 
@@ -48,12 +46,6 @@ const ServiceForm = () => {
     }
 
     console.log(responses);
-
-    // payload.forEach((el, i) => {
-    //   let response = await addComplyData(payload[i])
-    // });
-    // console.log(payload);
-    // navigate("/services/documents");
   };
 
   const handlePrev = () => {
@@ -67,7 +59,7 @@ const ServiceForm = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 2 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.4 })); // total- total pages and current - current page
   }, []);
 
   return (

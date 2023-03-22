@@ -53,19 +53,19 @@ const TemplateView = ({ info, templateNumber, setDisabled, deleteAction, deleteS
               action={() => setDisabled(false)}
             />
           )}
-          {confirm === false && (
+          {info?.templateLink && confirm === false && (
             <CommonButton
               text="Delete"
               LeftIcon={DeleteIcon}
               leftIconColor="#ed4e3a"
               action={() => setConfirm(true)}
-              loading={deleteState.isLoading}
+              loading={loading}
               LoadingIcon={
                 <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
               }
             />
           )}
-          {confirm && (
+          {info?.templateLink && confirm && (
             <DeleteWrapper>
               <input
                 ref={deleteInputRef}
@@ -88,7 +88,7 @@ const TemplateView = ({ info, templateNumber, setDisabled, deleteAction, deleteS
 
       <ReviewDocumentName>
         {info?.templateName}
-        {info?.templateLink && <span>( {info?.templateLink} )</span>}
+        <span>( {info?.templateLink ? info?.templateLink : "Link not provided"} )</span>
       </ReviewDocumentName>
     </ReviewContainer>
   );
