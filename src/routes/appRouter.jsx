@@ -7,6 +7,11 @@ import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
 import ServiceSuccessPage from "../pages/Services/ServiceSuccessPage";
+import ServicesDetailLayout from "pages/Services/Detail/layout";
+import ServiceInformation from "pages/Services/Detail/ServiceInformation";
+import ReviewDocuments from "pages/Services/Review/ReviewDocuments";
+import FormInformation from "pages/Services/Detail/FormInformation";
+import DocumentInfoDetails from "pages/Services/Detail/DocumentInfoDetails";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -257,6 +262,13 @@ const AppRouter = () => {
                 </Protected>
               }
             >
+               <Route path="services/details" element={<ServicesDetailLayout />}>
+                <Route path="ServiceInformation" element={<ServiceInformation />} />
+                <Route path="FormInformation" element={<FormInformation />} />
+                <Route path="DocumentInfo" element={<DocumentInfoDetails />} />
+                
+              </Route>
+
               <Route index element={<BusinessRegistration />} />
               <Route path="business-registration" element={<BusinessRegistration />} />
               <Route path="application" element={<Application />}></Route>
@@ -284,6 +296,7 @@ const AppRouter = () => {
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
+              
               <Route path="compliance" element={<Compliance />}></Route>
               <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
               <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
@@ -383,7 +396,7 @@ const AppRouter = () => {
             <Route path="review" element={<ServiceReview />}>
               <Route path="info" element={<ServiceInfoReview />} />
               <Route path="form" element={<ServiceFormReview />} />
-              <Route path="documents" element={<ServiceDocumentsReview />} />
+              <Route path="documents" element={<ReviewDocuments />} />
             </Route>
             <Route path="success" element={<ServiceSuccessPage />} />
           </Route>

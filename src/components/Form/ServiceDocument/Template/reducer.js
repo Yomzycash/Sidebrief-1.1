@@ -4,8 +4,6 @@ export const initialState = {
   nameError: "",
   linkError: "",
   done: false,
-  doneClicked: false,
-  updateClicked: false,
 };
 
 export const reducer = (state, action) => {
@@ -34,16 +32,6 @@ export const reducer = (state, action) => {
       return {
         ...state,
         done: action.payload,
-      };
-    case "setDoneClicked":
-      return {
-        ...state,
-        doneClicked: action.payload,
-      };
-    case "setUpdateClicked":
-      return {
-        ...state,
-        updateClicked: action.payload,
       };
     default:
       throw new Error("Action does not exist");

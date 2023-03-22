@@ -18,6 +18,7 @@ import { ReactComponent as AddIcon } from "asset/Launch/Add.svg";
 import { useActions } from "./actions";
 import { initialState, reducer } from "./reducer";
 import { ErrMsg } from "components/input/styled";
+import { SpinningCircles } from "react-loading-icons";
 
 const QuestionEdit = ({
   questionNumber,
@@ -27,12 +28,24 @@ const QuestionEdit = ({
   setDisabled,
   handleQuestionSubmit,
   handleUpdateQuestion,
+  addState,
+  updateState,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const optionsRef = useRef(null);
 
-  const { question, selectedType, optionsArray, questionError, optionsError, done } = state;
+  const {
+    question,
+    required,
+    selectedType,
+    optionsArray,
+    questionError,
+    optionsError,
+    done,
+    doneClicked,
+    updateClicked,
+  } = state;
 
   const {
     otherClicked,
@@ -45,10 +58,11 @@ const QuestionEdit = ({
     updateOptionValue,
     handleToggle,
     handleSubmit,
-    handleDone,
   } = useActions({
     state,
+    info,
     dispatch,
+    setDisabled,
     handleQuestionSubmit,
     handleUpdateQuestion,
     review,
@@ -67,9 +81,11 @@ const QuestionEdit = ({
       dispatch({ type: "setRequired", payload: info?.fieldRequired });
       dispatch({ type: "setSelectedType", payload: info?.fieldType });
       dispatch({ type: "setOptionsArray", payload: info?.fieldOptions });
+      dispatch({ type: "setRequired", payload: info?.fieldRequired });
     }
   }, [disabled]);
 
+  // console.log("parent", required);
   return (
     <QuestionForm onSubmit={handleSubmit}>
       {!done && (
@@ -87,7 +103,12 @@ const QuestionEdit = ({
               errorMessage={questionError}
             />
             <ToggleWrapper>
-              <ToggleButton rightText="Compulsory" name="toggle-button" onChange={handleToggle} />
+              <ToggleButton
+                rightText="Compulsory"
+                // name="toggle-button"
+                checked={required}
+                onChange={handleToggle}
+              />
             </ToggleWrapper>
           </Question>
 
@@ -178,26 +199,28 @@ const QuestionEdit = ({
             text="Update"
             type="submit"
             id="review-submit"
-            action={() => setDisabled(true)}
+            action={() => dispatch({ type: "setUpdateClicked", payload: true })}
+            loading={updateState.isLoading && updateClicked}
+            LoadingIcon={<SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />}
           />
         ) : (
           <>
             <CommonButton
               text="Add New Question"
               LeftIcon={AddIcon}
-              type={done ? "button" : "submit"}
-              action={() => {
-                dispatch({ type: "setDone", payload: false });
-                dispatch({ type: "setQuestionError", payload: "" });
-              }}
+              type="submit"
               id="addnew-submit"
             />
             {!done && (
               <CommonButton
                 text="Done"
-                type={question ? "submit" : "button"}
-                action={() => (question ? "" : handleDone())}
+                type="submit"
+                action={() => dispatch({ type: "setDoneClicked", payload: true })}
                 id="done-submit"
+                loading={addState.isLoading && doneClicked}
+                LoadingIcon={
+                  <SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />
+                }
               />
             )}
           </>

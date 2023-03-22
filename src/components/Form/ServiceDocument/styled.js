@@ -34,6 +34,11 @@ export const Document = styled.div`
     max-width: 633px;
   }
 
+  .input-class-1 {
+    height: 40px;
+    background-color: #eee;
+  }
+
   @media screen and (max-width: 600px) {
     flex-flow: row wrap;
   }

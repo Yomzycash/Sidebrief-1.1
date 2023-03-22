@@ -19,8 +19,9 @@ import {
 import ServiceDocumentTemplate from "components/Form/ServiceDocument/Template";
 import ServiceDocument from "components/Form/ServiceDocument";
 import { useGetSingleServiceQuery } from "services/staffService";
+import { toast } from "react-hot-toast";
 
-const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => {
+const DocsSection = ({ setOpen, service, serviceId, refetchServices, mode }) => {
   const { data, refetch } = useGetSingleServiceQuery(serviceId);
 
   const [addDocument, addDocumentState] = useAddServiceRequiredDocMutation();
@@ -41,6 +42,7 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
     handleServiceTemplateDelete,
   } = useActions({
     service,
+    serviceId,
     addDocument,
     updateDocument,
     deleteDocument,
@@ -82,21 +84,26 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
   };
 
   const handleNext = () => {
-    let docsRef = document.getElementById("staff-service-docs");
-    scrollTo(docsRef);
+    setOpen(false);
+    toast.success("Successfully created service");
   };
 
   let serviceDocInfo = useMemo(
     () =>
-      data?.serviceRequirements?.map((el) => ({
-        templateName: el?.requirementName,
-        templateLink:
-          data?.serviceTemplate?.find((each) => each?.templateName === el?.requirementName) || "",
-      })),
-    [data?.serviceRequirements]
+      data?.serviceRequirements?.map((el) => {
+        let templateInfo = data?.serviceTemplates?.find(
+          (each) => each?.templateName === el?.requirementName
+        );
+
+        return {
+          templateCode: templateInfo?.templateCode || "",
+          templateName: el?.requirementName,
+          templateLink: templateInfo?.templateLink || "",
+        };
+      }),
+    [data?.serviceRequirements, data?.serviceTemplates]
   );
 
-  console.log("Meo", serviceDocInfo);
   return (
     <SectionContainer id="staff-service-docs">
       <SimpleTabNavBar
@@ -142,17 +149,11 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
                     handleTemplateSubmit={handleTemplateSubmit}
                     handleDeleteTemplate={handleDeleteTemplate}
                     handleUpdateTemplate={handleUpdateTemplate}
-                    deleteState={deleteTemplateState}
+                    addState={addTemplateState}
                     updateState={updateTemplateState}
+                    deleteState={deleteTemplateState}
                   />
                 ))}
-                {/* <ServiceDocumentTemplate
-                  handleTemplateSubmit={handleTemplateSubmit}
-                  handleUpdateTemplate={handleUpdateTemplate}
-                  review={false}
-                  lastDocument={data?.serviceRequirements?.length + 1}
-                  addState={addTemplateState}
-                /> */}
               </SectionInfoContainer>
             ),
           },
@@ -166,7 +167,7 @@ const DocsSection = ({ setOpen, service, refetchServices, serviceId, mode }) => 
         containerStyle={buttonContainerStyles}
         backBottonStyle={buttonStyles}
         forwardButtonStyle={buttonStyles}
-        forwardText="Next"
+        forwardText="Done"
         // forwardDisable={disable}
         $modal
       />

@@ -14,6 +14,7 @@ export const useActions = ({
   updateTemplate,
   deleteTemplate,
   service,
+  serviceId,
   refetchServices,
   refetchService,
   setOpen,
@@ -37,7 +38,7 @@ export const useActions = ({
     let hasOptions = formData.selectedType === "checkbox" || formData.selectedType === "radio";
     if (hasOptions) {
       return {
-        serviceId: service?.serviceId,
+        serviceId: mode === "edit" ? service?.serviceId : serviceId,
         serviceFormField: {
           fieldQuestion: formData.question,
           fieldType: formData.selectedType,
@@ -47,7 +48,7 @@ export const useActions = ({
       };
     } else {
       return {
-        serviceId: service?.serviceId,
+        serviceId: mode === "edit" ? service?.serviceId : serviceId,
         serviceFormField: {
           fieldQuestion: formData.question,
           fieldType: formData.selectedType,
@@ -60,7 +61,7 @@ export const useActions = ({
   //
   const getDocumentPayload = (formData) => {
     return {
-      serviceId: service?.serviceId,
+      serviceId: mode === "edit" ? service?.serviceId : serviceId,
       serviceRequirement: {
         requirementName: formData.documentName,
         requirementDescription: formData.documentDescription,
@@ -71,7 +72,7 @@ export const useActions = ({
   //
   const getTemplatePayload = (formData) => {
     return {
-      serviceId: service?.serviceId,
+      serviceId: mode === "edit" ? service?.serviceId : serviceId,
       serviceTemplate: {
         templateName: formData?.templateName,
         templateType: formData?.templateLink?.split(".")?.pop(),
@@ -97,7 +98,8 @@ export const useActions = ({
       scrollTo(formRef);
       refetchServices();
     } else {
-      handleError(error);
+      console.log(error);
+      // handleError(error);
     }
   };
 
@@ -105,8 +107,8 @@ export const useActions = ({
 
   // Updates service
   const handleServiceUpdate = async (formData) => {
-    let payload = getServicePayload(formData);
-    let response = await updateService({ ...payload, serviceId: service?.serviceId });
+    let payload = { ...getServicePayload(formData), serviceId: service?.serviceId };
+    let response = await updateService(payload);
     let data = response?.data;
     let error = response?.error;
     if (data) {
@@ -114,7 +116,8 @@ export const useActions = ({
       scrollTo(formRef);
       refetchServices();
     } else {
-      handleError(error);
+      console.log(error);
+      // handleError(error);
     }
   };
 
@@ -135,13 +138,14 @@ export const useActions = ({
   //
 
   // Updates form question
-  const handleServiceFormFieldUpdate = async (formData) => {
-    let payload = getFormPayload(formData);
+  const handleServiceFormFieldUpdate = async (formInfo) => {
+    let payload = { ...getFormPayload(formInfo), fieldCode: formInfo?.fieldCode };
     let response = await updateFormField(payload);
     let data = response?.data;
     let error = response?.error;
     if (data) {
-      console.log(data);
+      refetchService();
+      return response;
     } else {
       handleError(error);
     }
@@ -152,7 +156,7 @@ export const useActions = ({
   // Deletes form question
   const handleServiceFormFieldDelete = async (info) => {
     let payload = {
-      serviceId: service.serviceId,
+      serviceId: mode === "edit" ? service?.serviceId : serviceId,
       fieldCode: info.fieldCode,
     };
     let response = await deleteFormField(payload);
@@ -198,7 +202,7 @@ export const useActions = ({
   // Deletes service required document
   const handleServiceDocumentDelete = async (info) => {
     let payload = {
-      serviceId: service?.serviceId,
+      serviceId: mode === "edit" ? service?.serviceId : serviceId,
       requirementCode: info?.requirementCode,
     };
     let response = await deleteDocument(payload);
@@ -234,7 +238,7 @@ export const useActions = ({
 
   const handleServiceTemplateDelete = async (info) => {
     let payload = {
-      serviceId: service.serviceId,
+      serviceId: mode === "edit" ? service?.serviceId : serviceId,
       templateCode: info?.templateCode,
     };
     let response = await deleteTemplate(payload);

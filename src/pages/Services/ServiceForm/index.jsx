@@ -3,65 +3,54 @@ import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutController, CheckoutSection } from "containers";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
+import { useAddComplyDataQAMutation } from "services/complyService";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
 import { Body, Container } from "../styled";
 import { FormContainer, formInputsStyle, formStyle } from "./style";
 
 const ServiceForm = () => {
-  const { data } = useGetSingleServiceQuery("2673756897");
-  const [serviceInfo, setServiceInfo] = useState({});
+  let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo?.serviceId;
 
-  // name uniqueness has to be validated
-  const formInfo = [
-    {
-      question: "When did you register your company",
-      questionType: "input",
-      name: "registration",
-      required: true,
-    },
-    {
-      question: "Who is your favourite artist",
-      questionType: "radio",
-      options: ["davido", "wizkid", "burna"],
-      name: "artist",
-      required: true,
-    },
-    {
-      question: "How many shareholders do you have",
-      questionType: "number",
-      name: "shareholders",
-      required: true,
-    },
-    {
-      question: "How many directors do you have",
-      questionType: "number",
-      name: "directors",
-      required: true,
-    },
-    {
-      question: "Select your favourite colors",
-      questionType: "checkbox",
-      options: ["black", "white", "green", "yellow"],
-      name: "beneficiaries",
-      required: true,
-    },
-  ];
+  const { data } = useGetSingleServiceQuery(serviceId);
+  const [addComplyData, addState] = useAddComplyDataQAMutation();
 
   const navigate = useNavigate();
 
   const handleSubmit = async (formData) => {
-    console.log(formData);
-    // store.dispatch();
-    // navigate("/services/documents");
+    let payload = data?.serviceForm?.map((el) => ({
+      complyCode: serviceId,
+      complyData: {
+        complyQuestion: el.fieldQuestion,
+        complyAnswer: formData[el.fieldName],
+      },
+    }));
+
+    console.log(payload);
+    let addArray = payload.map((el, i) => addComplyData(el));
+    let responses = await Promise.all(addArray);
+
+    let error = responses.find((el) => el?.error);
+
+    if (error?.error) {
+      handleError(error);
+      return;
+    } else {
+      toast.success("Questions submitted successfully");
+      navigate("/services/documents");
+    }
+
+    console.log(responses);
   };
 
   const handlePrev = () => {
-    const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
-    if (servicePaymentDetails) {
+    const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+    if (paymentDetails?.paymentStatus === "successful") {
       navigate("/services");
     } else {
       navigate("/services/payment");
@@ -70,7 +59,7 @@ const ServiceForm = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 2 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.4 })); // total- total pages and current - current page
   }, []);
 
   return (
@@ -83,6 +72,7 @@ const ServiceForm = () => {
             formInfo={data?.serviceForm}
             style={formStyle}
             inputsStyle={formInputsStyle}
+            handlePrev={handlePrev}
             submitAction={handleSubmit}
           />
         </FormContainer>

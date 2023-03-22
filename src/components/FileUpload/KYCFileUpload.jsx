@@ -33,7 +33,7 @@ import {
   DetailsPage,
   KYCPage,
 } from "./styled";
-import { useDeleteComplyMutation, useViewComplyMutation } from "services/complyService";
+import { useDeleteComplyMutation, useLazyViewComplyQuery } from "services/complyService";
 
 const KYCFileUpload = ({
   TopText,
@@ -52,6 +52,7 @@ const KYCFileUpload = ({
   downloadDocumentName,
   downloadDocumentLink,
   complyCode,
+  onPage = "",
 }) => {
   const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewBeneficialsKYC] = useViewBeneficialsKYCMutation();
@@ -59,13 +60,13 @@ const KYCFileUpload = ({
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
   const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const [deleted, setDeleted] = useState(false);
-  const [viewServiceDocument] = useViewComplyMutation();
+  const [viewServiceDocument] = useLazyViewComplyQuery();
   const [deleteServiceDocument] = useDeleteComplyMutation();
 
   const { search } = useLocation();
 
   const searchParams = new URLSearchParams(search);
-
+  console.log(onPage);
   const launchResponse = {
     launchCode: searchParams.get("launchCode"),
     registrationCountry: searchParams.get("registrationCountry"),
@@ -120,16 +121,22 @@ const KYCFileUpload = ({
     });
   };
   useEffect(() => {
-    handleServiceDocumentView();
-  }, [isChanged, deleted, Object.keys(documentInfo).length >= 6]);
+    if (onPage === "serviceDownLoadPage") {
+      handleServiceDocumentView();
+    }
+  }, [isChanged, onPage, deleted, Object.keys(documentInfo).length >= 6]);
 
   useEffect(() => {
-    handleView();
-  }, [isChanged, deleted, Object.keys(documentInfo).length >= 6]);
+    if (onPage === "") {
+      handleView();
+    }
+  }, [isChanged, onPage, deleted, Object.keys(documentInfo).length >= 6]);
 
   useEffect(() => {
-    handleBeneficiary();
-  }, [isChanged, deleted, Object.keys(documentInfo).length >= 6]);
+    if (!onPage === "") {
+      handleBeneficiary();
+    }
+  }, [isChanged, onPage, deleted, Object.keys(documentInfo).length >= 6]);
 
   const handleRemove = async () => {
     if (beneficiaryCode) {

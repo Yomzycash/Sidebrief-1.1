@@ -6,7 +6,7 @@ export const Container = styled.div`
   margin-block: clamp(10px, 2vw, 20px);
   min-height: 150px;
 
-  background: ${({ theme }) => theme.grey4};
+  background: ${({ theme }) => theme.blue2};
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 5px;
   padding: 55px 63px 52px;
@@ -27,6 +27,7 @@ export const RHS = styled.div`
   display: flex;
   flex-direction: column;
   gap: 23px;
+  min-width: max-content;
 
   div {
     display: flex;
@@ -56,6 +57,8 @@ export const BigText = styled.p`
 `;
 
 export const CountryName = styled(BigText)`
+  display: flex;
+  align-items: center;
   font-weight: 900;
   text-transform: uppercase;
 
@@ -68,11 +71,17 @@ export const CountryName = styled(BigText)`
 
 export const Documents = styled.div`
   display: flex;
-  gap: 25px;
+  column-gap: 25px;
   flex-wrap: wrap;
 `;
 
 export const Doc = styled(NormalText)`
   font-weight: 700;
   line-height: 21px;
+`;
+
+export const DocumentList = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;

@@ -1,12 +1,25 @@
-import { Container, LHS, RHS, NormalText, BigText, CountryName, Documents, Doc } from "./styles";
+import {
+  Container,
+  LHS,
+  RHS,
+  NormalText,
+  BigText,
+  CountryName,
+  Documents,
+  Doc,
+  DocumentList,
+} from "./styles";
 import { Clock, Coin } from "asset/colorIcons";
 import numeral from "numeral";
-// import { useGetCountryInfoQuery } from "services/vendorService";
+import { getCurrencyInfo } from "utils/globalFunctions";
+import { BsCheck2All, BsCheckCircleFill } from "react-icons/bs";
 
-export const InfoContainer = ({ country, requiredDocuments, amount, currency, timeline }) => {
-  // const { data, isLoading } = useGetCountryInfoQuery(countryISO);
-
-  // !isLoading && console.log(data);
+export const InfoContainer = ({ country, service }) => {
+  let requiredDocuments = service?.serviceRequirements;
+  let amount = service?.servicePrice;
+  let currency = service?.serviceCurrency;
+  let currencySymbol = getCurrencyInfo(currency)?.symbol;
+  let timeline = service?.serviceTimeline;
 
   return (
     <Container>
@@ -14,17 +27,21 @@ export const InfoContainer = ({ country, requiredDocuments, amount, currency, ti
         <div>
           <NormalText>Operational Country</NormalText>
           <CountryName>
-            {country.countryName}
+            <BsCheckCircleFill size={16} />
+            {country?.countryName}
             {/* <img src={`https://countryflagsapi.com/png/${country.countryISO}`} alt={"flag"} /> */}
           </CountryName>
         </div>
         <div>
-          {requiredDocuments.length > 0 ? (
+          {requiredDocuments?.length > 0 ? (
             <>
-              <NormalText>You will be asked to upload the following documents</NormalText>
+              <NormalText>We will need the following documents</NormalText>
               <Documents>
-                {requiredDocuments.map((document) => (
-                  <Doc>{document.requirementName}</Doc>
+                {requiredDocuments?.map((document, index) => (
+                  <DocumentList key={index}>
+                    <BsCheck2All color="#fff" />
+                    <Doc key={index}>{document?.requirementName}</Doc>
+                  </DocumentList>
                 ))}
               </Documents>
             </>
@@ -38,7 +55,7 @@ export const InfoContainer = ({ country, requiredDocuments, amount, currency, ti
             Total amount
           </NormalText>
           <BigText>
-            {currency} {numeral(amount).format("0,0.[00]")}
+            {currencySymbol} {numeral(amount)?.format("0,0.[00]")}
           </BigText>
         </div>
         <div>
