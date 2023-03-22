@@ -47,6 +47,8 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
 
   const performDelete = async () => {
     setDeleting(true);
+    // I don't know where document code is gotten from
+    // document code should be passed into the function below
     await deleteAction();
     setFileName("");
     setDeleting(false);
