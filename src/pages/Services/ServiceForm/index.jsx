@@ -14,15 +14,20 @@ import { Body, Container } from "../styled";
 import { FormContainer, formInputsStyle, formStyle } from "./style";
 
 const ServiceForm = () => {
+  let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo?.serviceId;
+
   const { data } = useGetSingleServiceQuery("2673756897");
   const [serviceInfo, setServiceInfo] = useState({});
   const [addComplyData, addState] = useAddComplyDataQAMutation();
 
   const navigate = useNavigate();
 
+  console.log(complyInfo);
+
   const handleSubmit = async (formData) => {
     let payload = data?.serviceForm?.map((el) => ({
-      complyCode: "302033545077050509",
+      complyCode: serviceId,
       complyData: {
         complyQuestion: el.fieldQuestion,
         complyAnswer: formData[el.fieldName],
@@ -52,8 +57,8 @@ const ServiceForm = () => {
   };
 
   const handlePrev = () => {
-    const servicePaymentDetails = JSON.parse(localStorage.getItem("servicePaymentDetails"));
-    if (servicePaymentDetails) {
+    const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+    if (paymentDetails?.paymentStatus === "successful") {
       navigate("/services");
     } else {
       navigate("/services/payment");
@@ -75,6 +80,7 @@ const ServiceForm = () => {
             formInfo={data?.serviceForm}
             style={formStyle}
             inputsStyle={formInputsStyle}
+            handlePrev={handlePrev}
             submitAction={handleSubmit}
           />
         </FormContainer>

@@ -21,6 +21,13 @@ export const Container = styled.div`
   }
 `;
 
+export const Title = styled.h1`
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+`;
+
 export const RadioButtons = styled.div`
   display: flex;
   gap: 40px;

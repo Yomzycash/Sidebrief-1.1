@@ -52,12 +52,12 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
   const handlePrev = () => {
     let infoRef = document.getElementById("staff-service-info");
     scrollTo(infoRef);
-    setOpen(mode, serviceId, 50);
+    setOpen(mode, serviceId);
   };
 
   const handleNext = () => {
     let docsRef = document.getElementById("staff-service-docs");
-    scrollTo(docsRef);
+    scrollTo(docsRef, serviceId, 100);
   };
 
   return (
