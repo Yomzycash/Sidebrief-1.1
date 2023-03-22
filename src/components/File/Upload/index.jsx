@@ -1,40 +1,99 @@
-import React from "react";
-import { DocumentDownload, DocumentFrame, DocumentText, SmallText } from "./styled";
-import { CommonButton } from "components/button";
+import { useCallback, useState } from "react";
+import {
+  DocumentDownload,
+  DocumentFrame,
+  DocumentText /*,SmallText*/,
+  Top,
+  UploadWrapper,
+  Preview,
+  Delete,
+} from "./styled";
 import { ReactComponent as UploadIcon } from "asset/svg/Upload.svg";
 import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
 import { convertToLink } from "utils/LaunchHelper";
+import { useDropzone } from "react-dropzone";
+import { SpinningCircles } from "react-loading-icons";
+import { DeleteRedSvg } from "asset/svg";
 
-export const Upload = ({ icon, docType, fileExtension, action }) => {
-  function handleButtonClick() {
-    const input = document.getElementById("upload-file");
-    input.click();
-  }
+export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => {} }) => {
+  const [uploading, setUploading] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
-  const collectFile = (file) => {
-    const uploadedFile = convertToLink(file);
-    // get link and call action here
-    console.log(uploadedFile);
+  const collectFile = useCallback(
+    async (file) => {
+      const realFile = file[0];
+      setUploading(true);
+      const uploadedFile = await convertToLink(realFile);
+      setFileName(realFile.name);
+      setUploading(false);
+      // get link and call action here
+      uploadAction(uploadedFile);
+      console.log(uploadedFile);
+    },
+    [uploadAction]
+  );
+
+  const nameLengthValidator = (file) => {
+    if (file.name !== undefined && file.name.length <= 0) {
+      return {
+        code: "no file",
+        message: `Please upload a document`,
+      };
+    }
+
+    return null;
   };
+
+  const performDelete = async () => {
+    setDeleting(true);
+    await deleteAction();
+    setFileName("");
+    setDeleting(false);
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: collectFile,
+    validator: nameLengthValidator,
+  });
 
   return (
     <DocumentDownload>
       <DocumentFrame>
-        {/* { icon && ( <DocumentIcon />) } 
-                { docType && (<DocumentText>{doc.doctype}</DocumentText>) }  
-                {action && (<CommonButton text={"Download"} LeftIcon={DownloadWhite} /> )}  */}
-        <DocumentIcon />
-        <DocumentText>{docType}</DocumentText>
-        <SmallText>file type: pdf, png, jpeg</SmallText>
-        <CommonButton text={"Upload"} LeftIcon={UploadIcon} action={handleButtonClick} />
-        <input
-          id={"upload-file"}
-          type={"file"}
-          style={{
-            display: "none",
-          }}
-          onChange={(event) => collectFile(event.target.files[0])}
-        />
+        <Top>
+          <DocumentIcon />
+          <DocumentText>{docType}</DocumentText>
+        </Top>
+        {/* <SmallText>file type: pdf, png, jpeg</SmallText> */}
+        {/* <CommonButton text={"Upload"} LeftIcon={UploadIcon} action={handleButtonClick} /> */}
+        {!fileName ? (
+          <UploadWrapper
+            {...getRootProps({
+              disabled: uploading,
+            })}
+          >
+            {!uploading ? (
+              <>
+                <UploadIcon />
+                <span>{isDragActive ? "Drop file here" : "Upload"}</span>
+              </>
+            ) : (
+              <SpinningCircles height={24} width={24} />
+            )}
+            <input
+              {...getInputProps({
+                multiple: false,
+              })}
+            />
+          </UploadWrapper>
+        ) : (
+          <Preview>
+            <span>{fileName}</span>
+            <Delete onClick={performDelete} disabled={deleting}>
+              {deleting ? <SpinningCircles height={24} width={24} /> : <DeleteRedSvg />}
+            </Delete>
+          </Preview>
+        )}
       </DocumentFrame>
     </DocumentDownload>
   );
