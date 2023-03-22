@@ -51,7 +51,8 @@ const ServiceFormReview = () => {
           <FormContainer
             number={index + 1}
             question={el?.complyQuestion}
-            answer={el?.complyAnswer}
+           
+            answerType={el?.answerArray}
           />
          </div>
        ))}

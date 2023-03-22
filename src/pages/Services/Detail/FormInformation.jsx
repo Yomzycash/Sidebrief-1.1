@@ -42,7 +42,7 @@ const FormInformation = () => {
           <FormContainer
             number={index + 1}
             question={el?.complyQuestion}
-            answer={el?.complyAnswer}
+            answerArray={el?.complyAnswer}
           />
         </div>
       ))}
