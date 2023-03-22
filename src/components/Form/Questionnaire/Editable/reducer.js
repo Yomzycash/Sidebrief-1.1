@@ -1,11 +1,13 @@
 export const initialState = {
   question: "",
-  required: false,
+  required: true,
   selectedType: "input",
   optionsArray: [""],
   optionsError: "",
   radioError: "",
   done: false,
+  doneClicked: false,
+  updateClicked: false,
 };
 
 export const reducer = (state, action) => {
@@ -45,7 +47,16 @@ export const reducer = (state, action) => {
         ...state,
         done: action.payload,
       };
-
+    case "setDoneClicked":
+      return {
+        ...state,
+        doneClicked: action.payload,
+      };
+    case "setUpdateClicked":
+      return {
+        ...state,
+        updateClicked: action.payload,
+      };
     default:
       throw new Error("Action does not exist");
   }

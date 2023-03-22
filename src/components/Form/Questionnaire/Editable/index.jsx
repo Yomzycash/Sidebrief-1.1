@@ -11,6 +11,8 @@ const EditableQuestionnaire = ({
   handleQuestionSubmit,
   handleDeleteQuestion,
   handleUpdateQuestion,
+  addState,
+  updateState,
   deleteState,
 }) => {
   const [disabled, setDisabled] = useState(review);
@@ -34,6 +36,8 @@ const EditableQuestionnaire = ({
           disabled={disabled}
           setDisabled={setDisabled}
           questionNumber={review ? index + 1 : lastQuestion}
+          addState={addState}
+          updateState={updateState}
         />
       )}
     </>

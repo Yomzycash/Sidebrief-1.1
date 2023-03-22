@@ -20,12 +20,10 @@ export const ComplyApi = createApi({
   endpoints: (builder) => ({
     // Create new compliance / service request
     createComply: builder.mutation({
-      query: (serviceId) => ({
+      query: (data) => ({
         url: `/comply/start`,
         method: "POST",
-        body: {
-          serviceId,
-        },
+        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -34,12 +32,10 @@ export const ComplyApi = createApi({
 
     // Update an existing compliance / service request
     updateComply: builder.mutation({
-      query: (serviceId) => ({
+      query: (data) => ({
         url: `/comply/update`,
         method: "POST",
-        body: {
-          serviceId,
-        },
+        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },

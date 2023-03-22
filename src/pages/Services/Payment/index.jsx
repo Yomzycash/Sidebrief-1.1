@@ -8,20 +8,23 @@ import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
-import { useAddComplyPaymentMutation } from "services/complyService";
 import { setLaunchPaid } from "redux/Slices";
 import { Puff } from "react-loading-icons";
 import { useGetSingleServiceQuery } from "services/staffService.js";
+import { useAddComplyPaymentMutation } from "services/complyService.js";
 
 const ServicePayment = () => {
   // const serviceData = JSON.parse(localStorage.getItem("serviceData"));
-  const complyData = JSON.parse(localStorage.getItem("complyData"));
-  const [addServicePayment] = useAddComplyPaymentMutation();
-  let serviceId = complyData.serviceId;
-  const viewService = useGetSingleServiceQuery(serviceId);
-  const serviceData = viewService.data;
-
+  // const complyData = JSON.parse(localStorage.getItem("complyInfo"));
   const navigate = useNavigate();
+
+  let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo?.serviceId;
+
+  const [addServicePayment] = useAddComplyPaymentMutation();
+  const viewService = useGetSingleServiceQuery(serviceId);
+
+  const serviceData = viewService.data;
 
   const handleNext = () => {
     navigate("/services/form");
@@ -38,24 +41,31 @@ const ServicePayment = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 4, current: 1 })); // total- total pages and current - current page
   }, []);
 
+  // Send the payment reference information to the backend
   const sendServiceRefToBackend = async (reference) => {
     const requiredData = {
-      complyCode: complyData.complyCode,
+      complyCode: complyInfo.complyCode,
       complyPayment: {
         paymentAmount: serviceData?.servicePrice,
-        paymentCurrency: "NGN",
+        paymentCurrency: serviceData?.serviceCurrency,
         paymentTransactionId: reference.transaction_id,
         paymentProvider: "Flutterwave",
         paymentStatus: reference.status,
       },
     };
-    localStorage.setItem("servicePaymentDetails", JSON.stringify(requiredData.complyPayment));
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await addServicePayment(requiredData);
-    if (payResponse.data) {
-      localStorage.removeItem("serviceData");
-    }
+
     navigate("/services/form");
+  };
+
+  let paymentInfo = {
+    sendRefsToBackend: sendServiceRefToBackend,
+    amount: serviceData?.servicePrice,
+    currency: serviceData?.serviceCurrency,
+    title: serviceData?.serviceName,
+    description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
   };
 
   return (
@@ -85,16 +95,7 @@ const ServicePayment = () => {
               <Puff stroke="#00A2D4" />
             </Loading>
           ) : (
-            <PaymentForm
-              currency={serviceData?.serviceCurrency || "--"}
-              amount={serviceData?.servicePrice || 0}
-              paymentProvider={getActive()}
-              onPaymentComplete={sendServiceRefToBackend}
-              title={"service payment"}
-              description={`Payment for business registration in ${
-                serviceData?.serviceCountry || "country"
-              }`}
-            />
+            <PaymentForm paymentProvider={getActive()} paymentInfo={paymentInfo} />
           )}
         </div>
         <Bottom>

@@ -105,8 +105,8 @@ export const useActions = ({
 
   // Updates service
   const handleServiceUpdate = async (formData) => {
-    let payload = getServicePayload(formData);
-    let response = await updateService({ ...payload, serviceId: service?.serviceId });
+    let payload = { ...getServicePayload(formData), serviceId: service?.serviceId };
+    let response = await updateService(payload);
     let data = response?.data;
     let error = response?.error;
     if (data) {
@@ -135,13 +135,14 @@ export const useActions = ({
   //
 
   // Updates form question
-  const handleServiceFormFieldUpdate = async (formData) => {
-    let payload = getFormPayload(formData);
+  const handleServiceFormFieldUpdate = async (formInfo) => {
+    let payload = { ...getFormPayload(formInfo), fieldCode: formInfo?.fieldCode };
     let response = await updateFormField(payload);
     let data = response?.data;
     let error = response?.error;
     if (data) {
-      console.log(data);
+      refetchService();
+      return response;
     } else {
       handleError(error);
     }

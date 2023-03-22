@@ -2,6 +2,7 @@ import React from "react";
 import {
   AnswerInput,
   AnswerTextArea,
+  ErrMsg,
   QuestionOptions,
   ReviewContainer,
   ReviewQuestion,
@@ -10,7 +11,7 @@ import {
 } from "../styled";
 import Option from "./Option";
 
-const TextType = ({ questionNumber, info, handleChange }) => {
+const TextType = ({ questionNumber, info, handleChange, error }) => {
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
   const onChange = (e) => {
@@ -25,6 +26,7 @@ const TextType = ({ questionNumber, info, handleChange }) => {
           <span>Question {questionNumber}</span>
           {info?.fieldRequired && <span>Compulsory</span>}
         </ReviewTopLeft>
+        <ErrMsg>{error?.message}</ErrMsg>
       </ReviewTop>
 
       <ReviewQuestion htmlFor={info?.fieldName}>
@@ -32,15 +34,20 @@ const TextType = ({ questionNumber, info, handleChange }) => {
       </ReviewQuestion>
 
       {info?.fieldType === "input" && (
-        <AnswerInput id={info?.fieldName} type="text" onChange={onChange} />
+        <AnswerInput id={info?.fieldName} type="text" onChange={onChange} error={error?.message} />
       )}
 
       {info?.fieldType === "number" && (
-        <AnswerInput id={info?.fieldName} type="number" onChange={onChange} />
+        <AnswerInput
+          id={info?.fieldName}
+          type="number"
+          onChange={onChange}
+          error={error?.message}
+        />
       )}
 
       {info?.fieldType === "textarea" && (
-        <AnswerTextArea id={info?.fieldName} onChange={onChange} />
+        <AnswerTextArea id={info?.fieldName} onChange={onChange} error={error?.message} />
       )}
     </ReviewContainer>
   );

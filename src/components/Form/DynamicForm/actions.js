@@ -16,7 +16,11 @@ export const getSchema = (array) => {
           .typeError(`Must be a number`)
           .required(`Please answer the question`);
       else if (el?.fieldType === "checkbox")
-        schema[el?.fieldName] = yup.array().of(yup.string()).required(`Select at least one option`);
+        schema[el?.fieldName] = yup
+          .array()
+          .of(yup.string())
+          .min(1, "Select at least one option")
+          .required("Select at least one option");
       else if (el?.fieldType === "radio")
         schema[el?.fieldName] = yup.string().required(`Select an option`);
     } else {
