@@ -10,6 +10,8 @@ import ServiceSuccessPage from "../pages/Services/ServiceSuccessPage";
 import ServicesDetailLayout from "pages/Services/Detail/layout";
 import ServiceInformation from "pages/Services/Detail/ServiceInformation";
 import ReviewDocuments from "pages/Services/Review/ReviewDocuments";
+import FormInformation from "pages/Services/Detail/FormInformation";
+import DocumentInfoDetails from "pages/Services/Detail/DocumentInfoDetails";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -260,6 +262,13 @@ const AppRouter = () => {
                 </Protected>
               }
             >
+               <Route path="services/details" element={<ServicesDetailLayout />}>
+                <Route path="ServiceInformation" element={<ServiceInformation />} />
+                <Route path="FormInformation" element={<FormInformation />} />
+                <Route path="DocumentInfo" element={<DocumentInfoDetails />} />
+                
+              </Route>
+
               <Route index element={<BusinessRegistration />} />
               <Route path="business-registration" element={<BusinessRegistration />} />
               <Route path="application" element={<Application />}></Route>

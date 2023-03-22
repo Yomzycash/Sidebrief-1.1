@@ -57,8 +57,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding-block: 45px;
-  padding-inline: 83px;
+ 
 `;
 
 const DocumentWrapper = styled.div`
