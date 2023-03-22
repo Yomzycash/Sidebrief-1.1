@@ -104,6 +104,7 @@ const ServiceDocuments = () => {
                     onDrop={(files) => handleChange(files, document.requirementName)}
                     isChanged={isChanged}
                     complyCode={complyCode}
+                    onPage="serviceDownLoadPage"
                   />
                 ))}
               </ContentWrapper>
