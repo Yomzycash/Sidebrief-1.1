@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import SuccessImage from "asset/svg/SuccessImage.svg";
 import { useNavigate } from "react-router-dom";
-import { useViewServiceQuery } from "services/complyService";
+import { useGetSingleServiceQuery } from "services/staffService";
 
 const ServiceSuccessPage = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const ServiceSuccessPage = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
   let serviceId = complyCodeData.serviceId;
 
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
   let timeline = viewService?.data?.serviceTimeline;
 
   const handleNavigate = () => {

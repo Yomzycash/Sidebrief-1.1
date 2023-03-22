@@ -39,10 +39,10 @@ import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 
 const ServiceDetailHeader = ({
-  serviceName,  
+  serviceName,
   date,
   status,
-  code ,
+  code,
   isStaff,
   deleteAction = () => {},
 }) => {
@@ -84,7 +84,7 @@ const ServiceDetailHeader = ({
       <Top>
         <BackContainer to={{}}>
           <FiArrowLeft color="#151717" size={24} />
-          <Text>{`Back to Applications`}</Text>
+          <Text>{`Back to Service list`}</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>
@@ -93,9 +93,7 @@ const ServiceDetailHeader = ({
 
               {/* Status */}
               <StatusType>
-                <StatusIndicator
-                  status={status}
-                />
+                <StatusIndicator status={status} />
               </StatusType>
               <CommonButton
                 text={"Messages"}
@@ -116,8 +114,6 @@ const ServiceDetailHeader = ({
             </BottomInfo>
           </LHS>
           <RHS>
-           
-
             <DeleteButton onClick={deleteAction}>
               <p>Delete</p>
               <RedTrash />
@@ -134,7 +130,7 @@ const ServiceDetailHeader = ({
         <ActiveNav
           text={"Service Information"}
           // total={0}
-          path={{}}
+          path={"/services/detail"}
         />
         <ActiveNav text={"Form"} path={{}} />
         <ActiveNav text={"Documents"} path={{}} />

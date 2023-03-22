@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteIcon = ({ color, onClick }) => {
+const DeleteIcon = ({ color, onClick, onMouseDown }) => {
   return (
     <svg
       width="20"
@@ -9,6 +9,7 @@ const DeleteIcon = ({ color, onClick }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
+      onMouseDown={onMouseDown}
       style={{ cursor: "pointer", minWidth: "20px" }}
     >
       <path

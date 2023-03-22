@@ -11,20 +11,24 @@ const CommonButton = ({
   textStyle,
   leftIconColor,
   rightIconColor,
+  puffColor,
+  id,
   classname,
   component,
   type,
   loading,
+  LoadingIcon,
 }) => {
   return (
     <ButtonContainer
       onClick={action}
       style={style}
-      className={"button__effect" || classname}
+      id={id}
+      className={`button__effect ${classname}`}
       type={type || "button"}
     >
       {loading ? (
-        <Puff stroke="#ffffff" fill="white" width={24} height={24} />
+        LoadingIcon || <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
       ) : (
         <>
           {LeftIcon && <LeftIcon size={20} color={leftIconColor || "white"} />}

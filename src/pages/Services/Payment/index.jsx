@@ -8,16 +8,17 @@ import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
-import { useAddServicePaymentMutation, useViewServiceQuery } from "services/complyService";
+import { useAddComplyPaymentMutation } from "services/complyService";
 import { setLaunchPaid } from "redux/Slices";
 import { Puff } from "react-loading-icons";
+import { useGetSingleServiceQuery } from "services/staffService.js";
 
 const ServicePayment = () => {
   // const serviceData = JSON.parse(localStorage.getItem("serviceData"));
   const complyData = JSON.parse(localStorage.getItem("complyData"));
-  const [addServicePayment] = useAddServicePaymentMutation();
+  const [addServicePayment] = useAddComplyPaymentMutation();
   let serviceId = complyData.serviceId;
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
   const serviceData = viewService.data;
 
   const navigate = useNavigate();

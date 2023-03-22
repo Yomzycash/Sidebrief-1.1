@@ -73,8 +73,7 @@ const TagInput = ({
 
   const handleChange = (e) => {
     const value = e.target.value;
-    const noTrailingComma =
-      value.slice(-1) === "," ? value.slice(0, -1) : value;
+    const noTrailingComma = value.slice(-1) === "," ? value.slice(0, -1) : value;
     setCurrentInput(noTrailingComma);
     setInputValue(value.trim());
   };
@@ -137,10 +136,7 @@ const TagInput = ({
         {tags.map((tag, index) => (
           <TagItem key={index} $disable={disable}>
             <TagText>{tag}</TagText>
-            <MdClear
-              size={20}
-              onClick={() => (disable ? "" : removeTags(index))}
-            />
+            <MdClear size={20} onClick={() => (disable ? "" : removeTags(index))} />
           </TagItem>
         ))}
       </TagWrapper>

@@ -2,9 +2,10 @@ import { Outlet, useSearchParams } from "react-router-dom";
 import { Body, Container } from "./styles";
 import { useEffect, useState } from "react";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
-import { useViewComplyMutation, useViewServiceQuery } from "services/complyService";
 import { useCallback } from "react";
 import { format } from "date-fns";
+import { useGetSingleServiceQuery } from "services/staffService";
+import { useViewComplyMutation } from "services/complyService";
 
 const ServicesDetailLayout = () => {
   const [viewComply, viewComplyState] = useViewComplyMutation();
@@ -17,13 +18,13 @@ const ServicesDetailLayout = () => {
       complyCode: complyCode,
     };
     const response = await viewComply(requiredData);
-    console.log(response);
+ if(response)
     setComplyResponse(response);
   };
 
   let serviceId = complyResponse?.data?.serviceId;
 
-  const serviceData = useViewServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
+  const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
 
   console.log(serviceId);
 
@@ -51,7 +52,7 @@ const ServicesDetailLayout = () => {
     }
   };
 
-  useEffect(() => {}, []);
+
 
   return (
     <Container>
@@ -59,7 +60,11 @@ const ServicesDetailLayout = () => {
         status={getStatus(complyResponse?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
         code={serviceId}
-        //  date={format(new Date(complyResponse?.data?.createdAt), "do MMMM yyyy")}
+        date={
+          viewComplyState?.isLoading
+            ? `--`
+            : format(new Date( "2023-03-13T10:52:36.152Z"), "do MMMM yyyy")
+        }
       />
       <Body>
         <Outlet />

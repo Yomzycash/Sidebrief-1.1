@@ -7,6 +7,9 @@ import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
 import ServiceSuccessPage from "../pages/Services/ServiceSuccessPage";
+import ServicesDetailLayout from "pages/Services/Detail/layout";
+import ServiceInformation from "pages/Services/Detail/ServiceInformation";
+import ReviewDocuments from "pages/Services/Review/ReviewDocuments";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -207,6 +210,12 @@ const AppRouter = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Outlet />}>
+          <Route path="services" element={<ServicesDetailLayout />}>
+                <Route path="detail" element={<ServiceInformation />} />
+                <Route path="form" element={<DetailShareholders />} />
+                <Route path="document" element={<DetailDirectors />} />
+               
+              </Route>
             <Route path="test" element={<Test />} />
 
             {/* Protected home route */}
@@ -284,12 +293,7 @@ const AppRouter = () => {
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
-              <Route path="services" element={<BusinessDetailLayout />}>
-                <Route path="detail" element={<BusinessDetail />} />
-                <Route path="form" element={<DetailShareholders />} />
-                <Route path="document" element={<DetailDirectors />} />
-               
-              </Route>
+              
               <Route path="compliance" element={<Compliance />}></Route>
               <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
               <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
@@ -380,7 +384,7 @@ const AppRouter = () => {
             </Route>
           </Route>
 
-          {/* <Route path="dashboard-staff" element={<StaffDashboard />}></Route> */}
+          {/* Services pages Routes */}
           <Route path="services" element={<Outlet />}>
             <Route index element={<ServiceInfo />} />
             <Route path="payment" element={<ServicePayment />} />
@@ -389,7 +393,7 @@ const AppRouter = () => {
             <Route path="review" element={<ServiceReview />}>
               <Route path="info" element={<ServiceInfoReview />} />
               <Route path="form" element={<ServiceFormReview />} />
-              <Route path="documents" element={<ServiceDocumentsReview />} />
+              <Route path="documents" element={<ReviewDocuments />} />
             </Route>
             <Route path="success" element={<ServiceSuccessPage />} />
           </Route>

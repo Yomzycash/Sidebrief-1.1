@@ -14,9 +14,10 @@ export const TitleWrapper = styled.div`
 `;
 
 export const Form = styled.form`
-  padding: 0 clamp(20px, 3vw, 40px);
+  min-width: 100%;
   width: 100%;
   max-width: 962px;
+  overflow-y: hidden;
 
   .input-container-class {
     gap: clamp(6px, 0.6vw, 12px);

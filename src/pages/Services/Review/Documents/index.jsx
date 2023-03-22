@@ -2,7 +2,7 @@ import ManageCard from "components/cards/ManageCard";
 import { CheckoutController } from "containers";
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useViewServiceDocumentMutation } from "services/complyService";
+import { useViewComplyMutation } from "services/complyService";
 import { Bottom } from "../style";
 import { Wrapper } from "./style";
 
@@ -11,7 +11,7 @@ const ServiceDocumentsReview = () => {
   let complyCode = complyCodeData.complyCode;
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewServiceDocumentMutation();
+  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
   const [documentContainer, setDocumentContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {

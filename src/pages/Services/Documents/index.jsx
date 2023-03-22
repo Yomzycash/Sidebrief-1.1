@@ -9,18 +9,19 @@ import { Body, Bottom, Container, ContentWrapper, DownLoadText, FileContainer } 
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
-import { useAddServiceDocumentMutation, useViewServiceQuery } from "services/complyService";
 import { convertToLink } from "utils/LaunchHelper";
 import toast from "react-hot-toast";
+import { useGetSingleServiceQuery } from "services/staffService";
+import { useAddComplyDocumentMutation } from "services/complyService";
 
 const ServiceDocuments = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
   let serviceId = complyCodeData.serviceId;
   // let code = 9031415997;
   const navigate = useNavigate();
-  const viewService = useViewServiceQuery(serviceId);
+  const viewService = useGetSingleServiceQuery(serviceId);
 
-  const [addServiceDocument, { isLoading, isSuccess }] = useAddServiceDocumentMutation();
+  const [addServiceDocument, { isLoading, isSuccess }] = useAddComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
   const handlePrev = () => {
     navigate(-1);

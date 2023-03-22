@@ -1,5 +1,7 @@
 import React from "react";
-import pdf from "../../../asset/svg/pdf.svg";
+import pdf from "../../../asset/images/pdf.png";
+import jpg from "../../../asset/images/jpg.png";
+import png from "../../../asset/images/png.png";
 import {
   Document,
   DocumentSection,
@@ -10,38 +12,32 @@ import {
   InnerDocument,
 } from "./style";
 
-const ServiceReviewCard = () => {
-  const DocContent = [
-    {
-      id: "1",
-      fileImage: pdf,
-      doctype: "National Identification Number",
-    },
-    {
-      id: "2",
-      fileImage: pdf,
-      doctype: "Voter's Card",
-    },
-    {
-      id: "3",
-      fileImage: pdf,
-      doctype: "Passport",
-    },
-    {
-      id: "4",
-      fileImage: pdf,
-      doctype: "Court Affidavit",
-    },
-  ];
+const ServiceReviewCard = ({ DocContent }) => {
+  const imageTypeImage = {
+    pdf: pdf,
+
+    png: png,
+
+    jpg: jpg,
+  };
+
   return (
     <DocumentSection>
       <Document>
         {DocContent.map((doc, id) => (
           <DocumentDownload key={id}>
             <InnerDocument>
-              <img src={doc.fileImage} alt="filetype" />
-              <DocumentText>{doc.doctype}</DocumentText>
-              <SmallText>file type: pdf, png, jpeg</SmallText>
+              <img
+                src={imageTypeImage[doc?.documentLink.slice(-3)]}
+                alt="filetype"
+                style={{
+                  margin: 0,
+                  height: "24px",
+                  width: "24px",
+                }}
+              />
+              <DocumentText>{doc?.documentName}</DocumentText>
+              {/* <SmallText>file type: pdf, png, jpeg</SmallText> */}
             </InnerDocument>
           </DocumentDownload>
         ))}
