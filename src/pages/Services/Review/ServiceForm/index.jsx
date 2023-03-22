@@ -4,14 +4,14 @@ import { Wrapper } from "./style";
 import { useNavigate } from "react-router-dom";
 import { CheckoutController } from "containers";
 import { Bottom } from "../style";
-import { useViewComplyMutation } from "services/complyService";
+import { useViewComplyQuery } from "services/complyService";
 
 const ServiceFormReview = () => {
   const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
   let complyCode = complyCodeData.complyCode;
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyMutation();
+  const [viewServiceDocument, viewServiceDocumentState] = useViewComplyQuery();
   const [questionContainer, setQuestionContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {
