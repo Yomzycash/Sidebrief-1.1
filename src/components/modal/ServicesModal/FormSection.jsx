@@ -30,6 +30,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
     handleServiceFormFieldDelete,
   } = useActions({
     service,
+    serviceId,
     addFormField,
     updateFormField,
     deleteFormField,
@@ -57,7 +58,8 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
 
   const handleNext = () => {
     let docsRef = document.getElementById("staff-service-docs");
-    scrollTo(docsRef, serviceId, 100);
+    scrollTo(docsRef, serviceId);
+    setOpen(mode, serviceId, 100);
   };
 
   return (

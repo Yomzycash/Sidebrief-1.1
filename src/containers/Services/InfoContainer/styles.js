@@ -57,6 +57,8 @@ export const BigText = styled.p`
 `;
 
 export const CountryName = styled(BigText)`
+  display: flex;
+  align-items: center;
   font-weight: 900;
   text-transform: uppercase;
 
@@ -76,4 +78,10 @@ export const Documents = styled.div`
 export const Doc = styled(NormalText)`
   font-weight: 700;
   line-height: 21px;
+`;
+
+export const DocumentList = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;

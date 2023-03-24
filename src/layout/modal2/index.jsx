@@ -66,7 +66,7 @@ const Modal2 = ({
           <Title>
             <p>{title}</p>
             <TopIcons>
-              {!$hideIcons && mode === "edit" && <EditIcon width={20} onClick={handleDisable} />}
+              {/* {!$hideIcons && mode === "edit" && <EditIcon width={20} onClick={handleDisable} />}
               {!$hideIcons && mode === "edit" && (
                 <DeleteWrapper>
                   {confirm && (
@@ -88,7 +88,7 @@ const Modal2 = ({
                     />
                   )}
                 </DeleteWrapper>
-              )}
+              )} */}
               <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
             </TopIcons>
           </Title>

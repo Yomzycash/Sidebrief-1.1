@@ -24,9 +24,8 @@ import { useGetSingleServiceQuery } from "services/staffService";
 import { useAddComplyDocumentMutation } from "services/complyService";
 
 const ServiceDocuments = () => {
-  // const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  // let serviceId = complyCodeData.serviceId;
-  let serviceId = "7013107844";
+  const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo?.serviceId;
 
   const navigate = useNavigate();
   const viewService = useGetSingleServiceQuery(serviceId);
@@ -41,13 +40,8 @@ const ServiceDocuments = () => {
     navigate("/services/review/info");
   };
 
-  // Set the progress of the application
-  useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 3 })); // total- total pages and current - current page
-  }, []);
-
-  // let complyCode = complyCodeData.complyCode;
-  let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
+  let complyCode = complyInfo.complyCode;
+  // let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
 
   // const handleChange = async (file, fileName) => {
   //   const res = await convertToLink(file[0]);
@@ -99,6 +93,11 @@ const ServiceDocuments = () => {
     console.log("removed");
     // remove comply endpoint should be called here
   };
+  
+  // Set the progress of the application
+  useEffect(() => {
+    store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.8 })); // total- total pages and current - current page
+  }, []);
 
   return (
     <Container>

@@ -1,5 +1,7 @@
 import React from "react";
-import pdf from "../../../asset/svg/pdf.svg";
+import pdf from "../../../asset/images/pdf.png";
+import jpg from "../../../asset/images/jpg.png";
+import png from "../../../asset/images/png.png";
 import {
   Document,
   DocumentSection,
@@ -9,39 +11,43 @@ import {
   SmallText,
   InnerDocument,
 } from "./style";
+import { handleDownloadFile } from "utils/LaunchHelper";
+import { useLocation } from "react-router-dom";
+import { downLoadImage } from "utils/staffHelper";
 
-const ServiceReviewCard = () => {
-  const DocContent = [
-    {
-      id: "1",
-      fileImage: pdf,
-      doctype: "National Identification Number",
-    },
-    {
-      id: "2",
-      fileImage: pdf,
-      doctype: "Voter's Card",
-    },
-    {
-      id: "3",
-      fileImage: pdf,
-      doctype: "Passport",
-    },
-    {
-      id: "4",
-      fileImage: pdf,
-      doctype: "Court Affidavit",
-    },
-  ];
+const ServiceReviewCard = ({ DocContent, action }) => {
+  const { pathname } = useLocation();
+  let details = pathname.includes("details");
+
+  const imageTypeImage = {
+    pdf: pdf,
+
+    png: png,
+
+    jpg: jpg,
+  };
+
   return (
     <DocumentSection>
       <Document>
-        {DocContent.map((doc, id) => (
-          <DocumentDownload key={id}>
-            <InnerDocument>
-              <img src={doc.fileImage} alt="filetype" />
-              <DocumentText>{doc.doctype}</DocumentText>
-              <SmallText>file type: pdf, png, jpeg</SmallText>
+        {DocContent?.map((doc, index) => (
+          <DocumentDownload key={index}>
+            <InnerDocument
+              onClick={() => {
+                details && downLoadImage(doc?.documentLink, doc?.documentName);
+              }}
+            >
+              <img
+                src={imageTypeImage[doc?.documentLink.slice(-3)]}
+                alt="filetype"
+                style={{
+                  margin: 0,
+                  height: "24px",
+                  width: "24px",
+                }}
+              />
+              <DocumentText>{doc?.documentName}</DocumentText>
+              {/* <SmallText>file type: pdf, png, jpeg</SmallText> */}
             </InnerDocument>
           </DocumentDownload>
         ))}

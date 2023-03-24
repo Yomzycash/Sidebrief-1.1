@@ -139,7 +139,7 @@ const ServiceInfo = () => {
           </LaunchFormContainer>
           {selectedService?.serviceName && (
             <InfoContainer
-              country={countriesArray?.find((el) => el.countryName === selectedCountry) || {}}
+              country={countries?.data?.find((el) => el.countryName === selectedCountry) || ""}
               service={selectedService}
             />
           )}

@@ -18,7 +18,7 @@ const ServiceReview = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 4, current: 4 })); // total- total pages and current - current page
+    store.dispatch(setServiceCheckoutProgress({ total: 2, current: 2 })); // total- total pages and current - current page
   }, []);
 
   return (
