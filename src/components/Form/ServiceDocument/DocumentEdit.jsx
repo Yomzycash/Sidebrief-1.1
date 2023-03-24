@@ -46,6 +46,13 @@ const DocumentEdit = ({
     }
   }, [disabled]);
 
+  // Hides edit instance if there is at least one question
+  useEffect(() => {
+    if (documentNumber > 1 && !review) {
+      dispatch({ type: "setDone", payload: true });
+    }
+  }, [documentNumber, review]);
+
   return (
     <DocumentForm onSubmit={handleSubmit}>
       {!done && (

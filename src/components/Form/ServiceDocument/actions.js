@@ -91,6 +91,7 @@ export const useActions = ({
 
   //
 
+  // Resets all fields to default values
   const resetFields = () => {
     dispatch({ type: "setDocumentName", payload: "" });
     dispatch({ type: "setDocumentDescription", payload: "" });

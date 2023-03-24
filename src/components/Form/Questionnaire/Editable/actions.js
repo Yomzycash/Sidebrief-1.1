@@ -26,6 +26,8 @@ export const useActions = ({
     validateQuestion(value);
   };
 
+  //
+
   // Validates question input
   const validateQuestion = (value) => {
     if (value.length === 0) {
@@ -40,6 +42,8 @@ export const useActions = ({
     }
   };
 
+  //
+
   // Validates the length of options array
   const validateOptions = () => {
     if ((selectedType === "checkbox" || selectedType === "radio") && optionsArray.length < 2) {
@@ -50,6 +54,8 @@ export const useActions = ({
       return true;
     }
   };
+
+  //
 
   // Validates the length of each option
   const validateEmptyOptions = () => {
@@ -64,6 +70,8 @@ export const useActions = ({
     } else return true;
   };
 
+  //
+
   // Adds an option
   const handleOptionAdd = (e) => {
     e.preventDefault();
@@ -74,6 +82,8 @@ export const useActions = ({
     optionsCopy.push("");
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
   };
+
+  //
 
   // Adds "other" option
   const handleOtherAdd = (e) => {
@@ -86,6 +96,8 @@ export const useActions = ({
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
   };
 
+  //
+
   const focusLastOption = () => {
     let lastIndex = optionsArray.length - 1;
     if (lastIndex < 0) return;
@@ -93,11 +105,15 @@ export const useActions = ({
       optionsRef.current?.childNodes[lastIndex + 1]?.childNodes[1].focus();
   };
 
+  //
+
   // Removes an existing option
   const handleOptionRemove = (index) => {
     let optionsArrayCopy = optionsArray.filter((el, elIndex) => elIndex !== index);
     dispatch({ type: "setOptionsArray", payload: optionsArrayCopy });
   };
+
+  //
 
   // Updates options values when selected question type is checkbox or radio
   const updateOptionValue = (index, value) => {
@@ -110,11 +126,15 @@ export const useActions = ({
     }
   };
 
+  //
+
   // Toggles compulsory
   const handleToggle = (checkboxRef) => {
     checkboxRef.checked = !state.required;
     dispatch({ type: "setRequired", payload: checkboxRef.checked });
   };
+
+  //
 
   // Submits the form
   const handleSubmit = async (e) => {
@@ -150,6 +170,9 @@ export const useActions = ({
     dispatch({ type: "setUpdateClicked", payload: false });
   };
 
+  //
+
+  // Resets all fields to default values
   const resetFields = () => {
     dispatch({ type: "setQuestion", payload: "" });
     dispatch({ type: "setOptionsArray", payload: [""] });
