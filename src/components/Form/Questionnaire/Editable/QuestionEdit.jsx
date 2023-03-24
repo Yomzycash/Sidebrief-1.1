@@ -102,12 +102,7 @@ const QuestionEdit = ({
               errorMessage={questionError}
             />
             <ToggleWrapper>
-              <ToggleButton
-                rightText="Compulsory"
-                // name="toggle-button"
-                checked={required}
-                onChange={handleToggle}
-              />
+              <ToggleButton rightText="Compulsory" checked={required} onChange={handleToggle} />
             </ToggleWrapper>
           </Question>
 

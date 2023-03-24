@@ -5,7 +5,7 @@ import EditIcon from "asset/Icons/EditIcon";
 import { SpinningCircles } from "react-loading-icons";
 import DeleteIcon from "asset/Icons/DeleteIcon";
 
-const EditDelete = ({ editAction, deleteAction, deleteLoading, hideEdit, hideDelete }) => {
+const EditDeleteButton = ({ editAction, deleteAction, deleteLoading, hideEdit, hideDelete }) => {
   const [confirm, setConfirm] = useState(false);
   const [confirmValue, setConfirmValue] = useState("");
 
@@ -74,4 +74,4 @@ const EditDelete = ({ editAction, deleteAction, deleteLoading, hideEdit, hideDel
   );
 };
 
-export default EditDelete;
+export default EditDeleteButton;

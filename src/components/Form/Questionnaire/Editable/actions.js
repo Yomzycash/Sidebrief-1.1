@@ -154,7 +154,7 @@ export const useActions = ({
     dispatch({ type: "setQuestion", payload: "" });
     dispatch({ type: "setOptionsArray", payload: [""] });
     dispatch({ type: "setSelectedType", payload: "input" });
-    dispatch({ type: "setRequired", payload: false });
+    dispatch({ type: "setRequired", payload: true });
     dispatch({ type: "setQuestionError", payload: "" });
     dispatch({ type: "setOptionsError", payload: "" });
   };

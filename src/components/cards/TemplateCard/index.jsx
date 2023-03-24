@@ -6,7 +6,7 @@ import {
   InnerWrapper,
   TopContainer,
   TextWrapper,
-  EditDeleteWrapper,
+  EditDeleteButtonWrapper,
   EditWrapper,
   EditText,
   DeleteText,
@@ -16,14 +16,13 @@ import {
 import styled from "styled-components";
 
 const TemplateCard = ({ docDetails }) => {
- 
   return (
     <div>
       <Wrapper>
         <InnerWrapper>
           <TopContainer>
             <TextWrapper>National Identification Number</TextWrapper>
-            <EditDeleteWrapper>
+            <EditDeleteButtonWrapper>
               <EditWrapper>
                 <img src={editIcon} alt="edit" />
                 <EditText> Edit </EditText>
@@ -32,13 +31,15 @@ const TemplateCard = ({ docDetails }) => {
                 <img src={deleteIcon} alt="delete" />
                 <DeleteText> Delete </DeleteText>
               </EditWrapper>
-            </EditDeleteWrapper>
+            </EditDeleteButtonWrapper>
           </TopContainer>
-          {docDetails && <TextContainer>
-            <Text>
-              {'Pdf'}, {'Png'}, {'Jpeg'}
-            </Text>
-          </TextContainer>}
+          {docDetails && (
+            <TextContainer>
+              <Text>
+                {"Pdf"}, {"Png"}, {"Jpeg"}
+              </Text>
+            </TextContainer>
+          )}
 
           {!docDetails && (
             <LowerContainer>

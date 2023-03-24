@@ -6,7 +6,7 @@ import {
   ReviewTop,
   ReviewTopLeft,
 } from "../styled";
-import EditDelete from "components/button/EditDelete";
+import EditDeleteButton from "components/button/EditDeleteButton";
 import Option from "./Option";
 
 const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, deleteState }) => {
@@ -32,7 +32,7 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, delet
           <span>Question {questionNumber}</span>
           {info?.fieldRequired && <span>Compulsory</span>}
         </ReviewTopLeft>
-        <EditDelete
+        <EditDeleteButton
           editAction={handleEditQuestion}
           deleteAction={handleDeleteQuestion}
           deleteLoading={loading}
