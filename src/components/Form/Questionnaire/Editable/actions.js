@@ -58,7 +58,7 @@ export const useActions = ({
   //
 
   // Validates the length of each option
-  const validateEmptyOptions = () => {
+  const validateEachOption = () => {
     let optionsCopy = optionsArray?.map((el) => el?.toLowerCase()?.trim());
     let uniqueOptions = [...new Set(optionsCopy)];
     let duplicatesExist = optionsCopy?.length !== uniqueOptions?.length;
@@ -82,7 +82,7 @@ export const useActions = ({
   const handleOptionAdd = (e) => {
     e.preventDefault();
     if (otherClicked) return;
-    let valid = validateEmptyOptions();
+    let valid = validateEachOption();
     if (!valid) return;
     let optionsCopy = [...optionsArray];
     optionsCopy.push("");
@@ -95,7 +95,7 @@ export const useActions = ({
   const handleOtherAdd = (e) => {
     e.preventDefault();
     if (otherClicked) return;
-    let valid = validateEmptyOptions();
+    let valid = validateEachOption();
     if (!valid) return;
     let optionsCopy = [...optionsArray];
     optionsCopy.push("Other");
@@ -157,7 +157,7 @@ export const useActions = ({
     }
 
     let questionValid = validateQuestion(question);
-    let optionsValid = validateOptions() && validateEmptyOptions();
+    let optionsValid = validateOptions() && validateEachOption();
     if (!questionValid || !optionsValid) return;
 
     let response = review

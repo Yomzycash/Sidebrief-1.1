@@ -156,7 +156,6 @@ const QuestionEdit = ({
                     removeAction={() => handleOptionRemove(index)}
                     placeholder={`Enter option ${index + 1}`}
                     updateOptionValue={updateOptionValue}
-                    focusLastOption={focusLastOption}
                     optionsArray={optionsArray}
                     dispatch={dispatch}
                   />
@@ -178,7 +177,6 @@ const QuestionEdit = ({
                     removeAction={() => handleOptionRemove(index)}
                     placeholder={`Enter option ${index + 1}`}
                     updateOptionValue={updateOptionValue}
-                    focusLastOption={focusLastOption}
                     optionsArray={optionsArray}
                     dispatch={dispatch}
                   />

@@ -18,7 +18,6 @@ const Option = ({
   index,
   updateOptionValue,
   disable,
-  focusLastOption,
   optionsArray,
   dispatch,
 }) => {
