@@ -71,7 +71,7 @@ export const SubmitButtons = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  max-width: 400px;
+  max-width: 350px;
 
   button {
     font-weight: 500;
@@ -89,7 +89,8 @@ export const SubmitButtons = styled.div`
     width: 132px;
   }
 
-  #addnew-submit {
+  #addnew-submit,
+  #cancel-submit {
     background-color: transparent;
     padding: 0;
   }

@@ -108,7 +108,8 @@ const BusinessRegistration = (props) => {
   };
 
   const handleManage = () => {
-    // navigate("/manage");
+    navigate("/services");
+    localStorage.removeItem("complyInfo");
   };
 
   useEffect(() => {
@@ -144,7 +145,7 @@ const BusinessRegistration = (props) => {
               // notready="false"
               buttonText="Manage Business"
               action={handleManage}
-              notready={true}
+              // notready={true}
             />
           </DashboardSection>
           {allLaunchContainer.length > 0 ? (

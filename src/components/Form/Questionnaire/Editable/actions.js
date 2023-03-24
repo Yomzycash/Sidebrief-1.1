@@ -146,6 +146,8 @@ export const useActions = ({
     } else {
       handleError(response?.error);
     }
+
+    dispatch({ type: "setUpdateClicked", payload: false });
   };
 
   const resetFields = () => {

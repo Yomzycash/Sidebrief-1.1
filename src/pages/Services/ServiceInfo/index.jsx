@@ -104,7 +104,6 @@ const ServiceInfo = () => {
     }
   }, [services, countries.data]);
 
-  console.log(selectedService);
   return (
     <Container>
       <ServicesCheckoutHeader />

@@ -85,7 +85,6 @@ const QuestionEdit = ({
     }
   }, [disabled]);
 
-  // console.log("parent", required);
   return (
     <QuestionForm onSubmit={handleSubmit}>
       {!done && (
@@ -160,7 +159,7 @@ const QuestionEdit = ({
 
           {selectedType === "radio" && (optionsArray.length > 0 || optionsError) && (
             <QuestionOptions ref={optionsRef}>
-              <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>
+              {optionsError && <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>}
               {optionsArray?.map((text, index) => (
                 <Option
                   type="radio"
@@ -195,14 +194,24 @@ const QuestionEdit = ({
 
       <SubmitButtons>
         {review ? (
-          <CommonButton
-            text="Update"
-            type="submit"
-            id="review-submit"
-            action={() => dispatch({ type: "setUpdateClicked", payload: true })}
-            loading={updateState.isLoading && updateClicked}
-            LoadingIcon={<SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />}
-          />
+          <>
+            <CommonButton
+              text="Update"
+              type="submit"
+              id="review-submit"
+              action={() => dispatch({ type: "setUpdateClicked", payload: true })}
+              loading={updateState.isLoading && updateClicked}
+              LoadingIcon={
+                <SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />
+              }
+            />
+            <CommonButton
+              text="Cancel"
+              type="button"
+              id="cancel-submit"
+              action={() => setDisabled(true)}
+            />
+          </>
         ) : (
           <>
             <CommonButton
