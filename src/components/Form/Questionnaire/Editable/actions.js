@@ -59,10 +59,16 @@ export const useActions = ({
 
   // Validates the length of each option
   const validateEmptyOptions = () => {
+    let optionsCopy = optionsArray?.map((el) => el?.toLowerCase()?.trim());
+    let uniqueOptions = [...new Set(optionsCopy)];
+    let duplicatesExist = optionsCopy?.length !== uniqueOptions?.length;
+
     if (selectedType === "checkbox" || selectedType === "radio") {
       if (optionsArray.some((el) => el.trim() === "")) {
         dispatch({ type: "setOptionsError", payload: "Option cannot be empty" });
         return false;
+      } else if (duplicatesExist) {
+        dispatch({ type: "setOptionsError", payload: "Duplicate option(s) exist" });
       } else {
         dispatch({ type: "setOptionsError", payload: "" });
         return true;
@@ -102,7 +108,7 @@ export const useActions = ({
     let lastIndex = optionsArray.length - 1;
     if (lastIndex < 0) return;
     if (selectedType === "checkbox" || selectedType === "radio")
-      optionsRef.current?.childNodes[lastIndex + 1]?.childNodes[1].focus();
+      optionsRef.current?.childNodes[lastIndex]?.childNodes[1].focus();
   };
 
   //
@@ -121,7 +127,7 @@ export const useActions = ({
     optionsCopy[index] = value;
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
     if (value !== "") {
-      if (!validateOptions()) return;
+      // if (!validateOptions()) return;
       dispatch({ type: "setOptionsError", payload: "" });
     }
   };

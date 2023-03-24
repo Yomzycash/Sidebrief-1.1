@@ -11,6 +11,7 @@ import {
   ToggleWrapper,
   QuestionInfoWrapper,
   SubmitButtons,
+  OptionsWrapper,
 } from "../styled";
 import CommonButton from "components/button/commonButton";
 import Option from "./Option";
@@ -72,7 +73,7 @@ const QuestionEdit = ({
   // Focuses the last option
   useEffect(() => {
     focusLastOption();
-  }, [selectedType]);
+  }, [selectedType, optionsArray.length]);
 
   // Populates the Question info
   useEffect(() => {
@@ -141,40 +142,49 @@ const QuestionEdit = ({
             />
           </QuestionType>
 
-          {selectedType === "checkbox" && (optionsArray.length > 0 || optionsError) && (
-            <QuestionOptions ref={optionsRef}>
+          {selectedType === "checkbox" && optionsArray.length > 0 && (
+            <OptionsWrapper>
               {optionsError && <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>}
-              {optionsArray?.map((text, index) => (
-                <Option
-                  type="checkbox"
-                  text={text}
-                  error
-                  key={index}
-                  index={index}
-                  removeAction={() => handleOptionRemove(index)}
-                  placeholder={`Enter option ${index + 1}`}
-                  updateOptionValue={updateOptionValue}
-                />
-              ))}
-            </QuestionOptions>
+              <QuestionOptions ref={optionsRef}>
+                {optionsArray?.map((text, index) => (
+                  <Option
+                    type="checkbox"
+                    text={text}
+                    error
+                    key={index}
+                    index={index}
+                    removeAction={() => handleOptionRemove(index)}
+                    placeholder={`Enter option ${index + 1}`}
+                    updateOptionValue={updateOptionValue}
+                    focusLastOption={focusLastOption}
+                    optionsArray={optionsArray}
+                    dispatch={dispatch}
+                  />
+                ))}
+              </QuestionOptions>
+            </OptionsWrapper>
           )}
 
-          {selectedType === "radio" && (optionsArray.length > 0 || optionsError) && (
-            <QuestionOptions ref={optionsRef}>
+          {selectedType === "radio" && optionsArray.length > 0 && (
+            <OptionsWrapper>
               {optionsError && <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>}
-              {optionsArray?.map((text, index) => (
-                <Option
-                  type="radio"
-                  text={text}
-                  key={index}
-                  index={index}
-                  removeAction={() => handleOptionRemove(index)}
-                  placeholder={`Enter option ${index + 1}`}
-                  updateOptionValue={updateOptionValue}
-                  focusLastOption={focusLastOption}
-                />
-              ))}
-            </QuestionOptions>
+              <QuestionOptions ref={optionsRef}>
+                {optionsArray?.map((text, index) => (
+                  <Option
+                    type="radio"
+                    text={text}
+                    key={index}
+                    index={index}
+                    removeAction={() => handleOptionRemove(index)}
+                    placeholder={`Enter option ${index + 1}`}
+                    updateOptionValue={updateOptionValue}
+                    focusLastOption={focusLastOption}
+                    optionsArray={optionsArray}
+                    dispatch={dispatch}
+                  />
+                ))}
+              </QuestionOptions>
+            </OptionsWrapper>
           )}
 
           {(selectedType === "checkbox" || selectedType === "radio") && (

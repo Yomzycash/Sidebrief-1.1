@@ -19,6 +19,8 @@ const Option = ({
   updateOptionValue,
   disable,
   focusLastOption,
+  optionsArray,
+  dispatch,
 }) => {
   let other = text === "Other" || text === "Other (allowed to type)";
 
@@ -39,8 +41,13 @@ const Option = ({
     setOpenOther(true);
   };
 
+  // Removes an option input when Backspace is pressed when the input is empty.
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") focusLastOption();
+    let value = e.target.value;
+    if (e.key === "Backspace" && value?.length < 1) {
+      optionsArray?.splice(index, 1);
+      dispatch({ type: "setOptionsArray", payload: optionsArray });
+    }
   };
 
   return (

@@ -50,6 +50,12 @@ export const QuestionType = styled.div`
   }
 `;
 
+export const OptionsWrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+`;
+
 export const QuestionOptions = styled.div`
   display: flex;
   flex-flow: column;
