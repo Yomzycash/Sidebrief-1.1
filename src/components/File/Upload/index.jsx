@@ -25,13 +25,12 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
       const realFile = file[0];
       setUploading(true);
       const uploadedFile = await convertToLink(realFile);
+      await uploadAction(uploadedFile, docType, realFile);
       setFileName(realFile.name);
       setUploading(false);
-      // get link and call action here
-      uploadAction(uploadedFile);
       console.log(uploadedFile);
     },
-    [uploadAction]
+    [uploadAction, docType]
   );
 
   const nameLengthValidator = (file) => {
@@ -72,6 +71,7 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
           <UploadWrapper
             {...getRootProps({
               disabled: uploading,
+              type: "button",
             })}
           >
             {!uploading ? (
@@ -91,7 +91,7 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
         ) : (
           <Preview>
             <span>{fileName}</span>
-            <Delete onClick={performDelete} disabled={deleting}>
+            <Delete onClick={performDelete} disabled={deleting} type="button">
               {deleting ? <SpinningCircles height={24} width={24} /> : <DeleteRedSvg />}
             </Delete>
           </Preview>

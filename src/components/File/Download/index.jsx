@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { DocumentDownload, DocumentFrame, DocumentText } from "./styled";
 import { CommonButton } from "components/button";
 import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
@@ -6,9 +6,13 @@ import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
 import { downLoadImage } from "utils/staffHelper";
 
 export const Download = ({ docType, fileUrl }) => {
-  const download = () => {
-    console.log(fileUrl);
-    downLoadImage(fileUrl, docType);
+  const [preparing, setPreparing] = useState(false);
+
+  const download = async () => {
+    setPreparing(true);
+    // console.log(fileUrl);
+    await downLoadImage(fileUrl, docType);
+    setPreparing(false);
   };
 
   return (
@@ -16,7 +20,12 @@ export const Download = ({ docType, fileUrl }) => {
       <DocumentFrame>
         <DocumentIcon />
         <DocumentText>{docType}</DocumentText>
-        <CommonButton text={"Download"} LeftIcon={DownloadWhite} action={download} />
+        <CommonButton
+          text={"Download"}
+          LeftIcon={DownloadWhite}
+          action={download}
+          loading={preparing}
+        />
       </DocumentFrame>
     </DocumentDownload>
   );
