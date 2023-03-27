@@ -262,11 +262,10 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-               <Route path="services/details" element={<ServicesDetailLayout />}>
+              <Route path=":complycode/details" element={<ServicesDetailLayout />}>
                 <Route path="ServiceInformation" element={<ServiceInformation />} />
                 <Route path="FormInformation" element={<FormInformation />} />
                 <Route path="DocumentInfo" element={<DocumentInfoDetails />} />
-                
               </Route>
 
               <Route index element={<BusinessRegistration />} />
@@ -276,6 +275,8 @@ const AppRouter = () => {
                 <Route index element={<BankAccount />} />
                 <Route path=":bankCode" element={<BankAccountDetails />} />
               </Route>
+
+              
               <Route path="business-registration" element={<BusinessRegistration />} />
               <Route path="settings" element={<UserSettingsLayout />}>
                 <Route index element={<PersonalSettings />} />

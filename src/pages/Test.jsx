@@ -12,7 +12,7 @@ const Test = () => {
   return (
     <div style={{}}>
 
-      <DocumentInfoDetails />
+      <UserService />
     </div>
   );
 };

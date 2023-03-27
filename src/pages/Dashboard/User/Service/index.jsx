@@ -7,20 +7,25 @@ import {
 	PageTitle,
 	Drop,
 	BottomContent,
+	Loading,
 	Flex,
 	SearchWrapper,
 	SubHeader,
 	TitleWrapper,
 } from "./styled";
-import { useGetAllServicesQuery } from "services/complyService"
+import { useViewAllComplyByMetaQuery } from "services/complyService"
 import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
-import { ReactComponent as AddIcon } from "asset/svg/AddWhite.svg";
+import { format } from "date-fns";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import FeatureTable from "components/Tables/FeatureTable";
 import { sortTableData } from "utils/staffHelper";
 import Paginator from "components/Paginator";
 import CheckBox from "components/input/Checkbox2"
+import { Puff } from "react-loading-icons";
+import { GeneralTable } from "components/Tables";
+import { columns } from "./tableColumn"
+import { useParams } from "react-router-dom";
 
 const UserService = () => {
 	const [tableArr, setTableArr] = useState([]);
@@ -28,40 +33,33 @@ const UserService = () => {
 	const [itemOffset, setItemOffset] = useState(0);
 	const [currentItems, setCurrentItems] = useState([]);
 	// const { data, isLoading, refetch } = useGetAllServicesQuery();
-	const myService = useGetAllServicesQuery();
-	const allService = myService?.data
-	const sortedArr = useMemo(() => {
-		const sortArr = [...tableArr];
-		return sortArr.sort(sortTableData);
-	}, [tableArr])
+	//const myService = useViewAllComplyByMetaQuery();
+	const { data, isLoading, refetch } = useViewAllComplyByMetaQuery({meta:"6338615b49272eb0663c5b9b"});
+	// const allService = myService?.data;
+	// console.log("allService", allService)
+	// const loader = myService?.isLoading;
 
-	const itemsPerPage = 15;
+	// const sortedArr = useMemo(() => {
+	// 	const sortArr = [...tableArr];
+	// 	return sortArr.sort(sortTableData);
+	// }, [tableArr])
 
-	const handlePageClick = (e) => {
-		const newOffset = (e.selected * itemsPerPage) % sortedArr?.length;
-		setItemOffset(newOffset);
-	};
+	const itemsPerPage = 10;
 
-	useEffect(() => {
-		const endOffset = itemOffset + itemsPerPage;
-		setCurrentItems(sortedArr?.slice(itemOffset, endOffset));
-		setPageCount(Math.ceil(sortedArr?.length / itemsPerPage));
-	}, [itemOffset, itemsPerPage, sortedArr]);
-	console.log("sortedArr", sortedArr)
-	// Table header information
-	const header = ["Service Name", "Type", "Country", "Date"];
-	
-	console.log("services", allService)
-	// Table row information
-	const serviceBody = allService?.map((service) => [
-		service?.serviceName,
-		service?.serviceCategory,
-		service?.serviceCountry,
-		service?.createdAt?.split("T")[0]
-	])
-	
+	// const handlePageClick = (e) => {
+	// 	const newOffset = (e.selected * itemsPerPage) % sortedArr?.length;
+	// 	setItemOffset(newOffset);
+	// };
+
+	// useEffect(() => {
+	// 	const endOffset = itemOffset + itemsPerPage;
+	// 	setCurrentItems(sortedArr?.slice(itemOffset, endOffset));
+	// 	setPageCount(Math.ceil(sortedArr?.length / itemsPerPage));
+	// }, [itemOffset, itemsPerPage, sortedArr]);
+	// console.log("sortedArr", sortedArr)
 
 	// console.log("serviceBody", serviceBody )
+	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
 	return (
 		<Container>
 			<Header>
@@ -80,11 +78,36 @@ const UserService = () => {
 					</TopContent>
 					<BottomContent>
 						<SearchWrapper>
-							<Search className={"searchbox"} placeholder={"Seach for a service"} />
+							<Search className={"searchbox"} placeholder={"Search for a service"} />
 						</SearchWrapper>
 					</BottomContent>
 
-					<FeatureTable header={header} body={serviceBody}/>
+					{ isLoading && (
+						<Loading>
+							<Puff stroke="#00A2D4" />
+						</Loading>
+					)}
+					
+					{/* //<FeatureTable header={header} body={serviceBody}/> */}
+					{ data?.length > 0 && (
+						<MemoisedGeneralTable 
+							data={data?.map((service) => {
+								return {
+									name: service?.serviceId,
+									type:service?.status,
+									country: service?.complyCode,
+									date: format(
+										new Date(service?.createdAt),
+										"dd/MM/yyyy"
+									),
+									
+								};
+
+							})} 
+							columns={columns}
+						/>
+					)}
+					
 					
 				</MainHeader>
 				{/* {sortedArr?.length > itemsPerPage && (

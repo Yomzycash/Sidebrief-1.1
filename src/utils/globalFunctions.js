@@ -8,7 +8,6 @@ import { launchApi } from "services/launchService";
 import { RewardApi } from "services/RewardService";
 import { staffApi } from "services/staffService";
 import { ChatApi } from "services/chatService";
-
 // handle error encountered in endpoints call
 export const handleError = (error) => {
   if (error?.status === "FETCH_ERROR") {
@@ -77,6 +76,13 @@ export const staffNavigateToDetailPage = (navigate, launchInfo) => {
     `/staff-dashboard/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
   );
 };
+
+export const userNavigateToDetailPage = (navigate, complyCode) => {
+  navigate(
+    `/dashboard/${complyCode=complyCode}/details`
+  )
+}
+
 
 export const getCurrencyInfo = (currency) => {
   let currencyInfo = countriesInfo.filter((country) => country.currency === currency)[0];
