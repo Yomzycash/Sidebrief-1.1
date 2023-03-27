@@ -60,7 +60,7 @@ const ServicesDetailLayout = () => {
         date={
           viewComply?.isLoading
             ? `--`
-            : format(parseJSON(viewComply?.data?.createdAt), "dd MMMM yyyy")
+            : format(parseJSON(viewComply?.data?.createdAt), "do MMMM yyyy")
         }
       />
       <Body>
