@@ -5,11 +5,11 @@ export const paymentProviders = [
   {
     provider: "Flutterwave",
     image: FlutterwaveImg,
-    supported: ["USD", "KES", "NGN"],
+    supported: ["USD", "KES", "NGN", "ZAR"],
   },
   {
     provider: "Stripe",
     image: StripeImg,
-    supported: ["USD", "KES"],
+    supported: ["USD", "KES", "ZAR"],
   },
 ];

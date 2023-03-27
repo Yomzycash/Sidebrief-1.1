@@ -1,5 +1,5 @@
 import React from "react";
-import { Body } from "./styles.js";
+import { Body, Loading } from "./styles.js";
 import { CheckoutController, CheckoutSection } from "containers";
 import { Bottom, Container } from "pages/Launch/styled";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,8 @@ import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx
 import { setLaunchPaid } from "redux/Slices";
 import { useGetSingleServiceQuery } from "services/staffService.js";
 import { useAddComplyPaymentMutation } from "services/complyService.js";
-import Payment from "../../../containers/Payment/index.jsx";
+import Payment from "containers/Payment/index.jsx";
+import { Puff } from "react-loading-icons";
 
 const ServicePayment = () => {
   const navigate = useNavigate();
@@ -62,13 +63,14 @@ const ServicePayment = () => {
         paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
       },
     };
-    store.dispatch(setLaunchPaid(requiredData));
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
+    store.dispatch(setLaunchPaid(requiredData));
     const payResponse = await addServicePayment(requiredData);
 
     navigate("/services/form");
   };
 
+  // Passed to the payment component
   let paymentInfo = {
     sendFlutterwaveRefToBackend: sendFlutterwaveRefToBackend,
     sendStripeRefToBackend: sendStripeRefToBackend,
@@ -91,7 +93,14 @@ const ServicePayment = () => {
           title="Payment Method"
           // HeaderParagraph="Please select a payment method to continue with."
         />
-        <Payment paymentInfo={paymentInfo} />
+        {viewService.isLoading ? (
+          <Loading>
+            <Puff stroke="#00A2D4" fill="white" />
+          </Loading>
+        ) : (
+          <Payment paymentInfo={paymentInfo} />
+        )}
+
         <Bottom>
           <CheckoutController
             backText={"Previous"}
