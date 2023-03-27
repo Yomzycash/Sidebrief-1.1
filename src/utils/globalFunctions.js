@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse,  } from "redux/Slices";
+import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -76,6 +76,10 @@ export const staffNavigateToDetailPage = (navigate, launchInfo) => {
   navigate(
     `/staff-dashboard/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
   );
+};
+
+export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
+  navigate(`/staff-dashboard/businesses/services/${complycode}/details/information`);
 };
 
 export const getCurrencyInfo = (currency) => {

@@ -262,11 +262,10 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-               <Route path="services/details" element={<ServicesDetailLayout />}>
+              <Route path="services/details" element={<ServicesDetailLayout />}>
                 <Route path="ServiceInformation" element={<ServiceInformation />} />
                 <Route path="FormInformation" element={<FormInformation />} />
                 <Route path="DocumentInfo" element={<DocumentInfoDetails />} />
-                
               </Route>
 
               <Route index element={<BusinessRegistration />} />
@@ -296,7 +295,7 @@ const AppRouter = () => {
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
-              
+
               <Route path="compliance" element={<Compliance />}></Route>
               <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
               <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
@@ -358,6 +357,11 @@ const AppRouter = () => {
                   <Route index element={<Services />} />
                   <Route path="all" element={<AllServices />} />
                   <Route path="chats" element={<ChatLayout />} />
+                  <Route path=":complycode/details" element={<ServicesDetailLayout />}>
+                    <Route path="information" element={<ServiceInformation />} />
+                    <Route path="forminfo" element={<FormInformation />} />
+                    <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                  </Route>
                 </Route>
               </Route>
               <Route path="business" element={<StaffBusinessDetailLayout />}>
