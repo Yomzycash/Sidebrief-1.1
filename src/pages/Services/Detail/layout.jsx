@@ -3,7 +3,7 @@ import { Body, Container } from "./styles";
 import { useEffect, useState } from "react";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { useCallback } from "react";
-import { format } from "date-fns";
+import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useLazyViewComplyQuery } from "services/complyService";
 
@@ -18,8 +18,7 @@ const ServicesDetailLayout = () => {
       complyCode: complyCode,
     };
     const response = await viewComply(requiredData);
- if(response)
-    setComplyResponse(response);
+    if (response) setComplyResponse(response);
   };
 
   let serviceId = complyResponse?.data?.serviceId;
@@ -52,8 +51,6 @@ const ServicesDetailLayout = () => {
     }
   };
 
-
-
   return (
     <Container>
       <ServiceDetailHeader
@@ -63,7 +60,7 @@ const ServicesDetailLayout = () => {
         date={
           viewComplyState?.isLoading
             ? `--`
-            : format(new Date( "2023-03-13T10:52:36.152Z"), "do MMMM yyyy")
+            : format(parseJSON("2023-03-13T10:52:36.152Z"), "dd MMMM yyyy")
         }
       />
       <Body>
