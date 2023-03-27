@@ -147,3 +147,12 @@ export const BodyText = styled.p`
 
   // background-color: blueviolet;
 `;
+
+export const Clickable = styled.button`
+  height: 56px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+`;
