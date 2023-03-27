@@ -1,21 +1,18 @@
 import React from "react";
-import { Body, Loading } from "./styles.js";
-import { CheckoutController, CheckoutSection, PaymentForm, PaymentSelector } from "containers";
-import { Bottom, Container, Header } from "pages/Launch/styled";
-import { usePaymentReducer } from "./reducer";
+import { Body } from "./styles.js";
+import { CheckoutController, CheckoutSection } from "containers";
+import { Bottom, Container } from "pages/Launch/styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
 import { setLaunchPaid } from "redux/Slices";
-import { Puff } from "react-loading-icons";
 import { useGetSingleServiceQuery } from "services/staffService.js";
 import { useAddComplyPaymentMutation } from "services/complyService.js";
+import Payment from "../../../containers/Payment/index.jsx";
 
 const ServicePayment = () => {
-  // const serviceData = JSON.parse(localStorage.getItem("serviceData"));
-  // const complyData = JSON.parse(localStorage.getItem("complyInfo"));
   const navigate = useNavigate();
 
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
@@ -30,19 +27,17 @@ const ServicePayment = () => {
     navigate("/services/form");
   };
 
-  const { activateProvider, getActive, providers } = usePaymentReducer();
-
   const handlePrev = () => {
     navigate(-1);
   };
 
   // Send the payment reference information to the backend
-  const sendServiceRefToBackend = async (reference) => {
+  const sendFlutterwaveRefToBackend = async (reference) => {
     const requiredData = {
       complyCode: complyInfo.complyCode,
       complyPayment: {
-        paymentAmount: serviceData?.servicePrice,
-        paymentCurrency: serviceData?.serviceCurrency,
+        paymentAmount: reference.amount,
+        paymentCurrency: reference.currency,
         paymentTransactionId: reference.transaction_id,
         paymentProvider: "Flutterwave",
         paymentStatus: reference.status,
@@ -55,8 +50,28 @@ const ServicePayment = () => {
     navigate("/services/form");
   };
 
+  // Stripe required data to be sent to the backend a successful payment
+  const sendStripeRefToBackend = async (paymentIntent) => {
+    const requiredData = {
+      complyCode: complyInfo.complyCode,
+      paymentDetails: {
+        paymentAmount: paymentIntent.amount,
+        paymentCurrency: paymentIntent.currency,
+        paymentTransactionId: paymentIntent.id,
+        paymentProvider: "Stripe",
+        paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
+      },
+    };
+    store.dispatch(setLaunchPaid(requiredData));
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
+    const payResponse = await addServicePayment(requiredData);
+
+    navigate("/services/form");
+  };
+
   let paymentInfo = {
-    sendRefsToBackend: sendServiceRefToBackend,
+    sendFlutterwaveRefToBackend: sendFlutterwaveRefToBackend,
+    sendStripeRefToBackend: sendStripeRefToBackend,
     amount: serviceData?.servicePrice,
     currency: serviceData?.serviceCurrency,
     title: serviceData?.serviceName,
@@ -69,34 +84,14 @@ const ServicePayment = () => {
   }, []);
   return (
     <Container>
-      <Header>
-        <ServicesCheckoutHeader />
-      </Header>
+      <ServicesCheckoutHeader />
 
       <Body>
         <CheckoutSection
           title="Payment Method"
           // HeaderParagraph="Please select a payment method to continue with."
         />
-        <PaymentSelector providers={providers} activate={activateProvider} />
-        {/* <button onClick={() => console.log(getActive().name)}>
-					Get active
-				</button> */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "40px",
-          }}
-        >
-          {viewService.isLoading ? (
-            <Loading>
-              <Puff stroke="#00A2D4" />
-            </Loading>
-          ) : (
-            <PaymentForm paymentProvider={getActive()} paymentInfo={paymentInfo} />
-          )}
-        </div>
+        <Payment paymentInfo={paymentInfo} />
         <Bottom>
           <CheckoutController
             backText={"Previous"}
@@ -107,7 +102,6 @@ const ServicePayment = () => {
           />
         </Bottom>
       </Body>
-      {/* <AppFeedback subProject="Payment page" /> */}
     </Container>
   );
 };

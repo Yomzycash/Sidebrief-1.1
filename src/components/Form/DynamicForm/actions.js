@@ -18,7 +18,7 @@ export const getSchema = (array) => {
       else if (el?.fieldType === "checkbox")
         schema[el?.fieldName] = yup
           .array()
-          .of(yup.string())
+          .of(yup.string().required("A checked option should not be empty"))
           .min(1, "Select at least one option")
           .required("Select at least one option");
       else if (el?.fieldType === "radio")

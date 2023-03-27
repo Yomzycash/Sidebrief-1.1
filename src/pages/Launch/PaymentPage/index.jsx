@@ -2,7 +2,7 @@ import React, { useReducer, useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import { Body } from "./styles.js";
-import { CheckoutController, CheckoutSection, PaymentForm, PaymentSelector } from "containers";
+import { CheckoutController, CheckoutSection } from "containers";
 import { Bottom, Container, Header } from "../styled";
 import { providerReducer, actions } from "./reducer";
 import { paymentProviders } from "./constants";
@@ -99,7 +99,7 @@ const PaymentPage = () => {
           title="Payment Method"
           // HeaderParagraph="Please select a payment method to continue with."
         />
-        <PaymentSelector providers={providers} activate={activateProvider} />
+        {/* <PaymentSelector providers={providers} activate={activateProvider} /> */}
         {/* <button onClick={() => console.log(getActive().name)}>
 					Get active
 				</button> */}
@@ -110,7 +110,7 @@ const PaymentPage = () => {
             paddingTop: "40px",
           }}
         >
-          <PaymentForm
+          {/* <PaymentForm
             currency={entityInfo.entityCurrency || "--"}
             amount={entityInfo.entityFee}
             USDprice={845}
@@ -118,7 +118,7 @@ const PaymentPage = () => {
             onPaymentComplete={sendRefToBackend}
             title={"Business registration"}
             description={`Payment for business registration in ${selectedEntity.entityCountry}`}
-          />
+          /> */}
         </div>
         <Bottom>
           <CheckoutController

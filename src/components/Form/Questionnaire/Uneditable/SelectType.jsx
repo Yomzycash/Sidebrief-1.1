@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ErrMsg,
   QuestionOptions,
@@ -10,23 +10,36 @@ import {
 import Option from "./Option";
 
 const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSelect, error }) => {
-  const [checkList, setCheckList] = useState([]);
+  const [checkList, setCheckList] = useState(info?.fieldAnswer || []);
 
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
-  const onRadioChange = (e, text) => {
-    handleRadioSelect(text, info?.fieldName);
+  //
+  const onRadioChange = (text, otherText) => {
+    let isOther = text.toLowerCase() === "other";
+    let otherValue = text + (otherText ? `(${otherText})` : "");
+
+    handleRadioSelect(isOther ? otherValue : text, info?.fieldName);
   };
 
-  const onCheckboxChange = (e, text) => {
-    let checked = e.target.checked;
+  //
+  const onCheckboxChange = (checked, text, otherText) => {
+    let isOther = text.toLowerCase() === "other";
+    let otherValue = text + (otherText ? `(${otherText})` : "");
+    let optionsMinusOther = [...checkList.filter((el) => !el.includes(`${text}(`) && el !== text)];
 
     if (checked) {
-      let list = [...checkList, text];
+      let list;
+      if (isOther) {
+        list = [...optionsMinusOther, otherValue];
+      } else {
+        list = [...checkList, text];
+      }
       setCheckList(list);
       handleCheckboxSelect(list, info?.fieldName);
     } else {
-      let list = checkList.filter((el) => el !== text);
+      let list = checkList.filter((el) => (isOther ? !el.includes(`${text}(`) : el));
+      list = list.filter((el) => el !== text);
       setCheckList(list);
       handleCheckboxSelect(list, info?.fieldName);
     }
@@ -49,11 +62,11 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
           {info?.fieldOptions?.map((text, index) => (
             <Option
               key={index}
-              index={index}
               type="checkbox"
               text={text}
+              info={info}
               name={info?.fieldName}
-              onChange={(e) => onCheckboxChange(e, text)}
+              onChange={(checked, otherText) => onCheckboxChange(checked, text, otherText)}
             />
           ))}
         </QuestionOptions>
@@ -64,11 +77,11 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
           {info?.fieldOptions?.map((text, index) => (
             <Option
               key={index}
-              index={index}
               type="radio"
               text={text}
+              info={info}
               name={info?.fieldName}
-              onChange={(e) => onRadioChange(e, text)}
+              onChange={(checked, otherText) => onRadioChange(text, otherText)}
             />
           ))}
         </QuestionOptions>

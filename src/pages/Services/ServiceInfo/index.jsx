@@ -8,26 +8,34 @@ import { useNavigate } from "react-router-dom";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { InfoContainer } from "containers/Services";
 import { useCreateComplyMutation, useUpdateComplyMutation } from "services/complyService";
-import { useGetAllCountriesQuery, useLazyGetServicesByCountryQuery } from "services/staffService";
-import { toast } from "react-hot-toast";
-import { handleError } from "utils/globalFunctions";
+import { useGetAllCountriesQuery, useGetServicesByCountryQuery } from "services/staffService";
+import { useActions } from "./actions";
 
 const ServiceInfo = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState({});
+  const [countryISO, setcountryISO] = useState("");
 
   const countries = useGetAllCountriesQuery();
-  const [servicesByCountry, servicesState] = useLazyGetServicesByCountryQuery(selectedCountry);
+  const services = useGetServicesByCountryQuery(countryISO);
   const [createComply, createState] = useCreateComplyMutation();
   const [updateComply, updateState] = useUpdateComplyMutation();
 
   let navigate = useNavigate();
 
   let countriesArray = countries?.data?.map((el) => el?.countryName) || [];
-  let servicesArray = services?.map((el) => el?.serviceName) || [];
+  let servicesArray = services.data?.map((el) => el?.serviceName) || [];
 
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+
+  const { handleSubmit } = useActions({
+    selectedCountry,
+    selectedService,
+    complyInfo,
+    createComply,
+    updateComply,
+    navigate,
+  });
 
   //   When country is selected
   const handleCountrySelect = useCallback(
@@ -37,72 +45,44 @@ const ServiceInfo = () => {
     [selectedCountry]
   );
 
-  // When resource is selected
+  // When a service is selected
   const handleServiceSelect = (valueSelected) => {
-    let serviceData = services?.find((el) => el?.serviceName === valueSelected) || {};
-    console.log(services);
+    let serviceData = services.data?.find((el) => el?.serviceName === valueSelected) || {};
     setSelectedService(serviceData);
   };
 
   const handleServices = async () => {
     const countryISO =
       countries.data?.find((el) => el.countryName === selectedCountry)?.countryISO || "";
-    const response = countryISO && (await servicesByCountry(countryISO));
-    console.log(countries.data, selectedCountry);
-    setServices(response.data);
+    setcountryISO(countryISO);
   };
+
+  //
 
   // Fetches services when country is selected
   useEffect(() => {
     handleServices();
   }, [selectedCountry]);
 
-  // Submits form
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!selectedCountry) {
-      toast.error("Select service country");
-      return;
-    } else if (!selectedService?.serviceId) {
-      toast.error("Select service");
-      return;
-    }
+  //
 
-    let payload = { serviceId: selectedService.serviceId };
-    let response = complyInfo?.complyCode
-      ? await updateComply(payload)
-      : await createComply(payload);
-    let data = response?.data;
-    let error = response?.error;
+  // Populates country information, if available
+  useEffect(() => {
+    let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+    let serviceCountry = complyInfo?.serviceCountry;
 
-    if (data) {
-      let info = {
-        ...data,
-        serviceCountry: selectedCountry,
-        serviceName: selectedService?.serviceName,
-      };
-      localStorage.setItem("complyInfo", JSON.stringify(info));
-      const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
+    setSelectedCountry(serviceCountry);
+    handleServices();
+  }, [countries]);
 
-      if (paymentDetails?.paymentStatus === "successful") {
-        navigate("/services/form");
-      } else {
-        navigate("/services/payment");
-      }
-    } else handleError(error);
-  };
+  //
 
   // Populates service information, if available
   useEffect(() => {
     let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
-    let serviceCountry = complyInfo?.serviceCountry;
     let serviceName = complyInfo?.serviceName;
-
-    if (serviceCountry && serviceName) {
-      setSelectedCountry(serviceCountry);
-      handleServiceSelect(serviceName);
-    }
-  }, [services, countries.data]);
+    handleServiceSelect(serviceName);
+  }, [services.data]);
 
   return (
     <Container>
@@ -132,7 +112,7 @@ const ServiceInfo = () => {
               initialValue={selectedService?.serviceName || "--"}
               MatchError="Please select resource from the list"
               EmptyError="Please select at least one service"
-              suggestionLoading={servicesState.isLoading || servicesState.isFetching}
+              suggestionLoading={services.isLoading || services.isFetching}
               fetchingText={"Fetching services..."}
             />
           </LaunchFormContainer>
@@ -147,9 +127,7 @@ const ServiceInfo = () => {
               forwardText={"Next"}
               forwardSubmit
               hidePrev
-              // forwardAction={handleNext}
-              // forwardDisable={!selectedService?.serviceName}
-              forwardLoading={createState.isLoading}
+              forwardLoading={createState.isLoading || updateState.isLoading}
             />
           </Bottom>
         </LaunchPrimaryContainer>
