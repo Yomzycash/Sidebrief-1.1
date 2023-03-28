@@ -360,6 +360,11 @@ const AppRouter = () => {
                   <Route index element={<Services />} />
                   <Route path="all" element={<AllServices />} />
                   <Route path="chats" element={<ChatLayout />} />
+                  <Route path=":complycode/details" element={<ServicesDetailLayout />}>
+                    <Route path="information" element={<ServiceInformation />} />
+                    <Route path="forminfo" element={<FormInformation />} />
+                    <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                  </Route>
                 </Route>
               </Route>
               <Route path="business" element={<StaffBusinessDetailLayout />}>

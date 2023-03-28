@@ -1,6 +1,4 @@
-import QuestionCard from "components/cards/QuestionCard";
 import FormContainer from "containers/FormContainer";
-
 import React, { useEffect, useState, useCallback } from "react";
 import { Wrapper, Loading } from "./style";
 import { useNavigate } from "react-router-dom";
