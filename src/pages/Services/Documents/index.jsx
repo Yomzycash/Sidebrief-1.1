@@ -39,7 +39,7 @@ const ServiceDocuments = () => {
     navigate("/services/review/info");
   };
 
-  let complyCode = complyInfo.complyCode;
+  let complyCode = complyInfo?.complyCode;
   // let complyCode = "335928451015517734"; // to be changed to the one stored in the localstorage
 
   const handleChange = async (file, fileName) => {

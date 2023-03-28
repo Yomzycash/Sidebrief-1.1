@@ -29,6 +29,7 @@ const Option = ({ text, type, info, onChange, fieldAnswer, otherFieldAnswer, nor
 
   // Populates answers on mount, if available.
   useEffect(() => {
+    console.log("ran this");
     let element = document.getElementById(unique);
     let answer = fieldAnswer;
 
@@ -41,7 +42,7 @@ const Option = ({ text, type, info, onChange, fieldAnswer, otherFieldAnswer, nor
     }
 
     if (otherFieldAnswer) setOpenOther(true);
-  }, [fieldAnswer]);
+  }, [info?.fieldAnswer]);
 
   return (
     <UneditableOption>

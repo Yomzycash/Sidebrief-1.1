@@ -27,6 +27,7 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
 
   // Appends/Removes the text of the selected answer to/from the answers list array.
   const onCheckboxChange = (checked, text) => {
+    console.log(checked, text);
     if (checked) {
       let list = checkList;
       if (checkIfOther(text)) {
