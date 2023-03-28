@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
@@ -10,7 +10,6 @@ import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staff
 import FeatureSection from "containers/Feature/FeatureSection";
 import FeatureTable from "components/Tables/FeatureTable";
 import { toast } from "react-hot-toast";
-// import lookup from "country-code-lookup"
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
 import { useGetAllNotificationsQuery } from "services/chatService";
@@ -24,7 +23,7 @@ import {
   SearchWrapper,
   TopContent,
 } from "./styled";
-import ServicesModal from "components/modal/ServicesModal";
+import StaffServicesModal from "components/modal/StaffServicesModal";
 import { handleError } from "utils/globalFunctions";
 import { useActions } from "./actions";
 
@@ -35,8 +34,6 @@ const iconStyle = { width: "17px", height: "17px" };
 //
 
 const ServicePage = () => {
-  // const [open, setOpen] = useState(false);
-  // const [cardAction, setCardAction] = useState("");
   const [clickedService, setClickedService] = useState({});
   const { data, isLoading, refetch } = useGetAllServicesQuery();
   const notifications = useGetAllNotificationsQuery();
@@ -53,13 +50,6 @@ const ServicePage = () => {
   const handleAddButton = () => {
     setOpen("add");
   };
-
-  const servicesNotifications = data?.filter((service) => {
-    let serviceNots = notifications.data?.filter((not) => not?.serviceId === service?.serviceId);
-    return serviceNots?.length > 0;
-  });
-
-  let lastNotification = servicesNotifications?.map((nots) => nots[nots?.length - 1]);
 
   // Table header information
   const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
@@ -171,7 +161,7 @@ const ServicePage = () => {
       >
         <FeatureTable header={header} body={dataBody} />
 
-        <ServicesModal
+        <StaffServicesModal
           disableAll={dialog.mode === "edit" ? true : false}
           clickedService={clickedService}
           deleteState={deleteState}

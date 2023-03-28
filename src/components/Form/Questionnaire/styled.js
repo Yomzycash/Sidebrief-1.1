@@ -185,33 +185,6 @@ export const OptionText = styled.input`
   }
 `;
 
-export const OtherSelect = styled.div`
-  position: absolute;
-  left: 24px;
-  top: 25px;
-
-  display: flex;
-  flex-flow: column;
-
-  font-size: 12px;
-  padding: 10px 15px 10px 5px;
-  border-radius: 5px;
-  border: 1px solid #cccccc44;
-  background-color: #fff;
-  box-shadow: 0 5px 5px 5px #cccccc22;
-  z-index: 1;
-`;
-
-export const OtherOption = styled.div`
-  cursor: pointer;
-  z-index: 4;
-  padding: 4px;
-
-  :hover {
-    background-color: #cccccc22;
-  }
-`;
-
 //
 
 //

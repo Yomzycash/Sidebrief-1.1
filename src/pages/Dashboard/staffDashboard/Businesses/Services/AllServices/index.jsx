@@ -1,29 +1,21 @@
 import StaffRewardHeader from "components/Header/StaffRewardHeader";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Puff } from "react-loading-icons";
 import { BodyRight, Loading, ServiceContainer } from "./style";
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
-import {
-  useAddServiceMutation,
-  useUpdateServiceMutation,
-  useDeleteServiceMutation,
-  useGetAllServicesQuery,
-} from "services/staffService";
-import Paginator from "components/Paginator";
-import { store } from "redux/Store";
+import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
 import { setRefreshApp } from "redux/Slices";
-import ServicesModal from "components/modal/ServicesModal";
+import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
-import { useSearchParams } from "react-router-dom";
 
 const AllServices = () => {
   const [clickedService, setClickedService] = useState({});
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
-  const { data, isLoading, isError, error, refetch } = useGetAllServicesQuery();
+  const { data, isLoading, refetch } = useGetAllServicesQuery();
   const [deleteService, deleteState] = useDeleteServiceMutation();
 
   const { refreshApp } = useSelector((store) => store.UserDataReducer);
@@ -93,7 +85,7 @@ const AllServices = () => {
           ))}
         </ServiceContainer>
       )}
-      <ServicesModal
+      <StaffServicesModal
         disableAll={dialog.mode === "edit" ? true : false}
         clickedService={clickedService}
         deleteState={deleteState}
@@ -110,21 +102,3 @@ const AllServices = () => {
 };
 
 export default AllServices;
-
-// const [currentItems, setCurrentItems] = useState([]);
-// const [pageCount, setPageCount] = useState(0);
-// const [itemOffset, setItemOffset] = useState(0);
-
-// const itemsPerPage = 12;
-
-// useEffect(() => {
-//   const endOffset = itemOffset + itemsPerPage;
-//   setCurrentItems(allServices?.slice(itemOffset, endOffset));
-//   setPageCount(Math.ceil(allServices?.length / itemsPerPage));
-//   store.dispatch(setRefreshApp(!refreshApp));
-// }, [itemOffset, itemsPerPage, allServices]);
-
-// const handlePageClick = (e) => {
-//   const newOffset = (e.selected * itemsPerPage) % data?.length;
-//   setItemOffset(newOffset);
-// };
