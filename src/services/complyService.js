@@ -11,7 +11,7 @@ export const ComplyApi = createApi({
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
-
+      console.log("token", token )
       return headers;
     },
   }),
@@ -64,6 +64,11 @@ export const ComplyApi = createApi({
       }),
     }),
 
+    // service 
+    getAllServices: builder.query({
+      query: () => "/services/all",
+    }),
+
     viewAllComply: builder.query({
       query: (data) => ({
         url: "/comply/view/all",
@@ -86,7 +91,7 @@ export const ComplyApi = createApi({
       }),
     }),
 
-    viewAllComplyByMeta: builder.mutation({
+    viewAllComplyByMeta: builder.query({
       query: (data) => ({
         url: "/comply/view/all/meta",
         method: "POST",
@@ -182,10 +187,11 @@ export const {
   useViewComplyQuery,
   useLazyViewComplyQuery,
   useDeleteComplyMutation,
+  useGetAllServicesQuery,
 
   useViewAllComplyQuery,
   useViewAllComplyByServiceIdMutation,
-  useViewAllComplyByMetaMutation,
+  useViewAllComplyByMetaQuery,
   useDeleteManyCompliesMutation,
   useViewServiceQuery,
 
