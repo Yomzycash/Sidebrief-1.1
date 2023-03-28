@@ -23,3 +23,10 @@ export const formInputsStyle = {
   gridTemplateColumns: "auto auto",
   gap: "16px",
 };
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;

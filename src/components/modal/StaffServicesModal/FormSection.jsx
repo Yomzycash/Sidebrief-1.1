@@ -83,7 +83,7 @@ const FormSection = ({ service, setOpen, serviceId, mode, refetchServices }) => 
           handleQuestionSubmit={handleQuestionSubmit}
           handleUpdateQuestion={handleUpdateQuestion}
           review={false}
-          lastQuestion={data?.serviceForm?.length + 1}
+          lastQuestion={(data?.serviceForm?.length || 0) + 1}
           addState={addState}
         />
       </SectionInfoContainer>

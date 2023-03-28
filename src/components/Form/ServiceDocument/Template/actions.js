@@ -71,6 +71,8 @@ export const useActions = ({
     } else {
       handleError(response?.error);
     }
+    dispatch({ type: "setAddClicked", payload: false });
+    dispatch({ type: "setUpdateClicked", payload: false });
   };
 
   return {

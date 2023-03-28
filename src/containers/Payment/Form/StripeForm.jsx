@@ -1,26 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-import "./stripe.css";
-
-//
-
-import {
-  PaymentElement,
-  LinkAuthenticationElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import React, { useState } from "react";
+import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { ButtonHolder, SPaymentButton } from "./styles";
 import { toast } from "react-hot-toast";
 import { Oval } from "react-loading-icons";
-import {
-  useGetSingleEntityQuery,
-  usePayLaunchMutation,
-} from "services/launchService";
-import { store } from "redux/Store";
-import { setLaunchPaid } from "redux/Slices";
-import { useNavigate } from "react-router-dom";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -28,13 +10,7 @@ import { useNavigate } from "react-router-dom";
 // Don’t submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
 
-export default function StripeForm() {
-  const [payLaunch] = usePayLaunchMutation();
-
-  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-
-  const navigate = useNavigate();
-
+export default function StripeForm({ sendStripeRefToBackend }) {
   const stripe = useStripe();
   const elements = useElements("card");
   const [message, setMessage] = useState(null);
@@ -65,8 +41,7 @@ export default function StripeForm() {
         if (result?.error) {
           toast.error(result.error?.message);
           setIsLoading(false);
-        } else if (result?.paymentIntent)
-          sendRefToBackend(result?.paymentIntent);
+        } else if (result?.paymentIntent) sendRefToBackend(result?.paymentIntent);
       });
 
     // This point will only be reached if there is an immediate error when
@@ -88,42 +63,16 @@ export default function StripeForm() {
   };
 
   const sendRefToBackend = async (paymentIntent) => {
-    const requiredData = {
-      launchCode: launchInfo.launchCode,
-      paymentDetails: {
-        paymentAmount: paymentIntent.amount,
-        paymentCurrency: paymentIntent.currency,
-        paymentTransactionId: paymentIntent.id,
-        paymentProvider: "Stripe",
-        paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
-      },
-    };
-
-    store.dispatch(setLaunchPaid(requiredData));
-    localStorage.setItem(
-      "paymentDetails",
-      JSON.stringify(requiredData.paymentDetails)
-    );
-
-    const payResponse = await payLaunch(requiredData);
+    await sendStripeRefToBackend(paymentIntent);
     setIsLoading(false);
     setSuccess(true);
     toast.success("Payment successful");
-    console.log("payResponse", payResponse);
-    navigate("/launch/address");
   };
 
   return (
     <div className="stripe-payment">
       <form id="payment-form" onSubmit={handleSubmit}>
-        {/* <LinkAuthenticationElement
-              id="link-authentication-element"
-              onChange={(e) => setEmail(e.target.value)}
-            /> */}
-        <PaymentElement
-        // id="payment-element"
-        // options={paymentElementOptions}
-        />
+        <PaymentElement />
         <ButtonHolder>
           <SPaymentButton
             bg_color="#00A2D4"
@@ -149,15 +98,3 @@ export default function StripeForm() {
     </div>
   );
 }
-
-//
-
-//
-
-//
-
-//
-
-//
-// Make sure to change this to your payment completion page
-// return_url: `${window.location.origin}/launch/payment-confirmation`,

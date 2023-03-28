@@ -88,7 +88,7 @@ const DocsSection = ({ setOpen, service, serviceId, refetchServices, mode }) => 
     toast.success("Successfully created service");
   };
 
-  let serviceDocInfo = useMemo(
+  let serviceDocTemplateInfo = useMemo(
     () =>
       data?.serviceRequirements?.map((el) => {
         let templateInfo = data?.serviceTemplates?.find(
@@ -130,7 +130,7 @@ const DocsSection = ({ setOpen, service, serviceId, refetchServices, mode }) => 
                   handleDocumentSubmit={handleDocumentSubmit}
                   handleUpdateDocument={handleUpdateDocument}
                   review={false}
-                  lastDocument={data?.serviceRequirements?.length + 1}
+                  lastDocument={(data?.serviceRequirements?.length || 0) + 1}
                   addState={addDocumentState}
                 />
               </SectionInfoContainer>
@@ -140,7 +140,7 @@ const DocsSection = ({ setOpen, service, serviceId, refetchServices, mode }) => 
             label: "Template Document",
             content: (
               <SectionInfoContainer>
-                {serviceDocInfo?.map((el, index) => (
+                {serviceDocTemplateInfo?.map((el, index) => (
                   <ServiceDocumentTemplate
                     key={index}
                     index={index}
@@ -168,7 +168,6 @@ const DocsSection = ({ setOpen, service, serviceId, refetchServices, mode }) => 
         backBottonStyle={buttonStyles}
         forwardButtonStyle={buttonStyles}
         forwardText="Done"
-        // forwardDisable={disable}
         $modal
       />
     </SectionContainer>

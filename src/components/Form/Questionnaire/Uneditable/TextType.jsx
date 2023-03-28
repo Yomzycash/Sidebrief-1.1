@@ -11,7 +11,7 @@ import {
 } from "../styled";
 import Option from "./Option";
 
-const TextType = ({ questionNumber, info, handleChange, error }) => {
+const TextType = ({ questionNumber, info, handleChange, error, register }) => {
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
   const onChange = (e) => {
@@ -34,7 +34,13 @@ const TextType = ({ questionNumber, info, handleChange, error }) => {
       </ReviewQuestion>
 
       {info?.fieldType === "input" && (
-        <AnswerInput id={info?.fieldName} type="text" onChange={onChange} error={error?.message} />
+        <AnswerInput
+          id={info?.fieldName}
+          type="text"
+          onChange={onChange}
+          error={error?.message}
+          {...register(info?.fieldName)}
+        />
       )}
 
       {info?.fieldType === "number" && (
@@ -43,11 +49,17 @@ const TextType = ({ questionNumber, info, handleChange, error }) => {
           type="number"
           onChange={onChange}
           error={error?.message}
+          {...register(info?.fieldName)}
         />
       )}
 
       {info?.fieldType === "textarea" && (
-        <AnswerTextArea id={info?.fieldName} onChange={onChange} error={error?.message} />
+        <AnswerTextArea
+          id={info?.fieldName}
+          onChange={onChange}
+          error={error?.message}
+          {...register(info?.fieldName)}
+        />
       )}
     </ReviewContainer>
   );

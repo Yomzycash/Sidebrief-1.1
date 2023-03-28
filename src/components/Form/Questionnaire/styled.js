@@ -50,6 +50,12 @@ export const QuestionType = styled.div`
   }
 `;
 
+export const OptionsWrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+`;
+
 export const QuestionOptions = styled.div`
   display: flex;
   flex-flow: column;
@@ -89,7 +95,7 @@ export const SubmitButtons = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  max-width: 400px;
+  max-width: 350px;
 
   button {
     font-weight: 500;
@@ -107,7 +113,8 @@ export const SubmitButtons = styled.div`
     width: 132px;
   }
 
-  #addnew-submit {
+  #addnew-submit,
+  #cancel-submit {
     background-color: transparent;
     padding: 0;
   }
@@ -175,33 +182,6 @@ export const OptionText = styled.input`
 
   :disabled {
     background-color: #fff;
-  }
-`;
-
-export const OtherSelect = styled.div`
-  position: absolute;
-  left: 24px;
-  top: 25px;
-
-  display: flex;
-  flex-flow: column;
-
-  font-size: 12px;
-  padding: 10px 15px 10px 5px;
-  border-radius: 5px;
-  border: 1px solid #cccccc44;
-  background-color: #fff;
-  box-shadow: 0 5px 5px 5px #cccccc22;
-  z-index: 1;
-`;
-
-export const OtherOption = styled.div`
-  cursor: pointer;
-  z-index: 4;
-  padding: 4px;
-
-  :hover {
-    background-color: #cccccc22;
   }
 `;
 
@@ -325,13 +305,64 @@ export const ReviewQuestion = styled.label`
 export const UneditableOption = styled.div`
   display: flex;
   align-items: center;
+  animation: other 0.3s ease;
+
+  @keyframes other {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 
   label {
     padding-left: 8px;
   }
-  label,
-  input {
+  > label,
+  > input {
     cursor: pointer;
+  }
+`;
+
+export const UneditableOther = styled.div`
+  display: flex;
+  gap: 8px;
+  padding-left: 8px;
+
+  > input {
+    border: none;
+    padding-block: 2.7px;
+    transition: 0.3s ease all;
+    font-size: 14px;
+    text-transform: capitalize;
+    letter-spacing: 0.4px;
+    color: #242627;
+
+    :focus {
+      box-shadow: 0 1px 1px #cccccc;
+    }
+    ::placeholder {
+      opacity: 0.6;
+    }
+  }
+
+  svg {
+    transition: 0.3s ease all;
+    animation: check 0.3s ease;
+
+    :hover {
+      color: green;
+    }
+
+    @keyframes check {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
   }
 `;
 

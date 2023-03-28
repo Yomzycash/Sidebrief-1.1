@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const Wrapper = styled.div`
   width: 100%;
   height: max-content;
@@ -30,7 +29,7 @@ export const TextWrapper = styled.h3`
   color: #4e5152;
 `;
 
-export const EditDeleteWrapper = styled.div`
+export const EditDeleteButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
