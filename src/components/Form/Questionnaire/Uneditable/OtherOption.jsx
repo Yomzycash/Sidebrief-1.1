@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { BsCheckCircle } from "react-icons/bs";
 import { UneditableOther } from "../styled";
 
-const Other = ({ handleValue, otherAnswer }) => {
+const Other = ({ handleValue, otherAnswer, checkInputId }) => {
   const [inputValue, setInputValue] = useState(otherAnswer || "");
-  const [blurred, setBlurred] = useState(false);
+  const [blurred, setBlurred] = useState(true);
 
   const inputRef = useRef(null);
 
@@ -14,6 +14,7 @@ const Other = ({ handleValue, otherAnswer }) => {
   };
 
   const handleClick = (e) => {
+    document.getElementById(checkInputId).checked = true;
     setBlurred(false);
     if (inputValue.toLowerCase() === "other") setInputValue("");
   };

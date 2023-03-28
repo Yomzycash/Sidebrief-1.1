@@ -2,34 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { UneditableOption } from "../styled";
 import OtherOption from "./OtherOption";
 
-const Option = ({ text, type, info, onChange }) => {
+const Option = ({ text, type, info, onChange, fieldAnswer, otherFieldAnswer, normalize }) => {
   let fieldName = info?.fieldName;
-  let fieldAnswer = info?.fieldAnswer;
 
-  let otherAnswer =
-    fieldAnswer &&
-    (type === "radio"
-      ? fieldAnswer
-      : fieldAnswer?.find(
-          (el) => el?.toLowerCase()?.includes("other(") || el?.toLowerCase() === "other"
-        ));
-
-  const [openOther, setOpenOther] = useState(otherAnswer ? true : false);
-
-  let inputRef = useRef(null);
-  let inputChecked = inputRef.current?.checked;
+  const [openOther, setOpenOther] = useState(otherFieldAnswer ? true : false);
 
   let unique = fieldName?.split(" ")?.join("") + text;
-  let isOther = text?.toLowerCase() === "other";
-  let closeOther = type === "radio" && isOther && !inputChecked;
+  let isOther = normalize(text) === "other";
 
   //
   const handleChange = (e) => {
     let checked = e.target.checked;
-    onChange(checked);
 
     if (isOther) {
       setOpenOther(checked);
+      checked === false && onChange(checked);
+    } else {
+      onChange(checked);
     }
   };
 
@@ -42,15 +31,16 @@ const Option = ({ text, type, info, onChange }) => {
   useEffect(() => {
     let element = document.getElementById(unique);
     let answer = fieldAnswer;
-    let checkOther = (ans) =>
-      ans?.toLowerCase()?.includes("other") && text?.toLowerCase() === "other";
 
     if (type === "radio") {
-      element.checked = answer === text || checkOther(answer) ? true : false;
+      element.checked = answer === text || (otherFieldAnswer && isOther);
     } else {
+      element.checked = otherFieldAnswer && isOther ? true : false;
       answer &&
-        answer?.map((el) => (el === text || checkOther(el) ? (element.checked = true) : false));
+        answer?.map((el) => (normalize(el) === normalize(text) ? (element.checked = true) : false));
     }
+
+    if (otherFieldAnswer) setOpenOther(true);
   }, [fieldAnswer]);
 
   return (
@@ -58,13 +48,17 @@ const Option = ({ text, type, info, onChange }) => {
       <input
         type={type === "radio" ? "radio" : "checkbox"}
         id={unique}
-        ref={inputRef}
         onChange={handleChange}
         name={fieldName}
       />
 
-      {isOther && openOther && !closeOther ? (
-        <OtherOption handleValue={handleOtherValue} type={type} otherAnswer={otherAnswer} />
+      {isOther && openOther ? (
+        <OtherOption
+          handleValue={handleOtherValue}
+          type={type}
+          otherAnswer={otherFieldAnswer}
+          checkInputId={unique}
+        />
       ) : (
         <label htmlFor={unique}>{text}</label>
       )}

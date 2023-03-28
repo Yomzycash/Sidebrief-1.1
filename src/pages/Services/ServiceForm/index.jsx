@@ -27,6 +27,7 @@ const ServiceForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (formData) => {
+    console.log(formData);
     let payload = data?.serviceForm?.map((el) => ({
       complyCode: complyCode,
       complyData: {
@@ -34,10 +35,11 @@ const ServiceForm = () => {
         complyAnswer: formData[el.fieldName],
       },
     }));
-
     console.log(payload);
+
     let addArray = payload.map((el, i) => addComplyData(el));
     let responses = await Promise.all(addArray);
+    console.log(responses);
 
     let error = responses.find((el) => el?.error);
 
@@ -48,8 +50,6 @@ const ServiceForm = () => {
       toast.success("Questions submitted successfully");
       navigate("/services/documents");
     }
-
-    console.log(responses);
   };
   // const handleView = async () => {
   //   let payload = {
