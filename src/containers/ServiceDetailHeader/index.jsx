@@ -17,10 +17,10 @@ import {
   StatusType,
   MessageCount,
   ModalWrapper,
-		ModalButton, 
-		Question,
-		TopContent,
-		CloseWrapper
+  ModalButton,
+  Question,
+  TopContent,
+  CloseWrapper,
 } from "./styled";
 import { FiArrowLeft } from "react-icons/fi";
 import { StatusIndicator } from "components/Indicators";
@@ -28,7 +28,7 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 
 import { Dialog } from "@mui/material";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HiX } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
@@ -40,15 +40,7 @@ import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useDeleteComplyMutation } from "services/complyService";
 
-const ServiceDetailHeader = ({
-  serviceName,
-  date,
-  status,
-  code,
-  isStaff,
-  complyCode,
-
-}) => {
+const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode }) => {
   const [openModal, setOpenModal] = useState(false);
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 
@@ -77,27 +69,22 @@ const ServiceDetailHeader = ({
     };
   }, []);
   const handleClick = () => {
-		setOpenModal(true);
-	};
-
+    setOpenModal(true);
+  };
 
   const handleNo = () => {
-		setOpenModal(false);
+    setOpenModal(false);
   };
   const deleteAction = async () => {
-		// perform delete action here
-		
-			await deleteComply({
-        complyCode: complyCode
-      });
-		
+    // perform delete action here
 
-    navigate(
-      `/staff-dashboard/businesses/services`
-		
-		);
-		setOpenModal(false);
-	};
+    await deleteComply({
+      complyCode: complyCode,
+    });
+
+    navigate(`/staff-dashboard/businesses/services`);
+    setOpenModal(false);
+  };
 
   const navigateToMessages = () => {
     if (isStaff) {
@@ -110,7 +97,9 @@ const ServiceDetailHeader = ({
   return (
     <Container>
       <Top>
-        <BackContainer to={{}}>
+        <BackContainer
+          to={!isStaff ? "/dashboard/services" : "/staff-dashboard/businesses/services"}
+        >
           <FiArrowLeft color="#151717" size={24} />
           <Text>{`Back to Service list`}</Text>
         </BackContainer>
@@ -155,44 +144,43 @@ const ServiceDetailHeader = ({
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
+
+        {/* using both relative and absolute routing to reduce the length of the pathname  */}
+        
         <ActiveNav
           text={"Service Information"}
           // total={0}
-          path={isStaff ? 'information' : `/dashboard/services/${complyCode}/details/information`}
+          path={isStaff ? "information" : `/dashboard/services/${complyCode}/details/information`}
         />
         <ActiveNav
           text={"Form"}
-          path={isStaff ?'forminfo' : `/dashboard/services/${complyCode}/details/forminfo`}
+          path={isStaff ? "forminfo" : `/dashboard/services/${complyCode}/details/forminfo`}
         />
         <ActiveNav
           text={"Documents"}
-          path={isStaff ? 'documentinfo' :`/dashboard/services/${complyCode}/details/documentinfo`}
+          path={isStaff ? "documentinfo" : `/dashboard/services/${complyCode}/details/documentinfo`}
         />
       </SubHeader>
       <Dialog open={openModal} fullWidth maxWidth="sm">
-				<ModalWrapper>
-					<TopContent>
-						<CloseWrapper onClick={() => setOpenModal(false)}>
-							<HiX size={20} />
-						</CloseWrapper>
-					</TopContent>
+        <ModalWrapper>
+          <TopContent>
+            <CloseWrapper onClick={() => setOpenModal(false)}>
+              <HiX size={20} />
+            </CloseWrapper>
+          </TopContent>
 
-					<Question>
-						Do you want to Delete this Application ?
-					</Question>
-					<ModalButton>
-						<CheckoutController
-							backAction={handleNo}
-							backText={"No"}
-							forwardAction={deleteAction}
-							forwardText={"Yes"}
-							forwardLoading={
-								deleteState.isLoading 
-							}
-						/>
-					</ModalButton>
-				</ModalWrapper>
-			</Dialog>
+          <Question>Do you want to Delete this Application ?</Question>
+          <ModalButton>
+            <CheckoutController
+              backAction={handleNo}
+              backText={"No"}
+              forwardAction={deleteAction}
+              forwardText={"Yes"}
+              forwardLoading={deleteState.isLoading}
+            />
+          </ModalButton>
+        </ModalWrapper>
+      </Dialog>
     </Container>
   );
 };
