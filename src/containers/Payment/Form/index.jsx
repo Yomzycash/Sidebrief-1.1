@@ -1,19 +1,12 @@
-import { useState } from "react";
-import { Container, Price, Text, TextContainer, Paystack, Title } from "./styles";
+import { Container, Price, Text, TextContainer, Flutterwave, Title } from "./styles";
 import numeral from "numeral";
-import { useActions } from "./actions";
 import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import toast from "react-hot-toast";
 import StripePayment from "./stripePayment";
+import { getCurrencyInfo } from "utils/globalFunctions";
 
 export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
-  const [isUSD, setIsUSD] = useState(false);
-
-  const { symbol } = useActions({
-    isUSD,
-    setIsUSD,
-    currency: paymentInfo?.currency || "",
-  });
+  const symbol = getCurrencyInfo(paymentInfo?.currency)?.symbol;
 
   let userEmail = localStorage.getItem("userEmail");
   let userInfo = localStorage.getItem("userInfo");
@@ -27,7 +20,7 @@ export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
     tx_ref: Date.now(),
     amount: paymentInfo?.amount,
     currency: paymentInfo?.currency,
-    payment_options: "card, mobilemoney, ussd",
+    payment_options: "card, mobilsemoney, ussd",
     customer: {
       email: userEmail,
       phone_number: "070********",
@@ -45,7 +38,7 @@ export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
     text: "Pay with Flutterwave",
     callback: (response) => {
       if (response?.status === "successful") toast.success("Payment successful");
-      paymentInfo?.sendRefsToBackend(response);
+      paymentInfo?.sendFlutterwaveRefToBackend(response);
       closePaymentModal(); // this will close the modal programmatically
     },
     onClose: () => {
@@ -58,18 +51,21 @@ export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
       <Title>{paymentInfo?.title}</Title>
       <TextContainer>
         <Price>
-          {symbol ? symbol : "??"}
+          {symbol && symbol}
           {numeral(paymentInfo?.amount).format("0,0.00")}
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
-      {paymentProvider === "flutterwave" && (
-        <Paystack>
-          <FlutterWaveButton className="paystack-button" {...fwConfig} />
-        </Paystack>
+      {paymentProvider.toLowerCase() === "flutterwave" && (
+        <Flutterwave>
+          <FlutterWaveButton className="flutterwave-button" {...fwConfig} />
+        </Flutterwave>
       )}
-      {paymentProvider === "stripe" && paymentInfo?.currency === "USD" && (
-        <StripePayment amount={paymentInfo?.amount} />
+      {paymentProvider.toLowerCase() === "stripe" && (
+        <StripePayment
+          amount={paymentInfo?.amount}
+          sendStripeRefToBackend={paymentInfo.sendStripeRefToBackend}
+        />
       )}
     </Container>
   );

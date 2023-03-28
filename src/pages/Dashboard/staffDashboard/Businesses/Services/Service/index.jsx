@@ -7,7 +7,6 @@ import Search from "components/navbar/Search";
 import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
 import FeatureSection from "containers/Feature/FeatureSection";
 import { toast } from "react-hot-toast";
-// import lookup from "country-code-lookup"
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
 import {
@@ -20,7 +19,7 @@ import {
   SearchWrapper,
   TopContent,
 } from "./styled";
-import ServicesModal from "components/modal/ServicesModal";
+import StaffServicesModal from "components/modal/StaffServicesModal";
 import { handleError } from "utils/globalFunctions";
 import { GeneralTable } from "components/Tables";
 import { columns } from "./table";
@@ -29,8 +28,6 @@ import { useViewAllComplyQuery } from "services/complyService";
 const iconStyle = { width: "17px", height: "17px" };
 
 const ServicePage = () => {
-  // const [open, setOpen] = useState(false);
-  // const [cardAction, setCardAction] = useState("");
   const [clickedService, setClickedService] = useState({});
   const { data, isLoading, refetch } = useGetAllServicesQuery();
   const allComply = useViewAllComplyQuery();
@@ -46,11 +43,14 @@ const ServicePage = () => {
     setOpen("add");
   };
 
+  // Table header information
+  const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
+
   // const servicesNotifications = data?.filter((service) => {
   //   let serviceNots = notifications.data?.filter((not) => not?.serviceId === service?.serviceId);
   //   return serviceNots?.length > 0;
   // });
-
+  
   useEffect(() => {
     setServicesEnquiry(data);
   }, [data]);
@@ -173,7 +173,7 @@ const ServicePage = () => {
           />
         )}
 
-        <ServicesModal
+        <StaffServicesModal
           disableAll={dialog.mode === "edit" ? true : false}
           clickedService={clickedService}
           deleteState={deleteState}

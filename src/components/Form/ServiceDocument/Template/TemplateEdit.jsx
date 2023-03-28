@@ -27,7 +27,7 @@ const TemplateEdit = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { templateLink, nameError, linkError, done } = state;
+  const { templateLink, nameError, linkError, done, addClicked, updateClicked } = state;
 
   const { handleTemplateName, handleTemplateLink, handleSubmit } = useActions({
     state,
@@ -38,6 +38,16 @@ const TemplateEdit = ({
     handleUpdateTemplate,
     review,
   });
+
+  let update = info?.templateLink;
+  let add = !update;
+
+  let addLoading = addState?.isLoading && addClicked;
+  let updateLoading = updateState?.isLoading && updateClicked;
+  let loading = add ? addLoading : updateLoading;
+
+  let addAction = { type: "setAddClicked", payload: true };
+  let updateAction = { type: "setUpdateClicked", payload: true };
 
   // Populates the Templates info
   useEffect(() => {
@@ -80,10 +90,11 @@ const TemplateEdit = ({
 
       <SubmitButtons style={{ maxWidth: "300px" }}>
         <CommonButton
-          text={info?.templateLink ? "Update Link" : "Add Link"}
+          text={update ? "Update Link" : "Add Link"}
           type="submit"
           id="done-submit"
-          loading={addState?.isLoading || updateState.isLoading}
+          action={() => dispatch(add ? addAction : updateAction)}
+          loading={loading}
           LoadingIcon={<SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />}
         />
         <CommonButton

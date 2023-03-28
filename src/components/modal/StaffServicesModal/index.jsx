@@ -8,7 +8,7 @@ import FormSection from "./FormSection";
 import DocsSection from "./DocsSection";
 import { useGetSingleServiceQuery } from "services/staffService";
 
-const ServicesModal = ({
+const StaffServicesModal = ({
   disableAll,
   customTitle,
   clickedService,
@@ -67,4 +67,4 @@ const ServicesModal = ({
   );
 };
 
-export default ServicesModal;
+export default StaffServicesModal;

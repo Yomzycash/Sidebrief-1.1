@@ -85,10 +85,13 @@ export const useActions = ({
     } else {
       handleError(response?.error);
     }
+
+    dispatch({ type: "setUpdateClicked", payload: false });
   };
 
   //
 
+  // Resets all fields to default values
   const resetFields = () => {
     dispatch({ type: "setDocumentName", payload: "" });
     dispatch({ type: "setDocumentDescription", payload: "" });

@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  CheckBullet,
-  OptionContainer,
-  OptionText,
-  OtherOption,
-  OtherSelect,
-  RadioBullet,
-} from "../styled";
+import React from "react";
+import { CheckBullet, OptionContainer, OptionText, RadioBullet } from "../styled";
 import { MdClear } from "react-icons/md";
-import { InvisibleBackDrop } from "components/input/styled";
 
 const Option = ({
   text,
@@ -18,11 +10,10 @@ const Option = ({
   index,
   updateOptionValue,
   disable,
-  focusLastOption,
+  optionsArray,
+  dispatch,
 }) => {
-  let other = text === "Other" || text === "Other (allowed to type)";
-
-  const [openOther, setOpenOther] = useState(other ? true : false);
+  let other = text.toLowerCase() === "other";
 
   const handleChange = (e) => {
     if (other) return;
@@ -30,17 +21,13 @@ const Option = ({
     updateOptionValue(index, value);
   };
 
-  const handleSelect = (value) => {
-    updateOptionValue(index, value);
-    setOpenOther(false);
-  };
-
-  const handleInputClick = () => {
-    setOpenOther(true);
-  };
-
+  // Removes an option input when Backspace is pressed when the input is empty.
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") focusLastOption();
+    let value = e.target.value;
+    if (e.key === "Backspace" && value?.length < 1) {
+      optionsArray?.splice(index, 1);
+      dispatch({ type: "setOptionsArray", payload: optionsArray });
+    }
   };
 
   return (
@@ -52,20 +39,9 @@ const Option = ({
         value={text}
         onChange={handleChange}
         placeholder={placeholder}
-        onClick={handleInputClick}
-        disabled={(other && openOther) || disable}
+        disabled={other || disable}
         onKeyDown={handleKeyDown}
       />
-
-      {other && openOther && (
-        <OtherSelect>
-          <InvisibleBackDrop onClick={() => setOpenOther(false)} />
-          <OtherOption onClick={() => handleSelect("Other")}>Other</OtherOption>
-          <OtherOption onClick={() => handleSelect("Other (allowed to type)")}>
-            Other (allowed to type)
-          </OtherOption>
-        </OtherSelect>
-      )}
 
       {!disable && <MdClear onClick={removeAction} />}
     </OptionContainer>
