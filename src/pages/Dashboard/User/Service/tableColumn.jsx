@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTable, createColumnHelper } from "@tanstack/react-table";
-import { HeadText, BodyText, /*Checkbox,*/ Clickable } from "../../staffDashboard/Businesses/BusinessRegistration/styles";
+import { HeadText, BodyText, /*Checkbox,*/ Clickable } from "./styled";
 import { TypeIndicator } from "components/Indicators";
 import { useNavigate } from "react-router-dom";
 import { useGetAllServicesQuery } from  "services/staffService";
