@@ -236,3 +236,37 @@ export const SearchAndSort = styled.div`
 	display: flex;
 	gap: 24px;
 `;
+
+export const ModalWrapper = styled.div`
+	display: flex;
+	align-items: center;
+	padding: 40px 0px;
+	flex-flow: column;
+`;
+
+export const ModalButton = styled.div`
+	display: flex;
+	width: 80%;
+`;
+
+export const Question = styled.p`
+	font-size: clamp(16px, 1.5vw, 20px);
+	margin-bottom: 20px;
+`;
+export const TopContent = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	width: 80%;
+`;
+
+export const CloseWrapper = styled.div`
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+	align-items: center;
+	padding: 10px;
+	border-radius: 100%;
+	background-color: #d7d7d7;
+	margin-bottom: 20px;
+`;

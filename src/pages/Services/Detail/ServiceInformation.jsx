@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { DetailContainer, DetailWrapper } from "./styles";
 import { Dialog, DialogContent, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { StepBar } from "components/Indicators";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
@@ -18,18 +18,22 @@ const ServiceInformation = () => {
 
   const navigate = useNavigate();
 
-  let complyCode = "302033545077050509";
+  const { complycode } = useParams();
 
   const handleViewResponse = async () => {
     const requiredData = {
-      complyCode: complyCode,
+      complyCode: complycode,
     };
     const response = await viewComply(requiredData);
-    console.log(response);
+    
     setComplyResponse(response);
   };
+  useEffect(() => {
+    handleViewResponse();
+  }, []);
 
   let serviceId = complyResponse?.data?.serviceId;
+ 
 
     const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
     
@@ -39,9 +43,7 @@ const ServiceInformation = () => {
 
   //console.log(serviceId);
 
-  useEffect(() => {
-    handleViewResponse();
-  }, []);
+  
 
   const handleClickOpen = () => {
     setOpen(true);

@@ -24,7 +24,7 @@ const ServiceForm = () => {
 
   const handleSubmit = async (formData) => {
     let payload = data?.serviceForm?.map((el) => ({
-      complyCode: serviceId,
+      complyCode: complyInfo?.complyCode,
       complyData: {
         complyQuestion: el.fieldQuestion,
         complyAnswer: formData[el.fieldName],

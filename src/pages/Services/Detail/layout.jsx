@@ -4,31 +4,20 @@ import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useViewComplyQuery } from "services/complyService";
+import { checkStaffEmail } from "utils/globalFunctions";
 
 const ServicesDetailLayout = () => {
   const { complycode } = useParams();
   const viewComply = useViewComplyQuery({
     complyCode: complycode,
   });
-  // const [viewComply, viewComplyState] = useLazyViewComplyQuery();
-  // const [complyResponse, setComplyResponse] = useState([]);
-
-  // const handleViewResponse = useCallback(async () => {
-  //   const requiredData = {
-  //     complyCode: complycode,
-  //   };
-  //   const response = await viewComply(requiredData);
-  //   if (response) setComplyResponse(response.data);
-  // }, [complycode, viewComply]);
-
+  
   const serviceId = viewComply?.data?.serviceId;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
-
-  // useEffect(() => {
-  //   handleViewResponse();
-  // }, [handleViewResponse]);
-
+	let userEmail = localStorage.getItem("userEmail");
+	let staffEmail = checkStaffEmail(userEmail);
+  
   const getStatus = (stat) => {
     switch (stat) {
       case "pending":
@@ -62,6 +51,8 @@ const ServicesDetailLayout = () => {
             ? `--`
             : format(parseJSON(viewComply?.data?.createdAt), "do MMMM yyyy")
         }
+        complyCode={complycode}
+        isStaff={staffEmail}
       />
       <Body>
         <Outlet />

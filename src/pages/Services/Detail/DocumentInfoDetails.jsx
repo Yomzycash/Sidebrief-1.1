@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import ServiceReviewCard from "components/cards/ServiceReviewCard";
@@ -8,20 +8,19 @@ import { StepBar } from "components/Indicators";
 import styled from "styled-components";
 
 const DocumentInfoDetails = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = "302033545077050509";
+  const { complycode } = useParams();
 
   const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [documentContainer, setDocumentContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {
     const requiredData = {
-      complyCode: complyCode,
+      complyCode: complycode,
     };
     const response = await viewServiceDocument(requiredData);
-    console.log(response);
+    console.log('femi', response);
     setDocumentContainer(response?.data?.complyDocuments);
-  }, [complyCode, viewServiceDocument]);
+  }, [complycode, viewServiceDocument]);
 
   useEffect(() => {
     handleViewDocument();
@@ -35,6 +34,9 @@ const DocumentInfoDetails = () => {
         </Loading>
       )}
       <DocumentWrapper>
+        {/* {documentContainer.length ===0 && (
+        <p>no document uploaded</p>
+        )} */}
         <ServiceReviewCard DocContent={documentContainer} />
       </DocumentWrapper>
       <StepBar />

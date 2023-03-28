@@ -21,7 +21,9 @@ const ServiceFormReview = () => {
       complyCode: complyCode,
     };
     const response = await viewServiceDocument(requiredData);
-    setQuestionContainer(response?.data?.complyData);
+    if (Array.isArray(response?.data?.complyData)) {
+      setQuestionContainer(response?.data?.complyData);
+    }
   }, [complyCode, viewServiceDocument]);
 
   useEffect(() => {
@@ -48,8 +50,8 @@ const ServiceFormReview = () => {
           <FormContainer
             number={index + 1}
             question={el?.complyQuestion}
-           
-            answerType={el?.answerArray}
+            answerArray={el?.complyAnswer}
+            answer={el?.complyAnswer}
           />
         </div>
       ))}

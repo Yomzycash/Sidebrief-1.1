@@ -262,11 +262,11 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-              <Route path="services/details" element={<ServicesDetailLayout />}>
-                <Route path="ServiceInformation" element={<ServiceInformation />} />
-                <Route path="FormInformation" element={<FormInformation />} />
-                <Route path="DocumentInfo" element={<DocumentInfoDetails />} />
-              </Route>
+              {/* <Route path=":complycode/details" element={<ServicesDetailLayout />}>
+                    <Route path="information" element={<ServiceInformation />} />
+                    <Route path="forminfo" element={<FormInformation />} />
+                    <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route> */}
 
               <Route index element={<BusinessRegistration />} />
               <Route path="business-registration" element={<BusinessRegistration />} />
