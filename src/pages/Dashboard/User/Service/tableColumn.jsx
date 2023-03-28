@@ -8,7 +8,7 @@ import {
 import { TypeIndicator } from "components/Indicators";
 import { useNavigate } from "react-router-dom";
 import { useGetAllServicesQuery } from "services/staffService";
-import { userNavigateToDetailPage } from "utils/globalFunctions";
+import { userNavigateToServiceDetailPage } from "utils/globalFunctions";
 import { format, parseJSON } from "date-fns";
 
 const ColumnHelper = createColumnHelper();
@@ -17,7 +17,7 @@ const TableActions = () => {
   const navigate = useNavigate();
 
   const clickService = (complyCode) => {
-    userNavigateToDetailPage(navigate, complyCode);
+    userNavigateToServiceDetailPage(navigate, complyCode);
   };
 
   return { clickService };
@@ -25,7 +25,7 @@ const TableActions = () => {
 
 export const columns = [
   ColumnHelper.accessor("complyCode", {
-    header: () => <HeadText>Service Name</HeadText>,
+    header: () => <HeadText>Comply Code</HeadText>,
     cell: (info) => {
       const { clickService } = TableActions();
       return (
@@ -36,7 +36,7 @@ export const columns = [
     },
   }),
   ColumnHelper.accessor("serviceId", {
-    header: () => <HeadText>Type</HeadText>,
+    header: () => <HeadText>Service Id</HeadText>,
     cell: (info) => {
       const { clickService } = TableActions();
       return (
@@ -46,17 +46,17 @@ export const columns = [
       );
     },
   }),
-  ColumnHelper.accessor("meta", {
-    header: () => <HeadText>Country</HeadText>,
-    cell: (info) => {
-      const { clickService } = TableActions();
-      return (
-        <Clickable onClick={() => clickService(info?.row?.original?.complyCode)}>
-          <BodyText>{info.getValue()}</BodyText>
-        </Clickable>
-      );
-    },
-  }),
+  // ColumnHelper.accessor("meta", {
+  //   header: () => <HeadText></HeadText>,
+  //   cell: (info) => {
+  //     const { clickService } = TableActions();
+  //     return (
+  //       <Clickable onClick={() => clickService(info?.row?.original?.complyCode)}>
+  //         <BodyText>{info.getValue()}</BodyText>
+  //       </Clickable>
+  //     );
+  //   },
+  // }),
 
   ColumnHelper.accessor("date", {
     header: () => <HeadText>Date</HeadText>,
