@@ -4,15 +4,11 @@ import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
-
 import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
-
 import FeatureSection from "containers/Feature/FeatureSection";
-import FeatureTable from "components/Tables/FeatureTable";
 import { toast } from "react-hot-toast";
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
-import { useGetAllNotificationsQuery } from "services/chatService";
 import {
   Container,
   Header,
@@ -25,26 +21,22 @@ import {
 } from "./styled";
 import StaffServicesModal from "components/modal/StaffServicesModal";
 import { handleError } from "utils/globalFunctions";
-import { useActions } from "./actions";
+import { GeneralTable } from "components/Tables";
+import { columns } from "./table";
+import { useViewAllComplyQuery } from "services/complyService";
 
 const iconStyle = { width: "17px", height: "17px" };
-
-//
-
-//
 
 const ServicePage = () => {
   const [clickedService, setClickedService] = useState({});
   const { data, isLoading, refetch } = useGetAllServicesQuery();
-  const notifications = useGetAllNotificationsQuery();
+  const allComply = useViewAllComplyQuery();
   const [deleteService, deleteState] = useDeleteServiceMutation();
   const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
   const navigate = useNavigate();
-
-  const { dataBody } = useActions({ notifications, navigate });
 
   // This runs when add service button is clicked
   const handleAddButton = () => {
@@ -54,6 +46,11 @@ const ServicePage = () => {
   // Table header information
   const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
 
+  // const servicesNotifications = data?.filter((service) => {
+  //   let serviceNots = notifications.data?.filter((not) => not?.serviceId === service?.serviceId);
+  //   return serviceNots?.length > 0;
+  // });
+  
   useEffect(() => {
     setServicesEnquiry(data);
   }, [data]);
@@ -159,7 +156,22 @@ const ServicePage = () => {
         btnRightIcon={ArrowLeftIcon}
         btnAction={handleViewAllNotifications}
       >
-        <FeatureTable header={header} body={dataBody} />
+        {allComply.isLoading ? (
+          <Loading height="300px">
+            <Puff stroke="#00A2D4" fill="white" width={60} />
+          </Loading>
+        ) : (
+          <GeneralTable
+            columns={columns}
+            data={allComply.data?.map((comply) => ({
+              complyCode: comply.complyCode,
+              serviceId: comply.serviceId,
+              meta: comply.meta,
+              date: comply.updatedAt,
+            }))}
+            normalLastRow
+          />
+        )}
 
         <StaffServicesModal
           disableAll={dialog.mode === "edit" ? true : false}

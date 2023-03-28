@@ -1,12 +1,9 @@
-import QuestionCard from "components/cards/QuestionCard";
 import FormContainer from "containers/FormContainer";
-
 import React, { useEffect, useState, useCallback } from "react";
-import { Wrapper,Loading } from "./style";
+import { Wrapper, Loading } from "./style";
 import { useNavigate } from "react-router-dom";
 import { CheckoutController } from "containers";
 import { Bottom } from "../style";
-import { useViewComplyMutation } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import { useLazyViewComplyQuery } from "services/complyService";
 
@@ -42,20 +39,20 @@ const ServiceFormReview = () => {
   return (
     <Wrapper>
       {viewServiceDocumentState?.isLoading && (
-          <Loading height="50vh">
-            <Puff stroke="#00A2D4" fill="white" />
-          </Loading>
+        <Loading height="50vh">
+          <Puff stroke="#00A2D4" fill="white" />
+        </Loading>
       )}
-      {questionContainer?.map((el, index) => ( 
-        <div key ={index}>
+      {questionContainer?.map((el, index) => (
+        <div key={index}>
           <FormContainer
             number={index + 1}
             question={el?.complyQuestion}
             answer={el?.complyAnswer}
           />
-         </div>
-       ))}
-      
+        </div>
+      ))}
+
       <Bottom>
         <CheckoutController
           backText={"Previous"}

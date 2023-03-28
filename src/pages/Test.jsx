@@ -1,5 +1,6 @@
 import FormContainer from "containers/FormContainer";
 import React from "react";
+import UserService from "./Dashboard/User/Service"; // imp
 import ServicesDetailLayout from "./Services/Detail/layout";
 import ServiceInformation from "./Services/Detail/ServiceInformation";
 import FormInformation from "./Services/Detail/FormInformation";
@@ -11,7 +12,7 @@ const Test = () => {
   return (
     <div style={{}}>
 
-      <DocumentInfoDetails />
+      <UserService />
     </div>
   );
 };

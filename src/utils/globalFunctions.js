@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse,  } from "redux/Slices";
+import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -8,7 +8,6 @@ import { launchApi } from "services/launchService";
 import { RewardApi } from "services/RewardService";
 import { staffApi } from "services/staffService";
 import { ChatApi } from "services/chatService";
-
 // handle error encountered in endpoints call
 export const handleError = (error) => {
   if (error?.status === "FETCH_ERROR") {
@@ -76,6 +75,13 @@ export const staffNavigateToDetailPage = (navigate, launchInfo) => {
   navigate(
     `/staff-dashboard/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
   );
+};
+
+export const userNavigateToServiceDetailPage = (navigate, complyCode) => {
+  navigate(`/dashboard/services/${complyCode}/detail`);
+
+export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
+  navigate(`/staff-dashboard/businesses/services/${complycode}/details/information`);
 };
 
 export const getCurrencyInfo = (currency) => {

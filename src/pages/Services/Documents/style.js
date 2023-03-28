@@ -41,10 +41,10 @@ export const Bottom = styled.div`
 
 export const DownLoadContentWrapper = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  row-gap: 24px;
+  column-gap: 20px;
 
   @media screen and (max-width: 900px) {
     flex-direction: column;
@@ -54,7 +54,7 @@ export const DownLoadContentWrapper = styled.div`
 export const ContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   row-gap: 24px;
   column-gap: 20px;
 

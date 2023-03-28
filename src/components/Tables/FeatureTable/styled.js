@@ -9,7 +9,9 @@ export const TableContainer = styled.table`
 	tr {
 		width: 100%;
 	}
-
+	th {
+		color:#00A2D4;
+	}
 	th,
 	td {
 		font-size: clamp(14px, 1.4vw, 16px);
