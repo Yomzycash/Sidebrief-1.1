@@ -1,36 +1,33 @@
-import { Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { Body, Container } from "./styles";
-import { useEffect, useState } from "react";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
-import { useCallback } from "react";
-import { format } from "date-fns";
+import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
-import { useLazyViewComplyQuery } from "services/complyService";
+import { useViewComplyQuery } from "services/complyService";
 
 const ServicesDetailLayout = () => {
-  const [viewComply, viewComplyState] = useLazyViewComplyQuery();
-  const [complyResponse, setComplyResponse] = useState([]);
+  const { complycode } = useParams();
+  const viewComply = useViewComplyQuery({
+    complyCode: complycode,
+  });
+  // const [viewComply, viewComplyState] = useLazyViewComplyQuery();
+  // const [complyResponse, setComplyResponse] = useState([]);
 
-  let complyCode = "302033545077050509";
+  // const handleViewResponse = useCallback(async () => {
+  //   const requiredData = {
+  //     complyCode: complycode,
+  //   };
+  //   const response = await viewComply(requiredData);
+  //   if (response) setComplyResponse(response.data);
+  // }, [complycode, viewComply]);
 
-  const handleViewResponse = async () => {
-    const requiredData = {
-      complyCode: complyCode,
-    };
-    const response = await viewComply(requiredData);
- if(response)
-    setComplyResponse(response);
-  };
-
-  let serviceId = complyResponse?.data?.serviceId;
+  const serviceId = viewComply?.data?.serviceId;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
 
-  console.log(serviceId);
-
-  useEffect(() => {
-    handleViewResponse();
-  }, []);
+  // useEffect(() => {
+  //   handleViewResponse();
+  // }, [handleViewResponse]);
 
   const getStatus = (stat) => {
     switch (stat) {
@@ -52,18 +49,18 @@ const ServicesDetailLayout = () => {
     }
   };
 
-
+  console.log(viewComply.data);
 
   return (
     <Container>
       <ServiceDetailHeader
-        status={getStatus(complyResponse?.data?.status)}
+        status={getStatus(viewComply?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
         code={serviceId}
         date={
-          viewComplyState?.isLoading
+          viewComply?.isLoading
             ? `--`
-            : format(new Date( "2023-03-13T10:52:36.152Z"), "do MMMM yyyy")
+            : format(parseJSON(viewComply?.data?.createdAt), "do MMMM yyyy")
         }
       />
       <Body>

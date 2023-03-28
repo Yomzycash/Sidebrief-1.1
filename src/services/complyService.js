@@ -64,7 +64,7 @@ export const ComplyApi = createApi({
       }),
     }),
 
-    viewAllComply: builder.mutation({
+    viewAllComply: builder.query({
       query: (data) => ({
         url: "/comply/view/all",
         method: "GET",
@@ -183,7 +183,7 @@ export const {
   useLazyViewComplyQuery,
   useDeleteComplyMutation,
 
-  useViewAllComplyMutation,
+  useViewAllComplyQuery,
   useViewAllComplyByServiceIdMutation,
   useViewAllComplyByMetaMutation,
   useDeleteManyCompliesMutation,
