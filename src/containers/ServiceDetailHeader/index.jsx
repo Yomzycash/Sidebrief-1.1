@@ -158,15 +158,15 @@ const ServiceDetailHeader = ({
         <ActiveNav
           text={"Service Information"}
           // total={0}
-          path={isStaff ? 'information' : ''}
+          path={isStaff ? 'information' : `/dashboard/services/${complyCode}/details/information`}
         />
         <ActiveNav
           text={"Form"}
-          path={isStaff ?'forminfo' : ''}
+          path={isStaff ?'forminfo' : `/dashboard/services/${complyCode}/details/forminfo`}
         />
         <ActiveNav
           text={"Documents"}
-          path={isStaff ? 'documentinfo' :''}
+          path={isStaff ? 'documentinfo' :`/dashboard/services/${complyCode}/details/documentinfo`}
         />
       </SubHeader>
       <Dialog open={openModal} fullWidth maxWidth="sm">

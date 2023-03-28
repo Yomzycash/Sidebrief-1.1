@@ -161,6 +161,7 @@ const AllServices = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllServices")
 );
 const ChatLayout = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/Services/Chat"));
+const UserServicesPage = lazy(() => import("pages/Dashboard/User/Service/index"));
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -262,11 +263,12 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-              {/* <Route path=":complycode/details" element={<ServicesDetailLayout />}>
-                    <Route path="information" element={<ServiceInformation />} />
-                    <Route path="forminfo" element={<FormInformation />} />
-                    <Route path="documentinfo" element={<DocumentInfoDetails />} />
-              </Route> */}
+              <Route path="services" element={<UserServicesPage />} />
+              <Route path="services/:complycode/details" element={<ServicesDetailLayout />}>
+                <Route path="information" element={<ServiceInformation />} />
+                <Route path="forminfo" element={<FormInformation />} />
+                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route>
 
               <Route index element={<BusinessRegistration />} />
               <Route path="business-registration" element={<BusinessRegistration />} />
@@ -275,6 +277,7 @@ const AppRouter = () => {
                 <Route index element={<BankAccount />} />
                 <Route path=":bankCode" element={<BankAccountDetails />} />
               </Route>
+
               <Route path="business-registration" element={<BusinessRegistration />} />
               <Route path="settings" element={<UserSettingsLayout />}>
                 <Route index element={<PersonalSettings />} />

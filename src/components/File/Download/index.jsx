@@ -1,5 +1,15 @@
 import { useState } from "react";
 import { DocumentDownload, DocumentFrame, DocumentText } from "./styled";
+// import { 
+//     Document,
+//     DocumentSection,
+//     DocumentDownload,
+//     DocumentFrame,
+//     DocumentText,
+//     Divider,
+//     SmallText,
+//     Paragraph,
+// } from "./styled"
 import { CommonButton } from "components/button";
 import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
 import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
