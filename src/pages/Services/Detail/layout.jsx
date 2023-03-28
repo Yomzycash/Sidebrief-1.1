@@ -11,12 +11,14 @@ const ServicesDetailLayout = () => {
   const viewComply = useViewComplyQuery({
     complyCode: complycode,
   });
+  console.log(viewComply)
   
   const serviceId = viewComply?.data?.serviceId;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
 	let userEmail = localStorage.getItem("userEmail");
-	let staffEmail = checkStaffEmail(userEmail);
+  let staffEmail = checkStaffEmail(userEmail);
+  
   
   const getStatus = (stat) => {
     switch (stat) {
@@ -53,6 +55,9 @@ const ServicesDetailLayout = () => {
         }
         complyCode={complycode}
         isStaff={staffEmail}
+        document={viewComply?.data?.complyDocuments
+        }
+        form ={viewComply?.data?.complyData}
       />
       <Body>
         <Outlet />

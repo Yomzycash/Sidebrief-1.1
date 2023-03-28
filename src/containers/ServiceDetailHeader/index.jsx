@@ -40,7 +40,7 @@ import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useDeleteComplyMutation } from "services/complyService";
 
-const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode }) => {
+const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode, form , document }) => {
   const [openModal, setOpenModal] = useState(false);
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 
@@ -146,20 +146,22 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
       >
 
         {/* using both relative and absolute routing to reduce the length of the pathname  */}
-        
+
         <ActiveNav
           text={"Service Information"}
           // total={0}
           path={isStaff ? "information" : `/dashboard/services/${complyCode}/details/information`}
         />
-        <ActiveNav
-          text={"Form"}
-          path={isStaff ? "forminfo" : `/dashboard/services/${complyCode}/details/forminfo`}
-        />
-        <ActiveNav
-          text={"Documents"}
-          path={isStaff ? "documentinfo" : `/dashboard/services/${complyCode}/details/documentinfo`}
-        />
+        {form?.length > 0 && (
+          <ActiveNav
+            text={"Form"}
+            path={isStaff ? "forminfo" : `/dashboard/services/${complyCode}/details/forminfo`}
+          />)}
+        {document?.length > 0 && (
+          <ActiveNav
+            text={"Documents"}
+            path={isStaff ? "documentinfo" : `/dashboard/services/${complyCode}/details/documentinfo`}
+          />)}
       </SubHeader>
       <Dialog open={openModal} fullWidth maxWidth="sm">
         <ModalWrapper>
