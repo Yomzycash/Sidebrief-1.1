@@ -16,6 +16,7 @@ import DeleteIcon from "asset/Icons/DeleteIcon";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import EditDeleteButton from "components/button/EditDeleteButton";
 
 const Modal2 = ({
   children,
@@ -30,34 +31,10 @@ const Modal2 = ({
   ProgressBarComponent,
   parentRef,
 }) => {
-  const [confirm, setConfirm] = useState(false);
-  const [value, setValue] = useState("");
-
-  let inputRef = useRef(null);
-
   // Called when closed button is clicked
   const handleClose = () => {
     setOpen && setOpen(false);
   };
-
-  // This enables the inputs. Called when the edit (pen) icon is clicked.
-  const handleDisable = () => {
-    setDisable(false);
-  };
-  const handleDeleteSelected = () => {
-    setConfirm(true);
-    if (value === "delete") handleDelete();
-  };
-
-  useEffect(() => {
-    setConfirm(false);
-    setValue("");
-  }, [mode]);
-
-  // Focuses confirmation input when delete icon is clicked
-  useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
-  }, [confirm]);
 
   return (
     <Dialog open={open}>
@@ -66,6 +43,11 @@ const Modal2 = ({
           <Title>
             <p>{title}</p>
             <TopIcons>
+              <EditDeleteButton
+                deleteAction={handleDelete}
+                deleteLoading={deleteState?.isLoading}
+                hideEdit
+              />
               {/* {!$hideIcons && mode === "edit" && <EditIcon width={20} onClick={handleDisable} />}
               {!$hideIcons && mode === "edit" && (
                 <DeleteWrapper>

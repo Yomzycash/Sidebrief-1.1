@@ -51,16 +51,13 @@ const ServicesDetailLayout = () => {
 
   const handleContinue = () => {
     let currency = serviceData.data?.serviceCurrency;
-
     let complyInfo = {
       ...comply,
       serviceCountry: getCountry(currency),
       serviceName: serviceData.data?.serviceName,
     };
-
     let paymentInfo = comply?.complyPayment[0];
 
-    console.log(paymentInfo);
     localStorage.setItem("complyInfo", JSON.stringify(complyInfo));
     localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo));
     navigate("/services");
