@@ -34,7 +34,6 @@ const ServiceReview = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 2 })); // total- total pages and current - current page
   }, []);
 
-  console.log(viewComply?.data);
   return (
     <Container>
       <ServicesCheckoutHeader />
