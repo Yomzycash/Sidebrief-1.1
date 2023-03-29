@@ -9,13 +9,14 @@ const FormContainer = ({ number, question, answer, answerArray }) => {
         <QuestionNumber> Question {number}</QuestionNumber>
 
         <Question>{question} ? </Question>
-        {Array.isArray(answerArray) && answerArray?.map((el, index) => (
-          <Answer key={index}>
-            <Bullet /> {el}
-          </Answer>
-        ))}
-        {!Array.isArray(answerArray) &&  (
-          <Answer >
+        {Array.isArray(answerArray) &&
+          answerArray?.map((el, index) => (
+            <Answer key={index}>
+              <BsCheck2All /> {el}
+            </Answer>
+          ))}
+        {!Array.isArray(answerArray) && (
+          <Answer>
             <BsCheck2All /> {answer}
           </Answer>
         )}
