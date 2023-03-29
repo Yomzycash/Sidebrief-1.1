@@ -80,10 +80,13 @@ const ServiceDetailHeader = ({
     }
   };
 
+  const { pathname } = useLocation();
+  const servicesUrl = pathname.split("/").slice(0, -2).join("/");
+
   return (
     <Container>
       <Top>
-        <BackContainer to="/dashboard/services">
+        <BackContainer to={servicesUrl}>
           <FiArrowLeft color="#151717" size={24} />
           <Text>{`Back to Services`}</Text>
         </BackContainer>
@@ -128,9 +131,9 @@ const ServiceDetailHeader = ({
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-        <ActiveNav text={"Service Information"} path={`/${mainUrl}/detail`} />
-        <ActiveNav text={"Form"} path={`/${mainUrl}/forminfo`} />
-        <ActiveNav text={"Documents"} path={`/${mainUrl}/documentinfo`} />
+        <ActiveNav text={"Service Information"} path={`${mainUrl}/info`} />
+        <ActiveNav text={"Form"} path={`${mainUrl}/forminfo`} />
+        <ActiveNav text={"Documents"} path={`${mainUrl}/documentinfo`} />
       </SubHeader>
     </Container>
   );

@@ -266,7 +266,7 @@ const AppRouter = () => {
               <Route path="services" element={<UserServicesPage />} />
               <Route path="services/:complycode" element={<ServicesDetailLayout />}>
                 <Route index element={<ServiceInformation />} />
-                <Route path="detail" element={<ServiceInformation />} />
+                <Route path="info" element={<ServiceInformation />} />
                 <Route path="forminfo" element={<FormInformation />} />
                 <Route path="documentinfo" element={<DocumentInfoDetails />} />
               </Route>
@@ -361,8 +361,9 @@ const AppRouter = () => {
                   <Route index element={<Services />} />
                   <Route path="all" element={<AllServices />} />
                   <Route path="chats" element={<ChatLayout />} />
-                  <Route path=":complycode/details" element={<ServicesDetailLayout />}>
-                    <Route path="information" element={<ServiceInformation />} />
+                  <Route path=":complycode" element={<ServicesDetailLayout />}>
+                    <Route index element={<ServiceInformation />} />
+                    <Route path="info" element={<ServiceInformation />} />
                     <Route path="forminfo" element={<FormInformation />} />
                     <Route path="documentinfo" element={<DocumentInfoDetails />} />
                   </Route>

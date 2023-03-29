@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { Body, Container } from "./styles";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { format, parseJSON } from "date-fns";
@@ -49,13 +49,16 @@ const ServicesDetailLayout = () => {
     }
   };
 
+  const { pathname } = useLocation();
+  const mainUrl = pathname.split("/").slice(0, -1).join("/");
+  console.log(mainUrl);
   return (
     <Container>
       <ServiceDetailHeader
         status={getStatus(viewComply?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
         code={serviceId}
-        mainUrl={`dashboard/services/${complycode}`}
+        mainUrl={mainUrl}
         date={
           viewComply?.isLoading
             ? `--`

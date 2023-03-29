@@ -79,11 +79,11 @@ export const staffNavigateToDetailPage = (navigate, launchInfo) => {
 };
 
 export const userNavigateToServiceDetailPage = (navigate, complyCode) => {
-  navigate(`/dashboard/services/${complyCode}/detail`);
+  navigate(`/dashboard/services/${complyCode}/info`);
 };
 
 export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
-  navigate(`/staff-dashboard/businesses/services/${complycode}/details/information`);
+  navigate(`/staff-dashboard/businesses/services/${complycode}/info`);
 };
 
 export const getCurrencyInfo = (currency) => {
