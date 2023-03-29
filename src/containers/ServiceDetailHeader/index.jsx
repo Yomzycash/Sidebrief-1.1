@@ -28,7 +28,7 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 
 import { Dialog } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HiX } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
@@ -40,8 +40,17 @@ import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useDeleteComplyMutation } from "services/complyService";
 
-const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode, form , document,mainUrl,
-  deleteAction = () => {} }) => {
+const ServiceDetailHeader = ({
+  serviceName,
+  date,
+  status,
+  code,
+  isStaff,
+  complyCode,
+  form,
+  document,
+  mainUrl,
+}) => {
   const [openModal, setOpenModal] = useState(false);
 
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
@@ -147,7 +156,6 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-
         {/* using both relative and absolute routing to reduce the length of the pathname  */}
 
         <ActiveNav
@@ -155,16 +163,8 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
           // total={0}
           path={`${mainUrl}/info`}
         />
-        {form?.length > 0 && (
-          <ActiveNav
-            text={"Form"}
-            path={`${mainUrl}/forminfo`}
-          />)}
-        {document?.length > 0 && (
-          <ActiveNav
-            text={"Documents"}
-            path={`${mainUrl}/documentinfo`}
-          />)}
+        {form?.length > 0 && <ActiveNav text={"Form"} path={`${mainUrl}/forminfo`} />}
+        {document?.length > 0 && <ActiveNav text={"Documents"} path={`${mainUrl}/documentinfo`} />}
       </SubHeader>
       <Dialog open={openModal} fullWidth maxWidth="sm">
         <ModalWrapper>
