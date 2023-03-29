@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse,  } from "redux/Slices";
+import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -77,12 +77,9 @@ export const staffNavigateToDetailPage = (navigate, launchInfo) => {
   );
 };
 
-export const userNavigateToDetailPage = (navigate, complyCode) => {
-  navigate(
-    `/dashboard/${complyCode=complyCode}/details`
-  )
-}
-
+export const userNavigateToServiceDetailPage = (navigate, complyCode) => {
+  navigate(`/dashboard/services/${complyCode}/detail`);
+};
 
 export const getCurrencyInfo = (currency) => {
   let currencyInfo = countriesInfo.filter((country) => country.currency === currency)[0];
