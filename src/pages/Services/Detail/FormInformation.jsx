@@ -1,28 +1,25 @@
 import { StepBar } from "components/Indicators";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import FormContainer from "containers/FormContainer";
 
-
 const FormInformation = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = "302033545077050509";
+  const { complycode } = useParams();
 
-  const navigate = useNavigate();
   const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [questionContainer, setQuestionContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {
     const requiredData = {
-      complyCode: complyCode,
+      complyCode: complycode,
     };
     const response = await viewServiceDocument(requiredData);
     setQuestionContainer(response?.data?.complyData);
-  }, [complyCode, viewServiceDocument]);
+  }, [complycode, viewServiceDocument]);
 
   useEffect(() => {
     handleViewDocument();
@@ -36,18 +33,17 @@ const FormInformation = () => {
         </Loading>
       )}
       <DocumentWrapper>
-
-      {questionContainer?.map((el, index) => (
-        <div key={index}>
-          <FormContainer
-            number={index + 1}
-            question={el?.complyQuestion}
-            answer={el?.complyAnswer}
-          />
-        </div>
-      ))}
-        </DocumentWrapper>
-      <StepBar  />
+        {questionContainer?.map((el, index) => (
+          <div key={index}>
+            <FormContainer
+              number={index + 1}
+              question={el?.complyQuestion}
+              answer={el?.complyAnswer}
+            />
+          </div>
+        ))}
+      </DocumentWrapper>
+      {/* <StepBar  /> */}
     </Wrapper>
   );
 };
@@ -57,17 +53,15 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
- 
 `;
 
 const DocumentWrapper = styled.div`
   max-width: 825px;
-  width:100%;
+  width: 100%;
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
-  
 `;
 const Loading = styled.div`
   display: flex;

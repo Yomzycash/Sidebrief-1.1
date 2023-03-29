@@ -213,6 +213,12 @@ export const sidebarLink = [
     path: "/dashboard/businesses",
   },
   {
+    id: 2,
+    title: "Services",
+    icon: BusinessesIcon,
+    path: "/dashboard/services",
+  },
+  {
     id: 3,
     title: "Bank Accounts",
     icon: BankAccountIcon,

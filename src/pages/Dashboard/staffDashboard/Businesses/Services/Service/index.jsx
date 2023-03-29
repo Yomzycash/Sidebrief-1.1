@@ -50,7 +50,7 @@ const ServicePage = () => {
   //   let serviceNots = notifications.data?.filter((not) => not?.serviceId === service?.serviceId);
   //   return serviceNots?.length > 0;
   // });
-  
+
   useEffect(() => {
     setServicesEnquiry(data);
   }, [data]);

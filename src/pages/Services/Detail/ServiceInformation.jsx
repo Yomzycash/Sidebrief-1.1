@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { DetailContainer, DetailWrapper } from "./styles";
 import { Dialog, DialogContent, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { StepBar } from "components/Indicators";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
@@ -11,18 +11,17 @@ import ServiceInfoContainer from "containers/ServiceInfoContainer";
 
 const ServiceInformation = () => {
   const [viewComply, viewComplyState] = useLazyViewComplyQuery();
-    const [complyResponse, setComplyResponse] = useState([]);
-    const countries = useGetAllCountriesQuery();
+  const [complyResponse, setComplyResponse] = useState([]);
+  const countries = useGetAllCountriesQuery();
 
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate();
-
-  let complyCode = "302033545077050509";
+  const { complycode } = useParams();
+  console.log(complycode);
 
   const handleViewResponse = async () => {
     const requiredData = {
-      complyCode: complyCode,
+      complyCode: complycode,
     };
     const response = await viewComply(requiredData);
     console.log(response);
@@ -31,13 +30,11 @@ const ServiceInformation = () => {
 
   let serviceId = complyResponse?.data?.serviceId;
 
-    const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
-    
-    let getCountry = countries?.data?.find(
-        (country) => country?.countryISO === serviceData?.data?.serviceCountry
-      )?.countryName;
+  const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
 
-  //console.log(serviceId);
+  let getCountry = countries?.data?.find(
+    (country) => country?.countryISO === serviceData?.data?.serviceCountry
+  )?.countryName;
 
   useEffect(() => {
     handleViewResponse();
@@ -90,7 +87,7 @@ const ServiceInformation = () => {
             serviceCurrency={serviceData?.data?.serviceCurrency}
             serviceTimeline={serviceData?.data?.serviceTimeline}
           />
-          <StepBar applied={complyResponse?.data?.createdAt} />
+          {/* <StepBar applied={complyResponse?.data?.createdAt} /> */}
         </DetailContainer>
       </DetailWrapper>
     </div>

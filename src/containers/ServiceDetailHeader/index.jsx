@@ -44,6 +44,7 @@ const ServiceDetailHeader = ({
   status,
   code,
   isStaff,
+  mainUrl,
   deleteAction = () => {},
 }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
@@ -82,9 +83,9 @@ const ServiceDetailHeader = ({
   return (
     <Container>
       <Top>
-        <BackContainer to={{}}>
+        <BackContainer to="/dashboard/services">
           <FiArrowLeft color="#151717" size={24} />
-          <Text>{`Back to Service list`}</Text>
+          <Text>{`Back to Services`}</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>
@@ -127,13 +128,9 @@ const ServiceDetailHeader = ({
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-        <ActiveNav
-          text={"Service Information"}
-          // total={0}
-          path={"/dashboard/services/details/ServiceInformation"}
-        />
-        <ActiveNav text={"Form"} path={"/dashboard/services/details/FormInformation"} />
-        <ActiveNav text={"Documents"} path={"/dashboard/services/details/DocumentInfo"} />
+        <ActiveNav text={"Service Information"} path={`/${mainUrl}/detail`} />
+        <ActiveNav text={"Form"} path={`/${mainUrl}/forminfo`} />
+        <ActiveNav text={"Documents"} path={`/${mainUrl}/documentinfo`} />
       </SubHeader>
     </Container>
   );
