@@ -40,8 +40,10 @@ import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useDeleteComplyMutation } from "services/complyService";
 
-const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode, form , document }) => {
+const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode, form , document,mainUrl,
+  deleteAction = () => {} }) => {
   const [openModal, setOpenModal] = useState(false);
+
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
 
   const [deleteComply, deleteState] = useDeleteComplyMutation();
@@ -94,14 +96,15 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
     }
   };
 
+  const { pathname } = useLocation();
+  const servicesUrl = pathname.split("/").slice(0, -2).join("/");
+
   return (
     <Container>
       <Top>
-        <BackContainer
-          to={!isStaff ? "/dashboard/services" : "/staff-dashboard/businesses/services"}
-        >
+        <BackContainer to={servicesUrl}>
           <FiArrowLeft color="#151717" size={24} />
-          <Text>{`Back to Service list`}</Text>
+          <Text>{`Back to Services`}</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>
@@ -150,17 +153,17 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
         <ActiveNav
           text={"Service Information"}
           // total={0}
-          path={isStaff ? "information" : `/dashboard/services/${complyCode}/details/information`}
+          path={`${mainUrl}/info`}
         />
         {form?.length > 0 && (
           <ActiveNav
             text={"Form"}
-            path={isStaff ? "forminfo" : `/dashboard/services/${complyCode}/details/forminfo`}
+            path={`${mainUrl}/forminfo`}
           />)}
         {document?.length > 0 && (
           <ActiveNav
             text={"Documents"}
-            path={isStaff ? "documentinfo" : `/dashboard/services/${complyCode}/details/documentinfo`}
+            path={`${mainUrl}/documentinfo`}
           />)}
       </SubHeader>
       <Dialog open={openModal} fullWidth maxWidth="sm">

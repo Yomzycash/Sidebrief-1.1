@@ -22,17 +22,11 @@ const ServiceInformation = () => {
   
   const viewService = useGetSingleServiceQuery(viewComply?.data?.serviceId);
 
-
  
 
- 
-
-    
     let getCountry = countries?.data?.find(
         (country) => country?.countryISO === viewService?.data?.serviceCountry
       )?.countryName;
-
-  //console.log(serviceId);
 
   
 
@@ -83,7 +77,6 @@ const ServiceInformation = () => {
             serviceCurrency={viewService?.data?.serviceCurrency}
             serviceTimeline={viewService?.data?.serviceTimeline}
           />
-          <StepBar applied={viewComply?.data?.createdAt} />
         </DetailContainer>
       </DetailWrapper>
     </div>

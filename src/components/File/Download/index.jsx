@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DocumentDownload, DocumentFrame, DocumentText } from "./styled";
-// import { 
+// import {
 //     Document,
 //     DocumentSection,
 //     DocumentDownload,

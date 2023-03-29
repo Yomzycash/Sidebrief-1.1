@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { Body, Container } from "./styles";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { format, parseJSON } from "date-fns";
@@ -11,7 +11,6 @@ const ServicesDetailLayout = () => {
   const viewComply = useViewComplyQuery({
     complyCode: complycode,
   });
-  
   const serviceId = viewComply?.data?.serviceId;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
@@ -39,7 +38,8 @@ const ServicesDetailLayout = () => {
     }
   };
 
-  console.log(viewComply.data);
+  const { pathname } = useLocation();
+  const mainUrl = pathname.split("/").slice(0, -1).join("/");
 
   return (
     <Container>
@@ -47,6 +47,7 @@ const ServicesDetailLayout = () => {
         status={getStatus(viewComply?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
         code={serviceId}
+        mainUrl={mainUrl}
         date={
           viewComply?.isLoading
             ? `--`

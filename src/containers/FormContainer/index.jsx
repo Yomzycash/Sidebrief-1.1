@@ -1,4 +1,5 @@
 import React from "react";
+import { BsCheck2All } from "react-icons/bs";
 import styled from "styled-components";
 
 const FormContainer = ({ number, question, answer, answerArray }) => {
@@ -15,7 +16,7 @@ const FormContainer = ({ number, question, answer, answerArray }) => {
         ))}
         {!Array.isArray(answerArray) &&  (
           <Answer >
-            <Bullet /> {answer}
+            <BsCheck2All /> {answer}
           </Answer>
         )}
       </InnerContainer>
@@ -33,12 +34,6 @@ const Container = styled.div`
   border: 1px solid #edf1f7;
 `;
 
-const Bullet = styled.div`
-  height: 12px;
-  width: 12px;
-  border-radius: 50%;
-  background-color: #4e5152;
-`;
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;

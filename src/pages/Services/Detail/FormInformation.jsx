@@ -48,7 +48,7 @@ const FormInformation = () => {
           </div>
         ))}
       </DocumentWrapper>
-      <StepBar applied={viewComply?.data?.createdAt} />
+      {/* <StepBar  /> */}
     </Wrapper>
   );
 };
