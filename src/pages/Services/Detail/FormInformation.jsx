@@ -1,7 +1,7 @@
 import { StepBar } from "components/Indicators";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
@@ -9,35 +9,35 @@ import FormContainer from "containers/FormContainer";
 
 const FormInformation = () => {
   const { complycode } = useParams();
+  const viewComply = useOutletContext();
 
+  // const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
+  // const [questionContainer, setQuestionContainer] = useState([]);
 
-  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
-  const [questionContainer, setQuestionContainer] = useState([]);
+  // const handleViewDocument = useCallback(async () => {
+  //   const requiredData = {
+  //     complyCode: complycode,
+  //   };
+  //   const response = await viewServiceDocument(requiredData);
+  //   if (Array.isArray(response?.data?.complyData)) {
+  //     setQuestionContainer(response?.data?.complyData);
+  //   }
+  // }, [complycode, viewServiceDocument]);
 
-  const handleViewDocument = useCallback(async () => {
-    const requiredData = {
-      complyCode: complycode,
-    };
-    const response = await viewServiceDocument(requiredData);
-    if (Array.isArray(response?.data?.complyData)) {
-      setQuestionContainer(response?.data?.complyData);
-    }
-  }, [complycode, viewServiceDocument]);
-
-  useEffect(() => {
-    handleViewDocument();
-  }, [handleViewDocument]);
-  console.log(questionContainer)
+  // useEffect(() => {
+  //   handleViewDocument();
+  // }, [handleViewDocument]);
+  // console.log(questionContainer)
 
   return (
     <Wrapper>
-      {viewServiceDocumentState?.isLoading && (
+      {viewComply?.isLoading && (
         <Loading height="50vh">
           <Puff stroke="#00A2D4" fill="white" />
         </Loading>
       )}
       <DocumentWrapper>
-        {questionContainer?.map((el, index) => (
+        {viewComply?.data?.complyData?.map((el, index) => (
           <div key={index}>
             <FormContainer
               number={index + 1}
@@ -48,7 +48,7 @@ const FormInformation = () => {
           </div>
         ))}
       </DocumentWrapper>
-      <StepBar />
+      <StepBar applied={viewComply?.data?.createdAt} />
     </Wrapper>
   );
 };

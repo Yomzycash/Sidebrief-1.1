@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { DetailContainer, DetailWrapper } from "./styles";
 import { Dialog, DialogContent, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams, useOutletContext } from "react-router-dom";
 import styled from "styled-components";
 import { StepBar } from "components/Indicators";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
@@ -10,35 +10,26 @@ import { useLazyViewComplyQuery } from "services/complyService";
 import ServiceInfoContainer from "containers/ServiceInfoContainer";
 
 const ServiceInformation = () => {
-  const [viewComply, viewComplyState] = useLazyViewComplyQuery();
-    const [complyResponse, setComplyResponse] = useState([]);
+  const viewComply = useOutletContext();
+  console.log(viewComply)
+
     const countries = useGetAllCountriesQuery();
 
   const [open, setOpen] = useState(false);
 
-  const navigate = useNavigate();
 
   const { complycode } = useParams();
+  
+  const viewService = useGetSingleServiceQuery(viewComply?.data?.serviceId);
 
-  const handleViewResponse = async () => {
-    const requiredData = {
-      complyCode: complycode,
-    };
-    const response = await viewComply(requiredData);
-    
-    setComplyResponse(response);
-  };
-  useEffect(() => {
-    handleViewResponse();
-  }, []);
 
-  let serviceId = complyResponse?.data?.serviceId;
  
 
-    const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
+ 
+
     
     let getCountry = countries?.data?.find(
-        (country) => country?.countryISO === serviceData?.data?.serviceCountry
+        (country) => country?.countryISO === viewService?.data?.serviceCountry
       )?.countryName;
 
   //console.log(serviceId);
@@ -74,7 +65,7 @@ const ServiceInformation = () => {
               <Dialog onClose={handleClose} open={open}>
                 <DialogContent style={StepbarStyle}>
                   <StepBar
-                    applied={complyResponse?.data?.createdAt}
+                    applied={viewComply?.data?.createdAt}
                     mobile
                     handleClose={handleClose}
                   />
@@ -85,14 +76,14 @@ const ServiceInformation = () => {
         )}
         <DetailContainer>
           <ServiceInfoContainer
-            serviceDescription={serviceData?.data?.serviceDescription}
-            serviceCategory={serviceData?.data?.serviceCategory}
+            serviceDescription={viewService?.data?.serviceDescription}
+            serviceCategory={viewService?.data?.serviceCategory}
             serviceCountry={getCountry}
-            servicePrice={serviceData?.data?.servicePrice}
-            serviceCurrency={serviceData?.data?.serviceCurrency}
-            serviceTimeline={serviceData?.data?.serviceTimeline}
+            servicePrice={viewService?.data?.servicePrice}
+            serviceCurrency={viewService?.data?.serviceCurrency}
+            serviceTimeline={viewService?.data?.serviceTimeline}
           />
-          <StepBar applied={complyResponse?.data?.createdAt} />
+          <StepBar applied={viewComply?.data?.createdAt} />
         </DetailContainer>
       </DetailWrapper>
     </div>

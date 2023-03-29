@@ -11,7 +11,6 @@ const ServicesDetailLayout = () => {
   const viewComply = useViewComplyQuery({
     complyCode: complycode,
   });
-  console.log(viewComply)
   
   const serviceId = viewComply?.data?.serviceId;
 
@@ -60,7 +59,7 @@ const ServicesDetailLayout = () => {
         form ={viewComply?.data?.complyData}
       />
       <Body>
-        <Outlet />
+        <Outlet context={viewComply} />
       </Body>
     </Container>
   );
