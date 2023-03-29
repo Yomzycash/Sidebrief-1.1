@@ -19,11 +19,14 @@ import { useEffect } from "react";
 export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState({ name: "", code: "" });
+  const [setOld, setSetOld] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (!file.name) setFile(oldFile);
-  }, [oldFile]);
+    if (setOld) {
+      setFile(oldFile);
+    }
+  }, [oldFile, setOld]);
 
   const collectFile = useCallback(
     async (file) => {
@@ -35,7 +38,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
         name: realFile.name,
         code: documentCode,
       });
-      console.log("something");
+      setSetOld(false);
       setUploading(false);
     },
     [uploadAction, docType]
@@ -59,6 +62,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
       name: "",
       code: "",
     });
+    setSetOld(false);
     setDeleting(false);
   };
 
