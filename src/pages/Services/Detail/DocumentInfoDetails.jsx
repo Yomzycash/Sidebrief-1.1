@@ -37,7 +37,7 @@ const DocumentInfoDetails = () => {
       <DocumentWrapper>
         <ServiceReviewCard DocContent={documentContainer} />
       </DocumentWrapper>
-      <StepBar />
+      {/* <StepBar /> */}
     </Wrapper>
   );
 };
@@ -54,7 +54,7 @@ const DocumentWrapper = styled.div`
   max-width: 825px;
   width: 100%;
   background: #ffffff;
-  border: 1px solid #EFF2F3;
+  border: 1px solid #eff2f3;
   box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
 `;

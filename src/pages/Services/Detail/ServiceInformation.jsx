@@ -11,12 +11,10 @@ import ServiceInfoContainer from "containers/ServiceInfoContainer";
 
 const ServiceInformation = () => {
   const [viewComply, viewComplyState] = useLazyViewComplyQuery();
-    const [complyResponse, setComplyResponse] = useState([]);
-    const countries = useGetAllCountriesQuery();
+  const [complyResponse, setComplyResponse] = useState([]);
+  const countries = useGetAllCountriesQuery();
 
   const [open, setOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   let complyCode = "302033545077050509";
 
@@ -31,13 +29,11 @@ const ServiceInformation = () => {
 
   let serviceId = complyResponse?.data?.serviceId;
 
-    const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
-    
-    let getCountry = countries?.data?.find(
-        (country) => country?.countryISO === serviceData?.data?.serviceCountry
-      )?.countryName;
+  const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
 
-  //console.log(serviceId);
+  let getCountry = countries?.data?.find(
+    (country) => country?.countryISO === serviceData?.data?.serviceCountry
+  )?.countryName;
 
   useEffect(() => {
     handleViewResponse();
@@ -90,7 +86,7 @@ const ServiceInformation = () => {
             serviceCurrency={serviceData?.data?.serviceCurrency}
             serviceTimeline={serviceData?.data?.serviceTimeline}
           />
-          <StepBar applied={complyResponse?.data?.createdAt} />
+          {/* <StepBar applied={complyResponse?.data?.createdAt} /> */}
         </DetailContainer>
       </DetailWrapper>
     </div>

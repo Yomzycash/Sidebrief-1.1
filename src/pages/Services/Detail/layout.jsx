@@ -20,7 +20,7 @@ const ServicesDetailLayout = () => {
   //   const response = await viewComply(requiredData);
   //   if (response) setComplyResponse(response.data);
   // }, [complycode, viewComply]);
-
+  console.log(viewComply?.data);
   const serviceId = viewComply?.data?.serviceId;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
@@ -49,14 +49,13 @@ const ServicesDetailLayout = () => {
     }
   };
 
-  console.log(viewComply.data);
-
   return (
     <Container>
       <ServiceDetailHeader
         status={getStatus(viewComply?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
         code={serviceId}
+        mainUrl={`dashboard/services/${complycode}`}
         date={
           viewComply?.isLoading
             ? `--`

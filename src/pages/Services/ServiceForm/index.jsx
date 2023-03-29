@@ -27,7 +27,6 @@ const ServiceForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (formData) => {
-    console.log(formData);
     let payload = data?.serviceForm?.map((el) => ({
       complyCode: complyCode,
       complyData: {
@@ -35,7 +34,6 @@ const ServiceForm = () => {
         complyAnswer: formData[el.fieldName],
       },
     }));
-    console.log(payload);
 
     let addArray = payload.map((el, i) => addComplyData(el));
     let responses = await Promise.all(addArray);
@@ -47,17 +45,10 @@ const ServiceForm = () => {
       handleError(error);
       return;
     } else {
-      toast.success("Questions submitted successfully");
+      // toast.success("Submitted successfully");
       navigate("/services/documents");
     }
   };
-  // const handleView = async () => {
-  //   let payload = {
-  //     complyCode: "335928451015517734",
-  //   };
-  //   let response = await viewComply(payload);
-  //   console.log(response);
-  // };
 
   const handlePrev = () => {
     const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
@@ -70,7 +61,6 @@ const ServiceForm = () => {
 
   // Set the progress of the application
   useEffect(() => {
-    // handleView();
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.4 })); // total- total pages and current - current page
   }, []);
 

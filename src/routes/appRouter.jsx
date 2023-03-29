@@ -265,6 +265,7 @@ const AppRouter = () => {
             >
               <Route path="services" element={<UserServicesPage />} />
               <Route path="services/:complycode" element={<ServicesDetailLayout />}>
+                <Route index element={<ServiceInformation />} />
                 <Route path="detail" element={<ServiceInformation />} />
                 <Route path="forminfo" element={<FormInformation />} />
                 <Route path="documentinfo" element={<DocumentInfoDetails />} />

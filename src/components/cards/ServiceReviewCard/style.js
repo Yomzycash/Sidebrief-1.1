@@ -9,7 +9,7 @@ border-style: solid; */
 
 export const Document = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   padding: 10px;
   width: 100%;
   gap: 25px;
@@ -25,7 +25,6 @@ export const DocumentDownload = styled.div`
   border-radius: 16px;
   padding: 16px 36px;
   cursor: pointer;
- 
 `;
 export const InnerDocument = styled.div`
 display:flex;
