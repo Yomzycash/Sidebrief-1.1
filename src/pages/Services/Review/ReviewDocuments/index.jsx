@@ -18,7 +18,6 @@ const ReviewDocuments = () => {
 
   const handleNext = async (formData) => {
     navigate("/services/success");
-    removeComplyFromLocalStorage();
   };
   return (
     <div>

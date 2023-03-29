@@ -23,11 +23,7 @@ const Success = ({
   return (
     <>
       <Wrapper>
-        <ImageWrapper
-          key="Success"
-          animate={{ rotate: 360 }}
-          transition={spinTransition}
-        >
+        <ImageWrapper>
           <Image src={image} alt={imageName} />
         </ImageWrapper>
 
@@ -36,9 +32,7 @@ const Success = ({
           <BottomText>{description}</BottomText>
         </TextWrapper>
         <Button title={buttonTitle} onClick={onClick} loading={loading} />
-        {lastText && (
-          <FinalText onClick={action}>Change Payment Method</FinalText>
-        )}
+        {lastText && <FinalText onClick={action}>Change Payment Method</FinalText>}
       </Wrapper>
     </>
   );
@@ -62,7 +56,7 @@ const Wrapper = styled.div`
 //     max-width: 250px;
 //   }
 // `
-const ImageWrapper = styled(motion.div)``;
+const ImageWrapper = styled.div``;
 const Image = styled.img`
   min-width: 113px;
   width: 12vw;
