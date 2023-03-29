@@ -15,9 +15,9 @@ import { useDropzone } from "react-dropzone";
 import { SpinningCircles } from "react-loading-icons";
 import { DeleteRedSvg } from "asset/svg";
 
-export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => {} }) => {
+export const Upload = ({ docType, uploadAction, deleteAction }) => {
   const [uploading, setUploading] = useState(false);
-  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState({ name: "", code: "" });
   const [deleting, setDeleting] = useState(false);
 
   const collectFile = useCallback(
@@ -25,10 +25,12 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
       const realFile = file[0];
       setUploading(true);
       const uploadedFile = await convertToLink(realFile);
-      await uploadAction(uploadedFile, docType, realFile);
-      setFileName(realFile.name);
+      const documentCode = await uploadAction(uploadedFile, docType, realFile);
+      setFile({
+        name: realFile.name,
+        code: documentCode,
+      });
       setUploading(false);
-      console.log(uploadedFile);
     },
     [uploadAction, docType]
   );
@@ -48,8 +50,11 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
     setDeleting(true);
     // I don't know where document code is gotten from
     // document code should be passed into the function below
-    await deleteAction();
-    setFileName("");
+    await deleteAction(file.code);
+    setFile({
+      name: "",
+      code: "",
+    });
     setDeleting(false);
   };
 
@@ -65,9 +70,7 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
           <DocumentIcon />
           <DocumentText>{docType}</DocumentText>
         </Top>
-        {/* <SmallText>file type: pdf, png, jpeg</SmallText> */}
-        {/* <CommonButton text={"Upload"} LeftIcon={UploadIcon} action={handleButtonClick} /> */}
-        {!fileName ? (
+        {!file.name ? (
           <UploadWrapper
             {...getRootProps({
               disabled: uploading,
@@ -90,9 +93,13 @@ export const Upload = ({ docType, uploadAction = () => {}, deleteAction = () => 
           </UploadWrapper>
         ) : (
           <Preview>
-            <span>{fileName}</span>
+            <span>{file.name}</span>
             <Delete onClick={performDelete} disabled={deleting} type="button">
-              {deleting ? <SpinningCircles height={24} width={24} /> : <DeleteRedSvg />}
+              {deleting ? (
+                <SpinningCircles height={24} width={24} fill={"red"} />
+              ) : (
+                <DeleteRedSvg />
+              )}
             </Delete>
           </Preview>
         )}

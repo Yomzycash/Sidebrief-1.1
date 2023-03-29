@@ -18,7 +18,10 @@ import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import toast from "react-hot-toast";
 import { useGetSingleServiceQuery } from "services/staffService";
-import { useAddComplyDocumentMutation } from "services/complyService";
+import {
+  useAddComplyDocumentMutation,
+  useDeleteComplyDocumentMutation,
+} from "services/complyService";
 
 const ServiceDocuments = () => {
   const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
@@ -26,8 +29,8 @@ const ServiceDocuments = () => {
 
   const navigate = useNavigate();
   const viewService = useGetSingleServiceQuery(serviceId);
-  console.log("dddd", viewService);
-  const [addServiceDocument, { isLoading, isSuccess }] = useAddComplyDocumentMutation();
+  const [addComplyDocument] = useAddComplyDocumentMutation();
+  const [deleteComplyDocument] = useDeleteComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
   const handlePrev = () => {
     navigate(-1);
@@ -51,17 +54,31 @@ const ServiceDocuments = () => {
       },
     };
 
-    const response = await addServiceDocument(requiredData);
+    const response = await addComplyDocument(requiredData);
+    const documentCode = response.data.complyDocuments.slice(-1)[0].documentCode;
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
+
+    return documentCode;
   };
 
-  const removeUploadedFile = () => {
-    console.log("removed");
+  const removeUploadedFile = async (documentCode) => {
+    const requiredData = {
+      complyCode,
+      documentCode,
+    };
+    const response = await deleteComplyDocument(requiredData);
+
+    if (response.data) {
+      toast.success("Document removed successfully");
+      setIsChanged(!isChanged);
+    } else if (response.error) {
+      toast.error(response.error?.data.message);
+    }
   };
 
   // Set the progress of the application
