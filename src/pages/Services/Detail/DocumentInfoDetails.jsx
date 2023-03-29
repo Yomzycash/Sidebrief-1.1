@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import ServiceReviewCard from "components/cards/ServiceReviewCard";
@@ -8,33 +8,20 @@ import { StepBar } from "components/Indicators";
 import styled from "styled-components";
 
 const DocumentInfoDetails = () => {
-  const { complycode } = useParams();
-
-  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
-  const [documentContainer, setDocumentContainer] = useState([]);
-
-  const handleViewDocument = useCallback(async () => {
-    const requiredData = {
-      complyCode: complycode,
-    };
-    const response = await viewServiceDocument(requiredData);
-    console.log(response);
-    setDocumentContainer(response?.data?.complyDocuments);
-  }, [complycode, viewServiceDocument]);
-
-  useEffect(() => {
-    handleViewDocument();
-  }, [handleViewDocument]);
-
+  const viewComply = useOutletContext();
+  
   return (
     <Wrapper>
-      {viewServiceDocumentState?.isLoading && (
+      {viewComply?.isLoading && (
         <Loading height="50vh">
           <Puff stroke="#00A2D4" fill="white" />
         </Loading>
       )}
       <DocumentWrapper>
-        <ServiceReviewCard DocContent={documentContainer} />
+        {/* {documentContainer.length ===0 && (
+        <p>no document uploaded</p>
+        )} */}
+        <ServiceReviewCard DocContent={viewComply?.data?.complyDocuments} />
       </DocumentWrapper>
       {/* <StepBar /> */}
     </Wrapper>

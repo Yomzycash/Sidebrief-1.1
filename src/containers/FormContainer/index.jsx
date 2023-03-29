@@ -2,16 +2,23 @@ import React from "react";
 import { BsCheck2All } from "react-icons/bs";
 import styled from "styled-components";
 
-const FormContainer = ({ number, question, answer }) => {
+const FormContainer = ({ number, question, answer, answerArray }) => {
   return (
     <Container>
       <InnerContainer>
         <QuestionNumber> Question {number}</QuestionNumber>
 
         <Question>{question} ? </Question>
-        <Answer>
-          <BsCheck2All /> {answer}
-        </Answer>
+        {Array.isArray(answerArray) && answerArray?.map((el, index) => (
+          <Answer key={index}>
+            <Bullet /> {el}
+          </Answer>
+        ))}
+        {!Array.isArray(answerArray) &&  (
+          <Answer >
+            <BsCheck2All /> {answer}
+          </Answer>
+        )}
       </InnerContainer>
     </Container>
   );
