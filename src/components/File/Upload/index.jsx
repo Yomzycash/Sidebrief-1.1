@@ -14,11 +14,16 @@ import { convertToLink } from "utils/LaunchHelper";
 import { useDropzone } from "react-dropzone";
 import { SpinningCircles } from "react-loading-icons";
 import { DeleteRedSvg } from "asset/svg";
+import { useEffect } from "react";
 
-export const Upload = ({ docType, uploadAction, deleteAction }) => {
+export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState({ name: "", code: "" });
   const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    setFile(oldFile);
+  }, [oldFile]);
 
   const collectFile = useCallback(
     async (file) => {
@@ -48,8 +53,6 @@ export const Upload = ({ docType, uploadAction, deleteAction }) => {
 
   const performDelete = async () => {
     setDeleting(true);
-    // I don't know where document code is gotten from
-    // document code should be passed into the function below
     await deleteAction(file.code);
     setFile({
       name: "",

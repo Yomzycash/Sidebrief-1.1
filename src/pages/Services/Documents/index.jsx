@@ -21,14 +21,19 @@ import { useGetSingleServiceQuery } from "services/staffService";
 import {
   useAddComplyDocumentMutation,
   useDeleteComplyDocumentMutation,
+  useViewComplyQuery,
 } from "services/complyService";
 
 const ServiceDocuments = () => {
   const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
-  let serviceId = complyInfo?.serviceId;
+  const serviceId = complyInfo?.serviceId;
+  const complyCode = complyInfo?.complyCode;
 
   const navigate = useNavigate();
   const viewService = useGetSingleServiceQuery(serviceId);
+  const viewComply = useViewComplyQuery({
+    complyCode,
+  });
   const [addComplyDocument] = useAddComplyDocumentMutation();
   const [deleteComplyDocument] = useDeleteComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
@@ -40,7 +45,25 @@ const ServiceDocuments = () => {
     navigate("/services/review/info");
   };
 
-  let complyCode = complyInfo?.complyCode;
+  const handleDocuments = (documents) => {
+    if (documents.length > 0) {
+      // get all document types
+      const documentTypes = [...new Set(documents.map((el) => el.documentType))];
+
+      const object = {};
+
+      documentTypes.forEach((key) => {
+        object[key] = documents.filter((el) => el.documentType === key).slice(-1)[0];
+      });
+
+      return object;
+    }
+    return {};
+  };
+
+  const complyDocuments = viewComply?.data?.complyDocuments || [];
+
+  const docs = handleDocuments(complyDocuments);
 
   const newHandleChange = async (uploadedFile, fileName, rawFile) => {
     const requiredData = {
@@ -109,14 +132,22 @@ const ServiceDocuments = () => {
               </DownLoadContentWrapper>
               <DownLoadText>Upload Documents</DownLoadText>
               <ContentWrapper>
-                {viewService?.data?.serviceRequirements.map((document, index) => (
-                  <Upload
-                    key={index}
-                    docType={document.requirementName}
-                    uploadAction={newHandleChange}
-                    deleteAction={removeUploadedFile}
-                  />
-                ))}
+                {viewService?.data?.serviceRequirements.map((document, index) => {
+                  const oldFile = docs[document.requirementName];
+                  return (
+                    <Upload
+                      key={index}
+                      docType={document.requirementName}
+                      uploadAction={newHandleChange}
+                      deleteAction={removeUploadedFile}
+                      oldFile={
+                        oldFile
+                          ? { name: oldFile.fileName, code: oldFile.documentCode }
+                          : { name: "", code: "" }
+                      }
+                    />
+                  );
+                })}
               </ContentWrapper>
             </FileContainer>
           </LaunchFormContainer>
