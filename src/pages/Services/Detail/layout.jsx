@@ -7,6 +7,7 @@ import { useViewComplyQuery } from "services/complyService";
 import { checkStaffEmail } from "utils/globalFunctions";
 import { countriesInfo } from "utils/allCountries";
 import CommonButton from "components/button/commonButton";
+const lookup = require("country-code-lookup");
 
 const ServicesDetailLayout = () => {
   const { complycode } = useParams();
@@ -19,7 +20,7 @@ const ServicesDetailLayout = () => {
   const complyCode = comply?.complyCode;
   const status = comply?.status?.toLowerCase();
 
-  const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
+  const service = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
@@ -49,12 +50,13 @@ const ServicesDetailLayout = () => {
 
   const navigate = useNavigate();
 
+  //
   const handleContinue = () => {
-    let currency = serviceData.data?.serviceCurrency;
+    const countryISO = service.data?.serviceCountry;
     let complyInfo = {
       ...comply,
-      serviceCountry: getCountry(currency),
-      serviceName: serviceData.data?.serviceName,
+      serviceCountry: lookup.byIso(countryISO)?.country,
+      serviceName: service.data?.serviceName,
     };
     let paymentInfo = comply?.complyPayment[0];
 
@@ -63,16 +65,11 @@ const ServicesDetailLayout = () => {
     navigate("/services");
   };
 
-  const getCountry = (currency) => {
-    return countriesInfo.filter((el) => el.currency.toLowerCase() === currency?.toLowerCase())[0]
-      ?.name;
-  };
-
   return (
     <Container>
       <ServiceDetailHeader
         status={getStatus(viewComply?.data?.status)}
-        serviceName={serviceData?.data?.serviceName}
+        serviceName={service?.data?.serviceName}
         code={complyCode}
         mainUrl={mainUrl}
         date={

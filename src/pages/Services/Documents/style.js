@@ -42,7 +42,7 @@ export const Bottom = styled.div`
 export const DownLoadContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 250px));
   row-gap: 24px;
   column-gap: 20px;
 
@@ -54,7 +54,7 @@ export const DownLoadContentWrapper = styled.div`
 export const ContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 250px));
   row-gap: 24px;
   column-gap: 20px;
 
