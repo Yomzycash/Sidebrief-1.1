@@ -41,13 +41,13 @@ const InnerContainer = styled.div`
   justify-content: center;
 `;
 const QuestionNumber = styled.h4`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
 `;
 const Question = styled.h3`
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   line-height: 27px;
 
@@ -60,7 +60,7 @@ const Answer = styled.h3`
   display: flex;
   gap: 8px;
   align-items: center;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 14px;
   line-height: 21px;
 

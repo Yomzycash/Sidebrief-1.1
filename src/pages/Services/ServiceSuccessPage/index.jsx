@@ -10,7 +10,7 @@ const ServiceSuccessPage = () => {
   const navigate = useNavigate();
 
   const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
-  let serviceId = complyInfo.serviceId;
+  let serviceId = complyInfo?.serviceId;
 
   const viewService = useGetSingleServiceQuery(serviceId);
   let timeline = viewService?.data?.serviceTimeline;
