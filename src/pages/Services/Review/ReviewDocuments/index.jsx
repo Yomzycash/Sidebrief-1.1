@@ -3,14 +3,14 @@ import { CheckoutController } from "containers";
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
-import { Bottom,Loading } from "./style";
+import { Bottom, Loading } from "./style";
 import { Puff } from "react-loading-icons";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
 const ReviewDocuments = () => {
   const viewComply = useOutletContext();
 
   const navigate = useNavigate();
-  
 
   const handlePrev = () => {
     navigate(-1);
@@ -18,16 +18,14 @@ const ReviewDocuments = () => {
 
   const handleNext = async (formData) => {
     navigate("/services/success");
-    localStorage.removeItem("complyData");
-    localStorage.removeItem("servicePaymentDetails");
-    // localStorage.removeItem("serviceData");
+    removeComplyFromLocalStorage();
   };
   return (
     <div>
-      {viewComply?.isLoading ?.isLoading && (
-          <Loading height="50vh">
-            <Puff stroke="#00A2D4" fill="white" />
-          </Loading>
+      {viewComply?.isLoading?.isLoading && (
+        <Loading height="50vh">
+          <Puff stroke="#00A2D4" fill="white" />
+        </Loading>
       )}
       <ServiceReviewCard DocContent={viewComply?.data?.complyDocuments} />
       <Bottom>
@@ -36,7 +34,7 @@ const ReviewDocuments = () => {
           forwardSubmit
           backAction={handlePrev}
           forwardAction={handleNext}
-          forwardText="Next"
+          forwardText="Done"
         />
       </Bottom>
     </div>

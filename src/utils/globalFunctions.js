@@ -113,3 +113,8 @@ export const removeLaunchFromLocalStorage = () => {
   localStorage.removeItem("useSidebriefDirectors");
   localStorage.removeItem("beneficiaries");
 };
+
+export const removeComplyFromLocalStorage = () => {
+  localStorage.removeItem("complyInfo");
+  localStorage.removeItem("paymentDetails");
+};
