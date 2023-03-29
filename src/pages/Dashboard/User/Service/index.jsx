@@ -65,7 +65,10 @@ const UserService = () => {
   // console.log("serviceBody", serviceBody )
   const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
 
-  console.log(data);
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Container>
       <Header>
