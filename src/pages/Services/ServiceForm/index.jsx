@@ -48,7 +48,10 @@ const ServiceForm = () => {
       return;
     } else {
       // toast.success("Submitted successfully");
-      navigate("/services/documents");
+
+      let link = "/services/documents";
+      link = data?.serviceRequirements?.length < 1 ? "/services/review" : link;
+      navigate(link);
     }
   };
 

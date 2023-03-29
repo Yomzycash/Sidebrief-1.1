@@ -59,7 +59,7 @@ const PaymentPage = () => {
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await payLaunch(requiredData);
 
-    navigate("/services/form");
+    navigate("/launch/address");
   };
 
   //
@@ -80,7 +80,7 @@ const PaymentPage = () => {
     store.dispatch(setLaunchPaid(requiredData));
     const payResponse = await payLaunch(requiredData);
 
-    navigate("/services/form");
+    navigate("/launch/address");
   };
 
   //

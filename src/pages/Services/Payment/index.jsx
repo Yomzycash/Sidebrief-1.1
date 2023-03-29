@@ -52,7 +52,10 @@ const ServicePayment = () => {
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await addServicePayment(requiredData);
 
-    navigate("/services/form");
+    let link = "/services/form";
+    link = serviceForm?.length < 1 ? "/services/documents" : link;
+    link = serviceRequirements?.length < 1 ? "/services/review" : link;
+    navigate(link);
   };
 
   // Stripe required data to be sent to the backend a successful payment
@@ -72,8 +75,8 @@ const ServicePayment = () => {
     const payResponse = await addServicePayment(requiredData);
 
     let link = "/services/form";
-    link = serviceForm?.length < 1 ? "servcies/documents" : link;
-    link = serviceRequirements?.length < 1 ? "services/review" : link;
+    link = serviceForm?.length < 1 ? "/services/documents" : link;
+    link = serviceRequirements?.length < 1 ? "/services/review" : link;
     navigate(link);
   };
 

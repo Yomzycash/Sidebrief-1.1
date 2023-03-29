@@ -55,6 +55,7 @@ const AllServices = () => {
         serviceId: serviceId || "",
         progress: (dialog.progress > progress ? dialog.progress : progress) || dialog.progress,
       });
+    if (mode === "add") setClickedService({});
   };
 
   return (
