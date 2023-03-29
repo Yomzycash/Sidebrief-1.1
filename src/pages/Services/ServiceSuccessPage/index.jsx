@@ -5,6 +5,7 @@ import styled from "styled-components";
 import SuccessImage from "asset/svg/SuccessImage.svg";
 import { useNavigate } from "react-router-dom";
 import { useGetSingleServiceQuery } from "services/staffService";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
 const ServiceSuccessPage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,8 @@ const ServiceSuccessPage = () => {
   let timeline = viewService?.data?.serviceTimeline;
 
   const handleNavigate = () => {
-    navigate(`/dashboard/services/${complyInfo?.complyCode}`);
+    navigate(`/dashboard/services/${complyInfo?.complyCode}/info`);
+    removeComplyFromLocalStorage();
   };
 
   return (
