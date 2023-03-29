@@ -49,7 +49,7 @@ export const FilledContainer = styled.div`
   max-width: 429px;
   width: 100%;
 
-  background: #d5d5d5;
+  background: #FAFAFA;
 
   border: 1px solid #edf1f7;
   border-radius: 8px;
@@ -63,7 +63,7 @@ export const CountryInput = styled.h3`
   display: flex;
   align-items: center;
 
-  color: #959697;
+  color: #242627;;
 `;
 export const Loading = styled.div`
   display: flex;

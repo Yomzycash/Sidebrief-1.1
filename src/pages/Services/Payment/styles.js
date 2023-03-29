@@ -23,7 +23,10 @@ export const Loading = styled.div`
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
+  margin: auto;
+
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;

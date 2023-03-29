@@ -15,24 +15,25 @@ const PUBLIC_KEY = `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`;
 // process.env.NODE_ENV === "production"
 //   ? `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`
 //   : `${process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY}`;
-
 const stripePromise = loadStripe(PUBLIC_KEY);
 
 // const stripePromise = loadStripe(
 //   "pk_test_51HeX6TIfUU2kDtjPErnZWbbWJ0o68xZNSFm5448kvxfyCR7Hz0wfoU9eO035HGbA7KrYSYEXIxQJ0DLsrPUEaIHJ00KBYIckOc"
 // );
 
-const StripePayment = ({ amount }) => {
+const StripePayment = ({ sendStripeRefToBackend, amount }) => {
   const [clientSecret, setClientSecret] = useState("");
   const [payWithStripe, payWithStripeState] = usePayWithStripeMutation();
 
   useEffect(() => {
-    (async () => {
-      const paymentResponse = await payWithStripe({ amount: amount * 100 });
-      if (paymentResponse?.data?.clientSecret)
-        setClientSecret(paymentResponse?.data?.clientSecret);
-    })();
-  }, []);
+    if (amount) {
+      (async () => {
+        const paymentResponse = await payWithStripe({ amount: amount * 100 });
+        if (paymentResponse?.data?.clientSecret)
+          setClientSecret(paymentResponse?.data?.clientSecret);
+      })();
+    }
+  }, [amount]);
 
   const appearance = {
     theme: "stripe",
@@ -84,7 +85,7 @@ const StripePayment = ({ amount }) => {
     <>
       {clientSecret && stripePromise && (
         <Elements options={options} stripe={stripePromise}>
-          <StripeForm />
+          <StripeForm sendStripeRefToBackend={sendStripeRefToBackend} />
         </Elements>
       )}
     </>

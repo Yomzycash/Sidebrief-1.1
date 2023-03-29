@@ -9,14 +9,14 @@ import { useGetSingleServiceQuery } from "services/staffService";
 const ServiceSuccessPage = () => {
   const navigate = useNavigate();
 
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let serviceId = complyCodeData.serviceId;
+  const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo.serviceId;
 
   const viewService = useGetSingleServiceQuery(serviceId);
   let timeline = viewService?.data?.serviceTimeline;
 
   const handleNavigate = () => {
-    navigate("/dashboard");
+    navigate(`/dashboard/services/${complyInfo?.complyCode}`);
   };
 
   return (
@@ -24,10 +24,10 @@ const ServiceSuccessPage = () => {
       <Body>
         <Success
           title="Service Request Successful"
-          description={`Thank you for your patience, your service request would take ${timeline} `}
+          description={`Thank you for your patience, your service request would take ${timeline} working days`}
           image={SuccessImage}
           buttonTitle="View Service"
-          onButtonClick={handleNavigate}
+          onClick={handleNavigate}
         />
       </Body>
     </>

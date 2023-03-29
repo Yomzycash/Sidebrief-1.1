@@ -1,31 +1,16 @@
 import ServiceReviewCard from "components/cards/ServiceReviewCard";
 import { CheckoutController } from "containers";
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Bottom,Loading } from "./style";
 import { Puff } from "react-loading-icons";
 
 const ReviewDocuments = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
-
-  let complyCode = complyCodeData?.complyCode;
+  const viewComply = useOutletContext();
 
   const navigate = useNavigate();
-  const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
-  const [documentContainer, setDocumentContainer] = useState([]);
-
-  const handleViewDocument = useCallback(async () => {
-    const requiredData = {
-      complyCode: complyCode,
-    };
-    const response = await viewServiceDocument(requiredData);
-    setDocumentContainer(response?.data?.complyDocuments);
-  }, [complyCode, viewServiceDocument]);
-
-  useEffect(() => {
-    handleViewDocument();
-  }, [handleViewDocument]);
+  
 
   const handlePrev = () => {
     navigate(-1);
@@ -39,12 +24,12 @@ const ReviewDocuments = () => {
   };
   return (
     <div>
-      {viewServiceDocumentState?.isLoading && (
+      {viewComply?.isLoading ?.isLoading && (
           <Loading height="50vh">
             <Puff stroke="#00A2D4" fill="white" />
           </Loading>
       )}
-      <ServiceReviewCard DocContent={documentContainer} />
+      <ServiceReviewCard DocContent={viewComply?.data?.complyDocuments} />
       <Bottom>
         <CheckoutController
           backText={"Previous"}

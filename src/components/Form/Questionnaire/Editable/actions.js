@@ -26,6 +26,8 @@ export const useActions = ({
     validateQuestion(value);
   };
 
+  //
+
   // Validates question input
   const validateQuestion = (value) => {
     if (value.length === 0) {
@@ -40,6 +42,8 @@ export const useActions = ({
     }
   };
 
+  //
+
   // Validates the length of options array
   const validateOptions = () => {
     if ((selectedType === "checkbox" || selectedType === "radio") && optionsArray.length < 2) {
@@ -51,12 +55,20 @@ export const useActions = ({
     }
   };
 
+  //
+
   // Validates the length of each option
-  const validateEmptyOptions = () => {
+  const validateEachOption = () => {
+    let optionsCopy = optionsArray?.map((el) => el?.toLowerCase()?.trim());
+    let uniqueOptions = [...new Set(optionsCopy)];
+    let duplicatesExist = optionsCopy?.length !== uniqueOptions?.length;
+
     if (selectedType === "checkbox" || selectedType === "radio") {
       if (optionsArray.some((el) => el.trim() === "")) {
         dispatch({ type: "setOptionsError", payload: "Option cannot be empty" });
         return false;
+      } else if (duplicatesExist) {
+        dispatch({ type: "setOptionsError", payload: "Duplicate option(s) exist" });
       } else {
         dispatch({ type: "setOptionsError", payload: "" });
         return true;
@@ -64,34 +76,42 @@ export const useActions = ({
     } else return true;
   };
 
+  //
+
   // Adds an option
   const handleOptionAdd = (e) => {
     e.preventDefault();
     if (otherClicked) return;
-    let valid = validateEmptyOptions();
+    let valid = validateEachOption();
     if (!valid) return;
     let optionsCopy = [...optionsArray];
     optionsCopy.push("");
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
   };
 
+  //
+
   // Adds "other" option
   const handleOtherAdd = (e) => {
     e.preventDefault();
     if (otherClicked) return;
-    let valid = validateEmptyOptions();
+    let valid = validateEachOption();
     if (!valid) return;
     let optionsCopy = [...optionsArray];
     optionsCopy.push("Other");
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
   };
 
+  //
+
   const focusLastOption = () => {
     let lastIndex = optionsArray.length - 1;
     if (lastIndex < 0) return;
     if (selectedType === "checkbox" || selectedType === "radio")
-      optionsRef.current?.childNodes[lastIndex + 1]?.childNodes[1].focus();
+      optionsRef.current?.childNodes[lastIndex]?.childNodes[1].focus();
   };
+
+  //
 
   // Removes an existing option
   const handleOptionRemove = (index) => {
@@ -99,22 +119,28 @@ export const useActions = ({
     dispatch({ type: "setOptionsArray", payload: optionsArrayCopy });
   };
 
+  //
+
   // Updates options values when selected question type is checkbox or radio
   const updateOptionValue = (index, value) => {
     let optionsCopy = [...optionsArray];
     optionsCopy[index] = value;
     dispatch({ type: "setOptionsArray", payload: optionsCopy });
     if (value !== "") {
-      if (!validateOptions()) return;
+      // if (!validateOptions()) return;
       dispatch({ type: "setOptionsError", payload: "" });
     }
   };
+
+  //
 
   // Toggles compulsory
   const handleToggle = (checkboxRef) => {
     checkboxRef.checked = !state.required;
     dispatch({ type: "setRequired", payload: checkboxRef.checked });
   };
+
+  //
 
   // Submits the form
   const handleSubmit = async (e) => {
@@ -131,7 +157,7 @@ export const useActions = ({
     }
 
     let questionValid = validateQuestion(question);
-    let optionsValid = validateOptions() && validateEmptyOptions();
+    let optionsValid = validateOptions() && validateEachOption();
     if (!questionValid || !optionsValid) return;
 
     let response = review
@@ -146,13 +172,18 @@ export const useActions = ({
     } else {
       handleError(response?.error);
     }
+
+    dispatch({ type: "setUpdateClicked", payload: false });
   };
 
+  //
+
+  // Resets all fields to default values
   const resetFields = () => {
     dispatch({ type: "setQuestion", payload: "" });
     dispatch({ type: "setOptionsArray", payload: [""] });
     dispatch({ type: "setSelectedType", payload: "input" });
-    dispatch({ type: "setRequired", payload: false });
+    dispatch({ type: "setRequired", payload: true });
     dispatch({ type: "setQuestionError", payload: "" });
     dispatch({ type: "setOptionsError", payload: "" });
   };

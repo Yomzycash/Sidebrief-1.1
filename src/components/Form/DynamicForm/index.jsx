@@ -1,10 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DropDown, InputWithLabel } from "components/input";
 import { CheckoutController } from "containers";
 import React from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { getSchema, getType } from "./actions";
+import { getSchema } from "./actions";
 import { Bottom, DynamicFormWrapper, Inputs } from "./styled";
 import UneditableQuestionnaire from "components/Form/Questionnaire/Uneditable";
 
@@ -43,14 +42,25 @@ const DynamicForm = ({
   };
 
   useEffect(() => {
-    if (formMode === "edit")
-      previewInfo.map((el) => setValue(el.name, previewInfo.entityName, { shouldValidate: true }));
-  }, []);
+    if (previewInfo)
+      previewInfo.map((el) =>
+        setValue(el.complyQuestionName, el.complyAnswer, {
+          shouldValidate: true,
+        })
+      );
+  }, [previewInfo]);
+
+  let updatedFormInfo = formInfo?.map((el) => ({
+    ...el,
+    // complyDataInfo: previewInfo?.find((each) => each?.complyQuestionName === el?.fieldName) || {},
+    fieldAnswer:
+      previewInfo?.find((each) => each?.complyQuestionName === el?.fieldName)?.complyAnswer || "",
+  }));
 
   return (
     <DynamicFormWrapper onSubmit={handleSubmit(submitAction)} style={style}>
       <Inputs>
-        {formInfo?.map((el, index) => (
+        {updatedFormInfo?.map((el, index) => (
           <UneditableQuestionnaire
             key={index}
             index={index}
@@ -59,6 +69,7 @@ const DynamicForm = ({
             handleRadioSelect={handleRadioSelect}
             handleCheckboxSelect={handleCheckboxSelect}
             error={errors[el?.fieldName]}
+            register={register}
           />
         ))}
       </Inputs>
@@ -69,6 +80,7 @@ const DynamicForm = ({
           backAction={handlePrev}
           forwardAction={() => {}}
           forwardText="Next"
+          forwardLoading={loading}
         />
       </Bottom>
     </DynamicFormWrapper>

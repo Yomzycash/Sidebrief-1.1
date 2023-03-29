@@ -1,46 +1,29 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
-  DeleteWrapper,
   QuestionOptions,
   ReviewContainer,
   ReviewQuestion,
   ReviewTop,
   ReviewTopLeft,
-  ReviewTopRight,
 } from "../styled";
-import CommonButton from "components/button/commonButton";
+import EditDeleteButton from "components/button/EditDeleteButton";
 import Option from "./Option";
-import DeleteIcon from "asset/Icons/DeleteIcon";
-import EditIcon from "asset/Icons/EditIcon";
-import { SpinningCircles } from "react-loading-icons";
 
 const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, deleteState }) => {
-  const [confirm, setConfirm] = useState(false);
-  const [confirmValue, setConfirmValue] = useState("");
   const [selectedToDelete, setselectedToDelete] = useState();
-
-  const deleteInputRef = useRef();
 
   let questionMark = info?.fieldQuestion?.slice(-1) === "?" ? "" : "?";
 
-  let confirmed = confirmValue === "delete";
   let loading = deleteState.isLoading && selectedToDelete?.fieldCode === info?.fieldCode;
 
   const handleDeleteQuestion = () => {
-    if (confirmed) {
-      deleteAction(info);
-      setselectedToDelete(info);
-      deleteInputRef.current.blur();
-    }
+    deleteAction(info);
+    setselectedToDelete(info);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleDeleteQuestion();
+  const handleEditQuestion = () => {
+    setDisabled(false);
   };
-
-  useEffect(() => {
-    if (confirm) deleteInputRef.current.focus();
-  }, [confirm]);
 
   return (
     <ReviewContainer>
@@ -49,46 +32,11 @@ const QuestionReview = ({ info, questionNumber, setDisabled, deleteAction, delet
           <span>Question {questionNumber}</span>
           {info?.fieldRequired && <span>Compulsory</span>}
         </ReviewTopLeft>
-        <ReviewTopRight>
-          {confirm === false && (
-            <CommonButton
-              text="Edit"
-              LeftIcon={EditIcon}
-              leftIconColor="#0082AA"
-              action={() => setDisabled(false)}
-            />
-          )}
-          {confirm === false && (
-            <CommonButton
-              text="Delete"
-              LeftIcon={DeleteIcon}
-              leftIconColor="#ed4e3a"
-              action={() => setConfirm(true)}
-              loading={loading}
-              LoadingIcon={
-                <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
-              }
-            />
-          )}
-          {confirm && (
-            <DeleteWrapper>
-              <input
-                ref={deleteInputRef}
-                type="text"
-                placeholder="Type DELETE to confirm"
-                value={confirmValue}
-                onChange={(e) => setConfirmValue(e.target.value.toLowerCase())}
-                onBlur={() => setConfirm(false)}
-                onKeyDown={handleKeyDown}
-              />
-              <DeleteIcon
-                width={11}
-                color={confirmed ? "#ed4e3a" : "#c68181"}
-                onMouseDown={handleDeleteQuestion}
-              />
-            </DeleteWrapper>
-          )}
-        </ReviewTopRight>
+        <EditDeleteButton
+          editAction={handleEditQuestion}
+          deleteAction={handleDeleteQuestion}
+          deleteLoading={loading}
+        />
       </ReviewTop>
 
       <ReviewQuestion>{info?.fieldQuestion + questionMark}</ReviewQuestion>

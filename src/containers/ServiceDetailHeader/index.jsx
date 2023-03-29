@@ -16,6 +16,11 @@ import {
   SubHeader,
   StatusType,
   MessageCount,
+  ModalWrapper,
+  ModalButton,
+  Question,
+  TopContent,
+  CloseWrapper,
 } from "./styled";
 import { FiArrowLeft } from "react-icons/fi";
 import { StatusIndicator } from "components/Indicators";
@@ -23,20 +28,19 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 
 import { Dialog } from "@mui/material";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HiX } from "react-icons/hi";
-import { useViewLaunchRequestQuery, useDeleteLaunchRequestMutation } from "services/launchService";
-import { useDeleteLaunchRequestStaffMutation } from "services/staffService";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { format } from "date-fns";
-import styled from "styled-components";
 import { CheckoutController } from "containers/Checkout";
 import { CommonButton } from "components/button";
 import { Mail } from "asset/svg";
 
 import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
+import { useDeleteComplyMutation } from "services/complyService";
+import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
 const ServiceDetailHeader = ({
   serviceName,
@@ -44,9 +48,16 @@ const ServiceDetailHeader = ({
   status,
   code,
   isStaff,
-  deleteAction = () => {},
+  complyCode,
+  form,
+  document,
+  mainUrl,
 }) => {
+  const [openModal, setOpenModal] = useState(false);
+
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
+
+  const [deleteComply, deleteState] = useDeleteComplyMutation();
 
   const { data, refetch } = useGetNotificationsByServiceIdQuery(code);
 
@@ -71,6 +82,30 @@ const ServiceDetailHeader = ({
     };
   }, []);
 
+  const handleClick = () => {
+    setOpenModal(true);
+  };
+
+  const handleNo = () => {
+    setOpenModal(false);
+  };
+  const deleteAction = async () => {
+    // perform delete action here
+
+    const response = await deleteComply({
+      complyCode: complyCode,
+    });
+
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Deleted");
+      navigate(`/staff-dashboard/businesses/services`);
+    } else handleError(error);
+    setOpenModal(false);
+  };
+
   const navigateToMessages = () => {
     if (isStaff) {
       navigate(`/staff-dashboard/businesses/services/chats/?serviceId=${code}`);
@@ -79,12 +114,15 @@ const ServiceDetailHeader = ({
     }
   };
 
+  const { pathname } = useLocation();
+  const servicesUrl = pathname.split("/").slice(0, -2).join("/");
+
   return (
     <Container>
       <Top>
-        <BackContainer to={{}}>
+        <BackContainer to={servicesUrl}>
           <FiArrowLeft color="#151717" size={24} />
-          <Text>{`Back to Service list`}</Text>
+          <Text>{`Back to Services`}</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>
@@ -114,7 +152,7 @@ const ServiceDetailHeader = ({
             </BottomInfo>
           </LHS>
           <RHS>
-            <DeleteButton onClick={deleteAction}>
+            <DeleteButton onClick={handleClick}>
               <p>Delete</p>
               <RedTrash />
             </DeleteButton>
@@ -127,14 +165,36 @@ const ServiceDetailHeader = ({
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
+        {/* using both relative and absolute routing to reduce the length of the pathname  */}
+
         <ActiveNav
           text={"Service Information"}
           // total={0}
-          path={"/dashboard/services/details/ServiceInformation"}
+          path={`${mainUrl}/info`}
         />
-        <ActiveNav text={"Form"} path={"/dashboard/services/details/FormInformation"} />
-        <ActiveNav text={"Documents"} path={"/dashboard/services/details/DocumentInfo"} />
+        {form?.length > 0 && <ActiveNav text={"Form"} path={`${mainUrl}/forminfo`} />}
+        {document?.length > 0 && <ActiveNav text={"Documents"} path={`${mainUrl}/documentinfo`} />}
       </SubHeader>
+      <Dialog open={openModal} fullWidth maxWidth="sm">
+        <ModalWrapper>
+          <TopContent>
+            <CloseWrapper onClick={() => setOpenModal(false)}>
+              <HiX size={20} />
+            </CloseWrapper>
+          </TopContent>
+
+          <Question>Do you want to Delete this Application ?</Question>
+          <ModalButton>
+            <CheckoutController
+              backAction={handleNo}
+              backText={"No"}
+              forwardAction={deleteAction}
+              forwardText={"Yes"}
+              forwardLoading={deleteState.isLoading}
+            />
+          </ModalButton>
+        </ModalWrapper>
+      </Dialog>
     </Container>
   );
 };

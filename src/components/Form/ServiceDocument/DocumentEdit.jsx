@@ -46,6 +46,13 @@ const DocumentEdit = ({
     }
   }, [disabled]);
 
+  // Hides edit instance if there is at least one question
+  useEffect(() => {
+    if (documentNumber > 1 && !review) {
+      dispatch({ type: "setDone", payload: true });
+    }
+  }, [documentNumber, review]);
+
   return (
     <DocumentForm onSubmit={handleSubmit}>
       {!done && (
@@ -80,14 +87,24 @@ const DocumentEdit = ({
 
       <SubmitButtons>
         {review ? (
-          <CommonButton
-            text="Update"
-            type="submit"
-            id="review-submit"
-            action={() => dispatch({ type: "setUpdateClicked", payload: true })}
-            loading={updateState.isLoading && updateClicked}
-            LoadingIcon={<SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />}
-          />
+          <>
+            <CommonButton
+              text="Update"
+              type="submit"
+              id="review-submit"
+              action={() => dispatch({ type: "setUpdateClicked", payload: true })}
+              loading={updateState.isLoading && updateClicked}
+              LoadingIcon={
+                <SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />
+              }
+            />
+            <CommonButton
+              text="Cancel"
+              type="button"
+              id="cancel-submit"
+              action={() => setDisabled(true)}
+            />
+          </>
         ) : (
           <>
             <CommonButton

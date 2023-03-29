@@ -9,6 +9,7 @@ const UneditableQuestionnaire = ({
   handleRadioSelect,
   handleCheckboxSelect,
   error,
+  register,
 }) => {
   return (
     <>
@@ -20,6 +21,7 @@ const UneditableQuestionnaire = ({
           info={info}
           handleChange={handleTextChange}
           error={error}
+          register={register}
         />
       )}
 
@@ -30,6 +32,7 @@ const UneditableQuestionnaire = ({
           handleRadioSelect={handleRadioSelect}
           handleCheckboxSelect={handleCheckboxSelect}
           error={error}
+          register={register}
         />
       )}
     </>

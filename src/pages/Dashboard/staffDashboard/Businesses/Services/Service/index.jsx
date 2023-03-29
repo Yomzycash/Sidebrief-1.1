@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Puff } from "react-loading-icons";
 import { ReactComponent as ArrowLeftIcon } from "asset/Icons/ArrowLeftIcon.svg";
 import { ReactComponent as AddIcon } from "asset/Icons/AddIcon.svg";
 import Search from "components/navbar/Search";
-
 import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
-
 import FeatureSection from "containers/Feature/FeatureSection";
-import FeatureTable from "components/Tables/FeatureTable";
 import { toast } from "react-hot-toast";
-// import lookup from "country-code-lookup"
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
-import { useGetAllNotificationsQuery } from "services/chatService";
 import {
   Container,
   Header,
@@ -24,49 +19,28 @@ import {
   SearchWrapper,
   TopContent,
 } from "./styled";
-import ServicesModal from "components/modal/ServicesModal";
+import StaffServicesModal from "components/modal/StaffServicesModal";
 import { handleError } from "utils/globalFunctions";
-import { useActions } from "./actions";
+import { GeneralTable } from "components/Tables";
+import { columns } from "./table";
+import { useViewAllComplyQuery } from "services/complyService";
 
 const iconStyle = { width: "17px", height: "17px" };
 
-//
-
-//
-
 const ServicePage = () => {
-  // const [open, setOpen] = useState(false);
-  // const [cardAction, setCardAction] = useState("");
   const [clickedService, setClickedService] = useState({});
   const { data, isLoading, refetch } = useGetAllServicesQuery();
-  const notifications = useGetAllNotificationsQuery();
+  const allComply = useViewAllComplyQuery();
   const [deleteService, deleteState] = useDeleteServiceMutation();
-  const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
   const navigate = useNavigate();
 
-  const { dataBody } = useActions({ notifications, navigate });
-
   // This runs when add service button is clicked
   const handleAddButton = () => {
     setOpen("add");
   };
-
-  const servicesNotifications = data?.filter((service) => {
-    let serviceNots = notifications.data?.filter((not) => not?.serviceId === service?.serviceId);
-    return serviceNots?.length > 0;
-  });
-
-  let lastNotification = servicesNotifications?.map((nots) => nots[nots?.length - 1]);
-
-  // Table header information
-  const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
-
-  useEffect(() => {
-    setServicesEnquiry(data);
-  }, [data]);
 
   const handleViewAllServices = () => {
     navigate("/staff-dashboard/businesses/services/all");
@@ -76,7 +50,7 @@ const ServicePage = () => {
     navigate("/staff-dashboard/businesses/services/chats");
   };
 
-  let totalServices = servicesEnquiry?.length > 0 ? servicesEnquiry.length : 0;
+  let totalServices = data?.length > 0 ? data?.length : 0;
 
   const handleServiceClick = (clickedInfo) => {
     setOpen("edit", clickedInfo.serviceId);
@@ -106,6 +80,10 @@ const ServicePage = () => {
         progress: (dialog.progress > progress ? dialog.progress : progress) || dialog.progress,
       });
   };
+
+  useEffect(() => {
+    allComply.refetch();
+  }, []);
 
   return (
     <Container>
@@ -143,8 +121,8 @@ const ServicePage = () => {
             </Loading>
           ) : (
             <ScrollBox>
-              {servicesEnquiry &&
-                servicesEnquiry.map((service, index) => (
+              {data &&
+                data?.map((service, index) => (
                   <PetalsCard
                     key={index}
                     title={service.serviceName}
@@ -169,9 +147,24 @@ const ServicePage = () => {
         btnRightIcon={ArrowLeftIcon}
         btnAction={handleViewAllNotifications}
       >
-        <FeatureTable header={header} body={dataBody} />
+        {allComply.isLoading ? (
+          <Loading height="300px">
+            <Puff stroke="#00A2D4" fill="white" width={60} />
+          </Loading>
+        ) : (
+          <GeneralTable
+            columns={columns}
+            data={allComply.data?.map((comply) => ({
+              complyCode: comply.complyCode,
+              serviceId: comply.serviceId,
+              meta: comply.meta,
+              date: comply.updatedAt,
+            }))}
+            normalLastRow
+          />
+        )}
 
-        <ServicesModal
+        <StaffServicesModal
           disableAll={dialog.mode === "edit" ? true : false}
           clickedService={clickedService}
           deleteState={deleteState}

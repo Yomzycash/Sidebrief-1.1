@@ -2,7 +2,7 @@ import InfoCard from "components/cards/InfoCard";
 import { CheckoutController } from "containers";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Bottom } from "../style";
@@ -12,27 +12,11 @@ import { Puff } from "react-loading-icons";
 
 
 const ServiceInfoReview = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyInfo"));
+  const viewComply = useOutletContext();
+  console.log(viewComply)
 
-  let complyCode = complyCodeData?.complyCode;
-  const [viewComplyData, viewComplyDataState] = useLazyViewComplyQuery();
-  const [complyData, setComplyData] = useState([]);
-
-  const handleViewData = useCallback(async () => {
-    const requiredData = {
-      complyCode: complyCode,
-    };
-    const response = await viewComplyData(requiredData);
   
-    setComplyData(response?.data?.serviceId);
-  }, [complyCode, viewComplyData]);
-
-  useEffect(() => {
-    handleViewData();
-  }, [handleViewData]);
-
-  //let serviceId = complyCodeData.serviceId;
-  const viewService = useGetSingleServiceQuery(complyData);
+  const viewService = useGetSingleServiceQuery(viewComply?.data?.serviceId);
 
   const countries = useGetAllCountriesQuery();
 
@@ -52,7 +36,7 @@ const ServiceInfoReview = () => {
   };
   return (
     <Wrapper>
-      {viewComplyDataState?.isLoading && (
+      {viewComply?.isLoading && (
           <Loading height="50vh">
             <Puff stroke="#00A2D4" fill="white" />
           </Loading>

@@ -1,36 +1,22 @@
-import { Outlet, useSearchParams } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { Body, Container } from "./styles";
-import { useEffect, useState } from "react";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
-import { useCallback } from "react";
-import { format } from "date-fns";
+import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
-import { useLazyViewComplyQuery } from "services/complyService";
+import { useViewComplyQuery } from "services/complyService";
+import { checkStaffEmail } from "utils/globalFunctions";
 
 const ServicesDetailLayout = () => {
-  const [viewComply, viewComplyState] = useLazyViewComplyQuery();
-  const [complyResponse, setComplyResponse] = useState([]);
-
-  let complyCode = "302033545077050509";
-
-  const handleViewResponse = async () => {
-    const requiredData = {
-      complyCode: complyCode,
-    };
-    const response = await viewComply(requiredData);
- if(response)
-    setComplyResponse(response);
-  };
-
-  let serviceId = complyResponse?.data?.serviceId;
+  const { complycode } = useParams();
+  const viewComply = useViewComplyQuery({
+    complyCode: complycode,
+  });
+  const serviceId = viewComply?.data?.serviceId;
+  const complyCode = viewComply?.data?.complyCode;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
-
-  console.log(serviceId);
-
-  useEffect(() => {
-    handleViewResponse();
-  }, []);
+  let userEmail = localStorage.getItem("userEmail");
+  let staffEmail = checkStaffEmail(userEmail);
 
   const getStatus = (stat) => {
     switch (stat) {
@@ -52,22 +38,28 @@ const ServicesDetailLayout = () => {
     }
   };
 
-
+  const { pathname } = useLocation();
+  const mainUrl = pathname.split("/").slice(0, -1).join("/");
 
   return (
     <Container>
       <ServiceDetailHeader
-        status={getStatus(complyResponse?.data?.status)}
+        status={getStatus(viewComply?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
-        code={serviceId}
+        code={complyCode}
+        mainUrl={mainUrl}
         date={
-          viewComplyState?.isLoading
+          viewComply?.isLoading
             ? `--`
-            : format(new Date( "2023-03-13T10:52:36.152Z"), "do MMMM yyyy")
+            : format(parseJSON(viewComply?.data?.createdAt), "do MMMM yyyy")
         }
+        complyCode={complycode}
+        isStaff={staffEmail}
+        document={viewComply?.data?.complyDocuments}
+        form={viewComply?.data?.complyData}
       />
       <Body>
-        <Outlet />
+        <Outlet context={viewComply} />
       </Body>
     </Container>
   );

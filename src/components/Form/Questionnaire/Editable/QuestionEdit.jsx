@@ -11,6 +11,7 @@ import {
   ToggleWrapper,
   QuestionInfoWrapper,
   SubmitButtons,
+  OptionsWrapper,
 } from "../styled";
 import CommonButton from "components/button/commonButton";
 import Option from "./Option";
@@ -72,7 +73,7 @@ const QuestionEdit = ({
   // Focuses the last option
   useEffect(() => {
     focusLastOption();
-  }, [selectedType]);
+  }, [selectedType, optionsArray.length]);
 
   // Populates the Question info
   useEffect(() => {
@@ -85,7 +86,13 @@ const QuestionEdit = ({
     }
   }, [disabled]);
 
-  // console.log("parent", required);
+  // Hides edit instance if there is at least one question
+  useEffect(() => {
+    if (questionNumber > 1 && !review) {
+      dispatch({ type: "setDone", payload: true });
+    }
+  }, [questionNumber, review]);
+
   return (
     <QuestionForm onSubmit={handleSubmit}>
       {!done && (
@@ -103,12 +110,7 @@ const QuestionEdit = ({
               errorMessage={questionError}
             />
             <ToggleWrapper>
-              <ToggleButton
-                rightText="Compulsory"
-                // name="toggle-button"
-                checked={required}
-                onChange={handleToggle}
-              />
+              <ToggleButton rightText="Compulsory" checked={required} onChange={handleToggle} />
             </ToggleWrapper>
           </Question>
 
@@ -140,40 +142,47 @@ const QuestionEdit = ({
             />
           </QuestionType>
 
-          {selectedType === "checkbox" && (optionsArray.length > 0 || optionsError) && (
-            <QuestionOptions ref={optionsRef}>
+          {selectedType === "checkbox" && optionsArray.length > 0 && (
+            <OptionsWrapper>
               {optionsError && <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>}
-              {optionsArray?.map((text, index) => (
-                <Option
-                  type="checkbox"
-                  text={text}
-                  error
-                  key={index}
-                  index={index}
-                  removeAction={() => handleOptionRemove(index)}
-                  placeholder={`Enter option ${index + 1}`}
-                  updateOptionValue={updateOptionValue}
-                />
-              ))}
-            </QuestionOptions>
+              <QuestionOptions ref={optionsRef}>
+                {optionsArray?.map((text, index) => (
+                  <Option
+                    type="checkbox"
+                    text={text}
+                    error
+                    key={index}
+                    index={index}
+                    removeAction={() => handleOptionRemove(index)}
+                    placeholder={`Enter option ${index + 1}`}
+                    updateOptionValue={updateOptionValue}
+                    optionsArray={optionsArray}
+                    dispatch={dispatch}
+                  />
+                ))}
+              </QuestionOptions>
+            </OptionsWrapper>
           )}
 
-          {selectedType === "radio" && (optionsArray.length > 0 || optionsError) && (
-            <QuestionOptions ref={optionsRef}>
-              <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>
-              {optionsArray?.map((text, index) => (
-                <Option
-                  type="radio"
-                  text={text}
-                  key={index}
-                  index={index}
-                  removeAction={() => handleOptionRemove(index)}
-                  placeholder={`Enter option ${index + 1}`}
-                  updateOptionValue={updateOptionValue}
-                  focusLastOption={focusLastOption}
-                />
-              ))}
-            </QuestionOptions>
+          {selectedType === "radio" && optionsArray.length > 0 && (
+            <OptionsWrapper>
+              {optionsError && <ErrMsg style={{ left: "24px" }}>{optionsError}</ErrMsg>}
+              <QuestionOptions ref={optionsRef}>
+                {optionsArray?.map((text, index) => (
+                  <Option
+                    type="radio"
+                    text={text}
+                    key={index}
+                    index={index}
+                    removeAction={() => handleOptionRemove(index)}
+                    placeholder={`Enter option ${index + 1}`}
+                    updateOptionValue={updateOptionValue}
+                    optionsArray={optionsArray}
+                    dispatch={dispatch}
+                  />
+                ))}
+              </QuestionOptions>
+            </OptionsWrapper>
           )}
 
           {(selectedType === "checkbox" || selectedType === "radio") && (
@@ -195,14 +204,24 @@ const QuestionEdit = ({
 
       <SubmitButtons>
         {review ? (
-          <CommonButton
-            text="Update"
-            type="submit"
-            id="review-submit"
-            action={() => dispatch({ type: "setUpdateClicked", payload: true })}
-            loading={updateState.isLoading && updateClicked}
-            LoadingIcon={<SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />}
-          />
+          <>
+            <CommonButton
+              text="Update"
+              type="submit"
+              id="review-submit"
+              action={() => dispatch({ type: "setUpdateClicked", payload: true })}
+              loading={updateState.isLoading && updateClicked}
+              LoadingIcon={
+                <SpinningCircles stroke="#00a2d4" fill="#00a2d4" width={20} height={20} />
+              }
+            />
+            <CommonButton
+              text="Cancel"
+              type="button"
+              id="cancel-submit"
+              action={() => setDisabled(true)}
+            />
+          </>
         ) : (
           <>
             <CommonButton
