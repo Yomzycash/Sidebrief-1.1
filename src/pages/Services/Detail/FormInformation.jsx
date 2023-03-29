@@ -1,27 +1,25 @@
 import { StepBar } from "components/Indicators";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import FormContainer from "containers/FormContainer";
 
 const FormInformation = () => {
-  const complyCodeData = JSON.parse(localStorage.getItem("complyData"));
-  let complyCode = "302033545077050509";
+  const { complycode } = useParams();
 
-  const navigate = useNavigate();
   const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
   const [questionContainer, setQuestionContainer] = useState([]);
 
   const handleViewDocument = useCallback(async () => {
     const requiredData = {
-      complyCode: complyCode,
+      complyCode: complycode,
     };
     const response = await viewServiceDocument(requiredData);
     setQuestionContainer(response?.data?.complyData);
-  }, [complyCode, viewServiceDocument]);
+  }, [complycode, viewServiceDocument]);
 
   useEffect(() => {
     handleViewDocument();
