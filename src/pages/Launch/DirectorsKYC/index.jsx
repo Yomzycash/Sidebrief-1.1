@@ -18,11 +18,7 @@ import {
 import { useSelector } from "react-redux";
 import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
-import {
-  convertToLink,
-  isValidFileUploaded,
-  mergeInfo,
-} from "utils/LaunchHelper";
+import { convertToLink, isValidFileUploaded, mergeInfo } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
 import AppFeedback from "components/AppFeedback";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
@@ -44,9 +40,7 @@ const DirectorKYC = () => {
   const [sameData, setSameData] = useState([]);
   const [error, setError] = useState("");
   const [uploadedFileDetails, setUploadedFileDetails] = useState("");
-  const launchResponse = useSelector(
-    (state) => state.LaunchReducer.launchResponse
-  );
+  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
   const countryISO = localStorage.getItem("countryISO");
   const entityType = localStorage.getItem("entityType");
   const [viewMember, viewMembersState] = useViewMembersMutation();
@@ -57,10 +51,9 @@ const DirectorKYC = () => {
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
   let navigatedFrom = localStorage.getItem("navigatedFrom");
+
   useEffect(() => {
-    const check = data?.find(
-      (entity) => entity.entityCode === launchResponse.registrationType
-    );
+    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -79,9 +72,7 @@ const DirectorKYC = () => {
     setDocumentContainer(mapping);
   }, [directorContainer]);
 
-  const generatedLaunchCode = useSelector(
-    (store) => store.LaunchReducer.generatedLaunchCode
-  );
+  const generatedLaunchCode = useSelector((store) => store.LaunchReducer.generatedLaunchCode);
   const handleDirectorCheck = async () => {
     const response = await viewMemberKYC(launchResponse);
     const MemberKYCInfo = [...response?.data?.businessMembersKYC];
@@ -227,9 +218,7 @@ const DirectorKYC = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 10 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 10 })); // total- total pages and current - current page
   }, []);
 
   return (
@@ -238,9 +227,7 @@ const DirectorKYC = () => {
       <Body>
         <CheckoutSection
           title={"Director KYC Documentation:"}
-          HeaderParagraph={
-            "Please attach the necessary documents for all directors"
-          }
+          HeaderParagraph={"Please attach the necessary documents for all directors"}
         />
         <LaunchPrimaryContainer>
           {viewDirectorState.isLoading && (
@@ -260,9 +247,7 @@ const DirectorKYC = () => {
                       documentComponentType={document}
                       TopText={document}
                       memberCode={director.code}
-                      onDrop={(files) =>
-                        handleChange(files, director.code, document)
-                      }
+                      onDrop={(files) => handleChange(files, director.code, document)}
                       handleRemove={() => handleRemove(document)}
                       BottomText={`Please provide your ${document}`}
                       handleRefetch={handleDirectorCheck}
