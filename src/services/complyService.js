@@ -184,7 +184,6 @@ export const {
   useCreateComplyMutation,
   useUpdateComplyMutation,
   useViewComplyQuery,
-  useViewComplyMutaton,
   useLazyViewComplyQuery,
   useDeleteComplyMutation,
   useGetAllServicesQuery,
