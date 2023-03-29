@@ -38,7 +38,7 @@ const ServiceReview = () => {
   return (
     <Container>
       <ServicesCheckoutHeader />
-      <Body>uj==           
+      <Body>          
         <CheckoutSection
           title={"Service Review Information"}
           HeaderParagraph="Please ensure all information provided for this business are correct"
