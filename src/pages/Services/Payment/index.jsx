@@ -23,8 +23,8 @@ const ServicePayment = () => {
   const viewService = useGetSingleServiceQuery(serviceId);
 
   const serviceData = viewService.data;
-  const serviceForm = serviceData.serviceForm;
-  const serviceRequirements = serviceData.serviceRequirements;
+  const serviceForm = serviceData?.serviceForm;
+  const serviceRequirements = serviceData?.serviceRequirements;
 
   console.log(serviceForm);
   console.log(serviceRequirements);
