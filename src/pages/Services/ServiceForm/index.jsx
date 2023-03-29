@@ -39,9 +39,10 @@ const ServiceForm = () => {
     let responses = await Promise.all(addArray);
     console.log(responses);
 
-    let error = responses.find((el) => el?.error);
+    let error = responses.find((el) => el?.error)?.error;
 
-    if (error?.error) {
+    if (error) {
+      console.log(error);
       handleError(error);
       return;
     } else {
