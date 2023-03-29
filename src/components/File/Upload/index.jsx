@@ -22,7 +22,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    setFile(oldFile);
+    if (!file.name) setFile(oldFile);
   }, [oldFile]);
 
   const collectFile = useCallback(
@@ -35,6 +35,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
         name: realFile.name,
         code: documentCode,
       });
+      console.log("something");
       setUploading(false);
     },
     [uploadAction, docType]

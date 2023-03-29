@@ -57,6 +57,7 @@ const ServicePage = () => {
     setOpen("edit", clickedInfo.serviceId);
     setClickedService(clickedInfo);
   };
+
   // delete service
   const handleServiceDelete = async () => {
     let response = await deleteService(clickedService.serviceId);
