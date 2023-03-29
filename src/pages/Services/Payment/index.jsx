@@ -23,7 +23,11 @@ const ServicePayment = () => {
   const viewService = useGetSingleServiceQuery(serviceId);
 
   const serviceData = viewService.data;
+  const serviceForm = serviceData.serviceForm;
+  const serviceRequirements = serviceData.serviceRequirements;
 
+  console.log(serviceForm);
+  console.log(serviceRequirements);
   const handleNext = () => {
     navigate("/services/form");
   };
@@ -67,7 +71,10 @@ const ServicePayment = () => {
     store.dispatch(setLaunchPaid(requiredData));
     const payResponse = await addServicePayment(requiredData);
 
-    navigate("/services/form");
+    let link = "/services/form";
+    link = serviceForm?.length < 1 ? "servcies/documents" : link;
+    link = serviceRequirements?.length < 1 ? "services/review" : link;
+    navigate(link);
   };
 
   // Passed to the payment component
