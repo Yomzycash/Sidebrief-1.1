@@ -180,7 +180,7 @@ const TagInputWithSearch = ({
     if (getValue) {
       getValue(MultiSelect ? tags : value);
     }
-  }, [tags, value]);
+  }, [tags.length, value]);
 
   return (
     <Container>

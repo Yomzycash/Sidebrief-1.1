@@ -17,6 +17,7 @@ import { LaunchRocket, ManageSpanner } from "asset/svg";
 import { useEffect } from "react";
 import { useState } from "react";
 import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
 const BusinessRegistration = (props) => {
   const [allLaunchContainer, setAllLaunchContainer] = useState([]);
@@ -109,7 +110,7 @@ const BusinessRegistration = (props) => {
 
   const handleManage = () => {
     navigate("/services");
-    localStorage.removeItem("complyInfo");
+    removeComplyFromLocalStorage();
   };
 
   useEffect(() => {

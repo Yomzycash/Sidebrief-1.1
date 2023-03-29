@@ -27,8 +27,8 @@ export const PayProvide = styled.button`
   ${({ active }) =>
     active
       ? `
-   background: #edf1f7;
-  box-shadow: 0 0 15px 4px #bbbbbb inset;
+   background: #edf1f755;
+  box-shadow: 0 0 15px 4px #bbbbbb55 inset;
 
    `
       : null}

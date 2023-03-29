@@ -9,22 +9,24 @@ import { useLazyViewComplyQuery } from "services/complyService";
 
 const ServiceFormReview = () => {
   const viewComply = useOutletContext();
-  console.log(viewComply)
+  const documents = viewComply?.data?.complyDocuments;
+  let done = documents?.length < 1;
 
   const navigate = useNavigate();
-  
 
   const handlePrev = () => {
     navigate(-1);
   };
 
   const handleNext = async () => {
-    navigate("/services/review/documents");
+    let link = "/services/review/documents";
+    link = done ? "/services/success" : link;
+    navigate(link);
   };
 
   return (
     <Wrapper>
-      {viewComply ?.isLoading && (
+      {viewComply?.isLoading && (
         <Loading height="50vh">
           <Puff stroke="#00A2D4" fill="white" />
         </Loading>
@@ -46,7 +48,7 @@ const ServiceFormReview = () => {
           forwardSubmit
           backAction={handlePrev}
           forwardAction={handleNext}
-          forwardText="Next"
+          forwardText={done ? "Done" : "Next"}
         />
       </Bottom>
     </Wrapper>
