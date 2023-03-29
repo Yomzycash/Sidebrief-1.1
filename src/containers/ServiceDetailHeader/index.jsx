@@ -28,7 +28,7 @@ import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
 
 import { Dialog } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HiX } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
@@ -39,9 +39,20 @@ import { Mail } from "asset/svg";
 import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useDeleteComplyMutation } from "services/complyService";
+import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
-const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyCode, form , document,mainUrl,
-  deleteAction = () => {} }) => {
+const ServiceDetailHeader = ({
+  serviceName,
+  date,
+  status,
+  code,
+  isStaff,
+  complyCode,
+  form,
+  document,
+  mainUrl,
+}) => {
   const [openModal, setOpenModal] = useState(false);
 
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
@@ -70,6 +81,7 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
       subHeaderContainer.removeEventListener("wheel", () => {});
     };
   }, []);
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -80,11 +92,17 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
   const deleteAction = async () => {
     // perform delete action here
 
-    await deleteComply({
+    const response = await deleteComply({
       complyCode: complyCode,
     });
 
-    navigate(`/staff-dashboard/businesses/services`);
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Deleted");
+      navigate(`/staff-dashboard/businesses/services`);
+    } else handleError(error);
     setOpenModal(false);
   };
 
@@ -147,7 +165,6 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-
         {/* using both relative and absolute routing to reduce the length of the pathname  */}
 
         <ActiveNav
@@ -155,16 +172,8 @@ const ServiceDetailHeader = ({ serviceName, date, status, code, isStaff, complyC
           // total={0}
           path={`${mainUrl}/info`}
         />
-        {form?.length > 0 && (
-          <ActiveNav
-            text={"Form"}
-            path={`${mainUrl}/forminfo`}
-          />)}
-        {document?.length > 0 && (
-          <ActiveNav
-            text={"Documents"}
-            path={`${mainUrl}/documentinfo`}
-          />)}
+        {form?.length > 0 && <ActiveNav text={"Form"} path={`${mainUrl}/forminfo`} />}
+        {document?.length > 0 && <ActiveNav text={"Documents"} path={`${mainUrl}/documentinfo`} />}
       </SubHeader>
       <Dialog open={openModal} fullWidth maxWidth="sm">
         <ModalWrapper>

@@ -12,12 +12,12 @@ const ServicesDetailLayout = () => {
     complyCode: complycode,
   });
   const serviceId = viewComply?.data?.serviceId;
+  const complyCode = viewComply?.data?.complyCode;
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
-	let userEmail = localStorage.getItem("userEmail");
+  let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
-  
-  
+
   const getStatus = (stat) => {
     switch (stat) {
       case "pending":
@@ -46,7 +46,7 @@ const ServicesDetailLayout = () => {
       <ServiceDetailHeader
         status={getStatus(viewComply?.data?.status)}
         serviceName={serviceData?.data?.serviceName}
-        code={serviceId}
+        code={complyCode}
         mainUrl={mainUrl}
         date={
           viewComply?.isLoading
@@ -55,9 +55,8 @@ const ServicesDetailLayout = () => {
         }
         complyCode={complycode}
         isStaff={staffEmail}
-        document={viewComply?.data?.complyDocuments
-        }
-        form ={viewComply?.data?.complyData}
+        document={viewComply?.data?.complyDocuments}
+        form={viewComply?.data?.complyData}
       />
       <Body>
         <Outlet context={viewComply} />

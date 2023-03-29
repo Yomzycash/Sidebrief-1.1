@@ -11,24 +11,16 @@ import ServiceInfoContainer from "containers/ServiceInfoContainer";
 
 const ServiceInformation = () => {
   const viewComply = useOutletContext();
-  console.log(viewComply)
 
-    const countries = useGetAllCountriesQuery();
+  const countries = useGetAllCountriesQuery();
 
   const [open, setOpen] = useState(false);
 
-
-  const { complycode } = useParams();
-  
   const viewService = useGetSingleServiceQuery(viewComply?.data?.serviceId);
 
- 
-
-    let getCountry = countries?.data?.find(
-        (country) => country?.countryISO === viewService?.data?.serviceCountry
-      )?.countryName;
-
-  
+  let getCountry = countries?.data?.find(
+    (country) => country?.countryISO === viewService?.data?.serviceCountry
+  )?.countryName;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,11 +50,7 @@ const ServiceInformation = () => {
               <TimeLine onClick={handleClickOpen}>View timeline</TimeLine>
               <Dialog onClose={handleClose} open={open}>
                 <DialogContent style={StepbarStyle}>
-                  <StepBar
-                    applied={viewComply?.data?.createdAt}
-                    mobile
-                    handleClose={handleClose}
-                  />
+                  <StepBar applied={viewComply?.data?.createdAt} mobile handleClose={handleClose} />
                 </DialogContent>
               </Dialog>
             </LowerContainer>

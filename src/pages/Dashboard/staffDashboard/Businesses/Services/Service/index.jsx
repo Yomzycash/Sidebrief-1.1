@@ -32,7 +32,6 @@ const ServicePage = () => {
   const { data, isLoading, refetch } = useGetAllServicesQuery();
   const allComply = useViewAllComplyQuery();
   const [deleteService, deleteState] = useDeleteServiceMutation();
-  const [servicesEnquiry, setServicesEnquiry] = useState([]);
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
@@ -43,18 +42,6 @@ const ServicePage = () => {
     setOpen("add");
   };
 
-  // Table header information
-  const header = ["Sender Id", "Notification ID", "Status", "Date", "Time"];
-
-  // const servicesNotifications = data?.filter((service) => {
-  //   let serviceNots = notifications.data?.filter((not) => not?.serviceId === service?.serviceId);
-  //   return serviceNots?.length > 0;
-  // });
-
-  useEffect(() => {
-    setServicesEnquiry(data);
-  }, [data]);
-
   const handleViewAllServices = () => {
     navigate("/staff-dashboard/businesses/services/all");
   };
@@ -63,7 +50,7 @@ const ServicePage = () => {
     navigate("/staff-dashboard/businesses/services/chats");
   };
 
-  let totalServices = servicesEnquiry?.length > 0 ? servicesEnquiry.length : 0;
+  let totalServices = data?.length > 0 ? data?.length : 0;
 
   const handleServiceClick = (clickedInfo) => {
     setOpen("edit", clickedInfo.serviceId);
@@ -93,6 +80,10 @@ const ServicePage = () => {
         progress: (dialog.progress > progress ? dialog.progress : progress) || dialog.progress,
       });
   };
+
+  useEffect(() => {
+    allComply.refetch();
+  }, []);
 
   return (
     <Container>
@@ -130,8 +121,8 @@ const ServicePage = () => {
             </Loading>
           ) : (
             <ScrollBox>
-              {servicesEnquiry &&
-                servicesEnquiry.map((service, index) => (
+              {data &&
+                data?.map((service, index) => (
                   <PetalsCard
                     key={index}
                     title={service.serviceName}
