@@ -39,6 +39,8 @@ import { Mail } from "asset/svg";
 import { getUnReadNotifications } from "components/navbar/actions";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { useDeleteComplyMutation } from "services/complyService";
+import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
 const ServiceDetailHeader = ({
   serviceName,
@@ -79,6 +81,7 @@ const ServiceDetailHeader = ({
       subHeaderContainer.removeEventListener("wheel", () => {});
     };
   }, []);
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -89,11 +92,17 @@ const ServiceDetailHeader = ({
   const deleteAction = async () => {
     // perform delete action here
 
-    await deleteComply({
+    const response = await deleteComply({
       complyCode: complyCode,
     });
 
-    navigate(`/staff-dashboard/businesses/services`);
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Deleted");
+      navigate(`/staff-dashboard/businesses/services`);
+    } else handleError(error);
     setOpenModal(false);
   };
 
