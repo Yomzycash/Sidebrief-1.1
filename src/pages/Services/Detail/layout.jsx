@@ -51,7 +51,7 @@ const ServicesDetailLayout = () => {
 
   const { pathname } = useLocation();
   const mainUrl = pathname.split("/").slice(0, -1).join("/");
-  console.log(mainUrl);
+
   return (
     <Container>
       <ServiceDetailHeader
