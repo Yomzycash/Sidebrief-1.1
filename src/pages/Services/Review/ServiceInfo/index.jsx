@@ -6,17 +6,30 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Bottom } from "../style";
-import { Container,CountryInput, EditWrapper, FilledContainer, InnerContainer, Label, Loading, TopFlex, Wrapper } from "./style";
+import {
+  Container,
+  CountryInput,
+  EditWrapper,
+  FilledContainer,
+  InnerContainer,
+  Label,
+  Loading,
+  TopFlex,
+  Wrapper,
+} from "./style";
 import { Puff } from "react-loading-icons";
-
-
 
 const ServiceInfoReview = () => {
   const viewComply = useOutletContext();
-  console.log(viewComply)
+  const serviceId = viewComply?.data?.serviceId;
+  const form = viewComply?.data?.complyData;
+  const documents = viewComply?.data?.complyDocuments;
 
-  
-  const viewService = useGetSingleServiceQuery(viewComply?.data?.serviceId);
+  let noForm = form?.length < 1;
+  let noDocument = documents?.length < 1;
+  let done = noForm && noDocument;
+
+  const viewService = useGetSingleServiceQuery(serviceId);
 
   const countries = useGetAllCountriesQuery();
 
@@ -32,14 +45,18 @@ const ServiceInfoReview = () => {
   };
 
   const handleNext = async () => {
-    navigate("/services/review/form");
+    let link = "/services/review/form";
+    link = noForm ? "/services/review/documents" : link;
+    link = done ? "/services/success" : link;
+    navigate(link);
   };
+
   return (
     <Wrapper>
       {viewComply?.isLoading && (
-          <Loading height="50vh">
-            <Puff stroke="#00A2D4" fill="white" />
-          </Loading>
+        <Loading height="50vh">
+          <Puff stroke="#00A2D4" fill="white" />
+        </Loading>
       )}
       <Container>
         <InnerContainer>
@@ -66,7 +83,7 @@ const ServiceInfoReview = () => {
           forwardSubmit
           backAction={handlePrev}
           forwardAction={handleNext}
-          forwardText="Next"
+          forwardText={done ? "Done" : "Next"}
         />
       </Bottom>
     </Wrapper>
@@ -74,4 +91,3 @@ const ServiceInfoReview = () => {
 };
 
 export default ServiceInfoReview;
-

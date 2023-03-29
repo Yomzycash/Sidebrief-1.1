@@ -18,6 +18,7 @@ import {
   Wrapper,
 } from "./styled";
 import ServicesProgressBar from "components/Indicators/progressbar/ServicesProgressBar";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
 const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
@@ -38,8 +39,7 @@ const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
 
   const handleNext = () => {
     setOpenModal(false);
-    localStorage.removeItem("serviceInfo");
-    localStorage.removeItem("paymentDetails");
+    removeComplyFromLocalStorage();
     toast.success("Saved");
     navigate("/dashboard");
   };

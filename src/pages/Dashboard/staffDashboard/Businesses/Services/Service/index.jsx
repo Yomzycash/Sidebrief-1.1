@@ -24,6 +24,7 @@ import { handleError } from "utils/globalFunctions";
 import { GeneralTable } from "components/Tables";
 import { columns } from "./table";
 import { useViewAllComplyQuery } from "services/complyService";
+import { compareAsc } from "date-fns";
 
 const iconStyle = { width: "17px", height: "17px" };
 
@@ -152,16 +153,20 @@ const ServicePage = () => {
             <Puff stroke="#00A2D4" fill="white" width={60} />
           </Loading>
         ) : (
-          <GeneralTable
-            columns={columns}
-            data={allComply.data?.map((comply) => ({
-              complyCode: comply.complyCode,
-              serviceId: comply.serviceId,
-              meta: comply.meta,
-              date: comply.updatedAt,
-            }))}
-            normalLastRow
-          />
+          allComply?.data?.length > 0 && (
+            <GeneralTable
+              columns={columns}
+              data={[...allComply.data]
+                ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
+                ?.map((comply) => ({
+                  complyCode: comply.complyCode,
+                  serviceId: comply.serviceId,
+                  meta: comply.meta,
+                  date: comply.updatedAt,
+                }))}
+              normalLastRow
+            />
+          )
         )}
 
         <StaffServicesModal

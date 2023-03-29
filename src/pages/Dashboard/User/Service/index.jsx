@@ -16,7 +16,7 @@ import {
 import { useViewAllComplyByMetaQuery } from "services/complyService";
 import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
-import { format } from "date-fns";
+import { compareAsc, format } from "date-fns";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { sortTableData } from "utils/staffHelper";
 import Paginator from "components/Paginator";
@@ -65,6 +65,10 @@ const UserService = () => {
   // console.log("serviceBody", serviceBody )
   const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -96,12 +100,14 @@ const UserService = () => {
           {/* //<FeatureTable header={header} body={serviceBody}/> */}
           {data?.length > 0 && (
             <MemoisedGeneralTable
-              data={data?.map((comply) => ({
-                complyCode: comply.complyCode,
-                serviceId: comply.serviceId,
-                meta: comply.meta,
-                date: comply.updatedAt,
-              }))}
+              data={[...data]
+                ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
+                .map((comply) => ({
+                  complyCode: comply.complyCode,
+                  serviceId: comply.serviceId,
+                  meta: comply.meta,
+                  date: comply.updatedAt,
+                }))}
               columns={columns}
               normalLastRow
             />

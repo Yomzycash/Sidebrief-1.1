@@ -68,6 +68,9 @@ const ServiceDetailHeader = ({
 
   const subHeader = useRef();
 
+  const { pathname } = useLocation();
+  const servicesUrl = pathname.split("/").slice(0, -2).join("/");
+
   useEffect(() => {
     const subHeaderContainer = subHeader.current;
     // Listen to the mouse wheel event
@@ -101,7 +104,7 @@ const ServiceDetailHeader = ({
 
     if (data) {
       toast.success("Deleted");
-      navigate(`/staff-dashboard/businesses/services`);
+      navigate(servicesUrl);
     } else handleError(error);
     setOpenModal(false);
   };
@@ -113,9 +116,6 @@ const ServiceDetailHeader = ({
       navigate(`/dashboard/businesses/chats/?serviceId=${code}`);
     }
   };
-
-  const { pathname } = useLocation();
-  const servicesUrl = pathname.split("/").slice(0, -2).join("/");
 
   return (
     <Container>
