@@ -37,12 +37,26 @@ const ServiceDocuments = () => {
   const [addComplyDocument] = useAddComplyDocumentMutation();
   const [deleteComplyDocument] = useDeleteComplyDocumentMutation();
   const [isChanged, setIsChanged] = useState(false);
+
   const handlePrev = () => {
     navigate(-1);
   };
 
   const handleNext = () => {
-    navigate("/services/review/info");
+    const requiredDocumentsLength = viewService.data.serviceRequirements.map(
+      (el) => el.requirementName
+    ).length;
+    const uploadedDocumentsLength = Object.keys(
+      handleDocuments(viewComply.data.complyDocuments)
+    ).length;
+
+    if (uploadedDocumentsLength === 0) {
+      toast.error("All documents are required");
+    } else if (requiredDocumentsLength !== uploadedDocumentsLength) {
+      toast.error("All documents are required");
+    } else {
+      navigate("/services/review/info");
+    }
   };
 
   const handleDocuments = (documents) => {
@@ -85,6 +99,7 @@ const ServiceDocuments = () => {
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
+    await viewComply.refetch();
 
     return documentCode;
   };
