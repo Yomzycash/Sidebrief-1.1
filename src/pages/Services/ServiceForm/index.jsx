@@ -35,6 +35,7 @@ const ServiceForm = () => {
       },
     }));
 
+    console.log(payload);
     let addArray = payload.map((el, i) => addComplyData(el));
     let responses = await Promise.all(addArray);
     console.log(responses);
@@ -62,9 +63,11 @@ const ServiceForm = () => {
 
   // Set the progress of the application
   useEffect(() => {
+    viewComply.refetch();
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.4 })); // total- total pages and current - current page
   }, []);
 
+  console.log(viewComply.data?.complyData);
   return (
     <Container>
       <ServicesCheckoutHeader />

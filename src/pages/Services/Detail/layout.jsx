@@ -1,18 +1,23 @@
-import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Body, Container } from "./styles";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useViewComplyQuery } from "services/complyService";
 import { checkStaffEmail } from "utils/globalFunctions";
+import { countriesInfo } from "utils/allCountries";
+import CommonButton from "components/button/commonButton";
 
 const ServicesDetailLayout = () => {
   const { complycode } = useParams();
   const viewComply = useViewComplyQuery({
     complyCode: complycode,
   });
-  const serviceId = viewComply?.data?.serviceId;
-  const complyCode = viewComply?.data?.complyCode;
+
+  const comply = viewComply?.data;
+  const serviceId = comply?.serviceId;
+  const complyCode = comply?.complyCode;
+  const status = comply?.status?.toLowerCase();
 
   const serviceData = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
   let userEmail = localStorage.getItem("userEmail");
@@ -40,6 +45,28 @@ const ServicesDetailLayout = () => {
 
   const { pathname } = useLocation();
   const mainUrl = pathname.split("/").slice(0, -1).join("/");
+  const isStaffEnd = pathname.toLowerCase().includes("staff");
+
+  const navigate = useNavigate();
+
+  const handleContinue = () => {
+    let currency = serviceData.data?.serviceCurrency;
+    let complyInfo = {
+      ...comply,
+      serviceCountry: getCountry(currency),
+      serviceName: serviceData.data?.serviceName,
+    };
+    let paymentInfo = comply?.complyPayment[0];
+
+    localStorage.setItem("complyInfo", JSON.stringify(complyInfo));
+    localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo));
+    navigate("/services");
+  };
+
+  const getCountry = (currency) => {
+    return countriesInfo.filter((el) => el.currency.toLowerCase() === currency?.toLowerCase())[0]
+      ?.name;
+  };
 
   return (
     <Container>
@@ -61,6 +88,9 @@ const ServicesDetailLayout = () => {
       <Body>
         <Outlet context={viewComply} />
       </Body>
+      {!isStaffEnd && status && (
+        <CommonButton text="Continue application" action={handleContinue} />
+      )}
     </Container>
   );
 };
