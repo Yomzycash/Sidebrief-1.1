@@ -13,6 +13,7 @@ import image from "../../../asset/images/SuccessStripe.png";
 import { store } from "redux/Store";
 import { setLaunchPaid } from "redux/Slices";
 import { useState } from "react";
+
 const StripePaymentSuccess = () => {
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
   const navigate = useNavigate();

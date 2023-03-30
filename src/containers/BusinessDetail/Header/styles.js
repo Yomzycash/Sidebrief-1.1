@@ -60,7 +60,7 @@ export const TopInfo = styled.div`
 
   .transbutton {
     background-color: #00a2d4;
-    color: #242627;
+    color: #fff;
     font-family: "BR Firma";
 
     svg {
@@ -68,7 +68,7 @@ export const TopInfo = styled.div`
       width: 20px;
       height: 20px;
       path {
-        fill: #242627;
+        fill: #fff;
       }
     }
   }
