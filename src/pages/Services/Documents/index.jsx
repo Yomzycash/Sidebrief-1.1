@@ -93,6 +93,7 @@ const ServiceDocuments = () => {
     };
 
     const response = await addComplyDocument(requiredData);
+    await viewComply.refetch();
     const documentCode = response.data.complyDocuments.slice(-1)[0].documentCode;
     if (response.data) {
       toast.success("Document uploaded successfully");
@@ -100,7 +101,6 @@ const ServiceDocuments = () => {
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
-    await viewComply.refetch();
 
     return documentCode;
   };
