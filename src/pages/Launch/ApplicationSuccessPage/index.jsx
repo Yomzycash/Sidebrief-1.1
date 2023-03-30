@@ -9,9 +9,14 @@ import AppFeedback from "components/AppFeedback";
 const ApplicationSuccessPage = () => {
   const navigate = useNavigate();
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-  console.log(launchInfo);
+
+  let launchCode = launchInfo?.launchCode;
+  let registrationCountry = launchInfo?.registrationCountry;
+  let registrationType = launchInfo?.registrationType;
+
   const handleNavigate = () => {
-    navigate(`/dashboard/business/${launchInfo.launchCode}/detail`);
+    let link = `/dashboard/business/detail?launchCode=${launchCode}&registrationCountry=${registrationCountry}&registrationType=${registrationType}`;
+    navigate(link);
   };
   const timeline = JSON.parse(localStorage.getItem("entityTimeline"));
 
@@ -25,7 +30,7 @@ const ApplicationSuccessPage = () => {
           description={`Thank you for your patience, your application would take ${timeline} `}
           image={SuccessImage}
           buttonTitle="View Application"
-          onButtonClick={handleNavigate}
+          onClick={handleNavigate}
         />
       </Body>
       {/* <AppFeedback subProject="Application success page" /> */}

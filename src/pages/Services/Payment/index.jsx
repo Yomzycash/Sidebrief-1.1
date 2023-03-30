@@ -26,8 +26,6 @@ const ServicePayment = () => {
   const serviceForm = serviceData?.serviceForm;
   const serviceRequirements = serviceData?.serviceRequirements;
 
-  console.log(serviceForm);
-  console.log(serviceRequirements);
   const handleNext = () => {
     navigate("/services/form");
   };
@@ -76,7 +74,10 @@ const ServicePayment = () => {
 
     let link = "/services/form";
     link = serviceForm?.length < 1 ? "/services/documents" : link;
-    link = serviceRequirements?.length < 1 ? "/services/review" : link;
+    link = serviceRequirements?.length < 1 ? "/services/review/info" : link;
+
+    console.log(serviceForm, serviceRequirements);
+    console.log(link);
     navigate(link);
   };
 

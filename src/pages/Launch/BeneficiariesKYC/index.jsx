@@ -34,13 +34,10 @@ const BeneficiariesKYC = () => {
   const [addBeneficialKYC] = useAddBeneficialKYCMutation();
   const [documentCode, setDocumentCode] = useState("");
 
-  const launchResponse = useSelector(
-    (state) => state.LaunchReducer.launchResponse
-  );
+  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
   const countryISO = localStorage.getItem("countryISO");
   const entityType = localStorage.getItem("entityType");
-  const [viewBeneficiaries, viewBeneficiariesState] =
-    useViewBeneficiariesMutation();
+  const [viewBeneficiaries, viewBeneficiariesState] = useViewBeneficiariesMutation();
 
   const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [beneficiaryContainer, setBeneficiaryContainer] = useState([]);
@@ -48,9 +45,7 @@ const BeneficiariesKYC = () => {
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
   let navigatedFrom = localStorage.getItem("navigatedFrom");
   useEffect(() => {
-    const check = data?.find(
-      (entity) => entity.entityCode === launchResponse.registrationType
-    );
+    const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
   useEffect(() => {
@@ -72,7 +67,7 @@ const BeneficiariesKYC = () => {
     if (navigatedFrom) {
       navigate(navigatedFrom);
     } else {
-      navigate("/launch/review");
+      navigate("/launch/review/business-info");
     }
   };
 
@@ -135,9 +130,7 @@ const BeneficiariesKYC = () => {
       },
     };
 
-    const beneficialResult = await addBeneficialKYC(
-      requiredBeneficialOwnerKYCData
-    );
+    const beneficialResult = await addBeneficialKYC(requiredBeneficialOwnerKYCData);
     if (beneficialResult.data) {
       let returnedArray = beneficialResult.data.beneficialOwnersKYC;
       let lastElememt = returnedArray[returnedArray.length - 1];
@@ -206,9 +199,7 @@ const BeneficiariesKYC = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    store.dispatch(
-      setCheckoutProgress({ total: 13, current: review ? 13 : 11 })
-    ); // total- total pages and current - current page
+    store.dispatch(setCheckoutProgress({ total: 13, current: review ? 13 : 11 })); // total- total pages and current - current page
   }, []);
 
   return (
@@ -217,9 +208,7 @@ const BeneficiariesKYC = () => {
       <Body>
         <CheckoutSection
           title={"Beneficiaries KYC Documentation:"}
-          HeaderParagraph={
-            "Please attach the necessary documents for all beneficiaries"
-          }
+          HeaderParagraph={"Please attach the necessary documents for all beneficiaries"}
         />
         <LaunchPrimaryContainer>
           {viewBeneficiariesState.isLoading && (
@@ -239,9 +228,7 @@ const BeneficiariesKYC = () => {
                       documentComponentType={document}
                       TopText={document}
                       beneficiaryCode={beneficiary.code}
-                      onDrop={(files) =>
-                        handleChange(files, beneficiary.code, document)
-                      }
+                      onDrop={(files) => handleChange(files, beneficiary.code, document)}
                       handleRemove={() => handleRemove(document)}
                       BottomText={`Please provide your ${document}`}
                     />

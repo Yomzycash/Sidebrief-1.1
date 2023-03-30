@@ -441,6 +441,7 @@ const AppRouter = () => {
 
             <Route path="review" element={<ProtectedReview />}>
               <Route index element={<BusinessInformationReview />} />
+              <Route path="business-info" element={<BusinessInformationReview />} />
               <Route path="shareholders" element={<ShareholderReview />} />
               <Route path="directors" element={<DirectorReview />} />
               <Route path="beneficiaries" element={<BeneficiaryReview />} />

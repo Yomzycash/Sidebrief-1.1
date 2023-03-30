@@ -77,20 +77,11 @@ const Modal1 = ({
                     />
                   )}
                   {deleteState?.isLoading ? (
-                    <SpinningCircles
-                      stroke="#cb1b1b"
-                      fill="#cb1b1b"
-                      width={20}
-                      height={20}
-                    />
+                    <SpinningCircles stroke="#cb1b1b" fill="#cb1b1b" width={20} height={20} />
                   ) : (
                     <DeleteIcon
                       width={20}
-                      color={
-                        value === "delete" || confirm === false
-                          ? "#cb1b1b"
-                          : "#c68181"
-                      }
+                      color={value === "delete" || confirm === false ? "#cb1b1b" : "#c68181"}
                       onClick={handleDeleteSelected}
                     />
                   )}

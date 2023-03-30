@@ -62,6 +62,9 @@ export const ContentWrapper = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+export const DocumentSection = styled.div``;
+
 export const DownLoadText = styled.p`
   font-family: "BR Firma";
   font-style: normal;
