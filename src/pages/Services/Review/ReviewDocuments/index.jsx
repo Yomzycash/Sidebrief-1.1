@@ -6,9 +6,18 @@ import { useLazyViewComplyQuery } from "services/complyService";
 import { Bottom, Loading } from "./style";
 import { Puff } from "react-loading-icons";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
+import { useActions } from "../actions";
+import { useUpdateComplyMutation } from "services/complyService";
 
 const ReviewDocuments = () => {
   const viewComply = useOutletContext();
+  const [updateComply, updateState] = useUpdateComplyMutation();
+
+  const { handleStatusUpdate } = useActions({
+    serviceId: viewComply.data?.serviceId,
+    complyInfo: viewComply.data,
+    updateComply,
+  });
 
   const navigate = useNavigate();
 
@@ -16,8 +25,9 @@ const ReviewDocuments = () => {
     navigate(-1);
   };
 
-  const handleNext = async (formData) => {
-    navigate("/services/success");
+  const handleNext = async () => {
+    let response = await handleStatusUpdate();
+    response.data && navigate("/services/success");
   };
   return (
     <div>
@@ -30,7 +40,6 @@ const ReviewDocuments = () => {
       <Bottom>
         <CheckoutController
           backText={"Previous"}
-          forwardSubmit
           backAction={handlePrev}
           forwardAction={handleNext}
           forwardText="Done"

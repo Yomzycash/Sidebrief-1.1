@@ -1,4 +1,3 @@
-import HeaderCheckout from "components/Header/HeaderCheckout";
 import Success from "containers/Confirmation/Success";
 import React from "react";
 import styled from "styled-components";
@@ -16,7 +15,7 @@ const ServiceSuccessPage = () => {
   const viewService = useGetSingleServiceQuery(serviceId);
   let timeline = viewService?.data?.serviceTimeline;
 
-  const handleNavigate = () => {
+  const handleNavigate = async () => {
     navigate(`/dashboard/services/${complyInfo?.complyCode}/info`);
     removeComplyFromLocalStorage();
   };

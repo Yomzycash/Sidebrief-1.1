@@ -213,31 +213,31 @@ export const sidebarLink = [
     path: "/dashboard/businesses",
   },
   {
-    id: 2,
+    id: 3,
     title: "Services",
     icon: BusinessesIcon,
     path: "/dashboard/services",
   },
   {
-    id: 3,
+    id: 4,
     title: "Bank Accounts",
     icon: BankAccountIcon,
     path: "/dashboard/bank-account",
   },
   {
-    id: 4,
+    id: 5,
     title: "Rewards",
     icon: RewardIcon,
     path: "/dashboard/rewards/all-rewards",
   },
   {
-    id: 5,
+    id: 6,
     title: "Resources",
     icon: ResourcesIcon,
     path: "/dashboard/resources",
   },
   {
-    id: 6,
+    id: 7,
     title: "Settings",
     icon: SettingsIcon,
     path: "/dashboard/settings",
@@ -846,7 +846,7 @@ export const ReviewTab = [
   {
     id: 1,
     title: "Business Information",
-    path: "/launch/review",
+    path: "/launch/review/business-info",
   },
   {
     id: 2,

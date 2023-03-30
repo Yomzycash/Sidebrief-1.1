@@ -166,7 +166,8 @@ const ShareHolderKYC = () => {
 
         let navigateTo = "/launch/directors-kyc";
         if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-        if (useSidebriefDirectors && beneficiaries === "false") navigateTo = "/launch/review";
+        if (useSidebriefDirectors && beneficiaries === "false")
+          navigateTo = "/launch/review/business-info";
 
         navigate(navigateTo);
       }
