@@ -64,7 +64,13 @@ const EditDeleteButton = ({ editAction, deleteAction, deleteLoading, hideEdit, h
               action={() => setConfirm(true)}
               loading={deleteLoading}
               LoadingIcon={
-                <SpinningCircles stroke="#ed4e3a" fill="#ed4e3a" width={20} height={20} />
+                <SpinningCircles
+                  stroke="#ed4e3a"
+                  fill="#ed4e3a"
+                  width={20}
+                  height={20}
+                  style={{ paddingBlock: "4px", boxSizing: "content-box" }}
+                />
               }
             />
           )}

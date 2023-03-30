@@ -47,15 +47,15 @@ const PaymentPage = () => {
   const sendFlutterwaveRefToBackend = async (reference) => {
     const requiredData = {
       launchCode: launchCode,
-      complyPayment: {
-        paymentAmount: reference.amount,
-        paymentCurrency: reference.currency,
-        paymentTransactionId: reference.transaction_id,
+      paymentDetails: {
+        paymentAmount: reference.amount.toString(),
+        paymentCurrency: reference.currency.toString(),
+        paymentTransactionId: reference.transaction_id.toString(),
         paymentProvider: "Flutterwave",
-        paymentStatus: reference.status,
+        paymentStatus: reference.status.toString(),
       },
     };
-    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await payLaunch(requiredData);
 
@@ -69,16 +69,16 @@ const PaymentPage = () => {
     const requiredData = {
       launchCode: launchCode,
       paymentDetails: {
-        paymentAmount: paymentIntent.amount,
-        paymentCurrency: paymentIntent.currency,
-        paymentTransactionId: paymentIntent.id,
+        paymentAmount: paymentIntent.amount.toString(),
+        paymentCurrency: paymentIntent.currency.toString(),
+        paymentTransactionId: paymentIntent.id.toString(),
         paymentProvider: "Stripe",
         paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
       },
     };
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
     store.dispatch(setLaunchPaid(requiredData));
-    const payResponse = await payLaunch(requiredData);
+    const payResponse = await payLaunch(JSON.stringify(requiredData));
 
     navigate("/launch/address");
   };
