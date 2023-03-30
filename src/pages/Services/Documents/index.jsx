@@ -9,6 +9,7 @@ import {
   Bottom,
   Container,
   ContentWrapper,
+  DocumentSection,
   DownLoadContentWrapper,
   DownLoadText,
   FileContainer,
@@ -124,46 +125,55 @@ const ServiceDocuments = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.8 })); // total- total pages and current - current page
   }, []);
 
+  let noTemplate = viewService.data.serviceTemplates < 1;
+  let title = noTemplate
+    ? "Upload the following document(s)"
+    : "Download the template(s) below (fill then upload back)";
+
   return (
     <Container>
       <ServicesCheckoutHeader />
 
       <Body>
-        <CheckoutSection
-          title="Download the templates below (fill and upload back)"
-          HeaderParagraph="Download documents"
-        />
+        <CheckoutSection title={title} />
         <LaunchPrimaryContainer>
           <LaunchFormContainer>
             <FileContainer>
-              <DownLoadContentWrapper>
-                {viewService?.data?.serviceTemplates.map((document, index) => (
-                  <Download
-                    key={index}
-                    docType={document.templateName}
-                    fileUrl={document.templateLink}
-                  />
-                ))}
-              </DownLoadContentWrapper>
-              <DownLoadText>Upload Documents</DownLoadText>
-              <ContentWrapper>
-                {viewService?.data?.serviceRequirements.map((document, index) => {
-                  const oldFile = docs[document.requirementName];
-                  return (
-                    <Upload
-                      key={index}
-                      docType={document.requirementName}
-                      uploadAction={newHandleChange}
-                      deleteAction={removeUploadedFile}
-                      oldFile={
-                        oldFile
-                          ? { name: oldFile.fileName, code: oldFile.documentCode }
-                          : { name: "", code: "" }
-                      }
-                    />
-                  );
-                })}
-              </ContentWrapper>
+              {!noTemplate && (
+                <DocumentSection>
+                  <DownLoadText>Download Template(s)</DownLoadText>
+                  <DownLoadContentWrapper>
+                    {viewService?.data?.serviceTemplates.map((document, index) => (
+                      <Download
+                        key={index}
+                        docType={document.templateName}
+                        fileUrl={document.templateLink}
+                      />
+                    ))}
+                  </DownLoadContentWrapper>
+                </DocumentSection>
+              )}
+              <DocumentSection>
+                {!noTemplate && <DownLoadText>Upload Document(s)</DownLoadText>}
+                <ContentWrapper>
+                  {viewService?.data?.serviceRequirements.map((document, index) => {
+                    const oldFile = docs[document.requirementName];
+                    return (
+                      <Upload
+                        key={index}
+                        docType={document.requirementName}
+                        uploadAction={newHandleChange}
+                        deleteAction={removeUploadedFile}
+                        oldFile={
+                          oldFile
+                            ? { name: oldFile.fileName, code: oldFile.documentCode }
+                            : { name: "", code: "" }
+                        }
+                      />
+                    );
+                  })}
+                </ContentWrapper>
+              </DocumentSection>
             </FileContainer>
           </LaunchFormContainer>
           <Bottom>
