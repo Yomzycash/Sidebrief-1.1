@@ -32,6 +32,7 @@ const ServiceInfo = () => {
     selectedCountry,
     selectedService,
     complyInfo,
+    services,
     createComply,
     updateComply,
     navigate,
