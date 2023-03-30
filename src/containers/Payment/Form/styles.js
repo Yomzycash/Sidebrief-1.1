@@ -4,11 +4,13 @@ import { InputWrapper, Wrapper } from "components/input/styled";
 export const Container = styled.div`
   max-width: 671px;
   width: 100%;
-  /* height: 501px; */
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
+  margin: auto;
+  margin-top: 40px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,6 +21,13 @@ export const Container = styled.div`
     border-radius: 0;
     border-inline: none;
   }
+`;
+
+export const Title = styled.h1`
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-transform: capitalize;
 `;
 
 export const RadioButtons = styled.div`
@@ -116,12 +125,12 @@ export const PaymentButton = styled.button`
   color: #ffffff;
 `;
 
-export const Paystack = styled.div`
+export const Flutterwave = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
 
-  .paystack-button {
+  .flutterwave-button {
     cursor: pointer;
     grid-column: span 2;
     padding: 16px 48px;

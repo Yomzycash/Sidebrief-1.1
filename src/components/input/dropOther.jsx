@@ -42,7 +42,7 @@ const DropOther = ({
       inputRef.focus();
       handleReferralChange("");
       setErrorMessage("");
-      setPlaceholder("Please enter an option");
+      setPlaceholder("Please enter how you found us");
     } else {
       inputRef.blur();
       setErrorMessage("");
@@ -67,9 +67,7 @@ const DropOther = ({
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
       </Top>
-      <DropDownWrapper
-        border={errorMessage ? "1px solid red" : "1px solid #e1e1de"}
-      >
+      <DropDownWrapper border={errorMessage ? "1px solid red" : "1px solid #e1e1de"}>
         <div
           style={{
             width: "100%",
@@ -113,10 +111,7 @@ const DropOther = ({
             <DropDown>
               <ListItems>
                 {referralOptions.map((option, index) => (
-                  <ListItem
-                    key={index}
-                    onClick={() => handleOptionClick(option.value)}
-                  >
+                  <ListItem key={index} onClick={() => handleOptionClick(option.value)}>
                     {option.label}
                   </ListItem>
                 ))}

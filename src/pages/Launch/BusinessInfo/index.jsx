@@ -27,8 +27,6 @@ import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/Launc
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import AppFeedback from "components/AppFeedback";
-import { set } from "date-fns";
 import { handleBusinessInfo } from "./actions";
 
 const BusinessInfo = () => {
@@ -45,12 +43,9 @@ const BusinessInfo = () => {
 
   const { data, isLoading } = useGetAllCountriesQuery();
   const [viewBusinessNames, viewNamesState] = useViewBusinessNamesMutation();
-  const [viewBusinessObjectives, viewObjectivesState] =
-    useViewBusinessObjectivesMutation();
-  const [updateBusinessNames, updateNamesState] =
-    useUpdateBusinessNamesMutation();
-  const [updateBusinessObjectives, updateObjectivesState] =
-    useUpdateBusinessObjectivesMutation();
+  const [viewBusinessObjectives, viewObjectivesState] = useViewBusinessObjectivesMutation();
+  const [updateBusinessNames, updateNamesState] = useUpdateBusinessNamesMutation();
+  const [updateBusinessObjectives, updateObjectivesState] = useUpdateBusinessObjectivesMutation();
   const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const navigate = useNavigate();
@@ -59,8 +54,7 @@ const BusinessInfo = () => {
 
   // Get payment information from the local storage
   const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
-  let paidStatus =
-    paymentDetails?.paymentStatus === "successful" ? true : false;
+  let paidStatus = paymentDetails?.paymentStatus === "successful" ? true : false;
 
   // This runs when next button is clicked
   const handleNext = async () => {
@@ -168,8 +162,7 @@ const BusinessInfo = () => {
     if (Object.keys(launchResponse).length === 0) return;
     const namesData = await viewBusinessNames(launchResponse);
     const objectivesData = await viewBusinessObjectives(launchResponse);
-    if (namesData.data)
-      setBusinessNames(Object.values(namesData.data.businessNames));
+    if (namesData.data) setBusinessNames(Object.values(namesData.data.businessNames));
     if (objectivesData.data) {
       let objectives = Object.values(objectivesData.data.businessObjects);
       let filtered = objectives.filter((objective) => objective !== "null");
@@ -192,9 +185,7 @@ const BusinessInfo = () => {
   // Set the selected country's ISO
   useEffect(() => {
     viewDraft();
-    const countryData = countriesData.filter(
-      (data) => data.countryName === selectedCountry
-    );
+    const countryData = countriesData.filter((data) => data.countryName === selectedCountry);
     let selectedCountryObj = { ...countryData[0] };
     setselectedCountryISO(selectedCountryObj.countryISO);
   }, [selectedCountry, countriesData, viewDraft]);
@@ -207,10 +198,7 @@ const BusinessInfo = () => {
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
 
-    let filled =
-      selectedObjectives?.length > 0 &&
-      businessNames?.length === 4 &&
-      selectedCountry;
+    let filled = selectedObjectives?.length > 0 && businessNames?.length === 4 && selectedCountry;
 
     store.dispatch(
       setCheckoutProgress({
@@ -236,10 +224,7 @@ const BusinessInfo = () => {
           />
           <LaunchPrimaryContainer>
             <LaunchFormContainer>
-              <TagInput
-                initialValues={businessNames}
-                getSelectedValues={handleBusinessNames}
-              />
+              <TagInput initialValues={businessNames} getSelectedValues={handleBusinessNames} />
 
               <TagInputWithSearch
                 label="Business Objectives"
@@ -272,9 +257,7 @@ const BusinessInfo = () => {
                 backAction={handlePrev}
                 backText={"Previous"}
                 forwardText={"Next"}
-                forwardLoading={
-                  updateNamesState.isLoading || updateObjectivesState.isLoading
-                }
+                forwardLoading={updateNamesState.isLoading || updateObjectivesState.isLoading}
                 hidePrev
               />
             </Bottom>

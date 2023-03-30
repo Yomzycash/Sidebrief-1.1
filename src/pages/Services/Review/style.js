@@ -23,7 +23,6 @@ export const Body = styled.form`
   border-top: none;
 `;
 
-
 export const Nav = styled.nav`
   background: #ffffff;
   width: 100%;
@@ -33,12 +32,10 @@ export const Nav = styled.nav`
   padding: 20px 40px 0px 40px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 150px;
   overflow-x: auto;
   overflow-y: hidden;
-
 `;
-
 
 export const ReviweTabWrapper = styled.div`
   display: flex;
@@ -63,4 +60,37 @@ export const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
-  `
+`;
+
+export const Bottom = styled.div`
+  display: flex;
+  width: 100%;
+
+  padding-block: 70px;
+`;
+export const SubHeader = styled.div`
+border-top: 1px solid #edf1f7;
+display: flex;
+gap: 24px;
+padding-inline: 24px;
+width: 100%;
+overflow-x: auto;
+overflow-y: hidden;
+scroll-behavior: smooth;
+
+&::-webkit-scrollbar {
+  height: 5px;
+  background: ${({ $hovered }) => ($hovered ? "#aaaaaa33" : "#fff")};
+}
+&::-webkit-scrollbar-thumb {
+  background: ${({ $hovered }) => ($hovered ? "#aaaaaa" : "#fff")};
+  border-radius: 15px;
+}
+
+@media screen and (max-width: 700px) {
+  /* border-width: 1px 0px;
+  border-style: solid; */
+  border-bottom: 1px solid #edf1f7;
+  /* border-color: #edf1f7; */
+}
+`;

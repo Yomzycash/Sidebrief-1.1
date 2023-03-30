@@ -2,21 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
-import LogoNav from "components/navbar/LogoNav";
 import { HeadText } from "components/texts";
 import TextsWithLink from "components/texts/TextWithLinks";
 import { AuthLayout } from "layout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useLoginNewUserMutation } from "services/authService";
-import { loginSchema } from "utils/config";
+import { loginSchema } from "./schema";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
-import { ThreeDots } from "react-loading-icons";
 import { store } from "redux/Store";
-import { saveUserInfo, saveUserLoginInfo } from "redux/Slices";
-import AppFeedback from "components/AppFeedback";
+import { saveUserInfo } from "redux/Slices";
 import { checkStaffEmail, handleError } from "utils/globalFunctions";
 import { useLoginStaffMutation } from "services/staffService";
 
@@ -29,11 +26,11 @@ const SignIn = () => {
   } = useForm({
     resolver: yupResolver(loginSchema),
   });
-  const [loginNewUser, { isLoading, isSuccess }] = useLoginNewUserMutation();
+  const [loginNewUser, { isLoading }] = useLoginNewUserMutation();
   const [loginStaff, staffState] = useLoginStaffMutation();
 
   const navigate = useNavigate();
-  const location = useLocation();
+
 
   const TestRef = useRef();
 
@@ -64,8 +61,10 @@ const SignIn = () => {
     };
   }, []);
 
+
   // Login function block
-  const submitForm = async (formData) => {
+	const submitForm = async (formData) => {
+
     let staffCheck = checkStaffEmail(formData.email);
 
     let response = staffCheck
@@ -103,11 +102,7 @@ const SignIn = () => {
   };
 
   return (
-    <AuthLayout
-      linkText="Sign Up"
-      link="/register/user"
-      question="Don't have an account?"
-    >
+    <AuthLayout linkText="Sign Up" link="/register/user" question="Don't have an account?">
       <Registration>
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
@@ -195,8 +190,7 @@ const Registration = styled.div`
   padding: 59px;
   background-color: white;
   border: 1px solid #edf1f7;
-  box-shadow: -10px -10px 10px -5px #9596970a,
-    10px 10px 10px -5px #9596970a;
+  box-shadow: -10px -10px 10px -5px #9596970a, 10px 10px 10px -5px #9596970a;
   border-radius: 12px;
   @media screen and (max-width: 1000px) {
     gap: 32px;

@@ -73,9 +73,7 @@ const KYCFileUpload = ({
   const handleView = async () => {
     const response = await viewMemberKYC(launchResponse);
     const MemberKYCInfo = [...response.data.businessMembersKYC];
-    let fileInfo = MemberKYCInfo.filter(
-      (member) => member.memberCode === memberCode
-    );
+    let fileInfo = MemberKYCInfo.filter((member) => member.memberCode === memberCode);
     fileInfo.forEach((info) => {
       if (info.documentType === documentComponentType) {
         setDocumentInfo(info);
@@ -170,11 +168,7 @@ const KYCFileUpload = ({
             },
           })}
           backgroundColor={
-            Object.keys(documentInfo).length === 7
-              ? detailsPage
-                ? "ffffff"
-                : "#FAFAFA"
-              : "ffffff"
+            Object.keys(documentInfo).length === 7 ? (detailsPage ? "ffffff" : "#FAFAFA") : "ffffff"
           }
         >
           <input {...getInputProps()} />
@@ -198,10 +192,7 @@ const KYCFileUpload = ({
               {detailsPage ? (
                 <DetailsPage
                   onClick={() =>
-                    downLoadImage(
-                      documentInfo.documentLink,
-                      documentInfo.documentType
-                    )
+                    downLoadImage(documentInfo.documentLink, documentInfo.documentType)
                   }
                 >
                   {documentInfo.documentType}

@@ -2,9 +2,21 @@ import { subMonths, isWithinInterval, subWeeks } from "date-fns";
 import numeral from "numeral";
 import { saveAs } from "file-saver";
 
+const isHttps = (url) => {
+  const httpPart = url.split(":")[0];
+  if (httpPart === "https") {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const downLoadImage = async (link, documentType) => {
+  // documentType is filename
   let httpsLink = link.split("");
-  httpsLink.splice(4, 0, "s");
+  if (!isHttps(link)) {
+    httpsLink.splice(4, 0, "s");
+  }
   httpsLink = httpsLink.join("");
   const downloadResult = await fetch(`${httpsLink}`);
   const blob = await downloadResult.blob();
@@ -46,9 +58,9 @@ export const calculatePercentageIncrease = (total, number) => {
 export const getPercentage = (array) => {
   // console.log(array);
 
-  return numeral(
-    calculatePercentageIncrease(array?.length, getLastMonthData(array).length)
-  ).format("0[.]0");
+  return numeral(calculatePercentageIncrease(array?.length, getLastMonthData(array).length)).format(
+    "0[.]0"
+  );
 };
 
 export const ParseUsers = (usersArray) => {

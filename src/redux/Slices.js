@@ -149,8 +149,7 @@ const BusinessesInfo = createSlice({
 });
 
 export const BusinessesReducers = BusinessesInfo.reducer;
-export const { setBusinessFormInfo, setBusinessesShown } =
-  BusinessesInfo.actions;
+export const { setBusinessFormInfo, setBusinessesShown } = BusinessesInfo.actions;
 
 // This slice will hold all launch application information
 const launchApplicationInfo = createSlice({
@@ -166,14 +165,13 @@ const launchApplicationInfo = createSlice({
     generatedLaunchCode: "",
     generatedMemberCode: "",
     businessAddress: {},
-    shareHoldersLaunchInfo: [],
     directorsLaunchInfo: [],
     beneficiariesLaunchInfo: [],
-    generatedBeneficialOwnerCode: "",
     editShareholderInfo: [],
     shareholderDocs: [],
     directorDocs: [],
     beneficiaryDocs: [],
+    currentPage: false,
   },
   reducers: {
     setSelectedBusinessNames: (state, action) => {
@@ -206,29 +204,11 @@ const launchApplicationInfo = createSlice({
     setBusinessAddress: (state, action) => {
       state.businessAddress = action.payload;
     },
-    setShareHoldersLaunchInfo: (state, action) => {
-      if (action.payload.type === "add") {
-        state.shareHoldersLaunchInfo.push(action.payload.info);
-      } else {
-        state.shareHoldersLaunchInfo = action.payload.info;
-      }
-    },
     setDirectorsLaunchInfo: (state, action) => {
-      if (action.payload.type === "add") {
-        state.directorsLaunchInfo.push(action.payload.info);
-      } else {
-        state.directorsLaunchInfo = action.payload.info;
-      }
+      state.directorsLaunchInfo = action.payload;
     },
     setBeneficiariesLaunchInfo: (state, action) => {
-      if (action.payload.type === "add") {
-        state.beneficiariesLaunchInfo.push(action.payload.info);
-      } else {
-        state.beneficiariesLaunchInfo = action.payload.info;
-      }
-    },
-    setGeneratedBeneficialOwnerCode: (state, action) => {
-      state.generatedBeneficialOwnerCode = action.payload;
+      state.beneficiariesLaunchInfo = action.payload;
     },
     setShareholderDocs: (state, action) => {
       state.shareholderDocs = action.payload;
@@ -238,6 +218,9 @@ const launchApplicationInfo = createSlice({
     },
     setBeneficiaryDocs: (state, action) => {
       state.beneficiaryDocs = action.payload;
+    },
+    setCurrentPage: (state, action) => {
+      state.currentPage = action.payload;
     },
   },
 });
@@ -254,15 +237,14 @@ export const {
   setGeneratedLaunchCode,
   setGeneratedMemberCode,
   setBusinessAddress,
-  setShareHoldersLaunchInfo,
   setDirectorsLaunchInfo,
   setBeneficiariesLaunchInfo,
   updateLaunchShareHolder,
-  setGeneratedBeneficialOwnerCode,
   setUploadeddocs,
   setShareholderDocs,
   setDirectorDocs,
   setBeneficiaryDocs,
+  setCurrentPage,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({
@@ -290,8 +272,7 @@ const RewardInfo = createSlice({
 });
 
 export const RewardReducer = RewardInfo.reducer;
-export const { setAllAvailableRewards, setMyClaimedRewards, setRewardsShown } =
-  RewardInfo.actions;
+export const { setAllAvailableRewards, setMyClaimedRewards, setRewardsShown } = RewardInfo.actions;
 
 const ServicesInfo = createSlice({
   //creating services slice (object) then export reducers of the slice

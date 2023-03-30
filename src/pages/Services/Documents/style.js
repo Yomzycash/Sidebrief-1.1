@@ -38,10 +38,23 @@ export const Bottom = styled.div`
   width: 100%;
   padding: 32px clamp(24px, 3.4vw, 40px);
 `;
+
+export const DownLoadContentWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 250px));
+  row-gap: 24px;
+  column-gap: 20px;
+
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+  }
+`;
+
 export const ContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 250px));
   row-gap: 24px;
   column-gap: 20px;
 
@@ -49,6 +62,9 @@ export const ContentWrapper = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+export const DocumentSection = styled.div``;
+
 export const DownLoadText = styled.p`
   font-family: "BR Firma";
   font-style: normal;

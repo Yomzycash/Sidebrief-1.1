@@ -44,6 +44,8 @@ const Draft = () => {
 		setPageCount(Math.ceil(sortedArr?.length / itemsPerPage));
 	}, [itemOffset, itemsPerPage, sortedArr]);
 
+	const MemoisedGeneralTable = useMemo(() => GeneralTable, [])
+
 	return (
 		<Container>
 			<Body>
@@ -54,7 +56,7 @@ const Draft = () => {
 				)}
 
 				{sortedArr.length > 0 && (
-					<GeneralTable
+					<MemoisedGeneralTable
 						data={currentItems.map((element) => {
 							return {
 								name: element.businessNames

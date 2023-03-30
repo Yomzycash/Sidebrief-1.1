@@ -1,46 +1,35 @@
-import React, { useReducer } from "react";
+import React, { useState } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
-// import DropDownWithSearch from "components/input/DropDownWithSearch";
-import { Body } from "./styles.js";
-
-import {
-  CheckoutController,
-  CheckoutSection,
-  PaymentForm,
-  PaymentSelector,
-} from "containers";
+import { Body, Loading } from "./styles.js";
+import { CheckoutController, CheckoutSection } from "containers";
 import { Bottom, Container, Header } from "../styled";
-import { providerReducer, actions } from "./reducer";
-import { paymentProviders } from "./constants";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import { useSelector } from "react-redux";
 import { setCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
+import { useGetSingleEntityQuery, usePayLaunchMutation } from "services/launchService";
+import { setLaunchPaid } from "redux/Slices";
+import Payment from "containers/Payment/index.jsx";
+import { Puff } from "react-loading-icons";
 
 const PaymentPage = () => {
-  const [providers, dispatch] = useReducer(
-    providerReducer,
-    paymentProviders.map((provider, index) => {
-      return {
-        ...provider,
-        id: index + 1,
-        active: index === 0,
-      };
-    })
-  );
+  const [entityInfo, setEntityInfo] = useState({
+    entityCurrency: "",
+    entityFee: "",
+  });
 
-  const activateProvider = (id) => {
-    dispatch({ type: actions.ACTIVATE, id: id });
-  };
+  const [payLaunch] = usePayLaunchMutation();
 
-  // get current active
-  const getActive = () => {
-    return providers.find((el) => el.active === true).name.toLowerCase();
-  };
-  const selectedEntity = useSelector(
-    (state) => state.LaunchReducer.selectedEntity
-  );
+  const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
+
+  const { launchCode, registrationType } = launchResponse;
+
+  const { data, isLoading } = useGetSingleEntityQuery(registrationType);
+
+  useEffect(() => {
+    if (data) setEntityInfo(data);
+  }, [data]);
 
   const navigate = useNavigate();
 
@@ -50,6 +39,60 @@ const PaymentPage = () => {
 
   const handlePrev = () => {
     navigate(-1);
+  };
+
+  //
+
+  // Send the payment reference information to the backend
+  const sendFlutterwaveRefToBackend = async (reference) => {
+    const requiredData = {
+      launchCode: launchCode,
+      complyPayment: {
+        paymentAmount: reference.amount,
+        paymentCurrency: reference.currency,
+        paymentTransactionId: reference.transaction_id,
+        paymentProvider: "Flutterwave",
+        paymentStatus: reference.status,
+      },
+    };
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
+    store.dispatch(setLaunchPaid(reference.status));
+    const payResponse = await payLaunch(requiredData);
+
+    navigate("/launch/address");
+  };
+
+  //
+
+  // Stripe required data to be sent to the backend a successful payment
+  const sendStripeRefToBackend = async (paymentIntent) => {
+    const requiredData = {
+      launchCode: launchCode,
+      paymentDetails: {
+        paymentAmount: paymentIntent.amount,
+        paymentCurrency: paymentIntent.currency,
+        paymentTransactionId: paymentIntent.id,
+        paymentProvider: "Stripe",
+        paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
+      },
+    };
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
+    store.dispatch(setLaunchPaid(requiredData));
+    const payResponse = await payLaunch(requiredData);
+
+    navigate("/launch/address");
+  };
+
+  //
+
+  // Passed to the payment component
+  let paymentInfo = {
+    sendFlutterwaveRefToBackend: sendFlutterwaveRefToBackend,
+    sendStripeRefToBackend: sendStripeRefToBackend,
+    amount: entityInfo?.entityFee,
+    currency: entityInfo?.entityCurrency,
+    title: "Business Registration",
+    description: `Payment for Business Registration in ${entityInfo?.entityCountry}`,
   };
 
   // Set the progress of the application
@@ -68,33 +111,23 @@ const PaymentPage = () => {
           title="Payment Method"
           // HeaderParagraph="Please select a payment method to continue with."
         />
-        <PaymentSelector providers={providers} activate={activateProvider} />
-        {/* <button onClick={() => console.log(getActive().name)}>
-					Get active
-				</button> */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "40px",
-          }}
-        >
-          <PaymentForm
-            currency={selectedEntity.entityCurrency}
-            amount={selectedEntity.entityFee}
-            USDprice={845}
-            paymentProvider={getActive()}
-          />
-        </div>
+        {isLoading ? (
+          <Loading>
+            <Puff stroke="#00A2D4" fill="white" />
+          </Loading>
+        ) : (
+          <Payment paymentInfo={paymentInfo} />
+        )}
+
         <Bottom>
           <CheckoutController
             backText={"Previous"}
             hideForward
             backAction={handlePrev}
+            forwardAction={handleNext}
           />
         </Bottom>
       </Body>
-      {/* <AppFeedback subProject="Payment page" /> */}
     </Container>
   );
 };

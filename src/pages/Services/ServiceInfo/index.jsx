@@ -1,156 +1,139 @@
-import { useState, useEffect, useCallback } from "react";
-import HeaderCheckout from "components/Header/HeaderCheckout";
-import {
-  Container,
-  Body,
-  Bottom,
-  InfoContainer,
-  Bullet,
-  Content,
-  InfoFrame,
-  InfoFrameHead,
-  BigContent,
-} from "./style";
+import React, { useCallback, useEffect, useState } from "react";
+import { Container, Body, Bottom } from "./style";
 import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { useGetAllCountriesQuery } from "services/launchService";
 import { useNavigate } from "react-router-dom";
-import { resources } from "utils/config";
-import { store } from "redux/Store";
-import { ReactComponent as Mark } from "asset/svg/mark.svg";
-import { FiClock } from "react-icons/fi";
-import { FaMoneyCheckAlt } from "react-icons/fa";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
-import { setServiceCheckoutProgress } from "redux/Slices";
+import { InfoContainer } from "containers/Services";
+import { useCreateComplyMutation, useUpdateComplyMutation } from "services/complyService";
+import { useGetAllCountriesQuery, useGetServicesByCountryQuery } from "services/staffService";
+import { useActions } from "./actions";
 
 const ServiceInfo = () => {
-  const [selectedResource, setselectedResource] = useState("");
-  const [countries, setCountries] = useState([]);
-
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedService, setSelectedService] = useState({});
+  const [countryISO, setcountryISO] = useState("");
 
-  const { data, isLoading } = useGetAllCountriesQuery();
-  const navigate = useNavigate();
+  const countries = useGetAllCountriesQuery();
+  const services = useGetServicesByCountryQuery(countryISO);
+  const [createComply, createState] = useCreateComplyMutation();
+  const [updateComply, updateState] = useUpdateComplyMutation();
 
-  const handleNext = async () => {
-    // store.dispatch();
-    navigate("/services/payment");
-  };
-  // Handle supported countries fetch
-  const handleCountry = useCallback(
+  let navigate = useNavigate();
+
+  let countriesArray = countries?.data?.map((el) => el?.countryName) || [];
+  let servicesArray = services.data?.map((el) => el?.serviceName) || [];
+
+  let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+
+  const { handleSubmit } = useActions({
+    selectedCountry,
+    selectedService,
+    complyInfo,
+    services,
+    createComply,
+    updateComply,
+    navigate,
+  });
+
+  //   When country is selected
+  const handleCountrySelect = useCallback(
     async (value) => {
-      let responseData = data;
-      let countries = [];
-      responseData?.forEach((data) => {
-        countries = [...countries, data?.countryName];
-      });
-      if (responseData) {
-        setCountries([...countries]);
-        setSelectedCountry(value);
-      }
+      setSelectedCountry(value);
     },
-    [data]
+    [selectedCountry]
   );
 
-  const selectCountry = (value) => {
-    setSelectedCountry(value);
+  // When a service is selected
+  const handleServiceSelect = (valueSelected) => {
+    let serviceData = services.data?.find((el) => el?.serviceName === valueSelected) || {};
+    setSelectedService(serviceData);
   };
 
-  // Update the supported countries when data changes
+  const handleServices = async () => {
+    const countryISO =
+      countries.data?.find((el) => el.countryName === selectedCountry)?.countryISO || "";
+    setcountryISO(countryISO);
+  };
+
+  //
+
+  // Fetches services when country is selected
   useEffect(() => {
-    handleCountry();
-  }, [handleCountry]);
+    handleServices();
+  }, [selectedCountry]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  //
 
-  const handleResourceSelect = (valuesSelected) => {
-    setselectedResource(valuesSelected);
-  };
-
-  // Set the progress of the application
+  // Populates country information, if available
   useEffect(() => {
-    store.dispatch(setServiceCheckoutProgress({ total: 5, current: 1 })); // total- total pages and current - current page
-  }, []);
+    let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+    let serviceCountry = complyInfo?.serviceCountry;
+
+    setSelectedCountry(serviceCountry);
+    handleServices();
+  }, [countries]);
+
+  //
+
+  // Populates service information, if available
+  useEffect(() => {
+    let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+    let serviceName = complyInfo?.serviceName;
+    handleServiceSelect(serviceName);
+  }, [services.data]);
+
   return (
-    <>
-      <Container>
-        <ServicesCheckoutHeader />
+    <Container>
+      <ServicesCheckoutHeader />
 
-        <Body onSubmit={handleSubmit}>
-          <CheckoutSection
-            title="Manage your business"
-            HeaderParagraph="Make changes to already registered companies"
-          />
-          <LaunchPrimaryContainer>
-            <LaunchFormContainer>
-              <div style={{ maxWidth: "450px" }}>
-                <TagInputWithSearch
-                  label="Operational Country"
-                  list={countries}
-                  getValue={selectCountry}
-                  initialValue={selectedCountry}
-                  suggestionLoading={isLoading}
-                />
-              </div>
+      <Body onSubmit={handleSubmit}>
+        <CheckoutSection
+          title="Manage your business"
+          HeaderParagraph="Make changes to already registered companies"
+        />
+        <LaunchPrimaryContainer>
+          <LaunchFormContainer>
+            <div style={{ maxWidth: "450px" }}>
               <TagInputWithSearch
-                label="Resource"
-                list={resources
-                  .filter(
-                    (el) =>
-                      el.country?.toLowerCase() ===
-                      selectedCountry?.toLowerCase()
-                  )
-                  .map((el) => el.resource)
-                  .sort()}
-                getValue={handleResourceSelect}
-                initialValue={selectedResource}
-                MatchError="Please select resource from the list"
-                EmptyError="Please select at least one resources"
+                label="Operational Country"
+                list={countriesArray}
+                getValue={handleCountrySelect}
+                initialValue={selectedCountry}
+                suggestionLoading={countries.isLoading}
+                fetchingText={"Fetching countries..."}
               />
-            </LaunchFormContainer>
-            <InfoContainer>
-              <InfoFrame space>
-                <InfoFrameHead>Requirements</InfoFrameHead>
-                <Bullet>
-                  <Mark />
-                  <Content>Passport</Content>
-                </Bullet>
-                <Bullet>
-                  <Mark />
-                  <Content>Proof of address</Content>
-                </Bullet>
-              </InfoFrame>
-              <InfoFrame>
-                <InfoFrameHead>Timeline</InfoFrameHead>
-                <Bullet>
-                  <FiClock />
-                  <BigContent>20-30 days</BigContent>
-                </Bullet>
-              </InfoFrame>
-              <InfoFrame>
-                <InfoFrameHead>Pricing</InfoFrameHead>
-                <Bullet>
-                  <FaMoneyCheckAlt />
-                  <BigContent>N22,000</BigContent>
-                </Bullet>
-              </InfoFrame>
-            </InfoContainer>
-            <Bottom>
-              <CheckoutController
-                forwardText={"Next"}
-                forwardSubmit
-                hidePrev
-                forwardAction={handleNext}
-              />
-            </Bottom>
-          </LaunchPrimaryContainer>
-        </Body>
-      </Container>
-    </>
+            </div>
+            <TagInputWithSearch
+              label="Services"
+              list={servicesArray}
+              getValue={handleServiceSelect}
+              initialValue={selectedService?.serviceName || "--"}
+              MatchError="Please select resource from the list"
+              EmptyError="Please select at least one service"
+              suggestionLoading={services.isLoading || services.isFetching}
+              fetchingText={"Fetching services..."}
+            />
+          </LaunchFormContainer>
+          {selectedService?.serviceName && (
+            <InfoContainer
+              country={countries?.data?.find((el) => el.countryName === selectedCountry) || ""}
+              service={selectedService}
+            />
+          )}
+          <Bottom>
+            <CheckoutController
+              forwardText={"Next"}
+              forwardSubmit
+              hidePrev
+              forwardLoading={createState.isLoading || updateState.isLoading}
+            />
+          </Bottom>
+        </LaunchPrimaryContainer>
+      </Body>
+    </Container>
   );
 };
 

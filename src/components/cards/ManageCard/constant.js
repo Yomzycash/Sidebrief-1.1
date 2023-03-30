@@ -1,14 +1,16 @@
 import pdf from '../../../asset/images/pdf.png';
+import png from '../../../asset/images/png.png';
+import jpg from '../../../asset/images/jpg.png';
 
 export const manageDoc = [
     {
       id: 1,
-      fileType: pdf,
+      fileType: 'pdf',
       fileName: 'required documents',
     },
     {
       id: 2,
-      fileType: pdf,
+      fileType: 'pdf',
       fileName: 'required documents',
     },
     {
@@ -32,4 +34,10 @@ export const manageDoc = [
       fileName: 'required documents',
     },
   ]
+  
+  export const imageTypeImage = {
+    pdf: pdf,
+    jpg: jpg,
+    png: png,
+  }
   

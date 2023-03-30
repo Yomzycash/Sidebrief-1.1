@@ -1,4 +1,6 @@
 import { toast } from "react-hot-toast";
+import { setCurrentPage } from "redux/Slices";
+import { store } from "redux/Store";
 import { handleError } from "utils/globalFunctions";
 
 // Add a member
@@ -87,9 +89,7 @@ export const handleSingleMemberView = async (memberCode) => {
   let members = await handleMembersView();
 
   if (members.data) {
-    let shareholder = members?.data?.filter(
-      (el) => el.memberCode === memberCode
-    );
+    let shareholder = members?.data?.filter((el) => el.memberCode === memberCode);
     if (shareholder) {
       // TODO
       return { data: shareholder };
@@ -113,10 +113,8 @@ export const checkMemberExistence = async (info) => {
   if (members.data) {
     let member = members.data.filter(
       (member) =>
-        member.memberName.toLowerCase() ===
-          info.formData.fullName.toLowerCase() &&
-        member.memberEmail.toLowerCase() ===
-          info.formData.email.toLowerCase() &&
+        member.memberName.toLowerCase() === info.formData.fullName.toLowerCase() &&
+        member.memberEmail.toLowerCase() === info.formData.email.toLowerCase() &&
         member.memberPhone === info.formData.phone
     );
     if (member.length > 0) return { data: { status: true, data: member[0] } };
@@ -130,12 +128,7 @@ export const checkMemberExistence = async (info) => {
 
 //
 
-export const handleResponse = (
-  response,
-  successMessage,
-  successAction,
-  errorAction
-) => {
+export const handleResponse = (response, successMessage, successAction, errorAction) => {
   if (response.data) {
     toast.success(successMessage);
     if (successAction) successAction();

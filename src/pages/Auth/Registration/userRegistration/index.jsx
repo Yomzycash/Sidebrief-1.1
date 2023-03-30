@@ -8,19 +8,6 @@ import {
   OrWrapper,
   QuestionWrap,
   Registration,
-  DropDown,
-  DropDownWrapper,
-  ListItem,
-  ListItems,
-  ShowList,
-  DefaultItem,
-  ShowListIcon,
-  Item,
-  Label,
-  OtherInput,
-  ErrMsg,
-  Top,
-  InvisibleBackDrop,
 } from "./styles";
 import MainButton from "components/button";
 import { InputWithLabel } from "components/input";
@@ -32,23 +19,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterNewUserMutation } from "services/authService";
 import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
-import { referralOptions, userRegistrationSchema } from "utils/config";
+import { referralOptions } from "utils/config";
 import toast from "react-hot-toast";
-import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { checkStaffEmail } from "utils/globalFunctions";
 import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
-import TagInputWithSearch from "components/input/TagInputWithSearch";
-import { useCallback } from "react";
 import DropOther from "components/input/dropOther";
-
-//
+import { userRegistrationSchema } from "./schema";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [registerNewUser, { isLoading, isSuccess }] =
-    useRegisterNewUserMutation();
+  const [registerNewUser, { isLoading, isSuccess }] = useRegisterNewUserMutation();
   const [registerNewStaff, staffState] = useRegisterNewStaffMutation();
 
   const {
@@ -112,10 +94,7 @@ const UserRegistration = () => {
     let error = response?.error;
     if (data) {
       store.dispatch(saveUserInfo(data));
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify({ ...data, newUser: true })
-      );
+      localStorage.setItem("userInfo", JSON.stringify({ ...data, newUser: true }));
       localStorage.setItem("userEmail", formData.email);
       toast.success(data.message);
       navigate(`${location.pathname}/success`);
@@ -124,16 +103,6 @@ const UserRegistration = () => {
       toast.error(error.data.message);
     }
   };
-  // const correctFormDate = (formData) => {
-  //   let data = formData;
-  //   let dateArray = [...data.date];
-  //   let bDay = dateArray[0].toString() + dateArray[1].toString();
-  //   let bMonth = dateArray[3].toString() + dateArray[4].toString();
-  //   let bYear = dateArray[6].toString() + dateArray[9].toString();
-  //   let newData = { ...data, bDay, bMonth, bYear };
-  //   delete newData["date"];
-  //   return newData;
-  // };
 
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
@@ -228,11 +197,7 @@ const UserRegistration = () => {
                     text: "Privacy Policy",
                     to: "",
                   },
-                  action: () =>
-                    window.open(
-                      "https://policy.sidebrief.com/privacy",
-                      "_blank"
-                    ),
+                  action: () => window.open("https://policy.sidebrief.com/privacy", "_blank"),
                 },
                 {
                   text: "&",
@@ -240,8 +205,7 @@ const UserRegistration = () => {
                     text: "Terms of Use.",
                     to: "",
                   },
-                  action: () =>
-                    window.open("https://policy.sidebrief.com/terms", "_blank"),
+                  action: () => window.open("https://policy.sidebrief.com/terms", "_blank"),
                 },
               ]}
             />

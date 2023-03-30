@@ -2,7 +2,7 @@ export const ReviewTab = [
   {
     id: 1,
     title: "Service Information",
-    path: "/services/review",
+    path: "/services/review/info",
   },
   {
     id: 2,

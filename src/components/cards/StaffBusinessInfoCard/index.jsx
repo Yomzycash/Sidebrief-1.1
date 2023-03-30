@@ -1,12 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const StaffBusinessInfoCard = ({
-  businessNames,
-  businessObjectives,
-  address,
-  type,
-}) => {
+const StaffBusinessInfoCard = ({ businessNames, businessObjectives, address, type, country }) => {
   return (
     <>
       <AllContainer>
@@ -50,7 +45,7 @@ const StaffBusinessInfoCard = ({
             <Wrapper>
               <TitleWrapper>Operational Country</TitleWrapper>
               <SingleContainer>
-                <TitleWrapper>{address?.addressCountry}</TitleWrapper>
+                <TitleWrapper>{country}</TitleWrapper>
               </SingleContainer>
             </Wrapper>
             <Wrapper>
