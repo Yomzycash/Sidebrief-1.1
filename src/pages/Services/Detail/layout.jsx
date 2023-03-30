@@ -5,7 +5,6 @@ import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useViewComplyQuery } from "services/complyService";
 import { checkStaffEmail } from "utils/globalFunctions";
-import { countriesInfo } from "utils/allCountries";
 import CommonButton from "components/button/commonButton";
 import { useEffect } from "react";
 import lookup from "country-code-lookup";
