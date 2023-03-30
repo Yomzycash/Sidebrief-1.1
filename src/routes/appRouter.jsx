@@ -165,6 +165,12 @@ const UserServicesPageLayout = lazy(() => import("pages/Dashboard/User/Service/i
 const UserServicesDraft = lazy(() => import("pages/Dashboard/User/Service/draft"));
 const UserServicesAll = lazy(() => import("pages/Dashboard/User/Service/all"));
 const UserServicesSubmitted = lazy(() => import("pages/Dashboard/User/Service/submitted"));
+const AllComplyLayout = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply")
+);
+const AllComply = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/all")
+);
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -373,6 +379,9 @@ const AppRouter = () => {
                     <Route path="info" element={<ServiceInformation />} />
                     <Route path="forminfo" element={<FormInformation />} />
                     <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                  </Route>
+                  <Route path="allcomply" element={<AllComplyLayout />}>
+                    <Route path="all" element={<AllComply />} />
                   </Route>
                 </Route>
               </Route>
