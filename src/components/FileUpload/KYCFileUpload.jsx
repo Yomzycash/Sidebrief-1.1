@@ -48,7 +48,9 @@ const KYCFileUpload = ({
   console.log(launchInfo);
   console.log("dddd", searchParams);
   const launchResponse = {
-    launchCode: launchInfo ? launchInfo.launchCode : searchParams.get("launchCode"),
+    launchCode: launchInfo
+      ? launchInfo.launchCode
+      : searchParams.get("launchCode"),
     registrationCountry: launchInfo
       ? launchInfo.registrationCountry
       : searchParams.get("registrationCountry"),
