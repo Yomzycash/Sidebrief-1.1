@@ -13,6 +13,7 @@ import {
   SubHeader,
   TitleWrapper,
 } from "./styled";
+import ActiveNav from "components/navbar/ActiveNav";
 import { useViewAllComplyByMetaQuery } from "services/complyService";
 import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
@@ -35,7 +36,7 @@ const UserService = () => {
   // const { data, isLoading, refetch } = useGetAllServicesQuery();
   //const myService = useViewAllComplyByMetaQuery();
   const userMeta = useSelector((state) => state.UserDataReducer.userInfo.id);
-  const { data, isLoading, refetch } = useViewAllComplyByMetaQuery({
+  const { data, isLoading, refetch, isSuccess } = useViewAllComplyByMetaQuery({
     meta: userMeta,
   });
 
@@ -63,11 +64,13 @@ const UserService = () => {
   // console.log("sortedArr", sortedArr)
 
   // console.log("serviceBody", serviceBody )
-  const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
 
   useEffect(() => {
     refetch();
   }, []);
+
+  const submitted = data?.filter((el) => el.status === "submitted") || [];
+  const draft = data?.filter((el) => el.status === "pending") || [];
 
   return (
     <Container>
@@ -91,36 +94,22 @@ const UserService = () => {
             </SearchWrapper>
           </BottomContent>
 
-          {isLoading && (
-            <Loading>
-              <Puff stroke="#00A2D4" />
-            </Loading>
-          )}
-
-          {/* //<FeatureTable header={header} body={serviceBody}/> */}
-          {data?.length > 0 && (
-            <MemoisedGeneralTable
-              data={[...data]
-                ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
-                .map((comply) => ({
-                  complyCode: comply.complyCode,
-                  serviceId: comply.serviceId,
-                  meta: comply.meta,
-                  date: comply.updatedAt,
-                }))}
-              columns={columns}
-              normalLastRow
+          <SubHeader>
+            <ActiveNav
+              text="All"
+              total={isSuccess ? data.length : 0}
+              path={"/dashboard/services/all"}
             />
-          )}
+            <ActiveNav
+              text="Submitted"
+              total={submitted.length}
+              path="/dashboard/services/submitted"
+            />
+            <ActiveNav text="Draft" total={draft.length} path="/dashboard/services/draft" />
+          </SubHeader>
+          <Outlet />
         </MainHeader>
-        {/* {sortedArr?.length > itemsPerPage && (
-					<Paginator
-						handlePageClick={handlePageClick}
-						pageCount={pageCount}
-					/>
-				)} */}
       </Header>
-      <Outlet />
     </Container>
   );
 };
