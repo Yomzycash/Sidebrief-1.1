@@ -51,7 +51,7 @@ const DocumentEdit = ({
     if (documentNumber > 1 && !review) {
       dispatch({ type: "setDone", payload: true });
     }
-  }, [documentNumber, review]);
+  }, []);
 
   return (
     <DocumentForm onSubmit={handleSubmit}>
