@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Body,
   BodyLeft,
+  BodyCenter,
   BodyRight,
   Container,
   Footer,
@@ -84,7 +85,7 @@ const MyRewards = () => {
             <Puff stroke="#00A2D4" fill="white" width={60} />
           </Loading>
         ) : (
-          filteredReward?.length > 0 && (
+          filteredReward?.length > 0 ? (
             <>
               <BodyLeft>
                 {/* <h3>Categories</h3> */}
@@ -116,6 +117,8 @@ const MyRewards = () => {
                 ))}
               </BodyRight>
             </>
+          ) : (
+            <BodyCenter>No rewards added yet!</BodyCenter>
           )
         )}
       </Body>
