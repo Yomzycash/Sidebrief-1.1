@@ -85,7 +85,7 @@ const DocsSection = ({ setOpen, service, serviceId, refetchServices, mode }) => 
 
   const handleNext = () => {
     setOpen(false);
-    toast.success("Successfully created service");
+    toast.success(mode === "add" ? "Service created successfully" : "Service updated successfully");
   };
 
   let serviceDocTemplateInfo = useMemo(

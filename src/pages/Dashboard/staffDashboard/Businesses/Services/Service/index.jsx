@@ -48,7 +48,7 @@ const ServicePage = () => {
   };
 
   const handleViewAllNotifications = () => {
-    navigate("/staff-dashboard/businesses/services/chats");
+    navigate("/staff-dashboard/businesses/services/allcomply");
   };
 
   let totalServices = data?.length > 0 ? data?.length : 0;
