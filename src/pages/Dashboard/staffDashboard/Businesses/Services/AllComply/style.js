@@ -11,13 +11,6 @@ export const Container = styled.div`
   }
 `;
 
-export const Body = styled.div`
-  display: flex;
-  gap: 42px;
-  border: 1px solid #edf1f7;
-  border-top: none;
-`;
-
 export const Header = styled.div`
   position: sticky;
   top: 57.1px;
@@ -74,13 +67,6 @@ export const SearchWrapper = styled.div`
     position: absolute;
     z-index: 5;
   }
-`;
-export const Loading = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 200px;
 `;
 
 export const TopContent = styled.div`
@@ -198,44 +184,25 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export const HeadText = styled.h5`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 500;
-	font-size: 16px;
-	line-height: 131%;
-	letter-spacing: 0.02em;
-	padding-inline: ${({ nopadding }) => (nopadding ? `0` : `24px`)};
-
-	color: #151717;
+export const TableContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  flex: 1;
 `;
 
-export const BodyText = styled.p`
-	font-family: "BR Firma";
-	font-style: normal;
-	font-weight: 400;
-	font-size: 16px;
-	line-height: 131%;
-	letter-spacing: 0.02em;
-	padding-inline: 24px;
-
-	color: #151717;
-
-	// background-color: blueviolet;
+export const Body = styled.div`
+  display: flex;
+  gap: 24px;
+  border: 1px solid #edf1f7;
+  border-top: none;
+  flex-direction: column;
+  padding-bottom: 24px;
 `;
 
-export const Checkbox = styled.input`
-	cursor: pointer;
-	width: 20px;
-	height: 20px;
-	margin-right: 30px;
-`;
-
-export const Clickable = styled.button`
-	height: 56px;
-	width: 100%;
-	display: flex;
-	align-items: center;
-	border: none;
-	background-color: transparent;
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 200px;
 `;
