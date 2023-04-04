@@ -161,7 +161,16 @@ const AllServices = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllServices")
 );
 const ChatLayout = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/Services/Chat"));
-const UserServicesPage = lazy(() => import("pages/Dashboard/User/Service/index"));
+const UserServicesPageLayout = lazy(() => import("pages/Dashboard/User/Service/index"));
+const UserServicesDraft = lazy(() => import("pages/Dashboard/User/Service/draft"));
+const UserServicesAll = lazy(() => import("pages/Dashboard/User/Service/all"));
+const UserServicesSubmitted = lazy(() => import("pages/Dashboard/User/Service/submitted"));
+const AllComplyLayout = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply")
+);
+const AllComply = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/all")
+);
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -263,7 +272,11 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-              <Route path="services" element={<UserServicesPage />} />
+              <Route path="services" element={<UserServicesPageLayout />}>
+                <Route path="all" element={<UserServicesAll />} />
+                <Route path="draft" element={<UserServicesDraft />} />
+                <Route path="submitted" element={<UserServicesSubmitted />} />
+              </Route>
               <Route path="services/:complycode" element={<ServicesDetailLayout />}>
                 <Route index element={<ServiceInformation />} />
                 <Route path="info" element={<ServiceInformation />} />
@@ -367,6 +380,9 @@ const AppRouter = () => {
                     <Route path="forminfo" element={<FormInformation />} />
                     <Route path="documentinfo" element={<DocumentInfoDetails />} />
                   </Route>
+                  <Route path="allcomply" element={<AllComplyLayout />}>
+                    <Route path="all" element={<AllComply />} />
+                  </Route>
                 </Route>
               </Route>
               <Route path="business" element={<StaffBusinessDetailLayout />}>
@@ -441,6 +457,7 @@ const AppRouter = () => {
 
             <Route path="review" element={<ProtectedReview />}>
               <Route index element={<BusinessInformationReview />} />
+              <Route path="business-info" element={<BusinessInformationReview />} />
               <Route path="shareholders" element={<ShareholderReview />} />
               <Route path="directors" element={<DirectorReview />} />
               <Route path="beneficiaries" element={<BeneficiaryReview />} />

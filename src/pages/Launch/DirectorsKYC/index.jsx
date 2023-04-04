@@ -111,7 +111,7 @@ const DirectorKYC = () => {
         let beneficiaries = localStorage.getItem("beneficiaries");
 
         if (beneficiaries === "false") {
-          navigate("/launch/review");
+          navigate("/launch/review/business-info");
         } else {
           navigate("/launch/beneficiaries-kyc");
         }

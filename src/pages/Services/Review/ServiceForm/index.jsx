@@ -1,16 +1,25 @@
 import FormContainer from "containers/FormContainer";
-import React, { useEffect, useState, useCallback } from "react";
+import React from "react";
 import { Wrapper, Loading } from "./style";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { CheckoutController } from "containers";
 import { Bottom } from "../style";
 import { Puff } from "react-loading-icons";
-import { useLazyViewComplyQuery } from "services/complyService";
+import { useActions } from "../actions";
+import { useUpdateComplyMutation } from "services/complyService";
 
 const ServiceFormReview = () => {
+  const [updateComply, updateState] = useUpdateComplyMutation();
+
   const viewComply = useOutletContext();
   const documents = viewComply?.data?.complyDocuments;
   let done = documents?.length < 1;
+
+  const { handleStatusUpdate } = useActions({
+    serviceId: viewComply.data?.serviceId,
+    complyInfo: viewComply.data,
+    updateComply,
+  });
 
   const navigate = useNavigate();
 
@@ -21,7 +30,13 @@ const ServiceFormReview = () => {
   const handleNext = async () => {
     let link = "/services/review/documents";
     link = done ? "/services/success" : link;
-    navigate(link);
+
+    if (done) {
+      let response = await handleStatusUpdate();
+      response.data && navigate(link);
+    } else {
+      navigate(link);
+    }
   };
 
   return (
@@ -38,6 +53,7 @@ const ServiceFormReview = () => {
             question={el?.complyQuestion}
             answerArray={el?.complyAnswer}
             answer={el?.complyAnswer}
+            forwardLoading={updateState.isLoading}
           />
         </div>
       ))}
@@ -45,7 +61,6 @@ const ServiceFormReview = () => {
       <Bottom>
         <CheckoutController
           backText={"Previous"}
-          forwardSubmit
           backAction={handlePrev}
           forwardAction={handleNext}
           forwardText={done ? "Done" : "Next"}

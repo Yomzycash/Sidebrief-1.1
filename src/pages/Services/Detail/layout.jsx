@@ -5,9 +5,9 @@ import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useViewComplyQuery } from "services/complyService";
 import { checkStaffEmail } from "utils/globalFunctions";
-import { countriesInfo } from "utils/allCountries";
 import CommonButton from "components/button/commonButton";
-const lookup = require("country-code-lookup");
+import { useEffect } from "react";
+import lookup from "country-code-lookup";
 
 const ServicesDetailLayout = () => {
   const { complycode } = useParams();
@@ -58,17 +58,21 @@ const ServicesDetailLayout = () => {
       serviceCountry: lookup.byIso(countryISO)?.country,
       serviceName: service.data?.serviceName,
     };
-    let paymentInfo = comply?.complyPayment[0];
+    let paymentInfo = comply?.complyPayment[0] || {};
 
     localStorage.setItem("complyInfo", JSON.stringify(complyInfo));
     localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo));
     navigate("/services");
   };
 
+  useEffect(() => {
+    viewComply.refetch();
+  }, []);
+
   return (
     <Container>
       <ServiceDetailHeader
-        status={getStatus(viewComply?.data?.status)}
+        status={getStatus(status)}
         serviceName={service?.data?.serviceName}
         code={complyCode}
         mainUrl={mainUrl}
@@ -85,7 +89,7 @@ const ServicesDetailLayout = () => {
       <Body>
         <Outlet context={viewComply} />
       </Body>
-      {!isStaffEnd && status && (
+      {!isStaffEnd && status?.toLowerCase() !== "submitted" && (
         <CommonButton text="Continue application" action={handleContinue} />
       )}
     </Container>

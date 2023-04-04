@@ -20,34 +20,31 @@ import {
   checkStaffEmail,
   // getReceivedNotifications,
 } from "utils/globalFunctions";
-import { useGetAllNotificationsQuery } from "services/chatService";
+import {
+  useGetAllNotificationsQuery,
+  useViewNotificationsByUserIdQuery,
+} from "services/chatService";
 import Notification from "components/notification";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { getUnReadNotifications } from "./actions";
 
-const Navbar = ({
-  dashboard,
-  rewards,
-  displayMobile,
-  imgStyles,
-  style,
-  hideSearch,
-}) => {
+const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearch }) => {
   // const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
-  const { data, refetch } = useGetAllNotificationsQuery();
-
-  const { refreshNotifications } = useSelector(
-    (store) => store.UserDataReducer
-  );
-  // console.log(refreshNotifications);
-
-  let userInfo = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
+
+  const { data, refetch } = useGetAllNotificationsQuery();
+  const userNotifications = useViewNotificationsByUserIdQuery({
+    userId: userInfo?.id,
+  });
+  const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
+  // console.log(refreshNotifications);
+
   // useEffect(() => {
   //   if (!dashboard && !rewards) {
   //     window.addEventListener("scroll", () => {
@@ -73,12 +70,11 @@ const Navbar = ({
     refetch();
   }, [refreshNotifications]);
 
-	// let newNotifications = useMemo(() => {
-	//   return getUnReadNotifications(data);
-	// }, [refreshNotifications]);
-	let newNotifications = getUnReadNotifications(data);
-	// console.log(getUnReadNotifications(data));
-
+  // let newNotifications = useMemo(() => {
+  //   return getUnReadNotifications(data);
+  // }, [refreshNotifications]);
+  let newNotifications = getUnReadNotifications(staffEmail ? data : userNotifications?.data?.data);
+  // console.log(getUnReadNotifications(data));
 
   return (
     <>
@@ -102,9 +98,7 @@ const Navbar = ({
             {/* {staffEmail && ( */}
             <BellContainer onClick={handleShowNotification}>
               {newNotifications?.length > 0 && (
-                <NotificationBadge>
-                  {newNotifications?.length}
-                </NotificationBadge>
+                <NotificationBadge>{newNotifications?.length}</NotificationBadge>
               )}
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
@@ -134,14 +128,12 @@ const Navbar = ({
       {showNotification && (
         <Notification
           closeNotifications={closeNotifications}
-          data={data}
-          refetch={refetch}
+          data={staffEmail ? data : userNotifications?.data?.data}
+          refetch={staffEmail ? refetch : userNotifications?.refetch}
         />
       )}
 
-      {showProfile && (
-        <Profile closeProfile={closeProfile} showProfile={showProfile} />
-      )}
+      {showProfile && <Profile closeProfile={closeProfile} showProfile={showProfile} />}
     </>
   );
 };

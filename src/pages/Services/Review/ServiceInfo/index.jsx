@@ -3,7 +3,7 @@ import { CheckoutController } from "containers";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useLazyViewComplyQuery } from "services/complyService";
+import { useUpdateComplyMutation } from "services/complyService";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Bottom } from "../style";
 import {
@@ -18,6 +18,7 @@ import {
   Wrapper,
 } from "./style";
 import { Puff } from "react-loading-icons";
+import { useActions } from "../actions";
 
 const ServiceInfoReview = () => {
   const viewComply = useOutletContext();
@@ -29,11 +30,16 @@ const ServiceInfoReview = () => {
   let noDocument = documents?.length < 1;
   let done = noForm && noDocument;
 
-  const viewService = useGetSingleServiceQuery(serviceId);
-
   const countries = useGetAllCountriesQuery();
+  const viewService = useGetSingleServiceQuery(serviceId);
+  const [updateComply, updateState] = useUpdateComplyMutation();
 
-  console.log(viewService);
+  const { handleStatusUpdate } = useActions({
+    serviceId,
+    complyInfo: viewComply?.data,
+    updateComply,
+  });
+
   let getCountry = countries?.data?.find(
     (country) => country?.countryISO === viewService?.data?.serviceCountry
   )?.countryName;
@@ -44,11 +50,17 @@ const ServiceInfoReview = () => {
     navigate(-1);
   };
 
-  const handleNext = async () => {
+  const handleNext = async (e) => {
     let link = "/services/review/form";
     link = noForm ? "/services/review/documents" : link;
     link = done ? "/services/success" : link;
-    navigate(link);
+
+    if (done) {
+      let response = await handleStatusUpdate();
+      response.data && navigate(link);
+    } else {
+      navigate(link);
+    }
   };
 
   return (
@@ -80,10 +92,10 @@ const ServiceInfoReview = () => {
       <Bottom>
         <CheckoutController
           backText={"Previous"}
-          forwardSubmit
           backAction={handlePrev}
           forwardAction={handleNext}
           forwardText={done ? "Done" : "Next"}
+          forwardLoading={updateState.isLoading}
         />
       </Bottom>
     </Wrapper>
