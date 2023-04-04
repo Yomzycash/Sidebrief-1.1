@@ -5,6 +5,7 @@ import {
   MainHeader,
   TopContent,
   PageTitle,
+  Wrapper,
   Drop,
   BottomContent,
   Loading,
@@ -19,13 +20,13 @@ import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import { compareAsc, format } from "date-fns";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { sortTableData } from "utils/staffHelper";
-import Paginator from "components/Paginator";
-import CheckBox from "components/input/Checkbox2";
-import { Puff } from "react-loading-icons";
-import { GeneralTable } from "components/Tables";
-import { columns } from "./tableColumn";
-import { useParams } from "react-router-dom";
+// import { sortTableData } from "utils/staffHelper";
+// import Paginator from "components/Paginator";
+// import CheckBox from "components/input/Checkbox2";
+// import { Puff } from "react-loading-icons";
+// import { GeneralTable } from "components/Tables";
+// import { columns } from "./tableColumn";
+// import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const UserService = () => {
@@ -79,7 +80,10 @@ const UserService = () => {
           <TopContent>
             <div>
               <PageTitle>Services</PageTitle>
-              <SummaryCard shown={9} total={30} />
+              <Wrapper>
+               <SummaryCard shown={9} total={30} />
+              </Wrapper>
+              
             </div>
             <Drop>
               <select>
