@@ -43,7 +43,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
     userId: userInfo?.id,
   });
   const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
-  // console.log(refreshNotifications);
+  //  console.log(allNotification);
 
   // useEffect(() => {
   //   if (!dashboard && !rewards) {
