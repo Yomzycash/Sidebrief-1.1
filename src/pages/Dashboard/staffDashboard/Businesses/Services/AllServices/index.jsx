@@ -62,9 +62,9 @@ const AllServices = () => {
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
         Description="Add New Service"
-        title="Services"
+        title="Products"
         handleButton={handleAddButton}
-        placeholder="Search for a service"
+        placeholder="Search for a product..."
         totalShown={data?.length}
       />
       {isLoading ? (
