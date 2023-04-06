@@ -122,7 +122,7 @@ const ServiceDetailHeader = ({
       <Top>
         <BackContainer to={servicesUrl}>
           <FiArrowLeft color="#151717" size={24} />
-          <Text>{`Back to Services`}</Text>
+          <Text>{`Back to Products`}</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>
@@ -168,7 +168,7 @@ const ServiceDetailHeader = ({
         {/* using both relative and absolute routing to reduce the length of the pathname  */}
 
         <ActiveNav
-          text={"Service Information"}
+          text={"Product Information"}
           // total={0}
           path={`${mainUrl}/info`}
         />
