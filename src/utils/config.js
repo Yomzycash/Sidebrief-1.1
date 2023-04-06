@@ -214,7 +214,7 @@ export const sidebarLink = [
   },
   {
     id: 3,
-    title: "Services",
+    title: "Products",
     icon: BusinessesIcon,
     path: "/dashboard/services/all",
   },
@@ -265,7 +265,7 @@ export const StaffSidebarLinks = [
       },
       {
         id: 2,
-        title: "Services",
+        title: "Products",
         icon: ServicesIcon,
         path: "/staff-dashboard/businesses/services",
       },
