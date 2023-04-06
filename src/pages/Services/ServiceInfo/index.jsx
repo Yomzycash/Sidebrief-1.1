@@ -107,7 +107,7 @@ const ServiceInfo = () => {
               />
             </div>
             <TagInputWithSearch
-              label="Services"
+              label="Products"
               list={servicesArray}
               getValue={handleServiceSelect}
               initialValue={selectedService?.serviceName || "--"}

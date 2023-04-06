@@ -210,13 +210,13 @@ export const sidebarLink = [
     id: 2,
     title: "Businesses",
     icon: BusinessesIcon,
-    path: "/dashboard/businesses",
+    path: "/dashboard/businesses/all-businesses",
   },
   {
     id: 3,
-    title: "Services",
+    title: "Products",
     icon: BusinessesIcon,
-    path: "/dashboard/services",
+    path: "/dashboard/services/all",
   },
   {
     id: 4,
@@ -265,7 +265,7 @@ export const StaffSidebarLinks = [
       },
       {
         id: 2,
-        title: "Services",
+        title: "Products",
         icon: ServicesIcon,
         path: "/staff-dashboard/businesses/services",
       },
