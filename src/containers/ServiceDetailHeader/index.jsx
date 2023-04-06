@@ -168,7 +168,7 @@ const ServiceDetailHeader = ({
         {/* using both relative and absolute routing to reduce the length of the pathname  */}
 
         <ActiveNav
-          text={"Products Information"}
+          text={"Product Information"}
           // total={0}
           path={`${mainUrl}/info`}
         />
