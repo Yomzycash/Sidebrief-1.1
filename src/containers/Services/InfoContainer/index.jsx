@@ -63,7 +63,7 @@ export const InfoContainer = ({ country, service }) => {
             <img src={Clock} alt={"clock"} />
             Total time required
           </NormalText>
-          <BigText>{timeline} Days</BigText>
+          <BigText>{timeline}</BigText>
         </div>
       </RHS>
     </Container>

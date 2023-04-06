@@ -210,13 +210,13 @@ export const sidebarLink = [
     id: 2,
     title: "Businesses",
     icon: BusinessesIcon,
-    path: "/dashboard/businesses",
+    path: "/dashboard/businesses/all-businesses",
   },
   {
     id: 3,
     title: "Services",
     icon: BusinessesIcon,
-    path: "/dashboard/services",
+    path: "/dashboard/services/all",
   },
   {
     id: 4,
