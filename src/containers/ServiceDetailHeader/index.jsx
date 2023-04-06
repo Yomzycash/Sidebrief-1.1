@@ -104,7 +104,7 @@ const ServiceDetailHeader = ({
 
     if (data) {
       toast.success("Deleted");
-      navigate(servicesUrl);
+      navigate(servicesUrl + "/all");
     } else handleError(error);
     setOpenModal(false);
   };
@@ -120,7 +120,7 @@ const ServiceDetailHeader = ({
   return (
     <Container>
       <Top>
-        <BackContainer to={servicesUrl}>
+        <BackContainer to={servicesUrl + "/all"}>
           <FiArrowLeft color="#151717" size={24} />
           <Text>{`Back to Products`}</Text>
         </BackContainer>
