@@ -14,7 +14,6 @@ import {
   Middle,
   Top,
 } from "./styled";
-import AppFeedback from "components/AppFeedback";
 import { TestBlock } from "../userRegistration/styles";
 
 const AccountType = () => {

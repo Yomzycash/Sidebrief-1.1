@@ -2,21 +2,10 @@ import { SummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Container,
-  Drop,
-  Header,
-  MainHeader,
-  MobileHeader,
-  SubHeader,
-} from "./styled";
+import { Container, Drop, Header, MainHeader, MobileHeader, SubHeader } from "./styled";
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  useGetAllRewardsQuery,
-  useGetUserRewardQuery,
-} from "services/RewardService";
-import AppFeedback from "components/AppFeedback";
+import { useGetAllRewardsQuery, useGetUserRewardQuery } from "services/RewardService";
 import { setRefreshApp, setRewardsShown } from "redux/Slices";
 import { store } from "redux/Store";
 
@@ -46,9 +35,7 @@ const Rewards = () => {
   const mainHeaderRef = useRef();
 
   // rewardsPageHeader controls whether or not to display the header
-  const rewardsPageHeader = useSelector(
-    (store) => store.LayoutInfo.rewardsPageHeader
-  );
+  const rewardsPageHeader = useSelector((store) => store.LayoutInfo.rewardsPageHeader);
 
   // useEffect(() => {
   //   rewardsPageHeader &&
@@ -69,13 +56,9 @@ const Rewards = () => {
   // This sets the shown of all rewards
   useEffect(() => {
     if (location.pathname === "/dashboard/rewards/all-rewards")
-      store.dispatch(
-        setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal })
-      );
+      store.dispatch(setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal }));
     if (location.pathname === "/dashboard/rewards/my-rewards")
-      store.dispatch(
-        setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal })
-      );
+      store.dispatch(setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal }));
     store.dispatch(setRefreshApp(!refreshApp));
   }, [location.pathname]);
 
@@ -91,10 +74,7 @@ const Rewards = () => {
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
             <div>
-              <SummaryCard
-                shown={rewardsShown.shown}
-                total={rewardsShown.total}
-              />
+              <SummaryCard shown={rewardsShown.shown} total={rewardsShown.total} />
               <Search style={searchStyle} placeholder={"Search for a reward"} />
             </div>
           </MainHeader>
