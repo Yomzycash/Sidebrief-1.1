@@ -73,7 +73,7 @@ export const TopInfo = styled.div`
     }
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 900px) {
     display:flex;
     flex-direction:column;
   }
@@ -118,7 +118,7 @@ export const StatusType = styled.div`
 `;
 
 export const RHS = styled.div`
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 900px) {
     display: none;
   }
 

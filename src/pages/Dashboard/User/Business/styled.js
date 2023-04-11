@@ -177,7 +177,7 @@ export const HeadText = styled.h5`
 	letter-spacing: 0.02em;
 	padding-inline: ${({ nopadding }) => (nopadding ? `0` : `24px`)};
 
-	color: #ace123;
+	color: #00a2d4;
 `;
 
 export const BodyText = styled.p`
@@ -189,7 +189,7 @@ export const BodyText = styled.p`
 	letter-spacing: 0.02em;
 	padding-inline: 24px;
 
-	color:#ace123;
+	color:#151717;
 `;
 
 export const Checkbox = styled.input`

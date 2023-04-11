@@ -97,7 +97,7 @@ export const TopContent = styled.div`
     justify-content: space-between;
   }
   @media screen and (max-width: 700px) {
-    // display: block;
+    // display: none;
   }
 `;
 export const PageTitle = styled.div`
@@ -149,7 +149,9 @@ export const Drop = styled.div`
     background: none; 
   }
 
-  
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 export const Flex = styled.div`
   display: flex;
