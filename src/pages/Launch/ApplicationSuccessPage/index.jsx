@@ -4,7 +4,6 @@ import React from "react";
 import styled from "styled-components";
 import SuccessImage from "asset/svg/SuccessImage.svg";
 import { useNavigate } from "react-router-dom";
-import AppFeedback from "components/AppFeedback";
 
 const ApplicationSuccessPage = () => {
   const navigate = useNavigate();
