@@ -81,11 +81,8 @@ const UserService = () => {
         <MainHeader>
           <TopContent>
             <div>
-              <PageTitle>Services</PageTitle>
-              {/* <Wrapper>
-               <SummaryCard shown={9} total={30} />
-              </Wrapper> */}
-              
+              <PageTitle>Products</PageTitle>
+              <SummaryCard shown={9} total={30} />
             </div>
             <Drop>
               <select>

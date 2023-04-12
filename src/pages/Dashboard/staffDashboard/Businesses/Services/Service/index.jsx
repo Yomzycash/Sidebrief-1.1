@@ -65,7 +65,7 @@ const ServicePage = () => {
     let error = response?.error;
 
     if (data) {
-      toast.success("Service deleted successfully");
+      toast.success("Product deleted successfully");
       setOpen(false);
     } else {
       handleError(error);
@@ -94,13 +94,13 @@ const ServicePage = () => {
         <MainHeader>
           <TopContent>
             <div>
-              <PageTitle>Services</PageTitle>
+              <PageTitle>Products</PageTitle>
             </div>
             <SearchWrapper>
               <Search
                 style={searchStyle}
                 iconStyle={iconStyle}
-                placeholder="Search for a service"
+                placeholder="Search for a product..."
               />
             </SearchWrapper>
           </TopContent>
@@ -108,10 +108,10 @@ const ServicePage = () => {
       </Header>
 
       <FeatureSection
-        title={`Services (${totalServices}) available`}
+        title={`Products (${totalServices}) available`}
         subText="Select all available banks to create an account with"
         LeftbtnLeftIcon={AddIcon}
-        LeftbtnText="Add Service"
+        LeftbtnText="Add Product"
         btnText="View all"
         anotherBtnAction={handleAddButton}
         btnAction={handleViewAllServices}
@@ -144,7 +144,7 @@ const ServicePage = () => {
       <br />
 
       <FeatureSection
-        title="Service Requests"
+        title="Product Requests"
         subText="View recent registered businesses service request"
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
