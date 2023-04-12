@@ -1,11 +1,11 @@
-import styled from "styled-components";
-
 /**
  * MAKE TABLES RESPONSIVE
  *
  * 1. Add overflow-x scroll to Container (Wrapping the table)
  * 2. Add a padding to the text, both head and body
  * */
+
+import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
@@ -28,13 +28,9 @@ export const Table = styled.table`
 `;
 
 export const Head = styled.thead`
-  height: 56px;
-  color:blue;
-
   tr {
     background: #fafafa;
-    color:red;
-    font-size:5px;
+    height: 56px;
   }
 `;
 
@@ -72,7 +68,7 @@ export const Row = styled.tr`
     ${({ selectionRow }) =>
       selectionRow
         ? `
-                    width: 48px;
+               width: 48px;
                 `
         : null}
   }
