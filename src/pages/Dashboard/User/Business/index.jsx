@@ -136,6 +136,7 @@ const Business = () => {
                 </Drop>
               </TopContent>
               <BottomContent>
+                {/* Search Query */}
                 <SearchWrapper onFocus={() => setSearchFocused(true)}>
                   <Search
                     style={searchStyle}
@@ -156,10 +157,12 @@ const Business = () => {
                           registrationCountry: el.item.registrationCountry,
                           registrationType: el.item.registrationType,
                         };
-                      })}
+                      })
+                    }
                     show={searchFocused}
                     unShow={() => setSearchFocused(false)}
                     onItemClick={onItemClick}
+                    searchResult={searchValue}
                   />
                 </SearchWrapper>
                 <ButtonWrapper>

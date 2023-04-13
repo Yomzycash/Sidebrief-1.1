@@ -97,7 +97,7 @@ export const TopContent = styled.div`
     justify-content: space-between;
   }
   @media screen and (max-width: 700px) {
-    display: none;
+    // display: none;
   }
 `;
 export const PageTitle = styled.div`
@@ -106,10 +106,17 @@ export const PageTitle = styled.div`
   font-size: clamp(20px, 2vw, 24px);
   font-weight: 700;
   color: #151717;
+
   @media screen and (max-width: 700px) {
-    display: none;
+    display:none;
   }
 `;
+
+export const Wrapper = styled.div`
+  @media screen and (max-width: 700px) {
+    display:none;
+  }
+`
 
 export const BottomContent = styled.div`
   display: flex;
@@ -118,6 +125,13 @@ export const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
+
+  @media screen and (max-width: 700px) {
+    padding-inline: 0px;
+    width:100%;
+    position:absolute;
+    top:15px;
+  }
 `;
 
 export const Drop = styled.div`
@@ -127,11 +141,16 @@ export const Drop = styled.div`
   background-color: #fafafa;
   padding: 8px 16px;
 
+
   select {
     border: none;
     outline: none;
     width: 60px;
-    background: none;
+    background: none; 
+  }
+
+  @media screen and (max-width: 700px) {
+    display: none;
   }
 `;
 export const Flex = styled.div`
@@ -189,6 +208,7 @@ export const ButtonWrapper = styled.div`
     padding: 10px 24px;
     display: flex;
     align-items: center;
+
     @media screen and (max-width: 700px) {
       width: 100%;
       display: flex;
@@ -196,4 +216,49 @@ export const ButtonWrapper = styled.div`
       justify-content: center !important;
     }
   }
+`;
+
+export const HeadText = styled.h5`
+	font-family: "BR Firma";
+	font-style: normal;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 131%;
+  color:red;
+	letter-spacing: 0.02em;
+	padding-inline: ${({ nopadding }) => (nopadding ? `0` : `24px`)};
+
+  .nth-child(2){
+    color:blue;
+  }
+`;
+
+export const BodyText = styled.p`
+	font-family: "BR Firma";
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 131%;
+	letter-spacing: 0.02em;
+	padding-inline: 24px;
+
+	color: purple;
+
+	// background-color: blueviolet;
+`;
+
+export const Checkbox = styled.input`
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	margin-right: 30px;
+`;
+
+export const Clickable = styled.button`
+	height: 56px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	border: none;
+	background-color: transparent;
 `;

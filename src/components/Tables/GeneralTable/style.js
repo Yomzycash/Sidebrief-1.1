@@ -10,13 +10,17 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   border: 1px solid #edf1f7;
+  font-size:10px;
   border-radius: 0px 0px 16px 16px;
-  /* overflow: hidden; */
+  // overflow: hidden;
 
-  /* overflow-x: auto;
-	overflow-y: hidden; */
+  overflow-x: auto;
+	overflow-y: hidden;
 `;
-
+export const TableWrapper = styled.div`
+  overflow-y: scroll;
+  margin-right: -17px;
+`;
 export const Table = styled.table`
   width: 100%;
   border-spacing: 0;
@@ -30,12 +34,15 @@ export const Head = styled.thead`
   }
 `;
 
+export const Body = styled.tbody``
+
 export const HeadData = styled.th`
   text-align: left;
   // position: sticky;
 
   ${Head} &:first-child {
-    padding-left: 24px;
+    padding-left: 3px;
+   
   }
 
   ${Head} &:last-child {
@@ -51,12 +58,13 @@ export const Row = styled.tr`
   border-top: 1px solid #edf1f7;
   background: #fff;
 
+
   &:nth-child(even) {
     background: #fcfcfc;
   }
 
   & > :first-child {
-    padding-left: 24px;
+    padding-left: 3px;
     ${({ selectionRow }) =>
       selectionRow
         ? `
@@ -78,4 +86,6 @@ export const Row = styled.tr`
 
 export const RowData = styled.td`
   border: none;
+  color:#ace123;
+  font-size:8px;
 `;

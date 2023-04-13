@@ -186,7 +186,6 @@ export const {
   useViewComplyQuery,
   useLazyViewComplyQuery,
   useDeleteComplyMutation,
-  useGetAllServicesQuery,
 
   useViewAllComplyQuery,
   useViewAllComplyByServiceIdMutation,
