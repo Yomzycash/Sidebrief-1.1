@@ -4,26 +4,19 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StaffHeader from "components/Header/StaffHeader";
 import CountryCard from "components/cards/CountryCard";
-import {
-  useAddCountryMutation,
-  useGetAllCountriesQuery,
-} from "services/staffService";
+import { useAddCountryMutation, useGetAllCountriesQuery } from "services/staffService";
 import { Puff } from "react-loading-icons";
 import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
-import { store } from "redux/Store";
-import { setRefreshApp } from "redux/Slices";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   // Exchange information with the backend
-  const { data, isLoading, isError, error, refetch } =
-    useGetAllCountriesQuery();
+  const { data, isLoading, isError, error, refetch } = useGetAllCountriesQuery();
   const [addCountry, addState] = useAddCountryMutation();
 
   const navigate = useNavigate();
@@ -48,7 +41,6 @@ const Countries = () => {
       handleError(error);
       errorRef.current = false;
     }
-    store.dispatch(setRefreshApp(!refreshApp));
   }, [isError, error, refetch]);
 
   // Returns the data to be sent to the backend
@@ -61,7 +53,6 @@ const Countries = () => {
       countryFlag: formData.flag,
     };
   };
- 
 
   // This adds a new country
   const handleCountryAdd = async (formData) => {
@@ -77,8 +68,6 @@ const Countries = () => {
     }
     refetch();
   };
-
-  
 
   return (
     <Container SidebarWidth={sidebarWidth}>
@@ -104,9 +93,7 @@ const Countries = () => {
                 countryNumber={country.countryCode}
                 countryCurrency={country.countryCurrency}
                 action={() => {
-                  navigate(
-                    `/staff-dashboard/businesses/countries/${country.countryISO}/detail`
-                  );
+                  navigate(`/staff-dashboard/businesses/countries/${country.countryISO}/detail`);
                 }}
               />
             ))

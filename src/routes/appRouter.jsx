@@ -172,6 +172,10 @@ const AllComply = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/all")
 );
 
+//
+
+//
+
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
   const { launchResponse, launchPaid } = useSelector((store) => store.LaunchReducer);
@@ -181,6 +185,7 @@ const AppRouter = () => {
   let token = userInfo?.token;
   let user_token = userInfo?.user_token;
   let userEmail = localStorage.getItem("userEmail");
+  let isStaff = checkStaffEmail(userEmail);
   const loggedIn = token?.length > 0 || user_token > 0;
 
   //
@@ -198,15 +203,18 @@ const AppRouter = () => {
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
   const [paid, setPaid] = useState(paidStatus);
-  const [staff, setStaff] = useState(userEmail?.includes("@sidebrief.com") ? true : false);
+  const [staff, setStaff] = useState(isStaff);
 
   //
 
   useEffect(() => {
     setisLoggedIn(loggedIn);
+  }, [loggedIn, userData.userInfo]);
+
+  useEffect(() => {
     let staffEmail = checkStaffEmail(userEmail);
     setStaff(staffEmail);
-  }, [loggedIn, userData.refreshApp, userData.userInfo]);
+  }, [isLoggedIn]);
 
   //
 
@@ -235,7 +243,14 @@ const AppRouter = () => {
             />
 
             {/* Autentication pages */}
-            <Route path="register" element={<Outlet />}>
+            <Route
+              path="register"
+              element={
+                <Protected isVerified={!loggedIn} redirect="/">
+                  <Outlet />
+                </Protected>
+              }
+            >
               <Route index element={<UserRegistration />} />
               {/* <Route path="user" element={<Outlet />}> */}
               {/* <Route index element={<UserRegistration />} /> */}
@@ -245,7 +260,14 @@ const AppRouter = () => {
               <Route path="partner" element={<PartnerRegistration />} />
             </Route>
 
-            <Route path="login" element={<Outlet />}>
+            <Route
+              path="login"
+              element={
+                <Protected isVerified={!isLoggedIn} redirect="/">
+                  <Outlet />
+                </Protected>
+              }
+            >
               <Route index element={<SignIn />} />
               <Route path="verifyaccount" element={<EmailVerify />} />
 
@@ -266,7 +288,7 @@ const AppRouter = () => {
               path="dashboard"
               element={
                 <Protected isVerified={isLoggedIn}>
-                  <Protected isVerified={!staff} path="/staff-dashboard">
+                  <Protected isVerified={!isStaff} redirect="/staff-dashboard">
                     <UserDashboard />
                   </Protected>
                 </Protected>
@@ -333,7 +355,7 @@ const AppRouter = () => {
               path="staff-dashboard"
               element={
                 <Protected isVerified={isLoggedIn}>
-                  <Protected isVerified={staff} path="/dashboard">
+                  <Protected isVerified={isStaff} redirect="/dashboard">
                     <Stafflayout />
                   </Protected>
                 </Protected>
@@ -410,59 +432,66 @@ const AppRouter = () => {
                 <Route path="team" element={<SidebriefTeam />} />
               </Route>
             </Route>
-          </Route>
 
-          {/* Services pages Routes */}
-          <Route path="services" element={<Outlet />}>
-            <Route index element={<ServiceInfo />} />
-            <Route path="payment" element={<ServicePayment />} />
-            <Route path="form" element={<ServiceForm />} />
-            <Route path="documents" element={<ServiceDocuments />} />
-            <Route path="review" element={<ServiceReview />}>
-              <Route path="info" element={<ServiceInfoReview />} />
-              <Route path="form" element={<ServiceFormReview />} />
-              <Route path="documents" element={<ReviewDocuments />} />
-            </Route>
-            <Route path="success" element={<ServiceSuccessPage />} />
-          </Route>
-
-          {/* Launch pages routes */}
-          <Route
-            path="launch"
-            element={
-              <Protected isVerified={isLoggedIn}>
-                <Outlet />
-              </Protected>
-            }
-          >
-            <Route index element={<BusinessInfo />} />
-            <Route path="business-info" element={<BusinessInfo />} />
-            <Route path="entity" element={<EntitySelect />} />
+            {/* Services pages Routes */}
             <Route
-              path="payment"
+              path="services"
               element={
-                <Protected isVerified={launchCode} path="/launch">
-                  <PaymentPage />
+                <Protected isVerified={isLoggedIn} redirect="/login">
+                  <Outlet />
                 </Protected>
               }
-            />
-            <Route path="payment-confirmation" element={<StripePaymentSuccess />} />
-            <Route path="address" element={<ProtectedBusinessAddress />} />
-            <Route path="shareholders-info" element={<ProtectedShareholdersInfo />} />
-            <Route path="directors-info" element={<ProtectedDirectorsInfo />} />
-            <Route path="beneficiaries-info" element={<ProtectedBeneficiariesInfo />} />
-            <Route path="beneficiaries-kyc" element={<ProtectedBeneficiariesKyc />} />
-            <Route path="shareholders-kyc" element={<ProtectedShareholdersKyc />} />
-            <Route path="directors-kyc" element={<ProtectedDirectorsKyc />} />
-
-            <Route path="review" element={<ProtectedReview />}>
-              <Route index element={<BusinessInformationReview />} />
-              <Route path="business-info" element={<BusinessInformationReview />} />
-              <Route path="shareholders" element={<ShareholderReview />} />
-              <Route path="directors" element={<DirectorReview />} />
-              <Route path="beneficiaries" element={<BeneficiaryReview />} />
+            >
+              <Route index element={<ServiceInfo />} />
+              <Route path="payment" element={<ServicePayment />} />
+              <Route path="form" element={<ServiceForm />} />
+              <Route path="documents" element={<ServiceDocuments />} />
+              <Route path="review" element={<ServiceReview />}>
+                <Route path="info" element={<ServiceInfoReview />} />
+                <Route path="form" element={<ServiceFormReview />} />
+                <Route path="documents" element={<ReviewDocuments />} />
+              </Route>
+              <Route path="success" element={<ServiceSuccessPage />} />
             </Route>
-            <Route path="success" element={<ProtectedApplicationSuccess />} />
+
+            {/* Launch pages routes */}
+            <Route
+              path="launch"
+              element={
+                <Protected isVerified={isLoggedIn} redirect="/login">
+                  <Outlet />
+                </Protected>
+              }
+            >
+              <Route index element={<BusinessInfo />} />
+              <Route path="business-info" element={<BusinessInfo />} />
+              <Route path="entity" element={<EntitySelect />} />
+              <Route
+                path="payment"
+                element={
+                  <Protected isVerified={launchCode} redirect="/launch">
+                    <PaymentPage />
+                  </Protected>
+                }
+              />
+              <Route path="payment-confirmation" element={<StripePaymentSuccess />} />
+              <Route path="address" element={<ProtectedBusinessAddress />} />
+              <Route path="shareholders-info" element={<ProtectedShareholdersInfo />} />
+              <Route path="directors-info" element={<ProtectedDirectorsInfo />} />
+              <Route path="beneficiaries-info" element={<ProtectedBeneficiariesInfo />} />
+              <Route path="beneficiaries-kyc" element={<ProtectedBeneficiariesKyc />} />
+              <Route path="shareholders-kyc" element={<ProtectedShareholdersKyc />} />
+              <Route path="directors-kyc" element={<ProtectedDirectorsKyc />} />
+
+              <Route path="review" element={<ProtectedReview />}>
+                <Route index element={<BusinessInformationReview />} />
+                <Route path="business-info" element={<BusinessInformationReview />} />
+                <Route path="shareholders" element={<ShareholderReview />} />
+                <Route path="directors" element={<DirectorReview />} />
+                <Route path="beneficiaries" element={<BeneficiaryReview />} />
+              </Route>
+              <Route path="success" element={<ProtectedApplicationSuccess />} />
+            </Route>
           </Route>
         </Routes>
         <Toaster
