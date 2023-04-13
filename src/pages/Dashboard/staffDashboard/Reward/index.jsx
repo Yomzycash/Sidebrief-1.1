@@ -9,15 +9,10 @@ import Button from "components/button";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { Image, ImageContainer } from "./style";
 import StaffRewardModal from "components/modal/StaffRewardModal";
-import {
-  useDeleteRewardMutation,
-  useUpdateRewardMutation,
-} from "services/staffService";
+import { useDeleteRewardMutation, useUpdateRewardMutation } from "services/staffService";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import ConfirmDelete from "components/modal/ConfirmDelete";
-import { setRefreshApp } from "redux/Slices";
-import { store } from "redux/Store";
 
 const StaffReward = () => {
   const [selectedReward, setSelectedReward] = useState([]);
@@ -34,17 +29,12 @@ const StaffReward = () => {
   const [updateReward, updateState] = useUpdateRewardMutation();
   const [deleteReward, deleteState] = useDeleteRewardMutation();
 
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
-
   useEffect(() => {
     let localRewardID = localStorage.getItem("rewardId");
     let rewardID = JSON.parse(localRewardID);
     const rewardData = data === undefined ? [] : [...data];
-    const rewardDatails = rewardData.filter(
-      (data) => data.rewardID === rewardID
-    );
+    const rewardDatails = rewardData.filter((data) => data.rewardID === rewardID);
     setSelectedReward(rewardDatails);
-    store.dispatch(setRefreshApp(!refreshApp));
   }, [data]);
 
   const getRequiredData = (info) => ({
@@ -136,14 +126,8 @@ const StaffReward = () => {
           // onMouseLeave={() => setSubHeaderHovered(false)}
           // $hovered={subHeaderHovered}
           >
-            <ActiveNav
-              text={"Reward Details"}
-              path="/staff-dashboard/all-rewards/reward/details"
-            />
-            <ActiveNav
-              text={"Analytics"}
-              path="/staff-dashboard/all-rewards/reward/analytics"
-            />
+            <ActiveNav text={"Reward Details"} path="/staff-dashboard/all-rewards/reward/details" />
+            <ActiveNav text={"Analytics"} path="/staff-dashboard/all-rewards/reward/analytics" />
           </SubHeader>
         </TopContainer>
         <Outlet />
@@ -155,9 +139,7 @@ const StaffReward = () => {
           submitAction={handleUpdate}
           loading={updateState.isLoading}
         />
-        {isSuccess && (
-          <Delete onClick={() => setdeleteConfirm(true)}>Delete</Delete>
-        )}
+        {isSuccess && <Delete onClick={() => setdeleteConfirm(true)}>Delete</Delete>}
         <ConfirmDelete
           toDelete="Reward"
           open={deleteConfirm}

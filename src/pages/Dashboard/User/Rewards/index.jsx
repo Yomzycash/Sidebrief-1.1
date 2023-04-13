@@ -6,7 +6,7 @@ import { Container, Drop, Header, MainHeader, MobileHeader, SubHeader } from "./
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery, useGetUserRewardQuery } from "services/RewardService";
-import { setRefreshApp, setRewardsShown } from "redux/Slices";
+import { setRewardsShown } from "redux/Slices";
 import { store } from "redux/Store";
 
 const searchStyle = {
@@ -16,8 +16,6 @@ const searchStyle = {
 };
 
 const Rewards = () => {
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
-
   const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
 
   const location = useLocation();
@@ -59,7 +57,6 @@ const Rewards = () => {
       store.dispatch(setRewardsShown({ total: allRewardsTotal, shown: allRewardsTotal }));
     if (location.pathname === "/dashboard/rewards/my-rewards")
       store.dispatch(setRewardsShown({ total: myRewardsTotal, shown: myRewardsTotal }));
-    store.dispatch(setRefreshApp(!refreshApp));
   }, [location.pathname]);
 
   useEffect(() => {
