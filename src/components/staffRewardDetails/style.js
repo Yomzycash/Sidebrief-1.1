@@ -19,6 +19,7 @@ export const FullContentWrapper = styled.div`
 	grid-template-columns: 1fr;
 	row-gap: 24px;
 	column-gap: 24px;
+	padding-bottom:10px;
 
 	@media screen and (max-width: 900px) {
 		grid-template-columns: 1fr;
@@ -31,6 +32,7 @@ export const ContentWrapper = styled.div`
 	grid-template-columns: repeat(2, minmax(50px, 1fr));
 	row-gap: 24px;
 	column-gap: 24px;
+	padding-bottom:10px;
 
 	@media screen and (max-width: 900px) {
 		display: flex;
