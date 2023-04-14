@@ -64,6 +64,16 @@ export const ChatApi = createApi({
     getNotificationsByNotificationId: builder.query({
       query: (notificationID) => `/notifications/view/${notificationID}`,
     }),
+    viewNotificationsByUserId: builder.query({
+      query: (data) => ({
+        url: "/notifications/viewByUserId",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
 
     // get all notifications by serviceID
     getNotificationsByServiceId: builder.query({
@@ -78,5 +88,6 @@ export const {
   useGetAllNotificationsQuery,
   useGetAllNotificationsByIdQuery,
   useGetNotificationsByServiceIdQuery,
+  useViewNotificationsByUserIdQuery,
   useGetNotificationsByNotificationIdQuery,
 } = ChatApi;

@@ -22,11 +22,6 @@ const ServiceReview = () => {
     complyCode: complyCode,
   });
 
-  const ActiveStyles = {
-    color: "#151717",
-    borderBottom: "4px solid #00A2D4",
-    borderRadius: 0,
-  };
 
   // Set the progress of the application
   useEffect(() => {
@@ -37,7 +32,7 @@ const ServiceReview = () => {
   return (
     <Container>
       <ServicesCheckoutHeader />
-      <Body>
+      <Body>          
         <CheckoutSection
           title={"Service Review Information"}
           HeaderParagraph="Please ensure all information provided for this business are correct"
