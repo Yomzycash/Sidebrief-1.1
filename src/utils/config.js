@@ -199,6 +199,15 @@ export const ServicesSchema = yup.object().shape({
   timeline: yup.string().required("Enter service timeline"),
 });
 
+export const BankAccountSchema = yup.object().shape({
+  bank_name:yup.string().required("Bank Name is required"),
+  description: yup.string().required("Enter bank description"),
+  bank_code: yup.string().required("Bank code is a required field"),
+  country: yup.string().required("Country is a required field"),
+  bank_url:yup.string().required("url is a required field"),
+  image:yup.string().required("lmage is a required field"),
+})
+
 export const sidebarLink = [
   {
     id: 1,
@@ -303,24 +312,30 @@ export const StaffSidebarLinks = [
   },
   {
     id: 6,
+    title: "Bank Accounts",
+    icon: BankAccountIcon,
+    path: "/staff-dashboard/bank-accounts",
+  },
+  {
+    id: 7,
     title: "Rewards",
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
   },
   {
-    id: 7,
+    id: 8,
     title: "Payments",
     icon: PaymentIcon,
     path: "/staff-dashboard/payments",
   },
   {
-    id: 8,
+    id: 9,
     title: "Resources",
     icon: ResourcesIcon,
     path: "/staff-dashboard/resources",
   },
   {
-    id: 9,
+    id: 10,
     title: "Settings",
     icon: SettingsIcon,
     path: "/staff-dashboard/settings/general",
