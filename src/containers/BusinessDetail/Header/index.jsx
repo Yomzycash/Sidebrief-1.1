@@ -273,6 +273,16 @@ export const Header = ({ isStaff, code }) => {
           }`}
         />
         <ActiveNav
+          text={"Payment Details"}
+          // total={0}
+          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/payment?launchCode=${
+            launchResponse.launchCode
+          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
+            launchResponse.registrationType
+          }`}
+        />
+
+        <ActiveNav
           text={"Shareholders"}
           total={launchRequest?.isLoading ? 0 : launchRequest?.data?.businessShareholders?.length}
           path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/shareholders?launchCode=${
