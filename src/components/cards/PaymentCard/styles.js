@@ -42,6 +42,7 @@ export const DarkContainer = styled.div`
 export const LeftTextContainer = styled.p`
   width: 50%;
   font-size: 14px;
+  margin-top: 5px;
 `;
 export const RightTextContainer = styled.p`
   font-size: 14px;
@@ -56,15 +57,6 @@ export const LightContainer = styled.div`
   background-color: white;
   padding: 18px 14px;
   border: 1px solid #edf1f6;
-
-  /* @media screen and (max-width: 1050px) {
-    padding-inline: 0;
-  } */
-
-  /* @media screen and (max-width: 700px) {
-    padding-inline: 0;
-    gap: 24px;
-  } */
 `;
 
 export const TopContainer = styled.div`
@@ -95,6 +87,7 @@ export const Name = styled.p`
   font-size: 16px;
   line-height: 24px;
   text-decoration-line: underline;
+  text-transform: capitalize;
   color: #00a2d4;
 `;
 
