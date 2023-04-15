@@ -4,7 +4,7 @@ import { CheckoutController, CheckoutSection } from "containers";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { InfoContainer } from "containers/Services";
 import { useCreateComplyMutation, useUpdateComplyMutation } from "services/complyService";
@@ -14,7 +14,7 @@ import { useActions } from "./actions";
 const ServiceInfo = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedService, setSelectedService] = useState({});
-  const [countryISO, setcountryISO] = useState("");
+  const [countryISO, setCountryISO] = useState("");
 
   const countries = useGetAllCountriesQuery();
   const services = useGetServicesByCountryQuery(countryISO);
@@ -22,13 +22,12 @@ const ServiceInfo = () => {
   const [updateComply, updateState] = useUpdateComplyMutation();
 
   let navigate = useNavigate();
-
-  let countriesArray = countries?.data?.map((el) => el?.countryName) || [];
-  let servicesArray = services.data?.map((el) => el?.serviceName) || [];
+  let { option } = useParams();
+  let paramsIsValid = option.toLowerCase() === "onboard" || option.toLowerCase() === "manage";
 
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
 
-  const { handleSubmit } = useActions({
+  const { handleSubmit, normalize } = useActions({
     selectedCountry,
     selectedService,
     complyInfo,
@@ -38,10 +37,20 @@ const ServiceInfo = () => {
     navigate,
   });
 
+  let countriesArray = countries?.data?.map((el) => el?.countryName) || [];
+  let servicesArray =
+    services.isError || services.isLoading || services.isFetching
+      ? []
+      : services.data
+          ?.filter((el) => normalize(el?.serviceCategory) === normalize(option))
+          ?.map((el) => el?.serviceName) || [];
+
   //   When country is selected
   const handleCountrySelect = useCallback(
     async (value) => {
       setSelectedCountry(value);
+      setSelectedService("");
+      services.refetch();
     },
     [selectedCountry]
   );
@@ -55,7 +64,7 @@ const ServiceInfo = () => {
   const handleServices = async () => {
     const countryISO =
       countries.data?.find((el) => el.countryName === selectedCountry)?.countryISO || "";
-    setcountryISO(countryISO);
+    setCountryISO(countryISO);
   };
 
   //
@@ -86,54 +95,63 @@ const ServiceInfo = () => {
   }, [services.data]);
 
   return (
-    <Container>
-      <ServicesCheckoutHeader />
+    <>
+      {paramsIsValid ? (
+        <Container>
+          <ServicesCheckoutHeader getStarted backToDashBoard />
 
-      <Body onSubmit={handleSubmit}>
-        <CheckoutSection
-          title="Manage your business"
-          HeaderParagraph="Make changes to already registered companies"
-        />
-        <LaunchPrimaryContainer>
-          <LaunchFormContainer>
-            <div style={{ maxWidth: "450px" }}>
-              <TagInputWithSearch
-                label="Operational Country"
-                list={countriesArray}
-                getValue={handleCountrySelect}
-                initialValue={selectedCountry}
-                suggestionLoading={countries.isLoading}
-                fetchingText={"Fetching countries..."}
-              />
-            </div>
-            <TagInputWithSearch
-              label="Products"
-              list={servicesArray}
-              getValue={handleServiceSelect}
-              initialValue={selectedService?.serviceName || "--"}
-              MatchError="Please select resource from the list"
-              EmptyError="Please select at least one service"
-              suggestionLoading={services.isLoading || services.isFetching}
-              fetchingText={"Fetching services..."}
+          <Body onSubmit={handleSubmit}>
+            <CheckoutSection
+              title="Manage your business"
+              HeaderParagraph="Make changes to already registered companies"
             />
-          </LaunchFormContainer>
-          {selectedService?.serviceName && (
-            <InfoContainer
-              country={countries?.data?.find((el) => el.countryName === selectedCountry) || ""}
-              service={selectedService}
-            />
-          )}
-          <Bottom>
-            <CheckoutController
-              forwardText={"Next"}
-              forwardSubmit
-              hidePrev
-              forwardLoading={createState.isLoading || updateState.isLoading}
-            />
-          </Bottom>
-        </LaunchPrimaryContainer>
-      </Body>
-    </Container>
+            <LaunchPrimaryContainer>
+              <LaunchFormContainer>
+                <div style={{ maxWidth: "450px" }}>
+                  <TagInputWithSearch
+                    label="Operational Country"
+                    list={countriesArray}
+                    getValue={handleCountrySelect}
+                    initialValue={selectedCountry}
+                    suggestionLoading={countries.isLoading}
+                    fetchingText={"Fetching countries..."}
+                    fetchFailedText="Couldn't fetch countries"
+                  />
+                </div>
+                <TagInputWithSearch
+                  label="Products"
+                  list={servicesArray}
+                  getValue={handleServiceSelect}
+                  initialValue={selectedService?.serviceName || "--"}
+                  MatchError="Please select resource from the list"
+                  EmptyError="Please select at least one service"
+                  suggestionLoading={services.isLoading || services.isFetching}
+                  fetchingText="Fetching products..."
+                  fetchFailedText="Couldn't fetch products"
+                />
+              </LaunchFormContainer>
+              {selectedService?.serviceName && (
+                <InfoContainer
+                  country={countries?.data?.find((el) => el.countryName === selectedCountry) || ""}
+                  service={selectedService}
+                />
+              )}
+              <Bottom>
+                <CheckoutController
+                  forwardText={"Next"}
+                  forwardSubmit
+                  backText="Previous"
+                  backAction={() => navigate("/services")}
+                  forwardLoading={createState.isLoading || updateState.isLoading}
+                />
+              </Bottom>
+            </LaunchPrimaryContainer>
+          </Body>
+        </Container>
+      ) : (
+        <>Invalid URL</>
+      )}
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import { handleError } from "utils/globalFunctions";
 
 export const useActions = ({
@@ -10,6 +11,8 @@ export const useActions = ({
   updateComply,
   navigate,
 }) => {
+  const { option } = useParams();
+
   // Submits form
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,20 +50,23 @@ export const useActions = ({
         const link = getLink();
         navigate(link);
       } else {
-        navigate("/services/payment");
+        navigate(`/services/${option}/payment`);
       }
     } else handleError(error);
   };
 
   const getLink = () => {
     let service = services.data?.find((el) => el?.serviceId === complyInfo?.serviceId);
-    let link = "/services/form";
-    link = service?.serviceForm?.length < 1 ? "/services/documents" : link;
-    link = service?.serviceRequirements?.length < 1 ? "/services/review/info" : link;
+    let link = `/services/${option}/form`;
+    link = service?.serviceForm?.length < 1 ? `/services/${option}/documents` : link;
+    link = service?.serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     return link;
   };
 
+  const normalize = (text) => text?.toLowerCase();
+
   return {
     handleSubmit,
+    normalize,
   };
 };

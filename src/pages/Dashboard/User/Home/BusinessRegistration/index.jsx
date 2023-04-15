@@ -105,7 +105,7 @@ const BusinessRegistration = (props) => {
   };
 
   const handleManage = () => {
-    navigate("/services");
+    navigate("/services/option-select");
     removeComplyFromLocalStorage();
   };
 

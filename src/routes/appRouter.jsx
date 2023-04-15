@@ -12,6 +12,7 @@ import ServiceInformation from "pages/Services/Detail/ServiceInformation";
 import ReviewDocuments from "pages/Services/Review/ReviewDocuments";
 import FormInformation from "pages/Services/Detail/FormInformation";
 import DocumentInfoDetails from "pages/Services/Detail/DocumentInfoDetails";
+import ServiceOptionSelect from "../pages/Services/ServiceOptionSelect";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -88,7 +89,6 @@ const ServiceDocuments = lazy(() => import("pages/Services/Documents"));
 const ServiceReview = lazy(() => import("pages/Services/Review"));
 const ServiceInfoReview = lazy(() => import("pages/Services/Review/ServiceInfo"));
 const ServiceFormReview = lazy(() => import("pages/Services/Review/ServiceForm"));
-const ServiceDocumentsReview = lazy(() => import("pages/Services/Review/Documents"));
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() => import("pages/Auth/Registration/EmailVerify/success"));
@@ -442,16 +442,20 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-              <Route index element={<ServiceInfo />} />
-              <Route path="payment" element={<ServicePayment />} />
-              <Route path="form" element={<ServiceForm />} />
-              <Route path="documents" element={<ServiceDocuments />} />
-              <Route path="review" element={<ServiceReview />}>
-                <Route path="info" element={<ServiceInfoReview />} />
-                <Route path="form" element={<ServiceFormReview />} />
-                <Route path="documents" element={<ReviewDocuments />} />
+              <Route index element={<ServiceOptionSelect />} />
+              <Route path="option-select" element={<ServiceOptionSelect />} />
+              <Route path=":option" element={<Outlet />}>
+                <Route index element={<ServiceInfo />} />
+                <Route path="payment" element={<ServicePayment />} />
+                <Route path="form" element={<ServiceForm />} />
+                <Route path="documents" element={<ServiceDocuments />} />
+                <Route path="review" element={<ServiceReview />}>
+                  <Route path="info" element={<ServiceInfoReview />} />
+                  <Route path="form" element={<ServiceFormReview />} />
+                  <Route path="documents" element={<ReviewDocuments />} />
+                </Route>
+                <Route path="success" element={<ServiceSuccessPage />} />
               </Route>
-              <Route path="success" element={<ServiceSuccessPage />} />
             </Route>
 
             {/* Launch pages routes */}
@@ -494,6 +498,7 @@ const AppRouter = () => {
             </Route>
           </Route>
         </Routes>
+
         <Toaster
           position="top-right"
           toastOptions={{
