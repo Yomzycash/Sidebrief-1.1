@@ -40,7 +40,7 @@ const StaffBank = () => {
     const [updateBank, updateState] = useUpdateBankMutation();
     const [ deleteBank, deleteState] = useDeleteBankMutation();
 
-    const { refreshApp } = useSelector((store) => store.UserDataReducer);
+    // const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
     useEffect(() => {
         let localBankID = localStorage.getItem("bankCode");
@@ -54,7 +54,6 @@ const StaffBank = () => {
           } else {
             console.log("Id not found")
           }
-        store.dispatch(setRefreshApp(!refreshApp));
     }, [data]);
 
     // const handleBankClick = (bankID) => {
@@ -97,7 +96,7 @@ const StaffBank = () => {
 
     // Delete Bank Function
     const handleDelete = async () => {
-        let requiredData = { bankCode: selectedBank[0].bankCode}
+        let requiredData = selectedBank[0].bankCode;
         let response = await deleteBank(requiredData);
 
         let data = response?.data;
@@ -109,8 +108,7 @@ const StaffBank = () => {
             navigate("/staff-dashboard/bank-accounts");
         } else {
             handleError(error);
-        }
-        console.log("code", requiredData)
+        };
     }
     return (
         <BodyRight sidebarWidth={sidebarWidth}>
