@@ -66,6 +66,8 @@ export const Header = ({ isStaff, code }) => {
   const launchRequest = useViewLaunchRequestQuery(launchResponse);
   const page = pathname.split("/").pop();
 
+  console.log("checking page", page);
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -312,7 +314,7 @@ export const Header = ({ isStaff, code }) => {
           }`}
         />
       </SubHeader>
-      {page !== "detail" ? (
+      {page !== "detail" || "payment" ? (
         <SearchAndSort>
           {/* placeholder changes based on the page it's on */}
           {/* not implemented yet */}
