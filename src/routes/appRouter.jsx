@@ -29,6 +29,7 @@ import Onboarded from "pages/Dashboard/User/Onboarded";
 import AllOnboarded from "pages/Dashboard/User/Onboarded/AllOnboarded";
 import PendingOnboarded from "pages/Dashboard/User/Onboarded/PendingOnboarded";
 import DraftOnboarded from "pages/Dashboard/User/Onboarded/DraftOnboarded";
+import Products from "pages/Dashboard/User/Products";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -175,10 +176,6 @@ const AllServices = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllServices")
 );
 const ChatLayout = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/Services/Chat"));
-const UserServicesPageLayout = lazy(() => import("pages/Dashboard/User/Service/index"));
-const UserServicesDraft = lazy(() => import("pages/Dashboard/User/Service/draft"));
-const UserServicesAll = lazy(() => import("pages/Dashboard/User/Service/all"));
-const UserServicesSubmitted = lazy(() => import("pages/Dashboard/User/Service/submitted"));
 const AllComplyLayout = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply")
 );
@@ -325,17 +322,7 @@ const AppRouter = () => {
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
 
-              <Route path="services" element={<UserServicesPageLayout />}>
-                <Route path="all" element={<UserServicesAll />} />
-                <Route path="draft" element={<UserServicesDraft />} />
-                <Route path="submitted" element={<UserServicesSubmitted />} />
-              </Route>
-              <Route path="services/:complycode" element={<ServicesDetailLayout />}>
-                <Route index element={<ServiceInformation />} />
-                <Route path="info" element={<ServiceInformation />} />
-                <Route path="forminfo" element={<FormInformation />} />
-                <Route path="documentinfo" element={<DocumentInfoDetails />} />
-              </Route>
+              <Route path="products" element={<Products />} />
 
               <Route path="manage" element={<Manage />}>
                 <Route index element={<AllManage />} />
@@ -365,23 +352,21 @@ const AppRouter = () => {
                 <Route path="documentinfo" element={<DocumentInfoDetails />} />
               </Route>
 
-              <Route path="taxes" element={<Tax />}>
+              <Route path="tax" element={<Tax />}>
                 <Route index element={<AllTaxes />} />
                 <Route path="all-taxes" element={<AllTaxes />}></Route>
                 <Route path="submitted-taxes" element={<PendingTaxes />}></Route>
                 <Route path="draft-taxes" element={<DraftTaxes />}></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
-              <Route path="taxes/:complycode" element={<ServicesDetailLayout />}>
+              <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
                 <Route index element={<ServiceInformation />} />
                 <Route path="info" element={<ServiceInformation />} />
                 <Route path="forminfo" element={<FormInformation />} />
                 <Route path="documentinfo" element={<DocumentInfoDetails />} />
               </Route>
 
-              <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
-
-              <Route path="intellectual-properties" element={<Intellectual />}>
+              <Route path="intellectual-property" element={<Intellectual />}>
                 <Route index element={<AllIntellectuals />} />
                 <Route path="all-intellectual-properties" element={<AllIntellectuals />}></Route>
                 <Route
@@ -394,7 +379,7 @@ const AppRouter = () => {
                 ></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
-              <Route path="intellectual-properties/:complycode" element={<ServicesDetailLayout />}>
+              <Route path="intellectual-property/:complycode" element={<ServicesDetailLayout />}>
                 <Route index element={<ServiceInformation />} />
                 <Route path="info" element={<ServiceInformation />} />
                 <Route path="forminfo" element={<FormInformation />} />
@@ -424,6 +409,7 @@ const AppRouter = () => {
 
               <Route path="application" element={<Application />}></Route>
               <Route path="resources" element={<Resources />}></Route>
+              <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
             </Route>
 
             {/* Staff dashboard routes */}

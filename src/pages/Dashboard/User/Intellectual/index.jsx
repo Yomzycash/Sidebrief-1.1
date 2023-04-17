@@ -65,23 +65,23 @@ const Intellectual = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/intellectual-properties/all-intellectual-properties",
+      path: "/dashboard/intellectual-property/all-intellectual-properties",
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/intellectual-properties/submitted-intellectual-properties",
+      path: "/dashboard/intellectual-property/submitted-intellectual-properties",
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/intellectual-properties/draft-intellectual-properties",
+      path: "/dashboard/intellectual-property/draft-intellectual-properties",
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/intellectual-properties" &&
-    "/dashboard/intellectual-properties/all-intellectual-properties";
+    pathname === "/dashboard/intellectual-property" &&
+    "/dashboard/intellectual-property/all-intellectual-properties";
 
   return (
     <Container>

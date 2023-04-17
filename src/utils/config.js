@@ -234,13 +234,13 @@ export const sidebarLink = [
     id: 6,
     title: "Taxes",
     icon: BusinessesIcon,
-    path: "/dashboard/taxes",
+    path: "/dashboard/tax",
   },
   {
     id: 7,
     title: "Intellectual Property",
     icon: BusinessesIcon,
-    path: "/dashboard/intellectual-properties",
+    path: "/dashboard/intellectual-property",
   },
   {
     id: 8,
