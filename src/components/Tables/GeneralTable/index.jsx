@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Container, Table, Head, Body, HeadData, Row, RowData, TableWrapper } from "./style";
+import { Container, Table, Head, Body, HeadData, Row, RowData } from "./style";
 import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
 import { useEffect } from "react";
 
