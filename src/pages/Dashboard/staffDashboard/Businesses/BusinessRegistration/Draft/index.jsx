@@ -42,11 +42,11 @@ const Draft = () => {
   };
 
   const handleSelected = (selectedRow) => {
-    const selectedArray = selectedRow?.map((el) => {
-      return el?.original?.code;
+    const selectedArray = selectedRow?.map((row) => {
+      return row?.code;
     });
-   
-    //store.dispatch(setBatchDeleteArray(selectedArray))
+
+    store.dispatch(setBatchDeleteArray(selectedArray));
   };
 
   useEffect(() => {
