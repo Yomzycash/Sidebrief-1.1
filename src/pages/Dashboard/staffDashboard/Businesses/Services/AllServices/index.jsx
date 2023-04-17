@@ -5,7 +5,6 @@ import { Puff } from "react-loading-icons";
 import { BodyRight, Loading, ServiceContainer } from "./style";
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
-import { setRefreshApp } from "redux/Slices";
 import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
@@ -18,7 +17,6 @@ const AllServices = () => {
   const { data, isLoading, refetch } = useGetAllServicesQuery();
   const [deleteService, deleteState] = useDeleteServiceMutation();
 
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
@@ -62,9 +60,9 @@ const AllServices = () => {
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
         Description="Add New Service"
-        title="Services"
+        title="Products"
         handleButton={handleAddButton}
-        placeholder="Search for a service"
+        placeholder="Search for a product..."
         totalShown={data?.length}
       />
       {isLoading ? (

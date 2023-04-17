@@ -17,7 +17,6 @@ import { store } from "redux/Store";
 
 const All = () => {
   const [tableArr, setTableArr] = useState([]);
-  const [selectedArr, setSelectedArr] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [currentItems, setCurrentItems] = useState([]);
@@ -28,15 +27,6 @@ const All = () => {
   const navigate = useNavigate();
 
   const matches = useMediaQuery("(max-width:700px)");
-
-  // const handleSelected = (selectedRow) => {
-  //   const selectedArray = selectedRow?.map((el) => {
-  //     return el?.original?.code;
-  //   });
-    
-  //   //store.dispatch(setBatchDeleteArray(selectedArray))
-	// console.log(selectedArray);
-  // };
 
   useEffect(() => {
     if (allLaunch.isSuccess && countries.isSuccess) {
@@ -56,9 +46,6 @@ const All = () => {
   const handlePageClick = (e) => {
     const newOffset = (e.selected * itemsPerPage) % sortedArr?.length;
     setItemOffset(newOffset);
-    // if (selectedArr.length > 0) {
-    // 	store.dispatch(setBatchDeleteArray(selectedArr))
-    // }
   };
 
   useEffect(() => {
@@ -90,8 +77,6 @@ const All = () => {
               };
             })}
             columns={columns}
-            // getSelectedRows={handleSelected}
-            // selectionRow={true}
           />
         ) : (
           <MobileContainer>

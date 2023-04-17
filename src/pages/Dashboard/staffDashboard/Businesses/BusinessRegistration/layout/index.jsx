@@ -37,8 +37,6 @@ import {
   useGetRejectedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
-import { store } from "redux/Store";
-import { setRefreshApp } from "redux/Slices";
 import { useSelector } from "react-redux";
 import Fuse from "fuse.js";
 import { handleError, staffNavigateToDetailPage } from "utils/globalFunctions";
@@ -76,7 +74,7 @@ const Registrationlayout = () => {
   let approved = approvedLaunch?.currentData?.length;
   let paid = pendingLaunch?.currentData?.filter((el) => el.paid).length;
 
-  const { refreshApp, unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
+  const { unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
 
   const fuseOptions = {
     shouldSort: true,
@@ -135,8 +133,7 @@ const Registrationlayout = () => {
   useEffect(() => {
     setAllReg(all ? all : []);
     setAwaiting(awaiting ? awaiting : []);
-    store.dispatch(setRefreshApp(!refreshApp));
-  }, [all, awaiting, pending, approved, refreshApp]);
+  }, [all, awaiting, pending, approved]);
 
   const location = useLocation();
 

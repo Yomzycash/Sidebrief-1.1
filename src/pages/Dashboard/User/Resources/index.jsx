@@ -1,27 +1,11 @@
-import TabNavBar from "components/TabNavBar/TabNavBar";
 import React from "react";
-import {
-  Body,
-  BoldText,
-  ComingBtn,
-  Container,
-  Image,
-  Main,
-  ParagraphText,
-} from "./styled";
+import { Body, BoldText, ComingBtn, Container, Image, Main, ParagraphText } from "./styled";
 import image from "../../../../asset/images/coming.png";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { setRefreshApp } from "redux/Slices";
-import { store } from "redux/Store";
-import { useEffect } from "react";
+
 const Resources = () => {
   const navigate = useNavigate();
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
-  useEffect(() => {
-    store.dispatch(setRefreshApp(!refreshApp));
-  }, []);
   return (
     <Container>
       {/* <TabNavBar /> */}
@@ -30,12 +14,10 @@ const Resources = () => {
           <Image src={image} alt="" />
           <BoldText>Coming Soon...</BoldText>
           <ParagraphText align="center">
-            Uh oh, our apologies. The page you’re looking for is unavailable at
-            the moment. However once it’s live, you’ll be the first to know.
+            Uh oh, our apologies. The page you’re looking for is unavailable at the moment. However
+            once it’s live, you’ll be the first to know.
           </ParagraphText>
-          <ComingBtn
-            onClick={() => navigate("/dashboard/business-registration")}
-          >
+          <ComingBtn onClick={() => navigate("/dashboard/business-registration")}>
             Back to Dashboard
           </ComingBtn>
         </Main>

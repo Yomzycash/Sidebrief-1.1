@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import { useSelector } from "react-redux";
 import { store } from "redux/Store";
-import { setRefreshApp, setUnreadLaunchNotifications } from "redux/Slices";
+import { setUnreadLaunchNotifications } from "redux/Slices";
 import { useGetAllServicesQuery } from "services/staffService";
 import { useMemo } from "react";
 import { getUnReadNotifications } from "components/navbar/actions";
@@ -15,9 +15,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
   const [iconHovered, setIconHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
-  const { refreshNotifications } = useSelector(
-    (store) => store.UserDataReducer
-  );
+  const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
 
   const notifications = useGetAllNotificationsQuery();
   // const services = useGetAllServicesQuery();
@@ -65,9 +63,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
             to={item.path}
             onMouseEnter={() => setIconHovered(item.id)}
             onMouseLeave={() => setIconHovered(0)}
-            style={({ isActive }) =>
-              isActive || homePathActive ? { color: "#00a2d4" } : {}
-            }
+            style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
           >
             <item.icon
               filled={locationPath?.includes(item.path) || homePathActive}
@@ -76,10 +72,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
             {expanded && item.title}
           </NavLink>
           {expanded && item.dropDownList && (
-            <ArrowDown
-              onClick={() => setCollapsed(!collapsed)}
-              collapsed={collapsed}
-            >
+            <ArrowDown onClick={() => setCollapsed(!collapsed)} collapsed={collapsed}>
               <IoIosArrowUp />
             </ArrowDown>
           )}
@@ -94,15 +87,11 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   to={each.path}
                   onMouseEnter={() => setIconHovered(item.id + each.id)}
                   onMouseLeave={() => setIconHovered(0)}
-                  style={({ isActive }) =>
-                    isActive || homePathActive ? { color: "#00a2d4" } : {}
-                  }
+                  style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
                 >
                   <span>
                     <each.icon
-                      filled={
-                        locationPath?.includes(each.path) || homePathActive
-                      }
+                      filled={locationPath?.includes(each.path) || homePathActive}
                       hover={iconHovered === item.id + each.id}
                     />
                   </span>
@@ -174,8 +163,7 @@ export const ListContainer = styled.div`
   align-items: center;
   padding-left: 30px;
 
-  height: ${({ collapsed, items }) =>
-    collapsed ? 0 : `calc(${items * 35}px)`};
+  height: ${({ collapsed, items }) => (collapsed ? 0 : `calc(${items * 35}px)`)};
   overflow: hidden;
   transition: 0.3s height ease;
 `;

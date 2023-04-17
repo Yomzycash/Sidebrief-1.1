@@ -1,32 +1,18 @@
 import { CheckoutController, CheckoutSection } from "containers";
 import React from "react";
-import {
-  NavLink,
-  Outlet,
-  useNavigate,
-  Link,
-  useLocation,
-} from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Container } from "../styled";
 import styled from "styled-components";
-import { imageTypeImage, ReviewTab } from "utils/config";
-import LaunchSummaryCard from "components/cards/LaunchSummaryCard";
+import { ReviewTab } from "utils/config";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import { useSelector } from "react-redux";
-import { ReactComponent as EditIcon } from "asset/Launch/Edit.svg";
 import { store } from "redux/Store";
 import toast from "react-hot-toast";
 import { setCheckoutProgress } from "redux/Slices";
-import {
-  useSubmitLaunchMutation,
-  useViewBeneficialsKYCMutation,
-  useViewBeneficiariesMutation,
-} from "services/launchService";
+import { useSubmitLaunchMutation, useViewBeneficiariesMutation } from "services/launchService";
 import { useEffect } from "react";
 import { useState } from "react";
 import ReviewCard from "components/cards/ReviewCard";
-import AppFeedback from "components/AppFeedback";
-import { mergeInfo } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
 
 const BeneficiaryReview = () => {
@@ -37,8 +23,6 @@ const BeneficiaryReview = () => {
   };
   const [beneficialArray, setBeneficialArray] = useState([]);
 
-  const LaunchApplicationInfo = useSelector((store) => store.LaunchReducer);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,12 +31,8 @@ const BeneficiaryReview = () => {
   //   (store) => store.LaunchReducer.generatedLaunchCode
   // );
   // getting the beneficiary container from store
-  const beneficiaryDocumentContainer = useSelector(
-    (state) => state.LaunchReducer.beneficiaryDocs
-  );
-  const launchResponse = useSelector(
-    (store) => store.LaunchReducer.launchResponse
-  );
+  const beneficiaryDocumentContainer = useSelector((state) => state.LaunchReducer.beneficiaryDocs);
+  const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
 
   const [viewBeneficials, viewBeneficialState] = useViewBeneficiariesMutation();
 
@@ -128,10 +108,7 @@ const BeneficiaryReview = () => {
           <Nav>
             {ReviewTab.map((item, index) => (
               <ReviweTabWrapper to={item.path} key={index}>
-                <NavLink
-                  to={item.path}
-                  style={({ isActive }) => (isActive ? ActiveStyles : {})}
-                >
+                <NavLink to={item.path} style={({ isActive }) => (isActive ? ActiveStyles : {})}>
                   {item.title}
                 </NavLink>
               </ReviweTabWrapper>
@@ -175,7 +152,6 @@ const BeneficiaryReview = () => {
             />
           </ButtonWrapper>
         </Body>
-        {/* <AppFeedback subProject="Beneficiary review" /> */}
       </Container>
     </>
   );
@@ -219,24 +195,6 @@ const ReviweTabWrapper = styled.div`
     color: #959697;
     white-space: nowrap;
   }
-`;
-const ContentWrapper = styled.div`
-  width: 100%;
-  padding: 40px 40px 0px;
-`;
-const EditWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-`;
-
-const EditText = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 27px;
-  color: #00a2d4;
 `;
 const CardWrapper = styled.div`
   display: flex;

@@ -10,7 +10,6 @@ const UserData = createSlice({
     userLoginInfo: {},
     partnerLoginInfo: {},
     resellerLoginInfo: {},
-    refreshApp: false,
     refreshNotifications: false,
     unreadLaunchNotifications: 0,
     batchDeleteArray: [],
@@ -34,9 +33,6 @@ const UserData = createSlice({
     saveResellerLoginInfo: (state, action) => {
       state.loginIfo = action.payload;
     },
-    setRefreshApp: (state, action) => {
-      state.refreshApp = action.payload;
-    },
     setRefreshNotifications: (state, action) => {
       state.refreshNotifications = action.payload;
     },
@@ -57,7 +53,6 @@ export const {
   saveUserLoginInfo,
   savePartnerLoginInfo,
   saveResellerLoginInfo,
-  setRefreshApp,
   setRefreshNotifications,
   setUnreadLaunchNotifications,
   setBatchDeleteArray,

@@ -35,7 +35,6 @@ import Dialog from "@mui/material/Dialog";
 import RewardModal from "components/modal/RewardModal";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { DialogContent } from "@mui/material";
-import AppFeedback from "components/AppFeedback";
 
 const RewardDetails = (props) => {
   const [open, setOpen] = useState(false);
@@ -59,9 +58,7 @@ const RewardDetails = (props) => {
   useEffect(() => {
     const responseData = data === undefined ? [] : [...data];
 
-    const rewardDetails = responseData.find(
-      (reward) => reward.rewardID === rewardID
-    );
+    const rewardDetails = responseData.find((reward) => reward.rewardID === rewardID);
     setSelectedReward(rewardDetails);
     // console.log(rewardDetails);
   }, [data]);

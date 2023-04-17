@@ -15,9 +15,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { handleError } from "utils/globalFunctions";
 import { toast } from "react-hot-toast";
-import { useSelector } from "react-redux";
 import { store } from "redux/Store";
-import { setRefreshApp } from "redux/Slices";
 
 const CountryEntities = () => {
   const [clickedEntity, setClickedEntity] = useState({});
@@ -31,12 +29,6 @@ const CountryEntities = () => {
   const [updateEntity, updateState] = useUpdateEntityMutation();
   const [addEntity, addState] = useAddEntityMutation();
   const [deleteEntity, deleteState] = useDeleteEntityMutation();
-
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
-
-  useEffect(() => {
-    store.dispatch(setRefreshApp(!refreshApp));
-  }, [data]);
 
   const handleCardClick = (entity) => {
     setCardAction("edit");
@@ -142,13 +134,9 @@ const CountryEntities = () => {
             // setOpen={setOpen}
             cardAction={cardAction}
             setCardAction={setCardAction}
-            title={
-              cardAction === "edit" ? "Entity Information" : "Add New Entity"
-            }
+            title={cardAction === "edit" ? "Entity Information" : "Add New Entity"}
             entityInfo={clickedEntity}
-            submitAction={
-              cardAction === "edit" ? handleEntityUpdate : handleEntityAdd
-            }
+            submitAction={cardAction === "edit" ? handleEntityUpdate : handleEntityAdd}
             loading={updateState.isLoading || addState.isLoading}
             deleteState={deleteState}
             handleEntityDelete={handleEntityDelete}
