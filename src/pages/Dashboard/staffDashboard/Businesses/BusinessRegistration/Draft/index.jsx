@@ -45,7 +45,7 @@ const Draft = () => {
     const selectedArray = selectedRow?.map((row) => {
       return row?.code;
     });
-
+      //console.log(selectedArray)
     store.dispatch(setBatchDeleteArray(selectedArray));
   };
 

@@ -61,8 +61,7 @@ const Registrationlayout = () => {
 
   const [batchDelete, deleteState] = useBatchDeleteLaunchRequestsMutation();
 
-  const batchDeleteArray = useSelector((store) => store.UserData?.batchDeleteArray);
-  // console.log(batchDeleteArray)
+  //const batchDeleteArray = useSelector((store) => store.UserData?.batchDeleteArray);
 
   const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
@@ -73,6 +72,8 @@ const Registrationlayout = () => {
   let paid = pendingLaunch?.currentData?.filter((el) => el.paid).length;
 
   const { unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
+  const { batchDeleteArray } = useSelector((store) => store.UserDataReducer);
+  console.log(batchDeleteArray);
 
   const fuseOptions = {
     shouldSort: true,
@@ -113,7 +114,7 @@ const Registrationlayout = () => {
     // perform delete action here
 
     const response = await batchDelete({
-      launchCodes: ["888209163334951660", "414526172812568242"],
+      launchCodes: batchDeleteArray,
     });
 
     let data = response?.data;
@@ -121,7 +122,7 @@ const Registrationlayout = () => {
 
     if (data) {
       toast.success("Deleted");
-      navigate("");
+      navigate("/staff-dashboard/businesses/registration/pending");
     } else handleError(error);
     setOpenModal(false);
   };
@@ -158,7 +159,7 @@ const Registrationlayout = () => {
                 <option value="All">All</option>
               </select>
             </Drop>
-            {deleteShown && (
+            {deleteShown && batchDeleteArray.length > 0 && (
               <DeleteWrapper>
                 <DeleteButton onClick={handleClick}>
                   <p>Delete</p>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { HeadText, BodyText, /*Checkbox,*/ Clickable } from "./styles";
 import { TypeIndicator } from "components/Indicators";
-import { useNavigate as createNavigate } from "react-router-dom";
+import { useNavigate as createNavigate, useLocation } from "react-router-dom";
 import { staffNavigateToDetailPage } from "utils/globalFunctions";
 import { Checkbox } from "components/Staff/Tables/TeamTable/styles";
 
@@ -15,7 +15,7 @@ export const columns = [
       return (
         <IndeterminateCheckbox
           checked={table.getIsAllRowsSelected()}
-          indeterminate={table.getIsSomeRowsSelected()}
+          // indeterminate={table.getIsSomeRowsSelected()}
           onChange={table.getToggleAllRowsSelectedHandler()}
         />
       );
@@ -25,7 +25,7 @@ export const columns = [
       return (
         <IndeterminateCheckbox
           checked={row.getIsSelected()}
-          indeterminate={row.getIsSomeSelected()}
+          // indeterminate={row.getIsSomeSelected()}
           onChange={row.getToggleSelectedHandler()}
         />
       );
@@ -112,8 +112,8 @@ export const columns = [
 
 const IndeterminateCheckbox = ({ indeterminate, className = "", checked, ...rest }) => {
   const ref = React.useRef(null);
-  //   const { pathname } = useLocation();
-  // let Shown = pathname.includes("pending");
+  const { pathname } = useLocation();
+  let Shown = pathname.includes("pending");
 
   React.useEffect(() => {
     if (typeof indeterminate === "boolean") {
@@ -121,5 +121,5 @@ const IndeterminateCheckbox = ({ indeterminate, className = "", checked, ...rest
     }
   }, [ref, indeterminate, checked]);
 
-  return <Checkbox type="checkbox" ref={ref} checked={checked} {...rest} />;
+  return <div>{Shown && <Checkbox type="checkbox" ref={ref} checked={checked} {...rest} />}</div>;
 };
