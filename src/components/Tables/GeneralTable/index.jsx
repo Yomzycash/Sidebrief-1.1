@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Table, Head, HeadData, Row, RowData } from "./style";
+import { Container, Table, Head,Body, HeadData, Row, RowData, TableWrapper } from "./style";
 import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
 import { useEffect } from "react";
 
@@ -40,17 +40,17 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
             </tr>
           ))}
         </Head>
-        <tbody>
+        <Body>
           {table.getRowModel().rows.map((row) => (
             <Row key={row.id} selectionRow={selectionRow} normalLastRow={normalLastRow}>
               {row.getVisibleCells().map((cell) => (
                 <RowData key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())} 
                 </RowData>
               ))}
             </Row>
           ))}
-        </tbody>
+        </Body>
       </Table>
       {/* The pagination controller */}
     </Container>

@@ -49,6 +49,7 @@ export const TitleWrapper = styled.h3`
   font-size: 14px;
   line-height: 21px;
   color: #4e5152;
+
 `;
 export const SingleContainer = styled.div`
   display: flex;
@@ -61,6 +62,10 @@ export const SingleContainer = styled.div`
   background: #fafafa;
   border: 1px solid #edf1f7;
   border-radius: 8px;
+
+  @media screen and (max-width: 443px) {
+    max-width: 544px;
+  }
 `;
 export const LastWrapper = styled.div`
   display: flex;

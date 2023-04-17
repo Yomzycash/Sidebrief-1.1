@@ -5,6 +5,7 @@ import {
   MainHeader,
   TopContent,
   PageTitle,
+  Wrapper,
   Drop,
   BottomContent,
   Loading,
@@ -19,51 +20,31 @@ import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import { compareAsc, format } from "date-fns";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { sortTableData } from "utils/staffHelper";
-import Paginator from "components/Paginator";
-import CheckBox from "components/input/Checkbox2";
-import { Puff } from "react-loading-icons";
-import { GeneralTable } from "components/Tables";
-import { columns } from "./tableColumn";
-import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { SearchResult } from "components/navbar/SearchResult";
+import { userNavigateToServiceDetailPage } from "utils/globalFunctions";
+
+const searchStyle = {
+  borderRadius: "12px",
+  backgroundColor: "white",
+  width: "100%",
+  height: "100%",
+};
+
+const iconStyle = { width: "17px", height: "17px" };
 
 const UserService = () => {
+  const [searchValue, setSearchValue] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
   const [tableArr, setTableArr] = useState([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [currentItems, setCurrentItems] = useState([]);
-  // const { data, isLoading, refetch } = useGetAllServicesQuery();
-  //const myService = useViewAllComplyByMetaQuery();
   const userMeta = useSelector((state) => state.UserDataReducer.userInfo.id);
   const { data, isLoading, refetch, isSuccess } = useViewAllComplyByMetaQuery({
     meta: userMeta,
   });
-
-  // const allService = myService?.data;
-  // console.log("allService", allService)
-  // const loader = myService?.isLoading;
-
-  // const sortedArr = useMemo(() => {
-  // 	const sortArr = [...tableArr];
-  // 	return sortArr.sort(sortTableData);
-  // }, [tableArr])
-
-  const itemsPerPage = 10;
-
-  // const handlePageClick = (e) => {
-  // 	const newOffset = (e.selected * itemsPerPage) % sortedArr?.length;
-  // 	setItemOffset(newOffset);
-  // };
-
-  // useEffect(() => {
-  // 	const endOffset = itemOffset + itemsPerPage;
-  // 	setCurrentItems(sortedArr?.slice(itemOffset, endOffset));
-  // 	setPageCount(Math.ceil(sortedArr?.length / itemsPerPage));
-  // }, [itemOffset, itemsPerPage, sortedArr]);
-  // console.log("sortedArr", sortedArr)
-
-  // console.log("serviceBody", serviceBody )
+  const navigate = useNavigate();
 
   useEffect(() => {
     refetch();
@@ -71,6 +52,12 @@ const UserService = () => {
 
   const submitted = data?.filter((el) => el.status === "submitted") || [];
   const draft = data?.filter((el) => el.status === "pending") || [];
+
+  const onItemClick = (item) => {
+    setSearchFocused(false);
+    const complyCode = item.complyCode;
+    userNavigateToServiceDetailPage(navigate, complyCode);
+  };
 
   return (
     <Container>
@@ -89,8 +76,15 @@ const UserService = () => {
             </Drop>
           </TopContent>
           <BottomContent>
-            <SearchWrapper>
-              <Search className={"searchbox"} placeholder={"Search for a service"} />
+            <SearchWrapper onFocus={() => setSearchFocused(true)}>
+              <Search
+                className={"searchbox"}
+                placeholder={"Search for a service"}
+                iconStyle={iconStyle}
+                style={searchStyle}
+                onChange={(value) => setSearchValue(value)}
+                value={searchValue}
+              />
             </SearchWrapper>
           </BottomContent>
 
