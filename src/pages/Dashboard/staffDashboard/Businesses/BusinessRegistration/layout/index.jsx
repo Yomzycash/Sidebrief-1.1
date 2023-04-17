@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { Dialog } from "@mui/material";
+import styled from "styled-components";
+import { HiX } from "react-icons/hi";
+import { CheckoutController } from "containers/Checkout";
+import { toast } from "react-hot-toast";
+import { RedTrash } from "asset/svg";
+
 import {
   Container,
   Header,
@@ -13,6 +20,8 @@ import {
   SearchWrapper,
   SubHeader,
   TitleWrapper,
+  DeleteWrapper,
+  DeleteButton,
 } from "./style";
 import { SummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
@@ -32,8 +41,9 @@ import { store } from "redux/Store";
 import { setRefreshApp } from "redux/Slices";
 import { useSelector } from "react-redux";
 import Fuse from "fuse.js";
-import { staffNavigateToDetailPage } from "utils/globalFunctions";
+import { handleError, staffNavigateToDetailPage } from "utils/globalFunctions";
 import { SearchResult } from "components/navbar/SearchResult";
+import { useBatchDeleteLaunchRequestsMutation } from "services/launchService";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
@@ -41,6 +51,7 @@ const Registrationlayout = () => {
   const [awaitingReg, setAwaiting] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const allLaunch = useGetAllLaunchQuery();
 
@@ -49,6 +60,13 @@ const Registrationlayout = () => {
   const rejectedLaunch = useGetRejectedLaunchQuery();
 
   const pendingLaunch = useGetDraftLaunchQuery();
+
+  const [batchDelete, deleteState] = useBatchDeleteLaunchRequestsMutation();
+
+  const UserData = useSelector((store) => store.UserData);
+  const batchDeleteArray  = UserData?.batchDeleteArray;
+  console.log(batchDeleteArray)
+
 
   const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
@@ -69,8 +87,13 @@ const Registrationlayout = () => {
       "businessNames.businessName4",
     ],
   };
+ 
+  const { pathname } = useLocation();
+  let deleteShown = pathname.includes("pending");
 
   const allData = [...(allLaunch.data || [])];
+
+ 
 
   const fuse = new Fuse(allData, fuseOptions);
 
@@ -84,11 +107,36 @@ const Registrationlayout = () => {
     staffNavigateToDetailPage(navigate, launchInfo);
   };
 
+  const handleClick = () => {
+    setOpenModal(true);
+  };
+
+  const handleNo = () => {
+    setOpenModal(false);
+  };
+
+  const deleteAction = async () => {
+    // perform delete action here
+
+    const response = await batchDelete({
+      launchCodes: ["888209163334951660", "414526172812568242"],
+    });
+
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Deleted");
+      navigate("");
+    } else handleError(error);
+    setOpenModal(false);
+  };
+
   useEffect(() => {
     setAllReg(all ? all : []);
     setAwaiting(awaiting ? awaiting : []);
     store.dispatch(setRefreshApp(!refreshApp));
-  }, [all, awaiting, pending, approved]);
+  }, [all, awaiting, pending, approved, refreshApp]);
 
   const location = useLocation();
 
@@ -117,6 +165,34 @@ const Registrationlayout = () => {
                 <option value="All">All</option>
               </select>
             </Drop>
+            {deleteShown && (
+              <DeleteWrapper>
+                <DeleteButton onClick={handleClick}>
+                  <p>Delete</p>
+                  <RedTrash />
+                </DeleteButton>
+              </DeleteWrapper>)}
+
+            <Dialog open={openModal} fullWidth maxWidth="sm">
+              <ModalWrapper>
+                <TopLevelContent>
+                  <CloseWrapper onClick={() => setOpenModal(false)}>
+                    <HiX size={20} />
+                  </CloseWrapper>
+                </TopLevelContent>
+
+                <Question>Do you want to Delete this Application ?</Question>
+                <ModalButton>
+                  <CheckoutController
+                    backAction={handleNo}
+                    backText={"No"}
+                    forwardAction={deleteAction}
+                    forwardText={"Yes"}
+                    forwardLoading={deleteState.isLoading}
+                  />
+                </ModalButton>
+              </ModalWrapper>
+            </Dialog>
           </TopContent>
           <BottomContent>
             <SearchWrapper onFocus={() => setSearchFocused(true)}>
@@ -211,3 +287,37 @@ export default Registrationlayout;
 // 		width: 100%;
 // 	}
 // `;
+
+const ModalWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 40px 0px;
+  flex-flow: column;
+`;
+
+const ModalButton = styled.div`
+  display: flex;
+  width: 80%;
+`;
+
+const Question = styled.p`
+  font-size: clamp(16px, 1.5vw, 20px);
+  margin-bottom: 20px;
+`;
+const TopLevelContent = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 80%;
+`;
+
+const CloseWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  padding: 10px;
+  border-radius: 100%;
+  background-color: #d7d7d7;
+  margin-bottom: 20px;
+`;

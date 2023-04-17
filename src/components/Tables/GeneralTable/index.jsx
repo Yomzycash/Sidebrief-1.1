@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Container, Table, Head, HeadData, Row, RowData } from "./style";
 import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
 import { useEffect } from "react";
@@ -17,11 +17,12 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
   });
 
   const selectedRows = table.getSelectedRowModel().flatRows;
+  const memoizedSelectedRows = useMemo (()=> selectedRows, [selectedRows])
 
-  // returns SelectedRows
+
   useEffect(() => {
-    if (selectionRow && getSelectedRows) getSelectedRows(selectedRows);
-  }, [getSelectedRows, selectedRows, selectionRow]);
+    if (selectionRow && getSelectedRows && memoizedSelectedRows.length) getSelectedRows(selectedRows);
+  }, [getSelectedRows, memoizedSelectedRows.length, selectedRows, selectionRow, table]);
 
   return (
     <Container>

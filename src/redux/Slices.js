@@ -13,6 +13,7 @@ const UserData = createSlice({
     refreshApp: false,
     refreshNotifications: false,
     unreadLaunchNotifications: 0,
+    batchDeleteArray: [],
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -42,6 +43,9 @@ const UserData = createSlice({
     setUnreadLaunchNotifications: (state, action) => {
       state.unreadLaunchNotifications = action.payload;
     },
+    setBatchDeleteArray: (state, action) => {
+      state.batchDeleteArray = action.payload;
+    },
   },
 });
 export const UserDataReducer = UserData.reducer;
@@ -56,6 +60,7 @@ export const {
   setRefreshApp,
   setRefreshNotifications,
   setUnreadLaunchNotifications,
+  setBatchDeleteArray,
 } = UserData.actions;
 
 // This slice will hold all glabally needed layout and similar information

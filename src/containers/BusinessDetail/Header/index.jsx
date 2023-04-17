@@ -333,6 +333,8 @@ export const Header = ({ isStaff, code }) => {
     </Container>
   );
 };
+
+
 const ModalWrapper = styled.div`
   display: flex;
   align-items: center;

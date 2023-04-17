@@ -437,6 +437,14 @@ export const launchApi = createApi({
       }),
       invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
+    batchDeleteLaunchRequests: builder.mutation({
+      query: (values) => ({
+        url: "launch/batch/delete",
+        method: "POST",
+        body: values,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
   }),
 });
 
@@ -505,4 +513,5 @@ export const {
   useSubmitLaunchMutation,
 
   useDeleteLaunchRequestMutation,
+  useBatchDeleteLaunchRequestsMutation,
 } = launchApi;
