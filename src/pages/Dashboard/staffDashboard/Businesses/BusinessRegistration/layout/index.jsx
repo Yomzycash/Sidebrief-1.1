@@ -38,9 +38,7 @@ import {
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
 import { useSelector } from "react-redux";
-import Fuse from "fuse.js";
-import { handleError, staffNavigateToDetailPage } from "utils/globalFunctions";
-import { SearchResult } from "components/navbar/SearchResult";
+import { handleError } from "utils/globalFunctions";
 import { useBatchDeleteLaunchRequestsMutation } from "services/launchService";
 
 const Registrationlayout = () => {
@@ -48,7 +46,6 @@ const Registrationlayout = () => {
   const [allReg, setAllReg] = useState([]);
   const [awaitingReg, setAwaiting] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [searchFocused, setSearchFocused] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const allLaunch = useGetAllLaunchQuery();
@@ -75,32 +72,12 @@ const Registrationlayout = () => {
   const { batchDeleteArray } = useSelector((store) => store.UserDataReducer);
   console.log(batchDeleteArray);
 
-  const fuseOptions = {
-    shouldSort: true,
-    keys: [
-      "businessNames.businessName1",
-      "businessNames.businessName2",
-      "businessNames.businessName3",
-      "businessNames.businessName4",
-    ],
-  };
+  
 
   const { pathname } = useLocation();
   let deleteShown = pathname.includes("pending");
 
-  const allData = [...(allLaunch.data || [])];
-
-  const fuse = new Fuse(allData, fuseOptions);
-
-  const onItemClick = (item) => {
-    setSearchFocused(false);
-    const launchInfo = {
-      launchCode: item.launchCode,
-      registrationCountry: item.registrationCountry,
-      registrationType: item.registrationType,
-    };
-    staffNavigateToDetailPage(navigate, launchInfo);
-  };
+  
 
   const handleClick = () => {
     setOpenModal(true);
@@ -190,30 +167,13 @@ const Registrationlayout = () => {
             </Dialog>
           </TopContent>
           <BottomContent>
-            <SearchWrapper onFocus={() => setSearchFocused(true)}>
+            <SearchWrapper>
               <Search
                 style={searchStyle}
                 iconStyle={iconStyle}
-                onChange={(value) => setSearchValue(value)}
+                onChange={(e) => setSearchValue(e.target.value)}
                 value={searchValue}
                 className={"searchbox"}
-              />
-              <SearchResult
-                items={fuse
-                  .search(searchValue)
-                  .slice(0, 5)
-                  .map((el) => {
-                    return {
-                      id: el.item.launchCode,
-                      name: el.item.businessNames.businessName1 || "no name",
-                      launchCode: el.item.launchCode,
-                      registrationCountry: el.item.registrationCountry,
-                      registrationType: el.item.registrationType,
-                    };
-                  })}
-                show={searchFocused}
-                unShow={() => setSearchFocused(false)}
-                onItemClick={onItemClick}
               />
             </SearchWrapper>
             <Flex>

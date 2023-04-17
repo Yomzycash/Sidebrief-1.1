@@ -1,14 +1,8 @@
-import CopyIcon from "asset/Icons/CopyIcon";
-import DownloadIcon from "asset/Icons/DownloadIcon";
-import { GladeLogo } from "asset/images";
 import React from "react";
-import { IoMdMore } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { GiConsoleController } from "react-icons/gi";
 import { TableBody, TableContainer, TableHead } from "./styled";
 
-const FeatureTable = ({ header, body }) => {
-  const handleAccountView = (account) => {};
-
+const FeatureTable = ({ header, body, onRowClick }) => {
   return (
     <TableContainer>
       <TableHead>
@@ -18,10 +12,10 @@ const FeatureTable = ({ header, body }) => {
           ))}
         </tr>
       </TableHead>
-      <TableBody>
-        {body?.map((account, index) => (
-          <tr key={index}>
-            {account?.map((el, index) => (
+      <TableBody $hasOnClick={onRowClick ? true : false}>
+        {body?.map((each, index) => (
+          <tr key={index} onClick={() => onRowClick(each)}>
+            {each?.map((el, index) => (
               <td key={index}>{el}</td>
             ))}
           </tr>

@@ -12,27 +12,41 @@ import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { columns } from "../tablecolumn";
+import { useBusinessActions } from "../actions";
+import { useOutletContext } from "react-router-dom";
 
 const PendingApplications = () => {
-  const { data, isLoading, isSuccess } = useGetUserSubmittedQuery();
+  const [dataArr, setDataArr] = useState([]);
+
+  const { submitted, searchValue } = useOutletContext();
 
   const countries = useGetAllCountriesQuery();
-
   const [viewPayLaunch] = useViewPayLaunchMutation();
 
-  const [dataArr, setDataArr] = useState([]);
+  const hasFetched = submitted.data;
+  const allSubmitted = hasFetched ? submitted.data : [];
+
+  const { filterWhenSearched, sortData } = useBusinessActions({
+    searchValue,
+    hasFetched,
+    setDataArr,
+  });
+
+  const data = submitted.data;
+  const error = submitted.error;
+  const isLoading = submitted.isLoading;
+  const isSuccess = submitted.isSuccess;
+
+  // Sort data
   useEffect(() => {
-    if (isSuccess && countries.isSuccess) {
-      const response = [...data];
-      response.sort((launch1, launch2) => {
-        return compareDesc(
-          new Date(launch1.createdAt),
-          new Date(launch2.createdAt)
-        );
-      });
-      setDataArr(response);
-    }
-  }, [data, isSuccess, countries.isSuccess]);
+    sortData(allSubmitted);
+  }, [data, isSuccess]);
+
+  // Filters data array by searched value
+  useEffect(() => {
+    filterWhenSearched(allSubmitted);
+  }, [searchValue]);
+
   const matches = useMediaQuery("(max-width:700px)");
 
   return (
@@ -47,13 +61,10 @@ const PendingApplications = () => {
           <GeneralTable
             data={dataArr.map((element) => {
               return {
-                name: element.businessNames
-                  ? element.businessNames.businessName1
-                  : "No name ",
+                name: element.businessNames ? element.businessNames.businessName1 : "No name ",
                 type: element?.registrationType,
                 country: countries.data.find(
-                  (country) =>
-                    country.countryISO === element.registrationCountry
+                  (country) => country.countryISO === element.registrationCountry
                 )?.countryName,
                 date: format(new Date(element.createdAt), "dd/MM/yyyy"),
                 code: element.launchCode,
@@ -68,11 +79,7 @@ const PendingApplications = () => {
             {dataArr.map((element) => {
               return (
                 <BusinessesCard
-                  name={
-                    element.businessNames
-                      ? element.businessNames.businessName1
-                      : "No name "
-                  }
+                  name={element.businessNames ? element.businessNames.businessName1 : "No name "}
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}

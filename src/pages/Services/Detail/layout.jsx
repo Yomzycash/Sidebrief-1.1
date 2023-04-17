@@ -20,7 +20,12 @@ const ServicesDetailLayout = () => {
   const complyCode = comply?.complyCode;
   const status = comply?.status?.toLowerCase();
 
-  const service = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
+  const viewService = useGetSingleServiceQuery(serviceId, { refetchOnMountOrArgChange: true });
+  const service = viewService.data;
+  const serviceName = service?.serviceName;
+  const serviceCategory = service?.serviceCategory?.toLowerCase();
+  const serviceCountry = service?.serviceCountry;
+
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
@@ -52,17 +57,17 @@ const ServicesDetailLayout = () => {
 
   //
   const handleContinue = () => {
-    const countryISO = service.data?.serviceCountry;
+    const countryISO = serviceCountry;
     let complyInfo = {
       ...comply,
       serviceCountry: lookup.byIso(countryISO)?.country,
-      serviceName: service.data?.serviceName,
+      serviceName: serviceName,
     };
     let paymentInfo = comply?.complyPayment[0] || {};
 
     localStorage.setItem("complyInfo", JSON.stringify(complyInfo));
     localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo));
-    navigate("/services");
+    navigate(`/services/${serviceCategory}`);
   };
 
   useEffect(() => {
@@ -73,7 +78,7 @@ const ServicesDetailLayout = () => {
     <Container>
       <ServiceDetailHeader
         status={getStatus(status)}
-        serviceName={service?.data?.serviceName}
+        serviceName={viewService?.data?.serviceName}
         code={complyCode}
         mainUrl={mainUrl}
         date={

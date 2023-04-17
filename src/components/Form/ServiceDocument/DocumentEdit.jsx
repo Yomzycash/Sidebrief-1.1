@@ -12,6 +12,7 @@ import {
   SubmitButtons,
 } from "./styled";
 import { SpinningCircles } from "react-loading-icons";
+import { v4 as uuidv4 } from "uuid";
 
 const DocumentEdit = ({
   documentNumber,
@@ -53,6 +54,9 @@ const DocumentEdit = ({
     }
   }, []);
 
+  let documentNameId = uuidv4();
+  let documentDescriptionId = uuidv4();
+
   return (
     <DocumentForm onSubmit={handleSubmit}>
       {!done && (
@@ -67,9 +71,11 @@ const DocumentEdit = ({
               inputClass="input-class"
               containerStyle="input-container-class"
               value={state.documentName}
+              inputId={documentNameId}
+              nextElementId={documentDescriptionId}
               onChange={handleDocumentName}
               errorMessage={nameError}
-            />{" "}
+            />
             <InputWithLabel
               label="Document Description"
               placeholder="Enter document description here"
@@ -78,6 +84,7 @@ const DocumentEdit = ({
               inputClass="input-class"
               containerStyle="input-container-class"
               value={state.documentDescription}
+              inputId={documentDescriptionId}
               onChange={handleDocumentDescription}
               errorMessage={descriptionError}
             />

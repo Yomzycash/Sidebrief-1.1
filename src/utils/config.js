@@ -20,6 +20,7 @@ import {
   CountryIcon,
   ArrowDownIcon,
   ServicesIcon,
+  ManageIcon
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
 // import  from "asset/Icons/ServicesIcon";
@@ -208,36 +209,60 @@ export const sidebarLink = [
   },
   {
     id: 2,
+    title: "Products",
+    icon: ServicesIcon,
+    path: "/dashboard/services/all",
+  },
+  {
+    id: 3,
     title: "Businesses",
     icon: BusinessesIcon,
     path: "/dashboard/businesses/all-businesses",
   },
   {
-    id: 3,
-    title: "Products",
-    icon: BusinessesIcon,
-    path: "/dashboard/services/all",
+    id: 4,
+    title: "Onboarded",
+    icon: HiringIcon,
+    path: "/dashboard/onboarded",
   },
   {
-    id: 4,
+    id: 5,
+    title: "Manage",
+    icon: ManageIcon,
+    path: "/dashboard/manage",
+  },
+  {
+    id: 6,
+    title: "Taxes",
+    icon: TaxesIcon,
+    path: "/dashboard/taxes",
+  },
+  {
+    id: 7,
+    title: "Intellectual Property",
+    icon: IntellectualIcon,
+    path: "/dashboard/intellectual-properties",
+  },
+  {
+    id: 8,
     title: "Bank Accounts",
     icon: BankAccountIcon,
     path: "/dashboard/bank-account",
   },
   {
-    id: 5,
+    id: 9,
     title: "Rewards",
     icon: RewardIcon,
     path: "/dashboard/rewards/all-rewards",
   },
+  // {
+  //   id: 10,
+  //   title: "Resources",
+  //   icon: ResourcesIcon,
+  //   path: "/dashboard/resources",
+  // },
   {
-    id: 6,
-    title: "Resources",
-    icon: ResourcesIcon,
-    path: "/dashboard/resources",
-  },
-  {
-    id: 7,
+    id: 11,
     title: "Settings",
     icon: SettingsIcon,
     path: "/dashboard/settings",

@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import { handleError } from "utils/globalFunctions";
 
 export const useActions = ({
@@ -10,6 +11,8 @@ export const useActions = ({
   updateComply,
   navigate,
 }) => {
+  const { option } = useParams();
+
   // Submits form
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,20 +50,47 @@ export const useActions = ({
         const link = getLink();
         navigate(link);
       } else {
-        navigate("/services/payment");
+        navigate(`/services/${option}/payment`);
       }
     } else handleError(error);
   };
 
   const getLink = () => {
     let service = services.data?.find((el) => el?.serviceId === complyInfo?.serviceId);
-    let link = "/services/form";
-    link = service?.serviceForm?.length < 1 ? "/services/documents" : link;
-    link = service?.serviceRequirements?.length < 1 ? "/services/review/info" : link;
+    let link = `/services/${option}/form`;
+    link = service?.serviceForm?.length < 1 ? `/services/${option}/documents` : link;
+    link = service?.serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     return link;
   };
 
+  const getHeaderText = (category) => {
+    if (!category)
+      return {
+        title: "",
+        titleSubText: "",
+      };
+
+    if (normalize(category) === "manage")
+      return {
+        title: "Manage Your Business",
+        titleSubText: "Make changes to already registered companies",
+      };
+    else if (normalize(category) === "onboard")
+      return { title: "Onboard Your Business", titleSubText: "Automate your business compliance" };
+    else if (normalize(category) === "tax")
+      return { title: "Tax", titleSubText: "5mins completion time" };
+    else if (normalize(category) === "intellectual-property")
+      return {
+        title: "Intellectual Property",
+        titleSubText: "5mins completion time",
+      };
+  };
+
+  const normalize = (text) => text?.toLowerCase()?.split(" ")?.join("-");
+
   return {
     handleSubmit,
+    normalize,
+    getHeaderText,
   };
 };
