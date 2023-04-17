@@ -63,10 +63,34 @@ export const useActions = ({
     return link;
   };
 
-  const normalize = (text) => text?.toLowerCase();
+  const getHeaderText = (category) => {
+    if (!category)
+      return {
+        title: "",
+        titleSubText: "",
+      };
+
+    if (normalize(category) === "manage")
+      return {
+        title: "Manage Your Business",
+        titleSubText: "Make changes to already registered companies",
+      };
+    else if (normalize(category) === "onboard")
+      return { title: "Onboard Your Business", titleSubText: "Automate your business compliance" };
+    else if (normalize(category) === "tax")
+      return { title: "Tax", titleSubText: "5mins completion time" };
+    else if (normalize(category) === "intellectual-property")
+      return {
+        title: "Intellectual Property",
+        titleSubText: "5mins completion time",
+      };
+  };
+
+  const normalize = (text) => text?.toLowerCase()?.split(" ")?.join("-");
 
   return {
     handleSubmit,
     normalize,
+    getHeaderText,
   };
 };

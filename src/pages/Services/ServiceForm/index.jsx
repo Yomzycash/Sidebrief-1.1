@@ -58,7 +58,7 @@ const ServiceForm = () => {
   const handlePrev = () => {
     const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
     if (paymentDetails?.paymentStatus === "successful") {
-      navigate("/services");
+      navigate(`/services/${option}`);
     } else {
       navigate(`/services/${option}/payment`);
     }

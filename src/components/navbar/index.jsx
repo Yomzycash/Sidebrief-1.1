@@ -26,23 +26,14 @@ import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { getUnReadNotifications } from "./actions";
 
-const Navbar = ({
-  dashboard,
-  rewards,
-  displayMobile,
-  imgStyles,
-  style,
-  hideSearch,
-}) => {
+const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearch }) => {
   // const [boxshadow, setBoxShadow] = useState("false");
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
-  const { data, refetch } = useGetAllNotificationsQuery();
+  const { currentData, refetch } = useGetAllNotificationsQuery({ refetchOnMountOrArgChange: true });
 
-  const { refreshNotifications } = useSelector(
-    (store) => store.UserDataReducer
-  );
+  const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
   // console.log(refreshNotifications);
 
   let userInfo = localStorage.getItem("userInfo");
@@ -73,12 +64,11 @@ const Navbar = ({
     refetch();
   }, [refreshNotifications]);
 
-	// let newNotifications = useMemo(() => {
-	//   return getUnReadNotifications(data);
-	// }, [refreshNotifications]);
-	let newNotifications = getUnReadNotifications(data);
-	// console.log(getUnReadNotifications(data));
-
+  // let newNotifications = useMemo(() => {
+  //   return getUnReadNotifications(data);
+  // }, [refreshNotifications]);
+  let newNotifications = getUnReadNotifications(currentData);
+  // console.log(getUnReadNotifications(data));
 
   return (
     <>
@@ -102,9 +92,7 @@ const Navbar = ({
             {/* {staffEmail && ( */}
             <BellContainer onClick={handleShowNotification}>
               {newNotifications?.length > 0 && (
-                <NotificationBadge>
-                  {newNotifications?.length}
-                </NotificationBadge>
+                <NotificationBadge>{newNotifications?.length}</NotificationBadge>
               )}
               <BellIcon src={bell} alt="logo" />
             </BellContainer>
@@ -134,14 +122,12 @@ const Navbar = ({
       {showNotification && (
         <Notification
           closeNotifications={closeNotifications}
-          data={data}
+          data={currentData}
           refetch={refetch}
         />
       )}
 
-      {showProfile && (
-        <Profile closeProfile={closeProfile} showProfile={showProfile} />
-      )}
+      {showProfile && <Profile closeProfile={closeProfile} showProfile={showProfile} />}
     </>
   );
 };

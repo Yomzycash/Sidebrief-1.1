@@ -12,7 +12,6 @@ import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchS
 import { store } from "redux/Store";
 import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { compareDesc } from "date-fns";
-// import AppFeedback from "components/AppFeedback";
 import { LaunchRocket, ManageSpanner } from "asset/svg";
 import { useEffect } from "react";
 import { useState } from "react";

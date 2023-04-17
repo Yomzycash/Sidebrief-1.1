@@ -52,7 +52,7 @@ const ServicePayment = () => {
 
     let link = `/services/${option}/form`;
     link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
-    link = serviceRequirements?.length < 1 ? `/services/${option}/review` : link;
+    link = serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     navigate(link);
   };
 

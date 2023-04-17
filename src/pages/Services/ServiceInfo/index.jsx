@@ -23,11 +23,16 @@ const ServiceInfo = () => {
 
   let navigate = useNavigate();
   let { option } = useParams();
-  let paramsIsValid = option.toLowerCase() === "onboard" || option.toLowerCase() === "manage";
+
+  let paramsIsValid =
+    option.toLowerCase() === "onboard" ||
+    option.toLowerCase() === "manage" ||
+    option.toLowerCase() === "intellectual-property" ||
+    option.toLowerCase() === "tax";
 
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
 
-  const { handleSubmit, normalize } = useActions({
+  const { handleSubmit, normalize, getHeaderText } = useActions({
     selectedCountry,
     selectedService,
     complyInfo,
@@ -94,17 +99,22 @@ const ServiceInfo = () => {
     handleServiceSelect(serviceName);
   }, [services.data]);
 
+  const { title, titleSubText } = getHeaderText(option);
+
+  const hidePrev =
+    !complyInfo?.paid || !(normalize(option) === "manage" || normalize(option) === "onboard");
+
   return (
     <>
       {paramsIsValid ? (
         <Container>
-          <ServicesCheckoutHeader getStarted backToDashBoard />
+          <ServicesCheckoutHeader
+            getStarted={!complyInfo ? true : false}
+            backToDashBoard={!complyInfo ? true : false}
+          />
 
           <Body onSubmit={handleSubmit}>
-            <CheckoutSection
-              title="Manage your business"
-              HeaderParagraph="Make changes to already registered companies"
-            />
+            <CheckoutSection title={title} HeaderParagraph={titleSubText} />
             <LaunchPrimaryContainer>
               <LaunchFormContainer>
                 <div style={{ maxWidth: "450px" }}>
@@ -116,6 +126,7 @@ const ServiceInfo = () => {
                     suggestionLoading={countries.isLoading}
                     fetchingText={"Fetching countries..."}
                     fetchFailedText="Couldn't fetch countries"
+                    disabled={complyInfo?.paid}
                   />
                 </div>
                 <TagInputWithSearch
@@ -128,6 +139,7 @@ const ServiceInfo = () => {
                   suggestionLoading={services.isLoading || services.isFetching}
                   fetchingText="Fetching products..."
                   fetchFailedText="Couldn't fetch products"
+                  disabled={complyInfo?.paid}
                 />
               </LaunchFormContainer>
               {selectedService?.serviceName && (
@@ -142,6 +154,7 @@ const ServiceInfo = () => {
                   forwardSubmit
                   backText="Previous"
                   backAction={() => navigate("/services")}
+                  hidePrev={hidePrev}
                   forwardLoading={createState.isLoading || updateState.isLoading}
                 />
               </Bottom>

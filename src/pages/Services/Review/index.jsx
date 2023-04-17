@@ -14,6 +14,8 @@ import { useOutletContext, useParams } from "react-router-dom";
 import { useViewComplyQuery } from "services/complyService";
 
 const ServiceReview = () => {
+  let { option } = useParams();
+
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
 
   let complyCode = complyInfo?.complyCode;
@@ -48,13 +50,13 @@ const ServiceReview = () => {
           <ActiveNav
             text={"Service Information"}
             // total={0}
-            path={"/services/review/info"}
+            path={`/services/${option}/review/info`}
           />
           {viewComply?.data?.complyData?.length > 0 && (
-            <ActiveNav text={"Form"} path={"/services/review/form"} />
+            <ActiveNav text={"Form"} path={`/services/${option}/review/form`} />
           )}
           {viewComply?.data?.complyDocuments?.length > 0 && (
-            <ActiveNav text={"Documents"} path={"/services/review/documents"} />
+            <ActiveNav text={"Documents"} path={`/services/${option}/review/documents`} />
           )}
         </Nav>
         <Outlet context={viewComply} />

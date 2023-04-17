@@ -57,7 +57,7 @@ export const SingleContainer = styled.div`
   padding: 16px 24px;
   gap: 16px;
   width: 100%;
-  height: 48px;
+  min-height: 48px;
   background: #fafafa;
   border: 1px solid #edf1f7;
   border-radius: 8px;
