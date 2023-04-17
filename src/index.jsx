@@ -10,13 +10,13 @@ import { theme } from "./styled.config";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-	<Provider store={store}>
-		<React.StrictMode>
-			<ThemeProvider theme={theme}>
-				<App style={{ display: "none" }} />
-			</ThemeProvider>
-		</React.StrictMode>
-	</Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App style={{ display: "none" }} />
+      </ThemeProvider>
+    </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

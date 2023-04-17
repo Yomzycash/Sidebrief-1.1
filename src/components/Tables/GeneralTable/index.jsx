@@ -1,10 +1,13 @@
-import { useMemo, useState } from "react";
-import { Container, Table, Head,Body, HeadData, Row, RowData, TableWrapper } from "./style";
+import { useRef, useState } from "react";
+import { Container, Table, Head, Body, HeadData, Row, RowData } from "./style";
 import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
 import { useEffect } from "react";
 
 export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, normalLastRow }) => {
   const [rowSelection, setRowSelection] = useState({});
+
+  const getSelectedRowsRef = useRef(getSelectedRows);
+  getSelectedRowsRef.current = getSelectedRows;
 
   const table = useReactTable({
     columns,
@@ -16,13 +19,12 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
     onRowSelectionChange: setRowSelection,
   });
 
-  const selectedRows = table.getSelectedRowModel().flatRows;
-  const memoizedSelectedRows = useMemo (()=> selectedRows, [selectedRows])
-
-
   useEffect(() => {
-    if (selectionRow && getSelectedRows && memoizedSelectedRows.length) getSelectedRows(selectedRows);
-  }, [getSelectedRows, memoizedSelectedRows.length, selectedRows, selectionRow, table]);
+    if (selectionRow && getSelectedRowsRef.current) {
+      const selectedRows = table.getSelectedRowModel().flatRows.map((row) => row.original);
+      getSelectedRowsRef.current(selectedRows);
+    }
+  }, [rowSelection, selectionRow, table]);
 
   return (
     <Container>
@@ -46,7 +48,7 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
             <Row key={row.id} selectionRow={selectionRow} normalLastRow={normalLastRow}>
               {row.getVisibleCells().map((cell) => (
                 <RowData key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())} 
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </RowData>
               ))}
             </Row>

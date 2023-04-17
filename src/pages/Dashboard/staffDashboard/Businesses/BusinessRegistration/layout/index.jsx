@@ -61,10 +61,8 @@ const Registrationlayout = () => {
 
   const [batchDelete, deleteState] = useBatchDeleteLaunchRequestsMutation();
 
-  const UserData = useSelector((store) => store.UserData);
-  const batchDeleteArray  = UserData?.batchDeleteArray;
-  console.log(batchDeleteArray)
-
+  const batchDeleteArray = useSelector((store) => store.UserData?.batchDeleteArray);
+  // console.log(batchDeleteArray)
 
   const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
@@ -85,13 +83,11 @@ const Registrationlayout = () => {
       "businessNames.businessName4",
     ],
   };
- 
+
   const { pathname } = useLocation();
   let deleteShown = pathname.includes("pending");
 
   const allData = [...(allLaunch.data || [])];
-
- 
 
   const fuse = new Fuse(allData, fuseOptions);
 
@@ -168,7 +164,8 @@ const Registrationlayout = () => {
                   <p>Delete</p>
                   <RedTrash />
                 </DeleteButton>
-              </DeleteWrapper>)}
+              </DeleteWrapper>
+            )}
 
             <Dialog open={openModal} fullWidth maxWidth="sm">
               <ModalWrapper>
