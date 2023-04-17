@@ -12,6 +12,23 @@ import ServiceInformation from "pages/Services/Detail/ServiceInformation";
 import ReviewDocuments from "pages/Services/Review/ReviewDocuments";
 import FormInformation from "pages/Services/Detail/FormInformation";
 import DocumentInfoDetails from "pages/Services/Detail/DocumentInfoDetails";
+import ServiceOptionSelect from "../pages/Services/ServiceOptionSelect";
+import Tax from "pages/Dashboard/User/Taxes";
+import AllTaxes from "pages/Dashboard/User/Taxes/AllTaxes/index";
+import PendingTaxes from "pages/Dashboard/User/Taxes/PendingTaxes/index";
+import DraftTaxes from "pages/Dashboard/User/Taxes/DraftTaxes";
+import Intellectual from "pages/Dashboard/User/Intellectual";
+import AllIntellectuals from "pages/Dashboard/User/Intellectual/AllIntellectual";
+import PendingIntellectuals from "pages/Dashboard/User/Intellectual/PendingIntellectual";
+import DraftIntellectuals from "pages/Dashboard/User/Intellectual/DraftIntellectual";
+import Manage from "pages/Dashboard/User/Manage";
+import AllManage from "pages/Dashboard/User/Manage/AllIManage";
+import PendingManage from "pages/Dashboard/User/Manage/PendingManage";
+import DraftManage from "pages/Dashboard/User/Manage/DraftManage";
+import Onboarded from "pages/Dashboard/User/Onboarded";
+import AllOnboarded from "pages/Dashboard/User/Onboarded/AllOnboarded";
+import PendingOnboarded from "pages/Dashboard/User/Onboarded/PendingOnboarded";
+import DraftOnboarded from "pages/Dashboard/User/Onboarded/DraftOnboarded";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -88,7 +105,6 @@ const ServiceDocuments = lazy(() => import("pages/Services/Documents"));
 const ServiceReview = lazy(() => import("pages/Services/Review"));
 const ServiceInfoReview = lazy(() => import("pages/Services/Review/ServiceInfo"));
 const ServiceFormReview = lazy(() => import("pages/Services/Review/ServiceForm"));
-const ServiceDocumentsReview = lazy(() => import("pages/Services/Review/Documents"));
 
 const Home = lazy(() => import("../pages/Home"));
 const EmailSuccess = lazy(() => import("pages/Auth/Registration/EmailVerify/success"));
@@ -123,8 +139,6 @@ const MyRewards = lazy(() => import("pages/Dashboard/User/Rewards/MyRewards"));
 const RewardDetails = lazy(() => import("pages/Dashboard/User/Rewards/RewardDetails"));
 const Compliance = lazy(() => import("pages/Dashboard/User/Home/Compliance"));
 const HiringAndPayroll = lazy(() => import("pages/Dashboard/User/Home/HiringAndPayroll"));
-const InetellectualAssets = lazy(() => import("pages/Dashboard/User/Home/IntellectualAssets"));
-const Taxes = lazy(() => import("pages/Dashboard/User/Home/Taxes"));
 const Rewards = lazy(() => import("pages/Dashboard/User/Rewards"));
 const PaymentPage = lazy(() => import("pages/Launch/PaymentPage"));
 const BeneficiaryReview = lazy(() => import("pages/Launch/Review/BeneficiaryReview"));
@@ -294,33 +308,9 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-              <Route path="services" element={<UserServicesPageLayout />}>
-                <Route path="all" element={<UserServicesAll />} />
-                <Route path="draft" element={<UserServicesDraft />} />
-                <Route path="submitted" element={<UserServicesSubmitted />} />
-              </Route>
-              <Route path="services/:complycode" element={<ServicesDetailLayout />}>
-                <Route index element={<ServiceInformation />} />
-                <Route path="info" element={<ServiceInformation />} />
-                <Route path="forminfo" element={<FormInformation />} />
-                <Route path="documentinfo" element={<DocumentInfoDetails />} />
-              </Route>
-
               <Route index element={<BusinessRegistration />} />
               <Route path="business-registration" element={<BusinessRegistration />} />
-              <Route path="application" element={<Application />}></Route>
-              <Route path="bank-account" element={<Outlet />}>
-                <Route index element={<BankAccount />} />
-                <Route path=":bankCode" element={<BankAccountDetails />} />
-              </Route>
 
-              <Route path="business-registration" element={<BusinessRegistration />} />
-              <Route path="settings" element={<UserSettingsLayout />}>
-                <Route index element={<PersonalSettings />} />
-                <Route path="personal" element={<PersonalSettings />} />
-                <Route path="payment" element={<PaymentSetting />} />
-              </Route>
-              <Route path="resources" element={<Resources />}></Route>
               <Route path="businesses" element={<Business />}>
                 <Route index element={<AllBusinesses />} />
                 <Route path="all-businesses" element={<AllBusinesses />}></Route>
@@ -335,10 +325,82 @@ const AppRouter = () => {
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
 
-              <Route path="compliance" element={<Compliance />}></Route>
+              <Route path="services" element={<UserServicesPageLayout />}>
+                <Route path="all" element={<UserServicesAll />} />
+                <Route path="draft" element={<UserServicesDraft />} />
+                <Route path="submitted" element={<UserServicesSubmitted />} />
+              </Route>
+              <Route path="services/:complycode" element={<ServicesDetailLayout />}>
+                <Route index element={<ServiceInformation />} />
+                <Route path="info" element={<ServiceInformation />} />
+                <Route path="forminfo" element={<FormInformation />} />
+                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route>
+
+              <Route path="manage" element={<Manage />}>
+                <Route index element={<AllManage />} />
+                <Route path="all-manage" element={<AllManage />}></Route>
+                <Route path="submitted-manage" element={<PendingManage />}></Route>
+                <Route path="draft-manage" element={<DraftManage />}></Route>
+                <Route path="chats" element={<ChatLayout />} />
+              </Route>
+              <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
+                <Route index element={<ServiceInformation />} />
+                <Route path="info" element={<ServiceInformation />} />
+                <Route path="forminfo" element={<FormInformation />} />
+                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route>
+
+              <Route path="onboarded" element={<Onboarded />}>
+                <Route index element={<AllOnboarded />} />
+                <Route path="all-onboarded" element={<AllOnboarded />}></Route>
+                <Route path="submitted-onboarded" element={<PendingOnboarded />}></Route>
+                <Route path="draft-onboarded" element={<DraftOnboarded />}></Route>
+                <Route path="chats" element={<ChatLayout />} />
+              </Route>
+              <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
+                <Route index element={<ServiceInformation />} />
+                <Route path="info" element={<ServiceInformation />} />
+                <Route path="forminfo" element={<FormInformation />} />
+                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route>
+
+              <Route path="taxes" element={<Tax />}>
+                <Route index element={<AllTaxes />} />
+                <Route path="all-taxes" element={<AllTaxes />}></Route>
+                <Route path="submitted-taxes" element={<PendingTaxes />}></Route>
+                <Route path="draft-taxes" element={<DraftTaxes />}></Route>
+                <Route path="chats" element={<ChatLayout />} />
+              </Route>
+              <Route path="taxes/:complycode" element={<ServicesDetailLayout />}>
+                <Route index element={<ServiceInformation />} />
+                <Route path="info" element={<ServiceInformation />} />
+                <Route path="forminfo" element={<FormInformation />} />
+                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route>
+
               <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
-              <Route path="intellectualAssets" element={<InetellectualAssets />}></Route>
-              <Route path="taxes" element={<Taxes />}></Route>
+
+              <Route path="intellectual-properties" element={<Intellectual />}>
+                <Route index element={<AllIntellectuals />} />
+                <Route path="all-intellectual-properties" element={<AllIntellectuals />}></Route>
+                <Route
+                  path="submitted-intellectual-properties"
+                  element={<PendingIntellectuals />}
+                ></Route>
+                <Route
+                  path="draft-intellectual-properties"
+                  element={<DraftIntellectuals />}
+                ></Route>
+                <Route path="chats" element={<ChatLayout />} />
+              </Route>
+              <Route path="intellectual-properties/:complycode" element={<ServicesDetailLayout />}>
+                <Route index element={<ServiceInformation />} />
+                <Route path="info" element={<ServiceInformation />} />
+                <Route path="forminfo" element={<FormInformation />} />
+                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+              </Route>
+
               <Route path="rewards" element={<Rewards />}>
                 <Route index element={<AllRewards />} />
                 <Route path="all-rewards" element={<AllRewards />}></Route>
@@ -348,6 +410,20 @@ const AppRouter = () => {
               </Route>
 
               <Route path="reward-details" element={<RewardDetails />} />
+
+              <Route path="bank-account" element={<Outlet />}>
+                <Route index element={<BankAccount />} />
+                <Route path=":bankCode" element={<BankAccountDetails />} />
+              </Route>
+
+              <Route path="settings" element={<UserSettingsLayout />}>
+                <Route index element={<PersonalSettings />} />
+                <Route path="personal" element={<PersonalSettings />} />
+                <Route path="payment" element={<PaymentSetting />} />
+              </Route>
+
+              <Route path="application" element={<Application />}></Route>
+              <Route path="resources" element={<Resources />}></Route>
             </Route>
 
             {/* Staff dashboard routes */}
@@ -442,16 +518,20 @@ const AppRouter = () => {
                 </Protected>
               }
             >
-              <Route index element={<ServiceInfo />} />
-              <Route path="payment" element={<ServicePayment />} />
-              <Route path="form" element={<ServiceForm />} />
-              <Route path="documents" element={<ServiceDocuments />} />
-              <Route path="review" element={<ServiceReview />}>
-                <Route path="info" element={<ServiceInfoReview />} />
-                <Route path="form" element={<ServiceFormReview />} />
-                <Route path="documents" element={<ReviewDocuments />} />
+              <Route index element={<ServiceOptionSelect />} />
+              <Route path="option-select" element={<ServiceOptionSelect />} />
+              <Route path=":option" element={<Outlet />}>
+                <Route index element={<ServiceInfo />} />
+                <Route path="payment" element={<ServicePayment />} />
+                <Route path="form" element={<ServiceForm />} />
+                <Route path="documents" element={<ServiceDocuments />} />
+                <Route path="review" element={<ServiceReview />}>
+                  <Route path="info" element={<ServiceInfoReview />} />
+                  <Route path="form" element={<ServiceFormReview />} />
+                  <Route path="documents" element={<ReviewDocuments />} />
+                </Route>
+                <Route path="success" element={<ServiceSuccessPage />} />
               </Route>
-              <Route path="success" element={<ServiceSuccessPage />} />
             </Route>
 
             {/* Launch pages routes */}
@@ -494,6 +574,7 @@ const AppRouter = () => {
             </Route>
           </Route>
         </Routes>
+
         <Toaster
           position="top-right"
           toastOptions={{

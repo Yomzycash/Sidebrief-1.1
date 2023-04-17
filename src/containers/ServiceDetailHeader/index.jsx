@@ -120,9 +120,9 @@ const ServiceDetailHeader = ({
   return (
     <Container>
       <Top>
-        <BackContainer to={servicesUrl + "/all"}>
+        <BackContainer to={servicesUrl}>
           <FiArrowLeft color="#151717" size={24} />
-          <Text>{`Back to Products`}</Text>
+          <Text>{`Back`}</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>

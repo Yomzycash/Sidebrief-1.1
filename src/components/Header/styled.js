@@ -7,14 +7,13 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: clamp(90px, 15vw, 164px);
-  gap: 12%;
+  gap: 10%;
   position: sticky;
   z-index: 4;
   top: 0;
   /* padding-inline: 8%; */
   padding-inline: clamp(24px, 3.4vw, 40px);
-  box-shadow: ${(props) =>
-    props.headerShadow === true ? "0px 10px 15px -5px #9596971a" : null};
+  box-shadow: ${(props) => (props.headerShadow === true ? "0px 10px 15px -5px #9596971a" : null)};
 `;
 
 export const BackContainer = styled.div`
@@ -39,9 +38,8 @@ export const Text = styled.h3`
 
 export const ProgressWrapper = styled.div`
   position: relative;
-  left: -6%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex: 1;
 `;

@@ -14,7 +14,7 @@ import {
   DownLoadText,
   FileContainer,
 } from "./style";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import toast from "react-hot-toast";
@@ -31,6 +31,8 @@ const ServiceDocuments = () => {
   const complyCode = complyInfo?.complyCode;
 
   const navigate = useNavigate();
+  let { option } = useParams();
+
   const viewService = useGetSingleServiceQuery(serviceId);
   const viewComply = useViewComplyQuery({
     complyCode,
@@ -56,7 +58,7 @@ const ServiceDocuments = () => {
     } else if (requiredDocumentsLength !== uploadedDocumentsLength) {
       toast.error("All documents are required");
     } else {
-      navigate("/services/review/info");
+      navigate(`/services/${option}/review/info`);
     }
   };
 

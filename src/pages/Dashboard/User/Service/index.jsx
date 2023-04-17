@@ -1,4 +1,3 @@
-
 import { React, useEffect, useState, useMemo } from "react";
 import {
   Container,
@@ -20,7 +19,6 @@ import { useViewAllComplyByMetaQuery } from "services/complyService";
 import { SummaryCard } from "components/cards";
 import Search from "components/navbar/Search";
 import { compareAsc, format } from "date-fns";
-import Fuse from "fuse.js";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { SearchResult } from "components/navbar/SearchResult";
@@ -48,7 +46,6 @@ const UserService = () => {
   });
   const navigate = useNavigate();
 
-
   useEffect(() => {
     refetch();
   }, []);
@@ -56,24 +53,11 @@ const UserService = () => {
   const submitted = data?.filter((el) => el.status === "submitted") || [];
   const draft = data?.filter((el) => el.status === "pending") || [];
 
-  const fuseOptions = {
-    shouldSort: true,
-    keys: [
-      "complyCode",
-      "serviceId",
-      "status"
-    ]
-  }
-
-  const userServices = [...(submitted || []), ...(draft || [])];
-
-  const fuse = new Fuse(userServices, fuseOptions);
-
   const onItemClick = (item) => {
     setSearchFocused(false);
     const complyCode = item.complyCode;
     userNavigateToServiceDetailPage(navigate, complyCode);
-  }
+  };
 
   return (
     <Container>
@@ -93,29 +77,13 @@ const UserService = () => {
           </TopContent>
           <BottomContent>
             <SearchWrapper onFocus={() => setSearchFocused(true)}>
-              <Search 
-                className={"searchbox"} 
-                placeholder={"Search for a service"} 
+              <Search
+                className={"searchbox"}
+                placeholder={"Search for a service"}
                 iconStyle={iconStyle}
                 style={searchStyle}
                 onChange={(value) => setSearchValue(value)}
                 value={searchValue}
-              />
-              <SearchResult 
-                items={fuse
-                  .search(searchValue)
-                  .slice(0,5)
-                  .map((el) => {
-                    return {
-                      complyCode:el.item.complyCode,
-                      serviceId: el.item.serviceId,
-                      status:el.item.status
-                    }
-                  })}
-                  show={searchFocused}
-                  unShow={() => setSearchFocused(false)}
-                  onItemClick={onItemClick}
-                  searchResult={searchValue}
               />
             </SearchWrapper>
           </BottomContent>

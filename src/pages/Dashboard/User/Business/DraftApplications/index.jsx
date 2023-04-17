@@ -13,30 +13,40 @@ import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import styled from "styled-components";
 import { columns } from "../tablecolumn";
+import { useOutletContext } from "react-router-dom";
+import { useBusinessActions } from "../actions";
 
 const DraftApplications = () => {
-  const { data, error, isLoading, isSuccess } = useGetUserDraftQuery({
-    refetchOnMountOrArgChange: true,
-  });
-
-  const countries = useGetAllCountriesQuery();
-
-  const [viewPayLaunch] = useViewPayLaunchMutation();
-
   const [dataArr, setDataArr] = useState([]);
 
+  const { drafts, searchValue } = useOutletContext();
+
+  const countries = useGetAllCountriesQuery();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
+
+  const hasFetched = drafts.data;
+  const allDrafts = hasFetched ? drafts.data : [];
+
+  const { filterWhenSearched, sortData } = useBusinessActions({
+    searchValue,
+    hasFetched,
+    setDataArr,
+  });
+
+  const data = drafts.data;
+  const error = drafts.error;
+  const isLoading = drafts.isLoading;
+  const isSuccess = drafts.isSuccess;
+
+  // Sort data
   useEffect(() => {
-    if (isSuccess && countries.isSuccess) {
-      const response = [...data];
-      response.sort((launch1, launch2) => {
-        return compareDesc(
-          new Date(launch1.createdAt),
-          new Date(launch2.createdAt)
-        );
-      });
-      setDataArr(response);
-    }
-  }, [data, isSuccess, countries.isSuccess]);
+    sortData(allDrafts);
+  }, [data, isSuccess]);
+
+  // Filters data array by searched value
+  useEffect(() => {
+    filterWhenSearched(allDrafts);
+  }, [searchValue]);
 
   const matches = useMediaQuery("(max-width:700px)");
 
@@ -53,13 +63,10 @@ const DraftApplications = () => {
           <GeneralTable
             data={dataArr.map((element) => {
               return {
-                name: element.businessNames
-                  ? element.businessNames.businessName1
-                  : "No name ",
+                name: element.businessNames ? element.businessNames.businessName1 : "No name ",
                 type: element?.registrationType,
                 country: countries.data.find(
-                  (country) =>
-                    country.countryISO === element.registrationCountry
+                  (country) => country.countryISO === element.registrationCountry
                 )?.countryName,
                 date: format(new Date(element.createdAt), "dd/MM/yyyy"),
                 code: element.launchCode,
@@ -74,11 +81,7 @@ const DraftApplications = () => {
             {dataArr.map((element) => {
               return (
                 <BusinessesCard
-                  name={
-                    element.businessNames
-                      ? element.businessNames.businessName1
-                      : "No name "
-                  }
+                  name={element.businessNames ? element.businessNames.businessName1 : "No name "}
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
@@ -88,8 +91,7 @@ const DraftApplications = () => {
             })}
           </MobileContainer>
         )}
-        {error?.status === "FETCH_ERROR" ||
-        countries?.isLoading === "FETCH_ERROR" ? (
+        {error?.status === "FETCH_ERROR" || countries?.isLoading === "FETCH_ERROR" ? (
           <p>Connection error</p>
         ) : (
           ""
