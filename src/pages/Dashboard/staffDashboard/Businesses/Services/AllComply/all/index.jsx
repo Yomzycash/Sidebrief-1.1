@@ -1,6 +1,6 @@
 import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState, useMemo } from "react";
-import { Body, TableContainer, Loading } from "../style";
+import { Body, TableContainer, Loading, EmptyContainer } from "../style";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
 import { columns } from "../tableColumn";
@@ -51,9 +51,9 @@ const All = () => {
           <Loading>
             <Puff stroke="#00A2D4" />
           </Loading>
-        ) : (
+        ) : data?.length > 0 ? (
           <MemoisedGeneralTable
-            data={[...currentItems]
+            data={[...data]
               ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
               .map((comply) => ({
                 complyCode: comply.complyCode,
@@ -64,11 +64,15 @@ const All = () => {
             columns={columns}
             normalLastRow
           />
-        )}
+        ):
+          (
+            <EmptyContainer>No Data Available</EmptyContainer>
+          )
+        }
 
-        {sortedArr?.length > itemsPerPage && (
+        {/* {sortedArr?.length > itemsPerPage && (
           <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
-        )}
+        )} */}
       </Body>
     </TableContainer>
   );

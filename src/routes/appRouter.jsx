@@ -198,6 +198,14 @@ const AllComply = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/all")
 );
 
+const AllSubmittedComply =  lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/submitted")
+);
+
+const AllDraftsComply =  lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/draft")
+);
+
 //
 
 //
@@ -492,6 +500,8 @@ const AppRouter = () => {
                   </Route>
                   <Route path="allcomply" element={<AllComplyLayout />}>
                     <Route path="all" element={<AllComply />} />
+                    <Route path="submitted" element={<AllSubmittedComply />} />
+                    <Route path="draft" element={<AllDraftsComply />} />
                   </Route>
                 </Route>
               </Route>
