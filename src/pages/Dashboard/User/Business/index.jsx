@@ -3,13 +3,9 @@ import { Container } from "./styled";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setBusinessesShown, setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { store } from "redux/Store";
-import {
-  useGetUserDraftQuery,
-  useGetUserSubmittedQuery,
-  useViewPayLaunchMutation,
-} from "services/launchService";
+import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
 import { useSelector } from "react-redux";
-import { navigateToDetailPage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 
 //

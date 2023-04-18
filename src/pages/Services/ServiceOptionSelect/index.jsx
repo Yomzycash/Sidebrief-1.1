@@ -5,6 +5,7 @@ import { CheckoutSection } from "containers";
 import ProductCard from "components/cards/ProductCard";
 import { OptionsContainer } from "./styled";
 import { GiLightningSpanner } from "react-icons/gi";
+import { IoIosRocket } from "react-icons/io";
 import { HiRocketLaunch } from "react-icons/hi2";
 
 const ServiceOptionSelect = () => {

@@ -307,11 +307,10 @@ export const staffApi = createApi({
     }),
 
     // Delete a bank
-    deleteBank: builder.mutation({
-      query: (data) => ({
-        url: "/banks/remove",
+    deleteBank: builder.mutation({ 
+      query: (bankCode) => ({
+        url: `/banks/delete/${bankCode}`,
         method: "DELETE",
-        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },

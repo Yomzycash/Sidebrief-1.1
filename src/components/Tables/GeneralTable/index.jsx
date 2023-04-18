@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { Container, Table, Head, HeadData, Row, RowData } from "./style";
+import { useRef, useState } from "react";
+import { Container, Table, Head, Body, HeadData, Row, RowData } from "./style";
 import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
 import { useEffect } from "react";
 
 export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, normalLastRow }) => {
   const [rowSelection, setRowSelection] = useState({});
+
+  const getSelectedRowsRef = useRef(getSelectedRows);
+  getSelectedRowsRef.current = getSelectedRows;
 
   const table = useReactTable({
     columns,
@@ -16,12 +19,12 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
     onRowSelectionChange: setRowSelection,
   });
 
-  const selectedRows = table.getSelectedRowModel().flatRows;
-
-  // returns SelectedRows
   useEffect(() => {
-    if (selectionRow && getSelectedRows) getSelectedRows(selectedRows);
-  }, [getSelectedRows, selectedRows, selectionRow]);
+    if (selectionRow && getSelectedRowsRef.current) {
+      const selectedRows = table.getSelectedRowModel().flatRows.map((row) => row.original);
+      getSelectedRowsRef.current(selectedRows);
+    }
+  }, [rowSelection, selectionRow, table]);
 
   return (
     <Container>
@@ -40,7 +43,7 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
             </tr>
           ))}
         </Head>
-        <tbody>
+        <Body>
           {table.getRowModel().rows.map((row) => (
             <Row key={row.id} selectionRow={selectionRow} normalLastRow={normalLastRow}>
               {row.getVisibleCells().map((cell) => (
@@ -50,7 +53,7 @@ export const GeneralTable = ({ columns, data, getSelectedRows, selectionRow, nor
               ))}
             </Row>
           ))}
-        </tbody>
+        </Body>
       </Table>
       {/* The pagination controller */}
     </Container>

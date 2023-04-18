@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import {
   Container,
   ContentWrapper,
@@ -11,22 +10,22 @@ import {
   TextWrapper,
 } from "./style";
 
-const StaffRewardDetails = ({ selectedReward }) => {
+const StaffBankDetails = ({ selectedBank }) => {
   return (
     <Container>
-      {selectedReward?.map((selected, index) => (
+      {selectedBank?.map((selected, index) => (
         <div key={index}>
           <ContentWrapper>
             <TextWithLabel>
-              <Label>Name</Label>
+              <Label>Bank name</Label>
               <TextWrapper>
-                <Text>{selected?.rewardName}</Text>
+                <Text>{selected?.bankName}</Text>
               </TextWrapper>
             </TextWithLabel>
             <TextWithLabel>
-              <Label>Partner</Label>
+              <Label>Bank Code</Label>
               <TextWrapper>
-                <Text>{selected?.rewardPartner}</Text>
+                <Text>{selected?.bankCode}</Text>
               </TextWrapper>
             </TextWithLabel>
           </ContentWrapper>
@@ -35,43 +34,38 @@ const StaffRewardDetails = ({ selectedReward }) => {
             <TextWithLabel>
               <Label>Description</Label>
               <TextWrapper>
-                <Text>{selected.rewardDescription}</Text>
+                <Text>{selected.bankDescription}</Text>
               </TextWrapper>
             </TextWithLabel>
           </FullContentWrapper>
-          
+
           <ContentWrapper>
             <TextWithLabel>
-              <Label>Category</Label>
+              <Label>Country</Label>
               <TextWrapper>
-                <Text>{selected.rewardCategory}</Text>
+                <Text>{selected.bankCountry}</Text>
               </TextWrapper>
             </TextWithLabel>
             <TextWithLabel>
-              <Label>Code</Label>
+              <Label>Bank Url</Label>
               <TextWrapper>
-                <Text>{selected.rewardID}</Text>
+                <LinkText>{selected.bankUrl}</LinkText>
               </TextWrapper>
             </TextWithLabel>
           </ContentWrapper>
-          <ContentWrapper>
-            <TextWithLabel>
-              <Label>Link</Label>
-              <TextWrapper>
-                <LinkText>{selected.rewardLink}</LinkText>
-              </TextWrapper>
-            </TextWithLabel>
+
+          <FullContentWrapper>
             <TextWithLabel>
               <Label>Image</Label>
               <TextWrapper>
-                <LinkText>{selected.rewardImage}</LinkText>
+                <LinkText>{selected.bankLogo}</LinkText>
               </TextWrapper>
             </TextWithLabel>
-          </ContentWrapper>
+          </FullContentWrapper>
         </div>
       ))}
     </Container>
   );
 };
 
-export default StaffRewardDetails;
+export default StaffBankDetails;

@@ -20,7 +20,10 @@ import {
   checkStaffEmail,
   // getReceivedNotifications,
 } from "utils/globalFunctions";
-import { useGetAllNotificationsQuery } from "services/chatService";
+import {
+  useGetAllNotificationsQuery,
+  useViewNotificationsByUserIdQuery,
+} from "services/chatService";
 import Notification from "components/notification";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import { useSelector } from "react-redux";
@@ -31,14 +34,18 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   const [showNotification, setShowNotification] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
-  const { currentData, refetch } = useGetAllNotificationsQuery({ refetchOnMountOrArgChange: true });
-
-  const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
-  // console.log(refreshNotifications);
-
-  let userInfo = localStorage.getItem("userInfo");
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
+
+  const { data, refetch } = useGetAllNotificationsQuery();
+  //console.log(data);
+  const userNotifications = useViewNotificationsByUserIdQuery({
+    userId: userInfo?.id,
+  });
+  const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
+  //  console.log(allNotification);
+
   // useEffect(() => {
   //   if (!dashboard && !rewards) {
   //     window.addEventListener("scroll", () => {
@@ -67,7 +74,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   // let newNotifications = useMemo(() => {
   //   return getUnReadNotifications(data);
   // }, [refreshNotifications]);
-  let newNotifications = getUnReadNotifications(currentData);
+  let newNotifications = getUnReadNotifications(staffEmail ? data : userNotifications?.data);
   // console.log(getUnReadNotifications(data));
 
   return (
@@ -122,8 +129,8 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
       {showNotification && (
         <Notification
           closeNotifications={closeNotifications}
-          data={currentData}
-          refetch={refetch}
+          data={staffEmail ? data : userNotifications?.data}
+          refetch={staffEmail ? refetch : userNotifications?.refetch}
         />
       )}
 

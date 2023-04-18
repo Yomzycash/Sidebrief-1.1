@@ -15,6 +15,7 @@ import { useDropzone } from "react-dropzone";
 import { SpinningCircles } from "react-loading-icons";
 import { DeleteRedSvg } from "asset/svg";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
   const [uploading, setUploading] = useState(false);
@@ -55,6 +56,10 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
     return null;
   };
 
+  const rejectFile = (file) => {
+    toast.error("Invalid file, only pdf, jpg and png allowed");
+  };
+
   const performDelete = async () => {
     setDeleting(true);
     await deleteAction(file.code);
@@ -67,8 +72,14 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: collectFile,
+    onDropAccepted: collectFile,
+    onDropRejected: rejectFile,
     validator: nameLengthValidator,
+    accept: {
+      "application/pdf": [],
+      "image/jpeg": [],
+      "image/png": [],
+    },
   });
 
   return (

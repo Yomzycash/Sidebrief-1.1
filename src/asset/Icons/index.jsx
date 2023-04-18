@@ -13,5 +13,6 @@ export { TaxesIcon } from "./TaxesIcon";
 export { PaymentIcon } from "./PaymentIcon";
 export { EntityIcon } from "./EntityIcon";
 export { CountryIcon } from "./CountryIcon";
+export { ManageIcon } from "./ManageIcon";
 export { ReactComponent as ArrowDownIcon } from "./ArrowDownIcon.svg";
 export { ServicesIcon };

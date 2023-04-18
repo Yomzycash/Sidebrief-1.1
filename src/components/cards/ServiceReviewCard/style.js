@@ -14,6 +14,7 @@ export const Document = styled.div`
   width: 100%;
   gap: 25px;
 `;
+
 export const DocumentDownload = styled.div`
   width: 100%;
   max-width: 195px;
@@ -25,17 +26,19 @@ export const DocumentDownload = styled.div`
   border-radius: 16px;
   padding: 16px 36px;
   cursor: pointer;
+
+  position: relative;
+  overflow: hidden;
 `;
+
 export const InnerDocument = styled.div`
-display:flex;
-flex-direction: column;
-align-items: center;
-justify-content:flex-start;
-gap: 6px;
-max-width
-
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
 `;
+
 export const DocumentFrame = styled.div`
   display: flex;
   flex-direction: column;
@@ -55,9 +58,35 @@ export const DocumentText = styled.p`
 
   color: #4e5152;
 `;
+
 export const SmallText = styled.h5`
   font-size: 8px;
   color: #4e5152;
   font-weight: 500;
   opacity: 0.5;
+`;
+
+export const Download = styled.button`
+  background: #00a2d4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  margin-top: auto;
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  transform: translateX(30px);
+  transition: all 0.2s ease-in-out;
+
+  cursor: pointer;
+
+  ${DocumentDownload}:hover & {
+    transform: translateX(0);
+  }
 `;

@@ -30,7 +30,7 @@ export const BackContainer = styled(Link)`
   align-self: flex-start;
 
   @media screen and (max-width: 700px) {
-    display: none;
+    margin:25px 25px 0px 15px;
   }
 `;
 
@@ -71,6 +71,11 @@ export const TopInfo = styled.div`
       }
     }
   }
+
+  @media screen and (max-width: 900px) {
+    display:flex;
+    flex-direction:column;
+  }
 `;
 
 export const CompanyName = styled.h2`
@@ -78,9 +83,11 @@ export const CompanyName = styled.h2`
   font-size: 24px;
   line-height: 36px;
   color: ${({ theme }) => theme.grey1};
+
   @media screen and (max-width: 700px) {
     font-weight: 600;
     font-size: 16px;
+    text-align:center;
   }
 `;
 
@@ -88,22 +95,29 @@ export const LHS = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
   @media screen and (max-width: 700px) {
-    gap: 16px;
-    padding-inline: 24px;
+    display: flex;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: row;
   }
 `;
 export const StatusType = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
+
   @media screen and (max-width: 700px) {
-    display: none;
+    display: block;
   }
 `;
 
 export const RHS = styled.div`
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 900px) {
     display: none;
   }
 
@@ -140,6 +154,7 @@ export const BottomInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+
   @media screen and (max-width: 700px) {
     gap: 16px;
     font-size: 14px;
@@ -155,8 +170,9 @@ export const UserName = styled.p`
   text-decoration-line: underline;
   color: #00a2d4;
   text-transform: capitalize;
+  
   @media screen and (max-width: 700px) {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 14px;
   }
 `;

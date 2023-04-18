@@ -1,6 +1,14 @@
 import { RewardCard, SummaryCard } from "components/cards";
 import React, { useEffect, useRef, useState } from "react";
-import { Body, BodyLeft, BodyRight, Container, Footer, Loading } from "./styled";
+import {
+  Body,
+  BodyLeft,
+  BodyCenter,
+  BodyRight,
+  Container,
+  Footer,
+  Loading,
+} from "./styled";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { store } from "redux/Store";
 import { setMyClaimedRewards, setRewardsPageHeader } from "redux/Slices";
@@ -72,7 +80,7 @@ const MyRewards = () => {
             <Puff stroke="#00A2D4" fill="white" width={60} />
           </Loading>
         ) : (
-          filteredReward?.length > 0 && (
+          filteredReward?.length > 0 ? (
             <>
               <BodyLeft>
                 {/* <h3>Categories</h3> */}
@@ -103,6 +111,8 @@ const MyRewards = () => {
                 ))}
               </BodyRight>
             </>
+          ) : (
+            <BodyCenter>No rewards added yet!</BodyCenter>
           )
         )}
       </Body>

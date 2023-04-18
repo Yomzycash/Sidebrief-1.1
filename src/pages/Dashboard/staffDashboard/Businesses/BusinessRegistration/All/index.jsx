@@ -12,6 +12,8 @@ import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { staffNavigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate } from "react-router-dom";
+import { setBatchDeleteArray } from "redux/Slices";
+import { store } from "redux/Store";
 
 const All = () => {
   const [tableArr, setTableArr] = useState([]);
