@@ -2,7 +2,7 @@ import InfoCard from "components/cards/InfoCard";
 import { CheckoutController } from "containers";
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useUpdateComplyMutation } from "services/complyService";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
 import { Bottom } from "../style";
@@ -45,15 +45,16 @@ const ServiceInfoReview = () => {
   )?.countryName;
 
   const navigate = useNavigate();
+  let { option } = useParams();
 
   const handlePrev = () => {
     navigate(-1);
   };
 
   const handleNext = async (e) => {
-    let link = "/services/review/form";
-    link = noForm ? "/services/review/documents" : link;
-    link = done ? "/services/success" : link;
+    let link = `/services/${option}/review/form`;
+    link = noForm ? `/services/${option}/review/documents` : link;
+    link = done ? `/services/${option}/success` : link;
 
     if (done) {
       let response = await handleStatusUpdate();

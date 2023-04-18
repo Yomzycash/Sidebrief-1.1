@@ -1,7 +1,7 @@
 import FormContainer from "containers/FormContainer";
 import React from "react";
 import { Wrapper, Loading } from "./style";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { CheckoutController } from "containers";
 import { Bottom } from "../style";
 import { Puff } from "react-loading-icons";
@@ -22,14 +22,15 @@ const ServiceFormReview = () => {
   });
 
   const navigate = useNavigate();
+  let { option } = useParams();
 
   const handlePrev = () => {
     navigate(-1);
   };
 
   const handleNext = async () => {
-    let link = "/services/review/documents";
-    link = done ? "/services/success" : link;
+    let link = `/services/${option}/review/documents`;
+    link = done ? `/services/${option}/success` : link;
 
     if (done) {
       let response = await handleStatusUpdate();
@@ -53,7 +54,6 @@ const ServiceFormReview = () => {
             question={el?.complyQuestion}
             answerArray={el?.complyAnswer}
             answer={el?.complyAnswer}
-            forwardLoading={updateState.isLoading}
           />
         </div>
       ))}
@@ -64,6 +64,7 @@ const ServiceFormReview = () => {
           backAction={handlePrev}
           forwardAction={handleNext}
           forwardText={done ? "Done" : "Next"}
+          forwardLoading={updateState.isLoading}
         />
       </Bottom>
     </Wrapper>

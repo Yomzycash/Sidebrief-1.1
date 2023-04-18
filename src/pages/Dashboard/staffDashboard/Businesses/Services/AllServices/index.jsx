@@ -14,8 +14,10 @@ const AllServices = () => {
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
-  const { data, isLoading, refetch } = useGetAllServicesQuery();
-  const [deleteService, deleteState] = useDeleteServiceMutation();
+  const { data, isLoading, refetch } = useGetAllServicesQuery({ refetchOnMountOrArgChange: true });
+  const [deleteService, deleteState] = useDeleteServiceMutation({
+    refetchOnMountOrArgChange: true,
+  });
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
