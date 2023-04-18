@@ -66,6 +66,8 @@ export const Header = ({ isStaff, code }) => {
   const launchRequest = useViewLaunchRequestQuery(launchResponse);
   const page = pathname.split("/").pop();
 
+  console.log("checking page", page);
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -273,6 +275,16 @@ export const Header = ({ isStaff, code }) => {
           }`}
         />
         <ActiveNav
+          text={"Payment Details"}
+          // total={0}
+          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/payment?launchCode=${
+            launchResponse.launchCode
+          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
+            launchResponse.registrationType
+          }`}
+        />
+
+        <ActiveNav
           text={"Shareholders"}
           total={launchRequest?.isLoading ? 0 : launchRequest?.data?.businessShareholders?.length}
           path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/shareholders?launchCode=${
@@ -302,7 +314,7 @@ export const Header = ({ isStaff, code }) => {
           }`}
         />
       </SubHeader>
-      {page !== "detail" ? (
+      {page !== "detail" || "payment" ? (
         <SearchAndSort>
           {/* placeholder changes based on the page it's on */}
           {/* not implemented yet */}
