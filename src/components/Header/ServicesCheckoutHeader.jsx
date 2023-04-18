@@ -50,24 +50,25 @@ const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
 
   const toDashboard = () => {
     navigate("/dashboard");
+    removeComplyFromLocalStorage();
   };
 
   return (
     <>
       <Wrapper headerShadow={headerShadow}>
-        {!getStarted ? (
+        {!getStarted && (
           <BackContainer onClick={handleClick}>
             <FiArrowLeft color="#151717" size={24} />
             <Text>Save & Exit</Text>
           </BackContainer>
-        ) : null}
+        )}
 
-        {backToDashBoard ? (
+        {backToDashBoard && (
           <BackContainer onClick={toDashboard}>
             <FiArrowLeft color="#151717" size={24} />
             <Text>Back to Dashboard</Text>
           </BackContainer>
-        ) : null}
+        )}
 
         <ProgressWrapper style={{ left: getStarted && 0 }}>
           <ServicesProgressBar progress={serviceCheckoutProgress} />
