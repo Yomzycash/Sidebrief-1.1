@@ -39,6 +39,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   let staffEmail = checkStaffEmail(userEmail);
 
   const { data, refetch } = useGetAllNotificationsQuery();
+  //console.log(data);
   const userNotifications = useViewNotificationsByUserIdQuery({
     userId: userInfo?.id,
   });
@@ -73,7 +74,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   // let newNotifications = useMemo(() => {
   //   return getUnReadNotifications(data);
   // }, [refreshNotifications]);
-  let newNotifications = getUnReadNotifications(staffEmail ? data : userNotifications?.data?.data);
+  let newNotifications = getUnReadNotifications(staffEmail ? data : userNotifications?.data);
   // console.log(getUnReadNotifications(data));
 
   return (
@@ -128,7 +129,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
       {showNotification && (
         <Notification
           closeNotifications={closeNotifications}
-          data={staffEmail ? data : userNotifications?.data?.data}
+          data={staffEmail ? data : userNotifications?.data}
           refetch={staffEmail ? refetch : userNotifications?.refetch}
         />
       )}

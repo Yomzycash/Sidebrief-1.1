@@ -81,7 +81,8 @@ export const Header = ({ isStaff, code }) => {
       await deleteLaunch({
         launchCode: launchResponse.launchCode,
       });
-    } else {
+    }
+    else {
       await deleteLaunchStaff({
         launchCode: launchResponse.launchCode,
       });
@@ -345,6 +346,7 @@ export const Header = ({ isStaff, code }) => {
     </Container>
   );
 };
+
 const ModalWrapper = styled.div`
   display: flex;
   align-items: center;

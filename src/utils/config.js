@@ -20,6 +20,7 @@ import {
   CountryIcon,
   ArrowDownIcon,
   ServicesIcon,
+  ManageIcon
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
 // import  from "asset/Icons/ServicesIcon";
@@ -218,7 +219,7 @@ export const sidebarLink = [
   {
     id: 2,
     title: "Products",
-    icon: BusinessesIcon,
+    icon: ServicesIcon,
     path: "/dashboard/services/all",
   },
   {
@@ -230,25 +231,25 @@ export const sidebarLink = [
   {
     id: 4,
     title: "Onboarded",
-    icon: BusinessesIcon,
+    icon: HiringIcon,
     path: "/dashboard/onboarded",
   },
   {
     id: 5,
     title: "Manage",
-    icon: BusinessesIcon,
+    icon: ManageIcon,
     path: "/dashboard/manage",
   },
   {
     id: 6,
     title: "Taxes",
-    icon: BusinessesIcon,
+    icon: TaxesIcon,
     path: "/dashboard/taxes",
   },
   {
     id: 7,
     title: "Intellectual Property",
-    icon: BusinessesIcon,
+    icon: IntellectualIcon,
     path: "/dashboard/intellectual-properties",
   },
   {
