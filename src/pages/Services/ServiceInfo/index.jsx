@@ -114,7 +114,7 @@ const ServiceInfo = () => {
               MatchError="Please select resource from the list"
               EmptyError="Please select at least one service"
               suggestionLoading={services.isLoading || services.isFetching}
-              fetchingText={"Fetching services..."}
+              fetchingText={"Fetching products..."}
             />
           </LaunchFormContainer>
           {selectedService?.serviceName && (

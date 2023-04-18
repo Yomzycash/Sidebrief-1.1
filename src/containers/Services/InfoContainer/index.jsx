@@ -1,6 +1,7 @@
 import {
   Container,
   LHS,
+  DocRequired,
   RHS,
   NormalText,
   BigText,
