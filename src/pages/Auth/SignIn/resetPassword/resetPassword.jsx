@@ -70,7 +70,6 @@ const ResetPassword = () => {
 	}, []);
 
 	const submitForm = async (data) => {
-		console.log(data);
 
 		const requiredData = {
 			email: state,

@@ -37,7 +37,6 @@ const BusinessDetail = () => {
   const { data, isLoading } = useViewLaunchRequestQuery(launchResponse);
   const [viewPayLaunch, viewPayState] = useViewPayLaunchMutation();
 
-  console.log(data);
   const navigate = useNavigate();
 
   const matches = useMediaQuery("(max-width:700px)");
