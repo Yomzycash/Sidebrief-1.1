@@ -58,17 +58,16 @@ const PdfCards = ({
   const [requiredDocuments, setRequiredDocuments] = useState([]);
 
   const { data } = useGetAllEntitiesQuery(countryISO);
-  console.log("data", data);
+
 
   const checkE = useGetAllEntitiesQuery(countryISO);
-  console.log("dcheckEata", checkE);
+
 
   useEffect(() => {
-    console.log("data", data);
     const check = data?.find(
       (entity) => entity?.entityCode === launchResponse.registrationType
     );
-    console.log("rrr", check);
+
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
 
@@ -123,7 +122,7 @@ const PdfCards = ({
     }
   };
 
-  console.log("ff", requiredDocuments);
+
   return (
     <>
       <Wrapper>

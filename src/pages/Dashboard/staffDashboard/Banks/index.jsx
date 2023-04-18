@@ -52,7 +52,7 @@ const StaffBank = () => {
             )
             setSelectedBank(bankDetails)
           } else {
-            console.log("Id not found")
+            // console.log("Id not found")
           }
     }, [data]);
 

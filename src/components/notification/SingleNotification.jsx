@@ -64,7 +64,6 @@ const SingleNotification = ({ item, handleBlur, refetch }) => {
     const response = await updateNotification(requiredData);
     if (response?.data) refetch();
 
-    console.log(response);
   };
 
   let isMyMessage = staffEmail

@@ -45,8 +45,7 @@ const KYCFileUpload = ({
   const searchParams = new URLSearchParams(search);
 
   const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
-  console.log(launchInfo);
-  console.log("dddd", searchParams);
+  
   const launchResponse = {
     launchCode: launchInfo
       ? launchInfo.launchCode

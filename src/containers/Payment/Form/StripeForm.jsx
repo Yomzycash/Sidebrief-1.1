@@ -37,7 +37,7 @@ export default function StripeForm({ sendStripeRefToBackend }) {
         redirect: "if_required",
       })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result?.error) {
           toast.error(result.error?.message);
           setIsLoading(false);

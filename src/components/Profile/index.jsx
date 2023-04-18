@@ -17,7 +17,6 @@ const Profile = ({ closeProfile }) => {
 
   useEffect(() => {
     profileRef.current.focus();
-    console.log("This function ran");
   }, []);
 
   const handleProfile = () => {

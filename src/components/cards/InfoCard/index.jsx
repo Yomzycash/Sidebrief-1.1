@@ -10,7 +10,6 @@ const InfoCard = () => {
 
   const countries = useGetAllCountriesQuery();
 
-  console.log(countries);
   let getCountry = countries?.data?.find(
     (country) => country?.countryISO === viewService?.data?.serviceCountry
   );

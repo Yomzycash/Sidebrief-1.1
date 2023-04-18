@@ -98,7 +98,6 @@ export const useActions = ({
       scrollTo(formRef);
       refetchServices();
     } else {
-      console.log(error);
       // handleError(error);
     }
   };
@@ -116,7 +115,6 @@ export const useActions = ({
       scrollTo(formRef);
       refetchServices();
     } else {
-      console.log(error);
       // handleError(error);
     }
   };
