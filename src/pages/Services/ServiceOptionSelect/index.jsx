@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import ServicesCard from "components/cards/ServicesCard";
 import { OptionsContainer } from "./styled";
 import { GiLightningSpanner } from "react-icons/gi";
-import { IoRocket } from "react-icons/io";
-
+// import { GoRocket } from "react-icons/gi";
 
 const ServiceOptionSelect = () => {
   return (
@@ -24,7 +23,7 @@ const ServiceOptionSelect = () => {
             to="/services/manage"
           />
           <ServicesCard
-            Icon={IoRocket}
+            Icon={GiLightningSpanner}
             title="Onboard your business"
             body="Hi everyone, I'm the body of the above header. I hold the content of this coomponent."
             to="/services/onboard"
