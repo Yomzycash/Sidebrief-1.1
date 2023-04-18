@@ -38,6 +38,8 @@ const InputWithLabel = ({
   defaultValue,
   value,
   ref,
+  inputId,
+  nextElementId,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -52,6 +54,15 @@ const InputWithLabel = ({
   const handleBorder = (bool) => {
     setActive(bool);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && nextElementId) {
+      e.preventDefault();
+      let element = document.getElementById(nextElementId);
+      element.focus();
+    }
+  };
+
   return (
     <Wrapper
       key="InputWithLabel"
@@ -83,10 +94,12 @@ const InputWithLabel = ({
             edit={edit}
             type={!show ? type || "password" : "text"}
             name={name}
+            id={inputId}
             disabled={disable}
             max={maxNumber}
             value={value}
             onChange={onChange}
+            onKeyDown={handleKeyDown}
             defaultValue={defaultValue}
             {...register(name)}
             {...rest}
@@ -99,11 +112,13 @@ const InputWithLabel = ({
             edit={edit}
             type={!show ? type || "password" : "text"}
             name={name}
+            id={inputId}
             disabled={disable}
             max={maxNumber}
             defaultValue={defaultValue}
             value={value}
             onChange={onChange}
+            onKeyDown={handleKeyDown}
             {...rest}
           />
         )}

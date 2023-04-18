@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Body, Container, Loading } from "./styled";
 import { format, compareDesc } from "date-fns";
 import {
-	useGetAllCountriesQuery,
-	useGetUserSubmittedQuery,
-	useGetUserDraftQuery,
-	useViewPayLaunchMutation,
+  useGetAllCountriesQuery,
+  useGetUserSubmittedQuery,
+  useGetUserDraftQuery,
+  useViewPayLaunchMutation,
 } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
@@ -14,108 +14,99 @@ import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { columns } from "../tablecolumn";
 import { navigateToDetailPage } from "utils/globalFunctions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { includesSearched, useBusinessActions } from "../actions";
 
 const AllBusinesses = () => {
-	const submitted = useGetUserSubmittedQuery();
+  const [dataArr, setDataArr] = useState([]);
 
-	const draft = useGetUserDraftQuery();
+  const { submitted, drafts, searchValue } = useOutletContext();
 
-	const navigate = useNavigate();
+  const countries = useGetAllCountriesQuery();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
 
-	const countries = useGetAllCountriesQuery();
-	const [viewPayLaunch] = useViewPayLaunchMutation();
+  const hasFetched = submitted.data && drafts.data;
+  const all = hasFetched ? submitted.data.concat(drafts.data) : [];
 
-	const [dataArr, setDataArr] = useState([]);
-	useEffect(() => {
-		if (submitted.isSuccess && draft.isSuccess && countries.isSuccess) {
-			const response = [...submitted.data, ...draft.data];
-			response.sort((launch1, launch2) => {
-				return compareDesc(
-					new Date(launch1.createdAt),
-					new Date(launch2.createdAt)
-				);
-			});
-			setDataArr(response);
-		}
-	}, [submitted, draft, countries.isSuccess]);
+  const { filterWhenSearched, sortData } = useBusinessActions({
+    searchValue,
+    hasFetched,
+    setDataArr,
+  });
 
-	const matches = useMediaQuery("(max-width:700px)");
+  const navigate = useNavigate();
 
-	const loadingData = submitted.isLoading && draft.isSuccess;
+  // Sort data
+  useEffect(() => {
+    sortData(all);
+  }, [submitted, drafts]);
 
-	return (
-		<Container>
-			<Body>
-				{loadingData && (
-					<Loading>
-						<Puff stroke="#00A2D4" />
-					</Loading>
-				)}
-				{!matches && dataArr.length > 0 ? (
-					<GeneralTable
-						data={dataArr.map((element) => {
-							return {
-								name: element.businessNames
-									? element.businessNames.businessName1
-									: "No name ",
-								type: element?.registrationType,
-								country: countries.data.find(
-									(country) =>
-										country.countryISO ===
-										element.registrationCountry
-								)?.countryName,
-								date: format(
-									new Date(element.createdAt),
-									"dd/MM/yyyy"
-								),
-								code: element.launchCode,
-								countryISO: element.registrationCountry,
-								viewPayLaunch: viewPayLaunch,
-							};
-						})}
-						columns={columns}
-					/>
-				) : (
-					<MobileContainer>
-						{dataArr.map((element) => {
-							return (
-								<BusinessesCard
-									key={element.launchCode}
-									name={
-										element.businessNames
-											? element.businessNames
-													.businessName1
-											: "No name "
-									}
-									type={element?.registrationType}
-									code={element?.launchCode}
-									countryISO={element?.registrationCountry}
-									navigate={(launchInfo) =>
-										navigateToDetailPage(
-											navigate,
-											launchInfo,
-											viewPayLaunch
-										)
-									}
-								/>
-							);
-						})}
-					</MobileContainer>
-				)}
-			</Body>
-		</Container>
-	);
+  // Filters data array by searched value
+  useEffect(() => {
+    filterWhenSearched(all);
+  }, [searchValue]);
+
+  const matches = useMediaQuery("(max-width:700px)");
+
+  const loadingData = submitted.isLoading && drafts.isSuccess;
+
+  return (
+    <Container>
+      <Body>
+        {loadingData && (
+          <Loading>
+            <Puff stroke="#00A2D4" />
+          </Loading>
+        )}
+        {!matches && dataArr.length > 0 ? (
+          <GeneralTable
+            data={dataArr.map((element) => {
+              return {
+                name: element.businessNames ? element.businessNames.businessName1 : "No name ",
+                type: element?.registrationType,
+                country:
+                  countries.data?.find(
+                    (country) => country?.countryISO === element?.registrationCountry
+                  )?.countryName || "--",
+                date: format(new Date(element.createdAt), "dd/MM/yyyy"),
+                code: element.launchCode,
+                countryISO: element.registrationCountry,
+                viewPayLaunch: viewPayLaunch,
+              };
+            })}
+            columns={columns}
+          />
+        ) : (
+          <MobileContainer>
+            {dataArr.map((element) => {
+              return (
+                <BusinessesCard
+                  key={element.launchCode}
+                  name={element.businessNames ? element.businessNames.businessName1 : "No name "}
+                  type={element?.registrationType}
+                  code={element?.launchCode}
+                  countryISO={element?.registrationCountry}
+                  navigate={(launchInfo) =>
+                    navigateToDetailPage(navigate, launchInfo, viewPayLaunch)
+                  }
+                />
+              );
+            })}
+          </MobileContainer>
+        )}
+      </Body>
+    </Container>
+  );
 };
 
 export default AllBusinesses;
 
 const MobileContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	max-width: inherit;
-	width: 100%;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
+  display: flex;
+  flex-direction: column;
+  max-width: inherit;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 `;
