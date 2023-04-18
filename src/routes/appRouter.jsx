@@ -71,11 +71,23 @@ const Completed = lazy(() =>
 const StaffEntities = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/StaffEntities/StaffEntities")
 );
+
+// // BANK
+const StaffBank = lazy(() => 
+  import("pages/Dashboard/staffDashboard/Banks")
+);
+const StaffBankAccounts = lazy(() => 
+  import("pages/Dashboard/staffDashboard/Banks/AllBanks")
+);
+const StaffBankDetailsPage = lazy(() => import("pages/Dashboard/staffDashboard/Banks/Details"));
+
+// REWARD
 const StaffReward = lazy(() => import("pages/Dashboard/staffDashboard/Reward"));
 const StaffRewardAnalyticsPage = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Reward/Analytics")
+  import("pages/Dashboard/staffDashboard/Reward/Analytics") // IGNORE
 );
 const StaffRewardDetailsPage = lazy(() => import("pages/Dashboard/staffDashboard/Reward/Details"));
+
 const StaffAllRewards = lazy(() => import("pages/Dashboard/staffDashboard/Reward/AllRewards"));
 const AllBusinessesSummary = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/All"));
 const InProgressBusinessesSummary = lazy(() =>
@@ -492,6 +504,7 @@ const AppRouter = () => {
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
               </Route>
+
               <Route path="all-rewards" element={<Outlet />}>
                 <Route index element={<StaffAllRewards />} />
                 <Route path="reward" element={<StaffReward />}>
@@ -499,9 +512,21 @@ const AppRouter = () => {
                   <Route path="analytics" element={<StaffRewardAnalyticsPage />} />
                 </Route>
               </Route>
+
               <Route path="taxes" element={<StaffComingSoon />} />
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
               <Route path="assets" element={<StaffComingSoon />} />
+             
+              {/* Bank Details */}
+              {/* <Route path="bank-accounts" element={<StaffBankAccounts />} />  */}
+               {/* Bank Details */}
+               <Route path="bank-accounts" element={<Outlet />}>
+                  <Route index element={<StaffBankAccounts />} />
+                  <Route path="bank" element={<StaffBank />}>
+                    <Route path=":bankID" element={<StaffBankDetailsPage/>} />
+                  </Route>
+               </Route>
+
               <Route path="payments" element={<StaffComingSoon />} />
               <Route path="resources" element={<StaffComingSoon />} />
               <Route path="settings" element={<StaffSettingLayout />}>
