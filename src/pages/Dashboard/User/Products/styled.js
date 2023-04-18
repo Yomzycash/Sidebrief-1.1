@@ -5,28 +5,40 @@ export const Container = styled.div`
   flex-flow: column;
   flex: 1;
   margin: 0 40px;
+  padding: 24px 0;
 
-  @media screen and (max-width: 1050px) {
-    margin: 0;
+  @media screen and (max-width: 700px) {
+    margin: 24px;
+    padding: 0;
   }
 `;
 
 export const Body = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 500px));
   gap: 42px;
-  border: 1px solid #edf1f7;
-  border-top: none;
+  padding-block: 40px;
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(2, minmax(200px, 500px));
+  }
+
+  @media screen and (max-width: 800px) {
+    display: flex;
+    flex-flow: column;
+  }
 `;
 
 export const Header = styled.div`
-  position: sticky;
-  top: 57.1px;
   display: flex;
   flex-flow: column;
+  gap: 12px;
   background-color: white;
   z-index: 2;
 
-  @media screen and (max-width: 700px) {
-    flex-flow: column-reverse;
+  p:nth-of-type(1) {
+    text-transform: capitalize;
+    font-size: clamp(18px, 1.8vw, 20px);
+    font-weight: 600;
   }
 `;
