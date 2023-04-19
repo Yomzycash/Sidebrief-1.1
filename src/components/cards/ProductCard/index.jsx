@@ -10,7 +10,7 @@ import {
 } from "./styled";
 import { CornerPetal } from "asset/svg";
 
-const ServicesCard = ({ title, body, Icon, to, headerColor }) => {
+const ProductCard = ({ title, body, Icon, to, headerColor }) => {
   return (
     <Container to={to || ""}>
       <Top color={headerColor}>
@@ -29,4 +29,4 @@ const ServicesCard = ({ title, body, Icon, to, headerColor }) => {
   );
 };
 
-export default ServicesCard;
+export default ProductCard;

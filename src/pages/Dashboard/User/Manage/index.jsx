@@ -86,7 +86,7 @@ const Manage = () => {
         summary={summary}
         filterList={filterList}
         action={handleManageCreate}
-        actionText="Create Manage"
+        actionText="Manage a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}

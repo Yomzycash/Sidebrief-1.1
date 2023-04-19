@@ -233,7 +233,6 @@ export const SubHeader = styled.div`
 
 export const SearchAndSort = styled.div`
   padding: clamp(20px, 2vw, 40px) 24px;
-  border-top: 1px solid #edf1f7;
   display: flex;
   gap: 24px;
 `;

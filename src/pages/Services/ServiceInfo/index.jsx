@@ -24,12 +24,6 @@ const ServiceInfo = () => {
   let navigate = useNavigate();
   let { option } = useParams();
 
-  let paramsIsValid =
-    option.toLowerCase() === "onboard" ||
-    option.toLowerCase() === "manage" ||
-    option.toLowerCase() === "intellectual-property" ||
-    option.toLowerCase() === "tax";
-
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
 
   const { handleSubmit, normalize, getHeaderText } = useActions({
@@ -41,6 +35,12 @@ const ServiceInfo = () => {
     updateComply,
     navigate,
   });
+
+  let paramsIsValid =
+    normalize(option) === "onboard" ||
+    normalize(option) === "manage" ||
+    normalize(option) === "intellectual-property" ||
+    normalize(option) === "tax";
 
   let countriesArray = countries?.data?.map((el) => el?.countryName) || [];
   let servicesArray =
@@ -101,8 +101,8 @@ const ServiceInfo = () => {
 
   const { title, titleSubText } = getHeaderText(option);
 
-  const hidePrev =
-    !complyInfo?.paid || !(normalize(option) === "manage" || normalize(option) === "onboard");
+  const isManageorOnboard = normalize(option) === "manage" || normalize(option) === "onboard";
+  const hidePrev = complyInfo?.paid || !isManageorOnboard;
 
   return (
     <>

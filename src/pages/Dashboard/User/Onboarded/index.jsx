@@ -87,7 +87,7 @@ const Onboarded = () => {
         summary={summary}
         filterList={filterList}
         action={handleOnboardCreate}
-        actionText="Onboard Your Business"
+        actionText="Onboard a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}

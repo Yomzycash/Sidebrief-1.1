@@ -12,8 +12,7 @@ export const Container = styled.header`
 `;
 
 export const Top = styled.div`
-  padding-inline: 40px;
-  padding-block: 40px 0;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -253,35 +252,35 @@ export const SearchAndSort = styled.div`
 `;
 
 export const ModalWrapper = styled.div`
-	display: flex;
-	align-items: center;
-	padding: 40px 0px;
-	flex-flow: column;
+  display: flex;
+  align-items: center;
+  padding: 40px 0px;
+  flex-flow: column;
 `;
 
 export const ModalButton = styled.div`
-	display: flex;
-	width: 80%;
+  display: flex;
+  width: 80%;
 `;
 
 export const Question = styled.p`
-	font-size: clamp(16px, 1.5vw, 20px);
-	margin-bottom: 20px;
+  font-size: clamp(16px, 1.5vw, 20px);
+  margin-bottom: 20px;
 `;
 export const TopContent = styled.div`
-	display: flex;
-	justify-content: flex-end;
-	align-items: flex-end;
-	width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 80%;
 `;
 
 export const CloseWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-	cursor: pointer;
-	align-items: center;
-	padding: 10px;
-	border-radius: 100%;
-	background-color: #d7d7d7;
-	margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  padding: 10px;
+  border-radius: 100%;
+  background-color: #d7d7d7;
+  margin-bottom: 20px;
 `;

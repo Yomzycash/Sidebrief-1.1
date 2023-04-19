@@ -62,21 +62,21 @@ const Tax = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/taxes/all-taxes",
+      path: "/dashboard/tax/all-taxes",
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/taxes/submitted-taxes",
+      path: "/dashboard/tax/submitted-taxes",
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/taxes/draft-taxes",
+      path: "/dashboard/tax/draft-taxes",
     },
   ];
 
-  let isFirstNav = pathname === "/dashboard/taxes" && "/dashboard/taxes/all-taxes";
+  let isFirstNav = pathname === "/dashboard/tax" && "/dashboard/tax/all-taxes";
 
   return (
     <Container>

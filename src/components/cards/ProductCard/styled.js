@@ -7,6 +7,7 @@ export const Container = styled(Link)`
   flex: 1;
   min-height: 300px;
   min-width: 200px;
+  max-width: 500px;
   background-color: #fff;
   border: 1px solid #b0b0b055;
   text-decoration: none;
