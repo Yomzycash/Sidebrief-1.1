@@ -3,8 +3,7 @@ import { Container, Header, Body, Loading } from "./styled";
 import { useGetAllCategoriesQuery } from "services/staffService";
 import ProductCard from "components/cards/ProductCard";
 import { GiLightningSpanner } from "react-icons/gi";
-import { MdRocketLaunch } from "react-icons/md";
-import { HiRocketLaunch } from "react-icons/hi2";
+import { IoIosRocket } from "react-icons/io";
 import { TbReceiptTax } from "react-icons/tb";
 import { AiOutlineFileProtect } from "react-icons/ai";
 import { Puff } from "react-loading-icons";
@@ -38,7 +37,7 @@ const Products = () => {
       return {
         title: "Onboard a Business",
         body: "Automate your business compliance",
-        icon: HiRocketLaunch,
+        icon: IoIosRocket,
         path: "/services/onboard",
       };
     }
@@ -59,7 +58,7 @@ const Products = () => {
         {allCategories?.data && (
           <>
             <ProductCard
-              Icon={MdRocketLaunch}
+              Icon={IoIosRocket}
               title="Launch a Business"
               body="Start your business registration process with no paperwork"
               to="/launch"
