@@ -1,30 +1,28 @@
 import React from "react";
-import pdf from "../../../asset/images/pdf.png";
-import jpg from "../../../asset/images/jpg.png";
-import png from "../../../asset/images/png.png";
+import pdf from "asset/images/pdf.png";
+import jpg from "asset/images/jpg.png";
+import png from "asset/images/png.png";
 import {
   Document,
   DocumentSection,
   DocumentDownload,
-  DocumentFrame,
   DocumentText,
-  SmallText,
   InnerDocument,
+  Download,
 } from "./style";
 import { handleDownloadFile } from "utils/LaunchHelper";
 import { useLocation } from "react-router-dom";
 import { downLoadImage } from "utils/staffHelper";
+import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
 
 const ServiceReviewCard = ({ DocContent, action }) => {
   const { pathname } = useLocation();
   let details = pathname.includes("details");
 
   const imageTypeImage = {
-    pdf: pdf,
-
-    png: png,
-
-    jpg: jpg,
+    pdf,
+    png,
+    jpg,
   };
 
   return (
@@ -49,6 +47,14 @@ const ServiceReviewCard = ({ DocContent, action }) => {
               <DocumentText>{doc?.documentName}</DocumentText>
               {/* <SmallText>file type: pdf, png, jpeg</SmallText> */}
             </InnerDocument>
+            <Download
+              onClick={async () => {
+                await downLoadImage(doc?.documentLink, doc?.documentName);
+              }}
+              type="button"
+            >
+              <DownloadWhite />
+            </Download>
           </DocumentDownload>
         ))}
       </Document>

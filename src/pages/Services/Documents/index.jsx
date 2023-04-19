@@ -127,7 +127,7 @@ const ServiceDocuments = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.8 })); // total- total pages and current - current page
   }, []);
 
-  let noTemplate = viewService?.data?.serviceTemplates < 1;
+  let noTemplate = viewService.data?.serviceTemplates < 1;
   let title = noTemplate
     ? "Upload the following document(s)"
     : "Download the template(s) below (fill then upload back)";
