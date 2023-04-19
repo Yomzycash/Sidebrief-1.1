@@ -6,6 +6,22 @@ import Loader from "../components/loader/loader";
 import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
+import StaffManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage";
+import StaffAllManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffAllIManage";
+import StaffPendingManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPendingManage";
+import StaffDraftManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffDraftManage";
+import StaffOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded";
+import StaffAllOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffAllOnboarded";
+import StaffPendingOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPendingOnboarded";
+import StaffDraftOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffDraftOnboarded";
+import StaffTax from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes";
+import StaffAllTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffAllTaxes";
+import StaffPendingTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPendingTaxes";
+import StaffDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffDraftTaxes";
+import StaffIntellectual from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual";
+import StaffAllIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffAllIntellectual";
+import StaffPendingIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPendingIntellectual";
+import StaffDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffDraftIntellectual";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -50,18 +66,14 @@ const StaffEntities = lazy(() =>
 );
 
 // // BANK
-const StaffBank = lazy(() => 
-  import("pages/Dashboard/staffDashboard/Banks")
-);
-const StaffBankAccounts = lazy(() => 
-  import("pages/Dashboard/staffDashboard/Banks/AllBanks")
-);
+const StaffBank = lazy(() => import("pages/Dashboard/staffDashboard/Banks"));
+const StaffBankAccounts = lazy(() => import("pages/Dashboard/staffDashboard/Banks/AllBanks"));
 const StaffBankDetailsPage = lazy(() => import("pages/Dashboard/staffDashboard/Banks/Details"));
 
 // REWARD
 const StaffReward = lazy(() => import("pages/Dashboard/staffDashboard/Reward"));
-const StaffRewardAnalyticsPage = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Reward/Analytics") // IGNORE
+const StaffRewardAnalyticsPage = lazy(
+  () => import("pages/Dashboard/staffDashboard/Reward/Analytics") // IGNORE
 );
 const StaffRewardDetailsPage = lazy(() => import("pages/Dashboard/staffDashboard/Reward/Details"));
 
@@ -461,8 +473,74 @@ const AppRouter = () => {
                   <Route path="pending" element={<Draft />} />
                   <Route path="paid-draft" element={<PaidDraft />} />
                 </Route>
+
                 <Route path="entities" element={<Outlet />}>
                   <Route index element={<StaffEntities />} />
+                </Route>
+
+                <Route path="manage" element={<StaffManage />}>
+                  <Route index element={<StaffAllManage />} />
+                  <Route path="all-manage" element={<StaffAllManage />}></Route>
+                  <Route path="submitted-manage" element={<StaffPendingManage />}></Route>
+                  <Route path="draft-manage" element={<StaffDraftManage />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
+
+                <Route path="onboarded" element={<StaffOnboarded />}>
+                  <Route index element={<StaffAllOnboarded />} />
+                  <Route path="all-onboarded" element={<StaffAllOnboarded />}></Route>
+                  <Route path="submitted-onboarded" element={<StaffPendingOnboarded />}></Route>
+                  <Route path="draft-onboarded" element={<StaffDraftOnboarded />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
+
+                <Route path="tax" element={<StaffTax />}>
+                  <Route index element={<StaffAllTaxes />} />
+                  <Route path="all-taxes" element={<StaffAllTaxes />}></Route>
+                  <Route path="submitted-taxes" element={<StaffPendingTaxes />}></Route>
+                  <Route path="draft-taxes" element={<StaffDraftTaxes />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
+
+                <Route path="intellectual-property" element={<StaffIntellectual />}>
+                  <Route index element={<StaffAllIntellectuals />} />
+                  <Route
+                    path="all-intellectual-properties"
+                    element={<StaffAllIntellectuals />}
+                  ></Route>
+                  <Route
+                    path="submitted-intellectual-properties"
+                    element={<StaffPendingIntellectuals />}
+                  ></Route>
+                  <Route
+                    path="draft-intellectual-properties"
+                    element={<StaffDraftIntellectuals />}
+                  ></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="intellectual-property/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
                 </Route>
 
                 <Route path="countries" element={<Outlet />}>
@@ -507,16 +585,16 @@ const AppRouter = () => {
               <Route path="taxes" element={<StaffComingSoon />} />
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
               <Route path="assets" element={<StaffComingSoon />} />
-             
+
               {/* Bank Details */}
               {/* <Route path="bank-accounts" element={<StaffBankAccounts />} />  */}
-               {/* Bank Details */}
-               <Route path="bank-accounts" element={<Outlet />}>
-                  <Route index element={<StaffBankAccounts />} />
-                  <Route path="bank" element={<StaffBank />}>
-                    <Route path=":bankID" element={<StaffBankDetailsPage/>} />
-                  </Route>
-               </Route>
+              {/* Bank Details */}
+              <Route path="bank-accounts" element={<Outlet />}>
+                <Route index element={<StaffBankAccounts />} />
+                <Route path="bank" element={<StaffBank />}>
+                  <Route path=":bankID" element={<StaffBankDetailsPage />} />
+                </Route>
+              </Route>
 
               <Route path="payments" element={<StaffComingSoon />} />
               <Route path="resources" element={<StaffComingSoon />} />

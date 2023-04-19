@@ -81,8 +81,7 @@ export const Header = ({ isStaff, code }) => {
       await deleteLaunch({
         launchCode: launchResponse.launchCode,
       });
-    }
-    else {
+    } else {
       await deleteLaunchStaff({
         launchCode: launchResponse.launchCode,
       });
@@ -260,6 +259,15 @@ export const Header = ({ isStaff, code }) => {
           </RHS>
         </TitleContainer>
       </Top>
+      {page !== "detail" || "payment" ? (
+        <SearchAndSort>
+          {/* placeholder changes based on the page it's on */}
+          {/* not implemented yet */}
+          <Search triggerSearch={triggerSearch} page={page} />
+          <SortDropdown />
+        </SearchAndSort>
+      ) : null}
+
       <SubHeader
         ref={subHeader}
         onMouseEnter={() => setSubHeaderHovered(true)}
@@ -315,14 +323,7 @@ export const Header = ({ isStaff, code }) => {
           }`}
         />
       </SubHeader>
-      {page !== "detail" || "payment" ? (
-        <SearchAndSort>
-          {/* placeholder changes based on the page it's on */}
-          {/* not implemented yet */}
-          <Search triggerSearch={triggerSearch} page={page} />
-          <SortDropdown />
-        </SearchAndSort>
-      ) : null}
+
       <Dialog open={openModal} fullWidth maxWidth="sm">
         <ModalWrapper>
           <TopContent>

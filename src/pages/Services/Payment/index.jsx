@@ -62,7 +62,7 @@ const ServicePayment = () => {
   const sendStripeRefToBackend = async (paymentIntent) => {
     const requiredData = {
       complyCode: complyInfo.complyCode,
-      paymentDetails: {
+      complyPayment: {
         paymentAmount: paymentIntent.amount,
         paymentCurrency: paymentIntent.currency,
         paymentTransactionId: paymentIntent.id,
@@ -70,7 +70,7 @@ const ServicePayment = () => {
         paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
       },
     };
-    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(requiredData));
     const payResponse = await addServicePayment(requiredData);
 
@@ -78,6 +78,8 @@ const ServicePayment = () => {
     link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
     link = serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     navigate(link);
+
+    return payResponse;
   };
 
   //

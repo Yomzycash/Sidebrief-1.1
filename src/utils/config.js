@@ -248,7 +248,7 @@ export const sidebarLink = [
   },
   {
     id: 7,
-    title: "Intellectual Property",
+    title: "Intellectual",
     icon: BusinessesIcon,
     path: "/dashboard/intellectual-property",
   },
@@ -293,24 +293,48 @@ export const StaffSidebarLinks = [
     dropDownList: [
       {
         id: 1,
-        title: "Registrations",
-        icon: ResourcesIcon,
-        path: "/staff-dashboard/businesses/registration",
-      },
-      {
-        id: 2,
         title: "Products",
         icon: ServicesIcon,
         path: "/staff-dashboard/businesses/services",
       },
       {
+        id: 2,
+        title: "Registrations",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/registration",
+      },
+      {
         id: 3,
+        title: "Manage",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/manage",
+      },
+      {
+        id: 4,
+        title: "Onboarded",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/onboarded",
+      },
+      {
+        id: 5,
+        title: "Taxes",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/tax",
+      },
+      {
+        id: 6,
+        title: "Intellectual",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/intellectual-property",
+      },
+      {
+        id: 7,
         title: "Entities",
         icon: EntityIcon,
         path: "/staff-dashboard/businesses/entities",
       },
       {
-        id: 4,
+        id: 8,
         title: "Countries",
         icon: CountryIcon,
         path: "/staff-dashboard/businesses/countries",

@@ -87,7 +87,17 @@ const Countries = () => {
             data?.map((country, index) => (
               <CountryCard
                 key={index}
-                image={`https://countryflagsapi.com/png/${country.countryISO.toLowerCase()}`}
+                image={
+                  <>
+                    https://flagsapi.com/$
+                    {
+                      <span style={{ textTransform: "uppercase" }}>
+                        {country?.countryISO?.slice(0, 2)}
+                      </span>
+                    }
+                    /flat/64.png
+                  </>
+                }
                 name={country.countryName}
                 countryCode={country.countryISO}
                 countryNumber={country.countryCode}

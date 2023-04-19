@@ -37,7 +37,6 @@ export default function StripeForm({ sendStripeRefToBackend }) {
         redirect: "if_required",
       })
       .then((result) => {
-        console.log(result);
         if (result?.error) {
           toast.error(result.error?.message);
           setIsLoading(false);
@@ -63,7 +62,7 @@ export default function StripeForm({ sendStripeRefToBackend }) {
   };
 
   const sendRefToBackend = async (paymentIntent) => {
-    await sendStripeRefToBackend(paymentIntent);
+    const res = await sendStripeRefToBackend(paymentIntent);
     setIsLoading(false);
     setSuccess(true);
     toast.success("Payment successful");

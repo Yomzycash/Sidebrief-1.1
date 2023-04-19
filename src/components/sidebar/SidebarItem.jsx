@@ -101,10 +101,10 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   each.path === "/staff-dashboard/businesses/services" && (
                     <Badge to={each.path}>{notifications.data?.length}</Badge>
                   )} */}
-                {newNotifications?.length > 0 &&
+                {/* {newNotifications?.length > 0 &&
                   each.path === "/staff-dashboard/businesses/registration" && (
                     <Badge to={each.path}>{newNotifications?.length}</Badge>
-                  )}
+                  )} */}
               </ListItem>
             ))}
           </List>
@@ -163,7 +163,7 @@ export const ListContainer = styled.div`
   align-items: center;
   padding-left: 30px;
 
-  height: ${({ collapsed, items }) => (collapsed ? 0 : `calc(${items * 35}px)`)};
+  height: ${({ collapsed, items }) => (collapsed ? 0 : `calc(${items * 30}px)`)};
   overflow: hidden;
   transition: 0.3s height ease;
 `;

@@ -101,8 +101,8 @@ const ServiceInfo = () => {
 
   const { title, titleSubText } = getHeaderText(option);
 
-  const hidePrev =
-    !complyInfo?.paid || !(normalize(option) === "manage" || normalize(option) === "onboard");
+  const isManageorOnboard = normalize(option) === "manage" || normalize(option) === "onboard";
+  const hidePrev = complyInfo?.paid || !isManageorOnboard;
 
   return (
     <>

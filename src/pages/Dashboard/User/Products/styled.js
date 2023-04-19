@@ -41,4 +41,16 @@ export const Header = styled.div`
     font-size: clamp(18px, 1.8vw, 20px);
     font-weight: 600;
   }
+
+  p:nth-of-type(2) {
+    font-size: clamp(14px, 1.5vw, 16px);
+  }
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;

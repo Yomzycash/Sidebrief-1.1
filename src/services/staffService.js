@@ -307,7 +307,7 @@ export const staffApi = createApi({
     }),
 
     // Delete a bank
-    deleteBank: builder.mutation({ 
+    deleteBank: builder.mutation({
       query: (bankCode) => ({
         url: `/banks/delete/${bankCode}`,
         method: "DELETE",
@@ -436,9 +436,10 @@ export const staffApi = createApi({
 
     // delete a service
     deleteService: builder.mutation({
-      query: (serviceId) => ({
-        url: `/services/delete/${serviceId}`,
+      query: (data) => ({
+        url: `/services/delete/${data.serviceId}`,
         method: "DELETE",
+        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },

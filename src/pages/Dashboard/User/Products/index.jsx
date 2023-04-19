@@ -1,12 +1,13 @@
 import { React } from "react";
-import { Container, Header, Body } from "./styled";
-import { useGetAllCategoriesQuery, useGetAllServicesQuery } from "services/staffService";
+import { Container, Header, Body, Loading } from "./styled";
+import { useGetAllCategoriesQuery } from "services/staffService";
 import ProductCard from "components/cards/ProductCard";
 import { GiLightningSpanner } from "react-icons/gi";
 import { MdRocketLaunch } from "react-icons/md";
 import { HiRocketLaunch } from "react-icons/hi2";
 import { TbReceiptTax } from "react-icons/tb";
 import { AiOutlineFileProtect } from "react-icons/ai";
+import { Puff } from "react-loading-icons";
 
 const Products = () => {
   const allCategories = useGetAllCategoriesQuery();
@@ -43,28 +44,36 @@ const Products = () => {
     }
   };
 
-  console.log(allCategories);
   return (
     <Container>
       <Header>
         <p>All Products</p>
         <p>Products you can rely on through your business's journey</p>
       </Header>
+      {allCategories.isLoading && (
+        <Loading height="50vh">
+          <Puff stroke="#00A2D4" fill="white" />
+        </Loading>
+      )}
       <Body>
-        <ProductCard
-          Icon={MdRocketLaunch}
-          title="Launch a Business"
-          body="Start your business registration process with no paperwork"
-          to="/launch"
-        />
-        {allCategories.data?.map((el) => (
-          <ProductCard
-            Icon={getInfo(el?.catergoryName)?.icon}
-            title={getInfo(el?.catergoryName)?.title}
-            body={getInfo(el?.catergoryName)?.body}
-            to={getInfo(el?.catergoryName)?.path}
-          />
-        ))}
+        {allCategories?.data && (
+          <>
+            <ProductCard
+              Icon={MdRocketLaunch}
+              title="Launch a Business"
+              body="Start your business registration process with no paperwork"
+              to="/launch"
+            />
+            {allCategories.data?.map((el) => (
+              <ProductCard
+                Icon={getInfo(el?.catergoryName)?.icon}
+                title={getInfo(el?.catergoryName)?.title}
+                body={getInfo(el?.catergoryName)?.body}
+                to={getInfo(el?.catergoryName)?.path}
+              />
+            ))}
+          </>
+        )}
       </Body>
     </Container>
   );
