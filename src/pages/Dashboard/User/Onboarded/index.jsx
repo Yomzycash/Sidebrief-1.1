@@ -5,6 +5,7 @@ import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "util
 import ProductHeader from "components/Header/ProductHeader";
 import { useViewAllComplyByMetaQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
+import EmptyContent from "components/EmptyContent";
 
 //
 
@@ -28,15 +29,19 @@ const Onboarded = () => {
     (el) => el?.serviceId === findOnboardId(el?.serviceId)
   );
 
-  console.log(allUserComply);
   const submitted = OnboardedComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
   const drafts = OnboardedComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
+  const paidDrafts = OnboardedComplies?.filter(
+    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
+  );
   const isLoading = Onboard.isLoading || allUserComply.isLoading;
   const isError = Onboard.isError || allUserComply.isError;
   const isSuccess = Onboard.isSuccess && allUserComply.isSuccess;
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
+  let paidDraftTotal = paidDrafts?.length;
+  let allTotal = OnboardedComplies?.length;
 
   const handleOnboardCreate = () => {
     removeLaunchFromLocalStorage();
@@ -64,16 +69,25 @@ const Onboarded = () => {
       text: "All",
       total: submittedTotal + draftTotal || 0,
       path: "/dashboard/onboarded/all-onboarded",
+      isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
       path: "/dashboard/onboarded/submitted-onboarded",
+      isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
       path: "/dashboard/onboarded/draft-onboarded",
+      isAvailable: draftTotal > 0,
+    },
+    {
+      text: "Paid Drafts",
+      total: paidDraftTotal || 0,
+      path: "/dashboard/onboarded/paid-draft-onboarded",
+      isAvailable: paidDrafts?.length > 0,
     },
   ];
 
@@ -92,7 +106,28 @@ const Onboarded = () => {
         navInfo={navInfo}
         defaultActive={isFirstNav}
       />
-      <Outlet context={{ submitted, drafts, searchValue, isLoading, isError, isSuccess }} />
+      {!allTotal && !isLoading ? (
+        isError ? (
+          <>There is an error loading this page</>
+        ) : (
+          <EmptyContent
+            emptyText="Your onboarded businesses will appear here."
+            buttonText="Onboard a Business"
+          />
+        )
+      ) : (
+        <Outlet
+          context={{
+            submitted,
+            paidDrafts,
+            drafts,
+            searchValue,
+            isLoading,
+            isError,
+            isSuccess,
+          }}
+        />
+      )}
     </Container>
   );
 };

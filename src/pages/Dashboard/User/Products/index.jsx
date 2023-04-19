@@ -16,7 +16,7 @@ const Products = () => {
     if (category?.toLowerCase() === "manage") {
       return {
         title: "Manage Business",
-        body: "Make changes to already registered companies",
+        body: "Make changes to already registered companies/businesses",
         icon: GiLightningSpanner,
         path: "/services/manage",
       };
@@ -44,6 +44,7 @@ const Products = () => {
     }
   };
 
+  console.log(allCategories);
   return (
     <Container>
       <Header>
@@ -56,16 +57,17 @@ const Products = () => {
         </Loading>
       )}
       <Body>
-        {allCategories?.data && (
+        {allCategories.data && (
           <>
             <ProductCard
               Icon={MdRocketLaunch}
               title="Launch a Business"
-              body="Start your business registration process with no paperwork"
+              body="Start your business/company registration process with no paperwork"
               to="/launch"
             />
-            {allCategories.data?.map((el) => (
+            {allCategories.data?.map((el, i) => (
               <ProductCard
+                key={i}
                 Icon={getInfo(el?.catergoryName)?.icon}
                 title={getInfo(el?.catergoryName)?.title}
                 body={getInfo(el?.catergoryName)?.body}
