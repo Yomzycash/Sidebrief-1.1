@@ -108,12 +108,16 @@ export const useActions = ({
 
   // Updates service
   const handleServiceUpdate = async (formData) => {
-    console.log(service);
-    let payload = {
-      ...getServicePayload(formData),
-      serviceId: service?.serviceId,
-      productID: service?.productId || "",
-    };
+    let payload = service?.productId
+      ? {
+          ...getServicePayload(formData),
+          serviceId: service?.serviceId,
+          productID: service?.productId || "",
+        }
+      : {
+          ...getServicePayload(formData),
+          serviceId: service?.serviceId,
+        };
     let response = await updateService(payload);
     let data = response?.data;
     let error = response?.error;
