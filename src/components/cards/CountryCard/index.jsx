@@ -12,7 +12,6 @@ const CountryCard = ({
   countryCurrency = "Naira",
   action,
 }) => {
-  console.log(image);
   return (
     <Container onClick={action}>
       <Corner>
@@ -56,7 +55,7 @@ const CountryCard = ({
 export default CountryCard;
 const Container = styled.div`
   cursor: pointer;
-  max-width: 342px;
+  /* max-width: 342px; */
   width: 100%;
   min-height: 108px;
   position: relative;

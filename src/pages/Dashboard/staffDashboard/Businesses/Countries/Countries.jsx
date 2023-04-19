@@ -10,6 +10,7 @@ import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
+import lookup from "country-code-lookup";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
@@ -84,29 +85,22 @@ const Countries = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loader>
           ) : (
-            data?.map((country, index) => (
-              <CountryCard
-                key={index}
-                image={
-                  <>
-                    https://flagsapi.com/$
-                    {
-                      <span style={{ textTransform: "uppercase" }}>
-                        {country?.countryISO?.slice(0, 2)}
-                      </span>
-                    }
-                    /flat/64.png
-                  </>
-                }
-                name={country.countryName}
-                countryCode={country.countryISO}
-                countryNumber={country.countryCode}
-                countryCurrency={country.countryCurrency}
-                action={() => {
-                  navigate(`/staff-dashboard/businesses/countries/${country.countryISO}/detail`);
-                }}
-              />
-            ))
+            data?.map((country, index) => {
+              const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
+              return (
+                <CountryCard
+                  key={index}
+                  image={`https://flagsapi.com/${iso2}/flat/64.png`}
+                  name={country.countryName}
+                  countryCode={country.countryISO}
+                  countryNumber={country.countryCode}
+                  countryCurrency={country.countryCurrency}
+                  action={() => {
+                    navigate(`/staff-dashboard/businesses/countries/${country.countryISO}/detail`);
+                  }}
+                />
+              );
+            })
           )}
           <StaffCountryModal
             open={open}
@@ -141,18 +135,8 @@ const CardContainer = styled.div`
 const CardWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
-
-  @media screen and (min-width: 1400px) {
-    grid-template-columns: auto auto auto auto;
-  }
-  @media screen and (max-width: 1120px) {
-    grid-template-columns: auto auto;
-  }
-  @media screen and (max-width: 800px) {
-    grid-template-columns: auto;
-  }
 `;
 
 const Loader = styled.div`
