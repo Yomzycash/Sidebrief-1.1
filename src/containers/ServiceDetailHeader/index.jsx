@@ -104,7 +104,7 @@ const ServiceDetailHeader = ({
 
     if (data) {
       toast.success("Deleted");
-      navigate(servicesUrl + "/all");
+      navigate(servicesUrl);
     } else handleError(error);
     setOpenModal(false);
   };

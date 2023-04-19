@@ -13,7 +13,7 @@ import { getUnReadNotifications } from "components/navbar/actions";
 
 const SidebarItem = ({ item, expanded, homePath }) => {
   const [iconHovered, setIconHovered] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
 

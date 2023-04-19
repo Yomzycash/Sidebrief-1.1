@@ -342,22 +342,10 @@ export const StaffSidebarLinks = [
     ],
   },
   {
-    id: 3,
-    title: "Taxes",
-    icon: TaxesIcon,
-    path: "/staff-dashboard/taxes/",
-  },
-  {
     id: 4,
     title: "Hiring & Payroll",
     icon: HiringIcon,
     path: "/staff-dashboard/hiring-and-payroll",
-  },
-  {
-    id: 5,
-    title: "Intellectual Assets",
-    icon: IntellectualIcon,
-    path: "/staff-dashboard/assets",
   },
   {
     id: 6,

@@ -17,9 +17,11 @@ const ProductCard = ({ title, body, Icon, to, headerColor }) => {
         <CornerPetal />
       </Top>
       <ContentWrapper>
-        <IconWrapper>
-          <Icon color="#fff" />
-        </IconWrapper>
+        {Icon && (
+          <IconWrapper>
+            <Icon color="#fff" />
+          </IconWrapper>
+        )}
         <Content>
           <ContentTitle>{title}</ContentTitle>
           <ContentBody>{body}</ContentBody>

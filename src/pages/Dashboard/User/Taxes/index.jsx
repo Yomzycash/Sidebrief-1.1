@@ -5,6 +5,7 @@ import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "util
 import ProductHeader from "components/Header/ProductHeader";
 import { useViewAllComplyByMetaQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
+import EmptyContent from "components/EmptyContent";
 
 //
 
@@ -30,12 +31,17 @@ const Tax = () => {
 
   const submitted = taxComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
   const drafts = taxComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
+  const paidDrafts = taxComplies?.filter(
+    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
+  );
   const isLoading = taxServices.isLoading || allUserComply.isLoading;
   const isError = taxServices.isError || allUserComply.isError;
   const isSuccess = taxServices.isSuccess && allUserComply.isSuccess;
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
+  let paidDraftTotal = paidDrafts?.length;
+  let allTotal = taxComplies?.length;
 
   const handleTaxCreate = () => {
     removeLaunchFromLocalStorage();
@@ -63,16 +69,25 @@ const Tax = () => {
       text: "All",
       total: submittedTotal + draftTotal || 0,
       path: "/dashboard/tax/all-taxes",
+      isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
       path: "/dashboard/tax/submitted-taxes",
+      isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
       path: "/dashboard/tax/draft-taxes",
+      isAvailable: draftTotal > 0,
+    },
+    {
+      text: "Paid Drafts",
+      total: paidDraftTotal || 0,
+      path: "/dashboard/tax/paid-draft-taxes",
+      isAvailable: paidDrafts?.length > 0,
     },
   ];
 
@@ -91,7 +106,25 @@ const Tax = () => {
         navInfo={navInfo}
         defaultActive={isFirstNav}
       />
-      <Outlet context={{ submitted, drafts, searchValue, isLoading, isError, isSuccess }} />
+      {!allTotal && !isLoading ? (
+        isError ? (
+          <>There is an error loading this page</>
+        ) : (
+          <EmptyContent emptyText="Your taxes will appear here." buttonText="Create Tax" />
+        )
+      ) : (
+        <Outlet
+          context={{
+            submitted,
+            paidDrafts,
+            drafts,
+            searchValue,
+            isLoading,
+            isError,
+            isSuccess,
+          }}
+        />
+      )}
     </Container>
   );
 };

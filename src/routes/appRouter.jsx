@@ -22,6 +22,14 @@ import StaffIntellectual from "pages/Dashboard/staffDashboard/Businesses/StaffIn
 import StaffAllIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffAllIntellectual";
 import StaffPendingIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPendingIntellectual";
 import StaffDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffDraftIntellectual";
+import StaffPaidDraftManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPaidDraftManage";
+import StaffPaidDraftOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPaidDraftOnboarded";
+import StaffPaidDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPaidDraftIntellectual";
+import PaidDraftOnboarded from "pages/Dashboard/User/Onboarded/PaidDraftOnboarded";
+import PaidDraftManage from "pages/Dashboard/User/Manage/PaidDraftManage";
+import PaidDraftTaxes from "pages/Dashboard/User/Taxes/PaidDraftTaxes";
+import PaidDraftIntellectuals from "pages/Dashboard/User/Intellectual/PaidDraftIntellectual";
+import StaffPaidDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPaidDraftTaxes";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -343,6 +351,7 @@ const AppRouter = () => {
                 <Route path="all-businesses" element={<AllBusinesses />}></Route>
                 <Route path="submitted-applications" element={<PendingApplications />}></Route>
                 <Route path="draft-applications" element={<DraftApplications />}></Route>
+                <Route path="paid-draft-applications" element={<DraftApplications />}></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
               <Route path="business" element={<BusinessDetailLayout />}>
@@ -360,6 +369,7 @@ const AppRouter = () => {
                 <Route path="all-manage" element={<AllManage />}></Route>
                 <Route path="submitted-manage" element={<PendingManage />}></Route>
                 <Route path="draft-manage" element={<DraftManage />}></Route>
+                <Route path="paid-draft-manage" element={<PaidDraftManage />}></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
               <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
@@ -374,6 +384,7 @@ const AppRouter = () => {
                 <Route path="all-onboarded" element={<AllOnboarded />}></Route>
                 <Route path="submitted-onboarded" element={<PendingOnboarded />}></Route>
                 <Route path="draft-onboarded" element={<DraftOnboarded />}></Route>
+                <Route path="paid-draft-onboarded" element={<PaidDraftOnboarded />}></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
               <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
@@ -388,6 +399,7 @@ const AppRouter = () => {
                 <Route path="all-taxes" element={<AllTaxes />}></Route>
                 <Route path="submitted-taxes" element={<PendingTaxes />}></Route>
                 <Route path="draft-taxes" element={<DraftTaxes />}></Route>
+                <Route path="paid-draft-taxes" element={<PaidDraftTaxes />}></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
               <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
@@ -407,6 +419,10 @@ const AppRouter = () => {
                 <Route
                   path="draft-intellectual-properties"
                   element={<DraftIntellectuals />}
+                ></Route>
+                <Route
+                  path="paid-draft-intellectual-properties"
+                  element={<PaidDraftIntellectuals />}
                 ></Route>
                 <Route path="chats" element={<ChatLayout />} />
               </Route>
@@ -483,6 +499,7 @@ const AppRouter = () => {
                   <Route path="all-manage" element={<StaffAllManage />}></Route>
                   <Route path="submitted-manage" element={<StaffPendingManage />}></Route>
                   <Route path="draft-manage" element={<StaffDraftManage />}></Route>
+                  <Route path="paid-draft-manage" element={<StaffPaidDraftManage />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
                 <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
@@ -497,6 +514,7 @@ const AppRouter = () => {
                   <Route path="all-onboarded" element={<StaffAllOnboarded />}></Route>
                   <Route path="submitted-onboarded" element={<StaffPendingOnboarded />}></Route>
                   <Route path="draft-onboarded" element={<StaffDraftOnboarded />}></Route>
+                  <Route path="paid-draft-onboarded" element={<StaffPaidDraftOnboarded />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
                 <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
@@ -511,6 +529,7 @@ const AppRouter = () => {
                   <Route path="all-taxes" element={<StaffAllTaxes />}></Route>
                   <Route path="submitted-taxes" element={<StaffPendingTaxes />}></Route>
                   <Route path="draft-taxes" element={<StaffDraftTaxes />}></Route>
+                  <Route path="paid-draft-taxes" element={<StaffPaidDraftTaxes />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
                 <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
@@ -533,6 +552,10 @@ const AppRouter = () => {
                   <Route
                     path="draft-intellectual-properties"
                     element={<StaffDraftIntellectuals />}
+                  ></Route>
+                  <Route
+                    path="paid-draft-intellectual-properties"
+                    element={<StaffPaidDraftIntellectuals />}
                   ></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>

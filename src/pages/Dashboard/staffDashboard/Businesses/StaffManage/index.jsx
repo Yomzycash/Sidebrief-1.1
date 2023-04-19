@@ -5,6 +5,7 @@ import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "util
 import ProductHeader from "components/Header/ProductHeader";
 import { useViewAllComplyByMetaQuery, useViewAllComplyQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
+import EmptyContent from "components/EmptyContent";
 
 //
 
@@ -13,8 +14,6 @@ const StaffManage = () => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const Manage = useGetServicesByCategoryQuery("MANAGE");
   const allUserComply = useViewAllComplyQuery();
@@ -27,12 +26,17 @@ const StaffManage = () => {
 
   const submitted = ManageComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
   const drafts = ManageComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
+  const paidDrafts = ManageComplies?.filter(
+    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
+  );
   const isLoading = Manage.isLoading || allUserComply.isLoading;
   const isError = Manage.isError || allUserComply.isError;
   const isSuccess = Manage.isSuccess && allUserComply.isSuccess;
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
+  let paidDraftTotal = paidDrafts?.length;
+  let allTotal = ManageComplies?.length;
 
   const handleManageCreate = () => {
     removeLaunchFromLocalStorage();
@@ -60,16 +64,25 @@ const StaffManage = () => {
       text: "All",
       total: submittedTotal + draftTotal || 0,
       path: "/staff-dashboard/businesses/manage/all-manage",
+      isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
       path: "/staff-dashboard/businesses/manage/submitted-manage",
+      isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
       path: "/staff-dashboard/businesses/manage/draft-manage",
+      isAvailable: draftTotal > 0,
+    },
+    {
+      text: "Paid Drafts",
+      total: paidDraftTotal || 0,
+      path: "/staff-dashboard/businesses/manage/paid-draft-manage",
+      isAvailable: paidDrafts?.length > 0,
     },
   ];
 
@@ -90,7 +103,28 @@ const StaffManage = () => {
         navInfo={navInfo}
         defaultActive={isFirstNav}
       />
-      <Outlet context={{ submitted, drafts, searchValue, isLoading, isError, isSuccess }} />
+      {!allTotal && !isLoading ? (
+        isError ? (
+          <>There is an error loading this page</>
+        ) : (
+          <EmptyContent
+            emptyText="Users manage requests will appear here when they create one"
+            buttonText="Manage a Business"
+          />
+        )
+      ) : (
+        <Outlet
+          context={{
+            submitted,
+            paidDrafts,
+            drafts,
+            searchValue,
+            isLoading,
+            isError,
+            isSuccess,
+          }}
+        />
+      )}{" "}
     </Container>
   );
 };
