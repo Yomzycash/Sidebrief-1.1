@@ -109,6 +109,7 @@ const StaffTax = () => {
           <EmptyContent
             emptyText="Users taxes requests will appear here when they create one"
             buttonText="Create Tax"
+            action={handleTaxCreate}
           />
         )
       ) : (

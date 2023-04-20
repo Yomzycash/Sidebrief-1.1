@@ -20,6 +20,7 @@ const StaffRewardHeader = ({
   totalShown,
   countrySelected,
   categorySelected,
+  onSearchChange,
 }) => {
   const category = useGetAllCategoriesQuery();
 
@@ -64,7 +65,12 @@ const StaffRewardHeader = ({
           </TopContent>
           <BottomContent>
             <SearchWrapper>
-              <Search style={searchStyle} iconStyle={iconStyle} placeholder={placeholder} />
+              <Search
+                style={searchStyle}
+                iconStyle={iconStyle}
+                placeholder={placeholder}
+                onChange={onSearchChange}
+              />
             </SearchWrapper>
             {filterShown && (
               <DropdownContainer>

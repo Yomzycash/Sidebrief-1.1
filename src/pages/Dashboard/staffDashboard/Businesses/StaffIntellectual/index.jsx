@@ -111,6 +111,7 @@ const StaffIntellectual = () => {
           <EmptyContent
             emptyText="Users intellectual properties requests will appear here when they create one"
             buttonText="Create Intellectual Property"
+            action={handleIntellectualCreate}
           />
         )
       ) : (

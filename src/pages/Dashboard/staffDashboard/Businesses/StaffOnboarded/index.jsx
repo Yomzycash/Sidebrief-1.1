@@ -111,6 +111,7 @@ const StaffOnboarded = () => {
           <EmptyContent
             emptyText="Users onboarded businesses will appear here when they create one"
             buttonText="Onboard a Business"
+            action={handleOnboardCreate}
           />
         )
       ) : (

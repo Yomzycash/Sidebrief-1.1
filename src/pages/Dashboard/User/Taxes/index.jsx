@@ -110,7 +110,11 @@ const Tax = () => {
         isError ? (
           <>There is an error loading this page</>
         ) : (
-          <EmptyContent emptyText="Your taxes will appear here." buttonText="Create Tax" />
+          <EmptyContent
+            emptyText="Your taxes will appear here."
+            buttonText="Create Tax"
+            action={handleTaxCreate}
+          />
         )
       ) : (
         <Outlet

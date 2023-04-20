@@ -110,6 +110,7 @@ const StaffManage = () => {
           <EmptyContent
             emptyText="Users manage requests will appear here when they create one"
             buttonText="Manage a Business"
+            action={handleManageCreate}
           />
         )
       ) : (

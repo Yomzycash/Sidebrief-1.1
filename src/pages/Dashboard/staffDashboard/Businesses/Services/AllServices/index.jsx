@@ -9,13 +9,15 @@ import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import { useGetAllCountriesQuery } from "services/launchService";
+import EmptyContent from "components/EmptyContent";
 
 const AllServices = () => {
   const [clickedService, setClickedService] = useState({});
 
-  const [countrySelect, setCountrySelect] = useState("All");
-  const [categorySelect, setCategorySelect] = useState("All");
-  const [filteredData, seFilteredData] = useState([]);
+  const [countrySelected, setCountrySelected] = useState("All");
+  const [categorySelected, setCategorySelected] = useState("All");
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
@@ -24,45 +26,32 @@ const AllServices = () => {
     refetchOnMountOrArgChange: true,
   });
   const countries = useGetAllCountriesQuery();
-  const countriesCategory = countries?.data?.find((el) => el?.countryName === countrySelect);
-
-  console.log(countriesCategory?.countryISO);
+  const selectedCountryInfo = countries?.data?.find((el) => el?.countryName === countrySelected);
+  const selectedCountryISO = selectedCountryInfo?.countryISO;
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
+  // Filters by selected category and selected country
   useEffect(() => {
-    let dataSet = [];
-    data?.forEach((el) => {
-      if (el?.serviceCategory.trim().toLowerCase() === categorySelect.trim().toLowerCase()) {
-        dataSet.push(el);
-        seFilteredData(dataSet);
-      } else if (categorySelect.trim()=== "All") {
-        seFilteredData(data);
-      }
-      else {
-        
-        seFilteredData(dataSet);
-      }
- 
-    });
-  }, [categorySelect, data]);
-  useEffect(() => {
-    let dataSet = [];
-    data?.forEach((el) => {
-      if (el?.serviceCountry === countriesCategory?.countryISO) {
-        dataSet.push(el);
-        seFilteredData(dataSet);
-      }
-      else if (countriesCategory?.countryISO === undefined) {
-        seFilteredData(data);
-      }
-      else {
-        
-        seFilteredData(dataSet);
-      }
-    });
-  }, [countriesCategory?.countryISO, data]);
+    let dataCopy = data;
+
+    dataCopy = dataCopy?.filter((el) =>
+      normalizeText(categorySelected) === "all"
+        ? el
+        : normalizeText(el?.serviceCategory) === normalizeText(categorySelected)
+    );
+
+    dataCopy = dataCopy?.filter((el) =>
+      normalizeText(countrySelected) === "all"
+        ? el
+        : normalizeText(el?.serviceCountry) === normalizeText(selectedCountryISO)
+    );
+
+    setFilteredData(dataCopy);
+  }, [data, categorySelected, countrySelected]);
+
+  const normalizeText = (text) => text?.toLowerCase()?.trim();
 
   // This runs when add service button is clicked
   const handleAddButton = () => {
@@ -72,6 +61,11 @@ const AllServices = () => {
   const handleServiceClick = (clickedInfo) => {
     setOpen("edit", clickedInfo.serviceId);
     setClickedService(clickedInfo);
+  };
+
+  const handleSearch = (e) => {
+    let value = e.target.value;
+    setSearchValue(value);
   };
 
   // delete service
@@ -88,7 +82,6 @@ const AllServices = () => {
     }
     refetch();
   };
- 
 
   // const filteredData= data?.filter((el)=>)
 
@@ -103,6 +96,14 @@ const AllServices = () => {
     if (mode === "add") setClickedService({});
   };
 
+  let searchFiltered = filteredData?.filter(
+    (el) =>
+      normalizeText(el?.serviceName)?.includes(normalizeText(searchValue)) ||
+      normalizeText(el?.serviceCategory)?.includes(normalizeText(searchValue)) ||
+      normalizeText(el?.serviceCountry)?.includes(normalizeText(searchValue)) ||
+      normalizeText(el?.serviceDescription)?.includes(normalizeText(searchValue))
+  );
+
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
@@ -111,19 +112,20 @@ const AllServices = () => {
         handleButton={handleAddButton}
         placeholder="Search for a product..."
         totalShown={filteredData?.length}
-        categorySelected={setCategorySelect}
-        countrySelected={setCountrySelect}
+        categorySelected={setCategorySelected}
+        countrySelected={setCountrySelected}
+        onSearchChange={handleSearch}
       />
       {isLoading && (
         <Loading height="300px">
           <Puff stroke="#00A2D4" fill="white" width={60} />
         </Loading>
       )}
-      {filteredData?.length <= 0 && ( 
-        <p> no data found </p>
-      )}
-        <ServiceContainer>
-          {filteredData?.length > 0 && filteredData?.map((service, index) => (
+      {filteredData?.length <= 0 && <EmptyContent emptyText="Not available" />}
+
+      <ServiceContainer>
+        {searchFiltered?.length > 0 &&
+          searchFiltered?.map((service, index) => (
             <PetalsCard
               key={index}
               title={service.serviceName}
@@ -134,10 +136,8 @@ const AllServices = () => {
               //action = {() => handleAddButton(service)}
             />
           ))}
-            
       </ServiceContainer>
-      
-    
+
       <StaffServicesModal
         disableAll={dialog.mode === "edit" ? true : false}
         clickedService={clickedService}

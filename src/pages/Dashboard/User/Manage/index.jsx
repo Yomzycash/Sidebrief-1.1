@@ -113,6 +113,7 @@ const Manage = () => {
           <EmptyContent
             emptyText="Your manage requests will appear here. Manage your business now."
             buttonText="Manage a Business"
+            action={handleManageCreate}
           />
         )
       ) : (
