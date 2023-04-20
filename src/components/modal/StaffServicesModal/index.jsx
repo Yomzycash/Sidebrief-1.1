@@ -25,7 +25,7 @@ const StaffServicesModal = ({
   let mode = dialog.mode;
   let serviceId = dialog.serviceId;
 
-  let title = mode === "edit" ? "Update Service" : "Add New Service";
+  let title = mode === "edit" ? "Update Product" : "Add New Product";
 
   return (
     <Modal2
