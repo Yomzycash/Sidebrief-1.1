@@ -35,12 +35,12 @@ export const handleBusinessInfo = async (info) => {
   const businessNamesResponse = namesExists
     ? await info?.updateBusinessNames(requiredBusinessNamesData)
     : await info?.addBusinessNames(requiredBusinessNamesData);
-  console.log(businessNamesResponse);
+  // console.log(businessNamesResponse);
   // Update if business objectives exist, add if otherwise
   const businessObjectivesResponse = objectivesExists
     ? await info?.updateBusinessObjectives(requiredBusinessObjectives)
     : await info?.addBusinessObjectives(requiredBusinessObjectives);
-  console.log(businessObjectivesResponse);
+  // console.log(businessObjectivesResponse);
 
   let error = businessNamesResponse?.error;
   let error2 = businessObjectivesResponse?.error;

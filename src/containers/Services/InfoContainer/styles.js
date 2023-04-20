@@ -15,6 +15,10 @@ export const Container = styled.div`
 
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+	}
 `;
 
 export const LHS = styled.div`
@@ -34,6 +38,11 @@ export const RHS = styled.div`
     flex-direction: column;
     align-items: flex-end;
   }
+
+  @media screen and (max-width: 600px) {
+    flex-direction: row;
+    padding-top:25px;
+	}
 `;
 
 export const NormalText = styled.p`

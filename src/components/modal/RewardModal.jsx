@@ -21,7 +21,7 @@ const RewardModal = ({ handleClose }) => {
   const [claimReward, claimState] = useClaimRewardMutation()
 
   const { rewardID } = useParams()
-  console.log(rewardID)
+  
 
   const rewardDetails = data?.find((element) => element.rewardID === rewardID)
 

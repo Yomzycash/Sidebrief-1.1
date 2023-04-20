@@ -89,7 +89,7 @@ const BeneficiariesInfo = () => {
     };
 
     let addResponse = await handleBeneficiaryAdd(actionInfo);
-    console.log(addResponse);
+    // console.log(addResponse);
     if (addResponse.data) {
       handleResponse(addResponse, "Beneficiary added successfully");
       return true;

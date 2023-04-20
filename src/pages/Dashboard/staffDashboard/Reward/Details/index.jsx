@@ -19,7 +19,7 @@ const StaffRewardDetailsPage = () => {
     );
     setSelectedReward(rewardDatails);
   }, [data]);
-  console.log("sayyyyy", selectedReward);
+  // console.log("sayyyyy", selectedReward);
   return (
     <Container>
       <Body>

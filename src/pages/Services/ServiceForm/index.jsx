@@ -38,12 +38,12 @@ const ServiceForm = () => {
 
     let addArray = payload.map((el, i) => addComplyData(el));
     let responses = await Promise.all(addArray);
-    console.log(responses);
+    // console.log(responses);
 
     let error = responses.find((el) => el?.error)?.error;
 
     if (error) {
-      console.log(error);
+      // console.log(error);
       handleError(error);
       return;
     } else {
@@ -70,7 +70,7 @@ const ServiceForm = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.4 })); // total- total pages and current - current page
   }, []);
 
-  console.log(viewComply.data?.complyData);
+  // console.log(viewComply.data?.complyData);
   return (
     <Container>
       <ServicesCheckoutHeader />

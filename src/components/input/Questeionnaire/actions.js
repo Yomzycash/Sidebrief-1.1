@@ -97,7 +97,6 @@ export const useActions = ({ state, dispatch }) => {
     let questionValid = validateQuestion(question);
     let optionsValid = validateOptions() && validateEmptyOptions();
     if (!questionValid || !optionsValid) return;
-    console.log(state);
   };
 
   // Hides form

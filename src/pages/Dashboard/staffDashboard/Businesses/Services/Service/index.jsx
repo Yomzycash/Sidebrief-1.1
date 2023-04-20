@@ -47,8 +47,8 @@ const ServicePage = () => {
     navigate("/staff-dashboard/businesses/services/all");
   };
 
-  const handleViewAllNotifications = () => {
-    navigate("/staff-dashboard/businesses/services/allcomply");
+  const handleViewAllComply = () => {
+    navigate("/staff-dashboard/businesses/services/allcomply/all");
   };
 
   let totalServices = data?.length > 0 ? data?.length : 0;
@@ -153,7 +153,7 @@ const ServicePage = () => {
         subText="View recent registered businesses service request"
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
-        btnAction={handleViewAllNotifications}
+        btnAction={handleViewAllComply}
       >
         {allComply.isLoading ? (
           <Loading height="300px">
@@ -165,7 +165,7 @@ const ServicePage = () => {
               columns={columns}
               data={[...allComply.data]
                 ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
-                ?.map((comply) => ({
+                ?.slice(0,10).map((comply) => ({
                   complyCode: comply.complyCode,
                   serviceId: comply.serviceId,
                   meta: comply.meta,

@@ -186,7 +186,7 @@ const DirectorsInfo = () => {
       deleteMember: deleteMember,
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
-    console.log(memberResponse);
+    // console.log(memberResponse);
   };
 
   //

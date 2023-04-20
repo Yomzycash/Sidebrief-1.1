@@ -70,7 +70,6 @@ const ResetPassword = () => {
 	}, []);
 
 	const submitForm = async (data) => {
-		console.log(data);
 
 		const requiredData = {
 			email: state,
@@ -86,7 +85,7 @@ const ResetPassword = () => {
 		const error = response?.error;
 
 		if (response) {
-			console.log(resData);
+			// console.log(resData);
 			toast.success(resData.message);
 			navigate(`${location.pathname}/success`);
 		} else {

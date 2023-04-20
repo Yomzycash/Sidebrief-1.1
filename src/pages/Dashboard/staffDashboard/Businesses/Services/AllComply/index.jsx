@@ -84,12 +84,12 @@ const Registrationlayout = () => {
           />
           <ActiveNav
             text="Submitted"
-            total={submitted.length}
+            total={submitted?.length}
             path={"/staff-dashboard/businesses/services/allcomply/submitted"}
           />
           <ActiveNav
             text="Draft"
-            total={draft.length}
+            total={draft?.length}
             path={"/staff-dashboard/businesses/services/allcomply/draft"}
           />
         </SubHeader>

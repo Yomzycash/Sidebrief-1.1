@@ -5,7 +5,6 @@ import { Switch as MuiSwitch } from "@mui/material";
 export const Switch = ({ text, id, subText, action }) => {
 	const handleChange = (event) => {
 		// perform change action or call change function
-		console.log(id, event.target.checked);
 	};
 
 	return (

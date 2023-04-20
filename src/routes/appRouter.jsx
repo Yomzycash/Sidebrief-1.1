@@ -586,6 +586,8 @@ const AppRouter = () => {
                   </Route>
                   <Route path="allcomply" element={<AllComplyLayout />}>
                     <Route path="all" element={<AllComply />} />
+                    <Route path="submitted" element={<AllSubmittedComply />} />
+                    <Route path="draft" element={<AllDraftsComply />} />
                   </Route>
                 </Route>
               </Route>

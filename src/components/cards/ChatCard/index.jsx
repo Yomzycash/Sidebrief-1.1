@@ -58,7 +58,6 @@ const ChatCard = ({ messages, threadsRefetch }) => {
 
     store.dispatch(setRefreshNotifications(!refreshNotifications));
 
-    console.log(response);
   };
 
   const openChat = () => {

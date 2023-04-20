@@ -21,7 +21,7 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
 
   //
   const onRadioChange = (text) => {
-    console.log(text);
+    
     handleRadioSelect(text, info?.fieldName);
   };
 
@@ -34,7 +34,7 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
       }
       list = list.filter((el) => normalize(el) !== normalize(text));
       list = [...list, text];
-      console.log(list);
+     
       setCheckList(list);
       handleCheckboxSelect(list, info?.fieldName);
     } else {
@@ -44,7 +44,6 @@ const SelectType = ({ info, questionNumber, handleRadioSelect, handleCheckboxSel
       }
 
       list = list.filter((el) => el !== text);
-      console.log(list);
       setCheckList(list);
       handleCheckboxSelect(list, info?.fieldName);
     }

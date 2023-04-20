@@ -99,8 +99,6 @@ export const useActions = ({
       refetchServices();
     } else {
       handleError(error);
-      console.log(error);
-      // handleError(error);
     }
   };
 
@@ -127,8 +125,6 @@ export const useActions = ({
       refetchServices();
     } else {
       handleError(error);
-      console.log(error);
-      // handleError(error);
     }
   };
 

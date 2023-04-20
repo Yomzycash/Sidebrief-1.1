@@ -29,7 +29,6 @@ const MyRewards = () => {
     refetchOnMountOrArgChange: true,
     skip: false,
   });
-  console.log(data);
 
   const navigate = useNavigate();
 
