@@ -19,7 +19,7 @@ const Payment = () => {
   const launchRequest = useViewLaunchRequestQuery(launchResponse);
 
   let paymentDetails = launchRequest?.data?.businessPayment[0];
-  console.log("checking", launchRequest?.data?.createdAt);
+  // console.log("checking", launchRequest?.data?.createdAt);
 
   return (
     <DetailContainer>
