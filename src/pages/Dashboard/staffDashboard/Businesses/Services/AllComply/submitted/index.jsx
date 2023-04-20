@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from "react";
 import { GeneralTable } from "components/Tables";
 import { Body, TableContainer, Loading, EmptyContainer } from "../style";
 import { Puff } from "react-loading-icons";
@@ -6,23 +6,21 @@ import { columns } from "../tableColumn";
 import { useViewAllComplyQuery } from "services/complyService";
 import { compareAsc } from "date-fns";
 
-
-const Submitted = () => {
+const AllSubmittedComply = () => {
   const { data, isLoading } = useViewAllComplyQuery();
 
   const draft = data?.filter((el) => el.status === "pending") || [];
   console.log("draft", draft);
 
-
   const submitted = data?.filter((el) => el.status === "submitted") || [];
-  console.log("submitted", submitted)
+  console.log("submitted", submitted);
 
   const loadingData = isLoading;
 
   const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
 
   return (
-     <TableContainer>
+    <TableContainer>
       <Body>
         {loadingData ? (
           <Loading>
@@ -41,19 +39,16 @@ const Submitted = () => {
             columns={columns}
             normalLastRow
           />
-        )
-        : 
-          (
-            <EmptyContainer>No Data Available</EmptyContainer>
-          )
-        }
+        ) : (
+          <EmptyContainer>No Data Available</EmptyContainer>
+        )}
 
         {/* {sortedArr?.length > itemsPerPage && (
           <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
         )} */}
       </Body>
     </TableContainer>
-  )
-}
+  );
+};
 
-export default Submitted
+export default AllSubmittedComply;
