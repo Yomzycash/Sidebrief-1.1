@@ -42,7 +42,9 @@ const AllServices = () => {
       }
       else {
         
+        seFilteredData(dataSet);
       }
+ 
     });
   }, [categorySelect, data]);
   useEffect(() => {
@@ -51,8 +53,13 @@ const AllServices = () => {
       if (el?.serviceCountry === countriesCategory?.countryISO) {
         dataSet.push(el);
         seFilteredData(dataSet);
-      } else if (countriesCategory?.countryISO === undefined) {
+      }
+      else if (countriesCategory?.countryISO === undefined) {
         seFilteredData(data);
+      }
+      else {
+        
+        seFilteredData(dataSet);
       }
     });
   }, [countriesCategory?.countryISO, data]);
@@ -107,13 +114,16 @@ const AllServices = () => {
         categorySelected={setCategorySelect}
         countrySelected={setCountrySelect}
       />
-      {isLoading ? (
+      {isLoading && (
         <Loading height="300px">
           <Puff stroke="#00A2D4" fill="white" width={60} />
         </Loading>
-      ) : (
+      )}
+      {filteredData?.length <= 0 && ( 
+        <p> no data found </p>
+      )}
         <ServiceContainer>
-          {filteredData?.map((service, index) => (
+          {filteredData?.length > 0 && filteredData?.map((service, index) => (
             <PetalsCard
               key={index}
               title={service.serviceName}
@@ -124,8 +134,10 @@ const AllServices = () => {
               //action = {() => handleAddButton(service)}
             />
           ))}
-        </ServiceContainer>
-      )}
+            
+      </ServiceContainer>
+      
+    
       <StaffServicesModal
         disableAll={dialog.mode === "edit" ? true : false}
         clickedService={clickedService}
