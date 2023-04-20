@@ -117,6 +117,7 @@ const Intellectual = () => {
           <EmptyContent
             emptyText="Your intellectual properties will appear here when you create one"
             buttonText="Create Intellectual Property"
+            action={handleIntellectualCreate}
           />
         )
       ) : (
