@@ -12,8 +12,11 @@ import {
   RewardIcon,
   SettingsIcon,
   IntellectualIcon,
+  Intellectual,
   ComplianceIcon,
-  TaxesIcon,
+  TaxIcon,
+  ProductIcon,
+  OnboardIcon,
   HiringIcon,
   PaymentIcon,
   EntityIcon,
@@ -219,7 +222,7 @@ export const sidebarLink = [
   {
     id: 2,
     title: "Products",
-    icon: BusinessesIcon,
+    icon: ProductIcon,
     path: "/dashboard/products",
   },
   {
@@ -230,8 +233,8 @@ export const sidebarLink = [
   },
   {
     id: 4,
-    title: "Onboarded",
-    icon: HiringIcon,
+    title: "Onboard",
+    icon: OnboardIcon,
     path: "/dashboard/onboarded",
   },
   {
@@ -243,13 +246,13 @@ export const sidebarLink = [
   {
     id: 6,
     title: "Taxes",
-    icon: BusinessesIcon,
+    icon: TaxIcon,
     path: "/dashboard/tax",
   },
   {
     id: 7,
     title: "Intellectual",
-    icon: BusinessesIcon,
+    icon: Intellectual,
     path: "/dashboard/intellectual-property",
   },
   {
@@ -294,7 +297,7 @@ export const StaffSidebarLinks = [
       {
         id: 1,
         title: "Products",
-        icon: ServicesIcon,
+        icon: ProductIcon,
         path: "/staff-dashboard/businesses/services",
       },
       {
@@ -306,25 +309,25 @@ export const StaffSidebarLinks = [
       {
         id: 3,
         title: "Manage",
-        icon: ResourcesIcon,
+        icon:   ManageIcon,
         path: "/staff-dashboard/businesses/manage",
       },
       {
         id: 4,
-        title: "Onboarded",
-        icon: ResourcesIcon,
+        title: "Onboard",
+        icon:   OnboardIcon,
         path: "/staff-dashboard/businesses/onboarded",
       },
       {
         id: 5,
         title: "Taxes",
-        icon: ResourcesIcon,
+        icon: TaxIcon,
         path: "/staff-dashboard/businesses/tax",
       },
       {
         id: 6,
         title: "Intellectual",
-        icon: ResourcesIcon,
+        icon: Intellectual,
         path: "/staff-dashboard/businesses/intellectual-property",
       },
       {
@@ -1027,7 +1030,7 @@ export const staffSidebarLink = [
   {
     id: 4,
     title: "Taxes",
-    icon: TaxesIcon,
+    icon: Intellectual,
     path: "/staffdashboard/Taxes",
     dropdownIcon: ArrowDownIcon,
     dropdown: [],

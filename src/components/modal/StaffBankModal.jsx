@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DetailedSection } from "containers/Checkout/InfoSection/style";
 import { BankAccountSchema } from "utils/config";
 import { useGetAllBanksQuery } from "services/staffService";
+import { useGetAllCountriesQuery } from "services/launchService";
 
 const StaffBankModal = ({
     cardAction,
@@ -25,10 +26,12 @@ const StaffBankModal = ({
         resolver: yupResolver(BankAccountSchema),
     });
 
-    const { data, isLoading} = useGetAllBanksQuery();
+    const {data, isLoading} = useGetAllBanksQuery();
+
+    const allCountries = useGetAllCountriesQuery();
 
     useEffect(() => {
-        const countries = data ? data.map((country) => country.bankCountry) : [];
+        let countries = allCountries.data ?  allCountries.data?.map((country) => country.countryISO) : [];
 
         setCountries(
             countries 
@@ -72,7 +75,7 @@ const StaffBankModal = ({
             handleSubmit={handleSubmit }
             submitAction={submitAction}
             cardAction={cardAction}
-            title="Add New Bank"
+            title={cardAction === "edit" ? "Update Bank" : "Add New Bank"}
             open={open}
             setOpen={setOpen}
             loading={loading}
