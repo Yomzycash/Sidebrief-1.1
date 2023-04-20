@@ -30,8 +30,6 @@ import PaidDraftManage from "pages/Dashboard/User/Manage/PaidDraftManage";
 import PaidDraftTaxes from "pages/Dashboard/User/Taxes/PaidDraftTaxes";
 import PaidDraftIntellectuals from "pages/Dashboard/User/Intellectual/PaidDraftIntellectual";
 import StaffPaidDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPaidDraftTaxes";
-import AllSubmittedComply from "pages/Dashboard/staffDashboard/Businesses/Services/AllComply/submitted";
-import AllDraftsComply from "pages/Dashboard/staffDashboard/Businesses/Services/AllComply/draft";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -187,6 +185,7 @@ const AllServices = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllServices")
 );
 const ChatLayout = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/Services/Chat"));
+// COMPLY
 const AllComplyLayout = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply")
 );
