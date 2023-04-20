@@ -78,16 +78,19 @@ const Business = () => {
       text: "All",
       total: submittedTotal + draftTotal || 0,
       path: "/dashboard/businesses/all-businesses",
+      isAvailable: true,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
       path: "/dashboard/businesses/submitted-applications",
+      isAvailable: true,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
       path: "/dashboard/businesses/draft-applications",
+      isAvailable: true,
     },
   ];
 

@@ -113,6 +113,7 @@ const Onboarded = () => {
           <EmptyContent
             emptyText="Your onboarded businesses will appear here."
             buttonText="Onboard a Business"
+            action={handleOnboardCreate}
           />
         )
       ) : (
