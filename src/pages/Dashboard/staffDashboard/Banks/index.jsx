@@ -34,13 +34,11 @@ const StaffBank = () => {
     const layoutInfo = useSelector((store) => store.LayoutInfo);
     const sidebarWidth = {layoutInfo};
     const navigate = useNavigate();
-    const { data, isLoading, isSuccess } = useGetAllBanksQuery({
+    const { data, refetch, isSuccess } = useGetAllBanksQuery({
         refetchOnMountOrArgChange: true,
     });
     const [updateBank, updateState] = useUpdateBankMutation();
     const [ deleteBank, deleteState] = useDeleteBankMutation();
-
-    // const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
     useEffect(() => {
         let localBankID = localStorage.getItem("bankCode");
@@ -54,7 +52,7 @@ const StaffBank = () => {
           } else {
             // console.log("Id not found")
           }
-    }, [data]);
+    }, [data, refetch]);
 
     // const handleBankClick = (bankID) => {
     //     navigate("/staff-dashboard/bank-accounts/bank/details");
@@ -91,7 +89,7 @@ const StaffBank = () => {
         } else {
             handleError(error);
         }
-
+        refetch();
     }
 
     // Delete Bank Function
@@ -109,6 +107,7 @@ const StaffBank = () => {
         } else {
             handleError(error);
         };
+        refetch();
     }
     return (
         <BodyRight sidebarWidth={sidebarWidth}>
