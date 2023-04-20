@@ -199,7 +199,6 @@ const AllSubmittedComply =  lazy(() =>
 const AllDraftsComply =  lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/draft")
 );
-
 const ServiceSuccessPage = lazy(() => import("../pages/Services/ServiceSuccessPage"));
 const ServicesDetailLayout = lazy(() => import("pages/Services/Detail/layout"));
 const ServiceInformation = lazy(() => import("pages/Services/Detail/ServiceInformation"));
