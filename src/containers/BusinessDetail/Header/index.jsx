@@ -66,6 +66,8 @@ export const Header = ({ isStaff, code }) => {
   const launchRequest = useViewLaunchRequestQuery(launchResponse);
   const page = pathname.split("/").pop();
 
+  console.log("checking page", page);
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -257,6 +259,15 @@ export const Header = ({ isStaff, code }) => {
           </RHS>
         </TitleContainer>
       </Top>
+      {page !== "detail" || "payment" ? (
+        <SearchAndSort>
+          {/* placeholder changes based on the page it's on */}
+          {/* not implemented yet */}
+          <Search triggerSearch={triggerSearch} page={page} />
+          <SortDropdown />
+        </SearchAndSort>
+      ) : null}
+
       <SubHeader
         ref={subHeader}
         onMouseEnter={() => setSubHeaderHovered(true)}
@@ -272,6 +283,16 @@ export const Header = ({ isStaff, code }) => {
             launchResponse.registrationType
           }`}
         />
+        <ActiveNav
+          text={"Payment Details"}
+          // total={0}
+          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/payment?launchCode=${
+            launchResponse.launchCode
+          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
+            launchResponse.registrationType
+          }`}
+        />
+
         <ActiveNav
           text={"Shareholders"}
           total={launchRequest?.isLoading ? 0 : launchRequest?.data?.businessShareholders?.length}
@@ -302,14 +323,7 @@ export const Header = ({ isStaff, code }) => {
           }`}
         />
       </SubHeader>
-      {page !== "detail" ? (
-        <SearchAndSort>
-          {/* placeholder changes based on the page it's on */}
-          {/* not implemented yet */}
-          <Search triggerSearch={triggerSearch} page={page} />
-          <SortDropdown />
-        </SearchAndSort>
-      ) : null}
+
       <Dialog open={openModal} fullWidth maxWidth="sm">
         <ModalWrapper>
           <TopContent>
@@ -333,6 +347,7 @@ export const Header = ({ isStaff, code }) => {
     </Container>
   );
 };
+
 const ModalWrapper = styled.div`
   display: flex;
   align-items: center;

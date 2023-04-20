@@ -18,7 +18,6 @@ import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import FileUpload from "components/FileUpload";
 import { convertToLink, isValidFileUploaded } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 
 const BeneficiariesKYC = () => {

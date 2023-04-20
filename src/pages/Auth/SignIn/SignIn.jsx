@@ -73,9 +73,6 @@ const SignIn = () => {
 
     let data = response?.data;
     let error = response?.error;
-
-    console.log("response data", data);
-    console.log("response error", error);
     if (data) {
       store.dispatch(saveUserInfo(data)); // !important DO NOT REMOVE
       localStorage.setItem("userInfo", JSON.stringify(data));

@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Body,
   BodyLeft,
+  BodyCenter,
   BodyRight,
   Container,
   Footer,
@@ -13,7 +14,6 @@ import { store } from "redux/Store";
 import { setMyClaimedRewards, setRewardsPageHeader } from "redux/Slices";
 import { useGetUserRewardQuery } from "services/RewardService";
 import { Puff } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
 
 // const rewardsCategories = ["All", "Human Resources", "Productivity"];
 
@@ -49,9 +49,7 @@ const MyRewards = () => {
   useEffect(() => {
     setMyRewards(data);
     setRewardscategories((prev) => {
-      const categories = data
-        ? data.map((element) => element.rewardCategory)
-        : [];
+      const categories = data ? data.map((element) => element.rewardCategory) : [];
 
       return [...new Set([...prev, ...categories])];
     });
@@ -68,9 +66,7 @@ const MyRewards = () => {
         setFilteredReward(myRewards);
         break;
       default:
-        let filtered = myRewards?.filter(
-          (reward) => reward?.rewardCategory === selectedCategory
-        );
+        let filtered = myRewards?.filter((reward) => reward?.rewardCategory === selectedCategory);
         setFilteredReward(filtered);
         break;
     }
@@ -84,7 +80,7 @@ const MyRewards = () => {
             <Puff stroke="#00A2D4" fill="white" width={60} />
           </Loading>
         ) : (
-          filteredReward?.length > 0 && (
+          filteredReward?.length > 0 ? (
             <>
               <BodyLeft>
                 {/* <h3>Categories</h3> */}
@@ -94,8 +90,7 @@ const MyRewards = () => {
                       key={index}
                       onClick={() => handleCategory(cat)}
                       style={{
-                        color:
-                          cat === category.get("category") ? "#00A2D4" : "",
+                        color: cat === category.get("category") ? "#00A2D4" : "",
                       }}
                     >
                       {cat}
@@ -116,6 +111,8 @@ const MyRewards = () => {
                 ))}
               </BodyRight>
             </>
+          ) : (
+            <BodyCenter>No rewards added yet!</BodyCenter>
           )
         )}
       </Body>

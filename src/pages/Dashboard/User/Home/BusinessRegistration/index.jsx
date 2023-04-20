@@ -10,9 +10,8 @@ import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery } from "services/RewardService";
 import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
 import { store } from "redux/Store";
-import { setGeneratedLaunchCode, setLaunchResponse, setRefreshApp } from "redux/Slices";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { compareDesc } from "date-fns";
-// import AppFeedback from "components/AppFeedback";
 import { LaunchRocket, ManageSpanner } from "asset/svg";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -22,11 +21,7 @@ import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 const BusinessRegistration = (props) => {
   const [allLaunchContainer, setAllLaunchContainer] = useState([]);
   // Get user data information
-  const { userInfo, refreshApp } = useSelector((store) => store.UserDataReducer);
-
-  useEffect(() => {
-    store.dispatch(setRefreshApp(!refreshApp));
-  }, []);
+  const { userInfo } = useSelector((store) => store.UserDataReducer);
 
   let firstName_raw = userInfo?.first_name;
   let firstName = firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
@@ -109,7 +104,7 @@ const BusinessRegistration = (props) => {
   };
 
   const handleManage = () => {
-    navigate("/services");
+    navigate("/services/option-select");
     removeComplyFromLocalStorage();
   };
 

@@ -5,7 +5,6 @@ import { Puff } from "react-loading-icons";
 import { BodyRight, Loading, ServiceContainer } from "./style";
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staffService";
-import { setRefreshApp } from "redux/Slices";
 import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
@@ -15,10 +14,11 @@ const AllServices = () => {
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
-  const { data, isLoading, refetch } = useGetAllServicesQuery();
-  const [deleteService, deleteState] = useDeleteServiceMutation();
+  const { data, isLoading, refetch } = useGetAllServicesQuery({ refetchOnMountOrArgChange: true });
+  const [deleteService, deleteState] = useDeleteServiceMutation({
+    refetchOnMountOrArgChange: true,
+  });
 
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
@@ -34,7 +34,12 @@ const AllServices = () => {
 
   // delete service
   const handleServiceDelete = async () => {
-    let response = await deleteService(clickedService.serviceId);
+    let payload = {
+      serviceId: clickedService.serviceId,
+      serviceName: clickedService.serviceName,
+    };
+
+    let response = await deleteService(payload);
     let data = response?.data;
     let error = response?.error;
 

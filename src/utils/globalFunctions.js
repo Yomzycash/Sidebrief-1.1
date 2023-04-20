@@ -15,10 +15,12 @@ export const handleError = (error) => {
     toast.error("Connection error");
   } else if (error?.originalStatus === "404") {
     toast.error("Please check credentiaal");
-  } else if (error?.data?.message) {
+  } else if (typeof error?.data?.message === "string") {
     toast.error(error?.data.message);
   } else if (error?.data?.error) {
     toast.error(error?.data.error);
+  } else if (error?.data?.message?.code) {
+    toast.error(error?.data?.message?.code);
   } else if (typeof error?.data === "string") {
     toast.error(error.data);
   } else if (typeof error === "string") {

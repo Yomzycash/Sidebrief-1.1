@@ -1,7 +1,7 @@
 import ServiceReviewCard from "components/cards/ServiceReviewCard";
 import { CheckoutController } from "containers";
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useLazyViewComplyQuery } from "services/complyService";
 import { Bottom, Loading } from "./style";
 import { Puff } from "react-loading-icons";
@@ -20,6 +20,7 @@ const ReviewDocuments = () => {
   });
 
   const navigate = useNavigate();
+  let { option } = useParams();
 
   const handlePrev = () => {
     navigate(-1);
@@ -27,8 +28,9 @@ const ReviewDocuments = () => {
 
   const handleNext = async () => {
     let response = await handleStatusUpdate();
-    response.data && navigate("/services/success");
+    response.data && navigate(`/services/${option}/success`);
   };
+
   return (
     <div>
       {viewComply?.isLoading?.isLoading && (
@@ -43,6 +45,7 @@ const ReviewDocuments = () => {
           backAction={handlePrev}
           forwardAction={handleNext}
           forwardText="Done"
+          forwardLoading={updateState.isLoading}
         />
       </Bottom>
     </div>

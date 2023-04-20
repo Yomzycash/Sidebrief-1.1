@@ -21,7 +21,8 @@ const PaymentPage = () => {
 
   const [payLaunch] = usePayLaunchMutation();
 
-  const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
+  // const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
+  const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
 
   const { launchCode, registrationType } = launchResponse;
 
@@ -60,6 +61,7 @@ const PaymentPage = () => {
     const payResponse = await payLaunch(requiredData);
 
     navigate("/launch/address");
+    return payResponse;
   };
 
   //
@@ -77,10 +79,12 @@ const PaymentPage = () => {
       },
     };
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
-    store.dispatch(setLaunchPaid(requiredData));
-    const payResponse = await payLaunch(JSON.stringify(requiredData));
+    store.dispatch(setLaunchPaid(requiredData.paymentStatus));
+    const payResponse = await payLaunch(requiredData);
 
     navigate("/launch/address");
+
+    return payResponse;
   };
 
   //

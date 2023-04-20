@@ -1,82 +1,26 @@
 import React, { useEffect, useState } from "react";
-import {
-  ButtonWrapper,
-  PageTitle,
-  Container,
-  Header,
-  SubHeader,
-  TopContent,
-  BottomContent,
-  MainHeader,
-  Drop,
-  SearchWrapper,
-} from "./styled";
-import { SummaryCard } from "components/cards";
-import Search from "components/navbar/Search";
-import ActiveNav from "components/navbar/ActiveNav";
-import { SearchResult } from "components/navbar/SearchResult";
+import { Container } from "./styled";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { ReactComponent as NoteIcon } from "../../../../asset/images/note.svg";
 import { setBusinessesShown, setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { store } from "redux/Store";
-import {
-  useGetUserDraftQuery,
-  useGetUserSubmittedQuery,
-  useViewPayLaunchMutation,
-} from "services/launchService";
+import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
 import { useSelector } from "react-redux";
-import Fuse from "fuse.js";
-import { navigateToDetailPage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import ProductHeader from "components/Header/ProductHeader";
 
-const searchStyle = {
-  borderRadius: "12px",
-  backgroundColor: "white",
-  width: "100%",
-  height: "100%",
-};
-
-const iconStyle = { width: "17px", height: "17px" };
+//
 
 const Business = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [searchFocused, setSearchFocused] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  let check = location.pathname.includes("chats");
-
-  const [viewPayLaunch] = useViewPayLaunchMutation();
 
   const drafts = useGetUserDraftQuery({
     refetchOnMountOrArgChange: true,
   });
-
   const submitted = useGetUserSubmittedQuery({
     refetchOnMountOrArgChange: true,
   });
-
-  const fuseOptions = {
-    shouldSort: true,
-    keys: [
-      "businessNames.businessName1",
-      "businessNames.businessName2",
-      "businessNames.businessName3",
-      "businessNames.businessName4",
-    ],
-  };
-
-  const allData = [...(drafts.data || []), ...(submitted.data || [])];
-
-  const fuse = new Fuse(allData, fuseOptions);
-
-  const onItemClick = (item) => {
-    setSearchFocused(false);
-    const launchInfo = {
-      launchCode: item.launchCode,
-      registrationCountry: item.registrationCountry,
-      registrationType: item.registrationType,
-    };
-    navigateToDetailPage(navigate, launchInfo, viewPayLaunch);
-  };
 
   const businessesShown = useSelector((store) => store.BusinessesInfo.businessesShown);
 
@@ -117,82 +61,50 @@ const Business = () => {
     removeLaunchFromLocalStorage();
   }, []);
 
+  const handleSearch = (e) => {
+    let value = e.target.value;
+    setSearchValue(value);
+  };
+
+  const summary = {
+    current: businessesShown.shown || 0,
+    total: businessesShown.total || 0,
+  };
+
+  const filterList = ["All", "Onboarded", "Launched"];
+
+  const navInfo = [
+    {
+      text: "All",
+      total: submittedTotal + draftTotal || 0,
+      path: "/dashboard/businesses/all-businesses",
+    },
+    {
+      text: "Submitted",
+      total: submittedTotal || 0,
+      path: "/dashboard/businesses/submitted-applications",
+    },
+    {
+      text: "Draft",
+      total: draftTotal || 0,
+      path: "/dashboard/businesses/draft-applications",
+    },
+  ];
+
   return (
-    <>
-      <Container>
-        {!check && (
-          <Header>
-            <MainHeader>
-              <TopContent>
-                <div>
-                  <PageTitle>Businesses</PageTitle>
-                  <SummaryCard shown={businessesShown.shown} total={businessesShown.total} />
-                </div>
-                <Drop>
-                  <select>
-                    <option value="Sort">Sort</option>
-                    <option value="All">All</option>
-                  </select>
-                </Drop>
-              </TopContent>
-              <BottomContent>
-                <SearchWrapper onFocus={() => setSearchFocused(true)}>
-                  <Search
-                    style={searchStyle}
-                    iconStyle={iconStyle}
-                    onChange={(value) => setSearchValue(value)}
-                    value={searchValue}
-                    className={"searchbox"}
-                  />
-                  <SearchResult
-                    items={fuse
-                      .search(searchValue)
-                      .slice(0, 5)
-                      .map((el) => {
-                        return {
-                          id: el.item.launchCode,
-                          name: el.item.businessNames.businessName1 || "no name",
-                          launchCode: el.item.launchCode,
-                          registrationCountry: el.item.registrationCountry,
-                          registrationType: el.item.registrationType,
-                        };
-                      })}
-                    show={searchFocused}
-                    unShow={() => setSearchFocused(false)}
-                    onItemClick={onItemClick}
-                  />
-                </SearchWrapper>
-                <ButtonWrapper>
-                  <button onClick={handleLaunch}>
-                    <NoteIcon />
-                    Launch a Business
-                  </button>
-                </ButtonWrapper>
-              </BottomContent>
-            </MainHeader>
-            <SubHeader>
-              <ActiveNav
-                text="All"
-                total={submitted.isSuccess && drafts.isSuccess ? submittedTotal + draftTotal : 0}
-                path={"/dashboard/businesses/all-businesses"}
-              />
-              <ActiveNav
-                text="Submitted"
-                total={submitted.isSuccess ? submittedTotal : 0}
-                path="/dashboard/businesses/submitted-applications"
-              />
-              <ActiveNav
-                text="Draft"
-                total={drafts.isSuccess ? draftTotal : 0}
-                path="/dashboard/businesses/draft-applications"
-              />
-            </SubHeader>
-          </Header>
-        )}
-        <Outlet />
-        {/* <AppFeedback subProject="Businesses" /> */}
-      </Container>
-    </>
+    <Container>
+      <ProductHeader
+        title="Businesses"
+        searchPlaceholder="Search business names..."
+        summary={summary}
+        filterList={filterList}
+        action={handleLaunch}
+        actionText="Launch a Business"
+        onSearchChange={handleSearch}
+        navInfo={navInfo}
+      />
+      <Outlet context={{ submitted, drafts, searchValue }} />
+    </Container>
   );
 };
 export default Business;

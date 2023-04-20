@@ -16,13 +16,11 @@ import { resellerRegistrationSchema } from "utils/config";
 import { saveResellerInfo } from "redux/Slices";
 import { store } from "redux/Store";
 import { ThreeDots } from "react-loading-icons";
-import AppFeedback from "components/AppFeedback";
 import NumberInput from "components/input/phoneNumberInput";
 
 const ResellerRegister = () => {
   const [navSticked, setNavSticked] = useState("");
-  const [registerNewReseller, { isLoading, isSuccess }] =
-    useRegisterNewResellerMutation();
+  const [registerNewReseller, { isLoading, isSuccess }] = useRegisterNewResellerMutation();
   const {
     handleSubmit,
     register,
@@ -185,12 +183,7 @@ const ResellerRegister = () => {
                 },
               ]}
             />
-            <MainButton
-              title="Sign Up"
-              type="submit"
-              loading={isLoading}
-              disabled={isLoading}
-            />
+            <MainButton title="Sign Up" type="submit" loading={isLoading} disabled={isLoading} />
 
             <QuestionWrap>
               <TextsWithLink
@@ -247,8 +240,7 @@ const Registration = styled.div`
   padding: 59px;
   background-color: white;
   border: 1px solid #edf1f7;
-  box-shadow: -10px -10px 10px -5px #9596970a,
-    10px 10px 10px -5px #9596970a;
+  box-shadow: -10px -10px 10px -5px #9596970a, 10px 10px 10px -5px #9596970a;
   border-radius: 12px;
 
   @media screen and (max-width: 700px) {

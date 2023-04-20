@@ -201,7 +201,7 @@ const InfoSection = ({ disable, refetchServices, setOpen, mode, service }) => {
             disable={disable}
           />
           <InputWithLabel
-            label="Service Timeline (days)"
+            label="Service Timeline"
             labelStyle="input-label"
             placeholder="Enter Service Timeline"
             type="text"

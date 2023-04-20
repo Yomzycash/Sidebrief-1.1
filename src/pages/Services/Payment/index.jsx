@@ -2,7 +2,7 @@ import React from "react";
 import { Body, Loading } from "./styles.js";
 import { CheckoutController, CheckoutSection } from "containers";
 import { Bottom, Container } from "pages/Launch/styled";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { store } from "redux/Store";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { useEffect } from "react";
@@ -26,13 +26,13 @@ const ServicePayment = () => {
   const serviceForm = serviceData?.serviceForm;
   const serviceRequirements = serviceData?.serviceRequirements;
 
-  const handleNext = () => {
-    navigate("/services/form");
-  };
+  let { option } = useParams();
 
   const handlePrev = () => {
     navigate(-1);
   };
+
+  //
 
   // Send the payment reference information to the backend
   const sendFlutterwaveRefToBackend = async (reference) => {
@@ -50,17 +50,19 @@ const ServicePayment = () => {
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await addServicePayment(requiredData);
 
-    let link = "/services/form";
-    link = serviceForm?.length < 1 ? "/services/documents" : link;
-    link = serviceRequirements?.length < 1 ? "/services/review" : link;
+    let link = `/services/${option}/form`;
+    link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
+    link = serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     navigate(link);
   };
+
+  //
 
   // Stripe required data to be sent to the backend a successful payment
   const sendStripeRefToBackend = async (paymentIntent) => {
     const requiredData = {
       complyCode: complyInfo.complyCode,
-      paymentDetails: {
+      complyPayment: {
         paymentAmount: paymentIntent.amount,
         paymentCurrency: paymentIntent.currency,
         paymentTransactionId: paymentIntent.id,
@@ -68,18 +70,19 @@ const ServicePayment = () => {
         paymentStatus: paymentIntent.status === "succeeded" ? "successful" : "",
       },
     };
-    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
+    localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(requiredData));
     const payResponse = await addServicePayment(requiredData);
 
-    let link = "/services/form";
-    link = serviceForm?.length < 1 ? "/services/documents" : link;
-    link = serviceRequirements?.length < 1 ? "/services/review/info" : link;
-
-    console.log(serviceForm, serviceRequirements);
-    console.log(link);
+    let link = `/services/${option}/form`;
+    link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
+    link = serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     navigate(link);
+
+    return payResponse;
   };
+
+  //
 
   // Passed to the payment component
   let paymentInfo = {
@@ -95,6 +98,7 @@ const ServicePayment = () => {
   useEffect(() => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1 })); // total- total pages and current - current page
   }, []);
+
   return (
     <Container>
       <ServicesCheckoutHeader />
@@ -117,7 +121,6 @@ const ServicePayment = () => {
             backText={"Previous"}
             hideForward
             backAction={handlePrev}
-            forwardAction={handleNext}
             forwardText="Next"
           />
         </Bottom>

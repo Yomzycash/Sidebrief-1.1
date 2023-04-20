@@ -20,6 +20,7 @@ import {
   CountryIcon,
   ArrowDownIcon,
   ServicesIcon,
+  ManageIcon,
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
 // import  from "asset/Icons/ServicesIcon";
@@ -199,6 +200,15 @@ export const ServicesSchema = yup.object().shape({
   timeline: yup.string().required("Enter service timeline"),
 });
 
+export const BankAccountSchema = yup.object().shape({
+  bank_name: yup.string().required("Bank Name is required"),
+  description: yup.string().required("Enter bank description"),
+  bank_code: yup.string().required("Bank code is a required field"),
+  country: yup.string().required("Country is a required field"),
+  bank_url: yup.string().required("url is a required field"),
+  image: yup.string().required("lmage is a required field"),
+});
+
 export const sidebarLink = [
   {
     id: 1,
@@ -208,36 +218,60 @@ export const sidebarLink = [
   },
   {
     id: 2,
+    title: "Products",
+    icon: BusinessesIcon,
+    path: "/dashboard/products",
+  },
+  {
+    id: 3,
     title: "Businesses",
     icon: BusinessesIcon,
     path: "/dashboard/businesses/all-businesses",
   },
   {
-    id: 3,
-    title: "Products",
-    icon: BusinessesIcon,
-    path: "/dashboard/services/all",
+    id: 4,
+    title: "Onboarded",
+    icon: HiringIcon,
+    path: "/dashboard/onboarded",
   },
   {
-    id: 4,
+    id: 5,
+    title: "Manage",
+    icon: ManageIcon,
+    path: "/dashboard/manage",
+  },
+  {
+    id: 6,
+    title: "Taxes",
+    icon: BusinessesIcon,
+    path: "/dashboard/tax",
+  },
+  {
+    id: 7,
+    title: "Intellectual",
+    icon: BusinessesIcon,
+    path: "/dashboard/intellectual-property",
+  },
+  {
+    id: 8,
     title: "Bank Accounts",
     icon: BankAccountIcon,
     path: "/dashboard/bank-account",
   },
   {
-    id: 5,
+    id: 9,
     title: "Rewards",
     icon: RewardIcon,
     path: "/dashboard/rewards/all-rewards",
   },
+  // {
+  //   id: 10,
+  //   title: "Resources",
+  //   icon: ResourcesIcon,
+  //   path: "/dashboard/resources",
+  // },
   {
-    id: 6,
-    title: "Resources",
-    icon: ResourcesIcon,
-    path: "/dashboard/resources",
-  },
-  {
-    id: 7,
+    id: 11,
     title: "Settings",
     icon: SettingsIcon,
     path: "/dashboard/settings",
@@ -259,35 +293,53 @@ export const StaffSidebarLinks = [
     dropDownList: [
       {
         id: 1,
-        title: "Registrations",
-        icon: ResourcesIcon,
-        path: "/staff-dashboard/businesses/registration",
-      },
-      {
-        id: 2,
         title: "Products",
         icon: ServicesIcon,
         path: "/staff-dashboard/businesses/services",
       },
       {
+        id: 2,
+        title: "Registrations",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/registration",
+      },
+      {
         id: 3,
+        title: "Manage",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/manage",
+      },
+      {
+        id: 4,
+        title: "Onboarded",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/onboarded",
+      },
+      {
+        id: 5,
+        title: "Taxes",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/tax",
+      },
+      {
+        id: 6,
+        title: "Intellectual",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/intellectual-property",
+      },
+      {
+        id: 7,
         title: "Entities",
         icon: EntityIcon,
         path: "/staff-dashboard/businesses/entities",
       },
       {
-        id: 4,
+        id: 8,
         title: "Countries",
         icon: CountryIcon,
         path: "/staff-dashboard/businesses/countries",
       },
     ],
-  },
-  {
-    id: 3,
-    title: "Taxes",
-    icon: TaxesIcon,
-    path: "/staff-dashboard/taxes/",
   },
   {
     id: 4,
@@ -296,31 +348,31 @@ export const StaffSidebarLinks = [
     path: "/staff-dashboard/hiring-and-payroll",
   },
   {
-    id: 5,
-    title: "Intellectual Assets",
-    icon: IntellectualIcon,
-    path: "/staff-dashboard/assets",
+    id: 6,
+    title: "Bank Accounts",
+    icon: BankAccountIcon,
+    path: "/staff-dashboard/bank-accounts",
   },
   {
-    id: 6,
+    id: 7,
     title: "Rewards",
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
   },
   {
-    id: 7,
+    id: 8,
     title: "Payments",
     icon: PaymentIcon,
     path: "/staff-dashboard/payments",
   },
   {
-    id: 8,
+    id: 9,
     title: "Resources",
     icon: ResourcesIcon,
     path: "/staff-dashboard/resources",
   },
   {
-    id: 9,
+    id: 10,
     title: "Settings",
     icon: SettingsIcon,
     path: "/staff-dashboard/settings/general",

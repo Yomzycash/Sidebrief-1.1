@@ -10,9 +10,9 @@ const UserData = createSlice({
     userLoginInfo: {},
     partnerLoginInfo: {},
     resellerLoginInfo: {},
-    refreshApp: false,
     refreshNotifications: false,
     unreadLaunchNotifications: 0,
+    batchDeleteArray: [],
   },
   reducers: {
     saveUserInfo: (state, action) => {
@@ -33,14 +33,14 @@ const UserData = createSlice({
     saveResellerLoginInfo: (state, action) => {
       state.loginIfo = action.payload;
     },
-    setRefreshApp: (state, action) => {
-      state.refreshApp = action.payload;
-    },
     setRefreshNotifications: (state, action) => {
       state.refreshNotifications = action.payload;
     },
     setUnreadLaunchNotifications: (state, action) => {
       state.unreadLaunchNotifications = action.payload;
+    },
+    setBatchDeleteArray: (state, action) => {
+      state.batchDeleteArray = action.payload;
     },
   },
 });
@@ -53,9 +53,9 @@ export const {
   saveUserLoginInfo,
   savePartnerLoginInfo,
   saveResellerLoginInfo,
-  setRefreshApp,
   setRefreshNotifications,
   setUnreadLaunchNotifications,
+  setBatchDeleteArray,
 } = UserData.actions;
 
 // This slice will hold all glabally needed layout and similar information

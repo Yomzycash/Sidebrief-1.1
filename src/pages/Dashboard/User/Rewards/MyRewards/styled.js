@@ -55,6 +55,16 @@ export const BodyLeft = styled.div`
     display: none;
   }
 `;
+
+export const BodyCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};  
+`;
+  
 export const BodyRight = styled.div`
   display: grid;
   grid-template-columns: auto auto auto;

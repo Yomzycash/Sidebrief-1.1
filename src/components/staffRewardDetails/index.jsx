@@ -18,7 +18,7 @@ const StaffRewardDetails = ({ selectedReward }) => {
         <div key={index}>
           <ContentWrapper>
             <TextWithLabel>
-              <Label>name</Label>
+              <Label>Name</Label>
               <TextWrapper>
                 <Text>{selected?.rewardName}</Text>
               </TextWrapper>
@@ -30,6 +30,7 @@ const StaffRewardDetails = ({ selectedReward }) => {
               </TextWrapper>
             </TextWithLabel>
           </ContentWrapper>
+
           <FullContentWrapper>
             <TextWithLabel>
               <Label>Description</Label>
@@ -38,6 +39,7 @@ const StaffRewardDetails = ({ selectedReward }) => {
               </TextWrapper>
             </TextWithLabel>
           </FullContentWrapper>
+          
           <ContentWrapper>
             <TextWithLabel>
               <Label>Category</Label>

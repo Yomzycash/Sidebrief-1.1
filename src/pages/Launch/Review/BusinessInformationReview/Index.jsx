@@ -7,10 +7,9 @@ import { ReviewTab } from "utils/config";
 import HeaderCheckout from "components/Header/HeaderCheckout";
 import BusinessInfoCard from "components/cards/BusinessInfoCard/BusinessInfoCard";
 import BusinessAddressCard from "components/cards/BusinessAddressCard/BusinessAddressCard";
-import { useSelector } from "react-redux";
 import { store } from "redux/Store";
 import { setCheckoutProgress } from "redux/Slices";
-import AppFeedback from "components/AppFeedback";
+
 const BusinessInformationReview = () => {
   const ActiveStyles = {
     color: "#151717",

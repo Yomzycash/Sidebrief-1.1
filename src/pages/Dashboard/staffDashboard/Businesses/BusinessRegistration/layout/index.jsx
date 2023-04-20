@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import { Dialog } from "@mui/material";
+import styled from "styled-components";
+import { HiX } from "react-icons/hi";
+import { CheckoutController } from "containers/Checkout";
+import { toast } from "react-hot-toast";
+import { RedTrash } from "asset/svg";
+
 import {
   Container,
   Header,
@@ -13,6 +20,8 @@ import {
   SearchWrapper,
   SubHeader,
   TitleWrapper,
+  DeleteWrapper,
+  DeleteButton,
 } from "./style";
 import { SummaryCard } from "components/cards";
 import ActiveNav from "components/navbar/ActiveNav";
@@ -28,19 +37,16 @@ import {
   useGetRejectedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
-import { store } from "redux/Store";
-import { setRefreshApp } from "redux/Slices";
 import { useSelector } from "react-redux";
-import Fuse from "fuse.js";
-import { staffNavigateToDetailPage } from "utils/globalFunctions";
-import { SearchResult } from "components/navbar/SearchResult";
+import { handleError } from "utils/globalFunctions";
+import { useBatchDeleteLaunchRequestsMutation } from "services/launchService";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
   const [allReg, setAllReg] = useState([]);
   const [awaitingReg, setAwaiting] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [searchFocused, setSearchFocused] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const allLaunch = useGetAllLaunchQuery();
 
@@ -50,6 +56,10 @@ const Registrationlayout = () => {
 
   const pendingLaunch = useGetDraftLaunchQuery();
 
+  const [batchDelete, deleteState] = useBatchDeleteLaunchRequestsMutation();
+
+  //const batchDeleteArray = useSelector((store) => store.UserData?.batchDeleteArray);
+
   const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
   let awaiting = awaitingLaunch?.currentData?.length;
@@ -58,36 +68,45 @@ const Registrationlayout = () => {
   let approved = approvedLaunch?.currentData?.length;
   let paid = pendingLaunch?.currentData?.filter((el) => el.paid).length;
 
-  const { refreshApp, unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
+  const { unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
+  const { batchDeleteArray } = useSelector((store) => store.UserDataReducer);
+  console.log(batchDeleteArray);
 
-  const fuseOptions = {
-    shouldSort: true,
-    keys: [
-      "businessNames.businessName1",
-      "businessNames.businessName2",
-      "businessNames.businessName3",
-      "businessNames.businessName4",
-    ],
+  
+
+  const { pathname } = useLocation();
+  let deleteShown = pathname.includes("pending");
+
+  
+
+  const handleClick = () => {
+    setOpenModal(true);
   };
 
-  const allData = [...(allLaunch.data || [])];
+  const handleNo = () => {
+    setOpenModal(false);
+  };
 
-  const fuse = new Fuse(allData, fuseOptions);
+  const deleteAction = async () => {
+    // perform delete action here
 
-  const onItemClick = (item) => {
-    setSearchFocused(false);
-    const launchInfo = {
-      launchCode: item.launchCode,
-      registrationCountry: item.registrationCountry,
-      registrationType: item.registrationType,
-    };
-    staffNavigateToDetailPage(navigate, launchInfo);
+    const response = await batchDelete({
+      launchCodes: batchDeleteArray,
+    });
+
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Deleted");
+      navigate("/staff-dashboard/businesses/registration/pending");
+    } else handleError(error);
+    setOpenModal(false);
   };
 
   useEffect(() => {
     setAllReg(all ? all : []);
     setAwaiting(awaiting ? awaiting : []);
-    store.dispatch(setRefreshApp(!refreshApp));
   }, [all, awaiting, pending, approved]);
 
   const location = useLocation();
@@ -117,32 +136,44 @@ const Registrationlayout = () => {
                 <option value="All">All</option>
               </select>
             </Drop>
+            {deleteShown && batchDeleteArray.length > 0 && (
+              <DeleteWrapper>
+                <DeleteButton onClick={handleClick}>
+                  <p>Delete</p>
+                  <RedTrash />
+                </DeleteButton>
+              </DeleteWrapper>
+            )}
+
+            <Dialog open={openModal} fullWidth maxWidth="sm">
+              <ModalWrapper>
+                <TopLevelContent>
+                  <CloseWrapper onClick={() => setOpenModal(false)}>
+                    <HiX size={20} />
+                  </CloseWrapper>
+                </TopLevelContent>
+
+                <Question>Do you want to Delete this Application ?</Question>
+                <ModalButton>
+                  <CheckoutController
+                    backAction={handleNo}
+                    backText={"No"}
+                    forwardAction={deleteAction}
+                    forwardText={"Yes"}
+                    forwardLoading={deleteState.isLoading}
+                  />
+                </ModalButton>
+              </ModalWrapper>
+            </Dialog>
           </TopContent>
           <BottomContent>
-            <SearchWrapper onFocus={() => setSearchFocused(true)}>
+            <SearchWrapper>
               <Search
                 style={searchStyle}
                 iconStyle={iconStyle}
-                onChange={(value) => setSearchValue(value)}
+                onChange={(e) => setSearchValue(e.target.value)}
                 value={searchValue}
                 className={"searchbox"}
-              />
-              <SearchResult
-                items={fuse
-                  .search(searchValue)
-                  .slice(0, 5)
-                  .map((el) => {
-                    return {
-                      id: el.item.launchCode,
-                      name: el.item.businessNames.businessName1 || "no name",
-                      launchCode: el.item.launchCode,
-                      registrationCountry: el.item.registrationCountry,
-                      registrationType: el.item.registrationType,
-                    };
-                  })}
-                show={searchFocused}
-                unShow={() => setSearchFocused(false)}
-                onItemClick={onItemClick}
               />
             </SearchWrapper>
             <Flex>
@@ -211,3 +242,37 @@ export default Registrationlayout;
 // 		width: 100%;
 // 	}
 // `;
+
+const ModalWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 40px 0px;
+  flex-flow: column;
+`;
+
+const ModalButton = styled.div`
+  display: flex;
+  width: 80%;
+`;
+
+const Question = styled.p`
+  font-size: clamp(16px, 1.5vw, 20px);
+  margin-bottom: 20px;
+`;
+const TopLevelContent = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 80%;
+`;
+
+const CloseWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  padding: 10px;
+  border-radius: 100%;
+  background-color: #d7d7d7;
+  margin-bottom: 20px;
+`;

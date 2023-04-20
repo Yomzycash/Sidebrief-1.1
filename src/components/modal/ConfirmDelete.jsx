@@ -33,7 +33,7 @@ const ConfirmDelete = ({
         <Title>
           <p>
             {deleteWarn ||
-              `Are you sure you want to delete ${toDelete.toLowerCase()}`}
+              `Are you sure you want to delete ${toDelete.toLowerCase()}?`}
           </p>
 
           <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />

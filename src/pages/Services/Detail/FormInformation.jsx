@@ -8,26 +8,7 @@ import styled from "styled-components";
 import FormContainer from "containers/FormContainer";
 
 const FormInformation = () => {
-  const { complycode } = useParams();
   const viewComply = useOutletContext();
-
-  // const [viewServiceDocument, viewServiceDocumentState] = useLazyViewComplyQuery();
-  // const [questionContainer, setQuestionContainer] = useState([]);
-
-  // const handleViewDocument = useCallback(async () => {
-  //   const requiredData = {
-  //     complyCode: complycode,
-  //   };
-  //   const response = await viewServiceDocument(requiredData);
-  //   if (Array.isArray(response?.data?.complyData)) {
-  //     setQuestionContainer(response?.data?.complyData);
-  //   }
-  // }, [complycode, viewServiceDocument]);
-
-  // useEffect(() => {
-  //   handleViewDocument();
-  // }, [handleViewDocument]);
-  // console.log(questionContainer)
 
   return (
     <Wrapper>
@@ -54,6 +35,7 @@ const FormInformation = () => {
 };
 
 export default FormInformation;
+
 const Wrapper = styled.div`
   width: 100%;
   display: flex;

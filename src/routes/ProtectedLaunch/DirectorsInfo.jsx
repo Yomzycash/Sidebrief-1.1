@@ -30,8 +30,8 @@ const ProtectedDirectorsInfo = () => {
   }, [launchResponse, launchPaid]);
 
   return (
-    <Protected isVerified={allowLaunch} path="/launch">
-      <Protected isVerified={paid} path="/launch/payment">
+    <Protected isVerified={allowLaunch} redirect="/launch">
+      <Protected isVerified={paid} redirect="/launch/payment">
         <DirectorsInfo />
       </Protected>
     </Protected>
