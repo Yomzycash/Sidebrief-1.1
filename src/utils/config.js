@@ -13,14 +13,16 @@ import {
   SettingsIcon,
   IntellectualIcon,
   ComplianceIcon,
-  TaxesIcon,
+  TaxIcon,
+  ProductIcon,
+  OnboardIcon,
   HiringIcon,
   PaymentIcon,
   EntityIcon,
   CountryIcon,
   ArrowDownIcon,
   ServicesIcon,
-  ManageIcon
+  ManageIcon,
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
 // import  from "asset/Icons/ServicesIcon";
@@ -201,13 +203,13 @@ export const ServicesSchema = yup.object().shape({
 });
 
 export const BankAccountSchema = yup.object().shape({
-  bank_name:yup.string().required("Bank Name is required"),
+  bank_name: yup.string().required("Bank Name is required"),
   description: yup.string().required("Enter bank description"),
   bank_code: yup.string().required("Bank code is a required field"),
   country: yup.string().required("Country is a required field"),
-  bank_url:yup.string().required("url is a required field"),
-  image:yup.string().required("lmage is a required field"),
-})
+  bank_url: yup.string().required("url is a required field"),
+  image: yup.string().required("lmage is a required field"),
+});
 
 export const sidebarLink = [
   {
@@ -219,8 +221,8 @@ export const sidebarLink = [
   {
     id: 2,
     title: "Products",
-    icon: ServicesIcon,
-    path: "/dashboard/services/all",
+    icon: ProductIcon,
+    path: "/dashboard/products",
   },
   {
     id: 3,
@@ -230,7 +232,7 @@ export const sidebarLink = [
   },
   {
     id: 4,
-    title: "Onboarded",
+    title: "Onboard",
     icon: HiringIcon,
     path: "/dashboard/onboarded",
   },
@@ -243,14 +245,14 @@ export const sidebarLink = [
   {
     id: 6,
     title: "Taxes",
-    icon: TaxesIcon,
-    path: "/dashboard/taxes",
+    icon: TaxIcon,
+    path: "/dashboard/tax",
   },
   {
     id: 7,
-    title: "Intellectual Property",
-    icon: IntellectualIcon,
-    path: "/dashboard/intellectual-properties",
+    title: "Intellectual",
+    icon: BusinessesIcon,
+    path: "/dashboard/intellectual-property",
   },
   {
     id: 8,
@@ -293,24 +295,48 @@ export const StaffSidebarLinks = [
     dropDownList: [
       {
         id: 1,
-        title: "Registrations",
-        icon: ResourcesIcon,
-        path: "/staff-dashboard/businesses/registration",
-      },
-      {
-        id: 2,
         title: "Products",
         icon: ServicesIcon,
         path: "/staff-dashboard/businesses/services",
       },
       {
+        id: 2,
+        title: "Registrations",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/registration",
+      },
+      {
         id: 3,
+        title: "Manage",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/manage",
+      },
+      {
+        id: 4,
+        title: "Onboard",
+        icon:   OnboardIcon,
+        path: "/staff-dashboard/businesses/onboarded",
+      },
+      {
+        id: 5,
+        title: "Taxes",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/tax",
+      },
+      {
+        id: 6,
+        title: "Intellectual",
+        icon: ResourcesIcon,
+        path: "/staff-dashboard/businesses/intellectual-property",
+      },
+      {
+        id: 7,
         title: "Entities",
         icon: EntityIcon,
         path: "/staff-dashboard/businesses/entities",
       },
       {
-        id: 4,
+        id: 8,
         title: "Countries",
         icon: CountryIcon,
         path: "/staff-dashboard/businesses/countries",
@@ -318,22 +344,10 @@ export const StaffSidebarLinks = [
     ],
   },
   {
-    id: 3,
-    title: "Taxes",
-    icon: TaxesIcon,
-    path: "/staff-dashboard/taxes/",
-  },
-  {
     id: 4,
     title: "Hiring & Payroll",
     icon: HiringIcon,
     path: "/staff-dashboard/hiring-and-payroll",
-  },
-  {
-    id: 5,
-    title: "Intellectual Assets",
-    icon: IntellectualIcon,
-    path: "/staff-dashboard/assets",
   },
   {
     id: 6,
@@ -1015,7 +1029,7 @@ export const staffSidebarLink = [
   {
     id: 4,
     title: "Taxes",
-    icon: TaxesIcon,
+    icon: TaxIcon,
     path: "/staffdashboard/Taxes",
     dropdownIcon: ArrowDownIcon,
     dropdown: [],

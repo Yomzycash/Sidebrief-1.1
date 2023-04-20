@@ -307,7 +307,7 @@ export const staffApi = createApi({
     }),
 
     // Delete a bank
-    deleteBank: builder.mutation({ 
+    deleteBank: builder.mutation({
       query: (bankCode) => ({
         url: `/banks/delete/${bankCode}`,
         method: "DELETE",
@@ -436,9 +436,10 @@ export const staffApi = createApi({
 
     // delete a service
     deleteService: builder.mutation({
-      query: (serviceId) => ({
-        url: `/services/delete/${serviceId}`,
+      query: (data) => ({
+        url: `/services/delete/${data.serviceId}`,
         method: "DELETE",
+        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -472,6 +473,46 @@ export const staffApi = createApi({
     getServicesByCountryandCategory: builder.query({
       query: (data) =>
         `/services/category/${data.serviceCategory}/country/KEN${data.serviceCountry}`,
+    }),
+
+    // Create a service category
+    createCategory: builder.mutation({
+      query: (data) => ({
+        url: "/create-category",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Update a service category
+    updateCategory: builder.mutation({
+      query: (data) => ({
+        url: `/update-category/${data?.categoryId}`,
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // delete a service category
+    deleteCategory: builder.mutation({
+      query: (categoryId) => ({
+        url: `/delete-category/${categoryId}`,
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Get all categories
+    getAllCategories: builder.query({
+      query: () => `/all-category`,
     }),
   }),
 });
@@ -537,4 +578,9 @@ export const {
   useGetServicesByCountryQuery,
   useLazyGetServicesByCountryQuery,
   useGetServicesByCountryandCategoryQuery,
+
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetAllCategoriesQuery,
 } = staffApi;

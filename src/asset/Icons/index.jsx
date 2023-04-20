@@ -16,3 +16,6 @@ export { CountryIcon } from "./CountryIcon";
 export { ManageIcon } from "./ManageIcon";
 export { ReactComponent as ArrowDownIcon } from "./ArrowDownIcon.svg";
 export { ServicesIcon };
+export { TaxIcon } from "./TaxIcon.jsx";
+export { ProductIcon} from "./ProductIcon.jsx";
+export { OnboardIcon } from "./OnboardIcon.jsx"

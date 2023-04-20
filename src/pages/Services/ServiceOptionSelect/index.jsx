@@ -2,11 +2,11 @@ import React from "react";
 import { Body, Container } from "../styled";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader";
 import { CheckoutSection } from "containers";
-import { Link } from "react-router-dom";
-import ServicesCard from "components/cards/ServicesCard";
+import ProductCard from "components/cards/ProductCard";
 import { OptionsContainer } from "./styled";
 import { GiLightningSpanner } from "react-icons/gi";
 import { IoIosRocket } from "react-icons/io";
+import { HiRocketLaunch } from "react-icons/hi2";
 
 const ServiceOptionSelect = () => {
   return (
@@ -16,16 +16,16 @@ const ServiceOptionSelect = () => {
       <Body>
         <CheckoutSection title="Select an Option" />
         <OptionsContainer>
-          <ServicesCard
+          <ProductCard
             Icon={GiLightningSpanner}
             title="Manage Your Business"
-            body="Hi everyone, I'm the body of the above header. I hold the content of this coomponent."
+            body="Make changes to already registered companies"
             to="/services/manage"
           />
-          <ServicesCard
-            Icon={IoIosRocket}
+          <ProductCard
+            Icon={HiRocketLaunch}
             title="Onboard your business"
-            body="Hi everyone, I'm the body of the above header. I hold the content of this coomponent."
+            body="Automate your business compliance"
             to="/services/onboard"
           />
         </OptionsContainer>

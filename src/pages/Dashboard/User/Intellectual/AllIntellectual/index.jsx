@@ -55,7 +55,7 @@ const AllIntellectuals = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/intellectual-properties/${serviceId}/info`);
+    navigate(`/dashboard/intellectual-property/${serviceId}/info`);
   };
 
   return (

@@ -27,7 +27,10 @@ const ProductHeader = ({
   defaultActive,
   onSearchChange,
   filterList,
+  emptyText,
 }) => {
+  const availableNavs = navInfo?.filter((el) => el.isAvailable);
+
   return (
     <Header>
       <MainHeader>
@@ -64,18 +67,20 @@ const ProductHeader = ({
           </ButtonWrapper>
         </BottomContent>
       </MainHeader>
-      <SubHeader>
-        {navInfo?.map((el, i) => (
-          <ActiveNav
-            key={i}
-            index={i}
-            text={el?.text}
-            total={el?.total}
-            path={el?.path}
-            defaultActive={defaultActive}
-          />
-        ))}
-      </SubHeader>
+      {availableNavs?.length > 0 && (
+        <SubHeader>
+          {availableNavs.map((el, i) => (
+            <ActiveNav
+              key={i}
+              index={i}
+              text={el?.text}
+              total={el?.total}
+              path={el?.path}
+              defaultActive={defaultActive}
+            />
+          ))}
+        </SubHeader>
+      )}
     </Header>
   );
 };

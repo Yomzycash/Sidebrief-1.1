@@ -70,6 +70,7 @@ export const useActions = ({
         titleSubText: "",
       };
 
+    console.log(normalize(category));
     if (normalize(category) === "manage")
       return {
         title: "Manage Your Business",
