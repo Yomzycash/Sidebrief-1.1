@@ -70,14 +70,10 @@ const Registrationlayout = () => {
 
   const { unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
   const { batchDeleteArray } = useSelector((store) => store.UserDataReducer);
-  console.log(batchDeleteArray);
-
-  
+  // console.log(batchDeleteArray);
 
   const { pathname } = useLocation();
   let deleteShown = pathname.includes("pending");
-
-  
 
   const handleClick = () => {
     setOpenModal(true);
