@@ -9,9 +9,12 @@ import "./stripe.css";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useEffect } from "react";
 import { useState } from "react";
-import { usePayWithStripeMutation } from "services/launchService";
+import { usePayWithStripeMutation, useTestPayWithStripeMutation } from "services/launchService";
 
-const PUBLIC_KEY = `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`;
+const PUBLIC_KEY =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY
+    : process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY;
 // process.env.NODE_ENV === "production"
 //   ? `${process.env.REACT_APP_STRIPE_PUBLIC_LIVE_KEY}`
 //   : `${process.env.REACT_APP_STRIPE_PUBLIC_TEST_KEY}`;
@@ -24,11 +27,16 @@ const stripePromise = loadStripe(PUBLIC_KEY);
 const StripePayment = ({ sendStripeRefToBackend, amount }) => {
   const [clientSecret, setClientSecret] = useState("");
   const [payWithStripe, payWithStripeState] = usePayWithStripeMutation();
+  const [testPayWithStripe, testPayWithStripeState] = useTestPayWithStripeMutation();
+
+  const productionEnv = process.env.NODE_ENV === "production";
 
   useEffect(() => {
     if (amount) {
       (async () => {
-        const paymentResponse = await payWithStripe({ amount: amount * 100 });
+        const paymentResponse = productionEnv
+          ? await payWithStripe({ amount: amount * 100 })
+          : await testPayWithStripe({ amount: amount * 100 });
         if (paymentResponse?.data?.clientSecret)
           setClientSecret(paymentResponse?.data?.clientSecret);
       })();

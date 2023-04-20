@@ -67,7 +67,7 @@ const ServicesDetailLayout = () => {
 
     localStorage.setItem("complyInfo", JSON.stringify(complyInfo));
     localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo));
-    navigate(`/services/${serviceCategory}`);
+    navigate(`/services/${serviceCategory?.split(" ")?.join("-")}`);
   };
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import StaffRewardHeader from "components/Header/StaffRewardHeader";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Puff } from "react-loading-icons";
 import { BodyRight, Loading, ServiceContainer } from "./style";
@@ -8,9 +8,14 @@ import { useDeleteServiceMutation, useGetAllServicesQuery } from "services/staff
 import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
+import { useGetAllCountriesQuery } from "services/launchService";
 
 const AllServices = () => {
   const [clickedService, setClickedService] = useState({});
+
+  const [countrySelect, setCountrySelect] = useState("All");
+  const [categorySelect, setCategorySelect] = useState("All");
+  const [filteredData, seFilteredData] = useState([]);
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
 
@@ -18,9 +23,39 @@ const AllServices = () => {
   const [deleteService, deleteState] = useDeleteServiceMutation({
     refetchOnMountOrArgChange: true,
   });
+  const countries = useGetAllCountriesQuery();
+  const countriesCategory = countries?.data?.find((el) => el?.countryName === countrySelect);
+
+  console.log(countriesCategory?.countryISO);
 
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
+
+  useEffect(() => {
+    let dataSet = [];
+    data?.forEach((el) => {
+      if (el?.serviceCategory.trim().toLowerCase() === categorySelect.trim().toLowerCase()) {
+        dataSet.push(el);
+        seFilteredData(dataSet);
+      } else if (categorySelect.trim()=== "All") {
+        seFilteredData(data);
+      }
+      else {
+        
+      }
+    });
+  }, [categorySelect, data]);
+  useEffect(() => {
+    let dataSet = [];
+    data?.forEach((el) => {
+      if (el?.serviceCountry === countriesCategory?.countryISO) {
+        dataSet.push(el);
+        seFilteredData(dataSet);
+      } else if (countriesCategory?.countryISO === undefined) {
+        seFilteredData(data);
+      }
+    });
+  }, [countriesCategory?.countryISO, data]);
 
   // This runs when add service button is clicked
   const handleAddButton = () => {
@@ -46,6 +81,9 @@ const AllServices = () => {
     }
     refetch();
   };
+ 
+
+  // const filteredData= data?.filter((el)=>)
 
   const setOpen = (mode, serviceId, progress) => {
     if (!mode) setDialog({});
@@ -65,7 +103,9 @@ const AllServices = () => {
         title="Products"
         handleButton={handleAddButton}
         placeholder="Search for a product..."
-        totalShown={data?.length}
+        totalShown={filteredData?.length}
+        categorySelected={setCategorySelect}
+        countrySelected={setCountrySelect}
       />
       {isLoading ? (
         <Loading height="300px">
@@ -73,7 +113,7 @@ const AllServices = () => {
         </Loading>
       ) : (
         <ServiceContainer>
-          {data?.map((service, index) => (
+          {filteredData?.map((service, index) => (
             <PetalsCard
               key={index}
               title={service.serviceName}
