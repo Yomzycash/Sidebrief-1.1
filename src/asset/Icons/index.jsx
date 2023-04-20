@@ -6,6 +6,7 @@ export { BusinessesIcon } from "./BusinessesIcon";
 export { ResourcesIcon } from "./ResourcesIcon";
 export { RewardIcon } from "./RewardIcon";
 export { SettingsIcon } from "./SettingsIcon";
+export { Intellectual } from "./Intellectual";
 export { IntellectualIcon } from "./IntellectualIcon";
 export { HiringIcon } from "./HiringIcon";
 export { ComplianceIcon } from "./ComplianceIcon";

@@ -12,6 +12,7 @@ import {
   RewardIcon,
   SettingsIcon,
   IntellectualIcon,
+  Intellectual,
   ComplianceIcon,
   TaxIcon,
   ProductIcon,
@@ -233,7 +234,7 @@ export const sidebarLink = [
   {
     id: 4,
     title: "Onboard",
-    icon: HiringIcon,
+    icon: OnboardIcon,
     path: "/dashboard/onboarded",
   },
   {
@@ -251,7 +252,7 @@ export const sidebarLink = [
   {
     id: 7,
     title: "Intellectual",
-    icon: BusinessesIcon,
+    icon: Intellectual,
     path: "/dashboard/intellectual-property",
   },
   {
@@ -296,7 +297,7 @@ export const StaffSidebarLinks = [
       {
         id: 1,
         title: "Products",
-        icon: ServicesIcon,
+        icon: ProductIcon,
         path: "/staff-dashboard/businesses/services",
       },
       {
@@ -308,7 +309,7 @@ export const StaffSidebarLinks = [
       {
         id: 3,
         title: "Manage",
-        icon: ResourcesIcon,
+        icon:   ManageIcon,
         path: "/staff-dashboard/businesses/manage",
       },
       {
@@ -320,13 +321,13 @@ export const StaffSidebarLinks = [
       {
         id: 5,
         title: "Taxes",
-        icon: ResourcesIcon,
+        icon: TaxIcon,
         path: "/staff-dashboard/businesses/tax",
       },
       {
         id: 6,
         title: "Intellectual",
-        icon: ResourcesIcon,
+        icon: Intellectual,
         path: "/staff-dashboard/businesses/intellectual-property",
       },
       {
@@ -1029,7 +1030,7 @@ export const staffSidebarLink = [
   {
     id: 4,
     title: "Taxes",
-    icon: TaxIcon,
+    icon: Intellectual,
     path: "/staffdashboard/Taxes",
     dropdownIcon: ArrowDownIcon,
     dropdown: [],
