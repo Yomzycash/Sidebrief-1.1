@@ -19,7 +19,7 @@ const Tax = () => {
 
   const taxServices = useGetServicesByCategoryQuery("TAX");
   const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo.id },
+    { meta: userInfo?.id },
     { refetchOnMountOrArgChange: true }
   );
 
@@ -68,30 +68,31 @@ const Tax = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/tax/all-taxes",
+      path: "/dashboard/my-products/tax/all-taxes",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/tax/submitted-taxes",
+      path: "/dashboard/my-products/tax/submitted-taxes",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/tax/draft-taxes",
+      path: "/dashboard/my-products/tax/draft-taxes",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/tax/paid-draft-taxes",
+      path: "/dashboard/my-products/tax/paid-draft-taxes",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
-  let isFirstNav = pathname === "/dashboard/tax" && "/dashboard/tax/all-taxes";
+  let isFirstNav =
+    pathname === "/dashboard/my-products/tax" && "/dashboard/my-products/tax/all-taxes";
 
   return (
     <Container>

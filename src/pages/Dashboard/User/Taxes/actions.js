@@ -1,6 +1,6 @@
 import { compareDesc } from "date-fns";
 
-export const useTaxActions = ({ searchValue, hasFetched, setDataArr }) => {
+export const useActions = ({ searchValue, hasFetched, setDataArr }) => {
   //
   const sortData = (data) => {
     if (hasFetched) {

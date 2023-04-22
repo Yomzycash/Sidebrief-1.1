@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import StaffSidebar from "components/sidebar/StaffSidebar";
+import Sidebar from "components/sidebar";
 import Navbar from "components/navbar";
 import MobileNavbar from "components/navbar/MobileNavbar";
 import { useSelector } from "react-redux";
 import { useLocation, Outlet } from "react-router-dom";
+import { staffSidebarItems } from "utils/config";
 
 const StaffLayout = ({ children }) => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -12,22 +13,17 @@ const StaffLayout = ({ children }) => {
   const location = useLocation();
 
   let hideMobileNav =
-    location.pathname.includes("/dashboard/rewards") &&
-    location.pathname.length > 31;
+    location.pathname.includes("/dashboard/rewards") && location.pathname.length > 31;
 
   // let hideSearch = location.pathname.includes("/dashboard/rewards");
 
   return (
     <Dashboard>
-      <Navbar
-        dashboard
-        imgStyles={{ maxWidth: "100px" }}
-        style={{ padding: "12px 24px" }}
-      />
+      <Navbar dashboard imgStyles={{ maxWidth: "100px" }} style={{ padding: "12px 24px" }} />
       <MobileNavbar hideNav={hideMobileNav} />
       <Body>
         <BodyLeft>
-          <StaffSidebar />
+          <Sidebar items={staffSidebarItems} />
         </BodyLeft>
         <BodyRight SidebarWidth={sidebarWidth}>
           <Outlet />

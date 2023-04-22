@@ -70,7 +70,7 @@ export const useActions = ({
         titleSubText: "",
       };
 
-    console.log(normalize(category));
+    // console.log(normalize(category));
     if (normalize(category) === "manage")
       return {
         title: "Manage Your Business",
@@ -83,6 +83,11 @@ export const useActions = ({
     else if (normalize(category) === "intellectual-property")
       return {
         title: "Intellectual Property",
+        titleSubText: "5mins completion time",
+      };
+    else if (normalize(category) === "compliance")
+      return {
+        title: "Compliance",
         titleSubText: "5mins completion time",
       };
   };

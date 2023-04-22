@@ -19,7 +19,7 @@ const Manage = () => {
 
   const Manage = useGetServicesByCategoryQuery("MANAGE");
   const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo.id },
+    { meta: userInfo?.id },
     { refetchOnMountOrArgChange: true }
   );
 
@@ -68,30 +68,31 @@ const Manage = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/manage/all-manage",
+      path: "/dashboard/my-products/manage/all-manage",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/manage/submitted-manage",
+      path: "/dashboard/my-products/manage/submitted-manage",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/manage/draft-manage",
+      path: "/dashboard/my-products/manage/draft-manage",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/manage/paid-draft-manage",
+      path: "/dashboard/my-products/manage/paid-draft-manage",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
-  let isFirstNav = pathname === "/dashboard/manage" && "/dashboard/manage/all-manage";
+  let isFirstNav =
+    pathname === "/dashboard/my-products/manage" && "/dashboard/my-products/manage/all-manage";
 
   return (
     <Container>
@@ -111,7 +112,7 @@ const Manage = () => {
           <>There is an error loading this page</>
         ) : (
           <EmptyContent
-            emptyText="Your manage requests will appear here. Manage your business now."
+            emptyText="Your manage requests will appear here. Manage a business now."
             buttonText="Manage a Business"
             action={handleManageCreate}
           />

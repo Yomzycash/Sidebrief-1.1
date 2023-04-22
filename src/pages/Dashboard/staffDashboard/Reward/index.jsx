@@ -23,7 +23,7 @@ const StaffReward = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
 
-  const { data, isLoading, isError, isSuccess } = useGetAllRewardsQuery({
+  const { data, refetch, isError, isSuccess } = useGetAllRewardsQuery({
     refetchOnMountOrArgChange: true,
   });
   const [updateReward, updateState] = useUpdateRewardMutation();
@@ -35,7 +35,7 @@ const StaffReward = () => {
     const rewardData = data === undefined ? [] : [...data];
     const rewardDatails = rewardData.filter((data) => data.rewardID === rewardID);
     setSelectedReward(rewardDatails);
-  }, [data]);
+  }, [data, refetch]);
 
   const getRequiredData = (info) => ({
     rewardID: selectedReward[0].rewardID,
@@ -62,6 +62,7 @@ const StaffReward = () => {
     } else {
       handleError(error);
     }
+    refetch()
   };
 
   // This deletes a reward information
@@ -79,6 +80,7 @@ const StaffReward = () => {
     } else {
       handleError(error);
     }
+    refetch();
   };
 
   return (

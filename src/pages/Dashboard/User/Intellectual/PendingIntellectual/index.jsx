@@ -6,7 +6,7 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useTaxActions } from "../actions";
+import { useActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
 
@@ -18,7 +18,7 @@ const PendingIntellectuals = () => {
   const hasFetched = submitted ? true : false;
   const allSubmitted = hasFetched ? submitted : [];
 
-  const { filterWhenSearched, sortData } = useTaxActions({
+  const { filterWhenSearched, sortData } = useActions({
     searchValue,
     hasFetched,
     setDataArr,
@@ -55,7 +55,7 @@ const PendingIntellectuals = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/intellectual-property/${serviceId}/info`);
+    navigate(`/dashboard/my-products/intellectual-property/${serviceId}/info`);
   };
 
   return (

@@ -30,6 +30,11 @@ import PaidDraftManage from "pages/Dashboard/User/Manage/PaidDraftManage";
 import PaidDraftTaxes from "pages/Dashboard/User/Taxes/PaidDraftTaxes";
 import PaidDraftIntellectuals from "pages/Dashboard/User/Intellectual/PaidDraftIntellectual";
 import StaffPaidDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPaidDraftTaxes";
+import Compliance from "pages/Dashboard/User/Compliance";
+import AllCompliances from "pages/Dashboard/User/Compliance/AllCompliances";
+import PendingCompliances from "pages/Dashboard/User/Compliance/PendingCompliances";
+import DraftCompliances from "pages/Dashboard/User/Compliance/DraftCompliances";
+import PaidDraftCompliances from "pages/Dashboard/User/Compliance/PaidDraftCompliances";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -127,8 +132,8 @@ const ResetPassword = lazy(() => import("pages/Auth/SignIn/resetPassword/resetPa
 const SignIn = lazy(() => import("pages/Auth/SignIn/SignIn"));
 const UserRegistration = lazy(() => import("../pages/Auth/Registration/userRegistration"));
 const ResellerRegistration = lazy(() => import("../pages/Auth/Registration/ResellerRegister"));
-const UserDashboard = lazy(() => import("pages/Dashboard/User"));
-const BusinessRegistration = lazy(() => import("pages/Dashboard/User/Home/BusinessRegistration"));
+const UserDashboardLayout = lazy(() => import("pages/Dashboard/User"));
+const UserDashboard = lazy(() => import("pages/Dashboard/User/Home"));
 const StaffDashboard = lazy(() => import("pages/Dashboard/staffDashboard"));
 const BusinessInfo = lazy(() => import("pages/Launch/BusinessInfo"));
 
@@ -146,8 +151,6 @@ const ProtectedApplicationSuccess = lazy(() => import("./ProtectedLaunch/Applica
 const AllRewards = lazy(() => import("pages/Dashboard/User/Rewards/AllRewards"));
 const MyRewards = lazy(() => import("pages/Dashboard/User/Rewards/MyRewards"));
 const RewardDetails = lazy(() => import("pages/Dashboard/User/Rewards/RewardDetails"));
-const Compliance = lazy(() => import("pages/Dashboard/User/Home/Compliance"));
-const HiringAndPayroll = lazy(() => import("pages/Dashboard/User/Home/HiringAndPayroll"));
 const Rewards = lazy(() => import("pages/Dashboard/User/Rewards"));
 const PaymentPage = lazy(() => import("pages/Launch/PaymentPage"));
 const BeneficiaryReview = lazy(() => import("pages/Launch/Review/BeneficiaryReview"));
@@ -193,11 +196,11 @@ const AllComply = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/all")
 );
 
-const AllSubmittedComply =  lazy(() =>
+const AllSubmittedComply = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/submitted")
 );
 
-const AllDraftsComply =  lazy(() =>
+const AllDraftsComply = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Services/AllComply/draft")
 );
 const ServiceSuccessPage = lazy(() => import("../pages/Services/ServiceSuccessPage"));
@@ -260,20 +263,12 @@ const AppRouter = () => {
   const [launchCode, setLaunchCode] = useState(entityLaunchCode);
   const [countryISO, setCountryISO] = useState(selectedCountryISO);
   const [paid, setPaid] = useState(paidStatus);
-  const [staff, setStaff] = useState(isStaff);
 
   //
 
   useEffect(() => {
     setisLoggedIn(loggedIn);
-  }, [loggedIn, userData.userInfo]);
-
-  useEffect(() => {
-    let staffEmail = checkStaffEmail(userEmail);
-    setStaff(staffEmail);
-  }, [isLoggedIn]);
-
-  //
+  }, [userData.userInfo]);
 
   //
   useEffect(() => {
@@ -282,6 +277,7 @@ const AppRouter = () => {
     setPaid(paidStatus);
   }, [launchResponse, launchPaid]);
 
+  console.log(loggedIn);
   return (
     <Suspense fallback={<Loader />}>
       <Router>
@@ -293,7 +289,7 @@ const AppRouter = () => {
             <Route
               index
               element={
-                <Protected isVerified={isLoggedIn}>
+                <Protected isVerified={loggedIn}>
                   <Home />
                 </Protected>
               }
@@ -320,7 +316,7 @@ const AppRouter = () => {
             <Route
               path="login"
               element={
-                <Protected isVerified={!isLoggedIn} redirect="/">
+                <Protected isVerified={!loggedIn} redirect="/">
                   <Outlet />
                 </Protected>
               }
@@ -344,101 +340,119 @@ const AppRouter = () => {
             <Route
               path="dashboard"
               element={
-                <Protected isVerified={isLoggedIn}>
+                <Protected isVerified={loggedIn}>
                   <Protected isVerified={!isStaff} redirect="/staff-dashboard">
-                    <UserDashboard />
+                    <UserDashboardLayout />
                   </Protected>
                 </Protected>
               }
             >
-              <Route index element={<BusinessRegistration />} />
-              <Route path="business-registration" element={<BusinessRegistration />} />
-
-              <Route path="businesses" element={<Business />}>
-                <Route index element={<AllBusinesses />} />
-                <Route path="all-businesses" element={<AllBusinesses />}></Route>
-                <Route path="submitted-applications" element={<PendingApplications />}></Route>
-                <Route path="draft-applications" element={<DraftApplications />}></Route>
-                <Route path="paid-draft-applications" element={<DraftApplications />}></Route>
-                <Route path="chats" element={<ChatLayout />} />
-              </Route>
-              <Route path="business" element={<BusinessDetailLayout />}>
-                <Route path="detail" element={<BusinessDetail />} />
-                <Route path="payment" element={<BusinessPaymet />} />
-                <Route path="shareholders" element={<DetailShareholders />} />
-                <Route path="directors" element={<DetailDirectors />} />
-                <Route path="beneficiaries" element={<DetailBeneficiaries />} />
-              </Route>
+              <Route index element={<UserDashboard />} />
+              <Route path="home" element={<UserDashboard />} />
 
               <Route path="products" element={<Products />} />
 
-              <Route path="manage" element={<Manage />}>
-                <Route index element={<AllManage />} />
-                <Route path="all-manage" element={<AllManage />}></Route>
-                <Route path="submitted-manage" element={<PendingManage />}></Route>
-                <Route path="draft-manage" element={<DraftManage />}></Route>
-                <Route path="paid-draft-manage" element={<PaidDraftManage />}></Route>
-                <Route path="chats" element={<ChatLayout />} />
-              </Route>
-              <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
-                <Route index element={<ServiceInformation />} />
-                <Route path="info" element={<ServiceInformation />} />
-                <Route path="forminfo" element={<FormInformation />} />
-                <Route path="documentinfo" element={<DocumentInfoDetails />} />
-              </Route>
+              <Route path="my-products" element={<Outlet />}>
+                <Route index element={<Business />} />
+                <Route path="businesses" element={<Business />}>
+                  <Route index element={<AllBusinesses />} />
+                  <Route path="all-businesses" element={<AllBusinesses />}></Route>
+                  <Route path="submitted-applications" element={<PendingApplications />}></Route>
+                  <Route path="draft-applications" element={<DraftApplications />}></Route>
+                  <Route path="paid-draft-applications" element={<DraftApplications />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="business" element={<BusinessDetailLayout />}>
+                  <Route path="detail" element={<BusinessDetail />} />
+                  <Route path="payment" element={<BusinessPaymet />} />
+                  <Route path="shareholders" element={<DetailShareholders />} />
+                  <Route path="directors" element={<DetailDirectors />} />
+                  <Route path="beneficiaries" element={<DetailBeneficiaries />} />
+                </Route>
 
-              <Route path="onboarded" element={<Onboarded />}>
-                <Route index element={<AllOnboarded />} />
-                <Route path="all-onboarded" element={<AllOnboarded />}></Route>
-                <Route path="submitted-onboarded" element={<PendingOnboarded />}></Route>
-                <Route path="draft-onboarded" element={<DraftOnboarded />}></Route>
-                <Route path="paid-draft-onboarded" element={<PaidDraftOnboarded />}></Route>
-                <Route path="chats" element={<ChatLayout />} />
-              </Route>
-              <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
-                <Route index element={<ServiceInformation />} />
-                <Route path="info" element={<ServiceInformation />} />
-                <Route path="forminfo" element={<FormInformation />} />
-                <Route path="documentinfo" element={<DocumentInfoDetails />} />
-              </Route>
+                <Route path="manage" element={<Manage />}>
+                  <Route index element={<AllManage />} />
+                  <Route path="all-manage" element={<AllManage />}></Route>
+                  <Route path="submitted-manage" element={<PendingManage />}></Route>
+                  <Route path="draft-manage" element={<DraftManage />}></Route>
+                  <Route path="paid-draft-manage" element={<PaidDraftManage />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
 
-              <Route path="tax" element={<Tax />}>
-                <Route index element={<AllTaxes />} />
-                <Route path="all-taxes" element={<AllTaxes />}></Route>
-                <Route path="submitted-taxes" element={<PendingTaxes />}></Route>
-                <Route path="draft-taxes" element={<DraftTaxes />}></Route>
-                <Route path="paid-draft-taxes" element={<PaidDraftTaxes />}></Route>
-                <Route path="chats" element={<ChatLayout />} />
-              </Route>
-              <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
-                <Route index element={<ServiceInformation />} />
-                <Route path="info" element={<ServiceInformation />} />
-                <Route path="forminfo" element={<FormInformation />} />
-                <Route path="documentinfo" element={<DocumentInfoDetails />} />
-              </Route>
+                <Route path="onboarded" element={<Onboarded />}>
+                  <Route index element={<AllOnboarded />} />
+                  <Route path="all-onboarded" element={<AllOnboarded />}></Route>
+                  <Route path="submitted-onboarded" element={<PendingOnboarded />}></Route>
+                  <Route path="draft-onboarded" element={<DraftOnboarded />}></Route>
+                  <Route path="paid-draft-onboarded" element={<PaidDraftOnboarded />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
 
-              <Route path="intellectual-property" element={<Intellectual />}>
-                <Route index element={<AllIntellectuals />} />
-                <Route path="all-intellectual-properties" element={<AllIntellectuals />}></Route>
-                <Route
-                  path="submitted-intellectual-properties"
-                  element={<PendingIntellectuals />}
-                ></Route>
-                <Route
-                  path="draft-intellectual-properties"
-                  element={<DraftIntellectuals />}
-                ></Route>
-                <Route
-                  path="paid-draft-intellectual-properties"
-                  element={<PaidDraftIntellectuals />}
-                ></Route>
-                <Route path="chats" element={<ChatLayout />} />
-              </Route>
-              <Route path="intellectual-property/:complycode" element={<ServicesDetailLayout />}>
-                <Route index element={<ServiceInformation />} />
-                <Route path="info" element={<ServiceInformation />} />
-                <Route path="forminfo" element={<FormInformation />} />
-                <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                <Route path="tax" element={<Tax />}>
+                  <Route index element={<AllTaxes />} />
+                  <Route path="all-taxes" element={<AllTaxes />}></Route>
+                  <Route path="submitted-taxes" element={<PendingTaxes />}></Route>
+                  <Route path="draft-taxes" element={<DraftTaxes />}></Route>
+                  <Route path="paid-draft-taxes" element={<PaidDraftTaxes />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
+
+                <Route path="intellectual-property" element={<Intellectual />}>
+                  <Route index element={<AllIntellectuals />} />
+                  <Route path="all-intellectual-properties" element={<AllIntellectuals />}></Route>
+                  <Route
+                    path="submitted-intellectual-properties"
+                    element={<PendingIntellectuals />}
+                  ></Route>
+                  <Route
+                    path="draft-intellectual-properties"
+                    element={<DraftIntellectuals />}
+                  ></Route>
+                  <Route
+                    path="paid-draft-intellectual-properties"
+                    element={<PaidDraftIntellectuals />}
+                  ></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="intellectual-property/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
+
+                <Route path="compliance" element={<Compliance />}>
+                  <Route index element={<AllCompliances />} />
+                  <Route path="all-compliances" element={<AllCompliances />}></Route>
+                  <Route path="submitted-compliances" element={<PendingCompliances />}></Route>
+                  <Route path="draft-compliances" element={<DraftCompliances />}></Route>
+                  <Route path="paid-draft-compliances" element={<PaidDraftCompliances />}></Route>
+                  <Route path="chats" element={<ChatLayout />} />
+                </Route>
+                <Route path="compliance/:complycode" element={<ServicesDetailLayout />}>
+                  <Route index element={<ServiceInformation />} />
+                  <Route path="info" element={<ServiceInformation />} />
+                  <Route path="forminfo" element={<FormInformation />} />
+                  <Route path="documentinfo" element={<DocumentInfoDetails />} />
+                </Route>
               </Route>
 
               <Route path="rewards" element={<Rewards />}>
@@ -464,14 +478,13 @@ const AppRouter = () => {
 
               <Route path="application" element={<Application />}></Route>
               <Route path="resources" element={<Resources />}></Route>
-              <Route path="hiring-and-payroll" element={<HiringAndPayroll />}></Route>
             </Route>
 
             {/* Staff dashboard routes */}
             <Route
               path="staff-dashboard"
               element={
-                <Protected isVerified={isLoggedIn}>
+                <Protected isVerified={loggedIn}>
                   <Protected isVerified={isStaff} redirect="/dashboard">
                     <Stafflayout />
                   </Protected>
@@ -643,7 +656,7 @@ const AppRouter = () => {
             <Route
               path="services"
               element={
-                <Protected isVerified={isLoggedIn} redirect="/login">
+                <Protected isVerified={loggedIn} redirect="/login">
                   <Outlet />
                 </Protected>
               }
@@ -668,7 +681,7 @@ const AppRouter = () => {
             <Route
               path="launch"
               element={
-                <Protected isVerified={isLoggedIn} redirect="/login">
+                <Protected isVerified={loggedIn} redirect="/login">
                   <Outlet />
                 </Protected>
               }

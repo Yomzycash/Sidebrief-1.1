@@ -18,7 +18,7 @@ import { useState } from "react";
 import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
-const BusinessRegistration = (props) => {
+const UserDashboard = (props) => {
   const [allLaunchContainer, setAllLaunchContainer] = useState([]);
   // Get user data information
   const { userInfo } = useSelector((store) => store.UserDataReducer);
@@ -213,4 +213,4 @@ const BusinessRegistration = (props) => {
   );
 };
 
-export default BusinessRegistration;
+export default UserDashboard;

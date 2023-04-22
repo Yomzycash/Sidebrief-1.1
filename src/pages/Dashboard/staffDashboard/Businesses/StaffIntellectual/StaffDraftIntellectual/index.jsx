@@ -6,7 +6,7 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useTaxActions } from "../actions";
+import { useActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
 
@@ -18,7 +18,7 @@ const StaffDraftIntellectuals = () => {
   const hasFetched = drafts ? true : false;
   const allDrafts = hasFetched ? drafts : [];
 
-  const { filterWhenSearched, sortData } = useTaxActions({
+  const { filterWhenSearched, sortData } = useActions({
     searchValue,
     hasFetched,
     setDataArr,

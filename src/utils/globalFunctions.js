@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import { saveUserInfo, setLaunchPaid, setLaunchResponse } from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -103,6 +103,9 @@ export const handleLogout = (navigate) => {
   store.dispatch(authApi.util.resetApiState());
   store.dispatch(launchApi.util.resetApiState());
   store.dispatch(staffApi.util.resetApiState());
+
+  store.dispatch(saveUserInfo({}));
+
   //navigate
   navigate("/login");
 };

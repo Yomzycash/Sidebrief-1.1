@@ -19,7 +19,7 @@ const Intellectual = () => {
 
   const Intellectuals = useGetServicesByCategoryQuery("Intellectual Property");
   const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo.id },
+    { meta: userInfo?.id },
     { refetchOnMountOrArgChange: true }
   );
 
@@ -69,32 +69,32 @@ const Intellectual = () => {
     {
       text: "All",
       total: allTotal || 0,
-      path: "/dashboard/intellectual-property/all-intellectual-properties",
+      path: "/dashboard/my-products/intellectual-property/all-intellectual-properties",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/intellectual-property/submitted-intellectual-properties",
+      path: "/dashboard/my-products/intellectual-property/submitted-intellectual-properties",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Drafts",
       total: draftTotal || 0,
-      path: "/dashboard/intellectual-property/draft-intellectual-properties",
+      path: "/dashboard/my-products/intellectual-property/draft-intellectual-properties",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/intellectual-property/paid-draft-intellectual-properties",
+      path: "/dashboard/my-products/intellectual-property/paid-draft-intellectual-properties",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/intellectual-property" &&
-    "/dashboard/intellectual-property/all-intellectual-properties";
+    pathname === "/dashboard/my-products/intellectual-property" &&
+    "/dashboard/my-products/intellectual-property/all-intellectual-properties";
 
   return (
     <Container>

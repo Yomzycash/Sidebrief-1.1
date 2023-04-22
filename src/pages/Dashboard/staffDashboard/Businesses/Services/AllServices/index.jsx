@@ -70,7 +70,11 @@ const AllServices = () => {
 
   // delete service
   const handleServiceDelete = async () => {
-    let response = await deleteService(clickedService.serviceId);
+    let payload = {
+      serviceId: clickedService.serviceId,
+      serviceName: clickedService.serviceName,
+    };
+    let response = await deleteService(payload);
     let data = response?.data;
     let error = response?.error;
 

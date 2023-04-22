@@ -40,7 +40,8 @@ const ServiceInfo = () => {
     normalize(option) === "onboard" ||
     normalize(option) === "manage" ||
     normalize(option) === "intellectual-property" ||
-    normalize(option) === "tax";
+    normalize(option) === "tax" ||
+    normalize(option) === "compliance";
 
   let countriesArray = countries?.data?.map((el) => el?.countryName) || [];
   let servicesArray =

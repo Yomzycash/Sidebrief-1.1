@@ -7,6 +7,7 @@ import { IoIosRocket } from "react-icons/io";
 import { TbReceiptTax } from "react-icons/tb";
 import { AiOutlineFileProtect } from "react-icons/ai";
 import { Puff } from "react-loading-icons";
+import { FaCheckDouble } from "react-icons/fa";
 
 const Products = () => {
   const allCategories = useGetAllCategoriesQuery();
@@ -40,10 +41,17 @@ const Products = () => {
         icon: IoIosRocket,
         path: "/services/onboard",
       };
+    } else if (category.toLowerCase() === "compliance") {
+      return {
+        title: "Compliance",
+        body: "Automate your business compliance",
+        icon: FaCheckDouble,
+        path: "/services/compliance",
+      };
     }
   };
 
-  console.log(allCategories);
+  // console.log(allCategories);
   return (
     <Container>
       <Header>

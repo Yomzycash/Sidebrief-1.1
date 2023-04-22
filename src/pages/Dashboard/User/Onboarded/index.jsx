@@ -19,7 +19,7 @@ const Onboarded = () => {
 
   const Onboard = useGetServicesByCategoryQuery("Onboard");
   const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo.id },
+    { meta: userInfo?.id },
     { refetchOnMountOrArgChange: true }
   );
 
@@ -68,30 +68,32 @@ const Onboarded = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/onboarded/all-onboarded",
+      path: "/dashboard/my-products/onboarded/all-onboarded",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/onboarded/submitted-onboarded",
+      path: "/dashboard/my-products/onboarded/submitted-onboarded",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/onboarded/draft-onboarded",
+      path: "/dashboard/my-products/onboarded/draft-onboarded",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/onboarded/paid-draft-onboarded",
+      path: "/dashboard/my-products/onboarded/paid-draft-onboarded",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
-  let isFirstNav = pathname === "/dashboard/onboarded" && "/dashboard/onboarded/all-onboarded";
+  let isFirstNav =
+    pathname === "/dashboard/my-products/onboarded" &&
+    "/dashboard/my-products/onboarded/all-onboarded";
 
   return (
     <Container>
