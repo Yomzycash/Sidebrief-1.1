@@ -72,7 +72,6 @@ const Banks = () => {
             handleError(error)
         }
         refetch();
-        console.log("formaDta for banks", formData)
     }
     return (
         <BodyRight sidebarWidth={sidebarWidth}>

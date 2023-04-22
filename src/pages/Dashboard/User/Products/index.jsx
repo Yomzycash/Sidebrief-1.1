@@ -43,7 +43,7 @@ const Products = () => {
     }
   };
 
-  console.log(allCategories);
+  // console.log(allCategories);
   return (
     <Container>
       <Header>

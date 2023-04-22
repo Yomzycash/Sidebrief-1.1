@@ -66,7 +66,7 @@ export const Header = ({ isStaff, code }) => {
   const launchRequest = useViewLaunchRequestQuery(launchResponse);
   const page = pathname.split("/").pop();
 
-  console.log("checking page", page);
+  // console.log("checking page", page);
 
   const handleClick = () => {
     setOpenModal(true);

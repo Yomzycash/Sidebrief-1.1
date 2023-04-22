@@ -41,7 +41,7 @@ const AllRewards = () => {
     setAllRewards(data);
     setRewardscategories((prev) => {
       const categories = data ? data.map((element) => element.rewardCategory) : [];
-      console.log("cat", categories);
+      // console.log("cat", categories);
 
       return [...new Set([...prev, ...categories])];
     });
