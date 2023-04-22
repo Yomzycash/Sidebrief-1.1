@@ -233,13 +233,13 @@ export const sidebarLink = [
   },
   {
     id: 4,
-    title: "Onboard",
+    title: "Onboarded",
     icon: OnboardIcon,
     path: "/dashboard/onboarded",
   },
   {
     id: 5,
-    title: "Manage",
+    title: "Managed",
     icon: ManageIcon,
     path: "/dashboard/manage",
   },
@@ -308,14 +308,14 @@ export const StaffSidebarLinks = [
       },
       {
         id: 3,
-        title: "Manage",
-        icon:   ManageIcon,
+        title: "Managed",
+        icon: ManageIcon,
         path: "/staff-dashboard/businesses/manage",
       },
       {
         id: 4,
-        title: "Onboard",
-        icon:   OnboardIcon,
+        title: "Onboarded",
+        icon: OnboardIcon,
         path: "/staff-dashboard/businesses/onboarded",
       },
       {
