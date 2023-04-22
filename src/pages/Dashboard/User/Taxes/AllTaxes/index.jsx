@@ -55,7 +55,7 @@ const AllTaxes = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/tax/${serviceId}/info`);
+    navigate(`/dashboard/my-products/tax/all-taxes/${serviceId}/info`);
   };
 
   return (

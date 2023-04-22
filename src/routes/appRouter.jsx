@@ -378,7 +378,7 @@ const AppRouter = () => {
                   <Route path="paid-draft-manage" element={<PaidDraftManage />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
-                <Route path="manage/:complycode" element={<ServicesDetailLayout />}>
+                <Route path="manage/:section/:complycode" element={<ServicesDetailLayout />}>
                   <Route index element={<ServiceInformation />} />
                   <Route path="info" element={<ServiceInformation />} />
                   <Route path="forminfo" element={<FormInformation />} />
@@ -393,7 +393,7 @@ const AppRouter = () => {
                   <Route path="paid-draft-onboarded" element={<PaidDraftOnboarded />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
-                <Route path="onboarded/:complycode" element={<ServicesDetailLayout />}>
+                <Route path="onboarded/:section/:complycode" element={<ServicesDetailLayout />}>
                   <Route index element={<ServiceInformation />} />
                   <Route path="info" element={<ServiceInformation />} />
                   <Route path="forminfo" element={<FormInformation />} />
@@ -408,7 +408,7 @@ const AppRouter = () => {
                   <Route path="paid-draft-taxes" element={<PaidDraftTaxes />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
-                <Route path="tax/:complycode" element={<ServicesDetailLayout />}>
+                <Route path="tax/:section/:complycode" element={<ServicesDetailLayout />}>
                   <Route index element={<ServiceInformation />} />
                   <Route path="info" element={<ServiceInformation />} />
                   <Route path="forminfo" element={<FormInformation />} />
@@ -432,7 +432,10 @@ const AppRouter = () => {
                   ></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
-                <Route path="intellectual-property/:complycode" element={<ServicesDetailLayout />}>
+                <Route
+                  path="intellectual-property/:section/:complycode"
+                  element={<ServicesDetailLayout />}
+                >
                   <Route index element={<ServiceInformation />} />
                   <Route path="info" element={<ServiceInformation />} />
                   <Route path="forminfo" element={<FormInformation />} />
@@ -447,7 +450,7 @@ const AppRouter = () => {
                   <Route path="paid-draft-compliances" element={<PaidDraftCompliances />}></Route>
                   <Route path="chats" element={<ChatLayout />} />
                 </Route>
-                <Route path="compliance/:complycode" element={<ServicesDetailLayout />}>
+                <Route path="compliance/:section/:complycode" element={<ServicesDetailLayout />}>
                   <Route index element={<ServiceInformation />} />
                   <Route path="info" element={<ServiceInformation />} />
                   <Route path="forminfo" element={<FormInformation />} />

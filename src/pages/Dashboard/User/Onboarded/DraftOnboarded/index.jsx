@@ -55,7 +55,7 @@ const DraftOnboarded = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/onboarded/${serviceId}/info`);
+    navigate(`/dashboard/my-products/onboarded/draft-onboarded/${serviceId}/info`);
   };
 
   return (

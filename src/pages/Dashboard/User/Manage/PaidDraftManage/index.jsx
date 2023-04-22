@@ -55,7 +55,7 @@ const PaidDraftManage = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/manage/${serviceId}/info`);
+    navigate(`/dashboard/my-products/manage/paid-draft-manage/${serviceId}/info`);
   };
 
   return (

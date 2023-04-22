@@ -55,7 +55,9 @@ const PaidDraftIntellectuals = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/intellectual-property/${serviceId}/info`);
+    navigate(
+      `/dashboard/my-products/intellectual-property/paid-draft-intellectual-properties/${serviceId}/info`
+    );
   };
 
   return (

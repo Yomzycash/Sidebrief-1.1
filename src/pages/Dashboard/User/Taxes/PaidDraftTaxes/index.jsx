@@ -55,7 +55,7 @@ const PaidDraftTaxes = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/tax/${serviceId}/info`);
+    navigate(`/dashboard/my-products/tax/paid-draft-taxes/${serviceId}/info`);
   };
 
   return (

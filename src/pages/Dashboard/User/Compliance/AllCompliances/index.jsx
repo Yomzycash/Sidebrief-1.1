@@ -55,7 +55,7 @@ const AllCompliances = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/compliance/${serviceId}/info`);
+    navigate(`/dashboard/my-products/compliance/all-compliances/${serviceId}/info`);
   };
 
   return (

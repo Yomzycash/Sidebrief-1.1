@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
@@ -25,6 +25,7 @@ const DraftCompliances = () => {
   });
 
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   // Sort data
   useEffect(() => {
@@ -55,7 +56,7 @@ const DraftCompliances = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/compliance/${serviceId}/info`);
+    navigate(`/dashboard/my-products/compliance/draft-compliances/${serviceId}/info`);
   };
 
   return (

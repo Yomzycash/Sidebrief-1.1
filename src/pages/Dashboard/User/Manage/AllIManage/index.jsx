@@ -55,7 +55,7 @@ const AllManage = () => {
 
   const handleRowClick = (el) => {
     let serviceId = el[0];
-    navigate(`/dashboard/my-products/manage/${serviceId}/info`);
+    navigate(`/dashboard/my-products/manage/all-manage/${serviceId}/info`);
   };
 
   return (
