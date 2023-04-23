@@ -41,12 +41,12 @@ const AllTaxes = () => {
   }, [isError]);
 
   // Tabele header
-  const header = ["Comply Code", "Service Id", "Paid", "Date"];
+  const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
-    el?.complyCode,
-    el?.serviceId,
+    el?.serviceName,
+    el?.serviceCountry,
     el?.paid?.toString(),
     format(new Date(el?.createdAt), "dd-MM-yyyy"),
   ]);

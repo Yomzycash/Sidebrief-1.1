@@ -1,52 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { Outlet, useLocation } from "react-router-dom";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import { useViewAllComplyByMetaQuery } from "services/complyService";
-import { useGetServicesByCategoryQuery } from "services/staffService";
 import EmptyContent from "components/EmptyContent";
+import { useCategoriesActions } from "../actions";
 
 //
 
 const Manage = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  const navigate = useNavigate();
+  const {
+    submitted,
+    drafts,
+    paidDrafts,
+    isLoading,
+    isError,
+    isSuccess,
+    complyFullInfo,
+    handleCategoryCreate,
+  } = useCategoriesActions({ category: "MANAGE", createPath: "/services/manage" });
+
   const { pathname } = useLocation();
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-  const Manage = useGetServicesByCategoryQuery("MANAGE");
-  const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo?.id },
-    { refetchOnMountOrArgChange: true }
-  );
-
-  const findManageId = (id) => Manage.data?.find((el) => el?.serviceId === id)?.serviceId;
-
-  const ManageComplies = allUserComply.data?.filter(
-    (el) => el?.serviceId === findManageId(el?.serviceId)
-  );
-
-  const submitted = ManageComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
-  const drafts = ManageComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
-  const paidDrafts = ManageComplies?.filter(
-    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
-  );
-  const isLoading = Manage.isLoading || allUserComply.isLoading;
-  const isError = Manage.isError || allUserComply.isError;
-  const isSuccess = Manage.isSuccess && allUserComply.isSuccess;
-
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
-  let allTotal = ManageComplies?.length;
-
-  const handleManageCreate = () => {
-    removeLaunchFromLocalStorage();
-    navigate("/services/manage");
-  };
+  let allTotal = complyFullInfo?.length;
 
   useEffect(() => {
     removeComplyFromLocalStorage();
@@ -101,7 +84,7 @@ const Manage = () => {
         searchPlaceholder="Search manage..."
         summary={summary}
         filterList={filterList}
-        action={handleManageCreate}
+        action={handleCategoryCreate}
         actionText="Manage a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
@@ -114,7 +97,7 @@ const Manage = () => {
           <EmptyContent
             emptyText="Your manage requests will appear here. Manage a business now."
             buttonText="Manage a Business"
-            action={handleManageCreate}
+            action={handleCategoryCreate}
           />
         )
       ) : (

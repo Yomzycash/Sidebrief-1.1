@@ -6,47 +6,30 @@ import ProductHeader from "components/Header/ProductHeader";
 import { useViewAllComplyByMetaQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
 import EmptyContent from "components/EmptyContent";
+import { useCategoriesActions } from "../actions";
 
 //
 
 const Onboarded = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  const navigate = useNavigate();
+  const {
+    submitted,
+    drafts,
+    paidDrafts,
+    isLoading,
+    isError,
+    isSuccess,
+    complyFullInfo,
+    handleCategoryCreate,
+  } = useCategoriesActions({ category: "Onboard", createPath: "/services/onboard" });
+
   const { pathname } = useLocation();
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-  const Onboard = useGetServicesByCategoryQuery("Onboard");
-  const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo?.id },
-    { refetchOnMountOrArgChange: true }
-  );
-
-  const findOnboardId = (id) => Onboard.data?.find((el) => el?.serviceId === id)?.serviceId;
-
-  const OnboardedComplies = allUserComply.data?.filter(
-    (el) => el?.serviceId === findOnboardId(el?.serviceId)
-  );
-
-  const submitted = OnboardedComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
-  const drafts = OnboardedComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
-  const paidDrafts = OnboardedComplies?.filter(
-    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
-  );
-  const isLoading = Onboard.isLoading || allUserComply.isLoading;
-  const isError = Onboard.isError || allUserComply.isError;
-  const isSuccess = Onboard.isSuccess && allUserComply.isSuccess;
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
-  let allTotal = OnboardedComplies?.length;
-
-  const handleOnboardCreate = () => {
-    removeLaunchFromLocalStorage();
-    navigate("/services/onboard");
-  };
+  let allTotal = complyFullInfo?.length;
 
   useEffect(() => {
     removeComplyFromLocalStorage();
@@ -102,7 +85,7 @@ const Onboarded = () => {
         searchPlaceholder="Search onboarded..."
         summary={summary}
         filterList={filterList}
-        action={handleOnboardCreate}
+        action={handleCategoryCreate}
         actionText="Onboard a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
@@ -115,7 +98,7 @@ const Onboarded = () => {
           <EmptyContent
             emptyText="Your onboarded businesses will appear here."
             buttonText="Onboard a Business"
-            action={handleOnboardCreate}
+            action={handleCategoryCreate}
           />
         )
       ) : (

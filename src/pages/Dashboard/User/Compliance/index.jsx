@@ -1,52 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { Outlet, useLocation } from "react-router-dom";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import { useViewAllComplyByMetaQuery } from "services/complyService";
-import { useGetServicesByCategoryQuery } from "services/staffService";
 import EmptyContent from "components/EmptyContent";
+import { useCategoriesActions } from "../actions";
 
 //
 
 const Compliance = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  const navigate = useNavigate();
+  const {
+    submitted,
+    drafts,
+    paidDrafts,
+    isLoading,
+    isError,
+    isSuccess,
+    complyFullInfo,
+    handleCategoryCreate,
+  } = useCategoriesActions({ category: "Compliance", createPath: "/services/compliance" });
+
   const { pathname } = useLocation();
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-  const Compliance = useGetServicesByCategoryQuery("Compliance");
-  const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo?.id },
-    { refetchOnMountOrArgChange: true }
-  );
-
-  const findComplianceId = (id) => Compliance.data?.find((el) => el?.serviceId === id)?.serviceId;
-
-  const ComplianceComplies = allUserComply.data?.filter(
-    (el) => el?.serviceId === findComplianceId(el?.serviceId)
-  );
-
-  const submitted = ComplianceComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
-  const drafts = ComplianceComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
-  const paidDrafts = ComplianceComplies?.filter(
-    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
-  );
-  const isLoading = Compliance.isLoading || allUserComply.isLoading;
-  const isError = Compliance.isError || allUserComply.isError;
-  const isSuccess = Compliance.isSuccess && allUserComply.isSuccess;
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
-  let allTotal = ComplianceComplies?.length;
-
-  const handleComplianceCreate = () => {
-    removeLaunchFromLocalStorage();
-    navigate("/services/compliance");
-  };
+  let allTotal = complyFullInfo?.length;
 
   useEffect(() => {
     removeComplyFromLocalStorage();
@@ -102,7 +83,7 @@ const Compliance = () => {
         searchPlaceholder="Search compliance..."
         summary={summary}
         filterList={filterList}
-        action={handleComplianceCreate}
+        action={handleCategoryCreate}
         actionText="Create a Compliance"
         onSearchChange={handleSearch}
         navInfo={navInfo}
@@ -115,7 +96,7 @@ const Compliance = () => {
           <EmptyContent
             emptyText="Your compliances will appear here."
             buttonText="Onboard a Business"
-            action={handleComplianceCreate}
+            action={handleCategoryCreate}
           />
         )
       ) : (

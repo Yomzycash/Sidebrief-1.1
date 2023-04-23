@@ -1,52 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { Outlet, useLocation } from "react-router-dom";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import { useViewAllComplyByMetaQuery } from "services/complyService";
-import { useGetServicesByCategoryQuery } from "services/staffService";
 import EmptyContent from "components/EmptyContent";
+import { useCategoriesActions } from "../actions";
 
 //
 
 const Tax = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  const navigate = useNavigate();
+  const {
+    submitted,
+    drafts,
+    paidDrafts,
+    isLoading,
+    isError,
+    isSuccess,
+    complyFullInfo,
+    handleCategoryCreate,
+  } = useCategoriesActions({ category: "TAX", createPath: "/services/tax" });
+
   const { pathname } = useLocation();
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-  const taxServices = useGetServicesByCategoryQuery("TAX");
-  const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo?.id },
-    { refetchOnMountOrArgChange: true }
-  );
-
-  const findTaxId = (id) => taxServices.data?.find((el) => el?.serviceId === id)?.serviceId;
-
-  const taxComplies = allUserComply.data?.filter(
-    (el) => el?.serviceId === findTaxId(el?.serviceId)
-  );
-
-  const submitted = taxComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
-  const drafts = taxComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
-  const paidDrafts = taxComplies?.filter(
-    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
-  );
-  const isLoading = taxServices.isLoading || allUserComply.isLoading;
-  const isError = taxServices.isError || allUserComply.isError;
-  const isSuccess = taxServices.isSuccess && allUserComply.isSuccess;
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
-  let allTotal = taxComplies?.length;
-
-  const handleTaxCreate = () => {
-    removeLaunchFromLocalStorage();
-    navigate("/services/tax");
-  };
+  let allTotal = complyFullInfo?.length;
 
   useEffect(() => {
     removeComplyFromLocalStorage();
@@ -101,7 +82,7 @@ const Tax = () => {
         searchPlaceholder="Search tax..."
         summary={summary}
         filterList={filterList}
-        action={handleTaxCreate}
+        action={handleCategoryCreate}
         actionText="Create Tax"
         onSearchChange={handleSearch}
         navInfo={navInfo}
@@ -114,7 +95,7 @@ const Tax = () => {
           <EmptyContent
             emptyText="Your taxes will appear here."
             buttonText="Create Tax"
-            action={handleTaxCreate}
+            action={handleCategoryCreate}
           />
         )
       ) : (
