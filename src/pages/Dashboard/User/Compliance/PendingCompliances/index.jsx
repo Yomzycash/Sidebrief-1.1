@@ -37,7 +37,7 @@ const PendingCompliances = () => {
   }, [searchValue]);
 
   // Tabele header
-  const header = ["Service Name", "Country", "Paid", "Date"];
+  const header = ["Comply Code", "Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
