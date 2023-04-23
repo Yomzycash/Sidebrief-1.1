@@ -7,7 +7,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Box, Dialog, Drawer, List } from "@mui/material";
 import MobileSidebar from "components/sidebar/MobileSidebar";
 
-const MobileNavbar = ({ hideNav }) => {
+const MobileNavbar = ({ hideNav, items }) => {
   const location = useLocation();
 
   let path = location.pathname;
@@ -81,7 +81,7 @@ const MobileNavbar = ({ hideNav }) => {
         <Drawer anchor="left" open={openSidebar} onClose={() => toggleDrawer(false)}>
           <Box sx={{ height: "100%", padding: "40px 24px 0" }} role="presentation">
             <List sx={{ height: "100%" }}>
-              <MobileSidebar toggleDrawer={toggleDrawer} />
+              <MobileSidebar toggleDrawer={toggleDrawer} items={items} />
             </List>
           </Box>
         </Drawer>

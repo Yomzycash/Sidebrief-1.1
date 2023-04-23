@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import { useSelector } from "react-redux";
 
-const SidebarItem = ({ item, expanded, homePath }) => {
+const SidebarItem = ({ item, expanded, homePath, onClick }) => {
   const [iconHovered, setIconHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
 
@@ -37,6 +37,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
             onMouseEnter={() => setIconHovered(item.id)}
             onMouseLeave={() => setIconHovered(0)}
             style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
+            onClick={onClick}
           >
             <item.icon
               filled={locationPath?.includes(item.path) || homePathActive}
@@ -61,6 +62,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   onMouseEnter={() => setIconHovered(item.id + each.id)}
                   onMouseLeave={() => setIconHovered(0)}
                   style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
+                  onClick={onClick}
                 >
                   <span>
                     <each.icon
@@ -100,7 +102,7 @@ const Item = styled.div`
     height: max-content;
     color: ${({ theme }) => theme.grey1};
 
-    padding: 12px 16px;
+    padding: clamp(8px, 1vw, 12px) clamp(12px, 1.4vw, 16px);
     border-radius: 8px;
 
     white-space: nowrap;

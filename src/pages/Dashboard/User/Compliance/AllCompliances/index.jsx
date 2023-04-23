@@ -36,15 +36,12 @@ const AllCompliances = () => {
     if (searchValue) filterWhenSearched(all);
   }, [searchValue]);
 
-  useEffect(() => {
-    if (isError) handleError("Connection error");
-  }, [isError]);
-
   // Tabele header
-  const header = ["Service Name", "Country", "Paid", "Date"];
+  const header = ["Comply Code", "Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
+    el?.complyCode,
     el?.serviceName,
     el?.serviceCountry,
     el?.paid?.toString(),
@@ -54,8 +51,8 @@ const AllCompliances = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/dashboard/my-products/compliance/all-compliances/${serviceId}/info`);
+    let complyCode = el[0];
+    navigate(`/dashboard/my-products/compliance/all-compliances/${complyCode}/info`);
   };
 
   return (

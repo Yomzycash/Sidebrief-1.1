@@ -14,19 +14,12 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { MdClear } from "react-icons/md";
 import { handleLogout as logout } from "utils/globalFunctions";
+import SidebarItem from "./SidebarItem";
 
 const MobileSidebar = ({ items, toggleDrawer }) => {
-  const [iconHovered, setIconHovered] = useState(0);
-
-  const location = useLocation();
-  const locationPath = location.pathname;
+  const { pathname } = useLocation();
 
   const navigate = useNavigate();
-
-  const ActiveStyle = {
-    background: "#00a2d419",
-    color: "#00a2d4",
-  };
 
   const handleLogout = () => {
     toggleDrawer(false);
@@ -38,13 +31,15 @@ const MobileSidebar = ({ items, toggleDrawer }) => {
     navigate(path);
   };
 
+  let homePath = pathname === "/staff-dashboard" || pathname === "/dashboard" ? true : false;
+
   return (
     <MobileSidebarWrapper>
       <Top>
         <MdClear
           size={25}
           style={{
-            marginBottom: "28px",
+            marginBottom: "18px",
             left: "10px",
             position: "relative",
           }}
@@ -52,26 +47,14 @@ const MobileSidebar = ({ items, toggleDrawer }) => {
         />
 
         <SidebarLinks>
-          {items.map((item, index) => (
-            <SideLinkWrapper key={index}>
-              {
-                <NavLink
-                  to={item.path}
-                  style={({ isActive }) => (isActive ? ActiveStyle : {})}
-                  onMouseEnter={() => setIconHovered(item.id)}
-                  onMouseLeave={() => setIconHovered(0)}
-                  onClick={() => handleNavigate(item.path)}
-                >
-                  <SidebarContentItemIcon>
-                    <item.icon
-                      filled={locationPath?.includes(item.path)}
-                      hover={iconHovered === item.id}
-                    />
-                  </SidebarContentItemIcon>
-                  <SidebarContentItemLink>{item.title}</SidebarContentItemLink>
-                </NavLink>
-              }
-            </SideLinkWrapper>
+          {items?.map((item, index) => (
+            <SidebarItem
+              key={index}
+              item={item}
+              expanded={true}
+              homePath={homePath}
+              onClick={handleNavigate}
+            />
           ))}
         </SidebarLinks>
       </Top>

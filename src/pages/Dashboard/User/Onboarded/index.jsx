@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { Outlet, useLocation } from "react-router-dom";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import { useViewAllComplyByMetaQuery } from "services/complyService";
-import { useGetServicesByCategoryQuery } from "services/staffService";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../actions";
+import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
@@ -93,7 +92,7 @@ const Onboarded = () => {
       />
       {!allTotal && !isLoading ? (
         isError ? (
-          <>There is an error loading this page</>
+          <LoadingError />
         ) : (
           <EmptyContent
             emptyText="Your onboarded businesses will appear here."

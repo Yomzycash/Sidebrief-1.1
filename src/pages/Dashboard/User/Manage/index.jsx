@@ -3,8 +3,9 @@ import { Container } from "./styled";
 import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../actions";
+import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
@@ -23,8 +24,6 @@ const Manage = () => {
   } = useCategoriesActions({ category: "MANAGE", createPath: "/services/manage" });
 
   const { pathname } = useLocation();
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
@@ -92,7 +91,7 @@ const Manage = () => {
       />
       {!allTotal && !isLoading ? (
         isError ? (
-          <>There is an error loading this page</>
+          <LoadingError />
         ) : (
           <EmptyContent
             emptyText="Your manage requests will appear here. Manage a business now."

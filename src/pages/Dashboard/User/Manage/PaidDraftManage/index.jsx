@@ -36,15 +36,12 @@ const PaidDraftManage = () => {
     if (searchValue) filterWhenSearched(allDrafts);
   }, [searchValue]);
 
-  useEffect(() => {
-    if (isError) handleError("Connection error");
-  }, [isError]);
-
   // Tabele header
   const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
+    el?.complyCode,
     el?.serviceName,
     el?.serviceCountry,
     el?.paid?.toString(),

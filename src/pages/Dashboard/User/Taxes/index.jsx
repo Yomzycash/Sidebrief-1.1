@@ -3,8 +3,9 @@ import { Container } from "./styled";
 import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../actions";
+import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
@@ -90,7 +91,7 @@ const Tax = () => {
       />
       {!allTotal && !isLoading ? (
         isError ? (
-          <>There is an error loading this page</>
+          <LoadingError />
         ) : (
           <EmptyContent
             emptyText="Your taxes will appear here."

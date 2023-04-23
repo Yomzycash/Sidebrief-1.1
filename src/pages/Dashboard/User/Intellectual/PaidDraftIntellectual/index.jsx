@@ -36,15 +36,12 @@ const PaidDraftIntellectuals = () => {
     if (searchValue) filterWhenSearched(allPaidDrafts);
   }, [searchValue]);
 
-  useEffect(() => {
-    if (isError) handleError("Connection error");
-  }, [isError]);
-
   // Tabele header
   const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
+    el?.complyCode,
     el?.serviceName,
     el?.serviceCountry,
     el?.paid?.toString(),

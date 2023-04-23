@@ -9,7 +9,7 @@ import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import { useGetAllCountriesQuery } from "services/launchService";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 
 const AllServices = () => {
   const [clickedService, setClickedService] = useState({});

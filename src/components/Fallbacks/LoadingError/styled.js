@@ -1,21 +1,21 @@
 import styled from "styled-components";
 
-export const EmptyContainer = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-flow: column;
-  gap: 16px;
   justify-content: center;
   align-items: center;
   width: 100%;
   padding: 24px;
 
-  * {
-    max-width: 90%;
+  svg {
+    max-width: 70%;
+    height: auto;
   }
 
   p {
     text-align: center;
-    font-size: clamp(16px, 1.8vw, 20px);
+    font-size: clamp(14px, 1.8vw, 18px);
   }
 
   button {

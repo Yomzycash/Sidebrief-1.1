@@ -5,7 +5,7 @@ import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "util
 import ProductHeader from "components/Header/ProductHeader";
 import { useViewAllComplyByMetaQuery, useViewAllComplyQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 
 //
 
