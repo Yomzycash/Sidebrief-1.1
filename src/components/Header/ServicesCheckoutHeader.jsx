@@ -20,7 +20,7 @@ import {
 import ServicesProgressBar from "components/Indicators/progressbar/ServicesProgressBar";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
-const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
+const ServicesCheckoutHeader = ({ getStarted }) => {
   const LayoutInfo = useSelector((store) => store.LayoutInfo);
   const { serviceCheckoutProgress } = LayoutInfo;
   const navigate = useNavigate();
@@ -56,21 +56,19 @@ const ServicesCheckoutHeader = ({ getStarted, backToDashBoard }) => {
   return (
     <>
       <Wrapper headerShadow={headerShadow}>
-        {!getStarted && (
+        {getStarted ? (
+          <BackContainer onClick={toDashboard}>
+            <FiArrowLeft color="#151717" size={24} />
+            <Text>Back to Dashboard</Text>
+          </BackContainer>
+        ) : (
           <BackContainer onClick={handleClick}>
             <FiArrowLeft color="#151717" size={24} />
             <Text>Save & Exit</Text>
           </BackContainer>
         )}
 
-        {backToDashBoard && (
-          <BackContainer onClick={toDashboard}>
-            <FiArrowLeft color="#151717" size={24} />
-            <Text>Back to Dashboard</Text>
-          </BackContainer>
-        )}
-
-        <ProgressWrapper style={{ left: getStarted && 0 }}>
+        <ProgressWrapper>
           <ServicesProgressBar progress={serviceCheckoutProgress} />
         </ProgressWrapper>
       </Wrapper>

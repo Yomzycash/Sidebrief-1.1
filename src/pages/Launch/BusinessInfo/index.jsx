@@ -215,7 +215,7 @@ const BusinessInfo = () => {
   return (
     <>
       <Container onClick={handleSubmit}>
-        <HeaderCheckout getStarted />
+        <HeaderCheckout getStarted backToDashBoard />
 
         <Body>
           <CheckoutSection
