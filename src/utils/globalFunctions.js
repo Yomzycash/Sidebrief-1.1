@@ -68,7 +68,7 @@ export const navigateToDetailPage = async (navigate, launchInfo, viewPayLaunch) 
   // setInfoToLocalStorageAndStore(launchInfo);
   // navigate
   navigate(
-    `/dashboard/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
+    `/dashboard/my-products/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
   );
 };
 

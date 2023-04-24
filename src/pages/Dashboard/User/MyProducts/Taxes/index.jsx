@@ -4,12 +4,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
-import { useCategoriesActions } from "../actions";
+import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
-const Onboarded = () => {
+const Tax = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -21,7 +21,7 @@ const Onboarded = () => {
     isSuccess,
     complyFullInfo,
     handleCategoryCreate,
-  } = useCategoriesActions({ category: "Onboard", createPath: "/services/onboard" });
+  } = useCategoriesActions({ category: "TAX", createPath: "/services/tax" });
 
   const { pathname } = useLocation();
 
@@ -50,41 +50,41 @@ const Onboarded = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/my-products/onboard/all-onboard",
+      path: "/dashboard/my-products/tax/all-taxes",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/onboard/submitted-onboard",
+      path: "/dashboard/my-products/tax/submitted-taxes",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/onboard/draft-onboard",
+      path: "/dashboard/my-products/tax/draft-taxes",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/onboard/paid-draft-onboard",
+      path: "/dashboard/my-products/tax/paid-draft-taxes",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/my-products/onboard" && "/dashboard/my-products/onboard/all-onboard";
+    pathname === "/dashboard/my-products/tax" && "/dashboard/my-products/tax/all-taxes";
 
   return (
     <Container>
       <ProductHeader
-        title="Onboarded"
-        searchPlaceholder="Search onboarded..."
+        title="Taxes"
+        searchPlaceholder="Search tax..."
         summary={summary}
         filterList={filterList}
         action={handleCategoryCreate}
-        actionText="Onboard a Business"
+        actionText="Create Tax"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
@@ -94,8 +94,8 @@ const Onboarded = () => {
           <LoadingError />
         ) : (
           <EmptyContent
-            emptyText="Your onboarded businesses will appear here."
-            buttonText="Onboard a Business"
+            emptyText="Your taxes will appear here."
+            buttonText="Create Tax"
             action={handleCategoryCreate}
           />
         )
@@ -115,4 +115,4 @@ const Onboarded = () => {
     </Container>
   );
 };
-export default Onboarded;
+export default Tax;

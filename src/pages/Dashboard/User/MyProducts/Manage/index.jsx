@@ -4,12 +4,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
-import { useCategoriesActions } from "../actions";
+import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
-const Compliance = () => {
+const Manage = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -21,7 +21,7 @@ const Compliance = () => {
     isSuccess,
     complyFullInfo,
     handleCategoryCreate,
-  } = useCategoriesActions({ category: "Compliance", createPath: "/services/compliance" });
+  } = useCategoriesActions({ category: "MANAGE", createPath: "/services/manage" });
 
   const { pathname } = useLocation();
 
@@ -50,42 +50,41 @@ const Compliance = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/my-products/compliance/all-compliance",
+      path: "/dashboard/my-products/manage/all-manage",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/compliance/submitted-compliance",
+      path: "/dashboard/my-products/manage/submitted-manage",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/compliance/draft-compliance",
+      path: "/dashboard/my-products/manage/draft-manage",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/compliance/paid-draft-compliance",
+      path: "/dashboard/my-products/manage/paid-draft-manage",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/my-products/compliance" &&
-    "/dashboard/my-products/compliance/all-compliance";
+    pathname === "/dashboard/my-products/manage" && "/dashboard/my-products/manage/all-manage";
 
   return (
     <Container>
       <ProductHeader
-        title="Compliance"
-        searchPlaceholder="Search compliance..."
+        title="Manage"
+        searchPlaceholder="Search manage..."
         summary={summary}
         filterList={filterList}
         action={handleCategoryCreate}
-        actionText="Create a Compliance"
+        actionText="Manage a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
@@ -95,8 +94,8 @@ const Compliance = () => {
           <LoadingError />
         ) : (
           <EmptyContent
-            emptyText="Your compliances will appear here."
-            buttonText="Onboard a Business"
+            emptyText="Your manage requests will appear here. Manage a business now."
+            buttonText="Manage a Business"
             action={handleCategoryCreate}
           />
         )
@@ -116,4 +115,4 @@ const Compliance = () => {
     </Container>
   );
 };
-export default Compliance;
+export default Manage;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { getCurrencyInfo } from "utils/globalFunctions";
-import PaymentDetailsCard from "../../../../../components/cards/PaymentCard";
+import PaymentDetailsCard from "../../../../../../components/cards/PaymentCard";
 import { DetailContainer } from "./styles";
 
 const Payment = () => {

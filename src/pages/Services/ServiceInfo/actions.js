@@ -73,11 +73,11 @@ export const useActions = ({
     // console.log(normalize(category));
     if (normalize(category) === "manage")
       return {
-        title: "Manage Your Business",
+        title: "Manage a Business",
         titleSubText: "Make changes to already registered companies",
       };
     else if (normalize(category) === "onboard")
-      return { title: "Onboard Your Business", titleSubText: "Automate your business compliance" };
+      return { title: "Onboard a Business", titleSubText: "Automate your business compliance" };
     else if (normalize(category) === "tax")
       return { title: "Tax", titleSubText: "5mins completion time" };
     else if (normalize(category) === "intellectual-property")

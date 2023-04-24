@@ -4,12 +4,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
-import { useCategoriesActions } from "../actions";
+import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
-const Manage = () => {
+const Intellectual = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -21,7 +21,10 @@ const Manage = () => {
     isSuccess,
     complyFullInfo,
     handleCategoryCreate,
-  } = useCategoriesActions({ category: "MANAGE", createPath: "/services/manage" });
+  } = useCategoriesActions({
+    category: "Intellectual Property",
+    createPath: "/services/intellectual-property",
+  });
 
   const { pathname } = useLocation();
 
@@ -49,42 +52,44 @@ const Manage = () => {
   const navInfo = [
     {
       text: "All",
-      total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/my-products/manage/all-manage",
+      total: allTotal || 0,
+      path: "/dashboard/my-products/intellectual-property/all-intellectual-properties",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/manage/submitted-manage",
+      path: "/dashboard/my-products/intellectual-property/submitted-intellectual-properties",
       isAvailable: submittedTotal > 0,
     },
     {
-      text: "Draft",
+      text: "Drafts",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/manage/draft-manage",
+      path: "/dashboard/my-products/intellectual-property/draft-intellectual-properties",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/manage/paid-draft-manage",
+      path: "/dashboard/my-products/intellectual-property/paid-draft-intellectual-properties",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/my-products/manage" && "/dashboard/my-products/manage/all-manage";
+    pathname === "/dashboard/my-products/intellectual-property" &&
+    "/dashboard/my-products/intellectual-property/all-intellectual-properties";
 
   return (
     <Container>
       <ProductHeader
-        title="Manage"
-        searchPlaceholder="Search manage..."
+        title="Intellectual Property"
+        searchPlaceholder="Search intellectual property..."
         summary={summary}
         filterList={filterList}
         action={handleCategoryCreate}
-        actionText="Manage a Business"
+        actionText="Create Intellectual Property"
+        emptyText="Your businesses will appear here when you launch one"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
@@ -94,8 +99,8 @@ const Manage = () => {
           <LoadingError />
         ) : (
           <EmptyContent
-            emptyText="Your manage requests will appear here. Manage a business now."
-            buttonText="Manage a Business"
+            emptyText="Your intellectual properties will appear here when you create one"
+            buttonText="Create Intellectual Property"
             action={handleCategoryCreate}
           />
         )
@@ -115,4 +120,4 @@ const Manage = () => {
     </Container>
   );
 };
-export default Manage;
+export default Intellectual;

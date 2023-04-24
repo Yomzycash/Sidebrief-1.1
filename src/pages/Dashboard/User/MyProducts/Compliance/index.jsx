@@ -4,12 +4,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
-import { useCategoriesActions } from "../actions";
+import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
-const Tax = () => {
+const Compliance = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -21,7 +21,7 @@ const Tax = () => {
     isSuccess,
     complyFullInfo,
     handleCategoryCreate,
-  } = useCategoriesActions({ category: "TAX", createPath: "/services/tax" });
+  } = useCategoriesActions({ category: "Compliance", createPath: "/services/compliance" });
 
   const { pathname } = useLocation();
 
@@ -50,41 +50,42 @@ const Tax = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/my-products/tax/all-taxes",
+      path: "/dashboard/my-products/compliance/all-compliance",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/tax/submitted-taxes",
+      path: "/dashboard/my-products/compliance/submitted-compliance",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/tax/draft-taxes",
+      path: "/dashboard/my-products/compliance/draft-compliance",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/tax/paid-draft-taxes",
+      path: "/dashboard/my-products/compliance/paid-draft-compliance",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/my-products/tax" && "/dashboard/my-products/tax/all-taxes";
+    pathname === "/dashboard/my-products/compliance" &&
+    "/dashboard/my-products/compliance/all-compliance";
 
   return (
     <Container>
       <ProductHeader
-        title="Taxes"
-        searchPlaceholder="Search tax..."
+        title="Compliance"
+        searchPlaceholder="Search compliance..."
         summary={summary}
         filterList={filterList}
         action={handleCategoryCreate}
-        actionText="Create Tax"
+        actionText="Create a Compliance"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
@@ -94,8 +95,8 @@ const Tax = () => {
           <LoadingError />
         ) : (
           <EmptyContent
-            emptyText="Your taxes will appear here."
-            buttonText="Create Tax"
+            emptyText="Your compliances will appear here."
+            buttonText="Onboard a Business"
             action={handleCategoryCreate}
           />
         )
@@ -115,4 +116,4 @@ const Tax = () => {
     </Container>
   );
 };
-export default Tax;
+export default Compliance;

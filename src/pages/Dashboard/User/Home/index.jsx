@@ -151,7 +151,7 @@ const UserDashboard = (props) => {
               body="Manage all your business registration in one place"
               link={{
                 text: "View all",
-                to: "/dashboard/businesses",
+                to: "/dashboard/my-products/business",
                 icon: <IoArrowForward />,
               }}
             >

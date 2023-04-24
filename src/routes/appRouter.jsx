@@ -25,28 +25,32 @@ import StaffDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/S
 import StaffPaidDraftManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPaidDraftManage";
 import StaffPaidDraftOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPaidDraftOnboarded";
 import StaffPaidDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPaidDraftIntellectual";
-import PaidDraftOnboarded from "pages/Dashboard/User/Onboarded/PaidDraftOnboarded";
-import PaidDraftManage from "pages/Dashboard/User/Manage/PaidDraftManage";
-import PaidDraftTaxes from "pages/Dashboard/User/Taxes/PaidDraftTaxes";
-import PaidDraftIntellectuals from "pages/Dashboard/User/Intellectual/PaidDraftIntellectual";
+import PaidDraftOnboarded from "pages/Dashboard/User/MyProducts/Onboarded/PaidDraftOnboarded";
+import PaidDraftManage from "pages/Dashboard/User/MyProducts/Manage/PaidDraftManage";
+import PaidDraftTaxes from "pages/Dashboard/User/MyProducts/Taxes/PaidDraftTaxes";
+import PaidDraftIntellectuals from "pages/Dashboard/User/MyProducts/Intellectual/PaidDraftIntellectual";
 import StaffPaidDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPaidDraftTaxes";
-import Compliance from "pages/Dashboard/User/Compliance";
-import AllCompliances from "pages/Dashboard/User/Compliance/AllCompliances";
-import PendingCompliances from "pages/Dashboard/User/Compliance/PendingCompliances";
-import DraftCompliances from "pages/Dashboard/User/Compliance/DraftCompliances";
-import PaidDraftCompliances from "pages/Dashboard/User/Compliance/PaidDraftCompliances";
-import PaidDraftApplications from "pages/Dashboard/User/Business/PaidDraftApplications";
+import Compliance from "pages/Dashboard/User/MyProducts/Compliance";
+import AllCompliances from "pages/Dashboard/User/MyProducts/Compliance/AllCompliances";
+import PendingCompliances from "pages/Dashboard/User/MyProducts/Compliance/PendingCompliances";
+import DraftCompliances from "pages/Dashboard/User/MyProducts/Compliance/DraftCompliances";
+import PaidDraftCompliances from "pages/Dashboard/User/MyProducts/Compliance/PaidDraftCompliances";
+import PaidDraftApplications from "pages/Dashboard/User/MyProducts/Business/PaidDraftApplications";
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
-const Business = lazy(() => import("pages/Dashboard/User/Business"));
+const Business = lazy(() => import("pages/Dashboard/User/MyProducts/Business"));
 const Application = lazy(() => import("pages/Dashboard/User/Application"));
 const BankAccountDetails = lazy(() =>
   import("pages/Dashboard/User/BankAccount/BankAccountDetails")
 );
-const AllBusinesses = lazy(() => import("pages/Dashboard/User/Business/AllBusinesses"));
-const DraftApplications = lazy(() => import("pages/Dashboard/User/Business/DraftApplications"));
-const PendingApplications = lazy(() => import("pages/Dashboard/User/Business/PendingApplications"));
+const AllBusinesses = lazy(() => import("pages/Dashboard/User/MyProducts/Business/AllBusinesses"));
+const DraftApplications = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/DraftApplications")
+);
+const PendingApplications = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/PendingApplications")
+);
 const StaffBusinesses = lazy(() => import("pages/Dashboard/staffDashboard/Businesses"));
 const CountryDetailLayout = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/Countries/CountryDetail/layout")
@@ -160,16 +164,24 @@ const BusinessInformationReview = lazy(() =>
 );
 const DirectorReview = lazy(() => import("pages/Launch/Review/DirectorReview/Index"));
 const ShareholderReview = lazy(() => import("pages/Launch/Review/ShareholderReview/Index"));
-const BusinessDetailLayout = lazy(() => import("pages/Dashboard/User/Business/Detail/layout"));
+const BusinessDetailLayout = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/Detail/layout")
+);
 const StaffBusinessDetailLayout = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout")
 );
-const BusinessDetail = lazy(() => import("pages/Dashboard/User/Business/Detail"));
-const BusinessPaymet = lazy(() => import("pages/Dashboard/User/Business/Detail/payment"));
-const DetailShareholders = lazy(() => import("pages/Dashboard/User/Business/Detail/shareholders"));
-const DetailDirectors = lazy(() => import("pages/Dashboard/User/Business/Detail/directors"));
+const BusinessDetail = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail"));
+const BusinessPaymet = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/Detail/payment")
+);
+const DetailShareholders = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/Detail/shareholders")
+);
+const DetailDirectors = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/Detail/directors")
+);
 const DetailBeneficiaries = lazy(() =>
-  import("pages/Dashboard/User/Business/Detail/beneficiaries")
+  import("pages/Dashboard/User/MyProducts/Business/Detail/beneficiaries")
 );
 const UserSettingsLayout = lazy(() => import("pages/Dashboard/User/Settings/layout"));
 const PersonalSettings = lazy(() => import("pages/Dashboard/User/Settings/personal"));
@@ -211,26 +223,32 @@ const ReviewDocuments = lazy(() => import("pages/Services/Review/ReviewDocuments
 const FormInformation = lazy(() => import("pages/Services/Detail/FormInformation"));
 const DocumentInfoDetails = lazy(() => import("pages/Services/Detail/DocumentInfoDetails"));
 const ServiceOptionSelect = lazy(() => import("../pages/Services/ServiceOptionSelect"));
-const Tax = lazy(() => import("pages/Dashboard/User/Taxes"));
-const AllTaxes = lazy(() => import("pages/Dashboard/User/Taxes/AllTaxes/index"));
-const PendingTaxes = lazy(() => import("pages/Dashboard/User/Taxes/PendingTaxes/index"));
-const DraftTaxes = lazy(() => import("pages/Dashboard/User/Taxes/DraftTaxes"));
-const Intellectual = lazy(() => import("pages/Dashboard/User/Intellectual"));
-const AllIntellectuals = lazy(() => import("pages/Dashboard/User/Intellectual/AllIntellectual"));
+const Tax = lazy(() => import("pages/Dashboard/User/MyProducts/Taxes"));
+const AllTaxes = lazy(() => import("pages/Dashboard/User/MyProducts/Taxes/AllTaxes/index"));
+const PendingTaxes = lazy(() => import("pages/Dashboard/User/MyProducts/Taxes/PendingTaxes/index"));
+const DraftTaxes = lazy(() => import("pages/Dashboard/User/MyProducts/Taxes/DraftTaxes"));
+const Intellectual = lazy(() => import("pages/Dashboard/User/MyProducts/Intellectual"));
+const AllIntellectuals = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Intellectual/AllIntellectual")
+);
 const PendingIntellectuals = lazy(() =>
-  import("pages/Dashboard/User/Intellectual/PendingIntellectual")
+  import("pages/Dashboard/User/MyProducts/Intellectual/PendingIntellectual")
 );
 const DraftIntellectuals = lazy(() =>
-  import("pages/Dashboard/User/Intellectual/DraftIntellectual")
+  import("pages/Dashboard/User/MyProducts/Intellectual/DraftIntellectual")
 );
-const Manage = lazy(() => import("pages/Dashboard/User/Manage"));
-const AllManage = lazy(() => import("pages/Dashboard/User/Manage/AllIManage"));
-const PendingManage = lazy(() => import("pages/Dashboard/User/Manage/PendingManage"));
-const DraftManage = lazy(() => import("pages/Dashboard/User/Manage/DraftManage"));
-const Onboarded = lazy(() => import("pages/Dashboard/User/Onboarded"));
-const AllOnboarded = lazy(() => import("pages/Dashboard/User/Onboarded/AllOnboarded"));
-const PendingOnboarded = lazy(() => import("pages/Dashboard/User/Onboarded/PendingOnboarded"));
-const DraftOnboarded = lazy(() => import("pages/Dashboard/User/Onboarded/DraftOnboarded"));
+const Manage = lazy(() => import("pages/Dashboard/User/MyProducts/Manage"));
+const AllManage = lazy(() => import("pages/Dashboard/User/MyProducts/Manage/AllIManage"));
+const PendingManage = lazy(() => import("pages/Dashboard/User/MyProducts/Manage/PendingManage"));
+const DraftManage = lazy(() => import("pages/Dashboard/User/MyProducts/Manage/DraftManage"));
+const Onboarded = lazy(() => import("pages/Dashboard/User/MyProducts/Onboarded"));
+const AllOnboarded = lazy(() => import("pages/Dashboard/User/MyProducts/Onboarded/AllOnboarded"));
+const PendingOnboarded = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Onboarded/PendingOnboarded")
+);
+const DraftOnboarded = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Onboarded/DraftOnboarded")
+);
 const Products = lazy(() => import("pages/Dashboard/User/Products"));
 
 //

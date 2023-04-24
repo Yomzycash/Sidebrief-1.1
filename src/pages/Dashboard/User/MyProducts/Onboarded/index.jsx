@@ -4,12 +4,12 @@ import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
-import { useCategoriesActions } from "../actions";
+import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
-const Intellectual = () => {
+const Onboarded = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -21,10 +21,7 @@ const Intellectual = () => {
     isSuccess,
     complyFullInfo,
     handleCategoryCreate,
-  } = useCategoriesActions({
-    category: "Intellectual Property",
-    createPath: "/services/intellectual-property",
-  });
+  } = useCategoriesActions({ category: "Onboard", createPath: "/services/onboard" });
 
   const { pathname } = useLocation();
 
@@ -52,44 +49,42 @@ const Intellectual = () => {
   const navInfo = [
     {
       text: "All",
-      total: allTotal || 0,
-      path: "/dashboard/my-products/intellectual-property/all-intellectual-properties",
+      total: submittedTotal + draftTotal || 0,
+      path: "/dashboard/my-products/onboard/all-onboard",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/intellectual-property/submitted-intellectual-properties",
+      path: "/dashboard/my-products/onboard/submitted-onboard",
       isAvailable: submittedTotal > 0,
     },
     {
-      text: "Drafts",
+      text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/intellectual-property/draft-intellectual-properties",
+      path: "/dashboard/my-products/onboard/draft-onboard",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/intellectual-property/paid-draft-intellectual-properties",
+      path: "/dashboard/my-products/onboard/paid-draft-onboard",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/my-products/intellectual-property" &&
-    "/dashboard/my-products/intellectual-property/all-intellectual-properties";
+    pathname === "/dashboard/my-products/onboard" && "/dashboard/my-products/onboard/all-onboard";
 
   return (
     <Container>
       <ProductHeader
-        title="Intellectual Property"
-        searchPlaceholder="Search intellectual property..."
+        title="Onboarded"
+        searchPlaceholder="Search onboarded..."
         summary={summary}
         filterList={filterList}
         action={handleCategoryCreate}
-        actionText="Create Intellectual Property"
-        emptyText="Your businesses will appear here when you launch one"
+        actionText="Onboard a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
@@ -99,8 +94,8 @@ const Intellectual = () => {
           <LoadingError />
         ) : (
           <EmptyContent
-            emptyText="Your intellectual properties will appear here when you create one"
-            buttonText="Create Intellectual Property"
+            emptyText="Your onboarded businesses will appear here."
+            buttonText="Onboard a Business"
             action={handleCategoryCreate}
           />
         )
@@ -120,4 +115,4 @@ const Intellectual = () => {
     </Container>
   );
 };
-export default Intellectual;
+export default Onboarded;

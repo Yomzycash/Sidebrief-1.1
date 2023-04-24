@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { store } from "redux/Store";
 import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { removeProductsFromLocalStorage } from "utils/globalFunctions";
+import LoadingError from "components/Fallbacks/LoadingError";
 
 const Products = () => {
   const allCategories = useGetAllCategoriesQuery();
@@ -62,10 +63,12 @@ const Products = () => {
   // console.log(allCategories);
   return (
     <Container>
-      <Header>
-        <p>All Products</p>
-        <p>Products you can rely on through your business's journey</p>
-      </Header>
+      {allCategories.data && (
+        <Header>
+          <p>All Products</p>
+          <p>Products you can rely on through your business's journey</p>
+        </Header>
+      )}
       {allCategories.isLoading && (
         <Loading height="50vh">
           <Puff stroke="#00A2D4" fill="white" />
@@ -92,6 +95,7 @@ const Products = () => {
           </>
         )}
       </Body>
+      {allCategories.isError && <LoadingError />}
     </Container>
   );
 };
