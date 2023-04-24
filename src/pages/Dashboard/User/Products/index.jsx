@@ -8,6 +8,10 @@ import { TbReceiptTax } from "react-icons/tb";
 import { AiOutlineFileProtect } from "react-icons/ai";
 import { Puff } from "react-loading-icons";
 import { FaCheckDouble } from "react-icons/fa";
+import { useEffect } from "react";
+import { store } from "redux/Store";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
+import { removeProductsFromLocalStorage } from "utils/globalFunctions";
 
 const Products = () => {
   const allCategories = useGetAllCategoriesQuery();
@@ -50,6 +54,10 @@ const Products = () => {
       };
     }
   };
+
+  useEffect(() => {
+    removeProductsFromLocalStorage();
+  }, []);
 
   // console.log(allCategories);
   return (

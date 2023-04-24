@@ -33,6 +33,7 @@ const ServicePayment = () => {
   };
 
   //
+  console.log(option);
 
   // Send the payment reference information to the backend
   const sendFlutterwaveRefToBackend = async (reference) => {

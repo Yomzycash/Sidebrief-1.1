@@ -89,7 +89,9 @@ export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
 };
 
 export const getCurrencyInfo = (currency) => {
-  let currencyInfo = countriesInfo.filter((country) => country.currency === currency)[0];
+  let currencyInfo = countriesInfo.filter(
+    (country) => country.currency.toLowerCase() === currency.toLowerCase()
+  )[0];
   if (currency) return currencyInfo;
   else return "";
 };
@@ -122,4 +124,10 @@ export const removeLaunchFromLocalStorage = () => {
 export const removeComplyFromLocalStorage = () => {
   localStorage.removeItem("complyInfo");
   localStorage.removeItem("paymentDetails");
+};
+
+export const removeProductsFromLocalStorage = () => {
+  store.dispatch(setLaunchResponse({}));
+  removeLaunchFromLocalStorage();
+  removeComplyFromLocalStorage();
 };

@@ -113,6 +113,7 @@ const UserDashboard = (props) => {
     store.dispatch(setGeneratedLaunchCode(""));
     store.dispatch(setLaunchResponse({}));
     removeLaunchFromLocalStorage();
+    removeComplyFromLocalStorage();
   }, []);
 
   return (
