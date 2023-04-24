@@ -6,17 +6,16 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useActions } from "../actions";
+import { useActions } from "../../actions";
 import FeatureTable from "components/Tables/FeatureTable";
-import { handleError } from "utils/globalFunctions";
 
 const PaidDraftIntellectuals = () => {
   const [dataArr, setDataArr] = useState([]);
 
-  const { paidrafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
+  const { paidDrafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
 
-  const hasFetched = paidrafts ? true : false;
-  const allPaidDrafts = hasFetched ? paidrafts : [];
+  const hasFetched = paidDrafts ? true : false;
+  const allPaidDrafts = hasFetched ? paidDrafts : [];
 
   const { filterWhenSearched, sortData } = useActions({
     searchValue,
@@ -29,7 +28,7 @@ const PaidDraftIntellectuals = () => {
   // Sort data
   useEffect(() => {
     sortData(allPaidDrafts);
-  }, [paidrafts, isSuccess]);
+  }, [paidDrafts, isSuccess]);
 
   // Filters data array by searched value
   useEffect(() => {
@@ -37,11 +36,10 @@ const PaidDraftIntellectuals = () => {
   }, [searchValue]);
 
   // Tabele header
-  const header = ["Comply Code", "Service Name", "Country", "Paid", "Date"];
+  const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
-    el?.complyCode,
     el?.serviceName,
     el?.serviceCountry,
     el?.paid?.toString(),
@@ -57,6 +55,7 @@ const PaidDraftIntellectuals = () => {
     );
   };
 
+  console.log(paidDrafts);
   return (
     <Container>
       <Body>

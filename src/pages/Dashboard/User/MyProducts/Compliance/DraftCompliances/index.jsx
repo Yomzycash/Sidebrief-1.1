@@ -6,9 +6,8 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { useActions } from "../actions";
+import { useActions } from "../../actions";
 import FeatureTable from "components/Tables/FeatureTable";
-import { handleError } from "utils/globalFunctions";
 
 const DraftCompliances = () => {
   const [dataArr, setDataArr] = useState([]);
@@ -38,11 +37,10 @@ const DraftCompliances = () => {
   }, [searchValue]);
 
   // Tabele header
-  const header = ["Comply Code", "Service Name", "Country", "Paid", "Date"];
+  const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
-    el?.complyCode,
     el?.serviceName,
     el?.serviceCountry,
     el?.paid?.toString(),
