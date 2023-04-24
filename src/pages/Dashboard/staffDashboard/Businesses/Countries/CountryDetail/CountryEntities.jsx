@@ -66,7 +66,7 @@ const CountryEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity added successfully");
-      // setOpen(false);
+      refetch();
       setCardAction("");
     } else {
       handleError(error);
@@ -82,6 +82,7 @@ const CountryEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity updated successfully");
+      refetch();
       setCardAction("");
       // setOpen(false);
     } else {
@@ -97,6 +98,7 @@ const CountryEntities = () => {
     let error = response?.error;
     if (data) {
       toast.success("Entity deleted successfully");
+      refetch();
       setCardAction("");
       // setOpen(false);
     } else {

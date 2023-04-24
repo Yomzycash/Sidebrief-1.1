@@ -46,7 +46,7 @@ const BusinessDetailLayout = () => {
       ...launchResponse,
       viewPayLaunch,
     });
-    localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo.data));
+    localStorage.setItem("paymentDetails", JSON.stringify(paymentInfo.data || {}));
     if (paymentInfo.status) {
       navigate("/launch/address");
     } else {
