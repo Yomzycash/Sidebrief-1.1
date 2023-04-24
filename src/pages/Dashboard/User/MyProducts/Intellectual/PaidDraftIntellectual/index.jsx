@@ -55,7 +55,6 @@ const PaidDraftIntellectuals = () => {
     );
   };
 
-  console.log(paidDrafts);
   return (
     <Container>
       <Body>
