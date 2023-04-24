@@ -8,7 +8,6 @@ import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
-import { handleError } from "utils/globalFunctions";
 
 const AllCompliances = () => {
   const [dataArr, setDataArr] = useState([]);
@@ -51,8 +50,9 @@ const AllCompliances = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let complyCode = el[0];
-    navigate(`/dashboard/my-products/compliance/all-compliances/${complyCode}/info`);
+    let complyCode = el?.complyCode;
+    console.log(complyCode);
+    navigate(`/dashboard/my-products/compliance/all-compliance/${complyCode}/info`);
   };
 
   return (
@@ -65,7 +65,12 @@ const AllCompliances = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

@@ -14,7 +14,7 @@ const ApplicationSuccessPage = () => {
   let registrationType = launchInfo?.registrationType;
 
   const handleNavigate = () => {
-    let link = `/dashboard/business/detail?launchCode=${launchCode}&registrationCountry=${registrationCountry}&registrationType=${registrationType}`;
+    let link = `/dashboard/my-products/business/detail?launchCode=${launchCode}&registrationCountry=${registrationCountry}&registrationType=${registrationType}`;
     navigate(link);
   };
   const timeline = JSON.parse(localStorage.getItem("entityTimeline"));
@@ -32,7 +32,6 @@ const ApplicationSuccessPage = () => {
           onClick={handleNavigate}
         />
       </Body>
-      {/* <AppFeedback subProject="Application success page" /> */}
     </>
   );
 };

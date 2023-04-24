@@ -61,26 +61,3 @@ export const Loader = styled.div`
   width: 100%;
   height: 100px;
 `;
-
-export const ContinueButton = styled.button`
-  background: #00a2d4;
-  border-radius: 8px;
-  height: 44px;
-  padding-inline: 24px;
-  margin-inline: 24px;
-  margin-top: 40px;
-  border: none;
-
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 27px;
-  letter-spacing: -0.5px;
-  color: white;
-  cursor: pointer;
-
-  &:hover {
-    background: #00a2d4b7;
-  }
-`;

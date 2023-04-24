@@ -54,8 +54,8 @@ const StaffPaidDraftTaxes = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/staff-dashboard/businesses/tax/${serviceId}/info`);
+    let complyCode = el?.complyCode;
+    navigate(`/staff-dashboard/businesses/tax/${complyCode}/info`);
   };
 
   return (
@@ -68,7 +68,12 @@ const StaffPaidDraftTaxes = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

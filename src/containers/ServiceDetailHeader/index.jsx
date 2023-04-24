@@ -113,7 +113,7 @@ const ServiceDetailHeader = ({
     if (isStaff) {
       navigate(`/staff-dashboard/businesses/services/chats/?serviceId=${code}`);
     } else {
-      navigate(`/dashboard/businesses/chats/?serviceId=${code}`);
+      navigate(`/dashboard/my-products/chats/?serviceId=${code}`);
     }
   };
 

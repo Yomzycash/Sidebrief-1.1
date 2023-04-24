@@ -64,32 +64,32 @@ const StaffOnboarded = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/all-onboarded",
+      path: "/staff-dashboard/businesses/onboarded/all-onboard",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/submitted-onboarded",
+      path: "/staff-dashboard/businesses/onboarded/submitted-onboard",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/draft-onboarded",
+      path: "/staff-dashboard/businesses/onboarded/draft-onboard",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/paid-draft-onboarded",
+      path: "/staff-dashboard/businesses/onboarded/paid-draft-onboard",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
     pathname === "/staff-dashboard/businesses/onboarded" &&
-    "/staff-dashboard/businesses/onboarded/all-onboarded";
+    "/staff-dashboard/businesses/onboarded/all-onboard";
 
   return (
     <Container>

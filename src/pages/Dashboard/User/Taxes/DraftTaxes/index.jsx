@@ -51,8 +51,8 @@ const DraftTaxes = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/dashboard/my-products/tax/draft-taxes/${serviceId}/info`);
+    let complyCode = el?.complyCode;
+    navigate(`/dashboard/my-products/tax/draft-taxes/${complyCode}/info`);
   };
 
   return (
@@ -65,7 +65,12 @@ const DraftTaxes = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

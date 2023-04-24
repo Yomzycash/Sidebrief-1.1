@@ -38,7 +38,6 @@ const Sidebar = ({ items }) => {
     store.dispatch(setSidebarWidth(expanded ? sidebarVariants.true.width : "100px"));
   }, [expanded]);
 
-  console.log(items);
   return (
     <SidebarWrapper
       width="100px"

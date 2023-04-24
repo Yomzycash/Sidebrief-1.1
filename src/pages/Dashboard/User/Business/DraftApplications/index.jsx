@@ -1,25 +1,20 @@
-import { GeneralTable } from "components/Tables";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import {
-  useGetAllCountriesQuery,
-  useGetUserDraftQuery,
-  useViewPayLaunchMutation,
-} from "services/launchService";
+import React, { useEffect, useState } from "react";
+import { useGetAllCountriesQuery, useViewPayLaunchMutation } from "services/launchService";
 import { Body, Container, Loading } from "./styled";
-import { format, compareDesc } from "date-fns";
 import { Puff } from "react-loading-icons";
+import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
-import styled from "styled-components";
-import { columns } from "../tablecolumn";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useBusinessActions } from "../actions";
+import FeatureTable from "components/Tables/FeatureTable";
 
 const DraftApplications = () => {
   const [dataArr, setDataArr] = useState([]);
 
-  const { drafts, searchValue } = useOutletContext();
+  const navigate = useNavigate();
+
+  const { drafts, searchValue, isLoading, isError, isSuccess, setListShown } = useOutletContext();
 
   const countries = useGetAllCountriesQuery();
   const [viewPayLaunch] = useViewPayLaunchMutation();
@@ -27,21 +22,19 @@ const DraftApplications = () => {
   const hasFetched = drafts.data;
   const allDrafts = hasFetched ? drafts.data : [];
 
-  const { filterWhenSearched, sortData } = useBusinessActions({
+  const { filterWhenSearched, sortData, header, dataBody, handleRowClick } = useBusinessActions({
     searchValue,
     hasFetched,
+    dataArr,
     setDataArr,
+    countries,
   });
-
-  const data = drafts.data;
-  const error = drafts.error;
-  const isLoading = drafts.isLoading;
-  const isSuccess = drafts.isSuccess;
 
   // Sort data
   useEffect(() => {
     sortData(allDrafts);
-  }, [data, isSuccess]);
+    setListShown(allDrafts?.length);
+  }, [drafts, isSuccess]);
 
   // Filters data array by searched value
   useEffect(() => {
@@ -60,21 +53,11 @@ const DraftApplications = () => {
             </Loading>
           ))}
         {!matches && dataArr.length > 0 ? (
-          <GeneralTable
-            data={dataArr.map((element) => {
-              return {
-                name: element.businessNames ? element.businessNames.businessName1 : "No name ",
-                type: element?.registrationType,
-                country: countries.data.find(
-                  (country) => country.countryISO === element.registrationCountry
-                )?.countryName,
-                date: format(new Date(element.createdAt), "dd/MM/yyyy"),
-                code: element.launchCode,
-                countryISO: element.registrationCountry,
-                viewPayLaunch: viewPayLaunch,
-              };
-            })}
-            columns={columns}
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
           />
         ) : (
           <MobileContainer>
@@ -91,12 +74,6 @@ const DraftApplications = () => {
             })}
           </MobileContainer>
         )}
-        {error?.status === "FETCH_ERROR" || countries?.isLoading === "FETCH_ERROR" ? (
-          <p>Connection error</p>
-        ) : (
-          ""
-        )}
-        {/* {console.log(countries.isError)} */}
       </Body>
     </Container>
   );

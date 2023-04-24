@@ -50,32 +50,31 @@ const Onboarded = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/my-products/onboarded/all-onboarded",
+      path: "/dashboard/my-products/onboard/all-onboard",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/onboarded/submitted-onboarded",
+      path: "/dashboard/my-products/onboard/submitted-onboard",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/onboarded/draft-onboarded",
+      path: "/dashboard/my-products/onboard/draft-onboard",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/onboarded/paid-draft-onboarded",
+      path: "/dashboard/my-products/onboard/paid-draft-onboard",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/dashboard/my-products/onboarded" &&
-    "/dashboard/my-products/onboarded/all-onboarded";
+    pathname === "/dashboard/my-products/onboard" && "/dashboard/my-products/onboard/all-onboard";
 
   return (
     <Container>

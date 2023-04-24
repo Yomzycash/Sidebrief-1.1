@@ -1,69 +1,58 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { Body, Container, Loading, MobileContainer } from "./styled";
-import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { useGetAllCountriesQuery, useViewPayLaunchMutation } from "services/launchService";
+import { Body, Container, Loading } from "./styled";
 import { Puff } from "react-loading-icons";
+import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useActions } from "../actions";
+import { useBusinessActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
-import { handleError } from "utils/globalFunctions";
 
-const PaidDraftCompliances = () => {
+const PaidDraftApplications = () => {
   const [dataArr, setDataArr] = useState([]);
-
-  const { paidDrafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
-
-  const hasFetched = paidDrafts ? true : false;
-  const allDrafts = hasFetched ? paidDrafts : [];
-
-  const { filterWhenSearched, sortData } = useActions({
-    searchValue,
-    hasFetched,
-    setDataArr,
-  });
 
   const navigate = useNavigate();
 
+  const { paidDrafts, searchValue, isLoading, isError, isSuccess, setListShown } =
+    useOutletContext();
+
+  const countries = useGetAllCountriesQuery();
+  const [viewPayLaunch] = useViewPayLaunchMutation();
+
+  const hasFetched = paidDrafts;
+  const allPaidDrafts = hasFetched ? paidDrafts : [];
+
+  const { filterWhenSearched, sortData, header, dataBody, handleRowClick } = useBusinessActions({
+    searchValue,
+    hasFetched,
+    dataArr,
+    setDataArr,
+    countries,
+  });
+
   // Sort data
   useEffect(() => {
-    sortData(allDrafts);
+    sortData(allPaidDrafts);
+    setListShown(allPaidDrafts?.length);
   }, [paidDrafts, isSuccess]);
 
   // Filters data array by searched value
   useEffect(() => {
-    if (searchValue) filterWhenSearched(allDrafts);
+    filterWhenSearched(allPaidDrafts);
   }, [searchValue]);
 
-  // Tabele header
-  const header = ["Comply Code", "Service Name", "Country", "Paid", "Date"];
-
-  // Table body
-  const dataBody = dataArr?.map((el) => [
-    el?.complyCode,
-    el?.serviceName,
-    el?.serviceCountry,
-    el?.paid?.toString(),
-    format(new Date(el?.createdAt), "dd-MM-yyyy"),
-  ]);
-
   const matches = useMediaQuery("(max-width:700px)");
-
-  const handleRowClick = (el) => {
-    let complyCode = el?.complyCode;
-    navigate(`/dashboard/my-products/compliance/paid-draft-compliance/${complyCode}/info`);
-  };
 
   return (
     <Container>
       <Body>
-        {isLoading && (
-          <Loading>
-            <Puff stroke="#00A2D4" />
-          </Loading>
-        )}
-
+        {isLoading ||
+          (countries.isLoading && (
+            <Loading>
+              <Puff stroke="#00A2D4" />
+            </Loading>
+          ))}
         {!matches && dataArr.length > 0 ? (
           <FeatureTable
             header={header}
@@ -80,6 +69,7 @@ const PaidDraftCompliances = () => {
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
+                  viewPayLaunch={viewPayLaunch}
                 />
               );
             })}
@@ -90,4 +80,15 @@ const PaidDraftCompliances = () => {
   );
 };
 
-export default PaidDraftCompliances;
+export default PaidDraftApplications;
+
+const MobileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: inherit;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+`;

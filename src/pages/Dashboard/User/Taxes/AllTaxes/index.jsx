@@ -51,8 +51,8 @@ const AllTaxes = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/dashboard/my-products/tax/all-taxes/${serviceId}/info`);
+    let complyCode = el?.complyCode;
+    navigate(`/dashboard/my-products/tax/all-taxes/${complyCode}/info`);
   };
 
   return (
@@ -65,7 +65,12 @@ const AllTaxes = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

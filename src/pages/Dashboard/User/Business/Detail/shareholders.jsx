@@ -1,23 +1,12 @@
 import { PdfCard } from "components/cards";
 import { CardContainer, Loader } from "./styles";
-import { useViewLaunchRequestQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 
 const DetailShareholder = () => {
-  const { search } = useLocation();
+  const { data, isLoading, isSuccess, refetch } = useOutletContext();
 
-  const searchParams = new URLSearchParams(search);
-
-  const launchResponse = {
-    launchCode: searchParams.get("launchCode"),
-    registrationCountry: searchParams.get("registrationCountry"),
-    registrationType: searchParams.get("registrationType"),
-  };
-
-  const { data, isLoading, isSuccess, refetch } =
-    useViewLaunchRequestQuery(launchResponse);
   const members = isSuccess ? data.businessMembers : [];
   const memberKYC = isSuccess ? data.businessMembersKYC : [];
 
@@ -33,9 +22,7 @@ const DetailShareholder = () => {
       ) : (
         <CardContainer>
           {data.businessShareholders.map((shareholder) => {
-            const member = members.find(
-              (el) => el.memberCode === shareholder.memberCode
-            );
+            const member = members.find((el) => el.memberCode === shareholder.memberCode);
             const currentmemberKYC = memberKYC.filter(
               (el) => el.memberCode === shareholder.memberCode
             );
@@ -58,21 +45,15 @@ const DetailShareholder = () => {
                 email={member.memberEmail}
                 phone={`+${member.memberPhone}`}
                 code={member.memberCode}
-                title={`${
-                  shareholder.shareholderRegistrationNumber
-                    ? "Company"
-                    : "Individual"
-                } - ${shareholder.shareholderOwnershipPercentage}%`}
+                title={`${shareholder.shareholderRegistrationNumber ? "Company" : "Individual"} - ${
+                  shareholder.shareholderOwnershipPercentage
+                }%`}
                 nin={NINSlip}
                 proof={proofFile}
                 signature={eSignature}
                 passport={passportFile}
                 page={"shareholders"}
-                type={
-                  shareholder.shareholderRegistrationNumber
-                    ? "company"
-                    : "individual"
-                }
+                type={shareholder.shareholderRegistrationNumber ? "company" : "individual"}
               />
             );
           })}

@@ -50,8 +50,8 @@ const DraftManage = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/dashboard/my-products/manage/draft-manage/${serviceId}/info`);
+    let complyCode = el?.complyCode;
+    navigate(`/dashboard/my-products/manage/draft-manage/${complyCode}/info`);
   };
 
   return (
@@ -64,7 +64,12 @@ const DraftManage = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

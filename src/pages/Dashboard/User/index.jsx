@@ -18,7 +18,6 @@ const UserDashboardLayout = () => {
   let hideMobileNav =
     location.pathname.includes("/dashboard/rewards") && location.pathname.length > 31;
 
-  console.log("Hello", userSidebarItems);
   return (
     <Dashboard>
       <Navbar

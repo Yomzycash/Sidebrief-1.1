@@ -51,9 +51,9 @@ const PaidDraftIntellectuals = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
+    let complyCode = el?.complyCode;
     navigate(
-      `/dashboard/my-products/intellectual-property/paid-draft-intellectual-properties/${serviceId}/info`
+      `/dashboard/my-products/intellectual-property/paid-draft-intellectual-properties/${complyCode}/info`
     );
   };
 
@@ -67,7 +67,12 @@ const PaidDraftIntellectuals = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

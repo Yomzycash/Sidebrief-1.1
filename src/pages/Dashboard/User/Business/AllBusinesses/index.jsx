@@ -1,24 +1,22 @@
-import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState } from "react";
+import { useGetAllCountriesQuery, useViewPayLaunchMutation } from "services/launchService";
 import { Body, Container, Loading } from "./styled";
-import { format } from "date-fns";
-import {
-  useGetAllCountriesQuery,
-  useViewPayLaunchMutation,
-} from "services/launchService";
 import { Puff } from "react-loading-icons";
 import styled from "styled-components";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
-import { columns } from "../tablecolumn";
 import { navigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useBusinessActions } from "../actions";
+import FeatureTable from "components/Tables/FeatureTable";
 
 const AllBusinesses = () => {
   const [dataArr, setDataArr] = useState([]);
 
-  const { submitted, drafts, searchValue } = useOutletContext();
+  const navigate = useNavigate();
+
+  const { submitted, drafts, searchValue, isLoading, isError, isSuccess, setListShown } =
+    useOutletContext();
 
   const countries = useGetAllCountriesQuery();
   const [viewPayLaunch] = useViewPayLaunchMutation();
@@ -26,18 +24,19 @@ const AllBusinesses = () => {
   const hasFetched = submitted.data && drafts.data;
   const all = hasFetched ? submitted.data.concat(drafts.data) : [];
 
-  const { filterWhenSearched, sortData } = useBusinessActions({
+  const { filterWhenSearched, sortData, header, dataBody, handleRowClick } = useBusinessActions({
     searchValue,
     hasFetched,
+    dataArr,
     setDataArr,
+    countries,
   });
-
-  const navigate = useNavigate();
 
   // Sort data
   useEffect(() => {
     sortData(all);
-  }, [submitted, drafts]);
+    setListShown(all?.length);
+  }, [submitted, drafts, isSuccess]);
 
   // Filters data array by searched value
   useEffect(() => {
@@ -46,33 +45,20 @@ const AllBusinesses = () => {
 
   const matches = useMediaQuery("(max-width:700px)");
 
-  const loadingData = submitted.isLoading && drafts.isSuccess;
-
   return (
     <Container>
       <Body>
-        {loadingData && (
+        {isLoading && (
           <Loading>
             <Puff stroke="#00A2D4" />
           </Loading>
         )}
         {!matches && dataArr.length > 0 ? (
-          <GeneralTable
-            data={dataArr.map((element) => {
-              return {
-                name: element.businessNames ? element.businessNames.businessName1 : "No name ",
-                type: element?.registrationType,
-                country:
-                  countries.data?.find(
-                    (country) => country?.countryISO === element?.registrationCountry
-                  )?.countryName || "--",
-                date: format(new Date(element.createdAt), "dd/MM/yyyy"),
-                code: element.launchCode,
-                countryISO: element.registrationCountry,
-                viewPayLaunch: viewPayLaunch,
-              };
-            })}
-            columns={columns}
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
           />
         ) : (
           <MobileContainer>

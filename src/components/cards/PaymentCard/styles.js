@@ -11,33 +11,6 @@ export const Container = styled.div`
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px rgba(149, 150, 151, 0.04);
   border-radius: 16px;
-
-  /* @media screen and (max-width: 1050px) {
-    padding-inline: 0;
-  } */
-
-  /* @media screen and (max-width: 700px) {
-    padding-inline: 0;
-    gap: 24px;
-  } */
-`;
-export const DarkContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: max-content;
-  background: #edf1f6;
-  padding: 18px 14px;
-  border: 1px solid #edf1f6;
-
-  /* @media screen and (max-width: 1050px) {
-    padding-inline: 0;
-  } */
-
-  /* @media screen and (max-width: 700px) {
-    padding-inline: 0;
-    gap: 24px;
-  } */
 `;
 export const LeftTextContainer = styled.p`
   width: 50%;
@@ -50,7 +23,7 @@ export const RightTextContainer = styled.p`
   border-radius: 16px;
   background-color: ${(props) => (props.background ? props.background : "")};
 `;
-export const LightContainer = styled.div`
+export const FieldContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: max-content;
@@ -64,7 +37,14 @@ export const TopContainer = styled.div`
   flex-direction: column;
 `;
 
-export const BottomContainer = styled.div``;
+export const BottomContainer = styled.div`
+  > div:nth-of-type(even) {
+    background-color: white;
+  }
+  > div:nth-of-type(odd) {
+    background-color: #edf1f6;
+  }
+`;
 
 export const Title = styled.p`
   font-family: "BR Firma";

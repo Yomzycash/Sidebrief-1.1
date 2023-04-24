@@ -31,8 +31,6 @@ const ProductHeader = ({
 }) => {
   const availableNavs = navInfo?.filter((el) => el.isAvailable);
 
-  console.log(navInfo);
-
   return (
     <Header>
       <MainHeader>

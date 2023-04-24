@@ -1,40 +1,29 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { useViewLaunchRequestQuery } from "services/launchService";
+import { useOutletContext } from "react-router-dom";
+import { getCurrencyInfo } from "utils/globalFunctions";
 import PaymentDetailsCard from "../../../../../components/cards/PaymentCard";
 import { DetailContainer } from "./styles";
 
 const Payment = () => {
-  const { search } = useLocation();
+  const { data, isLoading } = useOutletContext();
 
-  const searchParams = new URLSearchParams(search);
-  const { first_name, last_name } = useSelector((store) => store.UserDataReducer.userInfo);
-  const launchResponse = {
-    launchCode: searchParams.get("launchCode"),
-    registrationCountry: searchParams.get("registrationCountry"),
-    registrationType: searchParams.get("registrationType"),
-  };
+  let paymentDetails = data?.businessPayment[0];
 
-  const launchRequest = useViewLaunchRequestQuery(launchResponse);
-
-  let paymentDetails = launchRequest?.data?.businessPayment[0];
-  // console.log("checking", launchRequest?.data?.createdAt);
+  let amount =
+    getCurrencyInfo(paymentDetails?.paymentCurrency)?.symbol + paymentDetails?.paymentAmount;
 
   return (
     <DetailContainer>
       <PaymentDetailsCard
-        amount={paymentDetails?.paymentAmount}
+        amount={amount}
         currency={paymentDetails?.paymentCurrency}
         id={paymentDetails?.paymentTransactionId}
+        email={data?.businessAddress?.addressEmail}
         provider={paymentDetails?.paymentProvider}
         status={paymentDetails?.paymentStatus}
         code={paymentDetails?.launchCode}
-        launchRequest={launchRequest}
-        firstname={first_name}
-        lastname={last_name}
-        date={launchRequest?.data?.createdAt.slice(0, 10)}
-        isLoading={launchRequest?.isLoading}
+        date={data?.createdAt.slice(0, 10)}
+        isLoading={isLoading}
       />
     </DetailContainer>
   );

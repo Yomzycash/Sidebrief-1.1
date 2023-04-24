@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container } from "./styled";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { setBusinessesShown, setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { store } from "redux/Store";
 import { useGetUserDraftQuery, useGetUserSubmittedQuery } from "services/launchService";
-import { useSelector } from "react-redux";
 import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
+import LoadingError from "components/Fallbacks/LoadingError";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 
 //
 
 const Business = () => {
   const [searchValue, setSearchValue] = useState("");
-  const location = useLocation();
+  const [listShown, setListShown] = useState(0);
+
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const drafts = useGetUserDraftQuery({
@@ -21,11 +24,7 @@ const Business = () => {
   const submitted = useGetUserSubmittedQuery({
     refetchOnMountOrArgChange: true,
   });
-
-  const businessesShown = useSelector((store) => store.BusinessesInfo.businessesShown);
-
-  let submittedTotal = submitted?.currentData?.length;
-  let draftTotal = drafts?.currentData?.length;
+  const paidDrafts = drafts.currentData?.filter((el) => el?.paid === true);
 
   const handleLaunch = () => {
     store.dispatch(setGeneratedLaunchCode(""));
@@ -34,32 +33,14 @@ const Business = () => {
     navigate("/launch");
   };
 
-  // This sets the shown of all rewards
-  useEffect(() => {
-    if (location.pathname === "/dashboard/businesses/all-businesses")
-      store.dispatch(
-        setBusinessesShown({
-          total: submittedTotal + draftTotal,
-          shown: submittedTotal + draftTotal,
-        })
-      );
-    if (location.pathname === "/dashboard/businesses/submitted-applications")
-      store.dispatch(
-        setBusinessesShown({
-          total: submittedTotal,
-          shown: submittedTotal,
-        })
-      );
-    if (location.pathname === "/dashboard/businesses/draft-applications")
-      store.dispatch(setBusinessesShown({ total: draftTotal, shown: draftTotal }));
-  }, [location.pathname, draftTotal, submittedTotal]);
+  let isLoading = drafts.isLoading || submitted.isLoading;
+  let isError = drafts.isError || submitted.isError;
+  let isSuccess = drafts.isSuccess && submitted.isSuccess;
 
-  useEffect(() => {
-    // clear the localstorage when this page is entered
-    store.dispatch(setGeneratedLaunchCode(""));
-    store.dispatch(setLaunchResponse({}));
-    removeLaunchFromLocalStorage();
-  }, []);
+  let submittedTotal = submitted?.currentData?.length;
+  let draftTotal = drafts?.currentData?.length;
+  let paidDraftTotal = paidDrafts?.length;
+  let allTotal = submittedTotal + draftTotal;
 
   const handleSearch = (e) => {
     let value = e.target.value;
@@ -67,8 +48,8 @@ const Business = () => {
   };
 
   const summary = {
-    current: businessesShown.shown || 0,
-    total: businessesShown.total || 0,
+    current: listShown,
+    total: listShown,
   };
 
   const filterList = ["All", "Onboarded", "Launched"];
@@ -77,22 +58,32 @@ const Business = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/businesses/all-businesses",
-      isAvailable: true,
+      path: "/dashboard/my-products/business/all-businesses",
+      isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/businesses/submitted-applications",
-      isAvailable: true,
+      path: "/dashboard/my-products/business/submitted-applications",
+      isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/businesses/draft-applications",
-      isAvailable: true,
+      path: "/dashboard/my-products/business/draft-applications",
+      isAvailable: draftTotal > 0,
+    },
+    {
+      text: "Paid Drafts",
+      total: paidDraftTotal || 0,
+      path: "/dashboard/my-products/business/paid-draft-applications",
+      isAvailable: paidDrafts?.length > 0,
     },
   ];
+
+  let isFirstNav =
+    pathname === "/dashboard/my-products/business" &&
+    "/dashboard/my-products/business/all-applications";
 
   return (
     <Container>
@@ -105,8 +96,32 @@ const Business = () => {
         actionText="Launch a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
+        defaultActive={isFirstNav}
       />
-      <Outlet context={{ submitted, drafts, searchValue }} />
+      {!allTotal && !isLoading ? (
+        isError ? (
+          <LoadingError />
+        ) : (
+          <EmptyContent
+            emptyText="Your businesses will appear here."
+            buttonText="Launch a Business"
+            action={handleLaunch}
+          />
+        )
+      ) : (
+        <Outlet
+          context={{
+            submitted,
+            paidDrafts,
+            drafts,
+            searchValue,
+            isLoading,
+            isError,
+            isSuccess,
+            setListShown,
+          }}
+        />
+      )}
     </Container>
   );
 };

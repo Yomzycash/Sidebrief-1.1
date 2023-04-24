@@ -51,8 +51,8 @@ const AllOnboarded = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/dashboard/my-products/onboarded/all-onboarded/${serviceId}/info`);
+    let complyCode = el?.complyCode;
+    navigate(`/dashboard/my-products/onboard/all-onboard/${complyCode}/info`);
   };
 
   return (
@@ -65,7 +65,12 @@ const AllOnboarded = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

@@ -50,32 +50,32 @@ const Compliance = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/dashboard/my-products/compliance/all-compliances",
+      path: "/dashboard/my-products/compliance/all-compliance",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/dashboard/my-products/compliance/submitted-compliances",
+      path: "/dashboard/my-products/compliance/submitted-compliance",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/dashboard/my-products/compliance/draft-compliances",
+      path: "/dashboard/my-products/compliance/draft-compliance",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/dashboard/my-products/compliance/paid-draft-compliances",
+      path: "/dashboard/my-products/compliance/paid-draft-compliance",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
     pathname === "/dashboard/my-products/compliance" &&
-    "/dashboard/my-products/compliance/all-compliances";
+    "/dashboard/my-products/compliance/all-compliance";
 
   return (
     <Container>

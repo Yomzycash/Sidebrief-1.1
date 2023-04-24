@@ -235,13 +235,13 @@ export const userSidebarItems = [
         id: 1,
         title: "Businesses",
         icon: BusinessesIcon,
-        path: "/dashboard/my-products/businesses/all-businesses",
+        path: "/dashboard/my-products/business",
       },
       {
         id: 2,
         title: "Onboarded",
         icon: OnboardIcon,
-        path: "/dashboard/my-products/onboarded",
+        path: "/dashboard/my-products/onboard",
       },
       {
         id: 3,
