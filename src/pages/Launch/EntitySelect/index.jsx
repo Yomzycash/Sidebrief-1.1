@@ -160,7 +160,7 @@ const EntitySelect = () => {
         updateBusinessObjectives: updateBusinessObjectives,
         addBusinessObjectives: addBusinessObjectives,
       };
-      console.log(info);
+      // console.log(info);
       await handleBusinessInfo(info);
     } else {
       if (launchResponse?.error?.status === "FETCH_ERROR") {

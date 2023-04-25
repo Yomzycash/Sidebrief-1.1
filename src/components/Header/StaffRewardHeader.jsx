@@ -3,6 +3,11 @@ import Search from "components/navbar/Search";
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
+import { useGetAllCategoriesQuery } from "services/staffService";
+import { useGetAllCountriesQuery } from "services/launchService";
+import CustomDropdown from "components/input/CustomDropdown";
+import { useLocation } from "react-router-dom";
+import { CommonButton } from "components/button";
 
 const StaffRewardHeader = ({
   title = "Rewards",
@@ -14,7 +19,25 @@ const StaffRewardHeader = ({
   setOpen,
   handleButton,
   totalShown,
+  countrySelected,
+  categorySelected,
+  onSearchChange,
 }) => {
+  const category = useGetAllCategoriesQuery();
+
+  const countries = useGetAllCountriesQuery();
+
+  const servicesCategory = category?.data?.map((el) => {
+    return el?.catergoryName;
+  });
+  const countriesCategory = countries?.data?.map((el) => {
+    return el?.countryName;
+  });
+
+  const all = ["All"];
+  let newCountriesCategory = [].concat(all, countriesCategory);
+  let newservicesCategory = [].concat(all, servicesCategory);
+
   const searchStyle = {
     borderRadius: "12px",
     backgroundColor: "white",
@@ -28,6 +51,8 @@ const StaffRewardHeader = ({
     if (setOpen) setOpen(true);
     if (handleButton) handleButton();
   };
+  const { pathname } = useLocation();
+  let filterShown = pathname.includes("services/all");
 
   return (
     <Container>
@@ -41,14 +66,40 @@ const StaffRewardHeader = ({
           </TopContent>
           <BottomContent>
             <SearchWrapper>
-              <Search style={searchStyle} iconStyle={iconStyle} placeholder={placeholder} />
+              <Search
+                style={searchStyle}
+                iconStyle={iconStyle}
+                placeholder={placeholder}
+                onChange={onSearchChange}
+              />
             </SearchWrapper>
-            <ButtonWrapper onClick={buttonAction}>
+            {filterShown && (
+              <DropdownContainer>
+                <DropdownWrapper>
+                  <CategoryText>Category</CategoryText>
+                  <CustomDropdown
+                    options={newservicesCategory}
+                    intialvalue="All"
+                    selectedValue={categorySelected}
+                  />
+                </DropdownWrapper>
+                <DropdownWrapper>
+                  <CategoryText>Country</CategoryText>
+                  <CustomDropdown
+                    options={newCountriesCategory}
+                    intialvalue="All"
+                    selectedValue={countrySelected}
+                  />
+                </DropdownWrapper>
+              </DropdownContainer>
+            )}
+            <CommonButton action={buttonAction} text={Description} LeftIcon={AddIcon} />
+            {/* <ButtonWrapper onClick={buttonAction}>
               <button>
                 <AddIcon />
                 {Description}
               </button>
-            </ButtonWrapper>
+            </ButtonWrapper> */}
           </BottomContent>
         </MainHeader>
       </Header>
@@ -90,7 +141,7 @@ const TopContent = styled.div`
   padding-inline: 24px;
   flex: 1;
   justify-content: space-between;
-
+  width: 100%;
   > div {
     display: flex;
     gap: 48px;
@@ -108,14 +159,13 @@ const BottomContent = styled.div`
   display: flex;
   align-items: center;
   padding-inline: 24px;
-  gap: 60px;
+  gap: 24px;
   flex: 1;
   justify-content: space-between;
 `;
 const ButtonWrapper = styled.div`
   justify-content: center;
   align-items: center;
-
   button {
     width: 100%;
     height: 100%;
@@ -142,4 +192,24 @@ const SearchWrapper = styled.div`
     max-width: 100%;
     width: 100%;
   }
+`;
+const DropdownContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  max-width: 431px;
+`;
+const DropdownWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+`;
+const CategoryText = styled.h3`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  /* identical to box height, or 150% */
+  color: #000000;
 `;

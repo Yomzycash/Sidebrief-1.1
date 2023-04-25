@@ -28,10 +28,8 @@ const Success = ({ title, paragraph }) => {
   const handleNavigate = () => {
     if (staffCheck) {
       navigate("/staff-dashboard");
-      console.log("Navigated to the staff dashboard");
     } else {
       navigate("/dashboard");
-      console.log("Navigated to the user dashboard");
     }
   };
 

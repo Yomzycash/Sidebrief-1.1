@@ -1,21 +1,29 @@
-import { Container, Item, InvisibleBackDrop } from "./style";
+import { Container, Item, InvisibleBackDrop, NoResultContainer } from "./style";
 
-export const SearchResult = ({ items, show, onItemClick, unShow }) => {
+export const SearchResult = ({ items, show, searchResult, onItemClick, unShow }) => {
+	const searchResults = searchResult?.trim().length > 0;
 	return (
 		<>
-			{items.length > 0 && show && (
+			{show && searchResults && (
 				<>
 					<InvisibleBackDrop onClick={unShow} />
-					<Container>
-						{items.map((item) => (
-							<Item
-								key={item.id}
-								onClick={() => onItemClick(item)}
-							>
-								{item.name}
-							</Item>
-						))}
-					</Container>
+					{items.length > 0 ? (
+						<Container>
+							{items.map((item) => (
+								<Item
+									key={item.id}
+									onClick={() => onItemClick(item)}
+								>
+									{item.name}
+								</Item>
+							))}
+						</Container>
+					): (
+						<NoResultContainer>
+							<p>No results found</p>
+						</NoResultContainer>
+					)}
+					
 				</>
 			)}
 		</>

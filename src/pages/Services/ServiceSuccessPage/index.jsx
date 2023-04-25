@@ -2,7 +2,7 @@ import Success from "containers/Confirmation/Success";
 import React from "react";
 import styled from "styled-components";
 import SuccessImage from "asset/svg/SuccessImage.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
@@ -12,11 +12,13 @@ const ServiceSuccessPage = () => {
   const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
   let serviceId = complyInfo?.serviceId;
 
+  const { option } = useParams();
+
   const viewService = useGetSingleServiceQuery(serviceId);
   let timeline = viewService?.data?.serviceTimeline;
 
   const handleNavigate = async () => {
-    navigate(`/dashboard/services/${complyInfo?.complyCode}/info`);
+    navigate(`/dashboard/my-products/${option}/submitted-${option}/${complyInfo?.complyCode}/info`);
     removeComplyFromLocalStorage();
   };
 

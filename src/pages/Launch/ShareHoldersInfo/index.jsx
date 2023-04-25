@@ -244,7 +244,7 @@ const ShareHoldersInfo = () => {
     };
     let memberResponse = await handleMemberDelete(actionInfo_M);
     setSelectedToDelete(shareholder);
-    console.log(memberResponse);
+    // console.log(memberResponse);
   };
 
   //

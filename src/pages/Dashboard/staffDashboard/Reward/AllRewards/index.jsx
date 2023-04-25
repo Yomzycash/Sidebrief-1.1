@@ -77,6 +77,8 @@ const StaffAllRewards = () => {
   const handleRewardClick = (rewardID) => {
     navigate("/staff-dashboard/all-rewards/reward/details");
     localStorage.setItem("rewardId", JSON.stringify(rewardID));
+
+    
   };
 
   const handleCategory = (category) => {

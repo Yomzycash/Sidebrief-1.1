@@ -4,26 +4,20 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StaffHeader from "components/Header/StaffHeader";
 import CountryCard from "components/cards/CountryCard";
-import {
-  useAddCountryMutation,
-  useGetAllCountriesQuery,
-} from "services/staffService";
+import { useAddCountryMutation, useGetAllCountriesQuery } from "services/staffService";
 import { Puff } from "react-loading-icons";
 import { handleError } from "utils/globalFunctions";
 import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
-import { store } from "redux/Store";
-import { setRefreshApp } from "redux/Slices";
+import lookup from "country-code-lookup";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
-  const { refreshApp } = useSelector((store) => store.UserDataReducer);
 
   // Exchange information with the backend
-  const { data, isLoading, isError, error, refetch } =
-    useGetAllCountriesQuery();
+  const { data, isLoading, isError, error, refetch } = useGetAllCountriesQuery();
   const [addCountry, addState] = useAddCountryMutation();
 
   const navigate = useNavigate();
@@ -48,7 +42,6 @@ const Countries = () => {
       handleError(error);
       errorRef.current = false;
     }
-    store.dispatch(setRefreshApp(!refreshApp));
   }, [isError, error, refetch]);
 
   // Returns the data to be sent to the backend
@@ -61,7 +54,6 @@ const Countries = () => {
       countryFlag: formData.flag,
     };
   };
- 
 
   // This adds a new country
   const handleCountryAdd = async (formData) => {
@@ -78,8 +70,6 @@ const Countries = () => {
     refetch();
   };
 
-  
-
   return (
     <Container SidebarWidth={sidebarWidth}>
       <StaffHeader
@@ -95,21 +85,22 @@ const Countries = () => {
               <Puff stroke="#00A2D4" fill="white" />
             </Loader>
           ) : (
-            data?.map((country, index) => (
-              <CountryCard
-                key={index}
-                image={`https://countryflagsapi.com/png/${country.countryISO.toLowerCase()}`}
-                name={country.countryName}
-                countryCode={country.countryISO}
-                countryNumber={country.countryCode}
-                countryCurrency={country.countryCurrency}
-                action={() => {
-                  navigate(
-                    `/staff-dashboard/businesses/countries/${country.countryISO}/detail`
-                  );
-                }}
-              />
-            ))
+            data?.map((country, index) => {
+              const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
+              return (
+                <CountryCard
+                  key={index}
+                  image={`https://flagsapi.com/${iso2}/flat/64.png`}
+                  name={country.countryName}
+                  countryCode={country.countryISO}
+                  countryNumber={country.countryCode}
+                  countryCurrency={country.countryCurrency}
+                  action={() => {
+                    navigate(`/staff-dashboard/businesses/countries/${country.countryISO}/detail`);
+                  }}
+                />
+              );
+            })
           )}
           <StaffCountryModal
             open={open}
@@ -144,18 +135,8 @@ const CardContainer = styled.div`
 const CardWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
-
-  @media screen and (min-width: 1400px) {
-    grid-template-columns: auto auto auto auto;
-  }
-  @media screen and (max-width: 1120px) {
-    grid-template-columns: auto auto;
-  }
-  @media screen and (max-width: 800px) {
-    grid-template-columns: auto;
-  }
 `;
 
 const Loader = styled.div`

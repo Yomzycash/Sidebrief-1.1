@@ -70,7 +70,7 @@ const HeaderCheckout = ({ getStarted, noProgress, backToDashBoard }) => {
         ) : null}
 
         {!noProgress ? (
-          <ProgressWrapper style={{ left: getStarted && 0 }}>
+          <ProgressWrapper>
             <ProgressBar progress={checkoutProgress} />
           </ProgressWrapper>
         ) : null}

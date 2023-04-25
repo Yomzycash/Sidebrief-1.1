@@ -7,7 +7,7 @@ export const Container = styled.div`
 	width: 100%;
 
 	background-color: #fff;
-	border: 1px solid ${({ theme }) => theme.grey5};
+	border: 1px solid ${({ theme }) => theme.white1};
 	z-index: 10;
 `;
 
@@ -28,4 +28,19 @@ export const InvisibleBackDrop = styled.div`
 	height: 100%;
 	width: 100%;
 	z-index: 1;
+`;
+
+export const NoResultContainer = styled.div`
+	position: absolute;
+	top:100%;
+	left:0;
+	text-align:center;
+	width: 100%;
+	background-color: #fff;
+	border: 1px solid ${({ theme }) => theme.white1};
+	z-index: 10;
+	 
+	p {
+		margin:10px;
+	}
 `;

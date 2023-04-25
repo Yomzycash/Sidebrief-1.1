@@ -98,7 +98,8 @@ export const useActions = ({
       scrollTo(formRef);
       refetchServices();
     } else {
-      console.log(error);
+      handleError(error);
+      // console.log(error);
       // handleError(error);
     }
   };
@@ -107,7 +108,16 @@ export const useActions = ({
 
   // Updates service
   const handleServiceUpdate = async (formData) => {
-    let payload = { ...getServicePayload(formData), serviceId: service?.serviceId };
+    let payload = service?.productId
+      ? {
+          ...getServicePayload(formData),
+          serviceId: service?.serviceId,
+          productID: service?.productId || "",
+        }
+      : {
+          ...getServicePayload(formData),
+          serviceId: service?.serviceId,
+        };
     let response = await updateService(payload);
     let data = response?.data;
     let error = response?.error;
@@ -116,12 +126,11 @@ export const useActions = ({
       scrollTo(formRef);
       refetchServices();
     } else {
-      console.log(error);
+      handleError(error);
+      // console.log(error);
       // handleError(error);
     }
   };
-
-  //
 
   // Adds form question
   const handleServiceFormFieldAdd = async (formData) => {

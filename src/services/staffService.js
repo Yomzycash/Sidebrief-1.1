@@ -308,10 +308,9 @@ export const staffApi = createApi({
 
     // Delete a bank
     deleteBank: builder.mutation({
-      query: (data) => ({
-        url: "/banks/remove",
+      query: (bankCode) => ({
+        url: `/banks/delete/${bankCode}`,
         method: "DELETE",
-        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -437,9 +436,10 @@ export const staffApi = createApi({
 
     // delete a service
     deleteService: builder.mutation({
-      query: (serviceId) => ({
-        url: `/services/delete/${serviceId}`,
+      query: (data) => ({
+        url: `/services/delete/${data.serviceId}`,
         method: "DELETE",
+        body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
@@ -463,13 +463,56 @@ export const staffApi = createApi({
 
     // Get services by country
     getServicesByCountry: builder.query({
-      query: (serviceCountry) => `/services/country/${serviceCountry}`,
+      query: (serviceCountry) => {
+        if (serviceCountry) return `/services/country/${serviceCountry}`;
+        else return null;
+      },
     }),
 
     // Get services by category and country
     getServicesByCountryandCategory: builder.query({
       query: (data) =>
         `/services/category/${data.serviceCategory}/country/KEN${data.serviceCountry}`,
+    }),
+
+    // Create a service category
+    createCategory: builder.mutation({
+      query: (data) => ({
+        url: "/create-category",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Update a service category
+    updateCategory: builder.mutation({
+      query: (data) => ({
+        url: `/update-category/${data?.categoryId}`,
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // delete a service category
+    deleteCategory: builder.mutation({
+      query: (categoryId) => ({
+        url: `/delete-category/${categoryId}`,
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Get all categories
+    getAllCategories: builder.query({
+      query: () => `/all-category`,
     }),
   }),
 });
@@ -535,4 +578,9 @@ export const {
   useGetServicesByCountryQuery,
   useLazyGetServicesByCountryQuery,
   useGetServicesByCountryandCategoryQuery,
+
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetAllCategoriesQuery,
 } = staffApi;

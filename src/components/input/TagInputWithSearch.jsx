@@ -28,6 +28,7 @@ const TagInputWithSearch = ({
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [keyPressed, setKeyPressed] = useState("");
 
+  const inputRef = useRef();
   const suggestionContainer = useRef();
 
   // This sets the tag values (if available) on mounth
@@ -198,6 +199,7 @@ const TagInputWithSearch = ({
       <InputWrapper>
         <Input>
           <input
+            ref={inputRef}
             type="text"
             placeholder="--"
             value={value}
@@ -207,7 +209,7 @@ const TagInputWithSearch = ({
             onKeyDown={handleKeyDown}
             disabled={disabled}
           />
-          <div>
+          <div onClick={() => inputRef.current.focus()}>
             <IoIosArrowDown size={16} style={{ backgroundColor: "white", padding: "" }} />
           </div>
         </Input>

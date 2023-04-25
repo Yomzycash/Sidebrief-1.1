@@ -14,13 +14,11 @@ import CountryInput from "components/input/countryInput";
 import { partnerRegistrationSchema } from "utils/config";
 import { savePartnerInfo } from "redux/Slices";
 import { store } from "redux/Store";
-import AppFeedback from "components/AppFeedback";
 import NumberInput from "components/input/phoneNumberInput";
 
 const PartnerRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
-  const [registerNewPartner, { isLoading, isSuccess }] =
-    useRegisterNewPartnerMutation();
+  const [registerNewPartner, { isLoading, isSuccess }] = useRegisterNewPartnerMutation();
   const {
     handleSubmit,
     register,
@@ -90,8 +88,6 @@ const PartnerRegistration = () => {
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
   };
-
-  
 
   return (
     <AuthLayout
@@ -183,12 +179,7 @@ const PartnerRegistration = () => {
                 },
               ]}
             />
-            <MainButton
-              title="Sign Up"
-              type="submit"
-              loading={isLoading}
-              disabled={isLoading}
-            />
+            <MainButton title="Sign Up" type="submit" loading={isLoading} disabled={isLoading} />
 
             <QuestionWrap>
               <TextsWithLink
@@ -244,8 +235,7 @@ const Registration = styled.div`
   padding: 59px;
   background-color: white;
   border: 1px solid #edf1f7;
-  box-shadow: -10px -10px 10px -5px #9596970a,
-    10px 10px 10px -5px #9596970a;
+  box-shadow: -10px -10px 10px -5px #9596970a, 10px 10px 10px -5px #9596970a;
   border-radius: 12px;
   @media screen and (max-width: 700px) {
     padding-inline: 24px;

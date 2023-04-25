@@ -12,14 +12,18 @@ import {
   RewardIcon,
   SettingsIcon,
   IntellectualIcon,
+  Intellectual,
   ComplianceIcon,
-  TaxesIcon,
+  TaxIcon,
+  ProductIcon,
+  OnboardIcon,
   HiringIcon,
   PaymentIcon,
   EntityIcon,
   CountryIcon,
   ArrowDownIcon,
   ServicesIcon,
+  ManageIcon,
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
 // import  from "asset/Icons/ServicesIcon";
@@ -199,24 +203,71 @@ export const ServicesSchema = yup.object().shape({
   timeline: yup.string().required("Enter service timeline"),
 });
 
-export const sidebarLink = [
+export const BankAccountSchema = yup.object().shape({
+  bank_name: yup.string().required("Bank Name is required"),
+  description: yup.string().required("Enter bank description"),
+  bank_code: yup.string().required("Bank code is a required field"),
+  country: yup.string().required("Country is a required field"),
+  bank_url: yup.string().required("url is a required field"),
+  image: yup.string().required("lmage is a required field"),
+});
+
+export const userSidebarItems = [
   {
     id: 1,
     title: "Home",
     icon: HomeIcon,
-    path: "/dashboard/business-registration",
+    path: "/dashboard/home",
   },
   {
     id: 2,
-    title: "Businesses",
-    icon: BusinessesIcon,
-    path: "/dashboard/businesses/all-businesses",
+    title: "Products",
+    icon: ProductIcon,
+    path: "/dashboard/products",
   },
   {
     id: 3,
-    title: "Products",
+    title: "My Products",
     icon: BusinessesIcon,
-    path: "/dashboard/services/all",
+    path: "/dashboard/my-products",
+    dropDownList: [
+      {
+        id: 1,
+        title: "Businesses",
+        icon: BusinessesIcon,
+        path: "/dashboard/my-products/business",
+      },
+      {
+        id: 2,
+        title: "Onboarded",
+        icon: OnboardIcon,
+        path: "/dashboard/my-products/onboard",
+      },
+      {
+        id: 3,
+        title: "Managed",
+        icon: ManageIcon,
+        path: "/dashboard/my-products/manage",
+      },
+      {
+        id: 4,
+        title: "Taxes",
+        icon: TaxIcon,
+        path: "/dashboard/my-products/tax",
+      },
+      {
+        id: 5,
+        title: "Intellectuals",
+        icon: Intellectual,
+        path: "/dashboard/my-products/intellectual-property",
+      },
+      {
+        id: 6,
+        title: "Compliances",
+        icon: Intellectual,
+        path: "/dashboard/my-products/compliance",
+      },
+    ],
   },
   {
     id: 4,
@@ -244,7 +295,7 @@ export const sidebarLink = [
   },
 ];
 
-export const StaffSidebarLinks = [
+export const staffSidebarItems = [
   {
     id: 1,
     title: "Home",
@@ -259,35 +310,59 @@ export const StaffSidebarLinks = [
     dropDownList: [
       {
         id: 1,
+        title: "Products",
+        icon: ProductIcon,
+        path: "/staff-dashboard/businesses/services",
+      },
+      {
+        id: 2,
         title: "Registrations",
         icon: ResourcesIcon,
         path: "/staff-dashboard/businesses/registration",
       },
       {
-        id: 2,
-        title: "Products",
-        icon: ServicesIcon,
-        path: "/staff-dashboard/businesses/services",
+        id: 3,
+        title: "Managed",
+        icon: ManageIcon,
+        path: "/staff-dashboard/businesses/manage",
       },
       {
-        id: 3,
+        id: 4,
+        title: "Onboarded",
+        icon: OnboardIcon,
+        path: "/staff-dashboard/businesses/onboard",
+      },
+      {
+        id: 5,
+        title: "Taxes",
+        icon: TaxIcon,
+        path: "/staff-dashboard/businesses/tax",
+      },
+      {
+        id: 6,
+        title: "Intellectuals",
+        icon: Intellectual,
+        path: "/staff-dashboard/businesses/intellectual-property",
+      },
+      {
+        id: 7,
+        title: "Compliances",
+        icon: Intellectual,
+        path: "/staff-dashboard/businesses/compliance",
+      },
+      {
+        id: 8,
         title: "Entities",
         icon: EntityIcon,
         path: "/staff-dashboard/businesses/entities",
       },
       {
-        id: 4,
+        id: 9,
         title: "Countries",
         icon: CountryIcon,
         path: "/staff-dashboard/businesses/countries",
       },
     ],
-  },
-  {
-    id: 3,
-    title: "Taxes",
-    icon: TaxesIcon,
-    path: "/staff-dashboard/taxes/",
   },
   {
     id: 4,
@@ -296,31 +371,31 @@ export const StaffSidebarLinks = [
     path: "/staff-dashboard/hiring-and-payroll",
   },
   {
-    id: 5,
-    title: "Intellectual Assets",
-    icon: IntellectualIcon,
-    path: "/staff-dashboard/assets",
+    id: 6,
+    title: "Bank Accounts",
+    icon: BankAccountIcon,
+    path: "/staff-dashboard/bank-accounts",
   },
   {
-    id: 6,
+    id: 7,
     title: "Rewards",
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
   },
   {
-    id: 7,
+    id: 8,
     title: "Payments",
     icon: PaymentIcon,
     path: "/staff-dashboard/payments",
   },
   {
-    id: 8,
+    id: 9,
     title: "Resources",
     icon: ResourcesIcon,
     path: "/staff-dashboard/resources",
   },
   {
-    id: 9,
+    id: 10,
     title: "Settings",
     icon: SettingsIcon,
     path: "/staff-dashboard/settings/general",
@@ -975,7 +1050,7 @@ export const staffSidebarLink = [
   {
     id: 4,
     title: "Taxes",
-    icon: TaxesIcon,
+    icon: Intellectual,
     path: "/staffdashboard/Taxes",
     dropdownIcon: ArrowDownIcon,
     dropdown: [],

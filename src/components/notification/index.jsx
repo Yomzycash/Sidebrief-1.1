@@ -13,6 +13,7 @@ import SingleNotification from "./SingleNotification";
 import EmptyBellNotification from "components/texts/EmptyChat/EmptyBellNotification";
 import { compareAsc } from "date-fns";
 import { checkStaffEmail } from "utils/globalFunctions";
+import {  useViewNotificationsByUserIdQuery } from "services/chatService";
 
 const Notification = ({ closeNotifications, data, refetch }) => {
   const [notifications, setNotifications] = useState(data);
@@ -21,6 +22,7 @@ const Notification = ({ closeNotifications, data, refetch }) => {
     unread: false,
     all: true,
   });
+ 
 
   const notificationRef = useRef();
 

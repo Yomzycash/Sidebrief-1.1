@@ -47,8 +47,8 @@ const ServicePage = () => {
     navigate("/staff-dashboard/businesses/services/all");
   };
 
-  const handleViewAllNotifications = () => {
-    navigate("/staff-dashboard/businesses/services/allcomply");
+  const handleViewAllComply = () => {
+    navigate("/staff-dashboard/businesses/services/allcomply/all");
   };
 
   let totalServices = data?.length > 0 ? data?.length : 0;
@@ -60,7 +60,12 @@ const ServicePage = () => {
 
   // delete service
   const handleServiceDelete = async () => {
-    let response = await deleteService(clickedService.serviceId);
+    let payload = {
+      serviceId: clickedService.serviceId,
+      serviceName: clickedService.serviceName,
+    };
+
+    let response = await deleteService(payload);
     let data = response?.data;
     let error = response?.error;
 
@@ -145,10 +150,10 @@ const ServicePage = () => {
 
       <FeatureSection
         title="Product Requests"
-        subText="View recent registered businesses service request"
+        subText="View recent service requests"
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
-        btnAction={handleViewAllNotifications}
+        btnAction={handleViewAllComply}
       >
         {allComply.isLoading ? (
           <Loading height="300px">
@@ -160,7 +165,8 @@ const ServicePage = () => {
               columns={columns}
               data={[...allComply.data]
                 ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
-                ?.map((comply) => ({
+                ?.slice(0, 10)
+                .map((comply) => ({
                   complyCode: comply.complyCode,
                   serviceId: comply.serviceId,
                   meta: comply.meta,

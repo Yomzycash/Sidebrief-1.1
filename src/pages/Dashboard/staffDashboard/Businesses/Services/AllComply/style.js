@@ -206,3 +206,13 @@ export const Loading = styled.div`
   width: 100%;
   height: 200px;
 `;
+
+export const EmptyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
+  
+`

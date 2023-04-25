@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import { saveUserInfo, setLaunchPaid, setLaunchResponse } from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -15,10 +15,12 @@ export const handleError = (error) => {
     toast.error("Connection error");
   } else if (error?.originalStatus === "404") {
     toast.error("Please check credentiaal");
-  } else if (error?.data?.message) {
+  } else if (typeof error?.data?.message === "string") {
     toast.error(error?.data.message);
   } else if (error?.data?.error) {
     toast.error(error?.data.error);
+  } else if (error?.data?.message?.code) {
+    toast.error(error?.data?.message?.code);
   } else if (typeof error?.data === "string") {
     toast.error(error.data);
   } else if (typeof error === "string") {
@@ -66,7 +68,7 @@ export const navigateToDetailPage = async (navigate, launchInfo, viewPayLaunch) 
   // setInfoToLocalStorageAndStore(launchInfo);
   // navigate
   navigate(
-    `/dashboard/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
+    `/dashboard/my-products/business/detail?launchCode=${launchInfo.launchCode}&registrationCountry=${launchInfo.registrationCountry}&registrationType=${launchInfo.registrationType}`
   );
 };
 
@@ -87,7 +89,9 @@ export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
 };
 
 export const getCurrencyInfo = (currency) => {
-  let currencyInfo = countriesInfo.filter((country) => country.currency === currency)[0];
+  let currencyInfo = countriesInfo.filter(
+    (country) => country.currency.toLowerCase() === currency.toLowerCase()
+  )[0];
   if (currency) return currencyInfo;
   else return "";
 };
@@ -101,6 +105,9 @@ export const handleLogout = (navigate) => {
   store.dispatch(authApi.util.resetApiState());
   store.dispatch(launchApi.util.resetApiState());
   store.dispatch(staffApi.util.resetApiState());
+
+  store.dispatch(saveUserInfo({}));
+
   //navigate
   navigate("/login");
 };
@@ -117,4 +124,10 @@ export const removeLaunchFromLocalStorage = () => {
 export const removeComplyFromLocalStorage = () => {
   localStorage.removeItem("complyInfo");
   localStorage.removeItem("paymentDetails");
+};
+
+export const removeProductsFromLocalStorage = () => {
+  store.dispatch(setLaunchResponse({}));
+  removeLaunchFromLocalStorage();
+  removeComplyFromLocalStorage();
 };

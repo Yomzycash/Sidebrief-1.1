@@ -23,7 +23,7 @@ export const CheckoutController = ({
   loadingIconColor,
 }) => {
   return (
-    <Container style={containerStyle} $modal={$modal}>
+    <Container style={containerStyle} $modal={$modal} hidePrev={hidePrev}>
       <CheckoutButton
         back
         action={backAction}

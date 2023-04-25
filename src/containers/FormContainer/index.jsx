@@ -32,7 +32,8 @@ const Container = styled.div`
 
   padding-inline-start: 20px;
   padding-block: 20px;
-  border: 1px solid #edf1f7;
+  border-bottom: 1px solid #edf1f7;
+  border-radius: 16px;
 `;
 
 const InnerContainer = styled.div`

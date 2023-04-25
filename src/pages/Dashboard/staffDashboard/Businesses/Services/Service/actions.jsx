@@ -35,7 +35,7 @@ export const useActions = ({ notifications, navigate }) => {
   ]);
 
   const handleChat = (serviceId) => {
-    console.log(serviceId);
+    // console.log(serviceId);
     navigate(`/staff-dashboard/businesses/services/chats?serviceId=${serviceId}`);
   };
 

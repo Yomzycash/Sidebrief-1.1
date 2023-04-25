@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { Puff } from "react-loading-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setServiceCheckoutProgress } from "redux/Slices";
 import { store } from "redux/Store";
 import { useAddComplyDataQAMutation, useViewComplyQuery } from "services/complyService";
@@ -25,6 +25,7 @@ const ServiceForm = () => {
   const viewComply = useViewComplyQuery({ complyCode: complyCode });
 
   const navigate = useNavigate();
+  let { option } = useParams();
 
   const handleSubmit = async (formData) => {
     let payload = data?.serviceForm?.map((el) => ({
@@ -35,22 +36,21 @@ const ServiceForm = () => {
       },
     }));
 
-    console.log(payload);
     let addArray = payload.map((el, i) => addComplyData(el));
     let responses = await Promise.all(addArray);
-    console.log(responses);
+    // console.log(responses);
 
     let error = responses.find((el) => el?.error)?.error;
 
     if (error) {
-      console.log(error);
+      // console.log(error);
       handleError(error);
       return;
     } else {
       // toast.success("Submitted successfully");
 
-      let link = "/services/documents";
-      link = data?.serviceRequirements?.length < 1 ? "/services/review/info" : link;
+      let link = `/services/${option}/documents`;
+      link = data?.serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
       navigate(link);
     }
   };
@@ -58,9 +58,9 @@ const ServiceForm = () => {
   const handlePrev = () => {
     const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
     if (paymentDetails?.paymentStatus === "successful") {
-      navigate("/services");
+      navigate(`/services/${option}`);
     } else {
-      navigate("/services/payment");
+      navigate(`/services/${option}/payment`);
     }
   };
 
@@ -70,7 +70,7 @@ const ServiceForm = () => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1.4 })); // total- total pages and current - current page
   }, []);
 
-  console.log(viewComply.data?.complyData);
+  // console.log(viewComply.data?.complyData);
   return (
     <Container>
       <ServicesCheckoutHeader />

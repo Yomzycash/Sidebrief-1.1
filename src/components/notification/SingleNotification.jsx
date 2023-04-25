@@ -32,7 +32,7 @@ const SingleNotification = ({ item, handleBlur, refetch }) => {
     navigate(
       staffEmail
         ? `/staff-dashboard/businesses/services/chats?serviceId=${item?.serviceId}&subject=${item?.messageSubject}`
-        : `/dashboard/businesses/chats/?serviceId=${item?.serviceId}&subject=${item?.messageSubject}`
+        : `/dashboard/my-products/chats/?serviceId=${item?.serviceId}&subject=${item?.messageSubject}`
     );
     handleBlur();
   };
@@ -63,8 +63,6 @@ const SingleNotification = ({ item, handleBlur, refetch }) => {
     };
     const response = await updateNotification(requiredData);
     if (response?.data) refetch();
-
-    console.log(response);
   };
 
   let isMyMessage = staffEmail
