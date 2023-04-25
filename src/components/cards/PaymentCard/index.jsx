@@ -3,69 +3,71 @@ import React from "react";
 import {
   BottomContainer,
   Container,
-  DarkContainer,
+  FieldContainer,
   Date,
   LeftTextContainer,
-  LightContainer,
   Name,
   RightTextContainer,
   SubDowwn,
   Title,
   TopContainer,
 } from "./styles";
-import { format } from "date-fns";
+
 const PaymentDetailsCard = ({
   amount,
   currency,
   id,
+  email,
   provider,
   status,
   code,
-  firstname,
-  lastname,
   isLoading,
   date,
 }) => {
   return (
     <Container>
       <TopContainer>
-        <Title>{`${firstname} ${lastname}`}</Title>
+        {/* <Title>{`${firstname} ${lastname}`}</Title> */}
         <SubDowwn>
-          <Name>{`${firstname} ${lastname}`}</Name>
+          {/* <Name>{`${firstname} ${lastname}`}</Name> */}
           <SubDowwn>
             <DotSeperator />
-            <DateText>{isLoading ? `--` : date}</DateText>
+            <DateText>{isLoading ? `--` : `Date: ${date}`}</DateText>
           </SubDowwn>
         </SubDowwn>
       </TopContainer>
 
       <BottomContainer>
-        <DarkContainer>
+        <FieldContainer>
           <LeftTextContainer>Amount Paid</LeftTextContainer>
           <RightTextContainer>{amount}</RightTextContainer>
-        </DarkContainer>
-        <LightContainer>
+        </FieldContainer>
+        <FieldContainer>
           <LeftTextContainer>Currency</LeftTextContainer>
           <RightTextContainer>{currency}</RightTextContainer>
-        </LightContainer>
-        <DarkContainer>
+        </FieldContainer>
+        <FieldContainer>
           <LeftTextContainer>Transaction ID</LeftTextContainer>
           <RightTextContainer>{id}</RightTextContainer>
-        </DarkContainer>
-        <LightContainer>
+        </FieldContainer>
+        <FieldContainer>
+          <LeftTextContainer>Email</LeftTextContainer>
+          <RightTextContainer>{email}</RightTextContainer>
+        </FieldContainer>
+        <FieldContainer>
           <LeftTextContainer>Payment Gateway</LeftTextContainer>
           <RightTextContainer>{provider}</RightTextContainer>
-        </LightContainer>
-        <DarkContainer>
+        </FieldContainer>
+        <FieldContainer>
           <LeftTextContainer>Payment Gateway </LeftTextContainer>
-          <RightTextContainer background={status === "successful" ? "#00D448" : "#F9C4BD"}>
+          <RightTextContainer background={status === "successful" ? "#73d895" : "#F9C4BD"}>
             {status}
           </RightTextContainer>
-        </DarkContainer>
-        <LightContainer>
+        </FieldContainer>
+        <FieldContainer>
           <LeftTextContainer>Launch Code</LeftTextContainer>
           <RightTextContainer>{code}</RightTextContainer>
-        </LightContainer>
+        </FieldContainer>
       </BottomContainer>
     </Container>
   );

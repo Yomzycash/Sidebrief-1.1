@@ -29,6 +29,7 @@ export const TableHead = styled.thead`
   th {
     color: #151717;
     font-weight: 500;
+    max-width: 100px;
   }
 `;
 
@@ -48,6 +49,10 @@ export const TableBody = styled.tbody`
 
   td {
     font-weight: 400;
+    max-width: 100px;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   div,

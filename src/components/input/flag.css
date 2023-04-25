@@ -115,13 +115,13 @@
   border: none !important;
 }
 @media screen and (max-width: 600px) {
-  .active {
+  .flag .active {
     height: 48px;
   }
-  .nonActive {
+  .flag .nonActive {
     height: 48px;
   }
-  .error {
+  .flag .error {
     height: 48px;
   }
 

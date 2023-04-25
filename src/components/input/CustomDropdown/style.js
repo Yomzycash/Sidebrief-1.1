@@ -17,7 +17,7 @@ export const DropDownBtn = styled.div`
 
 export const DropDownContent = styled.div`
   position: absolute;
-  top: 48px;
+  top: 25px;
   background: #fafafa;
   /* z-index: 1; */
   border: 1px solid #edf1f7;

@@ -1,48 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { removeComplyFromLocalStorage, removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { Outlet, useLocation } from "react-router-dom";
+import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
-import { useViewAllComplyByMetaQuery, useViewAllComplyQuery } from "services/complyService";
-import { useGetServicesByCategoryQuery } from "services/staffService";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
+import { useCategoriesActions } from "../actions";
+import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
 const StaffOnboarded = () => {
   const [searchValue, setSearchValue] = useState("");
 
-  const navigate = useNavigate();
+  const {
+    submitted,
+    drafts,
+    paidDrafts,
+    isLoading,
+    isError,
+    isSuccess,
+    complyFullInfo,
+    handleCategoryCreate,
+  } = useCategoriesActions({ category: "Onboard", createPath: "/services/onboard" });
+
   const { pathname } = useLocation();
-
-  const Onboard = useGetServicesByCategoryQuery("Onboard");
-  const allUserComply = useViewAllComplyQuery();
-
-  const findOnboardId = (id) => Onboard.data?.find((el) => el?.serviceId === id)?.serviceId;
-
-  const OnboardedComplies = allUserComply.data?.filter(
-    (el) => el?.serviceId === findOnboardId(el?.serviceId)
-  );
-
-  console.log(allUserComply);
-  const submitted = OnboardedComplies?.filter((el) => el?.status?.toLowerCase() === "submitted");
-  const drafts = OnboardedComplies?.filter((el) => el?.status?.toLowerCase() === "pending");
-  const paidDrafts = OnboardedComplies?.filter(
-    (el) => el?.status?.toLowerCase() === "pending" && el?.paid === true
-  );
-  const isLoading = Onboard.isLoading || allUserComply.isLoading;
-  const isError = Onboard.isError || allUserComply.isError;
-  const isSuccess = Onboard.isSuccess && allUserComply.isSuccess;
-
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
-  let allTotal = OnboardedComplies?.length;
-
-  const handleOnboardCreate = () => {
-    removeLaunchFromLocalStorage();
-    navigate("/services/onboarded");
-  };
+  let allTotal = complyFullInfo?.length;
 
   useEffect(() => {
     removeComplyFromLocalStorage();
@@ -64,32 +49,32 @@ const StaffOnboarded = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/all-onboarded",
+      path: "/staff-dashboard/businesses/onboard/all-onboard",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/submitted-onboarded",
+      path: "/staff-dashboard/businesses/onboard/submitted-onboard",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/draft-onboarded",
+      path: "/staff-dashboard/businesses/onboard/draft-onboard",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/staff-dashboard/businesses/onboarded/paid-draft-onboarded",
+      path: "/staff-dashboard/businesses/onboard/paid-draft-onboard",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/staff-dashboard/businesses/onboarded" &&
-    "/staff-dashboard/businesses/onboarded/all-onboarded";
+    pathname === "/staff-dashboard/businesses/onboard" &&
+    "/staff-dashboard/businesses/onboard/all-onboard";
 
   return (
     <Container>
@@ -98,7 +83,7 @@ const StaffOnboarded = () => {
         searchPlaceholder="Search onboarded..."
         summary={summary}
         filterList={filterList}
-        action={handleOnboardCreate}
+        action={handleCategoryCreate}
         actionText="Onboard a Business"
         onSearchChange={handleSearch}
         navInfo={navInfo}
@@ -106,12 +91,12 @@ const StaffOnboarded = () => {
       />
       {!allTotal && !isLoading ? (
         isError ? (
-          <>There is an error loading this page</>
+          <LoadingError />
         ) : (
           <EmptyContent
             emptyText="Users onboarded businesses will appear here when they create one"
             buttonText="Onboard a Business"
-            action={handleOnboardCreate}
+            action={handleCategoryCreate}
           />
         )
       ) : (

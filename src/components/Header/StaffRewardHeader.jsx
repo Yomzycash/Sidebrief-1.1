@@ -7,6 +7,7 @@ import { useGetAllCategoriesQuery } from "services/staffService";
 import { useGetAllCountriesQuery } from "services/launchService";
 import CustomDropdown from "components/input/CustomDropdown";
 import { useLocation } from "react-router-dom";
+import { CommonButton } from "components/button";
 
 const StaffRewardHeader = ({
   title = "Rewards",
@@ -92,12 +93,13 @@ const StaffRewardHeader = ({
                 </DropdownWrapper>
               </DropdownContainer>
             )}
-            <ButtonWrapper onClick={buttonAction}>
+            <CommonButton action={buttonAction} text={Description} LeftIcon={AddIcon} />
+            {/* <ButtonWrapper onClick={buttonAction}>
               <button>
                 <AddIcon />
                 {Description}
               </button>
-            </ButtonWrapper>
+            </ButtonWrapper> */}
           </BottomContent>
         </MainHeader>
       </Header>
@@ -157,7 +159,7 @@ const BottomContent = styled.div`
   display: flex;
   align-items: center;
   padding-inline: 24px;
-  gap: 60px;
+  gap: 24px;
   flex: 1;
   justify-content: space-between;
 `;
@@ -193,10 +195,10 @@ const SearchWrapper = styled.div`
 `;
 const DropdownContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
+  gap: 24px;
   max-width: 431px;
-  width: 100%;
 `;
 const DropdownWrapper = styled.div`
   display: flex;

@@ -18,7 +18,7 @@ const ServiceSuccessPage = () => {
   let timeline = viewService?.data?.serviceTimeline;
 
   const handleNavigate = async () => {
-    navigate(`/dashboard/${option}/${complyInfo?.complyCode}/info`);
+    navigate(`/dashboard/my-products/${option}/submitted-${option}/${complyInfo?.complyCode}/info`);
     removeComplyFromLocalStorage();
   };
 

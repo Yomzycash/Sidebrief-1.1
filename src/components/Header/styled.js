@@ -42,6 +42,11 @@ export const ProgressWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex: 1;
+
+  @media screen and (min-width: 1180px) {
+    justify-content: center;
+    left: -150px;
+  }
 `;
 
 export const ModalWrapper = styled.div`

@@ -150,7 +150,7 @@ const ServicePage = () => {
 
       <FeatureSection
         title="Product Requests"
-        subText="View recent registered businesses service request"
+        subText="View recent service requests"
         btnText="View all"
         btnRightIcon={ArrowLeftIcon}
         btnAction={handleViewAllComply}
@@ -165,7 +165,8 @@ const ServicePage = () => {
               columns={columns}
               data={[...allComply.data]
                 ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
-                ?.slice(0,10).map((comply) => ({
+                ?.slice(0, 10)
+                .map((comply) => ({
                   complyCode: comply.complyCode,
                   serviceId: comply.serviceId,
                   meta: comply.meta,
