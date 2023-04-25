@@ -25,7 +25,7 @@ const Home = () => {
         </StaffLayout>
       ) : (
         <Dashboard>
-          <MobileNavbar />
+          <MobileNavbar items={userSidebarItems} />
           <Navbar dashboard imgStyles={{ maxWidth: "100px" }} style={{ padding: "12px 24px" }} />
           <Body>
             <BodyLeft>
