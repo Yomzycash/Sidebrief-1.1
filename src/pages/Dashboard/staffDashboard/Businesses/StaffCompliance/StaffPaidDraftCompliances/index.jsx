@@ -10,13 +10,13 @@ import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
 import { useCategoriesActions } from "../../actions";
 
-const StaffDraftManage = () => {
+const StaffPaidDraftCompliances = () => {
   const [dataArr, setDataArr] = useState([]);
 
-  const { drafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
+  const { paidDrafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
 
-  const hasFetched = drafts ? true : false;
-  const allDrafts = hasFetched ? drafts : [];
+  const hasFetched = paidDrafts ? true : false;
+  const allDrafts = hasFetched ? paidDrafts : [];
 
   const { filterWhenSearched, sortData } = useCategoriesActions({
     searchValue,
@@ -29,7 +29,7 @@ const StaffDraftManage = () => {
   // Sort data
   useEffect(() => {
     sortData(allDrafts);
-  }, [drafts, isSuccess]);
+  }, [paidDrafts, isSuccess]);
 
   // Filters data array by searched value
   useEffect(() => {
@@ -55,7 +55,7 @@ const StaffDraftManage = () => {
 
   const handleRowClick = (el) => {
     let complyCode = el?.complyCode;
-    navigate(`/staff-dashboard/businesses/manage/draft-manage/${complyCode}/info`);
+    navigate(`/staff-dashboard/businesses/compliance/paid-draft-compliance/${complyCode}/info`);
   };
 
   return (
@@ -93,4 +93,4 @@ const StaffDraftManage = () => {
   );
 };
 
-export default StaffDraftManage;
+export default StaffPaidDraftCompliances;

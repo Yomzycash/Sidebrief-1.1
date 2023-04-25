@@ -330,7 +330,7 @@ export const staffSidebarItems = [
         id: 4,
         title: "Onboarded",
         icon: OnboardIcon,
-        path: "/staff-dashboard/businesses/onboarded",
+        path: "/staff-dashboard/businesses/onboard",
       },
       {
         id: 5,
@@ -348,7 +348,7 @@ export const staffSidebarItems = [
         id: 7,
         title: "Compliances",
         icon: Intellectual,
-        path: "/staff-dashboard/businesses/intellectual-property",
+        path: "/staff-dashboard/businesses/compliance",
       },
       {
         id: 8,

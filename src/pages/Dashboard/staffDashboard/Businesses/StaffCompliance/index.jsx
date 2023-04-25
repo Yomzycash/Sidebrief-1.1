@@ -9,7 +9,7 @@ import LoadingError from "components/Fallbacks/LoadingError";
 
 //
 
-const StaffOnboarded = () => {
+const StaffCompliance = () => {
   const [searchValue, setSearchValue] = useState("");
 
   const {
@@ -21,9 +21,10 @@ const StaffOnboarded = () => {
     isSuccess,
     complyFullInfo,
     handleCategoryCreate,
-  } = useCategoriesActions({ category: "Onboard", createPath: "/services/onboard" });
+  } = useCategoriesActions({ category: "Compliance", createPath: "/services/compliance" });
 
   const { pathname } = useLocation();
+
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
@@ -49,42 +50,42 @@ const StaffOnboarded = () => {
     {
       text: "All",
       total: submittedTotal + draftTotal || 0,
-      path: "/staff-dashboard/businesses/onboard/all-onboard",
+      path: "/staff-dashboard/businesses/compliance/all-compliance",
       isAvailable: submittedTotal + draftTotal > 0,
     },
     {
       text: "Submitted",
       total: submittedTotal || 0,
-      path: "/staff-dashboard/businesses/onboard/submitted-onboard",
+      path: "/staff-dashboard/businesses/compliance/submitted-compliance",
       isAvailable: submittedTotal > 0,
     },
     {
       text: "Draft",
       total: draftTotal || 0,
-      path: "/staff-dashboard/businesses/onboard/draft-onboard",
+      path: "/staff-dashboard/businesses/compliance/draft-compliance",
       isAvailable: draftTotal > 0,
     },
     {
       text: "Paid Drafts",
       total: paidDraftTotal || 0,
-      path: "/staff-dashboard/businesses/onboard/paid-draft-onboard",
+      path: "/staff-dashboard/businesses/compliance/paid-draft-compliance",
       isAvailable: paidDrafts?.length > 0,
     },
   ];
 
   let isFirstNav =
-    pathname === "/staff-dashboard/businesses/onboard" &&
-    "/staff-dashboard/businesses/onboard/all-onboard";
+    pathname === "/staff-dashboard/businesses/compliance" &&
+    "/staff-dashboard/businesses/compliance/all-compliance";
 
   return (
     <Container>
       <ProductHeader
-        title="Onboarded"
-        searchPlaceholder="Search onboarded..."
+        title="Compliance"
+        searchPlaceholder="Search compliance..."
         summary={summary}
         filterList={filterList}
         action={handleCategoryCreate}
-        actionText="Onboard a Business"
+        actionText="Create a Compliance"
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
@@ -94,8 +95,8 @@ const StaffOnboarded = () => {
           <LoadingError />
         ) : (
           <EmptyContent
-            emptyText="Users onboarded businesses will appear here when they create one"
-            buttonText="Onboard a Business"
+            emptyText="Users compliance requests will appear here when they create one"
+            buttonText="Create a Compliance"
             action={handleCategoryCreate}
           />
         )
@@ -115,4 +116,4 @@ const StaffOnboarded = () => {
     </Container>
   );
 };
-export default StaffOnboarded;
+export default StaffCompliance;

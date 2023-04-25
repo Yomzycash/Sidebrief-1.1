@@ -35,7 +35,7 @@ const BusinessDetailLayout = () => {
     store.dispatch(setLaunchResponse(launchResponse));
   }, []);
 
-  let getC = countries.data
+  let getCountry = countries.data
     ? countries?.data.find((country) => country.countryISO === launchResponse.registrationCountry)
     : {
         countryName: "--",
@@ -60,7 +60,7 @@ const BusinessDetailLayout = () => {
     <Container>
       <Header code={searchParams.get("launchCode")} />
       <Body>
-        <Outlet context={{ data, isLoading, isSuccess, refetch, getC }} />
+        <Outlet context={{ data, isLoading, isSuccess, refetch, getCountry }} />
       </Body>
       {isPending ? (
         <CommonButton

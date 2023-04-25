@@ -10,7 +10,7 @@ import { useOutletContext } from "react-router-dom";
 const BusinessDetail = () => {
   const [open, setOpen] = useState(false);
 
-  const { data, isLoading, getC } = useOutletContext();
+  const { data, isLoading, getCountry } = useOutletContext();
 
   const matches = useMediaQuery("(max-width:700px)");
 
@@ -60,7 +60,7 @@ const BusinessDetail = () => {
                 businessObjectives={data?.businessObjects}
                 address={data?.businessAddress}
                 type={data?.registrationType}
-                country={getC?.countryName}
+                country={getCountry?.countryName}
               />
               <StepBar applied={data?.createdAt} />
             </DetailContainer>

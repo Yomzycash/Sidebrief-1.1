@@ -14,7 +14,6 @@ import {
   DateText,
   DeleteButton,
   SubHeader,
-  SearchAndSort,
   StatusType,
   MessageCount,
 } from "./styles";
@@ -22,10 +21,8 @@ import { FiArrowLeft } from "react-icons/fi";
 import { StatusIndicator } from "components/Indicators";
 import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
-import { Search } from "./Search";
-import { SortDropdown } from "./SortDropdown";
 import { Dialog } from "@mui/material";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HiX } from "react-icons/hi";
 import { useViewLaunchRequestQuery, useDeleteLaunchRequestMutation } from "services/launchService";
 import { useDeleteLaunchRequestStaffMutation } from "services/staffService";
@@ -38,6 +35,8 @@ import { CommonButton } from "components/button";
 import { Mail } from "asset/svg";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { getUnReadNotifications } from "components/navbar/actions";
+import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
 export const Header = ({ isStaff, code }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
@@ -77,37 +76,36 @@ export const Header = ({ isStaff, code }) => {
 
   const deleteAction = async () => {
     // perform delete action here
-    if (!isStaff) {
-      await deleteLaunch({
-        launchCode: launchResponse.launchCode,
-      });
-    } else {
-      await deleteLaunchStaff({
-        launchCode: launchResponse.launchCode,
-      });
-    }
+    let payload = {
+      launchCode: launchResponse.launchCode,
+    };
 
-    navigate(
-      isStaff
-        ? `/${"staff-dashboard"}/businesses/registration/${
-            launchRequest.isLoading
-              ? `all`
-              : launchRequest.data.registrationStatus === "pending"
-              ? `pending`
-              : launchRequest.data.registrationStatus === "submitted"
-              ? "awaiting-approval"
-              : "all"
-          }`
-        : `/${"dashboard"}/businesses/${
-            launchRequest.isLoading
-              ? `all-businesses`
-              : launchRequest.data.registrationStatus === "pending"
-              ? `draft-applications`
-              : launchRequest.data.registrationStatus === "submitted"
-              ? "submitted-applications"
-              : null
-          }`
-    );
+    let response = isStaff ? await deleteLaunchStaff(payload) : await deleteLaunch(payload);
+
+    if (response?.data) {
+      toast.success("Successfully deleted");
+      navigate(
+        isStaff
+          ? `/${"staff-dashboard"}/businesses/registration/${
+              launchRequest.isLoading
+                ? `all`
+                : launchRequest.data.registrationStatus === "pending"
+                ? `pending`
+                : launchRequest.data.registrationStatus === "submitted"
+                ? "awaiting-approval"
+                : "all"
+            }`
+          : `/${"dashboard"}/businesses/${
+              launchRequest.isLoading
+                ? `all-businesses`
+                : launchRequest.data.registrationStatus === "pending"
+                ? `draft-applications`
+                : launchRequest.data.registrationStatus === "submitted"
+                ? "submitted-applications"
+                : null
+            }`
+      );
+    } else handleError(response?.error);
     setOpenModal(false);
   };
 
@@ -124,9 +122,6 @@ export const Header = ({ isStaff, code }) => {
       navigate(`/staff-dashboard/businesses/services/chats/?serviceId=${code}`);
     } else {
       navigate(`/dashboard/my-products/chats/?serviceId=${code}`);
-
-      // const path = pathname.split("/").slice(0, -3).join("/");
-      // navigate(`${path}/chats/${code}`);
     }
   };
 
@@ -267,23 +262,19 @@ export const Header = ({ isStaff, code }) => {
         <ActiveNav
           text={"Business Information"}
           path={`/${
-            isStaff ? "staff-dashboard" : "dashboard"
-          }/my-products/business/detail?launchCode=${
-            launchResponse.launchCode
-          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-            launchResponse.registrationType
-          }`}
+            isStaff ? "staff-dashboard" : "dashboard/my-products"
+          }/business/detail?launchCode=${launchResponse.launchCode}&registrationCountry=${
+            launchResponse.registrationCountry
+          }&registrationType=${launchResponse.registrationType}`}
         />
         {paymentInfo?.length > 0 && (
           <ActiveNav
             text={"Payment Details"}
             path={`/${
-              isStaff ? "staff-dashboard" : "dashboard"
-            }/my-products/business/payment?launchCode=${
-              launchResponse.launchCode
-            }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-              launchResponse.registrationType
-            }`}
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/payment?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
           />
         )}
         {shareholders?.length > 0 && (
@@ -291,12 +282,10 @@ export const Header = ({ isStaff, code }) => {
             text={"Shareholders"}
             total={launchRequest?.isLoading ? 0 : shareholders?.length}
             path={`/${
-              isStaff ? "staff-dashboard" : "dashboard"
-            }/my-products/business/shareholders?launchCode=${
-              launchResponse.launchCode
-            }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-              launchResponse.registrationType
-            }`}
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/shareholders?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
           />
         )}
         {directors?.length > 0 && (
@@ -304,12 +293,10 @@ export const Header = ({ isStaff, code }) => {
             text={"Directors"}
             total={launchRequest?.isLoading ? 0 : directors?.length}
             path={`/${
-              isStaff ? "staff-dashboard" : "dashboard"
-            }/my-products/business/directors?launchCode=${
-              launchResponse.launchCode
-            }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-              launchResponse.registrationType
-            }`}
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/directors?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
           />
         )}
         {beneficiaries?.length > 0 && (
@@ -317,12 +304,10 @@ export const Header = ({ isStaff, code }) => {
             text={"Beneficiaries"}
             total={launchRequest?.isLoading ? 0 : beneficiaries?.length}
             path={`/${
-              isStaff ? "staff-dashboard" : "dashboard"
-            }/my-products/business/beneficiaries?launchCode=${
-              launchResponse.launchCode
-            }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-              launchResponse.registrationType
-            }`}
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/beneficiaries?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
           />
         )}
       </SubHeader>

@@ -6,9 +6,9 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
+import { useCategoriesActions } from "../../actions";
 
 const StaffPaidDraftManage = () => {
   const [dataArr, setDataArr] = useState([]);
@@ -18,7 +18,7 @@ const StaffPaidDraftManage = () => {
   const hasFetched = paidDrafts ? true : false;
   const allDrafts = hasFetched ? paidDrafts : [];
 
-  const { filterWhenSearched, sortData } = useActions({
+  const { filterWhenSearched, sortData } = useCategoriesActions({
     searchValue,
     hasFetched,
     setDataArr,
@@ -41,12 +41,12 @@ const StaffPaidDraftManage = () => {
   }, [isError]);
 
   // Tabele header
-  const header = ["Comply Code", "Service Id", "Paid", "Date"];
+  const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
-    el?.complyCode,
-    el?.serviceId,
+    el?.serviceName,
+    el?.serviceCountry,
     el?.paid?.toString(),
     format(new Date(el?.createdAt), "dd-MM-yyyy"),
   ]);
@@ -55,7 +55,7 @@ const StaffPaidDraftManage = () => {
 
   const handleRowClick = (el) => {
     let complyCode = el?.complyCode;
-    navigate(`/staff-dashboard/businesses/manage/${complyCode}/info`);
+    navigate(`/staff-dashboard/businesses/manage/paid-draft-manage/${complyCode}/info`);
   };
 
   return (

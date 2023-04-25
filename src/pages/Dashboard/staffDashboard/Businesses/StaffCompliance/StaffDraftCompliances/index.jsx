@@ -10,7 +10,7 @@ import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
 import { useCategoriesActions } from "../../actions";
 
-const StaffDraftManage = () => {
+const StaffDraftCompliances = () => {
   const [dataArr, setDataArr] = useState([]);
 
   const { drafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
@@ -55,7 +55,7 @@ const StaffDraftManage = () => {
 
   const handleRowClick = (el) => {
     let complyCode = el?.complyCode;
-    navigate(`/staff-dashboard/businesses/manage/draft-manage/${complyCode}/info`);
+    navigate(`/staff-dashboard/businesses/compliance/draft-compliance/${complyCode}/info`);
   };
 
   return (
@@ -93,4 +93,4 @@ const StaffDraftManage = () => {
   );
 };
 
-export default StaffDraftManage;
+export default StaffDraftCompliances;
