@@ -6,9 +6,9 @@ import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useTaxActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
+import { useCategoriesActions } from "../../actions";
 
 const StaffDraftTaxes = () => {
   const [dataArr, setDataArr] = useState([]);
@@ -18,7 +18,7 @@ const StaffDraftTaxes = () => {
   const hasFetched = drafts ? true : false;
   const allDrafts = hasFetched ? drafts : [];
 
-  const { filterWhenSearched, sortData } = useTaxActions({
+  const { filterWhenSearched, sortData } = useCategoriesActions({
     searchValue,
     hasFetched,
     setDataArr,
@@ -41,12 +41,12 @@ const StaffDraftTaxes = () => {
   }, [isError]);
 
   // Tabele header
-  const header = ["Comply Code", "Service Id", "Paid", "Date"];
+  const header = ["Service Name", "Country", "Paid", "Date"];
 
   // Table body
   const dataBody = dataArr?.map((el) => [
-    el?.complyCode,
-    el?.serviceId,
+    el?.serviceName,
+    el?.serviceCountry,
     el?.paid?.toString(),
     format(new Date(el?.createdAt), "dd-MM-yyyy"),
   ]);
@@ -54,8 +54,8 @@ const StaffDraftTaxes = () => {
   const matches = useMediaQuery("(max-width:700px)");
 
   const handleRowClick = (el) => {
-    let serviceId = el[0];
-    navigate(`/staff-dashboard/businesses/tax/${serviceId}/info`);
+    let complyCode = el?.complyCode;
+    navigate(`/staff-dashboard/businesses/tax/draft-taxes/${complyCode}/info`);
   };
 
   return (
@@ -68,7 +68,12 @@ const StaffDraftTaxes = () => {
         )}
 
         {!matches && dataArr.length > 0 ? (
-          <FeatureTable header={header} body={dataBody} onRowClick={handleRowClick} />
+          <FeatureTable
+            header={header}
+            body={dataBody}
+            onRowClick={handleRowClick}
+            bodyFullData={dataArr}
+          />
         ) : (
           <MobileContainer>
             {dataArr.map((element) => {

@@ -27,6 +27,7 @@ import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 import { convertToLink } from "utils/LaunchHelper";
 import toast from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+
 const PdfCards = ({
   name = "",
   title = "",
@@ -59,14 +60,10 @@ const PdfCards = ({
 
   const { data } = useGetAllEntitiesQuery(countryISO);
 
-
   const checkE = useGetAllEntitiesQuery(countryISO);
 
-
   useEffect(() => {
-    const check = data?.find(
-      (entity) => entity?.entityCode === launchResponse.registrationType
-    );
+    const check = data?.find((entity) => entity?.entityCode === launchResponse.registrationType);
 
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
@@ -107,9 +104,7 @@ const PdfCards = ({
         },
       };
 
-      const beneficialResult = await addBeneficialKYC(
-        requiredBeneficialOwnerKYCData
-      );
+      const beneficialResult = await addBeneficialKYC(requiredBeneficialOwnerKYCData);
       if (beneficialResult.data) {
         let returnedArray = beneficialResult.data.beneficialOwnersKYC;
         let lastElememt = returnedArray[returnedArray.length - 1];
@@ -121,7 +116,6 @@ const PdfCards = ({
       }
     }
   };
-
 
   return (
     <>

@@ -9,7 +9,7 @@ import StaffServicesModal from "components/modal/StaffServicesModal";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import { useGetAllCountriesQuery } from "services/launchService";
-import EmptyContent from "components/EmptyContent";
+import EmptyContent from "components/Fallbacks/EmptyContent";
 
 const AllServices = () => {
   const [clickedService, setClickedService] = useState({});
@@ -70,7 +70,11 @@ const AllServices = () => {
 
   // delete service
   const handleServiceDelete = async () => {
-    let response = await deleteService(clickedService.serviceId);
+    let payload = {
+      serviceId: clickedService.serviceId,
+      serviceName: clickedService.serviceName,
+    };
+    let response = await deleteService(payload);
     let data = response?.data;
     let error = response?.error;
 

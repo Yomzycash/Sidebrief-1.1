@@ -5,20 +5,14 @@ import { NavLink, useLocation, Link } from "react-router-dom";
 import { useState } from "react";
 import { useGetAllNotificationsQuery } from "services/chatService";
 import { useSelector } from "react-redux";
-import { store } from "redux/Store";
-import { setUnreadLaunchNotifications } from "redux/Slices";
-import { useGetAllServicesQuery } from "services/staffService";
-import { useMemo } from "react";
-import { getUnReadNotifications } from "components/navbar/actions";
 
-const SidebarItem = ({ item, expanded, homePath }) => {
+const SidebarItem = ({ item, expanded, homePath, onClick }) => {
   const [iconHovered, setIconHovered] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
 
   const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
 
   const notifications = useGetAllNotificationsQuery();
-  // const services = useGetAllServicesQuery();
 
   const location = useLocation();
   const locationPath = location?.pathname;
@@ -27,30 +21,9 @@ const SidebarItem = ({ item, expanded, homePath }) => {
 
   let homePathActive = homePath && item.id === 1;
 
-  // useMemo(() => {
-  //   if (!notifications.data || !services.data) return;
-
-  //   let newNotifications = notifications.data?.filter(
-  //     (notification) => notification?.messageIsRead === false
-  //   );
-  //   console.log(newNotifications);
-
-  //   let servicesNotifications = services.data.map((service) =>
-  //     newNotifications.filter((el) => el?.serviceId === service?.serviceId)
-  //   );
-  //   let servicesCount = servicesNotifications.filter((el) => el.length > 0);
-
-  //   setUnreadLaunchNots(newNotifications?.length - servicesCount?.length);
-  //   setUnreadServicesNots(servicesCount?.length);
-
-  //   store.dispatch(setUnreadLaunchNotifications(newNotifications));
-  // }, [services.data]);
-
   useEffect(() => {
     notifications.refetch();
   }, [refreshNotifications]);
-
-  let newNotifications = getUnReadNotifications(notifications.data);
 
   return (
     <SidebarItemContainer>
@@ -64,6 +37,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
             onMouseEnter={() => setIconHovered(item.id)}
             onMouseLeave={() => setIconHovered(0)}
             style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
+            onClick={onClick}
           >
             <item.icon
               filled={locationPath?.includes(item.path) || homePathActive}
@@ -88,6 +62,7 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   onMouseEnter={() => setIconHovered(item.id + each.id)}
                   onMouseLeave={() => setIconHovered(0)}
                   style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
+                  onClick={onClick}
                 >
                   <span>
                     <each.icon
@@ -97,14 +72,6 @@ const SidebarItem = ({ item, expanded, homePath }) => {
                   </span>
                   <span>{each.title}</span>
                 </NavLink>
-                {/* {notifications.data?.length > 0 &&
-                  each.path === "/staff-dashboard/businesses/services" && (
-                    <Badge to={each.path}>{notifications.data?.length}</Badge>
-                  )} */}
-                {/* {newNotifications?.length > 0 &&
-                  each.path === "/staff-dashboard/businesses/registration" && (
-                    <Badge to={each.path}>{newNotifications?.length}</Badge>
-                  )} */}
               </ListItem>
             ))}
           </List>
@@ -135,7 +102,7 @@ const Item = styled.div`
     height: max-content;
     color: ${({ theme }) => theme.grey1};
 
-    padding: 12px 16px;
+    padding: clamp(8px, 1vw, 12px) clamp(12px, 1.4vw, 16px);
     border-radius: 8px;
 
     white-space: nowrap;

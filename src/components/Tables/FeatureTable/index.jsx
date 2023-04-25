@@ -2,7 +2,7 @@ import React from "react";
 import { GiConsoleController } from "react-icons/gi";
 import { TableBody, TableContainer, TableHead } from "./styled";
 
-const FeatureTable = ({ header, body, onRowClick }) => {
+const FeatureTable = ({ header, body, onRowClick, bodyFullData }) => {
   return (
     <TableContainer>
       <TableHead>
@@ -14,7 +14,7 @@ const FeatureTable = ({ header, body, onRowClick }) => {
       </TableHead>
       <TableBody $hasOnClick={onRowClick ? true : false}>
         {body?.map((each, index) => (
-          <tr key={index} onClick={() => onRowClick(each)}>
+          <tr key={index} onClick={() => onRowClick(bodyFullData[index])}>
             {each?.map((el, index) => (
               <td key={index}>{el}</td>
             ))}

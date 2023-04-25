@@ -14,7 +14,6 @@ import {
   DateText,
   DeleteButton,
   SubHeader,
-  SearchAndSort,
   StatusType,
   MessageCount,
 } from "./styles";
@@ -22,10 +21,8 @@ import { FiArrowLeft } from "react-icons/fi";
 import { StatusIndicator } from "components/Indicators";
 import { RedTrash } from "asset/svg";
 import ActiveNav from "components/navbar/ActiveNav";
-import { Search } from "./Search";
-import { SortDropdown } from "./SortDropdown";
 import { Dialog } from "@mui/material";
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HiX } from "react-icons/hi";
 import { useViewLaunchRequestQuery, useDeleteLaunchRequestMutation } from "services/launchService";
 import { useDeleteLaunchRequestStaffMutation } from "services/staffService";
@@ -38,6 +35,8 @@ import { CommonButton } from "components/button";
 import { Mail } from "asset/svg";
 import { useGetNotificationsByServiceIdQuery } from "services/chatService";
 import { getUnReadNotifications } from "components/navbar/actions";
+import { handleError } from "utils/globalFunctions";
+import { toast } from "react-hot-toast";
 
 export const Header = ({ isStaff, code }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
@@ -77,37 +76,36 @@ export const Header = ({ isStaff, code }) => {
 
   const deleteAction = async () => {
     // perform delete action here
-    if (!isStaff) {
-      await deleteLaunch({
-        launchCode: launchResponse.launchCode,
-      });
-    } else {
-      await deleteLaunchStaff({
-        launchCode: launchResponse.launchCode,
-      });
-    }
+    let payload = {
+      launchCode: launchResponse.launchCode,
+    };
 
-    navigate(
-      isStaff
-        ? `/${"staff-dashboard"}/businesses/registration/${
-            launchRequest.isLoading
-              ? `all`
-              : launchRequest.data.registrationStatus === "pending"
-              ? `pending`
-              : launchRequest.data.registrationStatus === "submitted"
-              ? "awaiting-approval"
-              : "all"
-          }`
-        : `/${"dashboard"}/businesses/${
-            launchRequest.isLoading
-              ? `all-businesses`
-              : launchRequest.data.registrationStatus === "pending"
-              ? `draft-applications`
-              : launchRequest.data.registrationStatus === "submitted"
-              ? "submitted-applications"
-              : null
-          }`
-    );
+    let response = isStaff ? await deleteLaunchStaff(payload) : await deleteLaunch(payload);
+
+    if (response?.data) {
+      toast.success("Successfully deleted");
+      navigate(
+        isStaff
+          ? `/${"staff-dashboard"}/businesses/registration/${
+              launchRequest.isLoading
+                ? `all`
+                : launchRequest.data.registrationStatus === "pending"
+                ? `pending`
+                : launchRequest.data.registrationStatus === "submitted"
+                ? "awaiting-approval"
+                : "all"
+            }`
+          : `/${"dashboard"}/businesses/${
+              launchRequest.isLoading
+                ? `all-businesses`
+                : launchRequest.data.registrationStatus === "pending"
+                ? `draft-applications`
+                : launchRequest.data.registrationStatus === "submitted"
+                ? "submitted-applications"
+                : null
+            }`
+      );
+    } else handleError(response?.error);
     setOpenModal(false);
   };
 
@@ -123,10 +121,7 @@ export const Header = ({ isStaff, code }) => {
     if (isStaff) {
       navigate(`/staff-dashboard/businesses/services/chats/?serviceId=${code}`);
     } else {
-      navigate(`/dashboard/businesses/chats/?serviceId=${code}`);
-
-      // const path = pathname.split("/").slice(0, -3).join("/");
-      // navigate(`${path}/chats/${code}`);
+      navigate(`/dashboard/my-products/chats/?serviceId=${code}`);
     }
   };
 
@@ -166,13 +161,18 @@ export const Header = ({ isStaff, code }) => {
     };
   }, []);
 
+  let shareholders = launchRequest?.data?.businessShareholders;
+  let directors = launchRequest?.data?.businessDirectors;
+  let beneficiaries = launchRequest?.data?.businessBeneficialOwners;
+  let paymentInfo = launchRequest?.data?.businessPayment;
+
   return (
     <Container>
       <Top>
         <BackContainer
           to={
             isStaff
-              ? `/${"staff-dashboard"}/businesses/registration/${
+              ? `/staff-dashboard/businesses/registration/${
                   launchRequest?.isLoading
                     ? `all`
                     : launchRequest?.data?.registrationStatus === "pending"
@@ -181,7 +181,7 @@ export const Header = ({ isStaff, code }) => {
                     ? "awaiting-approval"
                     : "all"
                 }`
-              : `/${"dashboard"}/businesses/${
+              : `/dashboard/my-products/business/${
                   launchRequest?.isLoading
                     ? `all-businesses`
                     : launchRequest?.data?.registrationStatus === "pending"
@@ -243,13 +243,6 @@ export const Header = ({ isStaff, code }) => {
             </BottomInfo>
           </LHS>
           <RHS>
-            {/* <CommonButton
-
-							text={"Messages"}
-							classname="transbutton"
-							LeftIcon={Mail}
-							component={<MessageCount>1</MessageCount>}
-						/> */}
             {!noDelete ? (
               <DeleteButton onClick={handleClick}>
                 <p>Delete</p>
@@ -259,14 +252,6 @@ export const Header = ({ isStaff, code }) => {
           </RHS>
         </TitleContainer>
       </Top>
-      {page !== "detail" || "payment" ? (
-        <SearchAndSort>
-          {/* placeholder changes based on the page it's on */}
-          {/* not implemented yet */}
-          <Search triggerSearch={triggerSearch} page={page} />
-          <SortDropdown />
-        </SearchAndSort>
-      ) : null}
 
       <SubHeader
         ref={subHeader}
@@ -276,52 +261,55 @@ export const Header = ({ isStaff, code }) => {
       >
         <ActiveNav
           text={"Business Information"}
-          // total={0}
-          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/detail?launchCode=${
-            launchResponse.launchCode
-          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-            launchResponse.registrationType
-          }`}
+          path={`/${
+            isStaff ? "staff-dashboard" : "dashboard/my-products"
+          }/business/detail?launchCode=${launchResponse.launchCode}&registrationCountry=${
+            launchResponse.registrationCountry
+          }&registrationType=${launchResponse.registrationType}`}
         />
-        <ActiveNav
-          text={"Payment Details"}
-          // total={0}
-          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/payment?launchCode=${
-            launchResponse.launchCode
-          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-            launchResponse.registrationType
-          }`}
-        />
-
-        <ActiveNav
-          text={"Shareholders"}
-          total={launchRequest?.isLoading ? 0 : launchRequest?.data?.businessShareholders?.length}
-          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/shareholders?launchCode=${
-            launchResponse.launchCode
-          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-            launchResponse.registrationType
-          }`}
-        />
-        <ActiveNav
-          text={"Directors"}
-          total={launchRequest?.isLoading ? 0 : launchRequest?.data?.businessDirectors?.length}
-          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/directors?launchCode=${
-            launchResponse.launchCode
-          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-            launchResponse.registrationType
-          }`}
-        />
-        <ActiveNav
-          text={"Beneficiaries"}
-          total={
-            launchRequest?.isLoading ? 0 : launchRequest?.data?.businessBeneficialOwners?.length
-          }
-          path={`/${isStaff ? "staff-dashboard" : "dashboard"}/business/beneficiaries?launchCode=${
-            launchResponse.launchCode
-          }&registrationCountry=${launchResponse.registrationCountry}&registrationType=${
-            launchResponse.registrationType
-          }`}
-        />
+        {paymentInfo?.length > 0 && (
+          <ActiveNav
+            text={"Payment Details"}
+            path={`/${
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/payment?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
+          />
+        )}
+        {shareholders?.length > 0 && (
+          <ActiveNav
+            text={"Shareholders"}
+            total={launchRequest?.isLoading ? 0 : shareholders?.length}
+            path={`/${
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/shareholders?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
+          />
+        )}
+        {directors?.length > 0 && (
+          <ActiveNav
+            text={"Directors"}
+            total={launchRequest?.isLoading ? 0 : directors?.length}
+            path={`/${
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/directors?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
+          />
+        )}
+        {beneficiaries?.length > 0 && (
+          <ActiveNav
+            text={"Beneficiaries"}
+            total={launchRequest?.isLoading ? 0 : beneficiaries?.length}
+            path={`/${
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/beneficiaries?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
+          />
+        )}
       </SubHeader>
 
       <Dialog open={openModal} fullWidth maxWidth="sm">

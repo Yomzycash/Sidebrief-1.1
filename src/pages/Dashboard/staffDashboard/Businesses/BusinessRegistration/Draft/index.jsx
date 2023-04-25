@@ -10,22 +10,22 @@ import { columns } from "../tableColumn";
 import Paginator from "components/Paginator";
 import { store } from "./../../../../../../redux/Store";
 import { setBatchDeleteArray } from "../../../../../../redux/Slices";
+import { useOutletContext } from "react-router-dom";
 
 const Draft = () => {
   const [tableArr, setTableArr] = useState([]);
 
+  const { pendingLaunch } = useOutletContext();
+
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [currentItems, setCurrentItems] = useState([]);
-  const pendingLaunch = useGetDraftLaunchQuery();
-
-  const countries = useGetAllCountriesQuery();
 
   useEffect(() => {
-    if (pendingLaunch.isSuccess && countries.isSuccess) {
+    if (pendingLaunch.isSuccess) {
       setTableArr(pendingLaunch.data);
     }
-  }, [pendingLaunch, countries.isSuccess]);
+  }, [pendingLaunch]);
 
   const sortedArr = useMemo(() => {
     const sortArr = [...tableArr];
@@ -45,7 +45,7 @@ const Draft = () => {
     const selectedArray = selectedRow?.map((row) => {
       return row?.code;
     });
-      //console.log(selectedArray)
+    //console.log(selectedArray)
     store.dispatch(setBatchDeleteArray(selectedArray));
   };
 

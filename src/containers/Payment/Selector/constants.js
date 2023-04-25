@@ -5,7 +5,7 @@ export const paymentProviders = [
   {
     provider: "Flutterwave",
     image: FlutterwaveImg,
-    supported: ["KES", "NGN", "ZAR"],
+    supported: ["KES", "NGN", "ZAR", "RWF", "GHS", "UGX", "TZS", "ZMW"],
   },
   {
     provider: "Stripe",

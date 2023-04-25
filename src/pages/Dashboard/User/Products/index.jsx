@@ -7,6 +7,12 @@ import { IoIosRocket } from "react-icons/io";
 import { TbReceiptTax } from "react-icons/tb";
 import { AiOutlineFileProtect } from "react-icons/ai";
 import { Puff } from "react-loading-icons";
+import { FaCheckDouble } from "react-icons/fa";
+import { useEffect } from "react";
+import { store } from "redux/Store";
+import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
+import { removeProductsFromLocalStorage } from "utils/globalFunctions";
+import LoadingError from "components/Fallbacks/LoadingError";
 
 const Products = () => {
   const allCategories = useGetAllCategoriesQuery();
@@ -40,16 +46,29 @@ const Products = () => {
         icon: IoIosRocket,
         path: "/services/onboard",
       };
+    } else if (category.toLowerCase() === "compliance") {
+      return {
+        title: "Compliance",
+        body: "Automate your business compliance",
+        icon: FaCheckDouble,
+        path: "/services/compliance",
+      };
     }
   };
+
+  useEffect(() => {
+    removeProductsFromLocalStorage();
+  }, []);
 
   // console.log(allCategories);
   return (
     <Container>
-      <Header>
-        <p>All Products</p>
-        <p>Products you can rely on through your business's journey</p>
-      </Header>
+      {allCategories.data && (
+        <Header>
+          <p>All Products</p>
+          <p>Products you can rely on through your business's journey</p>
+        </Header>
+      )}
       {allCategories.isLoading && (
         <Loading height="50vh">
           <Puff stroke="#00A2D4" fill="white" />
@@ -76,6 +95,7 @@ const Products = () => {
           </>
         )}
       </Body>
+      {allCategories.isError && <LoadingError />}
     </Container>
   );
 };

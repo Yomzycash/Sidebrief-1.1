@@ -58,8 +58,6 @@ const Registrationlayout = () => {
 
   const [batchDelete, deleteState] = useBatchDeleteLaunchRequestsMutation();
 
-  //const batchDeleteArray = useSelector((store) => store.UserData?.batchDeleteArray);
-
   const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
   let awaiting = awaitingLaunch?.currentData?.length;
@@ -70,7 +68,6 @@ const Registrationlayout = () => {
 
   const { unreadLaunchNotifications } = useSelector((store) => store.UserDataReducer);
   const { batchDeleteArray } = useSelector((store) => store.UserDataReducer);
-  // console.log(batchDeleteArray);
 
   const { pathname } = useLocation();
   let deleteShown = pathname.includes("pending");
@@ -95,6 +92,8 @@ const Registrationlayout = () => {
 
     if (data) {
       toast.success("Deleted");
+      pendingLaunch.refetch();
+      allLaunch.refetch();
       navigate("/staff-dashboard/businesses/registration/pending");
     } else handleError(error);
     setOpenModal(false);
@@ -222,7 +221,9 @@ const Registrationlayout = () => {
           />
         </SubHeader>
       </Header>
-      <Outlet />
+      <Outlet
+        context={{ allLaunch, awaitingLaunch, rejectedLaunch, pendingLaunch, approvedLaunch }}
+      />
     </Container>
   );
 };
