@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowDown, DropDownBtn, DropDownContent, DropDownItems, TextContainer } from "./style";
 import { IoIosArrowDown } from "react-icons/io";
 
-const CustomDropdown = ({ options, intialvalue, selectedValue }) => {
+const CustomDropdown = ({ options, intialvalue, selectedValue, mobile }) => {
   const [selected, setSelected] = useState(intialvalue);
   const [isActive, setIsActive] = useState(false);
 
@@ -17,7 +17,6 @@ const CustomDropdown = ({ options, intialvalue, selectedValue }) => {
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
-
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -46,7 +45,23 @@ const CustomDropdown = ({ options, intialvalue, selectedValue }) => {
           <IoIosArrowDown />
         </ArrowDown>
       </DropDownBtn>
-      {isActive && (
+      {isActive && !mobile && (
+        <DropDownContent>
+          {options?.map((option, index) => (
+            <DropDownItems
+              key={index}
+              onClick={(e) => {
+                setSelected(option);
+                selectedValue(option);
+                setIsActive(false);
+              }}
+            >
+              {option}
+            </DropDownItems>
+          ))}
+        </DropDownContent>
+      )}
+      {isActive && !mobile && (
         <DropDownContent>
           {options?.map((option, index) => (
             <DropDownItems

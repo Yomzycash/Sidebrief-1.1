@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery, useGetUserRewardQuery } from "services/RewardService";
 import { setRewardsShown } from "redux/Slices";
 import { store } from "redux/Store";
+import { useMediaQuery } from "@mui/material";
+import HeaderSearch from "components/HeaderSearch";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -87,6 +89,7 @@ const Rewards = () => {
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>
+
           <MobileHeader>
             <Search
               style={{
@@ -102,7 +105,9 @@ const Rewards = () => {
                 <option value="All">All</option>
               </select>
             </Drop>
+           
           </MobileHeader>
+          
           {/* <AppFeedback subProject="Rewards" /> */}
         </Header>
       )}

@@ -89,7 +89,7 @@ const AllServices = () => {
     if (!mode) setDialog({});
     else
       setDialog({
-        mode: mode,
+        mode: mode,   
         serviceId: serviceId || "",
         progress: (dialog.progress > progress ? dialog.progress : progress) || dialog.progress,
       });

@@ -67,16 +67,21 @@ export const SubHeader = styled.div`
 
   @media screen and (max-width: 700px) {
     padding-inline: 24px;
+    display: none;
+
   }
 `;
 
 export const MobileHeader = styled.div`
   display: none;
   @media screen and (max-width: 700px) {
-    display: flex;
+    
+    display: none;
+  
+    /* display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px 24px;
+    padding: 16px 24px; */
   }
 `;
 
