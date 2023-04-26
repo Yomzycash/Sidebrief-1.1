@@ -6,41 +6,104 @@ import Loader from "../components/loader/loader";
 import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
-import StaffManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage";
-import StaffAllManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffAllIManage";
-import StaffPendingManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPendingManage";
-import StaffDraftManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffDraftManage";
-import StaffOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded";
-import StaffAllOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffAllOnboarded";
-import StaffPendingOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPendingOnboarded";
-import StaffDraftOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffDraftOnboarded";
-import StaffTax from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes";
-import StaffAllTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffAllTaxes";
-import StaffPendingTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPendingTaxes";
-import StaffDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffDraftTaxes";
-import StaffIntellectual from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual";
-import StaffAllIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffAllIntellectual";
-import StaffPendingIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPendingIntellectual";
-import StaffDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffDraftIntellectual";
-import StaffPaidDraftManage from "pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPaidDraftManage";
-import StaffPaidDraftOnboarded from "pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPaidDraftOnboarded";
-import StaffPaidDraftIntellectuals from "pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPaidDraftIntellectual";
-import PaidDraftOnboarded from "pages/Dashboard/User/MyProducts/Onboarded/PaidDraftOnboarded";
-import PaidDraftManage from "pages/Dashboard/User/MyProducts/Manage/PaidDraftManage";
-import PaidDraftTaxes from "pages/Dashboard/User/MyProducts/Taxes/PaidDraftTaxes";
-import PaidDraftIntellectuals from "pages/Dashboard/User/MyProducts/Intellectual/PaidDraftIntellectual";
-import StaffPaidDraftTaxes from "pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPaidDraftTaxes";
-import Compliance from "pages/Dashboard/User/MyProducts/Compliance";
-import AllCompliances from "pages/Dashboard/User/MyProducts/Compliance/AllCompliances";
-import PendingCompliances from "pages/Dashboard/User/MyProducts/Compliance/PendingCompliances";
-import DraftCompliances from "pages/Dashboard/User/MyProducts/Compliance/DraftCompliances";
-import PaidDraftCompliances from "pages/Dashboard/User/MyProducts/Compliance/PaidDraftCompliances";
-import PaidDraftApplications from "pages/Dashboard/User/MyProducts/Business/PaidDraftApplications";
-import StaffCompliance from "pages/Dashboard/staffDashboard/Businesses/StaffCompliance";
-import StaffAllCompliances from "pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffAllCompliances";
-import StaffPendingCompliances from "pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffPendingCompliances";
-import StaffDraftCompliances from "pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffDraftCompliances";
-import StaffPaidDraftCompliances from "pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffPaidDraftCompliances";
+
+const StaffManage = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/StaffManage"));
+const StaffAllManage = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffAllIManage")
+);
+const StaffPendingManage = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPendingManage")
+);
+const StaffDraftManage = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffDraftManage")
+);
+const StaffOnboarded = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffOnboarded")
+);
+const StaffAllOnboarded = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffAllOnboarded")
+);
+const StaffPendingOnboarded = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPendingOnboarded")
+);
+const StaffDraftOnboarded = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffDraftOnboarded")
+);
+const StaffTax = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/StaffTaxes"));
+const StaffAllTaxes = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffAllTaxes")
+);
+const StaffPendingTaxes = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPendingTaxes")
+);
+const StaffDraftTaxes = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffDraftTaxes")
+);
+const StaffIntellectual = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffIntellectual")
+);
+const StaffAllIntellectuals = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffAllIntellectual")
+);
+const StaffPendingIntellectuals = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPendingIntellectual")
+);
+const StaffDraftIntellectuals = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffDraftIntellectual")
+);
+const StaffPaidDraftManage = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffManage/StaffPaidDraftManage")
+);
+const StaffPaidDraftOnboarded = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffOnboarded/StaffPaidDraftOnboarded")
+);
+const StaffPaidDraftIntellectuals = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffIntellectual/StaffPaidDraftIntellectual")
+);
+const PaidDraftOnboarded = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Onboarded/PaidDraftOnboarded")
+);
+const PaidDraftManage = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Manage/PaidDraftManage")
+);
+const PaidDraftTaxes = lazy(() => import("pages/Dashboard/User/MyProducts/Taxes/PaidDraftTaxes"));
+const PaidDraftIntellectuals = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Intellectual/PaidDraftIntellectual")
+);
+const StaffPaidDraftTaxes = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffTaxes/StaffPaidDraftTaxes")
+);
+const Compliance = lazy(() => import("pages/Dashboard/User/MyProducts/Compliance"));
+const AllCompliances = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Compliance/AllCompliances")
+);
+const PendingCompliances = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Compliance/PendingCompliances")
+);
+const DraftCompliances = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Compliance/DraftCompliances")
+);
+const PaidDraftCompliances = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Compliance/PaidDraftCompliances")
+);
+const PaidDraftApplications = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/PaidDraftApplications")
+);
+const StaffCompliance = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffCompliance")
+);
+const StaffAllCompliances = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffAllCompliances")
+);
+const StaffPendingCompliances = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffPendingCompliances")
+);
+const StaffDraftCompliances = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffDraftCompliances")
+);
+const StaffPaidDraftCompliances = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/StaffCompliance/StaffPaidDraftCompliances")
+);
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
