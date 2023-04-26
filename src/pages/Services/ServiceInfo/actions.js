@@ -90,6 +90,11 @@ export const useActions = ({
         title: "Compliance",
         titleSubText: "5mins completion time",
       };
+    else if (normalize(category) === "launch")
+      return {
+        title: "Launch ",
+        titleSubText: "Launch New Flow",
+      };
   };
 
   const normalize = (text) => text?.toLowerCase()?.split(" ")?.join("-");

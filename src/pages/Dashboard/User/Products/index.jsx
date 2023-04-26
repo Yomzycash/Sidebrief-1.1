@@ -42,7 +42,7 @@ const Products = () => {
     } else if (category.toLowerCase() === "onboard") {
       return {
         title: "Onboard a Business",
-        body: "Automate your business compliance",
+        body: "Onbaord your business",
         icon: IoIosRocket,
         path: "/services/onboard",
       };
@@ -52,6 +52,13 @@ const Products = () => {
         body: "Automate your business compliance",
         icon: FaCheckDouble,
         path: "/services/compliance",
+      };
+    } else if (category.toLowerCase() === "launch") {
+      return {
+        title: "Launch",
+        body: "Launch your business",
+        icon: GiLightningSpanner,
+        path: "/launch",
       };
     }
   };

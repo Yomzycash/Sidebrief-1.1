@@ -264,7 +264,7 @@ export const userSidebarItems = [
       {
         id: 6,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/dashboard/my-products/compliance",
       },
     ],
@@ -347,7 +347,7 @@ export const staffSidebarItems = [
       {
         id: 7,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/staff-dashboard/businesses/compliance",
       },
       {
