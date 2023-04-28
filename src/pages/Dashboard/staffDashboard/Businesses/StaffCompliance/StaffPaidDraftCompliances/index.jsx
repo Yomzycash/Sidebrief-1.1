@@ -36,10 +36,6 @@ const StaffPaidDraftCompliances = () => {
     if (searchValue) filterWhenSearched(allDrafts);
   }, [searchValue]);
 
-  useEffect(() => {
-    if (isError) handleError("Connection error");
-  }, [isError]);
-
   // Tabele header
   const header = ["Service Name", "Country", "Paid", "Date"];
 

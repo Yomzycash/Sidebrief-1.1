@@ -276,6 +276,7 @@ export const staffApi = createApi({
       invalidatesTags: ["User"],
     }),
 
+    // Get all users information
     getAllUsers: builder.query({
       query: () => "/launch/allusers",
     }),
@@ -514,6 +515,11 @@ export const staffApi = createApi({
     getAllCategories: builder.query({
       query: () => `/all-category`,
     }),
+
+    // Get a user information
+    getUserById: builder.query({
+      query: (userId) => `/getUser/${userId}`,
+    }),
   }),
 });
 
@@ -583,4 +589,6 @@ export const {
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
   useGetAllCategoriesQuery,
+
+  useGetUserByIdQuery,
 } = staffApi;

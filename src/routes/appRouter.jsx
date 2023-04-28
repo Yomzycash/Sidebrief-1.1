@@ -6,6 +6,7 @@ import Loader from "../components/loader/loader";
 import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
+import UserInfo from "pages/Dashboard/User/MyProducts/Business/Detail/UserInfo";
 
 const StaffManage = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/StaffManage"));
 const StaffAllManage = lazy(() =>
@@ -719,6 +720,7 @@ const AppRouter = () => {
               </Route>
               <Route path="business" element={<StaffBusinessDetailLayout />}>
                 <Route path="detail" element={<BusinessDetail />} />
+                <Route path="user-info" element={<UserInfo />} />
                 <Route path="payment" element={<BusinessPaymet />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />

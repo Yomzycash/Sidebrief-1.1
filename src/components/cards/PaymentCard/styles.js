@@ -34,7 +34,8 @@ export const FieldContainer = styled.div`
 
 export const TopContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 5px;
 `;
 
 export const BottomContainer = styled.div`
@@ -44,37 +45,4 @@ export const BottomContainer = styled.div`
   > div:nth-of-type(odd) {
     background-color: #edf1f6;
   }
-`;
-
-export const Title = styled.p`
-  font-family: "BR Firma";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 36px;
-  text-transform: capitalize;
-  color: #242627;
-`;
-
-export const SubDowwn = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
-export const Name = styled.p`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  text-decoration-line: underline;
-  text-transform: capitalize;
-  color: #00a2d4;
-`;
-
-export const Date = styled.p`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  color: #4e5152;
 `;
