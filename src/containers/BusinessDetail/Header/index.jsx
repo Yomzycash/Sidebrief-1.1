@@ -267,6 +267,12 @@ export const Header = ({ isStaff, code }) => {
             launchResponse.registrationCountry
           }&registrationType=${launchResponse.registrationType}`}
         />
+        {isStaff && (
+          <ActiveNav
+            text={"User Information"}
+            path={`/staff-dashboard/business/user-info?launchCode=${launchResponse.launchCode}&registrationCountry=${launchResponse.registrationCountry}&registrationType=${launchResponse.registrationType}`}
+          />
+        )}
         {paymentInfo?.length > 0 && (
           <ActiveNav
             text={"Payment Details"}
