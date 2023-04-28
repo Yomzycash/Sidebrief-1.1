@@ -52,7 +52,7 @@ const Payment = () => {
     <DetailContainer>
       <PaymentDetailsCard
         info={info}
-        date={format(new Date(data?.createdAt), "dd MMMM, yyyy")}
+        date={data?.createdAt ? format(new Date(data?.createdAt), "dd MMMM, yyyy") : ""}
         isLoading={isLoading}
       />
     </DetailContainer>

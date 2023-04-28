@@ -37,7 +37,7 @@ const UserInfo = () => {
       <PaymentDetailsCard
         info={info}
         isLoading={userInfo.isLoading}
-        date={format(new Date(data?.createdAt), "dd MMMM, yyyy")}
+        date={data?.createdAt ? format(new Date(data?.createdAt), "dd MMMM, yyyy") : ""}
       />
     </DetailContainer>
   );
