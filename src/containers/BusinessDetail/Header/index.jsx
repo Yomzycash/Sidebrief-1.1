@@ -267,7 +267,7 @@ export const Header = ({ isStaff, code }) => {
             launchResponse.registrationCountry
           }&registrationType=${launchResponse.registrationType}`}
         />
-        {isStaff && (
+        {isStaff && launchRequest.data?.meta && (
           <ActiveNav
             text={"User Information"}
             path={`/staff-dashboard/business/user-info?launchCode=${launchResponse.launchCode}&registrationCountry=${launchResponse.registrationCountry}&registrationType=${launchResponse.registrationType}`}
