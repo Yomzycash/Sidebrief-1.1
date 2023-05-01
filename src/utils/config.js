@@ -229,7 +229,7 @@ export const userSidebarItems = [
     id: 3,
     title: "My Products",
     icon: BusinessesIcon,
-    path: "/dashboard/my-products",
+    path: "/dashboard/my-products/business",
     dropDownList: [
       {
         id: 1,

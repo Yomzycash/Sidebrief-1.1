@@ -53,14 +53,7 @@ const Products = () => {
         icon: FaCheckDouble,
         path: "/services/compliance",
       };
-    } else if (category.toLowerCase() === "launch") {
-      return {
-        title: "Launch",
-        body: "Launch your business",
-        icon: GiLightningSpanner,
-        path: "/launch",
-      };
-    }
+    } 
   };
 
   useEffect(() => {
