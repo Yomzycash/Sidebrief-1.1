@@ -36,10 +36,6 @@ const StaffPendingIntellectuals = () => {
     if (searchValue) filterWhenSearched(allSubmitted);
   }, [searchValue]);
 
-  useEffect(() => {
-    if (isError) handleError("Connection error");
-  }, [isError]);
-
   // Tabele header
   const header = ["Service Name", "Country", "Paid", "Date"];
 

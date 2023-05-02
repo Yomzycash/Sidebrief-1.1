@@ -182,6 +182,7 @@ export const OptionText = styled.input`
 
   :disabled {
     background-color: #fff;
+    width: 100%;
   }
 `;
 

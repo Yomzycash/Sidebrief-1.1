@@ -220,7 +220,7 @@ const EntitySelect = () => {
                     timeline={item?.entityTimeline}
                     features={item?.entityFeatures}
                     requirement={item?.entityRequirements}
-                    // price={parseInt(item?.entityFee).toLocaleString("en-US")}
+                    price={parseInt(item?.entityFee).toLocaleString("en-US")}
                     currency={item?.entityCurrency}
                     action={() => handleNext(item)}
                   />
