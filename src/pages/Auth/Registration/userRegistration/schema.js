@@ -5,7 +5,7 @@ export const userRegistrationSchema = yup.object().shape({
   first_name: yup.string().required("Enter your first name"),
   last_name: yup.string().required("Enter your last name"),
   email: yup.string().email("Enter a valid email address").required("Enter your email"),
-  phone: yup.string().required("Enter your phone number"),
+  phone: yup.string().min(10, "Invalid phone number").required("Enter your phone number"),
   // .test('phone-test', 'Invalid phone number', function (value) {
   //   const { country } = this.parent;
   //   const phoneNumber = typeof value === 'string'
@@ -13,8 +13,7 @@ export const userRegistrationSchema = yup.object().shape({
   //   : null;
   //   if (!phoneNumber) return false;
   //   const validLengths = phoneNumber.getMetadata().possibleLengths;
-  //   return validLengths.includes(value.length);
-  // })
+  //   return validLengths.includes(value.length);10  // })
   // .matches(/^[\d-+\s()]+$/, 'Phone number is invalid'),
   password: yup
     .string()
