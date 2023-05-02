@@ -56,13 +56,13 @@ export const EntityCard = ({
           <Title>{name}</Title>
           <TimeLine>{timeline}</TimeLine>
         </Top>
-        <Price>{description}</Price>
-        {/* <Mid>
+        <Description>{description}</Description>
+        <Mid>
           <Price>
             {getCurrencyInfo(currency)?.symbol}
             {numeral(price).format("0,0")}
           </Price>
-        </Mid> */}
+        </Mid>
         <Bottom>
           <Bullet>
             <Mark /> <Content>{type} Company</Content>
