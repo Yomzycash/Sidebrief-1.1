@@ -10,6 +10,7 @@ import { setRewardsShown } from "redux/Slices";
 import { store } from "redux/Store";
 import { useMediaQuery } from "@mui/material";
 import HeaderSearch from "components/HeaderSearch";
+import MobileBusiness from "layout/MobileBusiness";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -66,9 +67,13 @@ const Rewards = () => {
     myRewardsResponse.refetch();
   }, [location.pathname]);
 
+  const matches = useMediaQuery("(max-width:700px)");
+  const options= ["All Rewards", "My rewards"];
+  const newOptions = ["All Rewards", "My rewards"];
+
   return (
     <Container>
-      {rewardsPageHeader && (
+      {rewardsPageHeader && !matches ? (
         <Header>
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
@@ -105,11 +110,19 @@ const Rewards = () => {
                 <option value="All">All</option>
               </select>
             </Drop>
-           
           </MobileHeader>
-          
+
           {/* <AppFeedback subProject="Rewards" /> */}
         </Header>
+      ) : (
+        <MobileBusiness
+         // selectedValue={selectedValue}
+          options={options}
+          //newSelectedValue={newSelectedValue}
+          newOptions={newOptions}
+          reward
+          title={"Rewards "}
+        />
       )}
       <Outlet />
     </Container>

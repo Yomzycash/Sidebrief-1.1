@@ -3,8 +3,6 @@ import Accordion from "components/Accordion";
 import HeaderSearch from "components/HeaderSearch";
 import CustomDropdown from "components/input/CustomDropdown";
 import { useState } from "react";
-import AllRewards from "./Dashboard/User/Rewards/AllRewards";
-import MyRewards from "./Dashboard/User/Rewards/MyRewards";
 
 const Test = () => {
   const accordions = [
@@ -19,24 +17,7 @@ const Test = () => {
 
   return (
     <div className="accordion-group">
-      {accordions.map((accordion, index) => (
-        <Accordion
-          key={index}
-          title={accordion.title}
-          type={accordion?.type}
-          country={accordion?.country}
-          date={accordion?.date}
-        ></Accordion>
-      ))}
 
-      <HeaderSearch title="Businesses" />
-      <CustomDropdown
-        options={options}
-        selectedValue={setSelected}
-        intialvalue={"All Rewards"}
-      />
-      {selected === "All Rewards" && <AllRewards />}
-      {selected === "My Rewards" && <MyRewards />}
     </div>
   );
 };

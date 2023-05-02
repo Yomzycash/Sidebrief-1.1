@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
+import { useMediaQuery } from "@mui/material";
+import MobileBusiness from "layout/MobileBusiness";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
+
+
 
 //
 
@@ -75,9 +81,30 @@ const Manage = () => {
 
   let isFirstNav =
     pathname === "/dashboard/my-products/manage" && "/dashboard/my-products/manage/all-manage";
+    const matches = useMediaQuery("(max-width:700px)");
+    let pathNavigation = {
+      All: "all",
+      Submitted: "submitted",
+      Drafts: "draft",
+      "Paid Drafts": "paid-draft",
+    };
+    const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  
+    const navigate = useNavigate();
+    const selectedValue = (option) => {
+      navigate(`/dashboard/my-products/manage/${pathNavigation[option]}-manage`);
+  };
+  const handleManage = () => {
+    navigate("/services/manage");
+  };
 
   return (
     <Container>
+      
+      
+      {matches ? (
+        <MobileBusiness options={options} title={"Manage"} selectedValue={selectedValue} />
+      ) : (
       <ProductHeader
         title="Manage"
         searchPlaceholder="Search manage..."
@@ -88,7 +115,7 @@ const Manage = () => {
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
-      />
+      /> )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -112,6 +139,17 @@ const Manage = () => {
           }}
         />
       )}
+      {matches && (
+        <LastWrapper>
+          <ButtonContainer>
+            <button onClick={handleManage}>
+              <NoteIcon />
+             Manage a Business
+            </button>
+          </ButtonContainer>
+        </LastWrapper>
+      )}
+      
     </Container>
   );
 };

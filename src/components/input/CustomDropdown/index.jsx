@@ -29,10 +29,10 @@ const CustomDropdown = ({ options, intialvalue, selectedValue, mobile }) => {
       style={{
         position: "relative",
         width: "max-content",
-        background: "#FAFAFA",
+        background: !mobile ? "#FAFAFA" : "white",
 
-        border: "1px solid #F1F1F1",
-        borderRadius: "12px",
+        border: !mobile ? "1px solid #F1F1F1" : "none",
+        borderRadius: !mobile ? "12px" : "0px",
       }}
     >
       <DropDownBtn
@@ -45,23 +45,7 @@ const CustomDropdown = ({ options, intialvalue, selectedValue, mobile }) => {
           <IoIosArrowDown />
         </ArrowDown>
       </DropDownBtn>
-      {isActive && !mobile && (
-        <DropDownContent>
-          {options?.map((option, index) => (
-            <DropDownItems
-              key={index}
-              onClick={(e) => {
-                setSelected(option);
-                selectedValue(option);
-                setIsActive(false);
-              }}
-            >
-              {option}
-            </DropDownItems>
-          ))}
-        </DropDownContent>
-      )}
-      {isActive && !mobile && (
+      {isActive && (
         <DropDownContent>
           {options?.map((option, index) => (
             <DropDownItems

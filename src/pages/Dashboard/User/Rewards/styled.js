@@ -16,9 +16,9 @@ export const Header = styled.div`
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
-  @media screen and (max-width: 700px) {
+  /* @media screen and (max-width: 700px) {
     top: 76px;
-  }
+  } */
 `;
 
 export const MainHeader = styled.div`

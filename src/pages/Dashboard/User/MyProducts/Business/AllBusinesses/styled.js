@@ -4,6 +4,8 @@ export const Container = styled.div`
   display: flex;
   flex-flow: column;
   flex: 1;
+ 
+  
 `;
 
 export const Body = styled.div`
@@ -11,6 +13,10 @@ export const Body = styled.div`
   gap: 42px;
   border: 1px solid #edf1f7;
   border-top: none;
+  @media screen and (max-width: 700px) {
+    overflow: auto;
+    border: none;
+  }
 `;
 
 export const Loading = styled.div`

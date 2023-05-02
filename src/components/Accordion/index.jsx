@@ -2,39 +2,53 @@ import React from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
-const Accordion = ({ title, type, country, date }) => {
+const Accordion = ({ name, type, country, date, code, countryISO, navigate,product, action  }) => {
+  const launchInfo = {
+    launchCode: code,
+    registrationCountry: countryISO,
+    registrationType: type,
+  };
   const [isActive, setIsActive] = useState(false);
+  const { pathname } = useLocation();
+  const content = pathname.includes('business')
 
   return (
     <Wrapper>
       <TitleWrapper>
-        <Title>{title}</Title>
+        <Title>{name}</Title>
         <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive}>
           <IoIosArrowDown />
         </ArrowDown>
       </TitleWrapper>
       {isActive && (
-        <ContentWrapper>
-          <SubContentWrapper>
-            <ContentTitle>Type</ContentTitle>
-            <SubWrapper>
-              <ContentTitle>{type}</ContentTitle>
-            </SubWrapper>
-          </SubContentWrapper>
-          <SubContentWrapper>
-            <ContentTitle>Country</ContentTitle>
-            <SubWrapper>
-              <ContentTitle>{country}</ContentTitle>
-            </SubWrapper>
-          </SubContentWrapper>
-          <SubContentWrapper>
-            <ContentTitle>Date</ContentTitle>
-            <SubWrapper>
-              <ContentTitle>{date}</ContentTitle>
-            </SubWrapper>
-          </SubContentWrapper>
-        </ContentWrapper>
+        <AllContentWrapper>
+          <ContentWrapper>
+            <SubContentWrapper>
+              <ContentTitle>{content? 'Type' : 'Status'}</ContentTitle>
+              <SubWrapper>
+                <ContentTitle>{type}</ContentTitle>
+              </SubWrapper>
+            </SubContentWrapper>
+            <SubContentWrapper>
+              <ContentTitle>Country</ContentTitle>
+              <SubWrapper>
+                <ContentTitle>{country}</ContentTitle>
+              </SubWrapper>
+            </SubContentWrapper>
+            <SubContentWrapper>
+              <ContentTitle>Date</ContentTitle>
+              <SubWrapper>
+                <ContentTitle>{date}</ContentTitle>
+              </SubWrapper>
+            </SubContentWrapper>
+          </ContentWrapper>
+          {!product &&
+            <Details onClick={() => navigate(launchInfo)}>More details</Details>}
+           {product &&
+            <Details onClick={action}>More details</Details>}
+        </AllContentWrapper>
       )}
     </Wrapper>
   );
@@ -75,13 +89,21 @@ const ArrowDown = styled.div`
   transition: 0.3s transform ease;
   padding: 0 5px;
 `;
+const AllContentWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 16px;
+  width: 100%;
+`;
 
 const ContentWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   gap: 16px;
-  margin-top: 16px;
+
   width: 100%;
 `;
 const SubContentWrapper = styled.div`
@@ -90,13 +112,11 @@ const SubContentWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
 `;
 const SubWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
 `;
 const ContentTitle = styled.h3`
   font-weight: 400;
@@ -106,4 +126,14 @@ const ContentTitle = styled.h3`
   letter-spacing: -0.01em;
 
   color: #242627;
+`;
+
+const Details = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+
+  text-decoration-line: underline;
+
+  color: #00a2d4;
 `;
