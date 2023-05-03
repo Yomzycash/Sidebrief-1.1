@@ -40,6 +40,7 @@ const InputWithLabel = ({
   ref,
   inputId,
   nextElementId,
+  step,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -93,6 +94,7 @@ const InputWithLabel = ({
             secureTextEntry={secureTextEntry}
             edit={edit}
             type={!show ? type || "password" : "text"}
+            step={step || "any"}
             name={name}
             id={inputId}
             disabled={disable}
@@ -111,6 +113,7 @@ const InputWithLabel = ({
             secureTextEntry={secureTextEntry}
             edit={edit}
             type={!show ? type || "password" : "text"}
+            step={step || "any"}
             name={name}
             id={inputId}
             disabled={disable}

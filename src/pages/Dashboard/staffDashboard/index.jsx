@@ -17,6 +17,7 @@ import { StaffContainer, StatusCardContainer } from "./styled";
 // import { compareAsc } from "date-fns";
 import { getPercentage } from "utils/staffHelper";
 import { useLocation } from "react-router-dom";
+import { referralOptions } from "utils/config";
 
 const StaffDashboard = (props) => {
   // const [allApplications, setAllApplications] = useState([]);
@@ -38,53 +39,116 @@ const StaffDashboard = (props) => {
   let firstName = firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
   let alreadyUser = state;
 
-  // Get all users submitted launch requests
-  // useEffect(() => {
-  // 	setAllApplications(
-  // 		allLaunches.data &&
-  // 			[...allLaunches?.data]
-  // 				.sort((a, b) =>
-  // 					compareAsc(new Date(a.createdAt), new Date(b.createdAt))
-  // 				)
-  // 				.slice(0, 30)
-  // 				.map((application, index) => {
-  // 					return {
-  // 						id: index + 1,
-  // 						name:
-  // 							launchToUser?.get(
-  // 								`${application.launchCode}`
-  // 							) || "Tunde Ednot",
-  // 						type: application.registrationType,
-  // 						country: application.registrationCountry,
-  // 						status: application.registrationStatus,
-  // 						date: application?.createdAt.slice(0, 10),
-  // 					};
-  // 				})
-  // 	);
-  // }, [allLaunches, launchToUser]);
+  const realReferral = {};
 
-  // useEffect(() => {
-  // 	setLaunchToUser(ParseUsers(allUsers?.data?.users || []));
-  // }, [allUsers?.data?.users]);
+  referralOptions
+    .map((option) => option.value)
+    .forEach((item) => {
+      realReferral[item] = 0;
+    });
 
-  // if (!allLaunches.isLoading && !allUsers.isLoading) {
-  // 	console.log(allLaunches?.data);
-  // 	console.log(ParseUsers(allUsers?.data?.users || []));
-  // }
+  const allReferrals = {};
+
+  if (allUsers.isSuccess) {
+    allUsers.data.users.forEach((user) => {
+      if (user.referral_code) {
+        if (allReferrals[user.referral_code]) {
+          allReferrals[user.referral_code] = allReferrals[user.referral_code] + 1;
+        } else {
+          allReferrals[user.referral_code] = 1;
+        }
+      }
+    });
+  }
+
+  const fields = Object.keys(allReferrals);
+
+  fields.forEach((item) => {
+    switch (item) {
+      case "facebook":
+      case "Facebook":
+        realReferral["Facebook"] = realReferral["Facebook"] + allReferrals[item];
+        break;
+      case "Instagram":
+        realReferral["Instagram"] = realReferral["Instagram"] + allReferrals[item];
+        break;
+      case "Twitter":
+        realReferral["Twitter"] = realReferral["Twitter"] + allReferrals[item];
+        break;
+      case "Bus Ad":
+        realReferral["Bus Ad"] = realReferral["Bus Ad"] + allReferrals[item];
+        break;
+      case "Bill board":
+        realReferral["Bill board"] = realReferral["Bill board"] + allReferrals[item];
+        break;
+      case "google":
+      case "Google":
+      case "Chrome":
+        realReferral["Google"] = realReferral["Google"] + allReferrals[item];
+        break;
+      case "LinkedIn":
+      case "Linkin":
+        realReferral["LinkedIn"] = realReferral["LinkedIn"] + allReferrals[item];
+        break;
+      case "Radio":
+        realReferral["Radio"] = realReferral["Radio"] + allReferrals[item];
+        break;
+      default:
+        if (
+          item.toLowerCase().includes("recommend") ||
+          item.toLowerCase().includes("friend") ||
+          item.toLowerCase().includes("referral") ||
+          item.toLowerCase().includes("through")
+        ) {
+          realReferral["Recommendation"] = realReferral["Recommendation"] + allReferrals[item];
+        } else if (item.toLowerCase().includes("google")) {
+          realReferral["Google"] = realReferral["Google"] + allReferrals[item];
+        } else {
+          realReferral["Other"] = realReferral["Other"] + allReferrals[item];
+        }
+        break;
+    }
+  });
+
+  const referralColors = {
+    Facebook: "#3b5998",
+    Instagram: "#c32aa3",
+    Twitter: "#1da1f2",
+    LinkedIn: "#5e44ac",
+    Google: "#34a853",
+    "Bus Ad": "#93a82e",
+    Radio: "#28b28f",
+    "Bill board": "#d79db2",
+    Recommendation: "#db0d35",
+    Other: "#c37916",
+  };
 
   const analytics = {
     title: "User Analytics",
     options: ["All time", 1, 2, 3, 4, 5, 6, 7],
-    status1: {
-      text: "Total Users",
-      total: allUsers?.data?.users.length || 0,
-      color: "#ffffff66",
-    },
-    status2: {
-      text: "Registrations",
-      total: allLaunches?.data?.length || 0,
-      color: "#ffffff",
-    },
+    data: [
+      {
+        text: "Total Users",
+        total: allUsers?.data?.users.length || 0,
+        color: "#ffffff66",
+      },
+      {
+        text: "Registrations",
+        total: allLaunches?.data?.length || 0,
+        color: "#ffffff",
+      },
+    ],
+  };
+
+  const referralAnalytics = {
+    title: "Referral Analytics",
+    data: Object.keys(realReferral).map((key) => {
+      return {
+        text: key,
+        total: realReferral[key],
+        color: referralColors[key] || "#fe730a",
+      };
+    }),
   };
 
   return (
@@ -113,12 +177,12 @@ const StaffDashboard = (props) => {
         </StatusCardContainer>
       </DashboardSection>
       <DashboardSection>
-        <BusinessesChartCard analytics={analytics} staff />
+        <BusinessesChartCard analytics={analytics} staff noTotal />
         <AnalyticsChart data={allLaunches?.data || []} />
       </DashboardSection>
-      {/* <DashboardSection>
-				<ApplicationTable data={allApplications} />
-			</DashboardSection> */}
+      <DashboardSection>
+        <BusinessesChartCard analytics={referralAnalytics} staff noTotal />
+      </DashboardSection>
     </StaffContainer>
   );
 };
