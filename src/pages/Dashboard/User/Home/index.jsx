@@ -56,21 +56,23 @@ const UserDashboard = (props) => {
 
   const analytics = {
     label: "Registrations",
-    status1: {
-      text: "Completed",
-      total: 0,
-      color: "#00A2D4",
-    },
-    status2: {
-      text: "Pending",
-      total: submitted.isSuccess ? submitted?.currentData.length : 0,
-      color: " #55D7FF",
-    },
-    status3: {
-      text: "In Draft",
-      total: drafts.isSuccess ? drafts?.currentData.length : 0,
-      color: " #CCF3FF",
-    },
+    data: [
+      {
+        text: "Completed",
+        total: 0,
+        color: "#00A2D4",
+      },
+      {
+        text: "Pending",
+        total: submitted.isSuccess ? submitted?.currentData.length : 0,
+        color: " #55D7FF",
+      },
+      {
+        text: "In Draft",
+        total: drafts.isSuccess ? drafts?.currentData.length : 0,
+        color: " #CCF3FF",
+      },
+    ],
   };
 
   const getStatus = (regStatus) => {

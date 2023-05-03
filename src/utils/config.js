@@ -35,6 +35,9 @@ export const referralOptions = [
   { value: "Bus Ad", label: "Bus Ad" },
   { value: "Radio", label: "Radio" },
   { value: "Bill board", label: "Bill board" },
+  { value: "Google", label: "Google" },
+  { value: "LinkedIn", label: "LinkedIn" },
+  { value: "Recommendation", label: "Recommendation" },
   { value: "Other", label: "Other" },
 ];
 
