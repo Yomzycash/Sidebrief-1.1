@@ -44,7 +44,7 @@ const BusinessDetailLayout = () => {
     : {
         countryName: "--",
       };
-// handling navigation by checking payment status 
+  // handling navigation by checking payment status
   const handleContinueNavigation = async () => {
     let paymentInfo = await checkPaymentStatus({
       ...launchResponse,
@@ -59,16 +59,15 @@ const BusinessDetailLayout = () => {
   };
 
   const isPending = isLoading ? false : data?.registrationStatus === "pending";
-  //javascript mediaquery 
+  //javascript mediaquery
   const matches = useMediaQuery("(max-width:700px)");
-
 
   let shareholders = data?.businessShareholders;
   let directors = data?.businessDirectors;
   let beneficiaries = data?.businessBeneficialOwners;
   let paymentInfo = data?.businessPayment;
 
-  // options passed 
+  // options passed
   let options = [
     "Business Information",
     paymentInfo?.length > 0 ? "Payment Details" : "",
@@ -76,9 +75,9 @@ const BusinessDetailLayout = () => {
     directors?.length > 0 ? "Directors" : "",
     beneficiaries?.length > 0 ? "Beneficiaries" : "",
   ];
-  //removing empty element from the array 
+  //removing empty element from the array
   options = options.filter((el) => el !== "");
-  
+
   //getting the status of the application
 
   const getStatus = (stat) => {
@@ -101,7 +100,7 @@ const BusinessDetailLayout = () => {
     }
   };
 
-  // hashmap to help in  path navigation for selecting value 
+  // hashmap to help in  path navigation for selecting value
   let pathNavigation = {
     "Business Information": "detail",
     "Payment Details": "payment",
@@ -109,7 +108,7 @@ const BusinessDetailLayout = () => {
     Directors: "directors",
     Beneficiaries: "beneficiaries",
   };
-// using selected value to navigate to respective pah 
+  // using selected value to navigate to respective pah
   const selectedValue = (option) => {
     navigate(
       `/dashboard/my-products/business/${pathNavigation[option]}?launchCode=${searchParams.get(
@@ -120,6 +119,7 @@ const BusinessDetailLayout = () => {
     );
   };
   const backNavigation = "/dashboard/my-products/business/all-businesses";
+  const servicesUrl = "/dashboard/my-products/business";
 
   return (
     <Container>
@@ -136,6 +136,8 @@ const BusinessDetailLayout = () => {
           details
           business
           backLink={backNavigation}
+          servicesUrl={servicesUrl}
+          launchResponse={launchResponse}
           code={searchParams.get("launchCode")}
           type={searchParams.get("registrationType")}
           status={getStatus(

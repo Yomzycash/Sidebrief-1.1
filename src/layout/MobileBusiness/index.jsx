@@ -24,11 +24,14 @@ const MobileBusiness = ({
   reward,
   newSelectedValue,
   newOptions,
+  servicesUrl,
+  launchResponse,
+  staffUrl,
 }) => {
   return (
     <Layout>
       <Header>
-        {!details  ?  (
+        {!details ? (
           <MobileNavbar items={userSidebarItems} shadow border padding />
         ) : (
           <MobileNavbar
@@ -51,6 +54,9 @@ const MobileBusiness = ({
             type={type}
             isStaff={isStaff}
             business={business}
+            servicesUrl={servicesUrl}
+            launchResponse={launchResponse}
+            staffUrl={staffUrl}
           />
         )}
         <CustomDropdown

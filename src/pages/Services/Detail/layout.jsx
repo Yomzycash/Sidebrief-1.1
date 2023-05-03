@@ -80,9 +80,9 @@ const ServicesDetailLayout = () => {
   let pathNavigation = {
     "Product Information": "info",
 
-    Form: "forminfo",
+    Form: "shareholders",
 
-    Document: "documentinfo",
+    Document: "beneficiaries",
   };
 
   const matches = useMediaQuery("(max-width:700px)");
@@ -115,12 +115,13 @@ const ServicesDetailLayout = () => {
       navigate(
         `/dashboard/my-products/${pathSelected}/all-taxes/${complyCode}/${pathNavigation[option]}`
       );
-    } else {
-      navigate(
-        `/dashboard/my-products/${pathSelected}/all-${pathSelected}/${complyCode}/${pathNavigation[option]}`
-      );
     }
+    navigate(
+      `/dashboard/my-products/${pathSelected}/all-${pathSelected}/${complyCode}/${pathNavigation[option]}`
+    );
   };
+  const servicesUrl = `/dashboard/my-products/${pathSelected}`;
+  console.log(servicesUrl);
   return (
     <Container>
       {!matches ? (
@@ -143,6 +144,7 @@ const ServicesDetailLayout = () => {
         <MobileBusiness
           selectedValue={selectedValue}
           options={options}
+          complycode={complycode}
           initialValue={"Product Information"}
           title={"Businesses"}
           date={
@@ -154,6 +156,7 @@ const ServicesDetailLayout = () => {
           details
           backLink={backNavigation}
           code={complycode}
+          servicesUrl={servicesUrl}
           // type={searchParams.get("registrationType")}
           status={getStatus(
             viewService?.data?.isLoading || viewService?.data === undefined ? `--` : status

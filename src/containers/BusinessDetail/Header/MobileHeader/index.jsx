@@ -30,9 +30,31 @@ import { Mail } from "asset/svg";
 import { HiOutlineMail, HiX } from "react-icons/hi";
 import { CheckoutController } from "containers/Checkout";
 import styled from "styled-components";
+import { toast } from "react-hot-toast";
+import { handleError } from "utils/globalFunctions";
+import { useDeleteComplyMutation } from "services/complyService";
+import { useDeleteLaunchRequestMutation } from "services/launchService";
+import { useDeleteLaunchRequestStaffMutation } from "services/staffService";
 
-const MobileInfo = ({ serviceName, date, status, code, type, isStaff, business }) => {
+const MobileInfo = ({
+  serviceName,
+  date,
+  status,
+  code,
+  type,
+  isStaff,
+  business,
+  servicesUrl,
+  launchResponse,
+  staffUrl,
+}) => {
   const [openModal, setOpenModal] = useState(false);
+
+  const [deleteComply, deleteState] = useDeleteComplyMutation();
+
+  const [deleteLaunch, launchDeleteState] = useDeleteLaunchRequestMutation();
+  const [deleteLaunchStaff, deleteLaunchStaffState] = useDeleteLaunchRequestStaffMutation();
+
   const { first_name, last_name } = useSelector((store) => store.UserDataReducer.userInfo);
 
   const { data, refetch } = useGetNotificationsByServiceIdQuery(code);
@@ -53,8 +75,35 @@ const MobileInfo = ({ serviceName, date, status, code, type, isStaff, business }
       navigate(`/dashboard/my-products/chats/?serviceId=${code}`);
     }
   };
+  const launchDeleteAction = async () => {
+    // perform delete action here
+    let payload = {
+      launchCode: launchResponse.launchCode,
+    };
+
+    let response = isStaff ? await deleteLaunchStaff(payload) : await deleteLaunch(payload);
+
+    if (response?.data) {
+      toast.success("Successfully deleted");
+      navigate(isStaff ? staffUrl : servicesUrl);
+    } else handleError(response?.error);
+    setOpenModal(false);
+  };
+
   const deleteAction = async () => {
     // perform delete action here
+    const response = await deleteComply({
+      complyCode: code,
+    });
+
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      toast.success("Deleted");
+      navigate(servicesUrl);
+    } else handleError(error);
+    setOpenModal(false);
   };
   return (
     <div>
@@ -116,9 +165,11 @@ const MobileInfo = ({ serviceName, date, status, code, type, isStaff, business }
               <DotSeperator />
               <DateText>{date}</DateText>
             </SubBottomInfo>
-            <DeleteButton onClick={handleClick}>
-              <RedTrash />
-            </DeleteButton>
+            {status?.text !== "submitted" && (
+              <DeleteButton onClick={handleClick}>
+                <RedTrash />
+              </DeleteButton>
+            )}
           </BottomInfo>
         </LHS>
 
@@ -135,8 +186,9 @@ const MobileInfo = ({ serviceName, date, status, code, type, isStaff, business }
               <CheckoutController
                 backAction={handleNo}
                 backText={"No"}
-                forwardAction={deleteAction}
+                forwardAction={business ? launchDeleteAction : deleteAction}
                 forwardText={"Yes"}
+                forwardLoading={deleteState.isLoading}
               />
             </ModalButton>
           </ModalWrapper>
