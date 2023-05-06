@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
+import { useMediaQuery } from "@mui/material";
+import MobileBusiness from "layout/MobileBusiness";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
+
+
 
 //
 
@@ -75,9 +81,29 @@ const Tax = () => {
 
   let isFirstNav =
     pathname === "/dashboard/my-products/tax" && "/dashboard/my-products/tax/all-taxes";
+    const matches = useMediaQuery("(max-width:700px)");
+    let pathNavigation = {
+      All: "all",
+      Submitted: "submitted",
+      Drafts: "draft",
+      "Paid Drafts": "paid-draft",
+    };
+    const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  
+    const navigate = useNavigate();
+    const selectedValue = (option) => {
+      navigate(`/dashboard/my-products/tax/${pathNavigation[option]}-taxes`);
+  };
+  const handleTax = () => {
+    navigate("/services/manage");
+  };
+
 
   return (
     <Container>
+       {matches ? (
+        <MobileBusiness options={options} title={"Taxes"} selectedValue={selectedValue} />
+      ) : (
       <ProductHeader
         title="Taxes"
         searchPlaceholder="Search tax..."
@@ -88,7 +114,7 @@ const Tax = () => {
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
-      />
+      />)}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -112,6 +138,17 @@ const Tax = () => {
           }}
         />
       )}
+      {matches && (
+        <LastWrapper>
+          <ButtonContainer>
+            <button onClick={handleTax}>
+              <NoteIcon />
+             Create Tax
+            </button>
+          </ButtonContainer>
+        </LastWrapper>
+      )}
+      
     </Container>
   );
 };

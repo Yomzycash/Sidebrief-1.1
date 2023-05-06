@@ -9,6 +9,10 @@ export const Container = styled.div`
   @media screen and (max-width: 1050px) {
     margin: 0;
   }
+  @media screen and (max-width: 700px) {
+    flex: none;
+    height : 100vh;
+  }
 `;
 
 export const Header = styled.div`
@@ -206,4 +210,40 @@ export const Clickable = styled.button`
   align-items: center;
   border: none;
   background-color: transparent;
+`;
+
+export const LastWrapper = styled.div`
+  position: sticky;
+  bottom: 0px;
+  padding: 24px;
+  z-index: 1000;
+  background-color: #ffffff;
+`;
+export const ButtonContainer = styled.div`
+  width: 200px;
+  @media screen and (max-width: 700px) {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+    background-color: #00a2d4;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    @media screen and (max-width: 700px) {
+      width: 100%;
+      display: flex;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+  }
 `;

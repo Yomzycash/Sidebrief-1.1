@@ -89,8 +89,8 @@ export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
 };
 
 export const getCurrencyInfo = (currency) => {
-  let currencyInfo = countriesInfo.filter(
-    (country) => country.currency.toLowerCase() === currency.toLowerCase()
+  let currencyInfo = countriesInfo?.filter(
+    (country) => country.currency?.toLowerCase() === currency?.toLowerCase()
   )[0];
   if (currency) return currencyInfo;
   else return "";

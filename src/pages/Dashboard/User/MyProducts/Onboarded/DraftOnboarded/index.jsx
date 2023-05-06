@@ -8,9 +8,13 @@ import BusinessesCard from "components/cards/BusinessAddressCard";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useActions } from "../../actions";
 import FeatureTable from "components/Tables/FeatureTable";
+import { useGetAllCountriesQuery } from "services/launchService";
+import Accordion from "components/Accordion";
 
 const DraftOnboarded = () => {
   const [dataArr, setDataArr] = useState([]);
+  const countries = useGetAllCountriesQuery();
+
 
   const { drafts, searchValue, isLoading, isError, isSuccess } = useOutletContext();
 
@@ -73,12 +77,21 @@ const DraftOnboarded = () => {
           <MobileContainer>
             {dataArr.map((element) => {
               return (
-                <BusinessesCard
-                  name={element.businessNames ? element.businessNames.businessName1 : "No name "}
-                  type={element?.registrationType}
-                  code={element?.launchCode}
-                  countryISO={element?.registrationCountry}
-                />
+                <Accordion
+                product
+                key={element?.complyCode}
+                name={element?.serviceName ? element?.serviceName : "No name "}
+                type={element?.status}
+                code={element?.complyCode}
+                countryISO={element?.serviceCountry}
+                country={
+                  countries?.data?.find(
+                    (country) => country.countryISO === element?.serviceCountry
+                  )?.countryName
+                }
+                date={dataArr.length<1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
+                action={()=>{ navigate(`/dashboard/my-products/compliance/all-onboard/${element?.complyCode}/info`)}}
+              />
               );
             })}
           </MobileContainer>

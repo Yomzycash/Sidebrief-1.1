@@ -76,7 +76,7 @@ const AllContainer = styled.div`
     padding-inline-end: 0;
     padding-inline-start: 0px;
     border: 0;
-    padding-block: 0;
+    padding-block: 0px ;
     width: 100%;
   }
 `;

@@ -201,7 +201,10 @@ export const DeleteButton = styled.button`
     line-height: 21px;
     letter-spacing: 0.02em;
     color: #ed4e3a;
-  }
+    @media screen and (max-width: 910px) 
+   {
+   display:none;
+  }}
 `;
 
 export const SubHeader = styled.div`

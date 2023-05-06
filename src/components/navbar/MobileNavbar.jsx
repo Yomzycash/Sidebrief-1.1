@@ -1,60 +1,66 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { ReactComponent as LogoIcon } from "asset/images/sidebriefLogo.svg";
 import { ReactComponent as MenuIcon } from "asset/Icons/MenuIcon.svg";
 import { ReactComponent as ArrowDownIcon } from "asset/Icons/ArrowDownIcon.svg";
 import { ReactComponent as NotificationIcon } from "asset/Icons/NotificationIcon.svg";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Box, Dialog, Drawer, List } from "@mui/material";
 import MobileSidebar from "components/sidebar/MobileSidebar";
+import { FiArrowLeft } from "react-icons/fi";
+import { Details } from "components/cards/PdfCard/styles";
+import { BackContainer } from "./styled";
 
-const MobileNavbar = ({ hideNav, items }) => {
-  const location = useLocation();
-
-  let path = location.pathname;
-  let current = path.slice(path.lastIndexOf("/") + 1, path.length);
-
-  const [selected, setSelected] = useState(current);
-  const [showServices, setShowServices] = useState(false);
+const MobileNavbar = ({ hideNav, items, shadow, border, padding, backLink, details }) => {
+  //const [showServices, setShowServices] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  const services = [
-    {
-      title: "Registration",
-      path: "/dashboard/business-registration",
-    },
-    {
-      title: "Compliance",
-      path: "/dashboard/compliance",
-    },
-    {
-      title: "Taxes",
-      path: "/dashboard/taxes",
-    },
-    {
-      title: "Hiring & Payroll",
-      path: "/dashboard/hiring-and-payroll",
-    },
-    {
-      title: "Intellectual Assets",
-      path: "/dashboard/intellectualAssets",
-    },
-  ];
+  //let path = location.pathname
 
-  const handleService = (service) => {
-    navigate(service.path);
-    setSelected(service.title);
-    setShowServices(false);
-  };
+  //let current = path.slice(path.lastIndexOf("/") + 1, path.length);
 
-  useEffect(() => {
-    if (showServices) {
-      document.querySelector("body").style.overflow = "hidden";
-    } else {
-      document.querySelector("body").style.overflow = "auto";
-    }
-  }, [showServices]);
+  //const [selected, setSelected] = useState(current);
+
+  // const navigate = useNavigate();
+
+  // const services = [
+  //   {
+  //     title: "Registration",
+  //     path: "/dashboard/business-registration",
+  //   },
+  //   {
+  //     title: "Compliance",
+  //     path: "/dashboard/compliance",
+  //   },
+  //   {
+  //     title: "Taxes",
+  //     path: "/dashboard/taxes",
+  //   },
+  //   {
+  //     title: "Hiring & Payroll",
+  //     path: "/dashboard/hiring-and-payroll",
+  //   },
+  //   {
+  //     title: "Intellectual Assets",
+  //     path: "/dashboard/intellectualAssets",
+  //   },
+  // ];
+
+  // const handleService = (service) => {
+  //   navigate(service.path);
+  //   setSelected(service.title);
+  //   setShowServices(false);
+  // };
+
+  // useEffect(() => {
+  //   if (showServices) {
+  //     document.querySelector("body").style.overflow = "hidden";
+  //   } else {
+  //     document.querySelector("body").style.overflow = "auto";
+  //   }
+  // }, [showServices]);
 
   const toggleDrawer = (open) => {
     // if (
@@ -66,17 +72,24 @@ const MobileNavbar = ({ hideNav, items }) => {
     setOpenSidebar(open);
   };
 
-  useEffect(() => {
-    if (current === "business-registration") setSelected("Business Registration");
-    else if (current === "hiring-and-payroll") setSelected("Hiring & Payroll");
-    else if (current === "intellectualAssets") setSelected("Intellectual Assets");
-    else setSelected(current);
-    // console.log(current);
-  }, [current]);
+  // useEffect(() => {
+  //   if (current === "business-registration") setSelected("Business Registration");
+  //   else if (current === "hiring-and-payroll") setSelected("Hiring & Payroll");
+  //   else if (current === "intellectualAssets") setSelected("Intellectual Assets");
+  //   else setSelected(current);
+  //   // console.log(current);
+  // }, [current]);
 
   return (
-    <MobileNavContainer $hideNav={hideNav}>
-      <MenuIcon onClick={() => setOpenSidebar(true)} />
+    <MobileNavContainer $hideNav={hideNav} shadow={shadow} border={border} padding={padding}>
+      {!details ? (
+        <MenuIcon onClick={() => setOpenSidebar(true)} />
+      ) : (
+        <BackContainer to={backLink}>
+          <FiArrowLeft color="#151717" size={24} />
+        </BackContainer>
+      )}
+
       <React.Fragment key="left">
         <Drawer anchor="left" open={openSidebar} onClose={() => toggleDrawer(false)}>
           <Box sx={{ height: "100%", padding: "40px 24px 0" }} role="presentation">
@@ -88,13 +101,13 @@ const MobileNavbar = ({ hideNav, items }) => {
       </React.Fragment>
       {/* </Dialog> */}
       <Select>
-        <span onClick={() => setShowServices(!showServices)}>
+        {/* <span onClick={() => setShowServices(!showServices)}>
           {selected}
           <ArrowWrapper>
             <ArrowDownIcon />
           </ArrowWrapper>
-        </span>
-        {showServices && (
+        </span> */}
+        {/* {showServices && (
           <NavListWrapper onClick={() => setShowServices(false)}>
             <NavList neme="services" tabIndex={0}>
               {services.map((service, index) => (
@@ -111,8 +124,10 @@ const MobileNavbar = ({ hideNav, items }) => {
               ))}
             </NavList>
           </NavListWrapper>
-        )}
+        )} */}
+        <LogoIcon />
       </Select>
+
       <NotificationIcon />
     </MobileNavContainer>
   );
@@ -132,11 +147,11 @@ export const MobileNavContainer = styled.div`
   color: ${({ theme }) => theme.grey1};
   font-size: 14px;
   font-weight: 500;
-  padding: 30px 24px 20px 24px;
-  border-bottom: 1px solid #edf1f7;
+  padding: ${({ padding }) => (!padding ? " 30px 24px 20px 24px" : "")};
+  border-bottom: ${({ border }) => (!border ? " 1px solid #edf1f7" : "")};
   background-color: white;
 
-  box-shadow: 0px 4px 4px #95969714;
+  box-shadow: ${({ shadow }) => (!shadow ? " 0px 4px 4px #95969714" : "")};
   z-index: 3;
 
   @media screen and (min-width: 701px) {
@@ -200,4 +215,10 @@ export const ArrowWrapper = styled.div`
   align-items: flex-end;
   position: relative;
   top: 1px;
+`;
+export const LogobellWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 `;
