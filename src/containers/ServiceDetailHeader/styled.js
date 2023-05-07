@@ -30,7 +30,7 @@ export const BackContainer = styled(Link)`
   align-self: flex-start;
 
   @media screen and (max-width: 700px) {
-    margin:25px 25px 0px 15px;
+    margin: 25px 25px 0px 15px;
   }
 `;
 
@@ -71,11 +71,6 @@ export const TopInfo = styled.div`
       }
     }
   }
-
-  @media screen and (max-width: 900px) {
-    display:flex;
-    flex-direction:column;
-  }
 `;
 
 export const CompanyName = styled.h2`
@@ -87,7 +82,7 @@ export const CompanyName = styled.h2`
   @media screen and (max-width: 700px) {
     font-weight: 600;
     font-size: 16px;
-    text-align:center;
+    text-align: center;
   }
 `;
 
@@ -170,7 +165,7 @@ export const UserName = styled.p`
   text-decoration-line: underline;
   color: #00a2d4;
   text-transform: capitalize;
-  
+
   @media screen and (max-width: 700px) {
     font-weight: 400;
     font-size: 14px;
@@ -205,6 +200,7 @@ export const DeleteButton = styled.button`
   gap: 16px;
   padding: 8px;
   cursor: pointer;
+  
 
   p {
     font-family: "BR Firma";
@@ -214,6 +210,10 @@ export const DeleteButton = styled.button`
     line-height: 21px;
     letter-spacing: 0.02em;
     color: #ed4e3a;
+     @media screen and (max-width: 910px) 
+   {
+   display:none;
+   }
   }
 `;
 

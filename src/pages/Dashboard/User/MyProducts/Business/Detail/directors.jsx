@@ -22,7 +22,7 @@ const DetailDirectors = () => {
         </Loader>
       ) : (
         <CardContainer>
-          {data.businessDirectors.map((director, index) => {
+          {data?.businessDirectors?.map((director, index) => {
             const member = members.find((el) => el.memberCode === director.memberCode);
             const currentmemberKYC = memberKYC.filter(
               (el) => el.memberCode === director.memberCode

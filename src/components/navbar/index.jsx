@@ -38,10 +38,11 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
-  const { data, refetch } = useGetAllNotificationsQuery();
-  //console.log(data);
+  const { data, refetch } = useGetAllNotificationsQuery(undefined, { skip: !staffEmail });
+
   const userNotifications = useViewNotificationsByUserIdQuery({
     userId: userInfo?.id,
+    skip: !userInfo?.id,
   });
   const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
   //  console.log(allNotification);

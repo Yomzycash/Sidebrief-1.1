@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
+import MobileBusiness from "layout/MobileBusiness";
+import { useMediaQuery } from "@mui/material";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 
 //
 
@@ -79,21 +83,49 @@ const Intellectual = () => {
   let isFirstNav =
     pathname === "/dashboard/my-products/intellectual-property" &&
     "/dashboard/my-products/intellectual-property/all-intellectual-properties";
+  const matches = useMediaQuery("(max-width:700px)");
+
+  let pathNavigation = {
+    All: "all",
+    Submitted: "submitted",
+    Drafts: "draft",
+    "Paid Drafts": "paid-draft",
+  };
+  const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+
+  const navigate = useNavigate();
+  const selectedValue = (option) => {
+    console.log(option);
+    navigate(
+      `/dashboard/my-products/intellectual-property/${pathNavigation[option]}-intellectual-properties`
+    );
+  };
+  const handleIntellectual = () => {
+    navigate("/services/intellectual-property");
+  };
 
   return (
     <Container>
-      <ProductHeader
-        title="Intellectual Property"
-        searchPlaceholder="Search intellectual property..."
-        summary={summary}
-        filterList={filterList}
-        action={handleCategoryCreate}
-        actionText="Create Intellectual Property"
-        emptyText="Your businesses will appear here when you launch one"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
-      />
+      {matches ? (
+        <MobileBusiness
+          options={options}
+          title={"Intellectual Property"}
+          selectedValue={selectedValue}
+        />
+      ) : (
+        <ProductHeader
+          title="Intellectual Property"
+          searchPlaceholder="Search intellectual property..."
+          summary={summary}
+          filterList={filterList}
+          action={handleCategoryCreate}
+          actionText="Create Intellectual Property"
+          emptyText="Your businesses will appear here when you launch one"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        />
+      )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -116,6 +148,16 @@ const Intellectual = () => {
             isSuccess,
           }}
         />
+      )}
+      {matches && (
+        <LastWrapper>
+          <ButtonContainer>
+            <button onClick={handleIntellectual}>
+              <NoteIcon />
+              Create Intellectual Property
+            </button>
+          </ButtonContainer>
+        </LastWrapper>
       )}
     </Container>
   );

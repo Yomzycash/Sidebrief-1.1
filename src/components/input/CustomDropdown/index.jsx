@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowDown, DropDownBtn, DropDownContent, DropDownItems, TextContainer } from "./style";
 import { IoIosArrowDown } from "react-icons/io";
 
-const CustomDropdown = ({ options, intialvalue, selectedValue }) => {
+const CustomDropdown = ({ options, intialvalue, selectedValue, mobile }) => {
   const [selected, setSelected] = useState(intialvalue);
   const [isActive, setIsActive] = useState(false);
 
@@ -17,7 +17,6 @@ const CustomDropdown = ({ options, intialvalue, selectedValue }) => {
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
-
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -30,10 +29,10 @@ const CustomDropdown = ({ options, intialvalue, selectedValue }) => {
       style={{
         position: "relative",
         width: "max-content",
-        background: "#FAFAFA",
+        background: !mobile ? "#FAFAFA" : "white",
 
-        border: "1px solid #F1F1F1",
-        borderRadius: "12px",
+        border: !mobile ? "1px solid #F1F1F1" : "none",
+        borderRadius: !mobile ? "12px" : "0px",
       }}
     >
       <DropDownBtn
