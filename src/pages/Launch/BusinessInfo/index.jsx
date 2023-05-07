@@ -32,6 +32,10 @@ import { handleBusinessInfo } from "./actions";
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
+  const savedBusinessNames = useSelector((store) => store.LaunchReducer).businessNames;
+  const savedObjectives = useSelector((store) => store.LaunchReducer).selectedObjectives;
+  const savedCountry = useSelector((store) => store.LaunchReducer).selectedCountry;
+  const savedCountryISO = useSelector((store) => store.LaunchReducer).countryISO;
 
   const [businessNames, setBusinessNames] = useState([]);
   const [selectedCountry, setselectedCountry] = useState("");
@@ -157,12 +161,22 @@ const BusinessInfo = () => {
     }
   }, [data, handleCountry, launchResponse]);
 
+  // Pull from the store
+  const handleSavedInfo = () => {
+    console.log(savedObjectives);
+    if (savedBusinessNames?.length > 0) setBusinessNames(savedBusinessNames);
+    if (savedObjectives?.length > 0) setselectedObjectives(savedObjectives);
+    if (savedCountry) setselectedCountry(savedCountry);
+  };
+
   // This calls the view endpoint and set the recieved data to the respective states
   const viewDraft = useCallback(async () => {
     if (Object.keys(launchResponse).length === 0) return;
     const namesData = await viewBusinessNames(launchResponse);
     const objectivesData = await viewBusinessObjectives(launchResponse);
-    if (namesData.data) setBusinessNames(Object.values(namesData.data.businessNames));
+    if (namesData.data) {
+      setBusinessNames(Object.values(namesData.data.businessNames));
+    }
     if (objectivesData.data) {
       let objectives = Object.values(objectivesData.data.businessObjects);
       let filtered = objectives.filter((objective) => objective !== "null");
@@ -209,63 +223,61 @@ const BusinessInfo = () => {
   }, [selectedObjectives.length, businessNames.length, selectedCountry]);
 
   useEffect(() => {
+    handleSavedInfo();
     viewDraft();
   }, [viewDraft]);
 
   return (
-    <>
-      <Container onClick={handleSubmit}>
-        <HeaderCheckout getStarted backToDashBoard />
+    <Container onClick={handleSubmit}>
+      <HeaderCheckout getStarted backToDashBoard />
 
-        <Body>
-          <CheckoutSection
-            title="Business Information"
-            HeaderParagraph="Let's sail you through, take this swift walk with us."
-          />
-          <LaunchPrimaryContainer>
-            <LaunchFormContainer>
-              <TagInput initialValues={businessNames} getSelectedValues={handleBusinessNames} />
+      <Body>
+        <CheckoutSection
+          title="Business Information"
+          HeaderParagraph="Let's sail you through, take this swift walk with us."
+        />
+        <LaunchPrimaryContainer>
+          <LaunchFormContainer>
+            <TagInput initialValues={businessNames} getSelectedValues={handleBusinessNames} />
 
+            <TagInputWithSearch
+              label="Business Objectives"
+              list={BusinessObjectives.sort()}
+              getValue={handleObjectives}
+              initialValues={selectedObjectives}
+              MultiSelect
+              ExistsError="Objective has already been selected"
+              MatchError="Please select objectives from the list"
+              EmptyError="Please select at least one objective"
+              MaxError="You cannot select more than 4 objectives"
+              noSuggestionText="Objective doesn't exist"
+            />
+            <div style={{ maxWidth: "430px" }}>
               <TagInputWithSearch
-                label="Business Objectives"
-                list={BusinessObjectives.sort()}
-                getValue={handleObjectives}
-                initialValues={selectedObjectives}
-                MultiSelect
-                ExistsError="Objective has already been selected"
-                MatchError="Please select objectives from the list"
-                EmptyError="Please select at least one objective"
-                MaxError="You cannot select more than 4 objectives"
-                noSuggestionText="Objective doesn't exist"
+                label="Operational Country"
+                list={countries}
+                getValue={handleCountry}
+                initialValue={selectedCountry}
+                suggestionLoading={isLoading}
+                fetchingText="Fetching Countries..."
+                fetchFailedText="Could not fetch Countries"
+                disabled={paidStatus}
               />
-              <div style={{ maxWidth: "430px" }}>
-                <TagInputWithSearch
-                  label="Operational Country"
-                  list={countries}
-                  getValue={handleCountry}
-                  initialValue={selectedCountry}
-                  suggestionLoading={isLoading}
-                  fetchingText="Fetching Countries..."
-                  fetchFailedText="Could not fetch Countries"
-                  disabled={paidStatus}
-                />
-              </div>
-            </LaunchFormContainer>
-            <Bottom>
-              <CheckoutController
-                forwardAction={handleNext}
-                backAction={handlePrev}
-                backText={"Previous"}
-                forwardText={"Next"}
-                forwardLoading={updateNamesState.isLoading || updateObjectivesState.isLoading}
-                hidePrev
-              />
-            </Bottom>
-          </LaunchPrimaryContainer>
-        </Body>
-      </Container>
-      {/* <AppFeedback subProject="Business information" /> */}
-    </>
+            </div>
+          </LaunchFormContainer>
+          <Bottom>
+            <CheckoutController
+              forwardAction={handleNext}
+              backAction={handlePrev}
+              backText={"Previous"}
+              forwardText={"Next"}
+              forwardLoading={updateNamesState.isLoading || updateObjectivesState.isLoading}
+              hidePrev
+            />
+          </Bottom>
+        </LaunchPrimaryContainer>
+      </Body>
+    </Container>
   );
 };
 
