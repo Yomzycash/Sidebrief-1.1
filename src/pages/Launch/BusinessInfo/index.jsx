@@ -163,7 +163,6 @@ const BusinessInfo = () => {
 
   // Pull from the store
   const handleSavedInfo = () => {
-    console.log(savedObjectives);
     if (savedBusinessNames?.length > 0) setBusinessNames(savedBusinessNames);
     if (savedObjectives?.length > 0) setselectedObjectives(savedObjectives);
     if (savedCountry) setselectedCountry(savedCountry);
