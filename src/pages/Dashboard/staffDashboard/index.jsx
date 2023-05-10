@@ -176,10 +176,12 @@ const StaffDashboard = (props) => {
           />
         </StatusCardContainer>
       </DashboardSection>
+      
       <DashboardSection>
         <BusinessesChartCard analytics={analytics} staff noTotal />
         <AnalyticsChart data={allLaunches?.data || []} />
       </DashboardSection>
+
       <DashboardSection>
         <BusinessesChartCard analytics={referralAnalytics} staff noTotal />
       </DashboardSection>

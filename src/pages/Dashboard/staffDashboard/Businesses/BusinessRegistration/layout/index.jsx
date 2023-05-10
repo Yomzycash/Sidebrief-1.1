@@ -40,6 +40,8 @@ import {
 import { useSelector } from "react-redux";
 import { handleError } from "utils/globalFunctions";
 import { useBatchDeleteLaunchRequestsMutation } from "services/launchService";
+import useMobile from "utils/useMobile";
+import Dropdown from "components/Dropdown";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const Registrationlayout = () => {
   const [awaitingReg, setAwaiting] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
 
   const allLaunch = useGetAllLaunchQuery();
 
@@ -104,6 +107,10 @@ const Registrationlayout = () => {
     setAwaiting(awaiting ? awaiting : []);
   }, [all, awaiting, pending, approved]);
 
+  // WINDOW SIZE 
+  useEffect(() => {
+    
+  })
   const location = useLocation();
 
   let home = location.pathname === "/staff-dashboard/businesses/registration" ? true : false;
@@ -171,7 +178,7 @@ const Registrationlayout = () => {
                 className={"searchbox"}
               />
             </SearchWrapper>
-            <Flex>
+            {/* <Flex>
               <ExportWrapper>
                 <ExportIcon />
                 <TitleWrapper>Export Businesses</TitleWrapper>
@@ -182,9 +189,10 @@ const Registrationlayout = () => {
                   Start Business Registration
                 </button>
               </ButtonWrapper>
-            </Flex>
+            </Flex> */}
           </BottomContent>
         </MainHeader>
+
         <SubHeader>
           <ActiveNav
             text="All"
@@ -220,6 +228,37 @@ const Registrationlayout = () => {
             path="/staff-dashboard/businesses/registration/rejected"
           />
         </SubHeader>
+        
+        <Dropdown
+          options={[
+            {
+              text: 'Paid drafts',
+              path: '/staff-dashboard/businesses/registration/paid-draft',
+              total: paid,
+            },
+            {
+              text: 'Drafts',
+              path: '/staff-dashboard/businesses/registration/pending',
+              total: pending,
+            },
+            {
+              text: 'Submitted',
+              path: '/staff-dashboard/businesses/registration/awaiting-approval',
+              total: awaitingReg,
+              status: unreadLaunchNotifications?.length > 0,
+            },
+            {
+              text: 'Approved',
+              path: '/staff-dashboard/businesses/registration/in-progress',
+              total: approved,
+            },
+            {
+              text: 'Rejected',
+              path: '/staff-dashboard/businesses/registration/rejected',
+              total: rejected,
+            },
+          ]}
+        />
       </Header>
       <Outlet
         context={{ allLaunch, awaitingLaunch, rejectedLaunch, pendingLaunch, approvedLaunch }}
