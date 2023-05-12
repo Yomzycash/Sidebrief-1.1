@@ -26,6 +26,8 @@ const StaffAllManage = () => {
 
   const navigate = useNavigate();
 
+  console.log(all.filter((el) => el?.serviceId === "8473433669"));
+
   // Sort data
   useEffect(() => {
     sortData(all);
@@ -45,6 +47,7 @@ const StaffAllManage = () => {
     el?.serviceCountry,
     el?.paid?.toString(),
     format(new Date(el?.createdAt), "dd-MM-yyyy"),
+    // el?.createdAt?.slice(0, 10),
   ]);
 
   const matches = useMediaQuery("(max-width:700px)");

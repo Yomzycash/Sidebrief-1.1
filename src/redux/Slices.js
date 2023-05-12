@@ -151,28 +151,30 @@ const BusinessesInfo = createSlice({
 export const BusinessesReducers = BusinessesInfo.reducer;
 export const { setBusinessFormInfo, setBusinessesShown } = BusinessesInfo.actions;
 
+const launchInfoInitialState = {
+  businessNames: [],
+  selectedCountry: "",
+  countryISO: "",
+  selectedObjectives: [],
+  selectedEntity: {},
+  launchResponse: {},
+  launchPaid: false,
+  generatedLaunchCode: "",
+  generatedMemberCode: "",
+  businessAddress: {},
+  directorsLaunchInfo: [],
+  beneficiariesLaunchInfo: [],
+  editShareholderInfo: [],
+  shareholderDocs: [],
+  directorDocs: [],
+  beneficiaryDocs: [],
+  currentPage: false,
+};
+
 // This slice will hold all launch application information
 const launchApplicationInfo = createSlice({
   name: "launchApplication",
-  initialState: {
-    businessNames: [],
-    selectedCountry: "",
-    countryISO: "",
-    selectedObjectives: [],
-    selectedEntity: {},
-    launchResponse: {},
-    launchPaid: false,
-    generatedLaunchCode: "",
-    generatedMemberCode: "",
-    businessAddress: {},
-    directorsLaunchInfo: [],
-    beneficiariesLaunchInfo: [],
-    editShareholderInfo: [],
-    shareholderDocs: [],
-    directorDocs: [],
-    beneficiaryDocs: [],
-    currentPage: false,
-  },
+  initialState: launchInfoInitialState,
   reducers: {
     setSelectedBusinessNames: (state, action) => {
       state.businessNames = action.payload;
@@ -222,6 +224,9 @@ const launchApplicationInfo = createSlice({
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
+    resetLaunchInfo: (state, action) => {
+      return launchInfoInitialState;
+    },
   },
 });
 
@@ -245,6 +250,7 @@ export const {
   setDirectorDocs,
   setBeneficiaryDocs,
   setCurrentPage,
+  resetLaunchInfo,
 } = launchApplicationInfo.actions;
 
 const RewardInfo = createSlice({

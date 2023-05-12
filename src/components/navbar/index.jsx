@@ -42,6 +42,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
 
   const userNotifications = useViewNotificationsByUserIdQuery({
     userId: userInfo?.id,
+    skip: !userInfo?.id,
   });
   const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
   //  console.log(allNotification);

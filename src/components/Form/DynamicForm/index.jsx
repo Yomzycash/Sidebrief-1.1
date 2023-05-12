@@ -52,7 +52,6 @@ const DynamicForm = ({
 
   let updatedFormInfo = formInfo?.map((el) => ({
     ...el,
-    // complyDataInfo: previewInfo?.find((each) => each?.complyQuestionName === el?.fieldName) || {},
     fieldAnswer:
       previewInfo?.find((each) => each?.complyQuestionName === el?.fieldName)?.complyAnswer || "",
   }));

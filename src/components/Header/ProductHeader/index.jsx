@@ -16,6 +16,7 @@ import ActiveNav from "components/navbar/ActiveNav";
 import { SummaryCard } from "components/cards";
 import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 import Search from "components/navbar/Search";
+import { clearProductsInfo } from "utils/globalFunctions";
 
 const ProductHeader = ({
   title,
@@ -30,6 +31,11 @@ const ProductHeader = ({
   emptyText,
 }) => {
   const availableNavs = navInfo?.filter((el) => el.isAvailable);
+
+  const handleButtonClick = () => {
+    clearProductsInfo();
+    action();
+  };
 
   return (
     <Header>
@@ -60,7 +66,7 @@ const ProductHeader = ({
             />
           </SearchWrapper>
           <ButtonWrapper>
-            <button onClick={action}>
+            <button onClick={handleButtonClick}>
               <NoteIcon />
               {actionText}
             </button>

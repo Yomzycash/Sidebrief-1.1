@@ -3,7 +3,6 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetSubmittedLaunchQuery } from "services/staffService";
-import { sortTableData } from "utils/staffHelper";
 
 const AllBusinessesSummary = () => {
   const [submitted, setSubmitted] = useState([]);
@@ -26,12 +25,7 @@ const AllBusinessesSummary = () => {
     );
   }, [data]);
 
-  return (
-    <BusinessHomeTable
-      data={submitted}
-      link="/staff-dashboard/businesses/registration"
-    />
-  );
+  return <BusinessHomeTable data={submitted} link="/staff-dashboard/businesses/registration" />;
 };
 
 export default AllBusinessesSummary;

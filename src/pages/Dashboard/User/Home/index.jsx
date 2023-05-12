@@ -15,7 +15,7 @@ import { compareDesc } from "date-fns";
 import { LaunchRocket, ManageSpanner } from "asset/svg";
 import { useEffect } from "react";
 import { useState } from "react";
-import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
+import { removeLaunchFromLocalStorage, removeLaunchFromStore } from "utils/globalFunctions";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
 const UserDashboard = (props) => {
@@ -101,6 +101,7 @@ const UserDashboard = (props) => {
     store.dispatch(setGeneratedLaunchCode(""));
     store.dispatch(setLaunchResponse({}));
     removeLaunchFromLocalStorage();
+    removeLaunchFromStore();
     // window.open("/launch", "_blank");
     navigate("/launch");
   };
