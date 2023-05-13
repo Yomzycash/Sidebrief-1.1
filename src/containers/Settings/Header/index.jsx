@@ -19,10 +19,10 @@ export const SettingHeader = () => {
 					text={"Personal Information"}
 					path={`/dashboard/settings/personal`}
 				/>
-				<ActiveNav
+				{/* <ActiveNav
 					text={"Payments"}
 					path={`/dashboard/settings/payment`}
-				/>
+				/> */}
 			</SubHeader>
 		</Container>
 	);
