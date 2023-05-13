@@ -11,7 +11,7 @@ export const DropDownBtn = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding-left: 10px;
+
   cursor: pointer;
 `;
 
@@ -25,7 +25,6 @@ export const DropDownContent = styled.div`
   border-radius: 12px;
   width: 200px;
   z-index: 1000;
-
 `;
 export const DropDownItems = styled.div`
   padding: 4px 12px;

@@ -27,6 +27,12 @@ const MobileBusiness = ({
   servicesUrl,
   launchResponse,
   staffUrl,
+  originalOptions,
+  newOriginalOptions,
+  realSelectedValue,
+  initialTitle,
+  initialLength,
+  mobile
 }) => {
   return (
     <Layout>
@@ -60,17 +66,23 @@ const MobileBusiness = ({
           />
         )}
         <CustomDropdown
-          options={options}
+          // options={options}
           intialvalue={!details ? "All" : initialValue}
           selectedValue={selectedValue}
-          mobile
+          realSelectedValue={realSelectedValue}
+          mobile={mobile}
+          originalOptions={originalOptions}
+          initialTitle={initialTitle}
+          initialLength={initialLength}
+         
         />
         {reward && (
           <CustomDropdown
             options={newOptions}
             intialvalue={"All"}
             selectedValue={newSelectedValue}
-            mobile
+            mobile={mobile}
+            originalOptions= { newOriginalOptions}
           />
         )}
       </Header>
@@ -84,6 +96,7 @@ const Layout = styled.div`
   width: 100%;
   padding: 40px 24px 0px 24px;
   background-color: #ffffff;
+ 
 
   position: sticky;
   top: 0;

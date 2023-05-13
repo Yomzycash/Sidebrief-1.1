@@ -87,11 +87,20 @@ const ServicesDetailLayout = () => {
 
   const matches = useMediaQuery("(max-width:700px)");
   let options = [
-    "Product Information",
-    viewComply?.data?.complyData > 0 ? "Form" : "",
-    viewComply?.data?.complyDocuments > 0 ? "Document" : "",
+    {
+      title: "Product Information",
+      totalLength: 0,
+    },
+    {
+      title: viewComply?.data?.complyData?.length > 0 ? "Form" : "",
+      totalLength: viewComply?.data?.complyData.length,
+    },
+    {
+      title: viewComply?.data?.complyDocuments?.length > 0 ? "Document" : "",
+      totalLength: viewComply?.data?.complyDocuments.length,
+    },
   ];
-  options = options.filter((el) => el !== "");
+  options = options.filter((el) => el?.title !== "");
 
   let path = pathname.split("/");
   let pathSelected = "";
@@ -113,11 +122,15 @@ const ServicesDetailLayout = () => {
   const selectedValue = (option) => {
     if (pathSelected === "tax") {
       navigate(
-        `/dashboard/my-products/${pathSelected}/all-taxes/${complyCode}/${pathNavigation[option]}`
+        `/dashboard/my-products/${pathSelected}/all-taxes/${complyCode}/${
+          pathNavigation[option?.title]
+        }`
       );
     }
     navigate(
-      `/dashboard/my-products/${pathSelected}/all-${pathSelected}/${complyCode}/${pathNavigation[option]}`
+      `/dashboard/my-products/${pathSelected}/all-${pathSelected}/${complyCode}/${
+        pathNavigation[option?.title]
+      }`
     );
   };
   const servicesUrl = `/dashboard/my-products/${pathSelected}`;
@@ -142,11 +155,13 @@ const ServicesDetailLayout = () => {
         />
       ) : (
         <MobileBusiness
-          selectedValue={selectedValue}
-          options={options}
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          initialLength={0}
           complycode={complycode}
-          initialValue={"Product Information"}
-          title={"Businesses"}
+          initialTitle={"Product Information"}
+          mobile
+          // title={"Businesses"}
           date={
             viewService?.data === undefined
               ? `--`

@@ -91,13 +91,32 @@ const Intellectual = () => {
     Drafts: "draft",
     "Paid Drafts": "paid-draft",
   };
-  const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
 
   const navigate = useNavigate();
   const selectedValue = (option) => {
     console.log(option);
     navigate(
-      `/dashboard/my-products/intellectual-property/${pathNavigation[option]}-intellectual-properties`
+      `/dashboard/my-products/intellectual-property/${pathNavigation[option?.title]}-intellectual-properties`
     );
   };
   const handleIntellectual = () => {
@@ -108,9 +127,12 @@ const Intellectual = () => {
     <Container>
       {matches ? (
         <MobileBusiness
-          options={options}
+        realSelectedValue={selectedValue}
+        originalOptions={options}
           title={"Intellectual Property"}
-          selectedValue={selectedValue}
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          mobile
         />
       ) : (
         <ProductHeader
