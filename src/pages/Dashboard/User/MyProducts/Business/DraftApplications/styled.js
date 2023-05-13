@@ -10,7 +10,7 @@ export const Body = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
   @media screen and (max-width: 700px) {
-    padding: 32px 24px !important;
+    overflow: auto;
      border: none;
   }
 `;

@@ -88,11 +88,30 @@ const Tax = () => {
       Drafts: "draft",
       "Paid Drafts": "paid-draft",
     };
-    const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+    let options = [
+      {
+        title: submittedTotal + draftTotal > 0 ? "All" : "",
+        totalLength: submittedTotal + draftTotal,
+      },
+      {
+        title: submittedTotal > 0 ? "Submitted" : "",
+        totalLength: submittedTotal,
+      },
+  
+      {
+        title: draftTotal > 0 ? "Drafts" : "",
+        totalLength: draftTotal,
+      },
+      {
+        title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+        totalLength: paidDraftTotal,
+      },
+    ];
+    options = options.filter((el) => el?.title !== "");
   
     const navigate = useNavigate();
     const selectedValue = (option) => {
-      navigate(`/dashboard/my-products/tax/${pathNavigation[option]}-taxes`);
+      navigate(`/dashboard/my-products/tax/${pathNavigation[option?.title]}-taxes`);
   };
   const handleTax = () => {
     navigate("/services/manage");
@@ -102,7 +121,13 @@ const Tax = () => {
   return (
     <Container>
        {matches ? (
-        <MobileBusiness options={options} title={"Taxes"} selectedValue={selectedValue} />
+        <MobileBusiness
+        realSelectedValue={selectedValue}
+        originalOptions={options}
+        initialTitle={"All"}
+        initialLength={submittedTotal + draftTotal}
+        mobile
+        title={"Taxes"}/>
       ) : (
       <ProductHeader
         title="Taxes"

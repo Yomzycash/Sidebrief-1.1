@@ -69,14 +69,29 @@ const BusinessDetailLayout = () => {
 
   // options passed
   let options = [
-    "Business Information",
-    paymentInfo?.length > 0 ? "Payment Details" : "",
-    shareholders?.length > 0 ? "Shareholders" : "",
-    directors?.length > 0 ? "Directors" : "",
-    beneficiaries?.length > 0 ? "Beneficiaries" : "",
+    {
+      title: "Business Information",
+      totalLength: 0,
+    },
+    {
+      title: paymentInfo?.length > 0 ? "Payment Details" : "",
+      totalLength: 0,
+    },
+    {
+      title: shareholders?.length > 0 ? "Shareholders" : "",
+      totalLength: shareholders?.length,
+    },
+    {
+      title: directors?.length > 0 ? "Directors" : "",
+      totalLength: directors?.length,
+    },
+    {
+      title: beneficiaries?.length > 0 ? "Beneficiaries" : "",
+      totalLength: beneficiaries?.length,
+    },
   ];
   //removing empty element from the array
-  options = options.filter((el) => el !== "");
+  options = options.filter((el) => el?.title !== "");
 
   //getting the status of the application
 
@@ -111,9 +126,9 @@ const BusinessDetailLayout = () => {
   // using selected value to navigate to respective pah
   const selectedValue = (option) => {
     navigate(
-      `/dashboard/my-products/business/${pathNavigation[option]}?launchCode=${searchParams.get(
-        "launchCode"
-      )}&registrationCountry=${searchParams.get(
+      `/dashboard/my-products/business/${
+        pathNavigation[option?.title]
+      }?launchCode=${searchParams.get("launchCode")}&registrationCountry=${searchParams.get(
         "registrationCountry"
       )}&registrationType=${searchParams.get("registrationType")}`
     );
@@ -127,14 +142,17 @@ const BusinessDetailLayout = () => {
         <Header code={searchParams.get("launchCode")} />
       ) : (
         <MobileBusiness
-          selectedValue={selectedValue}
-          options={options}
-          initialValue={"Business Information"}
+          //selectedValue={selectedValue}
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          initialTitle={"Business Information"}
+          initialLength={0}
           title={"Businesses"}
           date={data === undefined ? `--` : format(parseJSON(data?.createdAt), "do MMMM yyyy")}
           serviceName={data?.businessNames?.businessName1}
           details
           business
+          mobile
           backLink={backNavigation}
           servicesUrl={servicesUrl}
           launchResponse={launchResponse}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container,ButtonContainer,LastWrapper } from "./styled";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
@@ -9,7 +9,6 @@ import LoadingError from "components/Fallbacks/LoadingError";
 import { useMediaQuery } from "@mui/material";
 import MobileBusiness from "layout/MobileBusiness";
 import { ReactComponent as NoteIcon } from "asset/images/note.svg";
-
 
 //
 
@@ -87,23 +86,45 @@ const Compliance = () => {
     Drafts: "draft-compliance",
     "Paid Drafts": "paid-draft-compliance",
   };
-  const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
 
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
   const navigate = useNavigate();
   const selectedValue = (option) => {
-      
-    navigate(`/dashboard/my-products/compliance/${pathNavigation[option]}`);
+    navigate(`/dashboard/my-products/compliance/${pathNavigation[option?.title]}`);
   };
   const handleCompliance = () => {
-   
     navigate("/services/compliance");
   };
-
 
   return (
     <Container>
       {matches ? (
-        <MobileBusiness options={options} title={"Compliance"} selectedValue={selectedValue} />
+        <MobileBusiness
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          mobile
+          title={"Compliance"}
+        />
       ) : (
         <ProductHeader
           title="Compliance"
