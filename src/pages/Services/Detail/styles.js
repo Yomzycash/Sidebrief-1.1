@@ -84,3 +84,13 @@ export const ContinueButton = styled.button`
     background: #00a2d4b7;
   }
 `;
+export const LastWrapper = styled.div`
+ @media screen and (max-width: 700px) {
+  max-width:100% !important;
+  width:100%;
+  position: sticky;
+  bottom: 0px;
+  padding: 24px;
+  z-index: 1000;
+  background-color: #ffffff;}
+`;

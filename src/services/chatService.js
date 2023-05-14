@@ -87,7 +87,9 @@ export const {
   useDeleteNotificationMutation,
   useGetAllNotificationsQuery,
   useGetAllNotificationsByIdQuery,
+  useLAzyGetAllNotificationsByIdQuery,
   useGetNotificationsByServiceIdQuery,
   useViewNotificationsByUserIdQuery,
+  useLAzyViewNotificationsByUserIdQuery,
   useGetNotificationsByNotificationIdQuery,
 } = ChatApi;

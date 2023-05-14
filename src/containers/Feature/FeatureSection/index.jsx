@@ -2,6 +2,7 @@ import { searchIcon } from "asset/images";
 import CommonButton from "components/button/commonButton";
 import NoBackgroundButton from "components/button/NoBackgroundButton";
 import React from "react";
+import { useMediaQuery } from "@mui/material";
 import {
   Content,
   Input,
@@ -9,6 +10,7 @@ import {
   Top,
   TopLeft,
   TopRight,
+  SubText,
 } from "./styled";
 
 const FeatureSection = ({
@@ -27,13 +29,14 @@ const FeatureSection = ({
   extraComponentLeft,
   extraComponentRight,
 }) => {
+  const matches = useMediaQuery("(max-width:700px)");
   return (
     <SectionContainer>
       <Top>
         <TopLeft>
           {extraComponentLeft}
           <p>{title}</p>
-          <p>{subText}</p>
+          <SubText>{subText}</SubText>
         </TopLeft>
         <TopRight>
           {extraComponentRight}
@@ -44,18 +47,26 @@ const FeatureSection = ({
             </Input>
           )}
           <NoBackgroundButton
-            LeftIcon={LeftbtnLeftIcon}
-            RightIcon={RightbtnRightIcon}
+            LeftIcon={!matches && LeftbtnLeftIcon}
+            RightIcon={!matches && RightbtnRightIcon}
             text={LeftbtnText}
             action={anotherBtnAction}
           />
-          <CommonButton
-            LeftIcon={btnLeftIcon}
-            RightIcon={btnRightIcon}
-            btnText2={btnText}
+
+         {/* {!matches ? (  */}
+           <CommonButton
+              LeftIcon={btnLeftIcon}
+              RightIcon={btnRightIcon}
+              btnText2={btnText}
+              text={btnText}
+              action={btnAction}
+         />
+         {/* ): (
+          <NoBackgroundButton
             text={btnText}
             action={btnAction}
-          />
+        />
+         )} */}
         </TopRight>
       </Top>
       <Content>{children}</Content>

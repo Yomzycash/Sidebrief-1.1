@@ -230,8 +230,8 @@ const TopContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-block-end: 40px;
-  position: sticky;
-  top: 0.7rem;
+  position: relative;
+  top: 0;
   z-index: 10;
   background: #fff;
 

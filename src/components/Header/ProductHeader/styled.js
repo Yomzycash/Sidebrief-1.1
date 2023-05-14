@@ -9,7 +9,7 @@ export const Header = styled.div`
   z-index: 2;
 
   @media screen and (max-width: 700px) {
-    flex-flow: column-reverse;
+    display:none;
   }
 `;
 

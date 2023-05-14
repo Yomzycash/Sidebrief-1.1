@@ -156,3 +156,14 @@ export const Clickable = styled.button`
   border: none;
   background-color: transparent;
 `;
+
+export const MobileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: inherit;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+`;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container } from "./styled";
+import { ButtonWrapper, Container } from "./styled";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
 import { store } from "redux/Store";
@@ -8,6 +8,10 @@ import { removeLaunchFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import LoadingError from "components/Fallbacks/LoadingError";
 import EmptyContent from "components/Fallbacks/EmptyContent";
+import { useMediaQuery } from "@mui/material";
+import MobileBusiness from "layout/MobileBusiness";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
+import styled from "styled-components";
 
 //
 
@@ -54,6 +58,8 @@ const Business = () => {
 
   const filterList = ["All", "Onboarded", "Launched"];
 
+  const matches = useMediaQuery("(max-width:700px)");
+
   const navInfo = [
     {
       text: "All",
@@ -85,19 +91,49 @@ const Business = () => {
     pathname === "/dashboard/my-products/business" &&
     "/dashboard/my-products/business/all-applications";
 
+  const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  let pathNavigation = {
+    All: "all-businesses",
+    Submitted: "submitted-applications",
+    Drafts: "draft-applications",
+    "Paid Drafts": "paid-draft-applications",
+  };
+
+  const selectedValue = (option) => {
+    console.log(option);
+    navigate(`/dashboard/my-products/business/${pathNavigation[option]}`);
+    console.log(pathNavigation[option]);
+  };
+
   return (
     <Container>
-      <ProductHeader
-        title="Businesses"
-        searchPlaceholder="Search business names..."
-        summary={summary}
-        filterList={filterList}
-        action={handleLaunch}
-        actionText="Launch a Business"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
-      />
+      {matches ? (
+        <MobileBusiness options={options} title={"Businesses"} selectedValue={selectedValue} />
+      ) : (
+        <ProductHeader
+          title="Businesses"
+          searchPlaceholder="Search business names..."
+          summary={summary}
+          filterList={filterList}
+          action={handleLaunch}
+          actionText="Launch a Business"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        />
+      )}
+       {/* <ProductHeader
+          title="Businesses"
+          searchPlaceholder="Search business names..."
+          summary={summary}
+          filterList={filterList}
+          action={handleLaunch}
+          actionText="Launch a Business"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        /> */}
+
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -122,7 +158,25 @@ const Business = () => {
           }}
         />
       )}
+       {matches && (
+        <LastWrapper>
+          <ButtonWrapper>
+            <button onClick={handleLaunch}>
+              <NoteIcon />
+              Launch a Business
+            </button>
+          </ButtonWrapper>
+        </LastWrapper>
+      )}
     </Container>
   );
 };
 export default Business;
+
+const LastWrapper = styled.div`
+  position: sticky;
+  bottom: 0px;
+  padding: 24px;
+  z-index: 1000;
+  background-color: #ffffff;
+`;

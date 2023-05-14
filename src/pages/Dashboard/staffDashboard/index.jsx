@@ -39,6 +39,8 @@ const StaffDashboard = (props) => {
   let firstName = firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
   let alreadyUser = state;
 
+  // console.log("userInfo", userInfo )
+
   const realReferral = {};
 
   referralOptions

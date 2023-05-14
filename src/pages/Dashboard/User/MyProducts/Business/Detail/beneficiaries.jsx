@@ -24,7 +24,7 @@ const DetailBeneficiaries = () => {
         </Loader>
       ) : (
         <CardContainer>
-          {data.businessBeneficialOwners.map((beneficiary) => {
+          {data?.businessBeneficialOwners?.map((beneficiary) => {
             const currentmemberKYC = beneficiaryKYC.filter(
               (el) => el.beneficialOwnerCode === beneficiary.beneficialOwnerCode
             );

@@ -5,6 +5,8 @@ import { HiX } from "react-icons/hi";
 import { CheckoutController } from "containers/Checkout";
 import { toast } from "react-hot-toast";
 import { RedTrash } from "asset/svg";
+import { useMediaQuery } from "@mui/material";
+import MobileBusiness from "layout/MobileBusiness";
 
 import {
   Container,
@@ -42,6 +44,7 @@ import { handleError } from "utils/globalFunctions";
 import { useBatchDeleteLaunchRequestsMutation } from "services/launchService";
 import useMobile from "utils/useMobile";
 import Dropdown from "components/Dropdown";
+import CustomDropdown from "components/input/CustomDropdown";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
@@ -74,6 +77,10 @@ const Registrationlayout = () => {
 
   const { pathname } = useLocation();
   let deleteShown = pathname.includes("pending");
+
+  const matches = useMediaQuery("(max-width:700px)");
+
+  const options = ["All", "Paid Drafts", "Drafts", "Submitted"];
 
   const handleClick = () => {
     setOpenModal(true);
@@ -114,6 +121,7 @@ const Registrationlayout = () => {
   const location = useLocation();
 
   let home = location.pathname === "/staff-dashboard/businesses/registration" ? true : false;
+
 
   const searchStyle = {
     borderRadius: "12px",
@@ -192,44 +200,50 @@ const Registrationlayout = () => {
             </Flex> */}
           </BottomContent>
         </MainHeader>
+         
+         { !matches ? (
+            <SubHeader>
+            <ActiveNav
+              text="All"
+              total={allReg}
+              status={unreadLaunchNotifications?.length > 0}
+              path={"/staff-dashboard/businesses/registration/all"}
+              defaultActive={home}
+            />
+            <ActiveNav
+              text="Paid drafts"
+              total={paid}
+              path={"/staff-dashboard/businesses/registration/paid-draft"}
+            />
+            <ActiveNav
+              text="Drafts"
+              total={pending}
+              path="/staff-dashboard/businesses/registration/pending"
+            />
+            <ActiveNav
+              text="Submitted"
+              total={awaitingReg}
+              status={unreadLaunchNotifications?.length > 0}
+              path="/staff-dashboard/businesses/registration/awaiting-approval"
+            />
+            <ActiveNav
+              text="Approved"
+              total={approved}
+              path="/staff-dashboard/businesses/registration/in-progress"
+            />
+            <ActiveNav
+              text="Rejected"
+              total={rejected}
+              path="/staff-dashboard/businesses/registration/rejected"
+            />
+            </SubHeader>
+         ) : (
+          <MobileBusiness options={options} title={"Business Registrations"}>
 
-        <SubHeader>
-          <ActiveNav
-            text="All"
-            total={allReg}
-            status={unreadLaunchNotifications?.length > 0}
-            path={"/staff-dashboard/businesses/registration/all"}
-            defaultActive={home}
-          />
-          <ActiveNav
-            text="Paid drafts"
-            total={paid}
-            path={"/staff-dashboard/businesses/registration/paid-draft"}
-          />
-          <ActiveNav
-            text="Drafts"
-            total={pending}
-            path="/staff-dashboard/businesses/registration/pending"
-          />
-          <ActiveNav
-            text="Submitted"
-            total={awaitingReg}
-            status={unreadLaunchNotifications?.length > 0}
-            path="/staff-dashboard/businesses/registration/awaiting-approval"
-          />
-          <ActiveNav
-            text="Approved"
-            total={approved}
-            path="/staff-dashboard/businesses/registration/in-progress"
-          />
-          <ActiveNav
-            text="Rejected"
-            total={rejected}
-            path="/staff-dashboard/businesses/registration/rejected"
-          />
-        </SubHeader>
-        
-        <Dropdown
+          </MobileBusiness>
+          // <CustomDropdown />
+         )}
+        {/* <Dropdown
           options={[
             {
               text: 'Paid drafts',
@@ -258,7 +272,7 @@ const Registrationlayout = () => {
               total: rejected,
             },
           ]}
-        />
+        /> */}
       </Header>
       <Outlet
         context={{ allLaunch, awaitingLaunch, rejectedLaunch, pendingLaunch, approvedLaunch }}

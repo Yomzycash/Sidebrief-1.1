@@ -12,6 +12,7 @@ import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { staffNavigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate } from "react-router-dom";
+import Accordion from "components/Accordion";
 import { setBatchDeleteArray } from "redux/Slices";
 import { store } from "redux/Store";
 
@@ -55,6 +56,8 @@ const All = () => {
   }, [itemOffset, itemsPerPage, sortedArr]);
 
   const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
+  console.log("currentItems", currentItems);
+  
   return (
     <Container>
       <Body>
@@ -82,10 +85,20 @@ const All = () => {
           <MobileContainer>
             {currentItems.map((element) => {
               return (
-                <BusinessesCard
+                // <BusinessesCard
+                //   key={element.launchCode}
+                //   name={element.businessNames ? element.businessNames.businessName1 : "No name "}
+                //   type={element?.registrationType}
+                //   code={element?.launchCode}
+                //   countryISO={element?.registrationCountry}
+                //   navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
+                // />
+                <Accordion
                   key={element.launchCode}
                   name={element.businessNames ? element.businessNames.businessName1 : "No name "}
                   type={element?.registrationType}
+                  country={element?.registrationCountry}
+                  date={format(new Date(element.createdAt), "dd/MM/yyyy")}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
                   navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}

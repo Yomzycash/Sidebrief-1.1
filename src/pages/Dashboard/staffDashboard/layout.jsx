@@ -15,12 +15,13 @@ const StaffLayout = ({ children }) => {
   let hideMobileNav =
     location.pathname.includes("/dashboard/rewards") && location.pathname.length > 31;
 
-  // let hideSearch = location.pathname.includes("/dashboard/rewards");
-
+  // let hideSearch = location.pathname.includes("/staff-dashboard");
+  let path = location.pathname.includes("/staff-dashboard") || location.pathname === "/";
   return (
     <Dashboard>
       <Navbar dashboard imgStyles={{ maxWidth: "100px" }} style={{ padding: "12px 24px" }} />
-      <MobileNavbar hideNav={hideMobileNav} />
+      {path && <MobileNavbar hideNav={hideMobileNav} items={staffSidebarItems}/> }
+
       <Body>
         <BodyLeft>
           <Sidebar items={staffSidebarItems} />

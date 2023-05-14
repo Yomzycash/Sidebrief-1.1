@@ -51,8 +51,8 @@ const StaffRewardHeader = ({
     if (setOpen) setOpen(true);
     if (handleButton) handleButton();
   };
-  const { pathname } = useLocation();
-  let filterShown = pathname.includes("services/all");
+  const { pathname } = useLocation();                                               
+  let filterShown = pathname.includes("services/all");                                   
 
   return (
     <Container>

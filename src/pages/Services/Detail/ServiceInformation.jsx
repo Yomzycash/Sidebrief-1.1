@@ -1,12 +1,7 @@
-import React, { useEffect } from "react";
 import { DetailContainer, DetailWrapper } from "./styles";
-import { Dialog, DialogContent, useMediaQuery } from "@mui/material";
-import { useState } from "react";
-import { useNavigate, useLocation, useParams, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import styled from "styled-components";
-import { StepBar } from "components/Indicators";
 import { useGetAllCountriesQuery, useGetSingleServiceQuery } from "services/staffService";
-import { useLazyViewComplyQuery } from "services/complyService";
 import ServiceInfoContainer from "containers/ServiceInfoContainer";
 
 const ServiceInformation = () => {
@@ -14,7 +9,6 @@ const ServiceInformation = () => {
 
   const countries = useGetAllCountriesQuery();
 
-  const [open, setOpen] = useState(false);
 
   const viewService = useGetSingleServiceQuery(viewComply?.data?.serviceId);
 
@@ -22,27 +16,14 @@ const ServiceInformation = () => {
     (country) => country?.countryISO === viewService?.data?.serviceCountry
   )?.countryName;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const matches = useMediaQuery("(max-width:700px)");
-  const StepbarStyle = {
-    padding: 0,
-    backgroundColor: "white",
-    width: "max-width",
-    borderRadius: "16px",
-    boxShadow:
-      "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
-  };
+  
+ 
   return (
     <div>
       <DetailWrapper>
-        {matches && (
+        {/* {matches && (
           <StatusWrapper>
             <Status> Status</Status>
             <LowerContainer>
@@ -55,7 +36,7 @@ const ServiceInformation = () => {
               </Dialog>
             </LowerContainer>
           </StatusWrapper>
-        )}
+        )} */}
         <DetailContainer>
           <ServiceInfoContainer
             serviceDescription={viewService?.data?.serviceDescription}
