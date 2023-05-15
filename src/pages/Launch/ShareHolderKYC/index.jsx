@@ -153,26 +153,26 @@ const ShareHolderKYC = () => {
     let c = sameData?.length;
     let d = a * b;
 
-    // if (c === 0) {
-    //   toast.error("All documents are required");
-    // } else if (d !== c) {
-    //   toast.error("All documents are required");
-    // } else {
-    if (navigatedFrom) {
-      navigate(navigatedFrom);
-      localStorage.removeItem("navigatedFrom");
+    if (c === 0) {
+      toast.error("All documents are required");
+    } else if (d !== c) {
+      toast.error("All documents are required");
     } else {
-      let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-      let beneficiaries = localStorage.getItem("beneficiaries");
+      if (navigatedFrom) {
+        navigate(navigatedFrom);
+        localStorage.removeItem("navigatedFrom");
+      } else {
+        let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+        let beneficiaries = localStorage.getItem("beneficiaries");
 
-      let navigateTo = "/launch/directors-kyc";
-      if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-      if (useSidebriefDirectors && beneficiaries === "false")
-        navigateTo = "/launch/review/business-info";
+        let navigateTo = "/launch/directors-kyc";
+        if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+        if (useSidebriefDirectors && beneficiaries === "false")
+          navigateTo = "/launch/review/business-info";
 
-      navigate(navigateTo);
+        navigate(navigateTo);
+      }
     }
-    // }
   };
 
   const handleRemove = async (documentName) => {
