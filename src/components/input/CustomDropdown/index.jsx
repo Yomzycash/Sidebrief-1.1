@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowDown, DropDownBtn, DropDownContent, DropDownItems, TextContainer } from "./style";
+import { ArrowDown, DropDownBtn, DropDownContent, DropDownItems, DropDownMobileContent, TextContainer } from "./style";
 import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
@@ -12,7 +12,6 @@ const CustomDropdown = ({
   realSelectedValue,
   initialTitle,
   initialLength,
-  position
 }) => {
   const [selected, setSelected] = useState(intialvalue);
   const [newSelected, setNewSelected] = useState({
@@ -79,7 +78,7 @@ const CustomDropdown = ({
         )}
       </DropDownBtn>
       {isActive && !mobile && (
-        <DropDownContent position ={position}>
+        <DropDownContent>
           {options?.map((option, index) => (
             <DropDownItems
               key={index}
@@ -95,7 +94,7 @@ const CustomDropdown = ({
         </DropDownContent>
       )}
       {isActive && mobile && (
-        <DropDownContent>
+        <DropDownMobileContent>
           {originalOptions?.map((option, index) => (
             <SubTopSelected
               key={index}
@@ -113,7 +112,7 @@ const CustomDropdown = ({
               )}
             </SubTopSelected>
           ))}
-        </DropDownContent>
+        </DropDownMobileContent>
       )}
     </div>
   );

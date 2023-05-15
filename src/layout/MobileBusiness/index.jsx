@@ -82,7 +82,6 @@ const MobileBusiness = ({
               intialvalue={"All"}
               selectedValue={newSelectedValue}
               originalOptions={newOriginalOptions}
-              position={"-50px"}
             />
           )}
         </DropdownContainer>
@@ -113,4 +112,7 @@ const DropdownContainer = styled.div`
 
   align-items: center;
   gap: 48px;
+  @media screen and (max-width: 320px) {
+    gap: 16px;
+  }
 `;
