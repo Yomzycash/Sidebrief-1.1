@@ -12,6 +12,7 @@ const CustomDropdown = ({
   realSelectedValue,
   initialTitle,
   initialLength,
+  position
 }) => {
   const [selected, setSelected] = useState(intialvalue);
   const [newSelected, setNewSelected] = useState({
@@ -78,7 +79,7 @@ const CustomDropdown = ({
         )}
       </DropDownBtn>
       {isActive && !mobile && (
-        <DropDownContent>
+        <DropDownContent position ={position}>
           {options?.map((option, index) => (
             <DropDownItems
               key={index}

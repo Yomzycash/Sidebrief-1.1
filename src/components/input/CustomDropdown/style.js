@@ -25,6 +25,7 @@ export const DropDownContent = styled.div`
   border-radius: 12px;
   width: 200px;
   z-index: 1000;
+  right: ${({ position }) => (position ? position : "")};
 `;
 export const DropDownItems = styled.div`
   padding: 4px 12px;

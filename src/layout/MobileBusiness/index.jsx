@@ -82,6 +82,7 @@ const MobileBusiness = ({
               intialvalue={"All"}
               selectedValue={newSelectedValue}
               originalOptions={newOriginalOptions}
+              position={"-50px"}
             />
           )}
         </DropdownContainer>
