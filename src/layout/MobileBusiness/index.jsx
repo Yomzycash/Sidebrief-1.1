@@ -32,7 +32,7 @@ const MobileBusiness = ({
   realSelectedValue,
   initialTitle,
   initialLength,
-  mobile
+  mobile,
 }) => {
   return (
     <Layout>
@@ -65,26 +65,26 @@ const MobileBusiness = ({
             staffUrl={staffUrl}
           />
         )}
-        <CustomDropdown
-          // options={options}
-          intialvalue={!details ? "All" : initialValue}
-          selectedValue={selectedValue}
-          realSelectedValue={realSelectedValue}
-          mobile={mobile}
-          originalOptions={originalOptions}
-          initialTitle={initialTitle}
-          initialLength={initialLength}
-         
-        />
-        {reward && (
+        <DropdownContainer>
           <CustomDropdown
-            options={newOptions}
-            intialvalue={"All"}
-            selectedValue={newSelectedValue}
+            // options={options}
+            intialvalue={!details ? "All" : initialValue}
+            selectedValue={selectedValue}
+            realSelectedValue={realSelectedValue}
             mobile={mobile}
-            originalOptions= { newOriginalOptions}
+            originalOptions={originalOptions}
+            initialTitle={initialTitle}
+            initialLength={initialLength}
           />
-        )}
+          {reward && (
+            <CustomDropdown
+              options={options}
+              intialvalue={"All"}
+              selectedValue={newSelectedValue}
+              originalOptions={newOriginalOptions}
+            />
+          )}
+        </DropdownContainer>
       </Header>
     </Layout>
   );
@@ -96,7 +96,6 @@ const Layout = styled.div`
   width: 100%;
   padding: 40px 24px 0px 24px;
   background-color: #ffffff;
- 
 
   position: sticky;
   top: 0;
@@ -107,4 +106,10 @@ const Header = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 24px;
+`;
+const DropdownContainer = styled.div`
+  display: flex;
+
+  align-items: center;
+  gap: 48px;
 `;

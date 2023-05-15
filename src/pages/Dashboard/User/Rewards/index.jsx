@@ -3,7 +3,7 @@ import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Drop, Header, MainHeader, MobileHeader, SubHeader } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery, useGetUserRewardQuery } from "services/RewardService";
 import { setRewardsShown } from "redux/Slices";
@@ -20,6 +20,10 @@ const searchStyle = {
 
 const Rewards = () => {
   const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
+  const [rewardsCategories, setRewardscategories] = useState(["All"]);
+  const [category, setCategory] = useSearchParams();
+  const { data } = useGetAllRewardsQuery();
+  const userReward = useGetUserRewardQuery();
 
   const location = useLocation();
 
@@ -53,6 +57,8 @@ const Rewards = () => {
   //     mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
   //   }
   // }, [boxshadow]);
+  const selectedRewards =
+    location.pathname === "/dashboard/rewards/my-rewards " ? userReward?.data : data;
 
   // This sets the shown of all rewards
   useEffect(() => {
@@ -65,16 +71,30 @@ const Rewards = () => {
   useEffect(() => {
     allRewardsResponse.refetch();
     myRewardsResponse.refetch();
-  }, [location.pathname]);
+
+    setRewardscategories((prev) => {
+      const categories = selectedRewards
+        ? selectedRewards.map((element) => element.rewardCategory)
+        : [];
+
+      return [...new Set([...prev, ...categories])];
+    });
+  }, [location.pathname, data, userReward, selectedRewards]);
 
   const matches = useMediaQuery("(max-width:700px)");
-  //const options= ["All Rewards", "My rewards"];
-  const newOptions = ["All Rewards", "My rewards"];
-  // const selectedValue = (option) => {
-  //   console.log(option);
-  //   navigate(`/dashboard/my-products/business/${pathNavigation[option?.title]}`);
-  //   //console.log(pathNavigation[option]);
-  // };
+
+  const newOptions = rewardsCategories;
+
+  const navigate = useNavigate();
+  let pathNavigation = {
+    "All Rewards": "all-rewards",
+    "My rewards": "my-rewards",
+  };
+  const selectedValue = (option) => {
+    console.log(option);
+    navigate(`/dashboard/rewards/${pathNavigation[option?.title]}`);
+    //console.log(pathNavigation[option]);
+  };
   let options = [
     {
       title: "All Rewards",
@@ -85,7 +105,11 @@ const Rewards = () => {
       totalLength: myRewardsTotal,
     },
   ];
-
+  const handleCategory = (category) => {
+    setCategory({ category }); // Set category as an object to the searchParams
+  };
+  const details = location.pathname.includes("details");
+  console.log(rewardsCategories);
   return (
     <Container>
       {rewardsPageHeader && !matches && (
@@ -130,13 +154,15 @@ const Rewards = () => {
           {/* <AppFeedback subProject="Rewards" /> */}
         </Header>
       )}
-      {matches && (
+      {matches && !details && (
         <MobileBusiness
-          //realSelectedValue={selectedValue}
-          options={options}
-          // mobile
-          //newSelectedValue={newSelectedValue}
-          originalOptions={newOptions}
+          realSelectedValue={selectedValue}
+          options={newOptions}
+          mobile
+          initialTitle={"All Reward"}
+          initialLength={allRewardsTotal}
+          newSelectedValue={handleCategory}
+          originalOptions={options}
           reward
           title={"Rewards "}
         />
