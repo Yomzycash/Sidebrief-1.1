@@ -38,13 +38,21 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
-  const { data, refetch } = useGetAllNotificationsQuery(undefined, { skip: !staffEmail });
+  console.log(staffEmail);
 
-  const userNotifications = useViewNotificationsByUserIdQuery({
-    userId: userInfo?.id,
-    skip: !userInfo?.id,
-  });
+  const { data, refetch, error } = useGetAllNotificationsQuery(undefined, { skip: !staffEmail });
+
+  const userNotifications = useViewNotificationsByUserIdQuery(
+    {
+      userId: userInfo?.id,
+    },
+    { skip: !userInfo?.id }
+  );
   const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
+
+  // console.log(data, userNotifications.data);
+  // console.log("User Error" + userNotifications.error);
+  // console.log("Staff Error" + error);
   //  console.log(allNotification);
 
   // useEffect(() => {
