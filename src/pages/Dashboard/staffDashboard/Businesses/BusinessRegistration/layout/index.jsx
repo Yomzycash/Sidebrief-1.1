@@ -115,6 +115,8 @@ const Registrationlayout = () => {
     height: "100%",
   };
 
+  let path = location.pathname.includes("staff");
+
   const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
@@ -176,12 +178,14 @@ const Registrationlayout = () => {
                 <ExportIcon />
                 <TitleWrapper>Export Businesses</TitleWrapper>
               </ExportWrapper>
-              <ButtonWrapper onClick={() => navigate("/launch")}>
-                <button>
-                  <NoteIcon />
-                  Start Business Registration
-                </button>
-              </ButtonWrapper>
+              {!path && (
+                <ButtonWrapper onClick={() => navigate("/launch")}>
+                  <button>
+                    <NoteIcon />
+                    Start Business Registration
+                  </button>
+                </ButtonWrapper>
+              )}
             </Flex>
           </BottomContent>
         </MainHeader>
