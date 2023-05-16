@@ -15,7 +15,7 @@ const StaffBusinessDetailLayout = () => {
 
   const countries = useGetAllCountriesQuery();
   const { data, isLoading, isSuccess, refetch } = useViewLaunchRequestQuery(launchResponse);
-  const userInfo = useGetUserByIdQuery(data?.meta);
+  const userInfo = useGetUserByIdQuery(data?.meta, { skip: !data?.meta });
 
   let getCountry = countries.data
     ? countries?.data.find((country) => country.countryISO === launchResponse.registrationCountry)
