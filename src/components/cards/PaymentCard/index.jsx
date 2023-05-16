@@ -18,8 +18,8 @@ const PaymentDetailsCard = ({ isLoading, date, info }) => {
       </TopContainer>
 
       <BottomContainer>
-        {info?.map((el) => (
-          <FieldContainer>
+        {info?.map((el, i) => (
+          <FieldContainer key={i}>
             <LeftTextContainer>{el?.fieldName}</LeftTextContainer>
             <RightTextContainer>{el?.fieldValue}</RightTextContainer>
           </FieldContainer>
