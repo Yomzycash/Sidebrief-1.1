@@ -38,7 +38,7 @@ const MyRewards = () => {
   }, []);
 
   const handleRewardClick = (rewardID) => {
-    navigate(`/dashboard/rewards/${rewardID}`);
+    navigate(`/dashboard/rewards/details/${rewardID}`);
   };
 
   const handleCategory = (category) => {

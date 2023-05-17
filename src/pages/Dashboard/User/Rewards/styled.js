@@ -16,9 +16,9 @@ export const Header = styled.div`
   box-shadow: ${(props) =>
     props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
-  @media screen and (max-width: 700px) {
+  /* @media screen and (max-width: 700px) {
     top: 76px;
-  }
+  } */
 `;
 
 export const MainHeader = styled.div`
@@ -67,16 +67,21 @@ export const SubHeader = styled.div`
 
   @media screen and (max-width: 700px) {
     padding-inline: 24px;
+    display: none;
+
   }
 `;
 
 export const MobileHeader = styled.div`
   display: none;
   @media screen and (max-width: 700px) {
-    display: flex;
+    
+    display: none;
+  
+    /* display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px 24px;
+    padding: 16px 24px; */
   }
 `;
 

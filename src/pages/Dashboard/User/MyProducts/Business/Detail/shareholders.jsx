@@ -21,7 +21,7 @@ const DetailShareholder = () => {
         </Loader>
       ) : (
         <CardContainer>
-          {data.businessShareholders.map((shareholder) => {
+          {data?.businessShareholders?.map((shareholder) => {
             const member = members.find((el) => el.memberCode === shareholder.memberCode);
             const currentmemberKYC = memberKYC.filter(
               (el) => el.memberCode === shareholder.memberCode

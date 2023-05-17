@@ -9,14 +9,23 @@ import { navigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useBusinessActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
+import Accordion from "components/Accordion";
+import { format } from "date-fns";
 
 const AllBusinesses = () => {
   const [dataArr, setDataArr] = useState([]);
 
   const navigate = useNavigate();
 
-  const { submitted, drafts, searchValue, isLoading, isError, isSuccess, setListShown } =
-    useOutletContext();
+  const {
+    submitted,
+    drafts,
+    searchValue,
+    isLoading,
+    isError,
+    isSuccess,
+    setListShown,
+  } = useOutletContext();
 
   const countries = useGetAllCountriesQuery();
   const [viewPayLaunch] = useViewPayLaunchMutation();
@@ -44,6 +53,7 @@ const AllBusinesses = () => {
   }, [searchValue]);
 
   const matches = useMediaQuery("(max-width:700px)");
+  console.log(dataArr);
 
   return (
     <Container>
@@ -64,12 +74,18 @@ const AllBusinesses = () => {
           <MobileContainer>
             {dataArr.map((element) => {
               return (
-                <BusinessesCard
+                <Accordion
                   key={element.launchCode}
                   name={element.businessNames ? element.businessNames.businessName1 : "No name "}
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
+                  country={
+                    countries?.data?.find(
+                      (country) => country.countryISO === element?.registrationCountry
+                    )?.countryName
+                  }
+                  date={format(new Date(element?.updatedAt), "dd/MM/yyyy")}
                   navigate={(launchInfo) =>
                     navigateToDetailPage(navigate, launchInfo, viewPayLaunch)
                   }
@@ -93,4 +109,5 @@ const MobileContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
+  overflow-y: scroll;
 `;

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
+import { useMediaQuery } from "@mui/material";
+import MobileBusiness from "layout/MobileBusiness";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
+
+
 
 //
 
@@ -75,9 +81,54 @@ const Tax = () => {
 
   let isFirstNav =
     pathname === "/dashboard/my-products/tax" && "/dashboard/my-products/tax/all-taxes";
+    const matches = useMediaQuery("(max-width:700px)");
+    let pathNavigation = {
+      All: "all",
+      Submitted: "submitted",
+      Drafts: "draft",
+      "Paid Drafts": "paid-draft",
+    };
+    let options = [
+      {
+        title: submittedTotal + draftTotal > 0 ? "All" : "",
+        totalLength: submittedTotal + draftTotal,
+      },
+      {
+        title: submittedTotal > 0 ? "Submitted" : "",
+        totalLength: submittedTotal,
+      },
+  
+      {
+        title: draftTotal > 0 ? "Drafts" : "",
+        totalLength: draftTotal,
+      },
+      {
+        title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+        totalLength: paidDraftTotal,
+      },
+    ];
+    options = options.filter((el) => el?.title !== "");
+  
+    const navigate = useNavigate();
+    const selectedValue = (option) => {
+      navigate(`/dashboard/my-products/tax/${pathNavigation[option?.title]}-taxes`);
+  };
+  const handleTax = () => {
+    navigate("/services/manage");
+  };
+
 
   return (
     <Container>
+       {matches ? (
+        <MobileBusiness
+        realSelectedValue={selectedValue}
+        originalOptions={options}
+        initialTitle={"All"}
+        initialLength={submittedTotal + draftTotal}
+        mobile
+        title={"Taxes"}/>
+      ) : (
       <ProductHeader
         title="Taxes"
         searchPlaceholder="Search tax..."
@@ -88,7 +139,7 @@ const Tax = () => {
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
-      />
+      />)}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -112,6 +163,17 @@ const Tax = () => {
           }}
         />
       )}
+      {matches && (
+        <LastWrapper>
+          <ButtonContainer>
+            <button onClick={handleTax}>
+              <NoteIcon />
+             Create Tax
+            </button>
+          </ButtonContainer>
+        </LastWrapper>
+      )}
+      
     </Container>
   );
 };

@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
+
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
+import MobileBusiness from "layout/MobileBusiness";
+import { useMediaQuery } from "@mui/material";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 
 //
 
@@ -79,21 +83,71 @@ const Intellectual = () => {
   let isFirstNav =
     pathname === "/dashboard/my-products/intellectual-property" &&
     "/dashboard/my-products/intellectual-property/all-intellectual-properties";
+  const matches = useMediaQuery("(max-width:700px)");
+
+  let pathNavigation = {
+    All: "all",
+    Submitted: "submitted",
+    Drafts: "draft",
+    "Paid Drafts": "paid-draft",
+  };
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
+
+  const navigate = useNavigate();
+  const selectedValue = (option) => {
+    console.log(option);
+    navigate(
+      `/dashboard/my-products/intellectual-property/${pathNavigation[option?.title]}-intellectual-properties`
+    );
+  };
+  const handleIntellectual = () => {
+    navigate("/services/intellectual-property");
+  };
 
   return (
     <Container>
-      <ProductHeader
-        title="Intellectual Property"
-        searchPlaceholder="Search intellectual property..."
-        summary={summary}
-        filterList={filterList}
-        action={handleCategoryCreate}
-        actionText="Create Intellectual Property"
-        emptyText="Your businesses will appear here when you launch one"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
-      />
+      {matches ? (
+        <MobileBusiness
+        realSelectedValue={selectedValue}
+        originalOptions={options}
+          title={"Intellectual Property"}
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          mobile
+        />
+      ) : (
+        <ProductHeader
+          title="Intellectual Property"
+          searchPlaceholder="Search intellectual property..."
+          summary={summary}
+          filterList={filterList}
+          action={handleCategoryCreate}
+          actionText="Create Intellectual Property"
+          emptyText="Your businesses will appear here when you launch one"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        />
+      )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -116,6 +170,16 @@ const Intellectual = () => {
             isSuccess,
           }}
         />
+      )}
+      {matches && (
+        <LastWrapper>
+          <ButtonContainer>
+            <button onClick={handleIntellectual}>
+              <NoteIcon />
+              Create Intellectual Property
+            </button>
+          </ButtonContainer>
+        </LastWrapper>
       )}
     </Container>
   );

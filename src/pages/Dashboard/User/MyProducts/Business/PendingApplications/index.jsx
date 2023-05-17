@@ -9,6 +9,8 @@ import { navigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useBusinessActions } from "../actions";
 import FeatureTable from "components/Tables/FeatureTable";
+import Accordion from "components/Accordion";
+import { format } from "date-fns";
 
 const PendingApplications = () => {
   const [dataArr, setDataArr] = useState([]);
@@ -64,12 +66,21 @@ const PendingApplications = () => {
           <MobileContainer>
             {dataArr.map((element) => {
               return (
-                <BusinessesCard
+                <Accordion
+                  key={element.launchCode}
                   name={element.businessNames ? element.businessNames.businessName1 : "No name "}
                   type={element?.registrationType}
                   code={element?.launchCode}
                   countryISO={element?.registrationCountry}
-                  viewPayLaunch={viewPayLaunch}
+                  country={
+                    countries?.data?.find(
+                      (country) => country?.countryISO === element?.registrationCountry
+                    )?.countryName
+                  }
+                  date={format(new Date(element?.updatedAt), "dd/MM/yyyy")}
+                  navigate={(launchInfo) =>
+                    navigateToDetailPage(navigate, launchInfo, viewPayLaunch)
+                  }
                 />
               );
             })}

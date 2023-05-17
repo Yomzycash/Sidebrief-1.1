@@ -1,6 +1,17 @@
 import toast from "react-hot-toast";
 import { store } from "redux/Store";
-import { saveUserInfo, setLaunchPaid, setLaunchResponse } from "redux/Slices";
+import {
+  resetLaunchInfo,
+  saveUserInfo,
+  setBusinessObjectives,
+  setCountry,
+  setCountryISO,
+  setGeneratedLaunchCode,
+  setLaunchPaid,
+  setLaunchResponse,
+  setSelectedBusinessNames,
+  setSelectedEntity,
+} from "redux/Slices";
 import { countriesInfo } from "./allCountries";
 import { checkPaymentStatus } from "pages/Launch/actions";
 import { authApi } from "services/authService";
@@ -89,8 +100,8 @@ export const staffNavigateToServiceDetailPage = (navigate, complycode) => {
 };
 
 export const getCurrencyInfo = (currency) => {
-  let currencyInfo = countriesInfo.filter(
-    (country) => country.currency.toLowerCase() === currency.toLowerCase()
+  let currencyInfo = countriesInfo?.filter(
+    (country) => country.currency?.toLowerCase() === currency?.toLowerCase()
   )[0];
   if (currency) return currencyInfo;
   else return "";
@@ -121,13 +132,17 @@ export const removeLaunchFromLocalStorage = () => {
   localStorage.removeItem("beneficiaries");
 };
 
+export const removeLaunchFromStore = () => {
+  store.dispatch(resetLaunchInfo());
+};
+
 export const removeComplyFromLocalStorage = () => {
   localStorage.removeItem("complyInfo");
   localStorage.removeItem("paymentDetails");
 };
 
-export const removeProductsFromLocalStorage = () => {
-  store.dispatch(setLaunchResponse({}));
+export const clearProductsInfo = () => {
+  removeLaunchFromStore();
   removeLaunchFromLocalStorage();
   removeComplyFromLocalStorage();
 };

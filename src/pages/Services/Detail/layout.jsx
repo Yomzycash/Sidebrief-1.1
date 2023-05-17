@@ -1,16 +1,19 @@
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import { Body, Container } from "./styles";
+import { Body, Container, LastWrapper } from "./styles";
 import ServiceDetailHeader from "containers/ServiceDetailHeader";
 import { format, parseJSON } from "date-fns";
 import { useGetSingleServiceQuery } from "services/staffService";
 import { useViewComplyQuery } from "services/complyService";
 import { checkStaffEmail } from "utils/globalFunctions";
 import CommonButton from "components/button/commonButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import lookup from "country-code-lookup";
+import MobileBusiness from "layout/MobileBusiness";
+import { useMediaQuery } from "@mui/material";
 
 const ServicesDetailLayout = () => {
   const { complycode } = useParams();
+
   const viewComply = useViewComplyQuery({
     complyCode: complycode,
   });
@@ -74,28 +77,114 @@ const ServicesDetailLayout = () => {
     viewComply.refetch();
   }, []);
 
+  let pathNavigation = {
+    "Product Information": "info",
+
+    Form: "shareholders",
+
+    Document: "beneficiaries",
+  };
+
+  const matches = useMediaQuery("(max-width:700px)");
+  let options = [
+    {
+      title: "Product Information",
+      totalLength: 0,
+    },
+    {
+      title: viewComply?.data?.complyData?.length > 0 ? "Form" : "",
+      totalLength: viewComply?.data?.complyData.length,
+    },
+    {
+      title: viewComply?.data?.complyDocuments?.length > 0 ? "Document" : "",
+      totalLength: viewComply?.data?.complyDocuments.length,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
+
+  let path = pathname.split("/");
+  let pathSelected = "";
+
+  for (let i = 0; i < path.length; i++) {
+    if (
+      path[i] === "manage" ||
+      path[i] === "tax" ||
+      path[i] === "onboard" ||
+      path[i] === "intellectual-property" ||
+      path[i] === "compliance"
+    ) {
+      pathSelected = path[i];
+      break;
+    }
+  }
+  const backNavigation = `/dashboard/my-products/${pathSelected} `;
+
+  const selectedValue = (option) => {
+    if (pathSelected === "tax") {
+      navigate(
+        `/dashboard/my-products/${pathSelected}/all-taxes/${complyCode}/${
+          pathNavigation[option?.title]
+        }`
+      );
+    }
+    navigate(
+      `/dashboard/my-products/${pathSelected}/all-${pathSelected}/${complyCode}/${
+        pathNavigation[option?.title]
+      }`
+    );
+  };
+  const servicesUrl = `/dashboard/my-products/${pathSelected}`;
+  console.log(servicesUrl);
   return (
     <Container>
-      <ServiceDetailHeader
-        status={getStatus(status)}
-        serviceName={viewService?.data?.serviceName}
-        code={complyCode}
-        mainUrl={mainUrl}
-        date={
-          viewComply?.isLoading
-            ? `--`
-            : format(parseJSON(viewComply?.data?.createdAt), "do MMMM yyyy")
-        }
-        complyCode={complycode}
-        isStaff={staffEmail}
-        document={viewComply?.data?.complyDocuments}
-        form={viewComply?.data?.complyData}
-      />
+      {!matches ? (
+        <ServiceDetailHeader
+          status={getStatus(status)}
+          serviceName={viewService?.data?.serviceName}
+          code={complyCode}
+          mainUrl={mainUrl}
+          date={
+            viewComply?.isLoading
+              ? `--`
+              : format(parseJSON(viewComply?.data?.createdAt), "do MMMM yyyy")
+          }
+          complyCode={complycode}
+          isStaff={staffEmail}
+          document={viewComply?.data?.complyDocuments}
+          form={viewComply?.data?.complyData}
+        />
+      ) : (
+        <MobileBusiness
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          initialLength={0}
+          complycode={complycode}
+          initialTitle={"Product Information"}
+          mobile
+          // title={"Businesses"}
+          date={
+            viewService?.data === undefined
+              ? `--`
+              : format(parseJSON(viewService?.data?.createdAt), "do MMMM yyyy")
+          }
+          serviceName={viewService?.data?.serviceName}
+          details
+          backLink={backNavigation}
+          code={complycode}
+          servicesUrl={servicesUrl}
+          // type={searchParams.get("registrationType")}
+          status={getStatus(
+            viewService?.data?.isLoading || viewService?.data === undefined ? `--` : status
+          )}
+        />
+      )}
       <Body>
         <Outlet context={viewComply} />
       </Body>
       {!isStaffEnd && status?.toLowerCase() !== "submitted" && (
-        <CommonButton text="Continue application" action={handleContinue} />
+        <LastWrapper>
+          <CommonButton text="Continue application" action={handleContinue} />
+        </LastWrapper>
       )}
     </Container>
   );

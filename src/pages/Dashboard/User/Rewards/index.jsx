@@ -3,11 +3,14 @@ import ActiveNav from "components/navbar/ActiveNav";
 import Search from "components/navbar/Search";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Drop, Header, MainHeader, MobileHeader, SubHeader } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetAllRewardsQuery, useGetUserRewardQuery } from "services/RewardService";
 import { setRewardsShown } from "redux/Slices";
 import { store } from "redux/Store";
+import { useMediaQuery } from "@mui/material";
+import HeaderSearch from "components/HeaderSearch";
+import MobileBusiness from "layout/MobileBusiness";
 
 const searchStyle = {
   borderRadius: "12px",
@@ -17,6 +20,10 @@ const searchStyle = {
 
 const Rewards = () => {
   const rewardsShown = useSelector((store) => store.RewardReducer.rewardsShown);
+  const [rewardsCategories, setRewardscategories] = useState(["All"]);
+  const [category, setCategory] = useSearchParams();
+  const { data } = useGetAllRewardsQuery();
+  const userReward = useGetUserRewardQuery();
 
   const location = useLocation();
 
@@ -50,6 +57,8 @@ const Rewards = () => {
   //     mainHeaderRef.current.style.height = "clamp(80px,10vw,120px)";
   //   }
   // }, [boxshadow]);
+  const selectedRewards =
+    location.pathname === "/dashboard/rewards/my-rewards " ? userReward?.data : data;
 
   // This sets the shown of all rewards
   useEffect(() => {
@@ -62,11 +71,48 @@ const Rewards = () => {
   useEffect(() => {
     allRewardsResponse.refetch();
     myRewardsResponse.refetch();
-  }, [location.pathname]);
 
+    setRewardscategories((prev) => {
+      const categories = selectedRewards
+        ? selectedRewards.map((element) => element.rewardCategory)
+        : [];
+
+      return [...new Set([...prev, ...categories])];
+    });
+  }, [location.pathname, data, userReward, selectedRewards]);
+
+  const matches = useMediaQuery("(max-width:700px)");
+
+  const newOptions = rewardsCategories;
+
+  const navigate = useNavigate();
+  let pathNavigation = {
+    "All Rewards": "all-rewards",
+    "My rewards": "my-rewards",
+  };
+  const selectedValue = (option) => {
+    console.log(option);
+    navigate(`/dashboard/rewards/${pathNavigation[option?.title]}`);
+    //console.log(pathNavigation[option]);
+  };
+  let options = [
+    {
+      title: "All Rewards",
+      totalLength: allRewardsTotal,
+    },
+    {
+      title: "My rewards",
+      totalLength: myRewardsTotal,
+    },
+  ];
+  const handleCategory = (category) => {
+    setCategory({ category }); // Set category as an object to the searchParams
+  };
+  const details = location.pathname.includes("details");
+  console.log(rewardsCategories);
   return (
     <Container>
-      {rewardsPageHeader && (
+      {rewardsPageHeader && !matches && (
         <Header>
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
@@ -87,6 +133,7 @@ const Rewards = () => {
               path="/dashboard/rewards/my-rewards"
             />
           </SubHeader>
+
           <MobileHeader>
             <Search
               style={{
@@ -103,8 +150,22 @@ const Rewards = () => {
               </select>
             </Drop>
           </MobileHeader>
+
           {/* <AppFeedback subProject="Rewards" /> */}
         </Header>
+      )}
+      {matches && !details && (
+        <MobileBusiness
+          realSelectedValue={selectedValue}
+          options={newOptions}
+          mobile
+          initialTitle={"All Reward"}
+          initialLength={allRewardsTotal}
+          newSelectedValue={handleCategory}
+          originalOptions={options}
+          reward
+          title={"Rewards "}
+        />
       )}
       <Outlet />
     </Container>

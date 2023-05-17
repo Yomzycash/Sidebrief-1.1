@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Container, ButtonContainer, LastWrapper } from "./styled";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
+import { useMediaQuery } from "@mui/material";
+import MobileBusiness from "layout/MobileBusiness";
+import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 
 //
 
@@ -76,20 +79,65 @@ const Compliance = () => {
   let isFirstNav =
     pathname === "/dashboard/my-products/compliance" &&
     "/dashboard/my-products/compliance/all-compliance";
+  const matches = useMediaQuery("(max-width:700px)");
+  let pathNavigation = {
+    All: "all-compliance",
+    Submitted: "submitted-compliance",
+    Drafts: "draft-compliance",
+    "Paid Drafts": "paid-draft-compliance",
+  };
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
+  const navigate = useNavigate();
+  const selectedValue = (option) => {
+    navigate(`/dashboard/my-products/compliance/${pathNavigation[option?.title]}`);
+  };
+  const handleCompliance = () => {
+    navigate("/services/compliance");
+  };
 
   return (
     <Container>
-      <ProductHeader
-        title="Compliance"
-        searchPlaceholder="Search compliance..."
-        summary={summary}
-        filterList={filterList}
-        action={handleCategoryCreate}
-        actionText="Create a Compliance"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
-      />
+      {matches ? (
+        <MobileBusiness
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          mobile
+          title={"Compliance"}
+        />
+      ) : (
+        <ProductHeader
+          title="Compliance"
+          searchPlaceholder="Search compliance..."
+          summary={summary}
+          filterList={filterList}
+          action={handleCategoryCreate}
+          actionText="Create a Compliance"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        />
+      )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -112,6 +160,16 @@ const Compliance = () => {
             isSuccess,
           }}
         />
+      )}
+      {matches && (
+        <LastWrapper>
+          <ButtonContainer>
+            <button onClick={handleCompliance}>
+              <NoteIcon />
+              Create a Compliance
+            </button>
+          </ButtonContainer>
+        </LastWrapper>
       )}
     </Container>
   );

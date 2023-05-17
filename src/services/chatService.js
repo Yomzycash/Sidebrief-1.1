@@ -57,7 +57,7 @@ export const ChatApi = createApi({
 
     // get all notifications
     getAllNotifications: builder.query({
-      query: () => "/notifications/all",
+      query: (staffEmail) => (staffEmail ? "/notifications/all" : ""),
     }),
 
     // get a notifications by notificationID
@@ -87,7 +87,9 @@ export const {
   useDeleteNotificationMutation,
   useGetAllNotificationsQuery,
   useGetAllNotificationsByIdQuery,
+  useLazyGetAllNotificationsByIdQuery,
   useGetNotificationsByServiceIdQuery,
   useViewNotificationsByUserIdQuery,
+  useLazyViewNotificationsByUserIdQuery,
   useGetNotificationsByNotificationIdQuery,
 } = ChatApi;

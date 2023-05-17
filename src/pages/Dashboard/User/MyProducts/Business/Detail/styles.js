@@ -16,6 +16,8 @@ export const Container = styled.div`
   @media screen and (max-width: 700px) {
     padding-inline: 0;
     gap: 24px;
+    height: 100%;
+    flex: 1;
   }
 `;
 
@@ -60,4 +62,16 @@ export const Loader = styled.div`
   place-items: center;
   width: 100%;
   height: 100px;
+`;
+export const LastWrapper = styled.div`
+  max-width: 100%;
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+
+    position: sticky;
+    bottom: 0px;
+    padding: 24px;
+    z-index: 1000;
+    background-color: #ffffff;
+  }
 `;

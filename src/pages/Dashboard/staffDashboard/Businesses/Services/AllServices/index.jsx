@@ -93,7 +93,7 @@ const AllServices = () => {
     if (!mode) setDialog({});
     else
       setDialog({
-        mode: mode,
+        mode: mode,   
         serviceId: serviceId || "",
         progress: (dialog.progress > progress ? dialog.progress : progress) || dialog.progress,
       });
@@ -111,7 +111,7 @@ const AllServices = () => {
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader
-        Description="Add New Service"
+        Description="Add New Product"
         title="Products"
         handleButton={handleAddButton}
         placeholder="Search for a product..."

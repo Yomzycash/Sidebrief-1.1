@@ -95,7 +95,7 @@ export const Header = ({ isStaff, code }) => {
                 ? "awaiting-approval"
                 : "all"
             }`
-          : `/${"dashboard"}/businesses/${
+          : `/dashboard/my-products/business/${
               launchRequest.isLoading
                 ? `all-businesses`
                 : launchRequest.data.registrationStatus === "pending"

@@ -11,7 +11,7 @@ export const DropDownBtn = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding-left: 10px;
+
   cursor: pointer;
 `;
 
@@ -24,6 +24,13 @@ export const DropDownContent = styled.div`
   box-shadow: -4px 10px 16px 8px #95969714, 0px 10px 10px -5px #9596970a;
   border-radius: 12px;
   width: 200px;
+  z-index: 1000;
+ 
+  @media screen and (max-width: 380px) {
+    width: fit-content;
+    padding-inline-end : 10px;
+   
+  }
 `;
 export const DropDownItems = styled.div`
   padding: 4px 12px;
@@ -51,3 +58,18 @@ export const ArrowDown = styled.div`
   transition: 0.3s transform ease;
   padding: 0 5px;
 `;
+export const DropDownMobileContent = styled.div`
+  position: absolute;
+  top: 25px;
+  background: #fafafa;
+  /* z-index: 1; */
+  border: 1px solid #edf1f7;
+  box-shadow: -4px 10px 16px 8px #95969714, 0px 10px 10px -5px #9596970a;
+  border-radius: 12px;
+  width: 200px;
+  z-index: 1000;
+  @media screen and (max-width: 230px) {
+    width: fit-content;
+    padding-inline-end : 10px;
+   
+  }`

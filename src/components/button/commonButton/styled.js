@@ -18,4 +18,10 @@ export const ButtonContainer = styled.button`
     font-size: 14px;
     line-height: 21px;
   }
+  @media screen and (max-width: 700px) {
+    max-width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
