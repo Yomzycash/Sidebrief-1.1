@@ -17,6 +17,7 @@ import { SummaryCard } from "components/cards";
 import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 import Search from "components/navbar/Search";
 import { clearProductsInfo } from "utils/globalFunctions";
+import { useLocation } from "react-router-dom";
 
 const ProductHeader = ({
   title,
@@ -36,6 +37,8 @@ const ProductHeader = ({
     clearProductsInfo();
     action();
   };
+  const { pathname } = useLocation();
+  let path = pathname.includes("staff");
 
   return (
     <Header>
@@ -66,10 +69,12 @@ const ProductHeader = ({
             />
           </SearchWrapper>
           <ButtonWrapper>
-            <button onClick={handleButtonClick}>
-              <NoteIcon />
-              {actionText}
-            </button>
+            {!path && (
+              <button onClick={handleButtonClick}>
+                <NoteIcon />
+                {actionText}
+              </button>
+            )}
           </ButtonWrapper>
         </BottomContent>
       </MainHeader>

@@ -152,6 +152,7 @@ const ShareHolderKYC = () => {
     let b = documentContainer.length;
     let c = sameData?.length;
     let d = a * b;
+
     if (c === 0) {
       toast.error("All documents are required");
     } else if (d !== c) {

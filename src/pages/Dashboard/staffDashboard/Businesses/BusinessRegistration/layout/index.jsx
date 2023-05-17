@@ -216,6 +216,18 @@ const Registrationlayout = () => {
                 className={"searchbox"}
               />
             </SearchWrapper>
+            <Flex>
+              <ExportWrapper>
+                <ExportIcon />
+                <TitleWrapper>Export Businesses</TitleWrapper>
+              </ExportWrapper>
+              <ButtonWrapper onClick={() => navigate("/launch")}>
+                <button>
+                  <NoteIcon />
+                  Start Business Registration
+                </button>
+              </ButtonWrapper>
+            </Flex>
           </BottomContent>
         </MainHeader>
          
