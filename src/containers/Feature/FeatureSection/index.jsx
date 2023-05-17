@@ -53,7 +53,7 @@ const FeatureSection = ({
             action={anotherBtnAction}
           />
 
-         {/* {!matches ? (  */}
+         {!matches ? ( 
            <CommonButton
               LeftIcon={btnLeftIcon}
               RightIcon={btnRightIcon}
@@ -61,12 +61,12 @@ const FeatureSection = ({
               text={btnText}
               action={btnAction}
          />
-         {/* ): (
+         ): (
           <NoBackgroundButton
             text={btnText}
             action={btnAction}
         />
-         )} */}
+         )}
         </TopRight>
       </Top>
       <Content>{children}</Content>

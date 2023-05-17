@@ -5,9 +5,9 @@ import MobileInfo from "containers/BusinessDetail/Header/MobileHeader";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { userSidebarItems } from "utils/config";
+import { staffSidebarItems } from "utils/config";
 
-const StaffBusiness = ({
+const MobileStaff = ({
   details,
   title,
   options,
@@ -38,10 +38,10 @@ const StaffBusiness = ({
     <Layout>
       <Header>
         {!details ? (
-          <MobileNavbar items={userSidebarItems} shadow border padding />
+          <MobileNavbar items={staffSidebarItems} shadow border padding />
         ) : (
           <MobileNavbar
-            items={userSidebarItems}
+            items={staffSidebarItems}
             backLink={backLink}
             shadow
             border
@@ -92,7 +92,7 @@ const StaffBusiness = ({
   );
 };
 
-export default StaffBusiness;
+export default MobileStaff;
 
 const Layout = styled.div`
   width: 100%;
