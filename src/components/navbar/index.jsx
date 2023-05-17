@@ -72,9 +72,6 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
     refetch();
   }, [refreshNotifications]);
 
-  // let newNotifications = useMemo(() => {
-  //   return getUnReadNotifications(data);
-  // }, [refreshNotifications]);
   let newNotifications = getUnReadNotifications(staffEmail ? data : userNotifications?.data);
   // console.log(getUnReadNotifications(data));
 
@@ -82,7 +79,6 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
     <>
       {dashboard || rewards ? (
         <NavWrapper
-          // boxshadow={boxshadow}
           border="1px solid #EDF1F7"
           key="Navbar"
           initial={{ opacity: 0 }}

@@ -74,23 +74,87 @@
 //   }
 // `;
 
+// import React from 'react';
+// import { Doughnut } from 'react-chartjs-2';
+// import styled from "styled-components";
+// import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+
+// ChartJS.register(ArcElement, Tooltip);
+
+// const CircleChart = ({ totalApplications, rejectedApplications, drafts, pendingApplications, }) => {
+//   const allData = {
+//     labels: ['Total'],
+//     datasets: [
+//       {
+//         data: [totalApplications, rejectedApplications],
+//         backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+//       },
+//     ],
+//   };
+
+//   const DraftData = {
+//     labels: ['Pending'],
+//     datasets: [
+//       {
+//         data: [totalApplications, drafts],
+//         backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+//       },
+//     ],
+//   };
+
+
+//   const submittedData = {
+//     labels: ['Submitted'],
+//     datasets: [
+//       {
+//         data: [totalApplications, rejectedApplications],
+//         backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)'],
+//       },
+//     ],
+//   };
+
+
+
+//   const options = {
+//     cutoutPercentage: 50,
+//     rotation: -0.5 * Math.PI,
+//     legend: {
+//       display: false,
+//     },
+//     tooltips: {
+//       enabled: false,
+//     },
+//   };
+
+//   return <Doughnut data={allData} height={150} width={150} options/>;
+// };
+
+// export default CircleChart;
+
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-// import styled from "styled-components";
-import { Chart as ChartJS, ArcElement, Tooltip } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip);
 
-const CircleChart = ({ totalApplications, rejectedApplications, drafts, pendingApplications, }) => {
-  const data = {
-    labels: ['Total Applications', 'Rejected Applications'],
-    datasets: [
-      {
-        data: [totalApplications, rejectedApplications],
-        backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)'],
-      },
-    ],
-  };
+const CircleChart = ({ totalApplications, pendingApplications, submittedApplications }) => {
+  const chartData = [
+    {
+      label: 'Total',
+      data: [totalApplications],
+      backgroundColor: ['rgba(154, 102, 235, 0.5)'],
+    },
+    {
+      label: 'Pending',
+      data: [pendingApplications],
+      backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+    },
+    {
+      label: 'Submitted',
+      data: [submittedApplications],
+      backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+    },
+  ];
 
   const options = {
     cutoutPercentage: 50,
@@ -103,7 +167,111 @@ const CircleChart = ({ totalApplications, rejectedApplications, drafts, pendingA
     },
   };
 
-  return <Doughnut data={data} height={150} width={150}/>;
+  return (
+    <div>
+      {chartData.map((data, index) => (
+        <div key={index}>
+          <Doughnut
+            data={{
+              labels: [data.label],
+              datasets: [
+                {
+                  data: data.data,
+                  backgroundColor: data.backgroundColor,
+                },
+              ],
+            }}
+            height={150}
+            width={150}
+            options={options}
+          />
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default CircleChart;
+
+
+// import React from 'react';
+// import { Doughnut } from 'react-chartjs-2';
+// import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js';
+
+// ChartJS.register(ArcElement, Tooltip);
+
+// const CircleChart = ({ totalApplications, pendingApplications, submittedApplications }) => {
+//   const calculatePercentage = (value) => ((value / totalApplications) * 100).toFixed(2);
+
+//   const pendingPercentage = calculatePercentage(pendingApplications);
+//   const submittedPercentage = calculatePercentage(submittedApplications);
+
+//   const options = {
+//     cutoutPercentage: 50,
+//     rotation: -0.5 * Math.PI,
+//     legend: {
+//       display: false,
+//     },
+//     tooltips: {
+//       enabled: false,
+//     },
+//   };
+
+//   return (
+//     <div>
+//       <div>
+//         <Doughnut
+//           data={{
+//             labels: ['Total'],
+//             datasets: [
+//               {
+//                 data: [totalApplications],
+//                 backgroundColor: ['#36A2EB' , '#FF6384'],
+//               },
+//             ],
+//           }}
+//           height={150}
+//           width={150}
+//           options={options}
+//         />
+//       </div>
+
+//       <div>
+//         <Doughnut
+//           data={{
+//             labels: ['Pending'],
+//             datasets: [
+//               {
+//                 data: [totalApplications - pendingApplications],
+//                 backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(0, 0, 0, 0)'],
+//               },
+//             ],
+//           }}
+//           height={150}
+//           width={150}
+//           options={options}
+//         />
+//       </div>
+
+//       <div>
+//         <Doughnut
+//           data={{
+//             labels: ['Submitted'],
+//             datasets: [
+//               {
+//                 data: [submittedApplications, totalApplications - submittedApplications],
+//                 backgroundColor: ['rgba(75, 192, 192, 0.5)', 'rgba(0, 0, 0, 0)'],
+//               },
+//             ],
+//           }}
+//           height={150}
+//           width={150}
+//           options={options}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CircleChart;
+

@@ -1,10 +1,11 @@
+
 import React from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Accordion = ({ name, type, country, date, code, countryISO, navigate,product, action }) => {
+const StaffProductAccordion = ({ name, type, country, date, code, countryISO, navigate,product, action , serviceId, userCode}) => {
   const launchInfo = {
     launchCode: code,
     registrationCountry: countryISO,
@@ -27,16 +28,16 @@ const Accordion = ({ name, type, country, date, code, countryISO, navigate,produ
       {isActive && (
         <AllContentWrapper>
           <ContentWrapper>
-            <SubContentWrapper>
-              <ContentTitle>{content? 'Type' : 'Status'}</ContentTitle>
+          <SubContentWrapper>
+              <ContentTitle>Service ID</ContentTitle>
               <SubWrapper>
-                <ContentTitle>{type}</ContentTitle>
+                <ContentTitle>{serviceId}</ContentTitle>
               </SubWrapper>
             </SubContentWrapper>
             <SubContentWrapper>
-              <ContentTitle>Country</ContentTitle>
+              <ContentTitle>User Code</ContentTitle>
               <SubWrapper>
-                <ContentTitle>{country}</ContentTitle>
+                <ContentTitle>{userCode}</ContentTitle>
               </SubWrapper>
             </SubContentWrapper>
             <SubContentWrapper>
@@ -58,7 +59,7 @@ const Accordion = ({ name, type, country, date, code, countryISO, navigate,produ
   );
 };
 
-export default Accordion;
+export default StaffProductAccordion;
 
 const Wrapper = styled.div`
   box-sizing: border-box;
