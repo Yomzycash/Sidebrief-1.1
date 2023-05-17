@@ -11,7 +11,7 @@ import { CommonButton } from "components/button";
 import { useMediaQuery } from "@mui/material";
 import NoBackgroundButton from "components/button/NoBackgroundButton";
 
-const StaffRewardHeader = ({
+const StaffProductHeader = ({
   title = "Rewards",
   shown = "12",
   total = "328",
@@ -80,18 +80,18 @@ const StaffRewardHeader = ({
                 <DropdownWrapper>
                   <CategoryText>Category</CategoryText>
                   <CustomDropdown
-                    options={newservicesCategory}
-                    intialvalue="All"
-                    selectedValue={categorySelected}
-                  />
+                        options={newservicesCategory}
+                        intialvalue="All"
+                        selectedValue={categorySelected}
+                    />
                 </DropdownWrapper>
                 <DropdownWrapper>
                   <CategoryText>Country</CategoryText>
                   <CustomDropdown
-                    options={newCountriesCategory}
-                    intialvalue="All"
-                    selectedValue={countrySelected}
-                  />
+                        options={newCountriesCategory}
+                        intialvalue="All"
+                        selectedValue={countrySelected}
+                    />
                 </DropdownWrapper>
               </DropdownContainer>
             )}
@@ -122,7 +122,7 @@ const StaffRewardHeader = ({
     </Container>
   );
 };
-export default StaffRewardHeader;
+export default StaffProductHeader;
 const Container = styled.div`
   display: flex;
   flex-flow: column;
@@ -220,7 +220,7 @@ const DropdownContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 24px;
+  gap: 30px;
   max-width: 431px;
 `;
 const DropdownWrapper = styled.div`
@@ -228,6 +228,10 @@ const DropdownWrapper = styled.div`
   gap: 8px;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width:700px) {
+
+  }
 `;
 const CategoryText = styled.h3`
   font-weight: 500;
@@ -235,15 +239,14 @@ const CategoryText = styled.h3`
   line-height: 21px;
   /* identical to box height, or 150% */
   color: #000000;
+  
 `;
 
-export const MobileView = styled.div`
+const MobileView = styled.div`
   @media screen and (max-width:700px) {
     position:absolute;
-    bottom:95px;
-    right:5px;
+    bottom: 143px;
+    right: 4px;
   }
 `
-
-// needed 
 
