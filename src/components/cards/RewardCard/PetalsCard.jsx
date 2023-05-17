@@ -39,10 +39,7 @@ const PetalsCard = ({
   }, []);
 
   const getDisplay = () => {
-    const buttonDisplay = window.getComputedStyle(
-      buttonRef.current,
-      null
-    ).display;
+    const buttonDisplay = window.getComputedStyle(buttonRef.current, null).display;
     if (buttonDisplay !== buttonDisplayValue) {
       setButtonDisplayValue(buttonDisplay);
     }
@@ -54,9 +51,7 @@ const PetalsCard = ({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       hover={hover}
-      onClick={
-        buttonDisplayValue === "none" ? (action ? action : () => {}) : () => {}
-      }
+      onClick={buttonDisplayValue === "none" ? (action ? action : () => {}) : () => {}}
       rewardspage={!showClaim}
     >
       <Corner>

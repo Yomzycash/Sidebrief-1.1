@@ -3,7 +3,7 @@ import { ArrowDown, DropDownBtn, DropDownContent, DropDownItems, TextContainer }
 import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
-const CustomDropdown = ({  
+const CustomDropdown = ({
   options,
   intialvalue,
   selectedValue,
@@ -16,9 +16,8 @@ const CustomDropdown = ({
   const [selected, setSelected] = useState(intialvalue);
   const [newSelected, setNewSelected] = useState({
     title: initialTitle,
-    totalLength: initialLength
+    totalLength: initialLength,
   });
-
   const [isActive, setIsActive] = useState(false);
 
   const dropdownRef = useRef(null);
@@ -77,7 +76,6 @@ const CustomDropdown = ({
           </>
         )}
       </DropDownBtn>
-
       {isActive && !mobile && (
         <DropDownContent>
           {options?.map((option, index) => (
@@ -94,7 +92,6 @@ const CustomDropdown = ({
           ))}
         </DropDownContent>
       )}
-      
       {isActive && mobile && (
         <DropDownContent>
           {originalOptions?.map((option, index) => (

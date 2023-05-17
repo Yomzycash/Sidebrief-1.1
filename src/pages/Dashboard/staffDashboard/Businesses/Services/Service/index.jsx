@@ -111,8 +111,6 @@ const ServicePage = () => {
       date: comply.updatedAt,
     })) : [];
 
- 
-
 
   return (
     <Container>
@@ -176,7 +174,7 @@ const ServicePage = () => {
         btnRightIcon={ArrowLeftIcon}
         btnAction={handleViewAllComply}
       >
-        {allComply.isLoading && (
+        {/* {allComply.isLoading && (
             <Loading height="300px">
               <Puff stroke="#00A2D4" fill="white" width={60} />
             </Loading>
@@ -189,26 +187,21 @@ const ServicePage = () => {
             />
         ) : (
           <MobileContainer>
-            {/* {allComply.data?.map((element) => {
-                return (
-                  <Accordion
-                    key={element?.complyCode}
-                    // date={format(new Date(element?.date), "dd/MM/yyyy")}
-                    date={sortedData.length < 1 ? '--': format(new Date(element?.date), "dd/MM/yyyy")}
-                  
-                  />
-                )
-            })} */}
-            {/* {dataComply.map((element) => {
-              return (
-                <Accordion
-                  key={element?.complyCode}
-                  date={dataComply.length < 1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
-              />
-              );
-            })} */}
-            data here
+
           </MobileContainer>
+        )} */}
+        {allComply.isLoading ? (
+          <Loading height="300px">
+            <Puff stroke="#00A2D4" fill="white" width={60} />
+          </Loading>
+        ) : (
+          allComply?.data?.length > 0 && (
+            <GeneralTable
+              columns={columns}
+              data={sortedData}
+              normalLastRow
+            />
+          )
         )}
 
         <StaffServicesModal

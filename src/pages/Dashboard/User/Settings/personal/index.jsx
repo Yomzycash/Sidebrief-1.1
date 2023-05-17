@@ -58,7 +58,7 @@ const Personal = () => {
           <User />
           <NameAndPost>
             <Name>{`${userInfo.first_name} ${userInfo.last_name}`}</Name>
-            <Position>Compliance officer</Position>
+            {/* <Position>Compliance officer</Position> */}
           </NameAndPost>
         </UserContainer>
         {!editable ? (

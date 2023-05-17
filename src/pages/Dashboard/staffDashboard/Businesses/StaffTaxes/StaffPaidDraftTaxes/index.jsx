@@ -53,6 +53,7 @@ const StaffPaidDraftTaxes = () => {
 
   const matches = useMediaQuery("(max-width:700px)");
 
+  
   const handleRowClick = (el) => {
     let complyCode = el?.complyCode;
     navigate(`/staff-dashboard/businesses/tax/paid-draft-taxes/${complyCode}/info`);
@@ -90,9 +91,7 @@ const StaffPaidDraftTaxes = () => {
                     )?.countryName
                   }
                   date={dataArr.length < 1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
-                  // navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
-                  // action={() => { navigate(`/staff-dashboard/businesses/manage/all-manage/${element?.complyCode}/info`)
-                  // action={()=> { navigate(url)}}  
+                  action={() => { navigate(`/staff-dashboard/businesses/tax/paid-draft-taxes/${element?.complyCode}/info`)}}
               />
               );
             })}

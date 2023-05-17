@@ -9,7 +9,8 @@ import { ReactComponent as PlusIcon } from "../../../../../src/asset/Icons/Add.s
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
-import useMobile from "../../../../utils/useMobile";
+import { useMediaQuery } from "@mui/material";
+import { IoIosAdd } from "react-icons/io";
 
 import {
   useGetAllCountriesQuery,
@@ -36,8 +37,8 @@ const StaffBusinesses = (props) => {
   // const navigate = useNavigate();
 
   // Fetch and set all countries and all entities
-  
-
+  const [isActive, setIsActive] = useState(false);
+  const matches = useMediaQuery("(max-width:700px)");
   useEffect(() => {
     let countries = allCountries?.data;
     let entities = allEntities?.data;
@@ -105,7 +106,6 @@ const StaffBusinesses = (props) => {
   const monthName = allMonths[month];
   allMonths.splice(month, 1, `This month (${monthName.slice(0, 3)})`);
 
-  const isMobile = useMobile();
 
   return (
     <Container>
@@ -134,25 +134,37 @@ const StaffBusinesses = (props) => {
           </ViewWrapper>
         </BusinessTop>
         
-        {/* Accordion Opens */}
-        <MiddleContainer>
+      {!matches ? (
+        <>
+           <MiddleContainer>
           <TitleWrapper>
             Business Summary 
           </TitleWrapper>
-          {/* <RegistrationBlock>
-            <AddIcon color={"#FFFFFF"} />
-            {!isMobile ? (
-                <TextContent to="/launch">Start Registration</TextContent>
-            ) : (
-              <TextContent to="/launch">Start Signing</TextContent>
-            )}
-            
-          </RegistrationBlock> */}
         </MiddleContainer>
-
         <CardWrapper>
           <StaffStatusCard status={businessStatus} />
         </CardWrapper>
+        </>
+         
+      ): (
+        <>
+           <Wrapper>
+            <TitleHead onClick={() => setIsActive(!isActive)} isActive={isActive}>
+            <Title>Business Summary </Title>
+            <ToggleArrow onClick={() => setIsActive(!isActive)} isActive={isActive} >
+              <IoIosAdd fontSize={"2em"}/>
+            </ToggleArrow>
+          </TitleHead>
+          
+          </Wrapper> 
+          {isActive && 
+            <CardWrapper>
+              <StaffStatusCard status={businessStatus} />
+            </CardWrapper>
+          }
+        </>
+      )}
+        
 
         {/* Accordion Closes */}
         <Outlet />
@@ -294,12 +306,13 @@ const MiddleContainer = styled.div`
   margin-block-end: 24px;
 
   @media screen and (max:width:700px) {
-    flex-direction: column;
-    align-items:flex-start;
+    // flex-direction: column;
+    // align-items:flex-start;
 
-    gap: 16px;
-    width: 100%;
-    padding-inline: 0px !important;
+    // gap: 16px;
+    // width: 100%;
+    // padding-inline: 0px !important;
+    display:none;
   }
 `;
 const TitleWrapper = styled.h3`
@@ -396,3 +409,45 @@ const ToggleDown = styled.p`
     display:block;
   }
 `
+
+const Wrapper = styled.div`
+  @media screen and (max-width:700px) {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px 5px 20px 0px;
+  }
+ 
+
+`;
+const TitleHead = styled.div`
+  @media screen and (max-width:700px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+`;
+const Title = styled.h2`
+@media screen and (max-width:700px) {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+
+  letter-spacing: -0.01em;
+
+  color: #000;
+}
+`;
+const ToggleArrow = styled.div`
+  @media screen and (max-width:700px) {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transform: ${({ isActive }) => (isActive ? "rotate(45deg)" : "")};
+    transition: 0.3s transform ease;
+    padding: 0 5px;
+  }
+  
+`;
+

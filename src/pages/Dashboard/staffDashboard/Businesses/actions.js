@@ -13,7 +13,7 @@ export const useCategoriesActions = ({
 }) => {
   const navigate = useNavigate();
 
-  const CategoryServices = useGetServicesByCategoryQuery(category);
+  const CategoryServices = useGetServicesByCategoryQuery(category, { skip: !category });
   const allUsersComply = useViewAllComplyQuery();
 
   const getServiceInfo = (id) => CategoryServices.data?.find((el) => el?.serviceId === id);
@@ -25,8 +25,8 @@ export const useCategoriesActions = ({
   const complyFullInfo = CategoryComplies?.map((el) => {
     let serviceInfo = getServiceInfo(el?.serviceId);
     return {
-      ...el,
       ...serviceInfo,
+      ...el,
     };
   });
 
@@ -98,5 +98,7 @@ export const useCategoriesActions = ({
     sortData,
     filterWhenSearched,
     includesSearched,
+    allUsersComply,
+    CategoryServices,
   };
 };

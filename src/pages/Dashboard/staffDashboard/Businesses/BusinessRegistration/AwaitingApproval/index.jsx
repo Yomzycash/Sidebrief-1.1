@@ -94,7 +94,7 @@ const Awaiting = () => {
 									code={element.launchCode}
 									countryISO={element.registrationCountry}
 									navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
-									/>
+								/>
 							)
 						})}
 					</MobileContainer>

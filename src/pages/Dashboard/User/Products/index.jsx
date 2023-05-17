@@ -11,7 +11,7 @@ import { FaCheckDouble } from "react-icons/fa";
 import { useEffect } from "react";
 import { store } from "redux/Store";
 import { setGeneratedLaunchCode, setLaunchResponse } from "redux/Slices";
-import { removeProductsFromLocalStorage } from "utils/globalFunctions";
+import { removeLaunchFromStore, clearProductsInfo } from "utils/globalFunctions";
 import LoadingError from "components/Fallbacks/LoadingError";
 
 const Products = () => {
@@ -57,7 +57,7 @@ const Products = () => {
   };
 
   useEffect(() => {
-    removeProductsFromLocalStorage();
+    clearProductsInfo();
   }, []);
 
   // console.log(allCategories);

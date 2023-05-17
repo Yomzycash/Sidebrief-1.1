@@ -87,10 +87,9 @@ const StaffPendingOnboarded = () => {
                         (country) => country.countryISO === element?.serviceCountry
                       )?.countryName
                     }
+                    product
                     date={dataArr.length < 1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
-                    // navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
-                    // action={() => { navigate(`/staff-dashboard/businesses/manage/all-manage/${element?.complyCode}/info`)
-                    // action={()=> { navigate(url)}}  
+                    action={() => { navigate(`/staff-dashboard/businesses/onboard/submitted-onboard/${element?.complyCode}/info`)}} 
                 />
               );
             })}

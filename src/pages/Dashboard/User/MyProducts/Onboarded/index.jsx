@@ -11,7 +11,6 @@ import { useMediaQuery } from "@mui/material";
 import MobileBusiness from "layout/MobileBusiness";
 import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 
-
 //
 
 const Onboarded = () => {
@@ -80,18 +79,36 @@ const Onboarded = () => {
 
   let isFirstNav =
     pathname === "/dashboard/my-products/onboard" && "/dashboard/my-products/onboard/all-onboard";
-    const matches = useMediaQuery("(max-width:700px)");
-    let pathNavigation = {
-      All: "all",
-      Submitted: "submitted",
-      Drafts: "draft",
-      "Paid Drafts": "paid-draft",
-    };
-    const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
-  
-    const navigate = useNavigate();
-    const selectedValue = (option) => {
-      navigate(`/dashboard/my-products/onboard/${pathNavigation[option]}-onboard`);
+  const matches = useMediaQuery("(max-width:700px)");
+  let pathNavigation = {
+    All: "all",
+    Submitted: "submitted",
+    Drafts: "draft",
+    "Paid Drafts": "paid-draft",
+  };
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
+  const navigate = useNavigate();
+  const selectedValue = (option) => {
+    navigate(`/dashboard/my-products/onboard/${pathNavigation[option?.title]}-onboard`);
   };
   const handleOnboard = () => {
     navigate("/services/onboard");
@@ -99,20 +116,27 @@ const Onboarded = () => {
 
   return (
     <Container>
-       {matches ? (
-        <MobileBusiness options={options} title={"Onboarded"} selectedValue={selectedValue} />
+      {matches ? (
+        <MobileBusiness 
+        realSelectedValue={selectedValue}
+        originalOptions={options}
+        initialTitle={"All"}
+        initialLength={submittedTotal + draftTotal}
+        mobile
+        title={"Onboarded"}/>
       ) : (
-      <ProductHeader
-        title="Onboarded"
-        searchPlaceholder="Search onboarded..."
-        summary={summary}
-        filterList={filterList}
-        action={handleCategoryCreate}
-        actionText="Onboard a Business"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
-      /> )}
+        <ProductHeader
+          title="Onboarded"
+          searchPlaceholder="Search onboarded..."
+          summary={summary}
+          filterList={filterList}
+          action={handleCategoryCreate}
+          actionText="Onboard a Business"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        />
+      )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -136,12 +160,12 @@ const Onboarded = () => {
           }}
         />
       )}
-       {matches && (
+      {matches && (
         <LastWrapper>
           <ButtonContainer>
             <button onClick={handleOnboard}>
               <NoteIcon />
-             Onboard a Business
+              Onboard a Business
             </button>
           </ButtonContainer>
         </LastWrapper>

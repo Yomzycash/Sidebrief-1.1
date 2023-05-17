@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext , useLocation} from "react-router-dom";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
 import { useCategoriesActions } from "../../actions";
@@ -51,11 +51,15 @@ const StaffDraftTaxes = () => {
 
   const matches = useMediaQuery("(max-width:700px)");
 
+  let url = "";
   const handleRowClick = (el) => {
     let complyCode = el?.complyCode;
-    navigate(`/staff-dashboard/businesses/tax/draft-taxes/${complyCode}/info`);
+    url = `/staff-dashboard/businesses/tax/draft-taxes/${complyCode}/info`
+    navigate(url);
   };
-
+  
+  const { pathname } = useLocation();
+  const staffUrl = pathname.includes("/staff-dashboard")
   return (
     <Container>
       <Body>
@@ -87,10 +91,9 @@ const StaffDraftTaxes = () => {
                       (country) => country.countryISO === element?.serviceCountry
                     )?.countryName
                   }
+                  product
                   date={dataArr.length < 1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
-                  // navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
-                  // action={() => { navigate(`/staff-dashboard/businesses/manage/all-manage/${element?.complyCode}/info`)
-                  // action={()=> { navigate(url)}}  
+                  action={()=> { navigate(url)}}  
               />
               );
             })}

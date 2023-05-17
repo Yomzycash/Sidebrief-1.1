@@ -1,5 +1,5 @@
 import { GeneralTable } from "components/Tables";
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useGetAllLaunchQuery } from "services/staffService";
 import { Body, Container, Loading, MobileContainer } from "./styled";
 import { format } from "date-fns";
@@ -13,8 +13,6 @@ import BusinessesCard from "components/cards/BusinessAddressCard";
 import { staffNavigateToDetailPage } from "utils/globalFunctions";
 import { useNavigate } from "react-router-dom";
 import Accordion from "components/Accordion";
-import { setBatchDeleteArray } from "redux/Slices";
-import { store } from "redux/Store";
 
 const All = () => {
   const [tableArr, setTableArr] = useState([]);
@@ -56,8 +54,6 @@ const All = () => {
   }, [itemOffset, itemsPerPage, sortedArr]);
 
   const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
-  console.log("currentItems", currentItems);
-  
   return (
     <Container>
       <Body>

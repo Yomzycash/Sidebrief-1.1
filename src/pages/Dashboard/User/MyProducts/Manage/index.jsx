@@ -11,8 +11,6 @@ import { useMediaQuery } from "@mui/material";
 import MobileBusiness from "layout/MobileBusiness";
 import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 
-
-
 //
 
 const Manage = () => {
@@ -81,18 +79,37 @@ const Manage = () => {
 
   let isFirstNav =
     pathname === "/dashboard/my-products/manage" && "/dashboard/my-products/manage/all-manage";
-    const matches = useMediaQuery("(max-width:700px)");
-    let pathNavigation = {
-      All: "all",
-      Submitted: "submitted",
-      Drafts: "draft",
-      "Paid Drafts": "paid-draft",
-    };
-    const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
-  
-    const navigate = useNavigate();
-    const selectedValue = (option) => {
-      navigate(`/dashboard/my-products/manage/${pathNavigation[option]}-manage`);
+  const matches = useMediaQuery("(max-width:700px)");
+  let pathNavigation = {
+    All: "all",
+    Submitted: "submitted",
+    Drafts: "draft",
+    "Paid Drafts": "paid-draft",
+  };
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  options = options.filter((el) => el?.title !== "");
+
+  const navigate = useNavigate();
+  const selectedValue = (option) => {
+    navigate(`/dashboard/my-products/manage/${pathNavigation[option?.title]}-manage`);
   };
   const handleManage = () => {
     navigate("/services/manage");
@@ -100,22 +117,28 @@ const Manage = () => {
 
   return (
     <Container>
-      
-      
       {matches ? (
-        <MobileBusiness options={options} title={"Manage"} selectedValue={selectedValue} />
+        <MobileBusiness
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          mobile
+          title={"Manage"}
+        />
       ) : (
-      <ProductHeader
-        title="Manage"
-        searchPlaceholder="Search manage..."
-        summary={summary}
-        filterList={filterList}
-        action={handleCategoryCreate}
-        actionText="Manage a Business"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
-      /> )}
+        <ProductHeader
+          title="Manage"
+          searchPlaceholder="Search manage..."
+          summary={summary}
+          filterList={filterList}
+          action={handleCategoryCreate}
+          actionText="Manage a Business"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
+        />
+      )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />
@@ -144,12 +167,11 @@ const Manage = () => {
           <ButtonContainer>
             <button onClick={handleManage}>
               <NoteIcon />
-             Manage a Business
+              Manage a Business
             </button>
           </ButtonContainer>
         </LastWrapper>
       )}
-      
     </Container>
   );
 };

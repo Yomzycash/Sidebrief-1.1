@@ -115,7 +115,7 @@ const TagInput = ({
   // Return the tags array
   useEffect(() => {
     if (getSelectedValues) getSelectedValues(tags);
-  }, [tags]);
+  }, [tags?.length]);
 
   // This sets the values of the tags when the component mounts
   useEffect(() => {

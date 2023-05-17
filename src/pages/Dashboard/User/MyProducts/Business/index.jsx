@@ -91,7 +91,29 @@ const Business = () => {
     pathname === "/dashboard/my-products/business" &&
     "/dashboard/my-products/business/all-applications";
 
-  const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  //const options = ["All", "Submitted", "Drafts", "Paid Drafts"];
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+  ];
+  //removing empty element from the array
+  options = options.filter((el) => el?.title !== "");
+
   let pathNavigation = {
     All: "all-businesses",
     Submitted: "submitted-applications",
@@ -101,14 +123,21 @@ const Business = () => {
 
   const selectedValue = (option) => {
     console.log(option);
-    navigate(`/dashboard/my-products/business/${pathNavigation[option]}`);
-    console.log(pathNavigation[option]);
+    navigate(`/dashboard/my-products/business/${pathNavigation[option?.title]}`);
+    //console.log(pathNavigation[option]);
   };
 
   return (
     <Container>
       {matches ? (
-        <MobileBusiness options={options} title={"Businesses"} selectedValue={selectedValue} />
+        <MobileBusiness
+          realSelectedValue={selectedValue}
+          originalOptions={options}
+          title={"Businesses"}
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          mobile
+        />
       ) : (
         <ProductHeader
           title="Businesses"
@@ -158,7 +187,7 @@ const Business = () => {
           }}
         />
       )}
-       {matches && (
+      {matches && (
         <LastWrapper>
           <ButtonWrapper>
             <button onClick={handleLaunch}>

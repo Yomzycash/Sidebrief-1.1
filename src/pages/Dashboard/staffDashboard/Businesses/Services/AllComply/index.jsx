@@ -23,6 +23,9 @@ import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useViewAllComplyQuery } from "services/complyService";
+import { useMediaQuery } from "@mui/material";
+import MobileStaff from "layout/MobileStaff";
+
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
@@ -42,6 +45,40 @@ const Registrationlayout = () => {
   const draft = data?.filter((el) => el.status === "pending") || [];
 
   const iconStyle = { width: "17px", height: "17px" };
+
+  const matches = useMediaQuery("(max-width:700px)");
+
+  let options = [
+    {
+      title: data?.length > 0 ? "All" : "",
+      totalLength: data?.length ,
+    },
+    {
+      title: submitted?.length > 0 ? "Submitted" : "",
+      totalLength: submitted?.length,
+    },
+
+    {
+      title: draft?.length > 0 ? "Drafts" : "",
+      totalLength: draft?.length,
+    },
+  ];
+
+  //removing empty element from the array
+  options = options.filter((el) => el?.title !== "");
+
+  let pathNavigation = {
+    All: "all",
+    Submitted: "awaiting-approval",
+    Drafts: "pending",
+  };
+
+  const handleRowClick = (el) => {
+    let complyCode = el?.complyCode;
+    navigate(`/staff-dashboard/businesses/services/${complyCode}/info`)
+  };
+  // staff-dashboard/businesses/registration/pending
+
   return (
     <Container>
       <Header>
@@ -76,23 +113,34 @@ const Registrationlayout = () => {
             </Flex>
           </BottomContent>
         </MainHeader>
-        <SubHeader>
-          <ActiveNav
-            text="All"
-            total={data?.length || 0}
-            path={"/staff-dashboard/businesses/services/allcomply/all"}
-          />
-          <ActiveNav
-            text="Submitted"
-            total={submitted?.length}
-            path={"/staff-dashboard/businesses/services/allcomply/submitted"}
-          />
-          <ActiveNav
-            text="Draft"
-            total={draft?.length}
-            path={"/staff-dashboard/businesses/services/allcomply/draft"}
-          />
-        </SubHeader>
+        {/* {!matches ? ( */}
+            <SubHeader>
+            <ActiveNav
+              text="All"
+              total={data?.length || 0}
+              path={"/staff-dashboard/businesses/services/allcomply/all"}
+            />
+            <ActiveNav
+              text="Submitted"
+              total={submitted?.length}
+              path={"/staff-dashboard/businesses/services/allcomply/submitted"}
+            />
+            <ActiveNav
+              text="Draft"
+              total={draft?.length}
+              path={"/staff-dashboard/businesses/services/allcomply/draft"}
+            />
+          </SubHeader>
+        {/* ) : (
+            <MobileStaff
+              title={"Compliance"}
+              originalOptions={options} 
+              initialTitle={"All"}
+              initialLength={data?.length}
+              mobile
+            />
+        )} */}
+        
       </Header>
       <Outlet />
     </Container>

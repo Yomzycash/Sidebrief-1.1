@@ -29,6 +29,7 @@ const StaffAllManage = () => {
 
   const navigate = useNavigate();
 
+  console.log(all.filter((el) => el?.serviceId === "8473433669"));
 
   // Sort data
   useEffect(() => {
@@ -49,6 +50,7 @@ const StaffAllManage = () => {
     el?.serviceCountry,
     el?.paid?.toString(),
     format(new Date(el?.createdAt), "dd-MM-yyyy"),
+    // el?.createdAt?.slice(0, 10),
   ]);
   console.log("dataBody", dataBody)
 
@@ -94,11 +96,9 @@ const StaffAllManage = () => {
                       (country) => country.countryISO === element?.serviceCountry
                     )?.countryName
                   }
+                  product
                   date={dataArr.length < 1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
-									// navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
-                  // action={() => { navigate(`/staff-dashboard/businesses/manage/all-manage/${element?.complyCode}/info`)
-                  // action={()=> { navigate(url)}}  
-                  navigate={(element?.url)}
+                  action={()=> { navigate(`/staff-dashboard/businesses/manage/all-manage/${element?.complyCode}/info`)}}
                 />
               );
             })}

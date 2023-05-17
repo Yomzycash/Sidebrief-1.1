@@ -66,13 +66,15 @@ const MobileBusiness = ({
           />
         )}
         <CustomDropdown
-           intialvalue={!details ? "All" : initialValue}
-           selectedValue={selectedValue}
-           realSelectedValue={realSelectedValue}
-           mobile={mobile}
-           originalOptions={originalOptions}
-           initialTitle={initialTitle}
-           initialLength={initialLength}
+          // options={options}
+          intialvalue={!details ? "All" : initialValue}
+          selectedValue={selectedValue}
+          realSelectedValue={realSelectedValue}
+          mobile={mobile}
+          originalOptions={originalOptions}
+          initialTitle={initialTitle}
+          initialLength={initialLength}
+         
         />
         {reward && (
           <CustomDropdown
@@ -98,6 +100,7 @@ const Layout = styled.div`
   width: 100%;
   padding: 40px 24px 0px 24px;
   background-color: #ffffff;
+ 
 
   position: sticky;
   top: 0;

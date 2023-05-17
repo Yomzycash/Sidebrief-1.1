@@ -68,12 +68,27 @@ const Rewards = () => {
   }, [location.pathname]);
 
   const matches = useMediaQuery("(max-width:700px)");
-  const options= ["All Rewards", "My rewards"];
+  //const options= ["All Rewards", "My rewards"];
   const newOptions = ["All Rewards", "My rewards"];
+  // const selectedValue = (option) => {
+  //   console.log(option);
+  //   navigate(`/dashboard/my-products/business/${pathNavigation[option?.title]}`);
+  //   //console.log(pathNavigation[option]);
+  // };
+  let options = [
+    {
+      title: "All Rewards",
+      totalLength: allRewardsTotal,
+    },
+    {
+      title: "My rewards",
+      totalLength: myRewardsTotal,
+    },
+  ];
 
   return (
     <Container>
-      {rewardsPageHeader && !matches ? (
+      {rewardsPageHeader && !matches && (
         <Header>
           <MainHeader ref={mainHeaderRef}>
             <p>Rewards</p>
@@ -114,12 +129,14 @@ const Rewards = () => {
 
           {/* <AppFeedback subProject="Rewards" /> */}
         </Header>
-      ) : (
+      )}
+      {matches && (
         <MobileBusiness
-         // selectedValue={selectedValue}
+          //realSelectedValue={selectedValue}
           options={options}
+          // mobile
           //newSelectedValue={newSelectedValue}
-          newOptions={newOptions}
+          originalOptions={newOptions}
           reward
           title={"Rewards "}
         />
