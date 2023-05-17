@@ -3,10 +3,7 @@ import ConfirmDelete from "components/modal/ConfirmDelete";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import {
-  useDeleteCountryMutation,
-  useGetSingleCountryQuery,
-} from "services/staffService";
+import { useDeleteCountryMutation, useGetSingleCountryQuery } from "services/staffService";
 import styled from "styled-components";
 import { handleError } from "utils/globalFunctions";
 
@@ -49,6 +46,7 @@ const CountryDetailLayout = (pages) => {
         delLoading={deleteState.isLoading}
         setDeleteConfirm={setDeleteConfirm}
         countryISO={ISO}
+        code={ISO.slice(0, 2)}
       />
       <ConfirmDelete
         toDelete="Country"

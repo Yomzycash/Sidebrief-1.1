@@ -4,8 +4,9 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import Search from "components/navbar/Search";
 import { Link } from "react-router-dom";
 import ScrollableDiv from "layout/scrollableDiv";
+import Flag from "react-world-flags";
 
-const StaffBusinessCard = ({ title, subText, list, link }) => {
+const StaffBusinessCard = ({ title, subText, list, link,code }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -37,7 +38,7 @@ const StaffBusinessCard = ({ title, subText, list, link }) => {
               ?.filter((each) => each?.text?.toLowerCase().includes(searchTerm.toLowerCase()))
               ?.map((each, index) => (
                 <ListWrapper key={index}>
-                  {each.image && <img  src={each.image} alt="" />}
+                  {each.image && <Flag code={ each?.code?.toLowerCase()==='se' ? 'sn' :each?.code?.toLowerCase() }  fallback={ <span>Unknown</span> }/>}
                   <TextWrapper to={each.link ? each.link : ""}>{each?.text}</TextWrapper>
                 </ListWrapper>
               ))}

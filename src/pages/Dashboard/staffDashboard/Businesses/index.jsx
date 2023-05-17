@@ -47,6 +47,7 @@ const StaffBusinesses = (props) => {
             text: country.countryName,
             link: "",
             image: `https://flagsapi.com/${iso2}/flat/64.png`,
+            code: country.countryISO.slice(0,2),
           };
         })
     );
@@ -102,6 +103,7 @@ const StaffBusinesses = (props) => {
   const month = date.getMonth();
   const monthName = allMonths[month];
   allMonths.splice(month, 1, `This month (${monthName.slice(0, 3)})`);
+  console.log(countries);
 
   return (
     <Container>
@@ -140,6 +142,7 @@ const StaffBusinesses = (props) => {
           subText="Countries we are currently available in"
           list={countries}
           link="/staff-dashboard/businesses/countries"
+         code={countries?.code}
         />
         <StaffBusinessCard
           title="Entities"

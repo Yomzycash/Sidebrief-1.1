@@ -11,6 +11,7 @@ import { SortDropdown } from "containers/BusinessDetail/Header/SortDropdown";
 import { useLocation, useParams } from "react-router-dom";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
 import { useGetSingleCountryQuery, useGetCountryEntitiesQuery } from "services/staffService";
+import Flag from "react-world-flags";
 
 const HeaderDetail = ({
   countryName = "--",
@@ -22,6 +23,7 @@ const HeaderDetail = ({
   setCardAction,
   delLoading,
   setDeleteConfirm,
+  code,
 }) => {
   const [subHeaderHovered, setSubHeaderHovered] = useState(false);
   const { pathname } = useLocation();
@@ -49,13 +51,15 @@ const HeaderDetail = ({
               <CountryName>{isLoading ? countryName : data?.countryName}</CountryName>
               {!isLoading ? (
                 <ImageWrapper>
-                  <img
+                  {/* <img
                     crossOrigin="anonymous"
                     src={`https://countryflagsapi.com/png/${
                       data?.countryISO?.toLowerCase()?.split("-")[0]
                     }`}
                     alt="flag"
-                  />
+                  /> */}
+                  <Flag code={code?.toLowerCase() === "se" ? "sn" : code?.toLowerCase() }  fallback={ <span>Unknown</span> } height ='24'/>
+
                 </ImageWrapper>
               ) : null}
             </TopInfo>

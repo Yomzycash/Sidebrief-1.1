@@ -545,9 +545,9 @@ const AppRouter = () => {
                 <Route index element={<AllRewards />} />
                 <Route path="all-rewards" element={<AllRewards />}></Route>
                 <Route path="my-rewards" element={<MyRewards />}></Route>
-                <Route path="details" element={<RewardDetails />} >
+                <Route path="details" element={<RewardDetails />}>
                   <Route path=":rewardID" element={<RewardDetails />} />
-                  </Route>
+                </Route>
               </Route>
 
               <Route path="reward-details" element={<RewardDetails />} />
@@ -582,6 +582,7 @@ const AppRouter = () => {
               <Route path="home" element={<StaffDashboard />} />
               <Route path="businesses" element={<Outlet />}>
                 <Route element={<StaffBusinesses />}>
+                  <Route path="overview" element={<StaffBusinesses />} />
                   <Route index element={<AllBusinessesSummary />} />
                   <Route path="all" element={<AllBusinessesSummary />} />
                   <Route path="awaiting-approval" element={<AwaitingBusinessesSummary />} />
