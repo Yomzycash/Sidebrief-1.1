@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
 import lookup from "country-code-lookup";
+import flags from "./flags";
 
 const Countries = () => {
   const [open, setOpen] = useState(false);
@@ -90,7 +91,7 @@ const Countries = () => {
               return (
                 <CountryCard
                   key={index}
-                  image={`https://flagsapi.com/${iso2}/flat/64.png`}
+                  image={flags[country.countryCode]}
                   name={country.countryName}
                   countryCode={country.countryISO}
                   countryNumber={country.countryCode}

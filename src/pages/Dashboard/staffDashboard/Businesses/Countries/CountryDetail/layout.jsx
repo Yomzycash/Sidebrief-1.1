@@ -48,6 +48,7 @@ const CountryDetailLayout = (pages) => {
         setCardAction={setCardAction}
         delLoading={deleteState.isLoading}
         setDeleteConfirm={setDeleteConfirm}
+        countryISO={ISO}
       />
       <ConfirmDelete
         toDelete="Country"

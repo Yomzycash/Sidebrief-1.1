@@ -8,6 +8,8 @@ import { ReactComponent as AddIcon } from "../../../../../src/asset/svg/Plus.svg
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
+
+import lookup from "country-code-lookup";
 import {
   useGetAllCountriesQuery,
   useGetApprovedLaunchQuery,
@@ -39,10 +41,12 @@ const StaffBusinesses = (props) => {
     setCountries(
       countries &&
         countries.map((country) => {
+          const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
+
           return {
             text: country.countryName,
             link: "",
-            image: `https://countryflagsapi.com/png/${country.countryISO.split("-")[0]}`,
+            image: `https://flagsapi.com/${iso2}/flat/64.png`,
           };
         })
     );

@@ -10,10 +10,7 @@ import Search from "components/navbar/Search";
 import { SortDropdown } from "containers/BusinessDetail/Header/SortDropdown";
 import { useLocation, useParams } from "react-router-dom";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
-import {
-  useGetSingleCountryQuery,
-  useGetCountryEntitiesQuery,
-} from "services/staffService";
+import { useGetSingleCountryQuery, useGetCountryEntitiesQuery } from "services/staffService";
 
 const HeaderDetail = ({
   countryName = "--",
@@ -42,18 +39,14 @@ const HeaderDetail = ({
   return (
     <Container>
       <Top>
-        <BackContainer
-          onClick={() => navigate("/staff-dashboard/businesses/countries")}
-        >
+        <BackContainer onClick={() => navigate("/staff-dashboard/businesses/countries")}>
           <FiArrowLeft color="#151717" size={24} />
           <Text>Back to Countries</Text>
         </BackContainer>
         <TitleContainer>
           <LHS>
             <TopInfo>
-              <CountryName>
-                {isLoading ? countryName : data?.countryName}
-              </CountryName>
+              <CountryName>{isLoading ? countryName : data?.countryName}</CountryName>
               {!isLoading ? (
                 <ImageWrapper>
                   <img
@@ -69,18 +62,12 @@ const HeaderDetail = ({
             <BottomInfo>
               <BottomContainer>
                 <BottomWrapper>
-                  <TextWrapper>
-                    {isLoading ? numberCode : `+${data?.countryCode}`}
-                  </TextWrapper>
+                  <TextWrapper>{isLoading ? numberCode : `+${data?.countryCode}`}</TextWrapper>
                 </BottomWrapper>
                 <BottomWrapper>
-                  <TextWrapper>
-                    {isLoading ? countryCode : data?.countryISO}
-                  </TextWrapper>
+                  <TextWrapper>{isLoading ? countryCode : data?.countryISO}</TextWrapper>
                 </BottomWrapper>
-                <TextWrapper>
-                  {isLoading ? countryCurrency : data?.countryCurrency}
-                </TextWrapper>
+                <TextWrapper>{isLoading ? countryCurrency : data?.countryCurrency}</TextWrapper>
               </BottomContainer>
             </BottomInfo>
           </LHS>
@@ -119,11 +106,7 @@ const HeaderDetail = ({
         />
         <ActiveNav
           text={"Entities"}
-          total={
-            entities.isLoading || !entities.data?.length
-              ? 0
-              : entities.data.length
-          }
+          total={entities.isLoading || !entities.data?.length ? 0 : entities.data.length}
           path={`/staff-dashboard/businesses/countries/${ISO}/entities`}
         />
       </SubHeader>
