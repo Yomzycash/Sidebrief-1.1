@@ -16,6 +16,7 @@ import { store } from "redux/Store";
 import { saveUserInfo } from "redux/Slices";
 import { checkStaffEmail, handleError } from "utils/globalFunctions";
 import { useLoginStaffMutation } from "services/staffService";
+import { Mixpanel } from "mixpanel";
 
 const SignIn = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -30,7 +31,6 @@ const SignIn = () => {
   const [loginStaff, staffState] = useLoginStaffMutation();
 
   const navigate = useNavigate();
-
 
   const TestRef = useRef();
 
@@ -61,15 +61,18 @@ const SignIn = () => {
     };
   }, []);
 
-
   // Login function block
-	const submitForm = async (formData) => {
-
+  const submitForm = async (formData) => {
     let staffCheck = checkStaffEmail(formData.email);
 
     let response = staffCheck
       ? await loginStaff(JSON.stringify(formData))
       : await loginNewUser(JSON.stringify(formData));
+
+    if (!staffCheck) {
+      Mixpanel.identify(formData.email);
+      Mixpanel.track("Logged in");
+    }
 
     let data = response?.data;
     let error = response?.error;
