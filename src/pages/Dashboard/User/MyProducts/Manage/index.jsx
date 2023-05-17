@@ -80,6 +80,7 @@ const Manage = () => {
   let isFirstNav =
     pathname === "/dashboard/my-products/manage" && "/dashboard/my-products/manage/all-manage";
   const matches = useMediaQuery("(max-width:700px)");
+  
   let pathNavigation = {
     All: "all",
     Submitted: "submitted",

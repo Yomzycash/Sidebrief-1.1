@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-mixed-operators
 import styled from "styled-components";
 import Sidebar from "components/sidebar";
 import Navbar from "components/navbar";
@@ -9,18 +10,28 @@ import { staffSidebarItems } from "utils/config";
 const StaffLayout = ({ children }) => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
   const { sidebarWidth } = layoutInfo;
+ 
 
   const location = useLocation();
-
+  const content = location.pathname.includes('settings');
+  
   let hideMobileNav =
-    location.pathname.includes("/dashboard/rewards") && location.pathname.length > 31;
+    location.pathname.includes("/staff-dashboard")  && location.pathname.length > 31 ;
 
   // let hideSearch = location.pathname.includes("/staff-dashboard");
-  let path = location.pathname.includes("/staff-dashboard") || location.pathname === "/";
+  let path = location.pathname.includes("/staff-dashboard") && location.pathname.includes("/staff-dashboard/businesses")  ;
+  
   return (
     <Dashboard>
-      <Navbar dashboard imgStyles={{ maxWidth: "100px" }} style={{ padding: "12px 24px" }} />
-      {path && <MobileNavbar hideNav={hideMobileNav} items={staffSidebarItems}/> }
+      <Navbar 
+        dashboard 
+        imgStyles={{ maxWidth: "100px" }} 
+        style={{ padding: "12px 24px" }} 
+      />
+      {!path && <MobileNavbar hideNav={hideMobileNav} items={staffSidebarItems}/> }
+      {/* <MobileNavbar hideNav={hideMobileNav} items={staffSidebarItems}/> */}
+
+      
 
       <Body>
         <BodyLeft>

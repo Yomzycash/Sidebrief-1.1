@@ -151,17 +151,6 @@ const Business = () => {
           defaultActive={isFirstNav}
         />
       )}
-       {/* <ProductHeader
-          title="Businesses"
-          searchPlaceholder="Search business names..."
-          summary={summary}
-          filterList={filterList}
-          action={handleLaunch}
-          actionText="Launch a Business"
-          onSearchChange={handleSearch}
-          navInfo={navInfo}
-          defaultActive={isFirstNav}
-        /> */}
 
       {!allTotal && !isLoading ? (
         isError ? (
