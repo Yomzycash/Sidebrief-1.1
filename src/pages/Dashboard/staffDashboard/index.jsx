@@ -141,7 +141,7 @@ const StaffDashboard = (props) => {
   }
 
   const draftMetric = {
-    title: "Drafts Applications",
+    title: "Draft Applications",
     data: [
       {
         text: "Drafts",

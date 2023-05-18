@@ -1,19 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const ScrollableDiv = ({
-  maxHeight,
-  maxWidth,
-  thumbColor,
-  containerStyle,
-  children,
-}) => {
+const ScrollableDiv = ({ maxHeight, maxWidth, thumbColor, containerStyle, children }) => {
   return (
-    <OuterContainer
-      thumbColor={thumbColor}
-      maxHeight={maxHeight}
-      maxWidth={maxWidth}
-    >
+    <OuterContainer thumbColor={thumbColor} maxHeight={maxHeight} maxWidth={maxWidth}>
       <InnerContainer style={{ ...containerStyle }}>{children}</InnerContainer>
     </OuterContainer>
   );

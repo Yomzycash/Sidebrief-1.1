@@ -33,7 +33,7 @@ const ServicePayment = () => {
   };
 
   //
-  console.log(option);
+  // console.log(option);
 
   // Send the payment reference information to the backend
   const sendFlutterwaveRefToBackend = async (reference) => {
@@ -93,6 +93,7 @@ const ServicePayment = () => {
     currency: serviceData?.serviceCurrency,
     title: serviceData?.serviceName,
     description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
+    isSubscription: option === "onboard",
   };
 
   // Set the progress of the application

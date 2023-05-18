@@ -10,12 +10,12 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   border: 1px solid #edf1f7;
-  font-size:10px;
+  font-size: 10px;
   border-radius: 0px 0px 16px 16px;
   // overflow: hidden;
 
   overflow-x: auto;
-	overflow-y: hidden;
+  overflow-y: hidden;
 `;
 export const TableWrapper = styled.div`
   overflow-y: scroll;
@@ -34,7 +34,7 @@ export const Head = styled.thead`
   }
 `;
 
-export const Body = styled.tbody``
+export const Body = styled.tbody``;
 
 export const HeadData = styled.th`
   text-align: left;
@@ -42,7 +42,6 @@ export const HeadData = styled.th`
 
   ${Head} &:first-child {
     padding-left: 3px;
-   
   }
 
   ${Head} &:last-child {
@@ -57,7 +56,6 @@ export const Row = styled.tr`
   background: grey;
   border-top: 1px solid #edf1f7;
   background: #fff;
-
 
   &:nth-child(even) {
     background: #fcfcfc;
@@ -86,6 +84,28 @@ export const Row = styled.tr`
 
 export const RowData = styled.td`
   border: none;
-  color:#ace123;
-  font-size:8px;
+  color: #ace123;
+  font-size: 8px;
+`;
+
+export const HeadText = styled.h5`
+  font-family: "BR Firma";
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: 0.02em;
+  padding-inline: 24px;
+
+  color: #151717;
+`;
+
+export const BodyText = styled.p`
+  font-family: "BR Firma";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0.02em;
+  color: #151717;
+  padding-inline: 24px;
+  width: fit-content;
 `;

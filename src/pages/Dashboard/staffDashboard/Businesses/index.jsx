@@ -1,7 +1,5 @@
 import StaffStatusCard from "components/cards/BusinessAddressCard/StaffStatusCard";
 import StaffBusinessCard from "components/cards/StaffBusinessCard/StaffBusinessCard";
-// import React from "react";
-// import { useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../../../src/asset/svg/Plus.svg";
@@ -14,21 +12,28 @@ import { IoIosAdd } from "react-icons/io";
 
 import {
   useGetAllCountriesQuery,
-  useGetApprovedLaunchQuery,
+  useGetDraftLaunchQuery,
   useGetSubmittedLaunchQuery,
+  useGetAllLaunchQuery,
 } from "services/staffService";
+import lookup from "country-code-lookup";
+import { BusinessHomeTableLayout } from "./BusinessHomeTableLayout";
 
 
 const StaffBusinesses = (props) => {
   const [countries, setCountries] = useState([]);
   const [entities, setEntities] = useState([]);
   //   const [completedLaunches, setCompletedLaunches] = useState([]);
-  const [businessStatus, setBusinessStatus] = useState([]);
+  // const [businessStatus, setBusinessStatus] = useState([]);
 
   const allCountries = useGetAllCountriesQuery();
   const allEntities = useGetAllTheEntitiesQuery();
-  const allSubmittedLaunches = useGetSubmittedLaunchQuery();
-  const allApprovedLaunches = useGetApprovedLaunchQuery();
+
+  const allLaunch = useGetAllLaunchQuery();
+
+  const awaitingLaunch = useGetSubmittedLaunchQuery();
+
+  const pendingLaunch = useGetDraftLaunchQuery();
 
   // const layoutInfo = useSelector((store) => store.LayoutInfo);
   // const { sidebarWidth } = layoutInfo;
@@ -46,10 +51,11 @@ const StaffBusinesses = (props) => {
     setCountries(
       countries &&
         countries.map((country) => {
+          const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
           return {
             text: country.countryName,
-            link: "",
-            image: `https://countryflagsapi.com/png/${country.countryISO.split("-")[0]}`,
+            link: `/staff-dashboard/businesses/countries/${country.countryISO}/detail`,
+            image: `https://flagsapi.com/${iso2}/flat/64.png`,
           };
         })
     );
@@ -66,25 +72,28 @@ const StaffBusinesses = (props) => {
   }, [allCountries?.data, allEntities?.data]);
 
   // Fetch and set all submitted and approved applications
-  useEffect(() => {
-    let submittedLaunches = allSubmittedLaunches?.data;
-    let approvedLauches = allApprovedLaunches?.data;
+  // useEffect(() => {
+  //   let submittedLaunches = allSubmittedLaunches?.data;
+  //   let approvedLauches = allApprovedLaunches?.data;
 
-    setBusinessStatus(
-      submittedLaunches &&
-        approvedLauches && {
-          awaiting: submittedLaunches?.length,
-          inProgress: approvedLauches?.length,
-          //   completed: completedLaunches?.length,
-        }
-    );
-    // console.log(countries);
-    // console.log(entities);
-  }, [
-    allSubmittedLaunches?.data,
-    allApprovedLaunches?.data,
-    // completedLaunches,
-  ]);
+  //   setBusinessStatus({
+  //     awaiting: submittedLaunches?.length || "--",
+  //     inProgress: approvedLauches?.length || "--",
+  //     completed: "--",
+  //   });
+  //   // console.log(countries);
+  //   // console.log(entities);
+  // }, [
+  //   allSubmittedLaunches?.data,
+  //   allApprovedLaunches?.data,
+  //   // completedLaunches,
+  // ]);
+
+  const businessStatus = {
+    all: allLaunch?.currentData?.length || "--",
+    awaiting: awaitingLaunch?.currentData?.length || "--",
+    pending: pendingLaunch?.currentData?.length || "--",
+  };
 
   const allMonths = [
     "January",
@@ -144,7 +153,8 @@ const StaffBusinesses = (props) => {
         <CardWrapper>
           <StaffStatusCard status={businessStatus} />
         </CardWrapper>
-        </>
+        
+          </>
          
       ): (
         <>
@@ -166,8 +176,9 @@ const StaffBusinesses = (props) => {
       )}
         
 
-        {/* Accordion Closes */}
-        <Outlet />
+        <BusinessHomeTableLayout>
+          <Outlet />
+        </BusinessHomeTableLayout>
       </LeftContainer>
       <RightContainer>
         <StaffBusinessCard

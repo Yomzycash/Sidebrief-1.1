@@ -25,7 +25,7 @@ const StaffStatusCard = ({ status }) => {
 			<Container
 				icon={awaitingImg}
 				number={status?.awaiting}
-				text="Businesses In Progress"
+				text="Businesses Awaiting Approval"
 			/>
 			<Container
 				icon={inProgressImg}
@@ -84,7 +84,7 @@ const StyledContainer = styled.div`
 	}
 `;
 const IconWrapper = styled.div`
-	margin-block-end: 16px;
+  margin-block-end: 16px;
 `;
 const Number = styled.h3`
 	font-weight: 700;
@@ -94,18 +94,18 @@ const Number = styled.h3`
 	// margin-block-end: 8px;
 `;
 const TextWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: -0.02em;
-	color: #959697;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #959697;
 `;
 const StatusWrapper = styled.div`
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: -0.02em;
-	color: #959697;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #959697;
 `;

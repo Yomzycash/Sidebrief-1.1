@@ -105,7 +105,7 @@ export const ArrowDown = styled.div`
     align-items: center;
     cursor: pointer;
     transform: ${({ isActive }) => (isActive ? "rotate(45deg)" : "")};
-    transition: 0.3s transform ease;
+    transition: 0.1s transform ease;
     padding: 0 5px;
   }
   
