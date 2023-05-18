@@ -4,6 +4,7 @@ import { FlutterWaveButton, closePaymentModal } from "flutterwave-react-v3";
 import toast from "react-hot-toast";
 import StripePayment from "./stripePayment";
 import { getCurrencyInfo } from "utils/globalFunctions";
+import { SubscriptionForm } from "./subscription";
 
 export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
   const symbol = getCurrencyInfo(paymentInfo?.currency)?.symbol;
@@ -56,16 +57,22 @@ export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
         </Price>
         <Text>Total amount for this purchase</Text>
       </TextContainer>
-      {paymentProvider.toLowerCase() === "flutterwave" && (
-        <Flutterwave>
-          <FlutterWaveButton className="flutterwave-button" {...fwConfig} />
-        </Flutterwave>
-      )}
-      {paymentProvider.toLowerCase() === "stripe" && (
-        <StripePayment
-          amount={paymentInfo?.amount}
-          sendStripeRefToBackend={paymentInfo.sendStripeRefToBackend}
-        />
+      {paymentInfo.isSubscription ? (
+        <SubscriptionForm />
+      ) : (
+        <>
+          {paymentProvider.toLowerCase() === "flutterwave" && (
+            <Flutterwave>
+              <FlutterWaveButton className="flutterwave-button" {...fwConfig} />
+            </Flutterwave>
+          )}
+          {paymentProvider.toLowerCase() === "stripe" && (
+            <StripePayment
+              amount={paymentInfo?.amount}
+              sendStripeRefToBackend={paymentInfo.sendStripeRefToBackend}
+            />
+          )}
+        </>
       )}
     </Container>
   );
