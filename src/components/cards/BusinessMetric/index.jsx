@@ -20,7 +20,7 @@ const BusinessMetricCard = ({ staff, user, analytics, loading, noTotal, total })
       </Indicator>
       <Bottom>
           {analytics.totalLength && <p>{analytics.totalLength}</p>}
-          {analytics.title && <p>{analytics.title}</p>}
+          {analytics.title && <div>{analytics.title}</div>}
       </Bottom>
     </BusinessesChart>
   );

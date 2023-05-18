@@ -1,5 +1,5 @@
 import { GeneralTable } from "components/Tables";
-import React, { useEffect, useState, useMemo, EmptyContainer } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useGetApprovedLaunchQuery } from "services/staffService";
 import { Body, Container, Loading } from "./styled";
 import { format } from "date-fns";
@@ -50,14 +50,6 @@ const InProgress = () => {
             columns={columns}
           />
         )}
-
-        { 
-					sortedArr.length === 0 && (
-						<EmptyContainer>
-							No Approved business yet
-						</EmptyContainer>
-					)
-				}
 
 
       </Body>

@@ -100,14 +100,6 @@ const Awaiting = () => {
 					</MobileContainer>
 				)}	
 
-				{ 
-					sortedArr.length === 0 && (
-						<EmptyContainer>
-							No Approved business yet
-						</EmptyContainer>
-					)
-				}
-
 				{sortedArr?.length > itemsPerPage && (
 					<Paginator
 						handlePageClick={handlePageClick}

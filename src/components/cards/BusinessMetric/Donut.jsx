@@ -23,7 +23,7 @@ export const Donut = ({ analytics, staff, noTotal }) => {
         borderColor: analytics.data.map((element) => element.color),
         borderWidth: 1,
         // borderRadius: 10,
-        cutout: !staff ? "25%" : "60%",
+        cutout: !staff ? "85%" : "90%",
         borderJoinStyle: "bevel",
         // borderAlign: "center",
         // weight: 10,

@@ -77,6 +77,20 @@ export const Bottom = styled.div`
   top: 11px;
   width: 100%;
   color: ${({ staff }) => (staff ? "#00A2D4" : "#626262")};
+
+  > p {
+    color: #151717;
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 700;
+    color: white;
+    color: ${({ staff }) => (staff ? "#00a2d4" : "#151717")};
+    padding-top:10px;
+  }
+  > div {
+    color: #727474;
+    font-size: clamp(10px, 1.5vw, 12px);
+    color: ${({ staff }) => (staff ? "#00a2d4" : "#727474")};
+  }
 `;
 
 // Status component's styles
@@ -178,7 +192,13 @@ export const Label = styled.div`
 
   > p {
     color: #00a2d4;
-    font-weight: 700;
-    font-size: clamp(20px, 2vw, 24px);
+    // color: #151717;
+    font-size: clamp(14px, 2vw, 18px);
+  }
+
+  > div {
+    color: #727474;
+    font-size: clamp(10px, 1.5vw, 12px);
+    color: ${({ staff }) => (staff ? "white" : "#727474")};
   }
 `;
