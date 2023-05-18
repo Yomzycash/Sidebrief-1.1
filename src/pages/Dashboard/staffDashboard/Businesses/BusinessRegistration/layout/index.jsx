@@ -56,9 +56,10 @@ const Registrationlayout = () => {
 
   const pendingLaunch = useGetDraftLaunchQuery();
 
+  const approvedLaunch = useGetApprovedLaunchQuery();
+
   const [batchDelete, deleteState] = useBatchDeleteLaunchRequestsMutation();
 
-  const approvedLaunch = useGetApprovedLaunchQuery();
   let all = allLaunch?.currentData?.length;
   let awaiting = awaitingLaunch?.currentData?.length;
   let rejected = rejectedLaunch?.currentData?.length;
