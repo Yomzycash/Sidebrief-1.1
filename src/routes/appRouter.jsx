@@ -166,14 +166,12 @@ const StaffRewardDetailsPage = lazy(() => import("pages/Dashboard/staffDashboard
 
 const StaffAllRewards = lazy(() => import("pages/Dashboard/staffDashboard/Reward/AllRewards"));
 const AllBusinessesSummary = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/All"));
-const InProgressBusinessesSummary = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/InProgress")
-);
-const AwaitingBusinessesSummary = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Awaiting")
-);
-const CompletedBusinessesSummary = lazy(() =>
-  import("pages/Dashboard/staffDashboard/Businesses/Completed")
+// const InProgressBusinessesSummary = lazy(() =>
+//   import("pages/Dashboard/staffDashboard/Businesses/InProgress")
+// );
+const DraftSummary = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/draftSummary"));
+const SubmittedBusinessesSummary = lazy(() =>
+  import("pages/Dashboard/staffDashboard/Businesses/submitted")
 );
 const Draft = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Draft")
@@ -585,9 +583,8 @@ const AppRouter = () => {
                   <Route path="overview" element={<StaffBusinesses />} />
                   <Route index element={<AllBusinessesSummary />} />
                   <Route path="all" element={<AllBusinessesSummary />} />
-                  <Route path="awaiting-approval" element={<AwaitingBusinessesSummary />} />
-                  <Route path="in-progress" element={<InProgressBusinessesSummary />} />
-                  <Route path="completed" element={<CompletedBusinessesSummary />} />
+                  <Route path="draft" element={<DraftSummary />} />
+                  <Route path="submitted" element={<SubmittedBusinessesSummary />} />
                 </Route>
                 <Route path="registration" element={<Registrationlayout />}>
                   <Route index element={<All />} />

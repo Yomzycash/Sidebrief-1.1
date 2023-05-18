@@ -47,7 +47,7 @@ const StaffBusinesses = (props) => {
             text: country.countryName,
             link: "",
             image: `https://flagsapi.com/${iso2}/flat/64.png`,
-            code: country.countryISO.slice(0,2),
+            code: country.countryISO.slice(0, 2),
           };
         })
     );
@@ -142,7 +142,7 @@ const StaffBusinesses = (props) => {
           subText="Countries we are currently available in"
           list={countries}
           link="/staff-dashboard/businesses/countries"
-         code={countries?.code}
+          code={countries?.code}
         />
         <StaffBusinessCard
           title="Entities"

@@ -1,13 +1,12 @@
-import React from "react";
-import { useGetAllLaunchQuery } from "services/staffService";
+import { useGetDraftLaunchQuery } from "services/staffService";
 import { parseJSON, format, compareDesc } from "date-fns";
 import { GeneralTable } from "components/Tables";
 import { columns } from "./column";
 import { Puff } from "react-loading-icons";
 import { Loading } from "./styled";
 
-const AllBusinessesSummary = () => {
-  const { data, isLoading } = useGetAllLaunchQuery();
+const DraftSummary = () => {
+  const { data, isLoading } = useGetDraftLaunchQuery();
 
   return (
     <>
@@ -35,4 +34,4 @@ const AllBusinessesSummary = () => {
   );
 };
 
-export default AllBusinessesSummary;
+export default DraftSummary;

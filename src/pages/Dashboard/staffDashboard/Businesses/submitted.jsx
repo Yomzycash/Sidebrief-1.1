@@ -1,13 +1,12 @@
-import React from "react";
-import { useGetAllLaunchQuery } from "services/staffService";
+import { useGetSubmittedLaunchQuery } from "services/staffService";
 import { parseJSON, format, compareDesc } from "date-fns";
 import { GeneralTable } from "components/Tables";
 import { columns } from "./column";
 import { Puff } from "react-loading-icons";
 import { Loading } from "./styled";
 
-const AllBusinessesSummary = () => {
-  const { data, isLoading } = useGetAllLaunchQuery();
+const SubmittedSummary = () => {
+  const { data, isLoading } = useGetSubmittedLaunchQuery();
 
   return (
     <>
@@ -35,4 +34,4 @@ const AllBusinessesSummary = () => {
   );
 };
 
-export default AllBusinessesSummary;
+export default SubmittedSummary;
