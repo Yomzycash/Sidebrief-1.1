@@ -181,14 +181,21 @@ const CardContainer = styled.div`
   height: 100%;
   padding-inline: 24px;
   padding-block: 40px;
+
 `;
 const CardWrapper = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: auto auto;
   gap: 24px;
+
   @media screen and (min-width: 1900px) {
     grid-template-columns: auto auto auto;
+    gap: 24px;
+  }
+
+  @media screen and (max-width: 700px) {
+    grid-template-columns: none;
     gap: 24px;
   }
 `;

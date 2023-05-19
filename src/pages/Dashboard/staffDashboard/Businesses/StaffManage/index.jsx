@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
-
-//
+import MobileStaff from "layout/MobileStaff";
+import { useMediaQuery } from "@mui/material";
 
 const StaffManage = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -24,6 +24,8 @@ const StaffManage = () => {
   } = useCategoriesActions({ category: "MANAGE", createPath: "/services/manage" });
 
   const { pathname } = useLocation();
+  
+  const navigate = useNavigate();
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
@@ -46,6 +48,7 @@ const StaffManage = () => {
 
   const filterList = ["All"];
 
+  const matches = useMediaQuery("(max-width:700px)");
   const navInfo = [
     {
       text: "All",
@@ -77,8 +80,44 @@ const StaffManage = () => {
     pathname === "/staff-dashboard/businesses/manage" &&
     "/staff-dashboard/businesses/manage/all-manage";
 
+
+  let options = [
+    {
+      title: submittedTotal + draftTotal > 0 ? "All" : "",
+      totalLength: submittedTotal + draftTotal,
+    },
+    {
+      title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+      totalLength: paidDraftTotal,
+    },
+    {
+      title: draftTotal > 0 ? "Drafts" : "",
+      totalLength: draftTotal,
+    },
+    {
+      title: submittedTotal > 0 ? "Submitted" : "",
+      totalLength: submittedTotal,
+    },
+  ];
+
+  //removing empty element from the array
+  options = options.filter((el) => el?.title !== "");
+
+  let pathNavigation = {
+    All: "all-manage",
+    Submitted: "submitted-manage",
+    Drafts: "draft-manage",
+    "Paid Drafts": "paid-draft-manage",
+  };
+
+  // staff-dashboard/businesses/registration/pending
+
+  const selectedValue = (option) => {
+    navigate(`/staff-dashboard/businesses/manage/${pathNavigation[option?.title]}`)
+  }
   return (
     <Container>
+     {!matches ? (
       <ProductHeader
         title="Manage"
         searchPlaceholder="Search manage..."
@@ -89,7 +128,17 @@ const StaffManage = () => {
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
+    />
+     ) :(
+      <MobileStaff
+        title={"Manage"}
+        originalOptions={options} 
+        initialTitle={"All"}
+        initialLength={submittedTotal + draftTotal}
+        realSelectedValue={selectedValue}
+        mobile
       />
+     )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />

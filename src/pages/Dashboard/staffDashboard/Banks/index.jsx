@@ -217,6 +217,10 @@ const ButtonContainer = styled.div`
   flex: 1;
   max-width: 180px;
   align-items: flex-start;
+
+  @media screen and (max-width: 700px) {
+    width:100%;
+  }
 `;
 
 
@@ -250,6 +254,12 @@ const TitleContainer = styled.div`
   gap: 24px;
   padding: 40px;
   width: 100%;
+
+  @media screen and (max-width: 700px) {
+    display: flex;
+    flex-direction:column;
+  }
+
 `;
 const DetailWrappper = styled.div`
   display: flex;
@@ -262,6 +272,11 @@ const LittleWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
+
+  @media screen and (max-width: 700px) {
+    // display: flex;
+    // flex-direction:column;
+  }
 `;
 const TopText = styled.div`
   font-weight: 700;
@@ -286,6 +301,11 @@ const LHS = styled.div`
   padding: 0px;
   gap: 24px;
   max-width: 70%;
+
+  @media screen and (max-width: 700px) {
+    max-width: 109%;
+    gap: 45px;
+  }
 `;
 
 const RHS = styled.div`

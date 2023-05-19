@@ -44,7 +44,6 @@ const CustomDropdown = ({
         position: "relative",
         width: "max-content",
         background: !mobile ? "#FAFAFA" : "white",
-
         border: !mobile ? "1px solid #F1F1F1" : "none",
         borderRadius: !mobile ? "12px" : "0px",
       }}

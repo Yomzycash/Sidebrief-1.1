@@ -57,6 +57,7 @@ export const Indicator = styled.div`
   display: flex;
   justify-content: center;
 `;
+
 export const Bottom = styled.div`
   display: flex;
   flex-flow: row wrap;

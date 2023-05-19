@@ -1,4 +1,4 @@
-import StaffRewardHeader from "components/Header/StaffRewardHeader";
+import StaffProductHeader from "components/Header/StaffProductHeader";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Puff } from "react-loading-icons";
@@ -110,7 +110,7 @@ const AllServices = () => {
 
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
-      <StaffRewardHeader
+      <StaffProductHeader
         Description="Add New Product"
         title="Products"
         handleButton={handleAddButton}

@@ -2,6 +2,7 @@ import StaffRewardHeader from "components/Header/StaffRewardHeader";
 // import Navbar from "components/navbar";
 // import StaffSidebar from "components/sidebar/StaffSidebar";
 import React, { useState, useEffect } from "react";
+import { IoIosArrowDown } from "react-icons/io";
 import {
   // Body,
   // BodyLeft,
@@ -12,6 +13,14 @@ import {
   ListItemsContainer,
   RewardContainer,
   Loading,
+  DropdownContent,
+  DropdownButton,
+  DropdownIcon,
+  ArrowDown,
+  DropdownWrapper, 
+  DropdownContainer,
+  CategoryText
+
 } from "./style";
 import { useSelector } from "react-redux";
 import { RewardCard } from "components/cards";
@@ -23,7 +32,9 @@ import StaffRewardModal from "components/modal/StaffRewardModal";
 import { useAddRewardMutation } from "services/staffService";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
-// import { useRef } from "react";
+import { useMediaQuery } from "@mui/material";
+import CustomDropdown from "components/input/CustomDropdown";
+
 
 const StaffAllRewards = () => {
   const layoutInfo = useSelector((store) => store.LayoutInfo);
@@ -38,8 +49,9 @@ const StaffAllRewards = () => {
   const [category, setCategory] = useSearchParams();
   const [addReward, addState] = useAddRewardMutation();
 
+  const [isActive, setIsActive] = useState(false)
   // let errorRef = useRef(true);
-
+  const matches = useMediaQuery("(max-width:700px)")
   useEffect(() => {
     setAllRewards(data);
     setRewardscategories((prev) => {
@@ -57,6 +69,15 @@ const StaffAllRewards = () => {
     //   errorRef.current = false;
     // }
   }, [data, refetch]);
+
+  const rewardsList = data?.map((el) => {
+    return el?.rewardCategory
+  })
+  console.log("rew", data);
+  console.log("rewardsList", rewardsList)
+
+  const all = ["All"]
+  const rewardsCategory = [].concat(rewardsCategories )
 
   useEffect(() => {
     let selectedCategory = category.get("category");
@@ -117,22 +138,69 @@ const StaffAllRewards = () => {
   return (
     <BodyRight SidebarWidth={sidebarWidth}>
       <StaffRewardHeader setOpen={setOpen} />
-      <ListItemsContainer>
-        <ListItems>
+      {/* beginning */}
+      {/* {!matches ? (
+          <ListItemsContainer>
+            <ListItems>
+              <h3>Categories</h3>
+              {rewardsCategories?.map((cat, index) => (
+                <ListItem
+                  key={index}
+                  onClick={() => handleCategory(cat)}
+                  style={{
+                    color: cat === category.get("category") ? "#00A2D4" : "",
+                  }}
+                >
+                  {cat}
+                </ListItem>
+              ))}
+            </ListItems>
+          </ListItemsContainer>
+      ) : (
+        <ListItemsContainer>
           <h3>Categories</h3>
-          {rewardsCategories?.map((cat, index) => (
-            <ListItem
-              key={index}
-              onClick={() => handleCategory(cat)}
-              style={{
-                color: cat === category.get("category") ? "#00A2D4" : "",
-              }}
-            >
-              {cat}
-            </ListItem>
-          ))}
-        </ListItems>
-      </ListItemsContainer>
+          <DropdownContent>
+            <DropdownWrapper>
+              {category.get("category")}
+              <DropdownIcon>
+              ✔️
+              </DropdownIcon>
+               <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive} >
+                <IoIosArrowDown />
+              </ArrowDown>
+            </DropdownWrapper>
+            {isActive &&
+               <ListItems>
+               {rewardsCategories?.map((cat, index) => (
+                 <ListItem
+                   key={index}
+                   onClick={() => handleCategory(cat)}
+                   style={{
+                     color: cat === category.get("category") ? "#00A2D4" : "",
+                   }}
+                 >
+                   {cat}
+                 </ListItem>
+               ))}
+             </ListItems>
+            }
+           
+          </DropdownContent>
+        </ListItemsContainer>
+      )} */}
+      {/* end */}
+      <DropdownContainer>
+        <DropdownWrapper>
+          <CategoryText>Category</CategoryText>
+          <CustomDropdown
+                options={rewardsCategory}
+                intialvalue="All"
+                selectedValue={handleCategory}
+            />
+        </DropdownWrapper>
+      </DropdownContainer>
+       
+      
 
       {isLoading ? (
         <Loading height="300px">

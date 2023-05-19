@@ -5,6 +5,8 @@ import { HiX } from "react-icons/hi";
 import { CheckoutController } from "containers/Checkout";
 import { toast } from "react-hot-toast";
 import { RedTrash } from "asset/svg";
+import { useMediaQuery } from "@mui/material";
+import MobileStaff from "layout/MobileStaff";
 
 import {
   Container,
@@ -40,6 +42,8 @@ import {
 import { useSelector } from "react-redux";
 import { handleError } from "utils/globalFunctions";
 import { useBatchDeleteLaunchRequestsMutation } from "services/launchService";
+import Dropdown from "components/Dropdown";
+import CustomDropdown from "components/input/CustomDropdown";
 
 const Registrationlayout = () => {
   const navigate = useNavigate();
@@ -73,6 +77,8 @@ const Registrationlayout = () => {
   const { pathname } = useLocation();
   let deleteShown = pathname.includes("pending");
 
+  const matches = useMediaQuery("(max-width:700px)");
+
   const handleClick = () => {
     setOpenModal(true);
   };
@@ -105,9 +111,14 @@ const Registrationlayout = () => {
     setAwaiting(awaiting ? awaiting : []);
   }, [all, awaiting, pending, approved]);
 
+  // WINDOW SIZE 
+  useEffect(() => {
+    
+  })
   const location = useLocation();
 
   let home = location.pathname === "/staff-dashboard/businesses/registration" ? true : false;
+
 
   const searchStyle = {
     borderRadius: "12px",
@@ -116,8 +127,40 @@ const Registrationlayout = () => {
     height: "100%",
   };
 
-  let path = location.pathname.includes("staff");
+  let options = [
+    {
+      title: allReg > 0 ? "All" : "",
+      totalLength: allReg,
+    },
+    {
+      title: paid > 0 ? "Paid Drafts" : "",
+      totalLength: paid,
+    },
+    {
+      title: pending > 0 ? "Drafts" : "",
+      totalLength: pending,
+    },
+    {
+      title: awaitingReg > 0 ? "Submitted" : "",
+      totalLength: awaitingReg,
+    },
+  ];
 
+  //removing empty element from the array
+  options = options.filter((el) => el?.title !== "");
+
+  let pathNavigation = {
+    All: "all",
+    Submitted: "awaiting-approval",
+    Drafts: "pending",
+    "Paid Drafts": "paid-draft",
+  };
+
+  // staff-dashboard/businesses/registration/pending
+
+  const selectedValue = (option) => {
+    navigate(`/staff-dashboard/businesses/registration/${pathNavigation[option?.title]}`)
+  }
   const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
@@ -179,52 +222,63 @@ const Registrationlayout = () => {
                 <ExportIcon />
                 <TitleWrapper>Export Businesses</TitleWrapper>
               </ExportWrapper>
-              {!path && (
-                <ButtonWrapper onClick={() => navigate("/launch")}>
-                  <button>
-                    <NoteIcon />
-                    Start Business Registration
-                  </button>
-                </ButtonWrapper>
-              )}
+              <ButtonWrapper onClick={() => navigate("/launch")}>
+                <button>
+                  <NoteIcon />
+                  Start Business Registration
+                </button>
+              </ButtonWrapper>
             </Flex>
           </BottomContent>
         </MainHeader>
-        <SubHeader>
-          <ActiveNav
-            text="All"
-            total={allReg}
-            status={unreadLaunchNotifications?.length > 0}
-            path={"/staff-dashboard/businesses/registration/all"}
-            defaultActive={home}
+         
+         {!matches ? (
+            <SubHeader>
+            <ActiveNav
+              text="All"
+              total={allReg}
+              status={unreadLaunchNotifications?.length > 0}
+              path={"/staff-dashboard/businesses/registration/all"}
+              defaultActive={home}
+            />
+            <ActiveNav
+              text="Paid drafts"
+              total={paid}
+              path={"/staff-dashboard/businesses/registration/paid-draft"}
+            />
+            <ActiveNav
+              text="Drafts"
+              total={pending}
+              path="/staff-dashboard/businesses/registration/pending"
+            />
+            <ActiveNav
+              text="Submitted"
+              total={awaitingReg}
+              status={unreadLaunchNotifications?.length > 0}
+              path="/staff-dashboard/businesses/registration/awaiting-approval"
+            />
+            <ActiveNav
+              text="Approved"
+              total={approved}
+              path="/staff-dashboard/businesses/registration/in-progress"
+            />
+            <ActiveNav
+              text="Rejected"
+              total={rejected}
+              path="/staff-dashboard/businesses/registration/rejected"
+            />
+            </SubHeader>
+         ) : (
+          <MobileStaff 
+            title={"Business Registrations"}
+            originalOptions={options} 
+            initialTitle={"All"}
+            initialLength={allReg}
+            realSelectedValue={selectedValue}
+            mobile
           />
-          <ActiveNav
-            text="Paid drafts"
-            total={paid}
-            path={"/staff-dashboard/businesses/registration/paid-draft"}
-          />
-          <ActiveNav
-            text="Drafts"
-            total={pending}
-            path="/staff-dashboard/businesses/registration/pending"
-          />
-          <ActiveNav
-            text="Submitted"
-            total={awaitingReg}
-            status={unreadLaunchNotifications?.length > 0}
-            path="/staff-dashboard/businesses/registration/awaiting-approval"
-          />
-          <ActiveNav
-            text="Approved"
-            total={approved}
-            path="/staff-dashboard/businesses/registration/in-progress"
-          />
-          <ActiveNav
-            text="Rejected"
-            total={rejected}
-            path="/staff-dashboard/businesses/registration/rejected"
-          />
-        </SubHeader>
+
+         )}
       </Header>
       <Outlet
         context={{ allLaunch, awaitingLaunch, rejectedLaunch, pendingLaunch, approvedLaunch }}
@@ -234,16 +288,6 @@ const Registrationlayout = () => {
 };
 
 export default Registrationlayout;
-
-// const searchStyle = styled.div`
-// 	border-radius: 12px;
-// 	background-color: "white";
-// 	max-width: 384px;
-// 	height: 40px;
-// 	@media screen and (max-width: 700px) {
-// 		width: 100%;
-// 	}
-// `;
 
 const ModalWrapper = styled.div`
   display: flex;

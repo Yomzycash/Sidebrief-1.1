@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
-
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import MobileStaff from "layout/MobileStaff";
+import { useMediaQuery } from "@mui/material";
 //
 
 const StaffOnboarded = () => {
@@ -24,6 +25,9 @@ const StaffOnboarded = () => {
   } = useCategoriesActions({ category: "Onboard", createPath: "/services/onboard" });
 
   const { pathname } = useLocation();
+
+  const navigate = useNavigate();
+
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
@@ -44,6 +48,8 @@ const StaffOnboarded = () => {
   };
 
   const filterList = ["All"];
+
+  const matches = useMediaQuery("(max-width:700px)");
 
   const navInfo = [
     {
@@ -76,8 +82,51 @@ const StaffOnboarded = () => {
     pathname === "/staff-dashboard/businesses/onboard" &&
     "/staff-dashboard/businesses/onboard/all-onboard";
 
+  
+  let options = [
+      {
+        title: submittedTotal + draftTotal > 0 ? "All" : "",
+        totalLength: submittedTotal + draftTotal,
+      },
+      {
+        title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+        totalLength: paidDraftTotal,
+      },
+      {
+        title: submittedTotal > 0 ? "Submitted" : "",
+        totalLength: submittedTotal,
+      },
+      {
+        title: draftTotal > 0 ? "Drafts" : "",
+        totalLength: draftTotal,
+      },
+    ];
+  
+    //removing empty element from the array
+    options = options.filter((el) => el?.title !== "");
+  
+    let pathNavigation = {
+      All: "all-onboard",
+      Submitted: "submitted-onboard",
+      Drafts: "draft-onboard",
+      "Paid Drafts": "paid-draft-onboard",
+    };
+
+    const selectedValue = (option) => {
+      navigate(`/staff-dashboard/businesses/onboard/${pathNavigation[option?.title]}`)
+    }
   return (
     <Container>
+     {matches ? (
+        <MobileStaff
+          title={"Onboard"}
+          originalOptions={options} 
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          realSelectedValue={selectedValue}
+          mobile
+        />
+     ): (
       <ProductHeader
         title="Onboarded"
         searchPlaceholder="Search onboarded..."
@@ -88,7 +137,7 @@ const StaffOnboarded = () => {
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
-      />
+    /> )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />

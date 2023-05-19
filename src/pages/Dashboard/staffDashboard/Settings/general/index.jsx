@@ -26,10 +26,11 @@ export default function StaffGeneral() {
 						<Title>Compliance officer</Title>
 					</Frame>
 				</NameContainer>
-				<ButtonContainer>
+				{/* FUNCTIONAL FIX for V2*/}
+				{/* <ButtonContainer>
 					<Button>Cancel</Button>
 					<FilledButton>Save changes</FilledButton>
-				</ButtonContainer>
+				</ButtonContainer> */}
 			</Top>
 			<DetailContainer>
 				<ProfileDetail />

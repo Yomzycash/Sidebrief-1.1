@@ -38,6 +38,7 @@ export const MainHeader = styled.div`
   border: 1px solid #edf1f7;
   border-top: none;
   transition: 0.2s all ease;
+  
   @media screen and (max-width: 700px) {
     padding: 16px 24px 32px 24px !important;
   }
