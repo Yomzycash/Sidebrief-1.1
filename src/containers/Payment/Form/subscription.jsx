@@ -4,6 +4,7 @@ import { CommonButton } from "components/button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { subFormElements, subscriptionSchema, useCardInput } from "./constants";
+import { useSelector } from "react-redux";
 
 export const SubscriptionForm = () => {
   const {
@@ -11,14 +12,21 @@ export const SubscriptionForm = () => {
     register,
     setValue,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(subscriptionSchema),
   });
 
   const { formatInput, parseCardInput } = useCardInput({ setValue });
+  const userEmail = localStorage.getItem("userEmail");
 
   const subscribe = (data) => {
-    console.log(parseCardInput(data));
+    const requiredData = {
+      email: userEmail,
+      ...parseCardInput(data),
+    };
+    console.log(requiredData);
+    reset();
   };
 
   return (
