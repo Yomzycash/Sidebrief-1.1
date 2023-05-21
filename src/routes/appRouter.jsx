@@ -6,6 +6,8 @@ import Loader from "../components/loader/loader";
 import Protected from "./Protected";
 import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
+import AllPromocodes from "pages/Dashboard/staffDashboard/Promocode";
+import PromoDetails from "pages/Dashboard/staffDashboard/Promocode/PromoDetails";
 
 const StaffManage = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/StaffManage"));
 const StaffAllManage = lazy(() =>
@@ -545,9 +547,9 @@ const AppRouter = () => {
                 <Route index element={<AllRewards />} />
                 <Route path="all-rewards" element={<AllRewards />}></Route>
                 <Route path="my-rewards" element={<MyRewards />}></Route>
-                <Route path="details" element={<RewardDetails />} >
+                <Route path="details" element={<RewardDetails />}>
                   <Route path=":rewardID" element={<RewardDetails />} />
-                  </Route>
+                </Route>
               </Route>
 
               <Route path="reward-details" element={<RewardDetails />} />
@@ -736,13 +738,14 @@ const AppRouter = () => {
                 </Route>
               </Route>
 
-              <Route path="taxes" element={<StaffComingSoon />} />
-              <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
-              <Route path="assets" element={<StaffComingSoon />} />
+              <Route path="promo-codes" element={<Outlet />}>
+                <Route index element={<AllPromocodes />} />
+                <Route path="create" element={<PromoDetails />} />
+                <Route path=":promoCode" element={<PromoDetails />} />
+              </Route>
 
-              {/* Bank Details */}
-              {/* <Route path="bank-accounts" element={<StaffBankAccounts />} />  */}
-              {/* Bank Details */}
+              <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
+
               <Route path="bank-accounts" element={<Outlet />}>
                 <Route index element={<StaffBankAccounts />} />
                 <Route path="bank" element={<StaffBank />}>
@@ -751,7 +754,9 @@ const AppRouter = () => {
               </Route>
 
               <Route path="payments" element={<StaffComingSoon />} />
+
               <Route path="resources" element={<StaffComingSoon />} />
+
               <Route path="settings" element={<StaffSettingLayout />}>
                 <Route path="general" element={<StaffGeneralSettings />} />
                 <Route path="notification" element={<StaffNotificationSettings />} />

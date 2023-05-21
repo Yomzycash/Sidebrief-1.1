@@ -38,6 +38,7 @@ export const referralOptions = [
   { value: "Google", label: "Google" },
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Recommendation", label: "Recommendation" },
+  { value: "Referral", label: "Referral" },
   { value: "Other", label: "Other" },
 ];
 
@@ -384,6 +385,12 @@ export const staffSidebarItems = [
     title: "Rewards",
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
+  },
+  {
+    id: 8,
+    title: "Promo Code",
+    icon: RewardIcon,
+    path: "/staff-dashboard/promo-codes",
   },
   {
     id: 8,

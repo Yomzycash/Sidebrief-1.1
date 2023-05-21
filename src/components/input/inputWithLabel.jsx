@@ -41,6 +41,7 @@ const InputWithLabel = ({
   inputId,
   nextElementId,
   step,
+  overlayComponent,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -131,6 +132,8 @@ const InputWithLabel = ({
             <Show>{!show ? "show" : "hide"}</Show>
           </div>
         ) : null}
+
+        {overlayComponent && overlayComponent}
       </InputWrapper>
 
       {bottomText ? <BottomText className={bottomTextClass}>{bottomText}</BottomText> : null}

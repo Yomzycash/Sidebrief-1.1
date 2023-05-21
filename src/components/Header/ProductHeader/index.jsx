@@ -17,7 +17,6 @@ import { SummaryCard } from "components/cards";
 import { ReactComponent as NoteIcon } from "asset/images/note.svg";
 import Search from "components/navbar/Search";
 import { clearProductsInfo } from "utils/globalFunctions";
-import { useLocation } from "react-router-dom";
 
 const ProductHeader = ({
   title,
@@ -29,16 +28,16 @@ const ProductHeader = ({
   defaultActive,
   onSearchChange,
   filterList,
+  hideButton,
+  ButtonIcon,
   emptyText,
 }) => {
-  const availableNavs = navInfo?.filter((el) => el.isAvailable);
+  const availableNavs = navInfo?.filter((el) => el?.isAvailable);
 
   const handleButtonClick = () => {
     clearProductsInfo();
     action();
   };
-  const { pathname } = useLocation();
-  let path = pathname.includes("staff");
 
   return (
     <Header>
@@ -68,14 +67,14 @@ const ProductHeader = ({
               className="searchbox"
             />
           </SearchWrapper>
-          <ButtonWrapper>
-            {!path && (
+          {!hideButton && (
+            <ButtonWrapper className="button__effect header-action-button">
               <button onClick={handleButtonClick}>
-                <NoteIcon />
+                {ButtonIcon ? <ButtonIcon /> : <NoteIcon />}
                 {actionText}
               </button>
-            )}
-          </ButtonWrapper>
+            </ButtonWrapper>
+          )}
         </BottomContent>
       </MainHeader>
       {availableNavs?.length > 0 && (

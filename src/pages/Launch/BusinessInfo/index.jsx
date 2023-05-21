@@ -28,6 +28,7 @@ import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/La
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { handleBusinessInfo } from "./actions";
+import { InputWithLabel } from "components/input";
 
 const BusinessInfo = () => {
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
@@ -261,6 +262,16 @@ const BusinessInfo = () => {
                 fetchingText="Fetching Countries..."
                 fetchFailedText="Could not fetch Countries"
                 disabled={paidStatus}
+              />
+            </div>
+            <div style={{ maxWidth: "330px" }}>
+              <InputWithLabel
+                label="Promo Code (Optional)"
+                labelStyle="input-label"
+                placeholder="Enter promo code"
+                type="text"
+                inputClass="input-class"
+                containerStyle="input-container-class"
               />
             </div>
           </LaunchFormContainer>
