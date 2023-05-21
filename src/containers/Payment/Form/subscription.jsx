@@ -4,8 +4,11 @@ import { CommonButton } from "components/button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { subFormElements, subscriptionSchema, useCardInput } from "./constants";
+import { useCreateSubscriptionMutation } from "services/productService";
 
 export const SubscriptionForm = ({ subInfo }) => {
+  const [createSubscription, createSubscriptionState] = useCreateSubscriptionMutation();
+
   const {
     handleSubmit,
     register,
@@ -23,10 +26,10 @@ export const SubscriptionForm = ({ subInfo }) => {
     const requiredData = {
       email: userEmail,
       ...parseCardInput(data),
-      productId: subInfo.productId || "",
-      priceId: subInfo.priceId || "",
+      productId: subInfo.productId,
+      priceId: subInfo.priceId,
     };
-    console.log(requiredData);
+    createSubscription(requiredData);
     reset();
   };
 

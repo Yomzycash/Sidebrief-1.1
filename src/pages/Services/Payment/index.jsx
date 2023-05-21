@@ -92,8 +92,8 @@ const ServicePayment = () => {
     title: serviceData?.serviceName,
     description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
     isSubscription: option === "onboard",
-    productId: serviceData.productId,
-    priceId: serviceData.priceId,
+    productId: serviceData?.productId || "",
+    priceId: serviceData?.priceId || "",
   };
 
   // Set the progress of the application
