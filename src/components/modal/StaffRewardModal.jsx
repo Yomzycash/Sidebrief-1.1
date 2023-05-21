@@ -78,7 +78,7 @@ const StaffRewardModal = ({
       handleSubmit={handleSubmit}
       submitAction={submitAction}
       cardAction={cardAction}
-      title="Add New Reward"
+      title={cardAction === "edit" ? "Update Reward" : "Add New Reward"}
       open={open}
       setOpen={setOpen}
       loading={loading}

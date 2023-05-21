@@ -238,9 +238,13 @@ const StaffBusinessDetailLayout = lazy(() =>
   import("pages/Dashboard/staffDashboard/Businesses/BusinessRegistration/Detail/layout")
 );
 const BusinessDetail = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail"));
+
+const BusinessDocument = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail/document"));
+
 const BusinessPaymet = lazy(() =>
   import("pages/Dashboard/User/MyProducts/Business/Detail/payment")
 );
+
 const DetailShareholders = lazy(() =>
   import("pages/Dashboard/User/MyProducts/Business/Detail/shareholders")
 );
@@ -449,6 +453,7 @@ const AppRouter = () => {
                 <Route path="business" element={<BusinessDetailLayout />}>
                   <Route path="detail" element={<BusinessDetail />} />
                   <Route path="payment" element={<BusinessPaymet />} />
+                  <Route path="document" element={<BusinessDocument/>}/>
                   <Route path="shareholders" element={<DetailShareholders />} />
                   <Route path="directors" element={<DetailDirectors />} />
                   <Route path="beneficiaries" element={<DetailBeneficiaries />} />
@@ -721,6 +726,7 @@ const AppRouter = () => {
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="user-info" element={<UserInfo />} />
                 <Route path="payment" element={<BusinessPaymet />} />
+                <Route path="document" element={<BusinessDocument/>}/>
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />

@@ -215,6 +215,16 @@ export const BankAccountSchema = yup.object().shape({
   image: yup.string().required("lmage is a required field"),
 });
 
+export const StaffDocumentSchema = yup.object().shape({
+  name: yup.string().required("Enter document name"),
+  description: yup.string().required("Enter document description"),
+  fileupload: yup.mixed().test('file-upload', 'File upload is required', function (value) {
+    if (value instanceof FileList) {
+      return value.length > 0;
+    }
+    return false;
+  }),
+})
 export const userSidebarItems = [
   {
     id: 1,
@@ -232,7 +242,7 @@ export const userSidebarItems = [
     id: 3,
     title: "My Products",
     icon: BusinessesIcon,
-    path: "/dashboard/my-products",
+    path: "/dashboard/my-products/business",
     dropDownList: [
       {
         id: 1,
@@ -267,7 +277,7 @@ export const userSidebarItems = [
       {
         id: 6,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/dashboard/my-products/compliance",
       },
     ],
@@ -356,7 +366,7 @@ export const staffSidebarItems = [
       {
         id: 8,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/staff-dashboard/businesses/compliance",
       },
       {

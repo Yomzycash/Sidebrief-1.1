@@ -8,6 +8,8 @@ import { useGetAllCountriesQuery } from "services/launchService";
 import CustomDropdown from "components/input/CustomDropdown";
 import { useLocation } from "react-router-dom";
 import { CommonButton } from "components/button";
+import { useMediaQuery } from "@mui/material";
+import NoBackgroundButton from "components/button/NoBackgroundButton";
 
 const StaffRewardHeader = ({
   title = "Rewards",
@@ -26,7 +28,7 @@ const StaffRewardHeader = ({
   const category = useGetAllCategoriesQuery();
 
   const countries = useGetAllCountriesQuery();
-
+  const matches = useMediaQuery("(max-width:700px)");
   const servicesCategory = category?.data?.map((el) => {
     return el?.catergoryName;
   });
@@ -61,7 +63,7 @@ const StaffRewardHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <SummaryCard shown={totalShown} total={totalShown} />
+              { !matches && <SummaryCard shown={totalShown} total={totalShown} /> }
             </div>
           </TopContent>
           <BottomContent>
@@ -93,7 +95,21 @@ const StaffRewardHeader = ({
                 </DropdownWrapper>
               </DropdownContainer>
             )}
-            <CommonButton action={buttonAction} text={Description} LeftIcon={AddIcon} />
+            {!matches ? 
+              <CommonButton 
+                action={buttonAction} 
+                text={Description} 
+                LeftIcon={AddIcon} 
+              /> : (
+                <MobileView>
+                    <NoBackgroundButton
+                      action={buttonAction} 
+                      text={Description} 
+                    />
+                </MobileView>
+               
+              )
+            }
             {/* <ButtonWrapper onClick={buttonAction}>
               <button>
                 <AddIcon />
@@ -162,6 +178,12 @@ const BottomContent = styled.div`
   gap: 24px;
   flex: 1;
   justify-content: space-between;
+
+  @media screen and (max-width:700px) {
+    display: flex;
+    flex-direction:column;
+  
+  }
 `;
 const ButtonWrapper = styled.div`
   justify-content: center;
@@ -189,6 +211,7 @@ const SearchWrapper = styled.div`
   height: 40px;
   width: 100%;
   @media screen and (max-width: 700px) {
+    
     max-width: 100%;
     width: 100%;
   }
@@ -213,3 +236,14 @@ const CategoryText = styled.h3`
   /* identical to box height, or 150% */
   color: #000000;
 `;
+
+export const MobileView = styled.div`
+  @media screen and (max-width:700px) {
+    position:absolute;
+    bottom:95px;
+    right:5px;
+  }
+`
+
+// needed 
+

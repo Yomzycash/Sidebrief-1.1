@@ -42,7 +42,7 @@ const Products = () => {
     } else if (category.toLowerCase() === "onboard") {
       return {
         title: "Onboard a Business",
-        body: "Automate your business compliance",
+        body: "Onbaord your business",
         icon: IoIosRocket,
         path: "/services/onboard",
       };
@@ -53,7 +53,7 @@ const Products = () => {
         icon: FaCheckDouble,
         path: "/services/compliance",
       };
-    }
+    } 
   };
 
   useEffect(() => {

@@ -3,6 +3,8 @@ import Search from "components/navbar/Search";
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
+import NoBackgroundButton from "components/button/NoBackgroundButton";
+import { useMediaQuery } from "@mui/material";
 
 const StaffHeader = ({
   title = "Countries",
@@ -11,6 +13,9 @@ const StaffHeader = ({
   Description = "Add Country",
   handleButton,
 }) => {
+
+  const matches = useMediaQuery("(max-width:700px)");
+
   return (
     <Container>
       <Header>
@@ -18,25 +23,30 @@ const StaffHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <SummaryCard shown={shown} total={total} />
+              {!matches && <SummaryCard shown={shown} total={total} /> }
             </div>
-            <Drop>
-              <select>
-                <option value="Sort">Sort</option>
-                <option value="All">All</option>
-              </select>
-            </Drop>
           </TopContent>
           <BottomContent>
             <SearchWrapper>
               <Search style={searchStyle} iconStyle={iconStyle} />
             </SearchWrapper>
-            <ButtonWrapper onClick={handleButton}>
-              <button>
-                <AddIcon />
-                {Description}
-              </button>
-            </ButtonWrapper>
+
+              {!matches ? (
+                <ButtonWrapper onClick={handleButton}>
+                <button>
+                  <AddIcon />
+                  {Description}
+                </button>
+              </ButtonWrapper>
+           ) : (
+            <MobileView>
+                <NoBackgroundButton
+                  action={handleButton} 
+                  text={Description} 
+                />
+              </MobileView>
+            )} 
+           
           </BottomContent>
         </MainHeader>
       </Header>
@@ -83,6 +93,7 @@ const TopContent = styled.div`
     gap: 48px;
     justify-content: space-between;
   }
+
 `;
 const PageTitle = styled.div`
   display: flex;
@@ -98,6 +109,11 @@ const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
+
+  @media screen and (max-width: 700px) {
+    display:flex;
+    flex-direction: column-reverse
+  }
 `;
 const Drop = styled.div`
   display: flex;
@@ -112,6 +128,8 @@ const Drop = styled.div`
     width: 60px;
     background: none;
   }
+
+ 
 `;
 const ButtonWrapper = styled.div`
   width: 200px;
@@ -131,6 +149,17 @@ const ButtonWrapper = styled.div`
     display: flex;
     gap: 8px;
     align-items: center;
+
+    @media screen and (max-width: 700px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+    width: 100%;
   }
 `;
 
@@ -151,4 +180,11 @@ const searchStyle = {
   height: "100%",
 };
 
+const MobileView = styled.div`
+  @media screen and (max-width:700px) {
+    position:absolute;
+    bottom: 99px;
+    right: 7px;
+  }
+`
 const iconStyle = { width: "17px", height: "17px" };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import MobileStaff from "layout/MobileStaff";
+import { useMediaQuery } from "@mui/material";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
@@ -25,6 +27,8 @@ const StaffCompliance = () => {
 
   const { pathname } = useLocation();
 
+  const navigate = useNavigate();
+  
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
   let paidDraftTotal = paidDrafts?.length;
@@ -45,6 +49,8 @@ const StaffCompliance = () => {
   };
 
   const filterList = ["All"];
+
+  const matches = useMediaQuery("(max-width:700px)");
 
   const navInfo = [
     {
@@ -77,19 +83,65 @@ const StaffCompliance = () => {
     pathname === "/staff-dashboard/businesses/compliance" &&
     "/staff-dashboard/businesses/compliance/all-compliance";
 
+    let options = [
+      {
+        title: submittedTotal + draftTotal > 0 ? "All" : "",
+        totalLength: submittedTotal + draftTotal,
+      },
+      {
+        title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+        totalLength: paidDraftTotal,
+      },
+      {
+        title: submittedTotal > 0 ? "Submitted" : "",
+        totalLength: submittedTotal,
+      },
+      {
+        title: draftTotal > 0 ? "Drafts" : "",
+        totalLength: draftTotal,
+      },
+    ];
+  
+    //removing empty element from the array
+    options = options.filter((el) => el?.title !== "");
+  
+    let pathNavigation = {
+      All: "all-compliance",
+      Submitted: "submitted-compliance",
+      Drafts: "draft-compliance",
+      "Paid Drafts": "paid-draft-compliance",
+    };
+
+    const selectedValue = (option) => {
+      navigate(`/staff-dashboard/businesses/compliance/${pathNavigation[option?.title]}`)
+    }
+
   return (
     <Container>
-      <ProductHeader
-        title="Compliance"
-        searchPlaceholder="Search compliance..."
-        summary={summary}
-        filterList={filterList}
-        action={handleCategoryCreate}
-        actionText="Create a Compliance"
-        onSearchChange={handleSearch}
-        navInfo={navInfo}
-        defaultActive={isFirstNav}
+      { matches ? (
+        <MobileStaff
+          title={"Compliance"}
+          originalOptions={options} 
+          initialTitle={"All"}
+          initialLength={submittedTotal + draftTotal}
+          realSelectedValue={selectedValue}
+          mobile
+        />
+      ) : (
+        <ProductHeader
+          title="Compliance"
+          searchPlaceholder="Search compliance..."
+          summary={summary}
+          filterList={filterList}
+          action={handleCategoryCreate}
+          actionText="Create a Compliance"
+          onSearchChange={handleSearch}
+          navInfo={navInfo}
+          defaultActive={isFirstNav}
       />
+      )
+
+      }
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />

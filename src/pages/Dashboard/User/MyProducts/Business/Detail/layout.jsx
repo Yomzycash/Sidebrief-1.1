@@ -69,6 +69,7 @@ const BusinessDetailLayout = () => {
 
   // options passed
   let options = [
+
     {
       title: "Business Information",
       totalLength: 0,
@@ -88,6 +89,9 @@ const BusinessDetailLayout = () => {
     {
       title: beneficiaries?.length > 0 ? "Beneficiaries" : "",
       totalLength: beneficiaries?.length,
+    },
+    {
+      title: "Documents"
     },
   ];
   //removing empty element from the array
@@ -117,6 +121,7 @@ const BusinessDetailLayout = () => {
 
   // hashmap to help in  path navigation for selecting value
   let pathNavigation = {
+    "Documents": "document",
     "Business Information": "detail",
     "Payment Details": "payment",
     Shareholders: "shareholders",

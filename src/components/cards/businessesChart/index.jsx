@@ -7,7 +7,7 @@ import { Donut } from "./Donut";
 
 const BusinessesChartCard = ({ staff, user, analytics, loading, noTotal }) => {
   // const total = completed + pending + awaiting;
-
+  
   return (
     <BusinessesChart staff={staff}>
       {analytics.title && (

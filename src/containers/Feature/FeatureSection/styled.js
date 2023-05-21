@@ -69,3 +69,9 @@ export const Input = styled.div`
 `;
 
 export const Content = styled.div``;
+
+export const SubText = styled.p`
+  @media screen and (max-width: 1050px) {
+    display: none;
+  }
+`
