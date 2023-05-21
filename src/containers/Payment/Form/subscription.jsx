@@ -4,9 +4,8 @@ import { CommonButton } from "components/button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { subFormElements, subscriptionSchema, useCardInput } from "./constants";
-import { useSelector } from "react-redux";
 
-export const SubscriptionForm = () => {
+export const SubscriptionForm = ({ subInfo }) => {
   const {
     handleSubmit,
     register,
@@ -24,6 +23,8 @@ export const SubscriptionForm = () => {
     const requiredData = {
       email: userEmail,
       ...parseCardInput(data),
+      productId: subInfo.productId || "",
+      priceId: subInfo.priceId || "",
     };
     console.log(requiredData);
     reset();

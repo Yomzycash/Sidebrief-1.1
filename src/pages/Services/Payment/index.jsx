@@ -57,8 +57,6 @@ const ServicePayment = () => {
     navigate(link);
   };
 
-  //
-
   // Stripe required data to be sent to the backend a successful payment
   const sendStripeRefToBackend = async (paymentIntent) => {
     const requiredData = {
@@ -94,6 +92,8 @@ const ServicePayment = () => {
     title: serviceData?.serviceName,
     description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
     isSubscription: option === "onboard",
+    productId: serviceData.productId,
+    priceId: serviceData.priceId,
   };
 
   // Set the progress of the application
