@@ -3,28 +3,34 @@ import EmptyContent from "components/Fallbacks/EmptyContent";
 import LoadingError from "components/Fallbacks/LoadingError";
 import ProductHeader from "components/Header/ProductHeader";
 import FeatureTable from "components/Tables/FeatureTable";
-import { format } from "date-fns";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetAllPromoCodesQuery } from "services/staffService";
+import { useGetAllPromoCodesQuery, useUpdatePromoCodeMutation } from "services/staffService";
 import { useActions } from "./actions";
-import { PromoBody, PromoContainer, Action, Status } from "./styled";
+import { PromoBody, PromoContainer } from "./styled";
 
 const AllPromocodes = () => {
   const [dataArr, setDataArr] = useState([]);
-  // const [filteredData, setFilteredData] = useState(dataArr);
+  const [clickedPromo, setClickedPromo] = useState({});
 
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useGetAllPromoCodesQuery();
+  const { data, isLoading, isError, refetch } = useGetAllPromoCodesQuery();
+  const [updatePromoCode, updateState] = useUpdatePromoCodeMutation();
 
-  const { handleCellClick, handleSearch, handlePromoCreate, handlePromoEdit } = useActions(
-    data,
-    dataArr,
-    setDataArr
-  );
+  const { getTable, handleTableRowClick, handleSearch, handlePromoCreate, handleFilterChange } =
+    useActions({
+      data,
+      dataArr,
+      setDataArr,
+      updatePromoCode,
+      refetch,
+      clickedPromo,
+      setClickedPromo,
+      updateState,
+    });
 
   useEffect(() => {
     if (data) setDataArr(data);
@@ -37,23 +43,6 @@ const AllPromocodes = () => {
 
   const filterList = ["All", "Active", "Inactive"];
 
-  // Tabele header
-  const header = ["Promo Code", "Discount", "Expiry Date", "Status", "Action"];
-
-  // Table body
-  const dataBody = dataArr?.map((el) => [
-    el?.promoCode,
-    el?.promoDiscount + "%",
-    format(new Date(el?.promoExpiry), "dd-MMM-yyyy"),
-    el?.promoStatus ? <Status active>Active</Status> : <Status>Inactive</Status>,
-    <Action>
-      <div value="Enable" onClick={(e) => handlePromoEdit(e)}>
-        Edit
-      </div>
-      <div value="disable">Disable</div>
-    </Action>,
-  ]);
-
   return (
     <PromoContainer>
       <ProductHeader
@@ -65,6 +54,7 @@ const AllPromocodes = () => {
         searchPlaceholder="Search promo code..."
         onSearchChange={handleSearch}
         ButtonIcon={RewardIcon}
+        handleFilterChange={handleFilterChange}
       />
       <PromoBody>
         {!data && !isLoading ? (
@@ -72,19 +62,23 @@ const AllPromocodes = () => {
             <LoadingError />
           ) : (
             <EmptyContent
-              emptyText="Users taxes requests will appear here when they create one"
-              buttonText="Create Tax"
+              emptyText="Promo codes will appear here when you create one"
+              buttonText="Create Promo Code"
               action={() => navigate("/staff-dashboard/promo-codes/create")}
             />
           )
         ) : (
           <FeatureTable
-            header={header}
-            body={dataBody}
-            onCellClick={handleCellClick}
+            header={getTable()?.header}
+            body={getTable()?.body}
+            onClick={handleTableRowClick}
             bodyFullData={dataArr}
             loading={isLoading}
+            rowCursor="pointer"
           />
+        )}
+        {!isLoading && !isError && dataArr?.length === 0 && (
+          <EmptyContent emptyText="Search doesn't match" />
         )}
       </PromoBody>
     </PromoContainer>

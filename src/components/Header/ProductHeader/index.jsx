@@ -28,6 +28,7 @@ const ProductHeader = ({
   defaultActive,
   onSearchChange,
   filterList,
+  handleFilterChange,
   hideButton,
   ButtonIcon,
   emptyText,
@@ -48,7 +49,7 @@ const ProductHeader = ({
             <SummaryCard shown={summary?.current} total={summary?.total} />
           </div>
           <Drop>
-            <select>
+            <select onChange={handleFilterChange}>
               {filterList?.map((el, i) => (
                 <option key={i} value={el}>
                   {el}

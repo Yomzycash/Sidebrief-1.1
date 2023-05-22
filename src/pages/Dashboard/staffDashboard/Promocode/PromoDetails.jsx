@@ -60,23 +60,30 @@ const PromoDetails = () => {
     resolver: yupResolver(promoSchema),
   });
 
-  const { generatePromo, submitForm, handleDeletePromo, handleActiveToggle, handlePromoEdit } =
-    useActions(
-      promoCode,
-      createPromoCode,
-      updatePromoCode,
-      deletePromoCode,
-      refetch,
-      reset,
-      selectedPromo,
-      setDeleteConfirm
-    );
+  const {
+    generatePromo,
+    copyPromoCode,
+    submitForm,
+    handleDeletePromo,
+    handleActiveToggle,
+    handlePromoEdit,
+  } = useActions({
+    promoCode,
+    createPromoCode,
+    updatePromoCode,
+    deletePromoCode,
+    refetch,
+    setValue,
+    reset,
+    selectedPromo,
+    setDeleteConfirm,
+  });
 
   // Populate promo information
   useEffect(() => {
     if (!promoCode || !data) {
       reset();
-      setValue("promoCode", generatePromo());
+      generatePromo();
       return;
     }
 
@@ -116,6 +123,7 @@ const PromoDetails = () => {
         <PromoDetailsLeft>
           <PromoForm onSubmit={handleSubmit(submitForm)}>
             <InputWithLabel
+              inputId="promo-code"
               label="Promo Code"
               labelStyle="input-label"
               type="text"
@@ -127,8 +135,15 @@ const PromoDetails = () => {
               errorMessage={errors.promoCode?.message}
               overlayComponent={
                 <PromoCodeIcons>
-                  <MdAutorenew size={20} style={{ cursor: "pointer" }} />
-                  <AiOutlineCopy size={20} style={{ cursor: "pointer" }} />
+                  {!promoCode && (
+                    <MdAutorenew size={20} style={{ cursor: "pointer" }} onClick={generatePromo} />
+                  )}
+                  <AiOutlineCopy
+                    size={20}
+                    style={{ cursor: "pointer" }}
+                    onClick={copyPromoCode}
+                    className="button__effect"
+                  />
                 </PromoCodeIcons>
               }
             />

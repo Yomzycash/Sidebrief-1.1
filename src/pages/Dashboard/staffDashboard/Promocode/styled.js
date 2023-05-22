@@ -50,16 +50,7 @@ export const Action = styled.div`
   max-width: max-content;
 
   > div {
-    cursor: pointer;
-
-    :nth-of-type(1) {
-      color: #00a2d4;
-      border-right: 1px solid #f1f1f1;
-      padding-right: 10px;
-    }
-    :nth-of-type(2) {
-      color: #c54130;
-    }
+    color: ${({ $active }) => ($active ? "#c54130" : "#00D448")};
   }
 `;
 

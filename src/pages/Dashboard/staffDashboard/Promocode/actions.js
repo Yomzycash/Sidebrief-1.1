@@ -1,41 +1,86 @@
 import { format } from "date-fns";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { handleError, handleResponse } from "utils/globalFunctions";
 import voucher_gen from "voucher-code-generator";
+import { Action, Status } from "./styled";
 
-export const useActions = (
+export const useActions = ({
   data,
   dataArr,
   setDataArr,
   promoCode,
+  clickedPromo,
+  setClickedPromo,
+  updateState,
   createPromoCode,
   updatePromoCode,
   deletePromoCode,
+  setValue,
   refetch,
   reset,
   selectedPromo,
-  setDeleteConfirm
-) => {
+  setDeleteConfirm,
+}) => {
   const navigate = useNavigate();
 
-  const handleCellClick = (info, row, col) => {
-    console.log(info, row, col);
-    // navigate(`/staff-dashboard/promo-codes/${info?.promoCode}`);
+  // Returns the table header and body
+  const getTable = () => {
+    // Tabele header
+    const header = ["Promo Code", "Discount", "Expiry Date", "Status", "Action"];
+
+    // Table body
+    const body = dataArr?.map((el, i) => [
+      el?.promoCode,
+      el?.promoDiscount + "%",
+      format(new Date(el?.promoExpiry), "dd-MMM-yyyy"),
+      el?.promoStatus ? <Status active>Active</Status> : <Status>Inactive</Status>,
+      <Action $active={el?.promoStatus}>
+        <div value="disable">
+          {el?.promoStatus ? `Disabl${getSuffix(i)}` : `Enabl${getSuffix(i)}`}
+        </div>
+      </Action>,
+    ]);
+
+    return { header, body };
   };
 
+  // Controls the text depending on the loading state.
+  const getSuffix = (index) => {
+    if (clickedPromo?.row - 1 === index && updateState.isLoading) return "ing...";
+    else return "e";
+  };
+
+  //
+  const handleTableRowClick = (info, row, col) => {
+    if (col !== 5) navigate(`/staff-dashboard/promo-codes/${info?.promoCode}`);
+    else if (col === 5) handleActiveToggle(undefined, info);
+    setClickedPromo({ ...info, row, col });
+  };
+
+  //
   const handlePromoCreate = () => {
     navigate("/staff-dashboard/promo-codes/create");
   };
 
+  //
   const handleSearch = (e) => {
     let value = e.target.value;
     filterWhenSearched(value);
   };
 
-  //Filters data by search value
+  //
+  const handleFilterChange = (e) => {
+    const option = e.target.value.toLowerCase();
+    if (option === "active") setDataArr(data?.filter((el) => el?.promoStatus === true));
+    else if (option === "inactive") setDataArr(data?.filter((el) => el?.promoStatus === false));
+    else setDataArr(data);
+  };
+
+  // Filters data by search value
   const filterWhenSearched = (searchValue) => {
     if (searchValue) {
-      const filteredDataArr = dataArr?.filter((el) => {
+      const filteredDataArr = data?.filter((el) => {
         const {
           promoCode,
           promoDescription,
@@ -62,18 +107,9 @@ export const useActions = (
     return text?.toString()?.toLowerCase()?.includes(searchValue?.toLowerCase());
   };
 
-  const generatePromo = () => {
-    return voucher_gen.generate({
-      length: 8,
-      count: 1,
-      prefix: "promo-",
-      postfix: `-${new Date().getFullYear()}`,
-      pattern: "####-####",
-    });
-  };
-
   //
 
+  // Conditionally updates or creates a promo code, depending on the promo code coming from the params
   const submitForm = async (formInfo) => {
     const response = promoCode
       ? await handleUpdatePromo(formInfo)
@@ -81,6 +117,26 @@ export const useActions = (
     console.log(response);
   };
 
+  // Generates a unique promo code
+  const generatePromo = () => {
+    const promo = voucher_gen.generate({
+      length: 8,
+      count: 1,
+      prefix: "promo-",
+      postfix: `-${new Date().getFullYear()}`,
+      pattern: "####-####",
+    });
+    setValue("promoCode", promo[0]);
+  };
+
+  //
+  const copyPromoCode = () => {
+    const promoCode = document.getElementById("promo-code").value;
+    navigator.clipboard.writeText(promoCode);
+    toast.success("Promo copied successfully");
+  };
+
+  // Creates a promo code
   const handleCreatePromo = async (formInfo) => {
     const payload = getPayload(formInfo);
     const response = await createPromoCode(payload);
@@ -92,6 +148,7 @@ export const useActions = (
     } else handleError(error);
   };
 
+  // Updates a promo code
   const handleUpdatePromo = async (formInfo) => {
     const payload = getPayload(formInfo);
     const response = await updatePromoCode(payload);
@@ -101,6 +158,7 @@ export const useActions = (
     else handleError(error);
   };
 
+  //  Deletes a promo code
   const handleDeletePromo = async () => {
     const response = await deletePromoCode(selectedPromo);
     const data = response?.data;
@@ -112,11 +170,13 @@ export const useActions = (
     } else handleError(error);
   };
 
+  //
   const getPayload = (formInfo) => ({
     ...formInfo,
     promoStatus: formInfo?.promoStatus?.toLowerCase() === "active" ? true : false,
   });
 
+  // Conditionally enables or disables a promo code
   const handleActiveToggle = async (e, promoInfo) => {
     const response = await updatePromoCode({ ...promoInfo, promoStatus: !promoInfo?.promoStatus });
     console.log(response);
@@ -132,10 +192,13 @@ export const useActions = (
   };
 
   return {
-    handleCellClick,
+    getTable,
+    handleTableRowClick,
     handleSearch,
+    handleFilterChange,
     filterWhenSearched,
     generatePromo,
+    copyPromoCode,
     handlePromoCreate,
     submitForm,
     handleDeletePromo,
