@@ -74,6 +74,8 @@ export const Header = ({ isStaff, code }) => {
   // when launch is submitted and userside
   const noDelete = !isStaff && launchRequest?.data?.registrationStatus === "submitted";
 
+  const completedRegistration = launchRequest?.data?.registrationStatus === "submitted"
+
   const deleteAction = async () => {
     // perform delete action here
     let payload = {
@@ -259,6 +261,9 @@ export const Header = ({ isStaff, code }) => {
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
+        
+      
+
         <ActiveNav
           text={"Business Information"}
           path={`/${
@@ -267,12 +272,14 @@ export const Header = ({ isStaff, code }) => {
             launchResponse.registrationCountry
           }&registrationType=${launchResponse.registrationType}`}
         />
+
         {isStaff && launchRequest.data?.meta && (
           <ActiveNav
             text={"User Information"}
             path={`/staff-dashboard/business/user-info?launchCode=${launchResponse.launchCode}&registrationCountry=${launchResponse.registrationCountry}&registrationType=${launchResponse.registrationType}`}
           />
         )}
+
         {paymentInfo?.length > 0 && (
           <ActiveNav
             text={"Payment Details"}
@@ -316,6 +323,17 @@ export const Header = ({ isStaff, code }) => {
             }&registrationType=${launchResponse.registrationType}`}
           />
         )}
+
+        {completedRegistration && 
+           <ActiveNav
+           text={"Documents"}
+           path={`/${
+             isStaff ? "staff-dashboard" : "dashboard/my-products"
+           }/business/document?launchCode=${launchResponse.launchCode}&registrationCountry=${
+             launchResponse.registrationCountry
+           }&registrationType=${launchResponse.registrationType}`}
+         />
+        }
       </SubHeader>
 
       <Dialog open={openModal} fullWidth maxWidth="sm">

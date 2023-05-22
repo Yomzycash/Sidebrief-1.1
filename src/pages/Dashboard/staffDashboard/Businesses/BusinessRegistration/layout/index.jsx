@@ -217,7 +217,7 @@ const Registrationlayout = () => {
                 className={"searchbox"}
               />
             </SearchWrapper>
-            <Flex>
+            {/* <Flex>
               <ExportWrapper>
                 <ExportIcon />
                 <TitleWrapper>Export Businesses</TitleWrapper>
@@ -228,7 +228,7 @@ const Registrationlayout = () => {
                   Start Business Registration
                 </button>
               </ButtonWrapper>
-            </Flex>
+            </Flex> */}
           </BottomContent>
         </MainHeader>
          

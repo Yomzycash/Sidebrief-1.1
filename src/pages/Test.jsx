@@ -3,7 +3,7 @@ import Accordion from "components/Accordion";
 import HeaderSearch from "components/HeaderSearch";
 import CustomDropdown from "components/input/CustomDropdown";
 import { useState } from "react";
-
+import StaffDocumentModal from "components/modal/StaffDocumentModal";
 import StaffMobileStatusCard from "components/cards/StaffStatusCard/StaffMobileStatusCard";
 
 const Test = () => {
@@ -19,7 +19,7 @@ const Test = () => {
 
   return (
     <div>
-      <StaffMobileStatusCard/>
+      <StaffDocumentModal/>
     </div>
   );
 };
