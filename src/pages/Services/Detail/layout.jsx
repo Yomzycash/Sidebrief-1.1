@@ -60,10 +60,11 @@ const ServicesDetailLayout = () => {
 
   //
   const handleContinue = () => {
-    const countryISO = serviceCountry;
+    const countryISO = serviceCountry?.split("-")[0];
+    const country = lookup.byIso(countryISO)?.country;
     let complyInfo = {
       ...comply,
-      serviceCountry: lookup.byIso(countryISO)?.country,
+      serviceCountry: country?.toLowerCase() === "united states" ? "Delaware" : country,
       serviceName: serviceName,
     };
     let paymentInfo = comply?.complyPayment[0] || {};
