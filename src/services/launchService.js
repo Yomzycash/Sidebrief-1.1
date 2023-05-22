@@ -398,6 +398,15 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    getMembersKYC: builder.query({
+      query: (data) => ({
+        url: "/launch/members/viewkyc",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // add beneficial KYC
     addBeneficialKYC: builder.mutation({
       query: (data) => ({
@@ -513,6 +522,8 @@ export const {
   useAddMemberKYCMutation,
   useDeleteMemberKYCMutation,
   useViewMembersKYCMutation,
+  useGetMembersKYCQuery,
+  useLazyGetMembersKYCQuery,
 
   useAddBeneficialKYCMutation,
   useDeleteBeneficialKYCMutation,

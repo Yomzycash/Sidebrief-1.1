@@ -12,6 +12,7 @@ import {
   useDeleteMemberKYCMutation,
   useGetAllEntitiesQuery,
   useViewMembersKYCMutation,
+  useGetMembersKYCQuery,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
@@ -24,20 +25,23 @@ import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 import { Upload } from "components/File";
 
 const ShareHolderKYC = () => {
+  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
+
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [sameData, setSameData] = useState([]);
-  const [viewMemberKYC] = useViewMembersKYCMutation();
+  // const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewMember, viewMembersState] = useViewMembersMutation();
   const [viewShareholders, viewShareholderState] = useViewShareholdersMutation();
   const [shareholderContainer, setShareholder] = useState([]);
   const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [deleteMemberKYC] = useDeleteMemberKYCMutation();
 
+  const memberKYC = useGetMembersKYCQuery(launchResponse);
+
   let navigatedFrom = localStorage.getItem("navigatedFrom");
 
-  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
   const countryISO = localStorage.getItem("countryISO");
 
   const [documentContainer, setDocumentContainer] = useState([]);
@@ -137,12 +141,12 @@ const ShareHolderKYC = () => {
     };
 
     const response = await addMemberKYC(requiredAddMemberData);
-    await viewMemberKYC();
+    memberKYC.refetch();
     const documentCode = response.data.businessMembersKYC.slice(-1)[0].documentCode;
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
-      handleShareHolderCheck();
+      // handleShareHolderCheck();
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
@@ -151,30 +155,30 @@ const ShareHolderKYC = () => {
   };
 
   store.dispatch(setShareholderDocs(documentContainer));
-  const handleShareHolderCheck = async () => {
-    let newArr = [];
-    const response = await viewMemberKYC(launchResponse);
-    const MemberKYCInfo = [...response?.data?.businessMembersKYC];
+  // const handleShareHolderCheck = async () => {
+  //   let newArr = [];
+  //   const response = await viewMemberKYC(launchResponse);
+  //   const MemberKYCInfo = [...response?.data?.businessMembersKYC];
 
-    MemberKYCInfo?.forEach((member) => {
-      documentContainer?.forEach((document) => {
-        if (member?.memberCode === document?.code) {
-          let newList = { ...member, ...document };
-          console.log("issue", newList);
-          newArr.push(newList);
-        }
-      });
-    });
+  //   MemberKYCInfo?.forEach((member) => {
+  //     documentContainer?.forEach((document) => {
+  //       if (member?.memberCode === document?.code) {
+  //         let newList = { ...member, ...document };
+  //         console.log("issue", newList);
+  //         newArr.push(newList);
+  //       }
+  //     });
+  //   });
 
-    setSameData(newArr);
-  };
+  //   setSameData(newArr);
+  // };
 
-  useEffect(() => {
-    handleShareHolderCheck();
-  }, [documentContainer]);
+  // useEffect(() => {
+  //   handleShareHolderCheck();
+  // }, [documentContainer]);
 
   const handleNext = () => {
-    handleShareHolderCheck();
+    // handleShareHolderCheck();
 
     let a = requiredDocuments.length;
     let b = documentContainer.length;
@@ -234,6 +238,10 @@ const ShareHolderKYC = () => {
     return {};
   };
 
+  const memberDocuments = memberKYC?.data?.businessMembersKYC || [];
+
+  const docs = handleDocuments(memberDocuments);
+
   // Set the progress of the application
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
@@ -262,6 +270,7 @@ const ShareHolderKYC = () => {
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
                   {requiredDocuments?.map((document, index) => {
+                    const oldFile = docs[document];
                     return (
                       // <KYCFileUpload
                       //   key={index}
@@ -277,7 +286,11 @@ const ShareHolderKYC = () => {
                       <Upload
                         key={index}
                         docType={document}
-                        oldFile={{ name: "", code: "" }}
+                        oldFile={
+                          oldFile
+                            ? { name: oldFile.fileName, code: oldFile.documentCode }
+                            : { name: "", code: "" }
+                        }
                         uploadAction={newHandleChange}
                         memberCode={shareholder.code}
                         deleteAction={handleRemove}

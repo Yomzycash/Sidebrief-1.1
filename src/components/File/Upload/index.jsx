@@ -44,7 +44,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile, memberCod
       setSetOld(false);
       setUploading(false);
     },
-    [uploadAction, docType]
+    [uploadAction, docType, memberCode]
   );
 
   const nameLengthValidator = (file) => {
