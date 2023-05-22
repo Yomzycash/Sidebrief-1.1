@@ -1,13 +1,17 @@
 import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState, useMemo } from "react";
 import { useGetDraftLaunchQuery } from "services/staffService";
-import { Body, Container, Loading } from "./styles";
+import { Body, Container, Loading , MobileContainer } from "./styles";
 import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
+import { useMediaQuery } from "@mui/material";
 import { Puff } from "react-loading-icons";
 import { sortTableData } from "utils/staffHelper";
 import { columns } from "../tableColumn";
+import { staffNavigateToDetailPage } from "utils/globalFunctions";
+import { useNavigate } from "react-router-dom";
 import Paginator from "components/Paginator";
+import Accordion from "components/Accordion";
 
 const Draft = () => {
 	const [tableArr, setTableArr] = useState([]);
@@ -17,6 +21,7 @@ const Draft = () => {
 	const pendingLaunch = useGetDraftLaunchQuery();
 
 	const countries = useGetAllCountriesQuery();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (pendingLaunch.isSuccess && countries.isSuccess) {
@@ -30,7 +35,7 @@ const Draft = () => {
 	}, [tableArr]);
 
 	const loadingData = pendingLaunch.isLoading;
-
+	const matches = useMediaQuery("(max-width:700px)");
 	const itemsPerPage = 15;
 
 	const handlePageClick = (e) => {
@@ -54,7 +59,7 @@ const Draft = () => {
 					</Loading>
 				)}
 
-				{sortedArr.length > 0 && (
+				{!matches && sortedArr.length > 0 ? (
 					<MemoisedGeneralTable
 						data={currentItems.map((element) => {
 							return {
@@ -73,6 +78,23 @@ const Draft = () => {
 						})}
 						columns={columns}
 					/>
+				) : (
+					<MobileContainer>
+						{ currentItems.map((element) => {
+							return (
+								<Accordion
+									key={element.launchCode}
+									name={element.businessNames ? element.businessNames.businessName1 : "No name "}
+									type={element?.registrationType}
+									country={element?.registrationCountry}
+									date={format(new Date(element.createdAt), "dd/MM/yyyy")}
+									code={element.launchCode}
+									countryISO={element.registrationCountry}
+									navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
+									/>
+							)
+						})}
+					</MobileContainer>
 				)}
 				{sortedArr?.length > itemsPerPage && (
 					<Paginator

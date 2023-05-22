@@ -3,6 +3,7 @@ import { CornerPetal } from "asset/svg";
 import styled from "styled-components";
 import { ReactComponent as MoreIcon } from "../../../../src/asset/svg/threeDot.svg";
 import { ReactComponent as MailIcon } from "../../../../src/asset/svg/mailbox.svg";
+import Flag from "react-world-flags";
 
 const CountryCard = ({
   image,
@@ -11,6 +12,7 @@ const CountryCard = ({
   countryNumber = "+234",
   countryCurrency = "Naira",
   action,
+  code,
 }) => {
   return (
     <Container onClick={action}>
@@ -20,7 +22,7 @@ const CountryCard = ({
       <Top>
         <TopWrapper>
           <CountryImageWrapper>
-            <img src={image} alt="flag" />
+            <Flag code={code?.toLowerCase() ==='se' ? 'sn': code?.toLowerCase()} fallback={<span>Unknown</span>} />
           </CountryImageWrapper>
           <CountryName>{name}</CountryName>
         </TopWrapper>

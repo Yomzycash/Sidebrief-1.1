@@ -26,6 +26,7 @@ import { useRegisterNewStaffMutation } from "services/staffService";
 import NumberInput from "components/input/phoneNumberInput";
 import DropOther from "components/input/dropOther";
 import { userRegistrationSchema } from "./schema";
+import { Mixpanel } from "mixpanel";
 
 const UserRegistration = () => {
   const [navSticked, setNavSticked] = useState("");
@@ -89,6 +90,13 @@ const UserRegistration = () => {
     let response = staffCheck
       ? await registerNewStaff(JSON.stringify(formData))
       : await registerNewUser(JSON.stringify(formData));
+
+    if (!staffCheck) {
+      Mixpanel.identify(formData.email);
+      Mixpanel.track("Signed up", {
+        referral: formData.referral_code,
+      });
+    }
 
     let data = response?.data;
     let error = response?.error;

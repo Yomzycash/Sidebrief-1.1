@@ -89,7 +89,9 @@ export const SubHeader = styled.div`
   overflow-y: hidden;
   padding-inline: 24px;
 
-  //TODO: maybe hide scroll bar
+  // @media screen and (max-width: 700px) {
+  //   display:none;
+  // }
 `;
 export const SearchWrapper = styled.div`
   max-width: 384px;
@@ -143,6 +145,10 @@ export const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
+
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 export const Drop = styled.div`

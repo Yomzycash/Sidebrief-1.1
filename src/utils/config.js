@@ -216,6 +216,16 @@ export const BankAccountSchema = yup.object().shape({
   image: yup.string().required("lmage is a required field"),
 });
 
+export const StaffDocumentSchema = yup.object().shape({
+  name: yup.string().required("Enter document name"),
+  description: yup.string().required("Enter document description"),
+  fileupload: yup.mixed().test('file-upload', 'File upload is required', function (value) {
+    if (value instanceof FileList) {
+      return value.length > 0;
+    }
+    return false;
+  }),
+})
 export const userSidebarItems = [
   {
     id: 1,
@@ -233,7 +243,7 @@ export const userSidebarItems = [
     id: 3,
     title: "My Products",
     icon: BusinessesIcon,
-    path: "/dashboard/my-products",
+    path: "/dashboard/my-products/business",
     dropDownList: [
       {
         id: 1,
@@ -268,7 +278,7 @@ export const userSidebarItems = [
       {
         id: 6,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/dashboard/my-products/compliance",
       },
     ],
@@ -314,54 +324,60 @@ export const staffSidebarItems = [
     dropDownList: [
       {
         id: 1,
+        title: "Overview",
+        icon: ProductIcon,
+        path: "/staff-dashboard/businesses/overview",
+      },
+      {
+        id: 2,
         title: "Products",
         icon: ProductIcon,
         path: "/staff-dashboard/businesses/services",
       },
       {
-        id: 2,
+        id: 3,
         title: "Registrations",
         icon: ResourcesIcon,
         path: "/staff-dashboard/businesses/registration",
       },
       {
-        id: 3,
+        id: 4,
         title: "Managed",
         icon: ManageIcon,
         path: "/staff-dashboard/businesses/manage",
       },
       {
-        id: 4,
+        id: 5,
         title: "Onboarded",
         icon: OnboardIcon,
         path: "/staff-dashboard/businesses/onboard",
       },
       {
-        id: 5,
+        id: 6,
         title: "Taxes",
         icon: TaxIcon,
         path: "/staff-dashboard/businesses/tax",
       },
       {
-        id: 6,
+        id: 7,
         title: "Intellectuals",
         icon: Intellectual,
         path: "/staff-dashboard/businesses/intellectual-property",
       },
       {
-        id: 7,
+        id: 8,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/staff-dashboard/businesses/compliance",
       },
       {
-        id: 8,
+        id: 9,
         title: "Entities",
         icon: EntityIcon,
         path: "/staff-dashboard/businesses/entities",
       },
       {
-        id: 9,
+        id: 10,
         title: "Countries",
         icon: CountryIcon,
         path: "/staff-dashboard/businesses/countries",

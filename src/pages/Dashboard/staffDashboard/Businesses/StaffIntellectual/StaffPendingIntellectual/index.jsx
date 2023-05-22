@@ -9,12 +9,14 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import FeatureTable from "components/Tables/FeatureTable";
 import { handleError } from "utils/globalFunctions";
 import { useCategoriesActions } from "../../actions";
+import { useGetAllCountriesQuery } from "services/launchService";
 
+import Accordion from "components/Accordion";
 const StaffPendingIntellectuals = () => {
   const [dataArr, setDataArr] = useState([]);
 
   const { submitted, searchValue, isLoading, isError, isSuccess } = useOutletContext();
-
+  const countries = useGetAllCountriesQuery();
   const hasFetched = submitted ? true : false;
   const allSubmitted = hasFetched ? submitted : [];
 
@@ -76,12 +78,21 @@ const StaffPendingIntellectuals = () => {
           <MobileContainer>
             {dataArr.map((element) => {
               return (
-                <BusinessesCard
-                  name={element.businessNames ? element.businessNames.businessName1 : "No name "}
-                  type={element?.registrationType}
-                  code={element?.launchCode}
-                  countryISO={element?.registrationCountry}
-                />
+                <Accordion
+                key={element?.complyCode}
+                name={element?.serviceName ? element?.serviceName : "No service "}
+                type={element?.status}
+                code={element?.complyCode}
+                countryISO={element?.serviceCountry}
+                country={
+                  countries?.data?.find(
+                    (country) => country.countryISO === element?.serviceCountry
+                  )?.countryName
+                }
+                product
+                date={dataArr.length < 1 ? '--': format(new Date(element?.updatedAt), "dd/MM/yyyy")}
+                action={() => { navigate(`/staff-dashboard/businesses/intellectual-property/submitted-intellectual-properties/${element?.complyCode}/info`)}}
+            />
               );
             })}
           </MobileContainer>

@@ -8,6 +8,7 @@ import {
   Text,
   TextWithLabel,
   TextWrapper,
+  ImageLink,
 } from "./style";
 
 const StaffBankDetails = ({ selectedBank }) => {
@@ -58,7 +59,7 @@ const StaffBankDetails = ({ selectedBank }) => {
             <TextWithLabel>
               <Label>Image</Label>
               <TextWrapper>
-                <LinkText>{selected.bankLogo}</LinkText>
+                <ImageLink>{selected.bankLogo}</ImageLink>
               </TextWrapper>
             </TextWithLabel>
           </FullContentWrapper>

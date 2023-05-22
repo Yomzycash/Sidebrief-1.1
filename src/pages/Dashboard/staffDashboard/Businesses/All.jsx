@@ -1,31 +1,38 @@
-import { BusinessHomeTable } from "components/Staff/Tables";
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useGetSubmittedLaunchQuery } from "services/staffService";
+import { useGetAllLaunchQuery } from "services/staffService";
+import { parseJSON, format, compareDesc } from "date-fns";
+import { GeneralTable } from "components/Tables";
+import { columns } from "./column";
+import { Puff } from "react-loading-icons";
+import { Loading } from "./styled";
 
 const AllBusinessesSummary = () => {
-  const [submitted, setSubmitted] = useState([]);
+  const { data, isLoading } = useGetAllLaunchQuery();
 
-  const { data } = useGetSubmittedLaunchQuery();
-
-  // let sortArr = [...data];
-  // let sortedArr = data?.sort(sortTableData);
-
-  useEffect(() => {
-    setSubmitted(
-      data &&
-        data?.map((reg) => {
-          return {
-            name: reg.businessNames?.businessName1,
-            country: reg?.registrationCountry,
-            date: reg?.updatedAt.slice(0, 10),
-          };
-        })
-    );
-  }, [data]);
-
-  return <BusinessHomeTable data={submitted} link="/staff-dashboard/businesses/registration" />;
+  return (
+    <>
+      {!isLoading && data.length > 0 ? (
+        <GeneralTable
+          columns={columns}
+          data={[...data]
+            .sort((a, b) => compareDesc(parseJSON(a.updatedAt), parseJSON(b.updatedAt)))
+            .slice(0, 10)
+            .map((reg) => {
+              return {
+                name: reg.businessNames?.businessName1,
+                country: reg?.registrationCountry,
+                date: format(parseJSON(reg?.updatedAt), "dd/MM/yyyy"),
+              };
+            })}
+          selectionRow={true}
+        />
+      ) : (
+        <Loading>
+          <Puff stroke="#00A2D4" />
+        </Loading>
+      )}
+    </>
+  );
 };
 
 export default AllBusinessesSummary;

@@ -33,7 +33,7 @@ const ServicePayment = () => {
   };
 
   //
-  console.log(option);
+  // console.log(option);
 
   // Send the payment reference information to the backend
   const sendFlutterwaveRefToBackend = async (reference) => {
@@ -56,8 +56,6 @@ const ServicePayment = () => {
     link = serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     navigate(link);
   };
-
-  //
 
   // Stripe required data to be sent to the backend a successful payment
   const sendStripeRefToBackend = async (paymentIntent) => {
@@ -93,6 +91,9 @@ const ServicePayment = () => {
     currency: serviceData?.serviceCurrency,
     title: serviceData?.serviceName,
     description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
+    isSubscription: option === "onboard",
+    productId: serviceData?.productId || "",
+    priceId: serviceData?.priceId || "",
   };
 
   // Set the progress of the application

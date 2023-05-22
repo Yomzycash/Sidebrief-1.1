@@ -14,17 +14,13 @@ import {
   TableHeader,
   FilterButton,
 } from "./styles";
-import {
-  useReactTable,
-  flexRender,
-  getCoreRowModel,
-} from "@tanstack/react-table";
+import { useReactTable, flexRender, getCoreRowModel } from "@tanstack/react-table";
 import { columns, businessesHeader } from "./constants";
 import { useState } from "react";
 import ActiveNav from "components/navbar/ActiveNav";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const BusinessHomeTable = ({ data, link }) => {
+export const BusinessHomeTable = ({ data, link, children }) => {
   const [activeFilter, setActiveFilter] = useState("all");
 
   const table = useReactTable({
@@ -72,10 +68,7 @@ export const BusinessHomeTable = ({ data, link }) => {
                   <HeadData key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </HeadData>
                 ))}
               </tr>

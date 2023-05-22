@@ -4,52 +4,39 @@ import awaitingImg from "asset/staff/Awaiting.svg";
 import completedImg from "asset/staff/Completed.svg";
 import inProgressImg from "asset/staff/InProgress.svg";
 
+
+
+const Container = ({ icon, number, text}) => {
+	return (
+		<StyledContainer>
+			<IconWrapper>
+				<img src={icon} alt="icon" />
+			</IconWrapper>
+			<Number>{number}</Number>
+			<TextWrapper>
+				<StatusWrapper>{text}</StatusWrapper>
+			</TextWrapper>
+		</StyledContainer>
+	)
+}
 const StaffStatusCard = ({ status }) => {
 	return (
 		<Wrapper>
-			<Container>
-				<IconWrapper>
-					<img src={awaitingImg} alt="icon" />
-				</IconWrapper>
-				<Number>{status?.awaiting}</Number>
-				<TextWrapper>
-					<StatusWrapper>Businesses Awaiting Approval</StatusWrapper>
-				</TextWrapper>
-			</Container>
-
-			<Container>
-				<IconWrapper>
-					<img src={inProgressImg} alt="icon" />
-				</IconWrapper>
-				<Number>{status?.inProgress}</Number>
-				<TextWrapper>
-					<StatusWrapper>Businesses In Progress</StatusWrapper>
-				</TextWrapper>
-			</Container>
-
-			<Container>
-				<IconWrapper>
-					<img src={completedImg} alt="icon" />
-				</IconWrapper>
-				<Number>{status?.completed}</Number>
-				<TextWrapper>
-					<StatusWrapper>Businesses Completed</StatusWrapper>
-				</TextWrapper>
-			</Container>
-			{/* {StaffBusinessStatus.map((card, index) => {
-        return (
-          <Container key={index}>
-            <IconWrapper>
-              <img src={card.image} alt="icon" />
-            </IconWrapper>
-            <Number>{card.number}</Number>
-            <TextWrapper>
-              {card.title}
-              <StatusWrapper>{card.status}</StatusWrapper>
-            </TextWrapper>
-          </Container>
-        );
-      })} */}
+			<Container
+				icon={awaitingImg}
+				number={status?.awaiting}
+				text="Businesses Awaiting Approval"
+			/>
+			<Container
+				icon={inProgressImg}
+				number={status?.inProgress}
+				text="Businesses In Progress"
+			/>
+			<Container
+				icon={completedImg}
+				number={status?.completted}
+				text="Businesses Completed"
+			/>
 		</Wrapper>
 	);
 };
@@ -57,47 +44,68 @@ const StaffStatusCard = ({ status }) => {
 export default StaffStatusCard;
 
 const Wrapper = styled.div`
-	display: flex;
+	// display: flex;
+	// width: 100%;
+	// flex-direction: row;
+	// align-items: flex-start;
+	// padding: 0px;
+	// gap: 24px;
+	
+	@media screen and (max-width: 700px) {
+		grid-template-columns: 1fr;
+	}
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap:3rem 4rem;
+	gap:3rem 4rem;
 	width: 100%;
-	flex-direction: row;
-	align-items: flex-start;
 	padding: 0px;
-	gap: 24px;
+	// justify-content: space-between;
 `;
-const Container = styled.div`
+const StyledContainer = styled.div`
 	width: 100%;
 	height: 168px;
 	padding: 24px;
-
 	background: #ffffff;
+	border: 1px solid #edf1f7;
+	box-shadow: 0px 10px 10px -5px #9596970a;
+	border-radius: 16px;
 
-  border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px #9596970a;
-  border-radius: 16px;
+	@media screen and (min-width: 701px) {
+		grid-row: span 2;
+		grid-column: span 1;
+		width:auto
+	}
+	
+	@media screen and (max-width: 700px) {
+		grid-row: span 2;
+		grid-column: span 1;
+		width:100%;
+	}
 `;
 const IconWrapper = styled.div`
-	margin-block-end: 16px;
+  margin-block-end: 16px;
 `;
 const Number = styled.h3`
 	font-weight: 700;
 	font-size: 20px;
 	line-height: 24px;
-	color: ;
-	margin-block-end: 8px;
+	color: #242627;
+	// margin-block-end: 8px;
 `;
 const TextWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: -0.02em;
-	color: #959697;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #959697;
 `;
 const StatusWrapper = styled.div`
-	font-weight: 400;
-	font-size: 14px;
-	line-height: 20px;
-	letter-spacing: -0.02em;
-	color: #959697;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #959697;
 `;

@@ -12,6 +12,7 @@ import StaffCountryModal from "components/modal/StaffCountryModal";
 import { toast } from "react-hot-toast";
 import lookup from "country-code-lookup";
 
+
 const Countries = () => {
   const [open, setOpen] = useState(false);
   const [cardAction, setCardAction] = useState("");
@@ -86,12 +87,13 @@ const Countries = () => {
             </Loader>
           ) : (
             data?.map((country, index) => {
-              const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
+              //const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
               return (
                 <CountryCard
                   key={index}
-                  image={`https://flagsapi.com/${iso2}/flat/64.png`}
+                  // image={`https://flagsapi.com/${iso2}/flat/64.png`}
                   name={country.countryName}
+                  code={country.countryISO.slice(0,2)}
                   countryCode={country.countryISO}
                   countryNumber={country.countryCode}
                   countryCurrency={country.countryCurrency}

@@ -32,6 +32,7 @@ const ServicesDetailLayout = () => {
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
+
   const getStatus = (stat) => {
     switch (stat) {
       case "pending":
@@ -135,7 +136,6 @@ const ServicesDetailLayout = () => {
     );
   };
   const servicesUrl = `/dashboard/my-products/${pathSelected}`;
-  console.log(servicesUrl);
   return (
     <Container>
       {!matches ? (

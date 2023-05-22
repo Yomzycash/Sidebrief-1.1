@@ -191,3 +191,36 @@ export const SPaymentButton = styled.button`
 
   background-color: ${({ $success }) => ($success ? "#28FF9D" : "")} !important;
 `;
+
+export const SubscriptionFormContainer = styled.form`
+  width: 100%;
+  /* background-color: green; */
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 20px;
+
+  .element1 {
+    grid-row: 1 / 1;
+    grid-column: 1 / -1;
+  }
+
+  .element2,
+  .element3 {
+  }
+
+  .submit {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100%;
+    height: 59px;
+    display: flex;
+    justify-content: center;
+
+    span {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 27px;
+    }
+  }
+`;
