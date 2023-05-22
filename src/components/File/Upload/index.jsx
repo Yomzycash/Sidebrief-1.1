@@ -17,7 +17,7 @@ import { DeleteRedSvg } from "asset/svg";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
+export const Upload = ({ docType, uploadAction, deleteAction, oldFile, memberCode }) => {
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState({ name: "", code: "" });
   const [setOld, setSetOld] = useState(true);
@@ -34,7 +34,9 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
       const realFile = file[0];
       setUploading(true);
       const uploadedFile = await convertToLink(realFile);
-      const documentCode = await uploadAction(uploadedFile, docType, realFile);
+      const documentCode = !memberCode
+        ? await uploadAction(uploadedFile, docType, realFile)
+        : await uploadAction(uploadedFile, docType, realFile, memberCode);
       setFile({
         name: realFile.name,
         code: documentCode,
@@ -62,7 +64,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
 
   const performDelete = async () => {
     setDeleting(true);
-    await deleteAction(file.code);
+    !memberCode ? await deleteAction(file.code) : await deleteAction(file.code, memberCode);
     setFile({
       name: "",
       code: "",
