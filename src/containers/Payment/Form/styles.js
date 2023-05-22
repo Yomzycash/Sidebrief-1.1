@@ -213,5 +213,14 @@ export const SubscriptionFormContainer = styled.form`
     grid-column: 1 / -1;
     width: 100%;
     max-width: 100%;
+    height: 59px;
+    display: flex;
+    justify-content: center;
+
+    span {
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 27px;
+    }
   }
 `;

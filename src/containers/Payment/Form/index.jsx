@@ -58,7 +58,12 @@ export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
         <Text>Total amount for this purchase</Text>
       </TextContainer>
       {paymentInfo.isSubscription ? (
-        <SubscriptionForm />
+        <SubscriptionForm
+          subInfo={{
+            priceId: paymentInfo.priceId,
+            productId: paymentInfo.productId,
+          }}
+        />
       ) : (
         <>
           {paymentProvider.toLowerCase() === "flutterwave" && (
