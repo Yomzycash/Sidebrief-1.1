@@ -29,8 +29,11 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { handleBusinessInfo } from "./actions";
 import { InputWithLabel } from "components/input";
+import { useGetPromoCodeQuery } from "services/staffService";
 
 const BusinessInfo = () => {
+  const [promoCode, setPromoCode] = useState("");
+
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
   const savedBusinessNames = useSelector((store) => store.LaunchReducer).businessNames;
@@ -52,6 +55,7 @@ const BusinessInfo = () => {
   const [updateBusinessNames, updateNamesState] = useUpdateBusinessNamesMutation();
   const [updateBusinessObjectives, updateObjectivesState] = useUpdateBusinessObjectivesMutation();
   const [viewPayLaunch] = useViewPayLaunchMutation();
+  // const promoResponse = useGetPromoCodeQuery(promoCode, { skip: promoCode?.length !== 20 });
 
   const navigate = useNavigate();
 
@@ -264,7 +268,7 @@ const BusinessInfo = () => {
                 disabled={paidStatus}
               />
             </div>
-            <div style={{ maxWidth: "330px" }}>
+            {/* <div style={{ maxWidth: "330px" }}>
               <InputWithLabel
                 label="Promo Code (Optional)"
                 labelStyle="input-label"
@@ -272,8 +276,10 @@ const BusinessInfo = () => {
                 type="text"
                 inputClass="input-class"
                 containerStyle="input-container-class"
+                onChange={(e) => setPromoCode(e.target.value)}
+                overlayComponent={<div>Error</div>}
               />
-            </div>
+            </div> */}
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
