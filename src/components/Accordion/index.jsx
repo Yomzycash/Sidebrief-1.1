@@ -2,23 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Accordion = ({ name, type, country, date, code, countryISO, navigate,product, action  }) => {
+const Accordion = ({ name, type, country, date, code, countryISO, navigate,product, action }) => {
   const launchInfo = {
     launchCode: code,
     registrationCountry: countryISO,
     registrationType: type,
   };
+
+
   const [isActive, setIsActive] = useState(false);
   const { pathname } = useLocation();
-  const content = pathname.includes('business')
+  const content = pathname.includes('business');
 
   return (
     <Wrapper>
-      <TitleWrapper>
+      <TitleWrapper onClick={() => setIsActive(!isActive)} isActive={isActive}>
         <Title>{name}</Title>
-        <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive}>
+        <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive} >
           <IoIosArrowDown />
         </ArrowDown>
       </TitleWrapper>
@@ -44,8 +46,10 @@ const Accordion = ({ name, type, country, date, code, countryISO, navigate,produ
               </SubWrapper>
             </SubContentWrapper>
           </ContentWrapper>
-          {!product &&
-            <Details onClick={() => navigate(launchInfo)}>More details</Details>}
+
+          {!product && 
+            <Details onClick={() => navigate(launchInfo)}>More details</Details>
+          }
            {product &&
             <Details onClick={action}>More details</Details>}
         </AllContentWrapper>

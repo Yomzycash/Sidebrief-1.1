@@ -22,3 +22,24 @@ export const Loading = styled.div`
 	width: 100%;
 	height: 200px;
 `;
+
+export const MobileContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	max-width: inherit;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+`;
+
+
+export const EmptyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px;
+  height: ${({ height }) => height && height};
+  
+`;

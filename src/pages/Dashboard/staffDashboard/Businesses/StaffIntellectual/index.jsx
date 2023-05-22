@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "./styled";
-import { Outlet, useLocation } from "react-router-dom";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 import ProductHeader from "components/Header/ProductHeader";
 import EmptyContent from "components/Fallbacks/EmptyContent";
 import { useCategoriesActions } from "../actions";
 import LoadingError from "components/Fallbacks/LoadingError";
-
-//
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import MobileStaff from "layout/MobileStaff";
+import { useMediaQuery } from "@mui/material";
 
 const StaffIntellectual = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -27,6 +27,8 @@ const StaffIntellectual = () => {
   });
 
   const { pathname } = useLocation();
+
+  const navigate = useNavigate();
 
   let submittedTotal = submitted?.length;
   let draftTotal = drafts?.length;
@@ -48,6 +50,8 @@ const StaffIntellectual = () => {
   };
 
   const filterList = ["All"];
+
+  const matches = useMediaQuery("(max-width:700px)");
 
   const navInfo = [
     {
@@ -79,9 +83,51 @@ const StaffIntellectual = () => {
   let isFirstNav =
     pathname === "/staff-dashboard/businesses/intellectual-property" &&
     "/staff-dashboard/businesses/intellectual-property/all-intellectual-properties";
+    let options = [
+      {
+        title: submittedTotal + draftTotal > 0 ? "All" : "",
+        totalLength: submittedTotal + draftTotal,
+      },
+      {
+        title: paidDraftTotal > 0 ? "Paid Drafts" : "",
+        totalLength: paidDraftTotal,
+      },
+      {
+        title: submittedTotal > 0 ? "Submitted" : "",
+        totalLength: submittedTotal,
+      },
+      {
+        title: draftTotal > 0 ? "Drafts" : "",
+        totalLength: draftTotal,
+      },
+    ];
+  
+    //removing empty element from the array
+    options = options.filter((el) => el?.title !== "");
+  
+    let pathNavigation = {
+      All: "all-intellectual-properties",
+      Submitted: "submitted-intellectual-properties",
+      Drafts: "draft-intellectual-properties",
+      "Paid Drafts": "paid-draft-intellectual-properties",
+    };
+
+    const selectedValue = (option) => {
+      navigate(`/staff-dashboard/businesses/intellectual-property/${pathNavigation[option?.title]}`)
+    }
 
   return (
     <Container>
+     {matches ? (
+      <MobileStaff
+        title={"Intellectual Property"}
+        originalOptions={options} 
+        initialTitle={"All"}
+        initialLength={submittedTotal + draftTotal}
+        realSelectedValue={selectedValue}
+        mobile
+      />
+     ): (
       <ProductHeader
         title="Intellectual Property"
         searchPlaceholder="Search intellectual property..."
@@ -92,7 +138,8 @@ const StaffIntellectual = () => {
         onSearchChange={handleSearch}
         navInfo={navInfo}
         defaultActive={isFirstNav}
-      />
+    />
+     )}
       {!allTotal && !isLoading ? (
         isError ? (
           <LoadingError />

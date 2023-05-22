@@ -97,6 +97,11 @@ export const TextContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: clamp(4px, 1.5vw, 8px);
+
+	@media screen and (max-width: 532px) {
+		color:red;
+	}
+
 `;
 
 export const Title = styled.h4`
@@ -116,7 +121,12 @@ export const Title = styled.h4`
 	@media screen and (max-width: 532px) {
 		font-weight: 600;
 		font-size: 16px;
+
+		display:flex;
+
 	}
+
+
 `;
 
 export const Message = styled.h5`

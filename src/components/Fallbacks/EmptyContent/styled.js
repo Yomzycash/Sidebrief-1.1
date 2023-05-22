@@ -9,7 +9,7 @@ export const Container = styled.div`
   width: 100%;
   padding: 24px;
 
-  svg {
+  img {
     max-width: 80%;
     height: auto;
   }

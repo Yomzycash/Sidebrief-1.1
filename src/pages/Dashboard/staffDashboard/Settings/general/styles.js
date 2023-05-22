@@ -36,6 +36,7 @@ export const Frame = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
+	white-space: nowrap
 `;
 
 export const Name = styled.h6`
@@ -61,6 +62,8 @@ export const Title = styled.p`
 export const ButtonContainer = styled.div`
 	display: flex;
 	gap: 40px;
+
+	
 `;
 
 export const Button = styled.button`

@@ -87,3 +87,10 @@ export const LinkText = styled.p`
 	cursor: pointer;
 	max-width: 100%;
 `;
+
+export const ImageLink = styled(LinkText)`
+	@media screen and (max-width: 700px) {
+		width:200px;
+	}
+	
+`

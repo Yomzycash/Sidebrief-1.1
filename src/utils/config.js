@@ -38,6 +38,7 @@ export const referralOptions = [
   { value: "Google", label: "Google" },
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Recommendation", label: "Recommendation" },
+  { value: "Referral", label: "Referral" },
   { value: "Other", label: "Other" },
 ];
 
@@ -232,7 +233,7 @@ export const userSidebarItems = [
     id: 3,
     title: "My Products",
     icon: BusinessesIcon,
-    path: "/dashboard/my-products",
+    path: "/dashboard/my-products/business",
     dropDownList: [
       {
         id: 1,
@@ -267,7 +268,7 @@ export const userSidebarItems = [
       {
         id: 6,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/dashboard/my-products/compliance",
       },
     ],
@@ -356,7 +357,7 @@ export const staffSidebarItems = [
       {
         id: 8,
         title: "Compliances",
-        icon: Intellectual,
+        icon: ComplianceIcon,
         path: "/staff-dashboard/businesses/compliance",
       },
       {
@@ -391,6 +392,12 @@ export const staffSidebarItems = [
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
   },
+  // {
+  //   id: 8,
+  //   title: "Promo Code",
+  //   icon: RewardIcon,
+  //   path: "/staff-dashboard/promo-codes",
+  // },
   {
     id: 8,
     title: "Payments",

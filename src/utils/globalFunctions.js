@@ -41,7 +41,7 @@ export const handleError = (error) => {
 
 // handle response received from endpoints call
 export const handleResponse = (response, successMessage, successAction, errorAction) => {
-  if (response.data) {
+  if (response?.data) {
     toast.success(successMessage);
     if (successAction) successAction();
   } else {
@@ -146,3 +146,4 @@ export const clearProductsInfo = () => {
   removeLaunchFromLocalStorage();
   removeComplyFromLocalStorage();
 };
+

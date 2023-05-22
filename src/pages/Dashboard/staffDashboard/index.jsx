@@ -4,7 +4,9 @@ import StatusCard from "components/cards/StaffStatusCard/StaffStatusCard";
 import DashboardSection from "layout/DashboardSection";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-// import { useLocation } from "react-router-dom";
+import { IoIosAdd } from "react-icons/io";
+import BusinessMetricCard from "components/cards/BusinessMetric";
+
 import {
   useGetAllLaunchQuery,
   useGetApprovedLaunchQuery,
@@ -13,15 +15,16 @@ import {
   useGetSubmittedLaunchQuery,
   useGetAllUsersQuery,
 } from "services/staffService";
-import { StaffContainer, StatusCardContainer } from "./styled";
+import { StaffContainer, StatusCardContainer, BusinessSummaryCard, Wrapper, TitleWrapper , Title, ArrowDown, Contain } from "./styled";
 // import { compareAsc } from "date-fns";
 import { getPercentage } from "utils/staffHelper";
 import { useLocation } from "react-router-dom";
 import { referralOptions } from "utils/config";
+import { useMediaQuery } from "@mui/material";
+
 
 const StaffDashboard = (props) => {
-  // const [allApplications, setAllApplications] = useState([]);
-  // const [launchToUser, setLaunchToUser] = useState();
+  const matches = useMediaQuery("(max-width:700px)");
 
   const allLaunches = useGetAllLaunchQuery();
   const allSubmittedLaunches = useGetSubmittedLaunchQuery();
@@ -31,13 +34,15 @@ const StaffDashboard = (props) => {
   const allUsers = useGetAllUsersQuery();
   const { state } = useLocation();
 
-  // const location = useLocation();
+  const [isActive, setIsActive] = useState(false);
 
   // Get user data information
   const userInfo = useSelector((store) => store.UserDataReducer.userInfo);
   let firstName_raw = userInfo?.first_name;
   let firstName = firstName_raw?.charAt(0)?.toUpperCase() + firstName_raw?.slice(1);
   let alreadyUser = state;
+
+  // console.log("userInfo", userInfo )
 
   const realReferral = {};
 
@@ -123,6 +128,55 @@ const StaffDashboard = (props) => {
     Other: "#c37916",
   };
 
+  const totalMetric = {
+    title: "Total Applications",
+    data: [
+      {
+        text: "Total",
+        total: allLaunches?.data?.length || 0,
+        color: "#00A2D4",
+      },
+    ],
+    totalLength: allLaunches?.data?.length || 0,
+  }
+
+  const draftMetric = {
+    title: "Draft Applications",
+    data: [
+      {
+        text: "Drafts",
+        total: allDraftLaunches?.data?.length || 0,
+        color:  "#00D448",
+      }, 
+      {
+        text: "Total",
+        total: allLaunches?.data?.length || 0,
+        color: "#ffffff66",
+      },
+     
+    ],
+    totalLength: allDraftLaunches?.data?.length || 0,
+  }
+
+  const submittedMetric = {
+    title: "Submitted Applications",
+    data: [
+      {
+        text: "Sumitted",
+        total: allSubmittedLaunches?.data?.length || 0,
+        color:  "#FFBF29"
+      },
+      {
+        text: "Total",
+        total: allLaunches?.data?.length || 0,
+        color: "#ffffff66",
+      }, 
+    ],
+    totalLength: allSubmittedLaunches?.data?.length || 0,
+  }
+  
+
+
   const analytics = {
     title: "User Analytics",
     options: ["All time", 1, 2, 3, 4, 5, 6, 7],
@@ -161,25 +215,50 @@ const StaffDashboard = (props) => {
         }
         nowrap
       >
-        <StatusCardContainer>
-          <StatusCard
-            total={allLaunches?.data?.length}
-            draft={allDraftLaunches?.data?.length}
-            approved={allApprovedLaunches?.data?.length}
-            awaiting={allSubmittedLaunches?.data?.length}
-            rejected={allRejectedLaunches?.data?.length}
-            totalPercentageIncrease={getPercentage(allLaunches?.data)}
-            draftPercentageIncrease={getPercentage(allDraftLaunches?.data)}
-            approvedPercentageIncrease={getPercentage(allApprovedLaunches?.data)}
-            awaitingPercentageIncrease={getPercentage(allSubmittedLaunches?.data)}
-            rejectedPercentageIncrease={getPercentage(allRejectedLaunches?.data)}
-          />
+
+        {/* {!matches ? ( */}
+          <StatusCardContainer>
+            <StatusCard
+              total={allLaunches?.data?.length}
+              draft={allDraftLaunches?.data?.length}
+              approved={allApprovedLaunches?.data?.length}
+              awaiting={allSubmittedLaunches?.data?.length}
+              rejected={allRejectedLaunches?.data?.length}
+              totalPercentageIncrease={getPercentage(allLaunches?.data)}
+              draftPercentageIncrease={getPercentage(allDraftLaunches?.data)}
+              approvedPercentageIncrease={getPercentage(allApprovedLaunches?.data)}
+              awaitingPercentageIncrease={getPercentage(allSubmittedLaunches?.data)}
+              rejectedPercentageIncrease={getPercentage(allRejectedLaunches?.data)}
+            />
         </StatusCardContainer>
+        <Contain>
+          <Wrapper>
+            <TitleWrapper onClick={() => setIsActive(!isActive)} isActive={isActive}>
+            <Title>Registration Metrics</Title>
+            <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive} >
+              <IoIosAdd fontSize={"2em"}/>
+            </ArrowDown>
+          </TitleWrapper>
+          </Wrapper> 
+          {isActive && 
+            <BusinessSummaryCard>
+              <BusinessMetricCard analytics={totalMetric} staff noTotal />
+              <BusinessMetricCard analytics={draftMetric} staff noTotal />
+              <BusinessMetricCard analytics={submittedMetric} staff noTotal />
+            </BusinessSummaryCard>
+          }
+          
+        </Contain>
+       
+
+
       </DashboardSection>
+      
       <DashboardSection>
         <BusinessesChartCard analytics={analytics} staff noTotal />
         <AnalyticsChart data={allLaunches?.data || []} />
       </DashboardSection>
+
       <DashboardSection>
         <BusinessesChartCard analytics={referralAnalytics} staff noTotal />
       </DashboardSection>

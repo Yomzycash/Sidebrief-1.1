@@ -9,6 +9,8 @@ import FeatureSection from "containers/Feature/FeatureSection";
 import { toast } from "react-hot-toast";
 import PetalsCard from "components/cards/ServiceCard/PetalsCard";
 import { ScrollBox } from "containers";
+import { useMediaQuery } from "@mui/material";
+import { format } from "date-fns";
 import {
   Container,
   Header,
@@ -18,6 +20,7 @@ import {
   searchStyle,
   SearchWrapper,
   TopContent,
+  MobileContainer,
 } from "./styled";
 import StaffServicesModal from "components/modal/StaffServicesModal";
 import { handleError } from "utils/globalFunctions";
@@ -25,13 +28,15 @@ import { GeneralTable } from "components/Tables";
 import { columns } from "./table";
 import { useViewAllComplyQuery } from "services/complyService";
 import { compareAsc } from "date-fns";
-
+import Accordion from "components/Accordion";
 const iconStyle = { width: "17px", height: "17px" };
 
 const ServicePage = () => {
   const [clickedService, setClickedService] = useState({});
   const { data, isLoading, refetch } = useGetAllServicesQuery();
   const allComply = useViewAllComplyQuery();
+  // const dataComply = allComply !== null && allComply?.data.slice(0, 10)
+  // console.log("dataComply", dataComply)
   const [deleteService, deleteState] = useDeleteServiceMutation();
 
   const [dialog, setDialog] = useState({ serviceId: "", mode: "", progress: 0 });
@@ -51,6 +56,7 @@ const ServicePage = () => {
     navigate("/staff-dashboard/businesses/services/allcomply/all");
   };
 
+  const matches = useMediaQuery("(max-width:700px)");
   let totalServices = data?.length > 0 ? data?.length : 0;
 
   const handleServiceClick = (clickedInfo) => {
@@ -92,6 +98,19 @@ const ServicePage = () => {
   useEffect(() => {
     allComply.refetch();
   }, []);
+
+  // const complyData = [...allComply.data]?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))?.slice(0, 10);
+  const sortedData = allComply?.data != null ?  
+    [...allComply?.data]?.sort((a, b) => compareAsc(
+      new Date(b?.createdAt), 
+      new Date(a?.createdAt)))?.
+    slice(0, 10).map((comply) => ({
+      complyCode: comply.complyCode,
+      serviceId: comply.serviceId,
+      meta: comply.meta,
+      date: comply.updatedAt,
+    })) : [];
+
 
   return (
     <Container>
@@ -155,6 +174,22 @@ const ServicePage = () => {
         btnRightIcon={ArrowLeftIcon}
         btnAction={handleViewAllComply}
       >
+        {/* {allComply.isLoading && (
+            <Loading height="300px">
+              <Puff stroke="#00A2D4" fill="white" width={60} />
+            </Loading>
+        )}
+        {!matches && allComply?.data?.length > 0 ? (
+            <GeneralTable
+              columns={columns}
+              data={sortedData}
+              normalLastRow
+            />
+        ) : (
+          <MobileContainer>
+
+          </MobileContainer>
+        )} */}
         {allComply.isLoading ? (
           <Loading height="300px">
             <Puff stroke="#00A2D4" fill="white" width={60} />
@@ -163,15 +198,7 @@ const ServicePage = () => {
           allComply?.data?.length > 0 && (
             <GeneralTable
               columns={columns}
-              data={[...allComply.data]
-                ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
-                ?.slice(0, 10)
-                .map((comply) => ({
-                  complyCode: comply.complyCode,
-                  serviceId: comply.serviceId,
-                  meta: comply.meta,
-                  date: comply.updatedAt,
-                }))}
+              data={sortedData}
               normalLastRow
             />
           )

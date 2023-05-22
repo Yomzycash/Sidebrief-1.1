@@ -3,6 +3,8 @@ import Search from "components/navbar/Search";
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../src/asset/svg/Plus.svg";
+import { useMediaQuery } from "@mui/material";
+import NoBackgroundButton from "components/button/NoBackgroundButton";
 
 const StaffBankHeader = ({
   title = "Banks",
@@ -22,6 +24,8 @@ const StaffBankHeader = ({
 
   const iconStyle = { width: "17px", height: "17px" };
 
+  const matches = useMediaQuery("(max-width:700px)");
+
   const buttonAction = () => {
     if (setOpen) setOpen(true);
     if (handleButton) handleButton();
@@ -34,19 +38,28 @@ const StaffBankHeader = ({
           <TopContent>
             <div>
               <PageTitle>{title}</PageTitle>
-              <SummaryCard shown={totalShown} total={totalShown} />
+              {!matches && <SummaryCard shown={totalShown} total={totalShown} /> }
             </div>
           </TopContent>
           <BottomContent>
             <SearchWrapper>
               <Search style={searchStyle} iconStyle={iconStyle} placeholder={placeholder} />
             </SearchWrapper>
-            <ButtonWrapper onClick={buttonAction}>
-              <button>
-                <AddIcon />
-                {Description}
-              </button>
-            </ButtonWrapper>
+           {!matches ? (
+                <ButtonWrapper onClick={buttonAction}>
+                <button>
+                  <AddIcon />
+                  {Description}
+                </button>
+              </ButtonWrapper>
+           ) : (
+            <MobileView>
+                <NoBackgroundButton
+                  action={buttonAction} 
+                  text={Description} 
+                />
+              </MobileView>
+            )} 
           </BottomContent>
         </MainHeader>
       </Header>
@@ -110,6 +123,11 @@ const BottomContent = styled.div`
   gap: 60px;
   flex: 1;
   justify-content: space-between;
+
+  @media screen and (max-width: 700px) {
+    display:flex;
+    flex-direction: column-reverse
+  }
 `;
 const ButtonWrapper = styled.div`
   justify-content: center;
@@ -130,7 +148,20 @@ const ButtonWrapper = styled.div`
     display: flex;
     gap: 8px;
     align-items: center;
+
+    
+    @media screen and (max-width: 700px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
+
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+    width: 100%;
+  }
+
 `;
 
 const SearchWrapper = styled.div`
@@ -142,3 +173,11 @@ const SearchWrapper = styled.div`
     width: 100%;
   }
 `;
+
+const MobileView = styled.div`
+  @media screen and (max-width:700px) {
+    position:absolute;
+    bottom: 99px;
+    right: 7px;
+  }
+`
