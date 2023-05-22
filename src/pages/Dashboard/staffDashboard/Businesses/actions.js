@@ -58,7 +58,7 @@ export const useCategoriesActions = ({
     return data;
   };
 
-  //Filters data by search valuoe
+  //Filters data by search value
   const filterWhenSearched = (data) => {
     if (searchValue && hasFetched) {
       const filteredDataArr = data?.filter((el) => {

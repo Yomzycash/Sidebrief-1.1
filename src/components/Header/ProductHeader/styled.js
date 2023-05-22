@@ -9,7 +9,7 @@ export const Header = styled.div`
   z-index: 2;
 
   @media screen and (max-width: 700px) {
-    display:none;
+    display: none;
   }
 `;
 
@@ -107,6 +107,10 @@ export const ButtonWrapper = styled.div`
   }
 
   button {
+    display: flex;
+    gap: 5px;
+    align-items: center
+
     width: 100%;
     height: 100%;
     background-color: #00a2d4;

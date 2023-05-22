@@ -520,6 +520,52 @@ export const staffApi = createApi({
     getUserById: builder.query({
       query: (userId) => `/getUser/${userId}`,
     }),
+
+    // Create a promo code
+    createPromoCode: builder.mutation({
+      query: (data) => ({
+        url: "/promocodes/create",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Update a promo code
+    updatePromoCode: builder.mutation({
+      query: (data) => ({
+        url: `/promocodes/update/${data?.promoCode}`,
+        method: "PUT",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Delete a promo code
+    deletePromoCode: builder.mutation({
+      query: (data) => ({
+        url: `/promocodes/delete/${data?.promoCode}`,
+        method: "DELETE",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
+    // Get a promo code
+    getPromoCode: builder.query({
+      query: (promoCode) => `/promocodes/${promoCode}`,
+    }),
+
+    // Get all promo codes
+    getAllPromoCodes: builder.query({
+      query: () => `/promocodes`,
+    }),
   }),
 });
 
@@ -591,4 +637,10 @@ export const {
   useGetAllCategoriesQuery,
 
   useGetUserByIdQuery,
+
+  useCreatePromoCodeMutation,
+  useUpdatePromoCodeMutation,
+  useDeletePromoCodeMutation,
+  useGetPromoCodeQuery,
+  useGetAllPromoCodesQuery,
 } = staffApi;

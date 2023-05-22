@@ -28,7 +28,7 @@ const CommonButton = ({
       type={type || "button"}
     >
       {loading ? (
-        LoadingIcon || <Puff stroke={puffColor || "#ffffff"} fill="white" width={24} height={24} />
+        LoadingIcon || <Puff stroke={puffColor || "#ffffff"} fill="white" width={20} height={20} />
       ) : (
         <>
           {LeftIcon && <LeftIcon size={20} color={leftIconColor || "white"} />}
