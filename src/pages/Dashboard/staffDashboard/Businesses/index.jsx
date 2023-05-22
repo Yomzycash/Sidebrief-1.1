@@ -1,5 +1,7 @@
 import StaffStatusCard from "components/cards/BusinessAddressCard/StaffStatusCard";
 import StaffBusinessCard from "components/cards/StaffBusinessCard/StaffBusinessCard";
+// import React from "react";
+// import { useSelector } from "react-redux";
 import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { ReactComponent as AddIcon } from "../../../../../src/asset/svg/Plus.svg";
@@ -7,33 +9,26 @@ import { ReactComponent as PlusIcon } from "../../../../../src/asset/Icons/Add.s
 import { useEffect } from "react";
 import { useState } from "react";
 import { useGetAllTheEntitiesQuery } from "services/launchService";
+import lookup from "country-code-lookup";
 import { useMediaQuery } from "@mui/material";
 import { IoIosAdd } from "react-icons/io";
-
 import {
   useGetAllCountriesQuery,
-  useGetDraftLaunchQuery,
+  useGetApprovedLaunchQuery,
   useGetSubmittedLaunchQuery,
-  useGetAllLaunchQuery,
 } from "services/staffService";
-import lookup from "country-code-lookup";
-import { BusinessHomeTableLayout } from "./BusinessHomeTableLayout";
 
 
 const StaffBusinesses = (props) => {
   const [countries, setCountries] = useState([]);
   const [entities, setEntities] = useState([]);
   //   const [completedLaunches, setCompletedLaunches] = useState([]);
-  // const [businessStatus, setBusinessStatus] = useState([]);
+  const [businessStatus, setBusinessStatus] = useState([]);
 
   const allCountries = useGetAllCountriesQuery();
   const allEntities = useGetAllTheEntitiesQuery();
-
-  const allLaunch = useGetAllLaunchQuery();
-
-  const awaitingLaunch = useGetSubmittedLaunchQuery();
-
-  const pendingLaunch = useGetDraftLaunchQuery();
+  const allSubmittedLaunches = useGetSubmittedLaunchQuery();
+  const allApprovedLaunches = useGetApprovedLaunchQuery();
 
   // const layoutInfo = useSelector((store) => store.LayoutInfo);
   // const { sidebarWidth } = layoutInfo;
@@ -52,10 +47,12 @@ const StaffBusinesses = (props) => {
       countries &&
         countries.map((country) => {
           const iso2 = lookup.byIso(country.countryISO.split("-")[0])?.iso2 || "";
+
           return {
             text: country.countryName,
-            link: `/staff-dashboard/businesses/countries/${country.countryISO}/detail`,
+            link: "",
             image: `https://flagsapi.com/${iso2}/flat/64.png`,
+            code: country.countryISO.slice(0, 2),
           };
         })
     );
@@ -72,28 +69,25 @@ const StaffBusinesses = (props) => {
   }, [allCountries?.data, allEntities?.data]);
 
   // Fetch and set all submitted and approved applications
-  // useEffect(() => {
-  //   let submittedLaunches = allSubmittedLaunches?.data;
-  //   let approvedLauches = allApprovedLaunches?.data;
+  useEffect(() => {
+    let submittedLaunches = allSubmittedLaunches?.data;
+    let approvedLauches = allApprovedLaunches?.data;
 
-  //   setBusinessStatus({
-  //     awaiting: submittedLaunches?.length || "--",
-  //     inProgress: approvedLauches?.length || "--",
-  //     completed: "--",
-  //   });
-  //   // console.log(countries);
-  //   // console.log(entities);
-  // }, [
-  //   allSubmittedLaunches?.data,
-  //   allApprovedLaunches?.data,
-  //   // completedLaunches,
-  // ]);
-
-  const businessStatus = {
-    all: allLaunch?.currentData?.length || "--",
-    awaiting: awaitingLaunch?.currentData?.length || "--",
-    pending: pendingLaunch?.currentData?.length || "--",
-  };
+    setBusinessStatus(
+      submittedLaunches &&
+        approvedLauches && {
+          awaiting: submittedLaunches?.length,
+          inProgress: approvedLauches?.length,
+          //   completed: completedLaunches?.length,
+        }
+    );
+    // console.log(countries);
+    // console.log(entities);
+  }, [
+    allSubmittedLaunches?.data,
+    allApprovedLaunches?.data,
+    // completedLaunches,
+  ]);
 
   const allMonths = [
     "January",
@@ -114,6 +108,7 @@ const StaffBusinesses = (props) => {
   const month = date.getMonth();
   const monthName = allMonths[month];
   allMonths.splice(month, 1, `This month (${monthName.slice(0, 3)})`);
+  console.log(countries);
 
 
   return (
@@ -186,6 +181,7 @@ const StaffBusinesses = (props) => {
           subText="Countries we are currently available in"
           list={countries}
           link="/staff-dashboard/businesses/countries"
+          code={countries?.code}
         />
 
         <StaffBusinessCard

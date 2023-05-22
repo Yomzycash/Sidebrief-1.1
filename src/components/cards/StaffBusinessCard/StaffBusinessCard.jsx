@@ -4,8 +4,9 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import Search from "components/navbar/Search";
 import { Link } from "react-router-dom";
 import ScrollableDiv from "layout/scrollableDiv";
+import Flag from "react-world-flags";
 
-const StaffBusinessCard = ({ title, subText, list, link }) => {
+const StaffBusinessCard = ({ title, subText, list, link,code }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -36,9 +37,9 @@ const StaffBusinessCard = ({ title, subText, list, link }) => {
             {list
               ?.filter((each) => each?.text?.toLowerCase().includes(searchTerm.toLowerCase()))
               ?.map((each, index) => (
-                <ListWrapper key={index} to={each.link ? each.link : ""}>
-                  {each.image && <img src={each.image} alt="" />}
-                  <TextWrapper>{each?.text}</TextWrapper>
+                <ListWrapper key={index}>
+                  {each.image && <Flag code={ each?.code?.toLowerCase()==='se' ? 'sn' :each?.code?.toLowerCase() }  fallback={ <span>Unknown</span> }/>}
+                  <TextWrapper to={each.link ? each.link : ""}>{each?.text}</TextWrapper>
                 </ListWrapper>
               ))}
           </LowerContainer>
@@ -123,7 +124,7 @@ const LowerContainer = styled.div`
   width: 100%;
 `;
 
-const ListWrapper = styled(Link)`
+const ListWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: clamp(12px, 1.2vw, 16px);
@@ -133,18 +134,18 @@ const ListWrapper = styled(Link)`
   background: #ffffff;
   border: 1px solid #edf1f7;
   border-radius: 20px;
-  text-decoration: none;
 
   img {
     width: 20px;
   }
 `;
 
-const TextWrapper = styled.p`
+const TextWrapper = styled(Link)`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: ${({ theme }) => theme.grey1};
+  text-decoration: none;
   white-space: nowrap;
 `;
 
