@@ -17,7 +17,7 @@ import {
   useGetApprovedLaunchQuery,
   useGetSubmittedLaunchQuery,
 } from "services/staffService";
-
+import { BusinessHomeTableLayout } from "./BusinessHomeTableLayout";
 
 const StaffBusinesses = (props) => {
   const [countries, setCountries] = useState([]);
@@ -110,7 +110,6 @@ const StaffBusinesses = (props) => {
   allMonths.splice(month, 1, `This month (${monthName.slice(0, 3)})`);
   console.log(countries);
 
-
   return (
     <Container>
       <LeftContainer>
@@ -122,54 +121,46 @@ const StaffBusinesses = (props) => {
           <MonthWrapper defaultValue={allMonths[month]}>
             {allMonths.map((month, index) => (
               <TextDropdown key={index}>
-                <Text>
-                  {month}
-                </Text>
+                <Text>{month}</Text>
               </TextDropdown>
             ))}
           </MonthWrapper>
         </TopContainer>
         <BusinessTop>
           <ViewWrapper to="/staff-dashboard/businesses/countries">
-              <TopText>See Countries</TopText>
+            <TopText>See Countries</TopText>
           </ViewWrapper>
           <ViewWrapper to="/staff-dashboard/businesses/entities">
             <TopText>Entities</TopText>
           </ViewWrapper>
         </BusinessTop>
-        
-      {!matches ? (
-        <>
-           <MiddleContainer>
-          <TitleWrapper>
-            Business Summary 
-          </TitleWrapper>
-        </MiddleContainer>
-        <CardWrapper>
-          <StaffStatusCard status={businessStatus} />
-        </CardWrapper>
-        
-          </>
-         
-      ): (
-        <>
-           <Wrapper>
-            <TitleHead onClick={() => setIsActive(!isActive)} isActive={isActive}>
-            <Title>Business Summary </Title>
-            <ToggleArrow onClick={() => setIsActive(!isActive)} isActive={isActive} >
-              <IoIosAdd fontSize={"2em"}/>
-            </ToggleArrow>
-          </TitleHead>
-          
-          </Wrapper> 
-          {isActive && 
+
+        {!matches ? (
+          <>
+            <MiddleContainer>
+              <TitleWrapper>Business Summary</TitleWrapper>
+            </MiddleContainer>
             <CardWrapper>
               <StaffStatusCard status={businessStatus} />
             </CardWrapper>
-          }
-        </>
-      )}
-        
+          </>
+        ) : (
+          <>
+            <Wrapper>
+              <TitleHead onClick={() => setIsActive(!isActive)} isActive={isActive}>
+                <Title>Business Summary </Title>
+                <ToggleArrow onClick={() => setIsActive(!isActive)} isActive={isActive}>
+                  <IoIosAdd fontSize={"2em"} />
+                </ToggleArrow>
+              </TitleHead>
+            </Wrapper>
+            {isActive && (
+              <CardWrapper>
+                <StaffStatusCard status={businessStatus} />
+              </CardWrapper>
+            )}
+          </>
+        )}
 
         <BusinessHomeTableLayout>
           <Outlet />
@@ -206,7 +197,7 @@ const Container = styled.div`
 
   @media screen and (max-width: 700px) {
     width: 100%;
-    flex-direction:column;
+    flex-direction: column;
     padding: 0px;
   }
 `;
@@ -218,10 +209,9 @@ const LeftContainer = styled.div`
 
   @media screen and (max-width: 700px) {
     margin-top: 0;
-    max-height:none;
-    overflow-y:none;
-    padding:0px 24px;
-
+    max-height: none;
+    overflow-y: none;
+    padding: 0px 24px;
   }
 
   ::-webkit-scrollbar {
@@ -240,7 +230,7 @@ const RightContainer = styled.div`
     display: none;
   }
   @media screen and (max-width: 700px) {
-    display:none;
+    display: none;
   }
 `;
 const TopContainer = styled.div`
@@ -253,7 +243,6 @@ const TopContainer = styled.div`
   top: 0;
   z-index: 10;
   background: #fff;
-
 `;
 const SideWrapper = styled.div`
   display: flex;
@@ -312,14 +301,14 @@ const MiddleContainer = styled.div`
   justify-content: space-between;
   margin-block-end: 24px;
 
-  @media screen and (max:width:700px) {
+  @media screen and (max: width:700px) {
     // flex-direction: column;
     // align-items:flex-start;
 
     // gap: 16px;
     // width: 100%;
     // padding-inline: 0px !important;
-    display:none;
+    display: none;
   }
 `;
 const TitleWrapper = styled.h3`
@@ -333,13 +322,12 @@ const TitleWrapper = styled.h3`
   background: none;
   border-radius: 8px;
 
-  @media screen and (max:width:700px) {
-  //  padding:0
-  //  margin-block-end: 24px;
-  max-width: 100%;
-  width: 100%;
+  @media screen and (max: width:700px) {
+    //  padding:0
+    //  margin-block-end: 24px;
+    max-width: 100%;
+    width: 100%;
   }
-
 `;
 const RegistrationBlock = styled.div`
   display: flex;
@@ -353,10 +341,10 @@ const RegistrationBlock = styled.div`
   background: #00a2d4;
   border-radius: 8px;
 
-  @media screen and (max:width:700px) {
+  @media screen and (max: width:700px) {
     // padding:0;
-    width:100%;
-   }
+    width: 100%;
+  }
 `;
 
 const TextContent = styled(Link)`
@@ -379,75 +367,71 @@ const BusinessTop = styled.div`
   display: none;
 
   @media screen and (max-width: 700px) {
-    position:relative;
-    display:flex;
-    flex-direction:row;
-    padding-bottom:20px;
-    gap:32px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+    gap: 32px;
   }
- 
-`
+`;
 
 const ViewWrapper = styled(Link)`
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	gap: 8px;
-	cursor: pointer;
-	white-space: nowrap;
-	text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
 `;
 
 const TopText = styled.h3`
-	font-weight: 500;
-	font-size: 14px;
-	line-height: 21px;
-	display: flex;
-	align-items: center;
-	text-align: center;
-	letter-spacing: -0.5px;
-	color: #00a2d4;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.5px;
+  color: #00a2d4;
 `;
 const ToggleDown = styled.p`
   // display:none;
 
   @media screen and (max-width: 700px) {
-    display:block;
+    display: block;
   }
-`
+`;
 
 const Wrapper = styled.div`
-  @media screen and (max-width:700px) {
+  @media screen and (max-width: 700px) {
     box-sizing: border-box;
     width: 100%;
     padding: 20px 5px 20px 0px;
   }
- 
-
 `;
 const TitleHead = styled.div`
-  @media screen and (max-width:700px) {
+  @media screen and (max-width: 700px) {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
-  
 `;
 const Title = styled.h2`
-@media screen and (max-width:700px) {
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 21px;
+  @media screen and (max-width: 700px) {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
 
-  letter-spacing: -0.01em;
+    letter-spacing: -0.01em;
 
-  color: #000;
-}
+    color: #000;
+  }
 `;
 const ToggleArrow = styled.div`
-  @media screen and (max-width:700px) {
+  @media screen and (max-width: 700px) {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -455,6 +439,4 @@ const ToggleArrow = styled.div`
     transition: 0.3s transform ease;
     padding: 0 5px;
   }
-  
 `;
-

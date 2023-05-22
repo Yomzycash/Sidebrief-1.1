@@ -464,10 +464,7 @@ export const staffApi = createApi({
 
     // Get services by country
     getServicesByCountry: builder.query({
-      query: (serviceCountry) => {
-        if (serviceCountry) return `/services/country/${serviceCountry}`;
-        else return null;
-      },
+      query: (serviceCountry) => `/services/country/${serviceCountry}`,
     }),
 
     // Get services by category and country
