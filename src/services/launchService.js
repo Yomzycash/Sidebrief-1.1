@@ -454,8 +454,42 @@ export const launchApi = createApi({
       }),
       invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
+    uploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+    addUploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+    updateUploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+    deleteUploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document-removal",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+  
   }),
 });
+
 
 export const {
   useGetUserDraftQuery,
@@ -524,4 +558,13 @@ export const {
 
   useDeleteLaunchRequestMutation,
   useBatchDeleteLaunchRequestsMutation,
+
+  useAddUploadDocumentMutation, 
+  useUpdateUploadDocumentMutation,
+  useDeleteUploadDocumentMutation, 
+
+
+
+
+
 } = launchApi;
