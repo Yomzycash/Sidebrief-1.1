@@ -15,13 +15,21 @@ import {
   useGetSubmittedLaunchQuery,
   useGetAllUsersQuery,
 } from "services/staffService";
-import { StaffContainer, StatusCardContainer, BusinessSummaryCard, Wrapper, TitleWrapper , Title, ArrowDown, Contain } from "./styled";
+import {
+  StaffContainer,
+  StatusCardContainer,
+  BusinessSummaryCard,
+  Wrapper,
+  TitleWrapper,
+  Title,
+  ArrowDown,
+  Contain,
+} from "./styled";
 // import { compareAsc } from "date-fns";
 import { getPercentage } from "utils/staffHelper";
 import { useLocation } from "react-router-dom";
 import { referralOptions } from "utils/config";
 import { useMediaQuery } from "@mui/material";
-
 
 const StaffDashboard = (props) => {
   const matches = useMediaQuery("(max-width:700px)");
@@ -138,7 +146,7 @@ const StaffDashboard = (props) => {
       },
     ],
     totalLength: allLaunches?.data?.length || 0,
-  }
+  };
 
   const draftMetric = {
     title: "Draft Applications",
@@ -146,17 +154,16 @@ const StaffDashboard = (props) => {
       {
         text: "Drafts",
         total: allDraftLaunches?.data?.length || 0,
-        color:  "#00D448",
-      }, 
+        color: "#00D448",
+      },
       {
         text: "Total",
         total: allLaunches?.data?.length || 0,
         color: "#ffffff66",
       },
-     
     ],
     totalLength: allDraftLaunches?.data?.length || 0,
-  }
+  };
 
   const submittedMetric = {
     title: "Submitted Applications",
@@ -164,18 +171,16 @@ const StaffDashboard = (props) => {
       {
         text: "Sumitted",
         total: allSubmittedLaunches?.data?.length || 0,
-        color:  "#FFBF29"
+        color: "#FFBF29",
       },
       {
         text: "Total",
         total: allLaunches?.data?.length || 0,
         color: "#ffffff66",
-      }, 
+      },
     ],
     totalLength: allSubmittedLaunches?.data?.length || 0,
-  }
-  
-
+  };
 
   const analytics = {
     title: "User Analytics",
@@ -215,45 +220,40 @@ const StaffDashboard = (props) => {
         }
         nowrap
       >
-
         {/* {!matches ? ( */}
-          <StatusCardContainer>
-            <StatusCard
-              total={allLaunches?.data?.length}
-              draft={allDraftLaunches?.data?.length}
-              approved={allApprovedLaunches?.data?.length}
-              awaiting={allSubmittedLaunches?.data?.length}
-              rejected={allRejectedLaunches?.data?.length}
-              totalPercentageIncrease={getPercentage(allLaunches?.data)}
-              draftPercentageIncrease={getPercentage(allDraftLaunches?.data)}
-              approvedPercentageIncrease={getPercentage(allApprovedLaunches?.data)}
-              awaitingPercentageIncrease={getPercentage(allSubmittedLaunches?.data)}
-              rejectedPercentageIncrease={getPercentage(allRejectedLaunches?.data)}
-            />
+        <StatusCardContainer>
+          <StatusCard
+            total={allLaunches?.data?.length}
+            draft={allDraftLaunches?.data?.length}
+            approved={allApprovedLaunches?.data?.length}
+            awaiting={allSubmittedLaunches?.data?.length}
+            rejected={allRejectedLaunches?.data?.length}
+            totalPercentageIncrease={getPercentage(allLaunches?.data)}
+            draftPercentageIncrease={getPercentage(allDraftLaunches?.data)}
+            approvedPercentageIncrease={getPercentage(allApprovedLaunches?.data)}
+            awaitingPercentageIncrease={getPercentage(allSubmittedLaunches?.data)}
+            rejectedPercentageIncrease={getPercentage(allRejectedLaunches?.data)}
+          />
         </StatusCardContainer>
         <Contain>
           <Wrapper>
             <TitleWrapper onClick={() => setIsActive(!isActive)} isActive={isActive}>
-            <Title>Registration Metrics</Title>
-            <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive} >
-              <IoIosAdd fontSize={"2em"}/>
-            </ArrowDown>
-          </TitleWrapper>
-          </Wrapper> 
-          {isActive && 
+              <Title>Registration Metrics</Title>
+              <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive}>
+                <IoIosAdd fontSize={"2em"} />
+              </ArrowDown>
+            </TitleWrapper>
+          </Wrapper>
+          {isActive && (
             <BusinessSummaryCard>
               <BusinessMetricCard analytics={totalMetric} staff noTotal />
               <BusinessMetricCard analytics={draftMetric} staff noTotal />
               <BusinessMetricCard analytics={submittedMetric} staff noTotal />
             </BusinessSummaryCard>
-          }
-          
+          )}
         </Contain>
-       
-
-
       </DashboardSection>
-      
+
       <DashboardSection>
         <BusinessesChartCard analytics={analytics} staff noTotal />
         <AnalyticsChart data={allLaunches?.data || []} />

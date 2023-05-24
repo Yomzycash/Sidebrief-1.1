@@ -241,7 +241,9 @@ const StaffBusinessDetailLayout = lazy(() =>
 );
 const BusinessDetail = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail"));
 
-const BusinessDocument = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail/document"));
+const BusinessDocument = lazy(() =>
+  import("pages/Dashboard/User/MyProducts/Business/Detail/document")
+);
 
 const BusinessPaymet = lazy(() =>
   import("pages/Dashboard/User/MyProducts/Business/Detail/payment")
@@ -339,11 +341,12 @@ const AppRouter = () => {
   let userEmail = localStorage.getItem("userEmail");
   let isStaff = checkStaffEmail(userEmail);
   const loggedIn = token?.length > 0 || user_token > 0;
+  let launchInfo = localStorage.getItem("launchInfo");
 
   //
 
   // Get launch information from local storage
-  const launchInfo = JSON.parse(localStorage.getItem("launchInfo"));
+  launchInfo = launchInfo && launchInfo !== "undefined" ? JSON.parse(launchInfo) : {};
   const entityLaunchCode = launchInfo?.launchCode;
   const selectedCountryISO = localStorage.getItem("countryISO");
   const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
@@ -455,7 +458,7 @@ const AppRouter = () => {
                 <Route path="business" element={<BusinessDetailLayout />}>
                   <Route path="detail" element={<BusinessDetail />} />
                   <Route path="payment" element={<BusinessPaymet />} />
-                  <Route path="document" element={<BusinessDocument/>}/>
+                  <Route path="document" element={<BusinessDocument />} />
                   <Route path="shareholders" element={<DetailShareholders />} />
                   <Route path="directors" element={<DetailDirectors />} />
                   <Route path="beneficiaries" element={<DetailBeneficiaries />} />
@@ -728,7 +731,7 @@ const AppRouter = () => {
                 <Route path="detail" element={<BusinessDetail />} />
                 <Route path="user-info" element={<UserInfo />} />
                 <Route path="payment" element={<BusinessPaymet />} />
-                <Route path="document" element={<BusinessDocument/>}/>
+                <Route path="document" element={<BusinessDocument />} />
                 <Route path="shareholders" element={<DetailShareholders />} />
                 <Route path="directors" element={<DetailDirectors />} />
                 <Route path="beneficiaries" element={<DetailBeneficiaries />} />
@@ -855,6 +858,16 @@ const AppRouter = () => {
               iconTheme: {
                 primary: "white",
                 secondary: "red",
+              },
+            },
+            loading: {
+              style: {
+                background: "#44cff2",
+                color: "white",
+              },
+              iconTheme: {
+                primary: "white",
+                secondary: "#44cff2",
               },
             },
             success: {

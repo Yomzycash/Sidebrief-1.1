@@ -3,6 +3,25 @@ import { setCurrentPage } from "redux/Slices";
 import { store } from "redux/Store";
 import { handleError } from "utils/globalFunctions";
 
+//
+export const getPromoPrice = (item) => {
+  let promoInfo = JSON.parse(localStorage.getItem("promoInfo"));
+
+  let originalPrice = item?.entityFee;
+  let promoPrice;
+  let currencyMatch =
+    promoInfo?.promoCurrency?.toLowerCase() === item?.entityCurrency?.toLowerCase();
+
+  if (promoInfo && currencyMatch) {
+    let discountPrice = originalPrice * (promoInfo.promoDiscount / 100);
+    discountPrice =
+      discountPrice >= promoInfo.promoMaxAmount ? promoInfo.promoMaxAmount : discountPrice;
+    promoPrice = originalPrice - discountPrice;
+  }
+
+  return promoPrice ? promoPrice.toLocaleString("en-US") : 0;
+};
+
 // Add a member
 // info needs to entail: launchCode, formData, and addMember
 export const handleMemberAdd = async (info) => {

@@ -127,6 +127,7 @@ export const removeLaunchFromLocalStorage = () => {
   localStorage.removeItem("launchInfo");
   localStorage.removeItem("countryISO");
   localStorage.removeItem("paymentDetails");
+  localStorage.removeItem("promoInfo");
   localStorage.removeItem("useSidebriefShareholders");
   localStorage.removeItem("useSidebriefDirectors");
   localStorage.removeItem("beneficiaries");
@@ -147,3 +148,14 @@ export const clearProductsInfo = () => {
   removeComplyFromLocalStorage();
 };
 
+export function debounce(func, delay) {
+  let timerId;
+
+  return function (...args) {
+    clearTimeout(timerId);
+
+    timerId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}

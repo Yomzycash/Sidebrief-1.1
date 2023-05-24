@@ -35,6 +35,7 @@ import { Puff } from "react-loading-icons";
 import toast from "react-hot-toast";
 import { Dialog, DialogContent } from "@mui/material";
 import { handleBusinessInfo } from "../BusinessInfo/actions";
+import { getPromoPrice } from "../actions";
 
 const EntitySelect = () => {
   const navigate = useNavigate();
@@ -171,8 +172,6 @@ const EntitySelect = () => {
     }
   };
 
-  //
-
   // Navigate to the previous page
   const handlePrev = () => {
     navigate(-1);
@@ -220,7 +219,8 @@ const EntitySelect = () => {
                     timeline={item?.entityTimeline}
                     features={item?.entityFeatures}
                     requirement={item?.entityRequirements}
-                    price={parseInt(item?.entityFee).toLocaleString("en-US")}
+                    price={item?.entityFee?.toLocaleString("en-US")}
+                    promoPrice={getPromoPrice(item)}
                     currency={item?.entityCurrency}
                     action={() => handleNext(item)}
                   />

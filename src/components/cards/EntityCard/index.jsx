@@ -25,6 +25,7 @@ export const EntityCard = ({
   action,
   name,
   price,
+  promoPrice,
   timeline,
   requirement,
   shares,
@@ -34,6 +35,8 @@ export const EntityCard = ({
   currency,
   description,
 }) => {
+  const hasPromo = parseInt(promoPrice) !== 0;
+
   return (
     <Wrap>
       {name === "Pro" && (
@@ -58,10 +61,16 @@ export const EntityCard = ({
         </Top>
         <Description>{description}</Description>
         <Mid>
-          <Price>
+          <Price $hasPromo={hasPromo}>
             {getCurrencyInfo(currency)?.symbol}
             {numeral(price).format("0,0")}
           </Price>
+          {hasPromo && (
+            <Price color="#18C49E">
+              {getCurrencyInfo(currency)?.symbol}
+              {numeral(promoPrice).format("0,0")}
+            </Price>
+          )}
         </Mid>
         <Bottom>
           <Bullet>

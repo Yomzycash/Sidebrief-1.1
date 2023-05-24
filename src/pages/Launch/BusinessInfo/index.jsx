@@ -3,7 +3,7 @@ import HeaderCheckout from "components/Header/HeaderCheckout";
 // import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
 import { CheckoutController, CheckoutSection } from "containers";
-import { Body, Bottom, Container } from "../styled";
+import { Body, Bottom, Container, PromoCheck } from "../styled";
 import { useNavigate } from "react-router-dom";
 import { store } from "redux/Store";
 import {
@@ -30,6 +30,8 @@ import { useSelector } from "react-redux";
 import { handleBusinessInfo } from "./actions";
 import { InputWithLabel } from "components/input";
 import { useGetPromoCodeQuery } from "services/staffService";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+import { debounce } from "utils/globalFunctions";
 
 const BusinessInfo = () => {
   const [promoCode, setPromoCode] = useState("");
@@ -39,7 +41,7 @@ const BusinessInfo = () => {
   const savedBusinessNames = useSelector((store) => store.LaunchReducer).businessNames;
   const savedObjectives = useSelector((store) => store.LaunchReducer).selectedObjectives;
   const savedCountry = useSelector((store) => store.LaunchReducer).selectedCountry;
-  const savedCountryISO = useSelector((store) => store.LaunchReducer).countryISO;
+  const savedPromo = localStorage.getItem("promoInfo");
 
   const [businessNames, setBusinessNames] = useState([]);
   const [selectedCountry, setselectedCountry] = useState("");
@@ -54,8 +56,10 @@ const BusinessInfo = () => {
   const [viewBusinessObjectives, viewObjectivesState] = useViewBusinessObjectivesMutation();
   const [updateBusinessNames, updateNamesState] = useUpdateBusinessNamesMutation();
   const [updateBusinessObjectives, updateObjectivesState] = useUpdateBusinessObjectivesMutation();
-  const [viewPayLaunch] = useViewPayLaunchMutation();
-  // const promoResponse = useGetPromoCodeQuery(promoCode, { skip: promoCode?.length !== 20 });
+  const promoResponse = useGetPromoCodeQuery(promoCode, {
+    skip: promoCode?.length !== 20,
+    refetchOnMountOrArgChange: true,
+  });
 
   const navigate = useNavigate();
 
@@ -70,6 +74,11 @@ const BusinessInfo = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setCountryISO(selectedCountryISO));
     localStorage.setItem("countryISO", selectedCountryISO);
+    if (promoResponse.data && promoCode?.length === 20)
+      localStorage.setItem("promoInfo", JSON.stringify(promoResponse.data));
+    else {
+      localStorage.removeItem("promoInfo");
+    }
     // store.dispatch(setCountryISO(selectedCountryISO));
     let resultToReturn = false;
     // call some function with callback function as argument
@@ -85,7 +94,6 @@ const BusinessInfo = () => {
       toast.error("Please input unique business names");
       return;
     }
-
     if (selectedObjectives.length >= 1) {
       store.dispatch(setBusinessObjectives(selectedObjectives));
     } else {
@@ -94,6 +102,10 @@ const BusinessInfo = () => {
     }
     if (!selectedCountry) {
       toast.error("Please select an operational country");
+      return;
+    }
+    if (promoResponse.isLoading) {
+      toast.loading("Checking promo code...");
       return;
     }
 
@@ -171,6 +183,7 @@ const BusinessInfo = () => {
     if (savedBusinessNames?.length > 0) setBusinessNames(savedBusinessNames);
     if (savedObjectives?.length > 0) setselectedObjectives(savedObjectives);
     if (savedCountry) setselectedCountry(savedCountry);
+    if (savedPromo) setPromoCode(JSON.parse(savedPromo)?.promoCode);
   };
 
   // This calls the view endpoint and set the recieved data to the respective states
@@ -210,6 +223,10 @@ const BusinessInfo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  };
+
+  const handlePromo = () => {
+    debounce(() => console.log("Debouncing"));
   };
 
   // Set the progress of the application
@@ -268,18 +285,29 @@ const BusinessInfo = () => {
                 disabled={paidStatus}
               />
             </div>
-            {/* <div style={{ maxWidth: "330px" }}>
-              <InputWithLabel
-                label="Promo Code (Optional)"
-                labelStyle="input-label"
-                placeholder="Enter promo code"
-                type="text"
-                inputClass="input-class"
-                containerStyle="input-container-class"
-                onChange={(e) => setPromoCode(e.target.value)}
-                overlayComponent={<div>Error</div>}
-              />
-            </div> */}
+            {/* {!paidStatus && (
+              <div style={{ maxWidth: "430px" }}>
+                <InputWithLabel
+                  label="Promo Code (Optional)"
+                  labelStyle="input-label"
+                  placeholder="Enter promo code, if you have one"
+                  type="text"
+                  inputClass="input-class"
+                  containerStyle="input-container-class"
+                  errorMessage={promoResponse.error?.data?.message}
+                  onChange={(e) => debounce(e.target.value)}
+                  value={promoCode}
+                  overlayComponent={
+                    !promoResponse.error &&
+                    promoResponse.isSuccess && (
+                      <PromoCheck>
+                        <IoIosCheckmarkCircle color="green" />
+                      </PromoCheck>
+                    )
+                  }
+                />
+              </div>
+            )} */}
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
