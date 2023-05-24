@@ -7,8 +7,7 @@ export const Wrap = styled.div`
 export const Container = styled.div`
   min-width: 350px;
   /* height: clamp(400px, 30vw, 450px); */
-  height: ${(props) =>
-    props.height ? props.height : "clamp(284px, 30vw, 340px)"};
+  height: ${(props) => (props.height ? props.height : "clamp(284px, 30vw, 340px)")};
   background: #ffffff;
   border: 1px solid #edf1f7;
   box-shadow: 0px 10px 10px -5px #9596970a;
@@ -120,7 +119,10 @@ export const TimeLine = styled.p`
   }
 `;
 
-export const Mid = styled.div``;
+export const Mid = styled.div`
+  display: flex;
+  gap: 8px;
+`;
 
 export const Bottom = styled.div`
   display: flex;
@@ -134,7 +136,8 @@ export const Price = styled.p`
   font-size: clamp(18px, 1.8vw, 24px);
   font-size: 24px;
   line-height: 36px;
-  color: #00a2d4;
+  color: ${({ color }) => color || "#00a2d4"};
+  text-decoration: ${({ $hasPromo }) => ($hasPromo ? "line-through" : "")};
 
   ${Container}:hover & {
     color: #ffffff;

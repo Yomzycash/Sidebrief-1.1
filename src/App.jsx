@@ -34,7 +34,7 @@ function App() {
   }, [localUserInfo]);
 
   useEffect(() => {
-    if (launchInfo) {
+    if (launchInfo && launchInfo !== "undefined") {
       store.dispatch(setLaunchResponse(JSON.parse(launchInfo)));
       store.dispatch(setGeneratedLaunchCode(JSON.parse(launchInfo).launchCode));
     }

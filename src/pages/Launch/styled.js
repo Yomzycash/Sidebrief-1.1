@@ -134,6 +134,19 @@ export const EntityTitle = styled.p`
   }
 `;
 
+export const PromoCheck = styled.div`
+  animation: promo 1s ease;
+
+  @keyframes promo {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
+
 export const modalStyle = {
   backgroundColor: "white",
   width: "100%",

@@ -1,6 +1,4 @@
-import { toast } from "react-hot-toast";
-import { useGetAllServicesQuery } from "services/staffService";
-import { handleError, handleResponse } from "utils/globalFunctions";
+import { handleError } from "utils/globalFunctions";
 
 export const useActions = ({
   addService,
@@ -33,19 +31,6 @@ export const useActions = ({
       serviceCurrency: formData.currency,
     };
   };
-
-  // const services = useGetAllServicesQuery();
-
-  // const handleServiceUpdate = async () => {
-  //   let all = services.data;
-  //   let manage = all?.filter((el) => el?.serviceCategory === "MANAGE");
-  //   console.log(manage);
-  //   let promiseRes = manage
-  //     ?.slice(0, 1)
-  //     ?.map((el) => updateService({ ...el, serviceCategory: "Manage" }));
-  //   let response = await Promise.all(promiseRes);
-  //   console.log(response);
-  // };
 
   //
   const getFormPayload = (formData) => {

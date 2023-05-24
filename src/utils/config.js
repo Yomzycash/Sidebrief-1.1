@@ -22,7 +22,6 @@ import {
   EntityIcon,
   CountryIcon,
   ArrowDownIcon,
-  ServicesIcon,
   ManageIcon,
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
@@ -219,13 +218,13 @@ export const BankAccountSchema = yup.object().shape({
 export const StaffDocumentSchema = yup.object().shape({
   name: yup.string().required("Enter document name"),
   description: yup.string().required("Enter document description"),
-  fileupload: yup.mixed().test('file-upload', 'File upload is required', function (value) {
+  fileupload: yup.mixed().test("file-upload", "File upload is required", function (value) {
     if (value instanceof FileList) {
       return value.length > 0;
     }
     return false;
   }),
-})
+});
 export const userSidebarItems = [
   {
     id: 1,
