@@ -275,7 +275,7 @@ const BusinessInfo = () => {
             />
             <div style={{ maxWidth: "430px" }}>
               <TagInputWithSearch
-                label="Operational Country"
+                label="Registration Country"
                 list={countries}
                 getValue={handleCountry}
                 initialValue={selectedCountry}
