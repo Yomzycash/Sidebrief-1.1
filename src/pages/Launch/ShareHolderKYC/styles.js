@@ -20,10 +20,11 @@ export const Name = styled.h3`
 export const ContentWrapper = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 250px));
   row-gap: 24px;
   column-gap: 20px;
-  @media screen and (max-width: 900px) {
+
+  @media screen and (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 `;

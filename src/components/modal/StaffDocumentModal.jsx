@@ -9,7 +9,16 @@ import { InputWithLabel } from "components/input";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
 import { Upload } from "components/File";
 import { useLocation } from "react-router-dom";
-import { getValue } from "@testing-library/user-event/dist/utils";
+import {
+  useAddUploadDocumentMutation,
+  useDeleteUploadDocumentMutation,
+  useUpdateUploadDocumentMutation,
+} from "services/launchService";
+import { toast } from "react-hot-toast";
+import { handleError } from "utils/globalFunctions";
+import SimpleUpload from "components/File/SimpleUpload";
+import { convertToLink } from "utils/LaunchHelper";
+
 const StaffDocumentModal = ({
   cardAction,
   setCardAction,
@@ -18,14 +27,17 @@ const StaffDocumentModal = ({
   disableAll,
   documentInfo,
   title,
-  handleDocumentDelete,
-  deleteState,
+
   submitAction,
   loading,
 }) => {
   const [disable, setDisable] = useState(disableAll);
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
+  const [addDocuent, addState] = useAddUploadDocumentMutation();
+  const [deleteDocument, deleteState] = useDeleteUploadDocumentMutation();
+  const [updateDocument, updateState] = useUpdateUploadDocumentMutation();
+  const [file, setFile] = useState({});
 
   const {
     handleSubmit,
@@ -33,11 +45,14 @@ const StaffDocumentModal = ({
     setValue,
     formState: { errors },
     getValues,
+    watch,
+    unregister,
   } = useForm({
     resolver: yupResolver(StaffDocumentSchema),
   });
 
   // update document details
+  console.log(documentInfo);
 
   useEffect(() => {
     if (documentInfo && cardAction === "edit") {
@@ -48,28 +63,94 @@ const StaffDocumentModal = ({
       setValue("description", documentInfo?.documentDescription, {
         shouldValidate: true,
       });
+
+      setValue(
+        "file",
+        [
+          {
+            path: documentInfo?.documentUrl,
+            name: documentInfo?.documentName,
+
+            code: documentInfo?.documentCode,
+          },
+        ],
+        {
+          shouldValidate: true,
+        }
+      );
     } else {
       setValue("name", "");
       setValue("description", "");
+      setValue("file", "");
     }
     setDisable(disableAll);
-  }, [documentInfo, cardAction]);
+  }, [documentInfo, cardAction, setValue]);
 
-  const handleUpload = (uploadedFile, docType, realFile) => {
+  const handleDocumentDelete = async () => {
+    let response = await deleteDocument({
+      launchCode: searchParams.get("launchCode"),
+      documentCode: documentInfo?.documentCode,
+    });
+    let data = response?.data;
+    console.log(data);
+    let error = response?.error;
+    if (data) {
+      toast.success("Document deleted successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    //refetch();
+  };
+  const handleUpdate = async () => {
+    let response = await updateDocument({
+      launchCode: searchParams.get("launchCode"),
+      documentCode: documentInfo?.documentCode,
+      documentDetails: {
+        documentName: getValues("name"),
+        documentDescription: getValues("description"),
+        documentUrl: "",
+      },
+    });
+    let data = response?.data;
+    console.log(data);
+    let error = response?.error;
+    if (data) {
+      toast.success("Document updated successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
+    //refetch();
+  };
+  const handleSubmission = async (formData) => {
+    const realFile = formData?.file[0];
+
+    const uploadedFile = await convertToLink(realFile);
+
     const required = {
       launchCode: searchParams.get("launchCode"),
       documentDetails: {
-        documentName: getValues('name'),
-        documentDescription:  getValues('name'),
-        documentUrl: uploadedFile,
+        documentName: getValues("name"),
+        documentDescription: getValues("description"),
+        documentUrl: uploadedFile.url,
       },
     };
+    let response = await addDocuent(required);
+    let data = response?.data;
+    let error = response?.error;
+    if (data) {
+      toast.success("Document added successfully");
+      setOpen(false);
+    } else {
+      handleError(error);
+    }
   };
 
   return (
     <Modal1
       handleSubmit={handleSubmit}
-      submitAction={submitAction}
+      submitAction={handleSubmission}
       cardAction={cardAction}
       setCardAction={setCardAction}
       title={title || "Add New Document"}
@@ -78,7 +159,7 @@ const StaffDocumentModal = ({
       disable={disable}
       setDisable={setDisable}
       loading={loading}
-      handleDelete={() => handleDocumentDelete(documentInfo)}
+      handleDelete={handleDocumentDelete}
       deleteState={deleteState}
     >
       <DetailedSection>
@@ -112,16 +193,13 @@ const StaffDocumentModal = ({
       </DetailedSection>
 
       <DetailedSection>
-        <Upload docType="Upload Document" uploadAction={handleUpload} />
-        {/* <KYCFileUpload
-          TopText="Upload Document"
-          BottomText="Kindly esnure image is not larger than 3MB"
-                  errorMsg={errors.fileupload?.message}
-                  //onDrop={(files) => handleChange(files, shareholder.code, document)}
-        /> */}
-        {/* <>
-                  <FiUpload /> Drag & drop, or browse
-                </> */}
+        <SimpleUpload
+          name="file"
+          register={register}
+          unregister={unregister}
+          watch={watch}
+          setValue={setValue}
+        />
       </DetailedSection>
     </Modal1>
   );

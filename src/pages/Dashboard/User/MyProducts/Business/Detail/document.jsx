@@ -16,21 +16,17 @@ import {
   Body,
   Loader,
   EmptyContainer,
+  Download,
 } from "./styles";
 import { ReactComponent as UploadIcon } from "asset/svg/Upload.svg";
 import { useLocation } from "react-router-dom";
 // import {completed}  from 'asset/images/completed';
 import { CommonButton } from "components/button";
 import StaffDocumentModal from "components/modal/StaffDocumentModal";
-import KYCFileUpload from "components/FileUpload/KYCFileUpload";
-import { handleError } from "utils/globalFunctions";
-import { toast } from "react-hot-toast";
-import {
-  useAddUploadDocumentMutation,
-  useDeleteUploadDocumentMutation,
-  useUpdateUploadDocumentMutation,
-  useViewLaunchRequestQuery,
-} from "services/launchService";
+
+import { useViewLaunchRequestQuery } from "services/launchService";
+import { downLoadImage } from "utils/staffHelper";
+import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
 
 const DetailDocument = () => {
   const [open, setOpen] = useState(false);
@@ -39,8 +35,6 @@ const DetailDocument = () => {
   const { pathname, search } = useLocation();
   const path = pathname.includes("staff");
 
-  //const { data, isLoading, refetch } = useGetUploadDocumentQuery();
-
   const searchParams = new URLSearchParams(search);
   const launchResponse = {
     launchCode: searchParams.get("launchCode"),
@@ -48,41 +42,9 @@ const DetailDocument = () => {
     registrationType: searchParams.get("registrationType"),
   };
   const launchRequest = useViewLaunchRequestQuery(launchResponse);
-  console.log(clickedDocument);
-  const [updateDocument, updateState] = useUpdateUploadDocumentMutation();
-  const [addDocuent, addState] = useAddUploadDocumentMutation();
-  const [deleteDocument, deleteState] = useDeleteUploadDocumentMutation();
+  console.log(launchRequest);
 
   const data1 = launchRequest?.data?.businessDocument;
-
-  //   let data = [
-  //     {
-  //       title: "Passport",
-  //       text: "My passport description",
-  //     },
-  //     {
-  //       title: "NIN",
-  //       text: "My National Identification Number description ",
-  //     },
-  //     {
-  //       title: "Photo",
-  //       text: "Photo description",
-  //     },
-  //     {
-  //       title: "Receipt",
-  //       text: "Payment receipt description",
-  //     },
-  //   ];
-  const getRequired = (formData) => {
-    return {
-      launchCode: searchParams.get("launchCode"),
-      documentDetails: {
-        documentName: formData?.name,
-        documentDescription: formData?.description,
-        documentUrl: "http://test.com",
-      },
-    };
-  };
 
   const handleCardClick = (document) => {
     setCardAction("edit");
@@ -92,49 +54,6 @@ const DetailDocument = () => {
   const handleAddButton = () => {
     setOpen(true);
     setCardAction("add");
-  };
-  // This adds a new entity
-  const handleDocumentAdd = async (formData) => {
-    let requiredData = getRequired(formData);
-    let response = await addDocuent(requiredData);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Document added successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    // refetch();
-  };
-
-  // This updates an existing entity
-  const handleDocumentUpdate = async (formData) => {
-    let requiredData = getRequired(formData);
-    let response = await updateDocument(requiredData);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Document updated successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    //refetch();
-  };
-
-  // This runs when the delete icon is pressed
-  const handleDocumentDelete = async (entityInfo) => {
-    let response = await deleteDocument(entityInfo);
-    let data = response?.data;
-    let error = response?.error;
-    if (data) {
-      toast.success("Document deleted successfully");
-      setOpen(false);
-    } else {
-      handleError(error);
-    }
-    //refetch();
   };
 
   return (
@@ -170,8 +89,8 @@ const DetailDocument = () => {
               {data1?.map((doc, index) => (
                 <>
                   <DocumentWrapper key={index} onClick={() => handleCardClick(doc)}>
-                    <Title>{doc.documentName}</Title>
-                    <SubText> {doc.documentDescription} </SubText>
+                    <Title>{doc?.documentName}</Title>
+                    <SubText> {doc?.documentDescription} </SubText>
                     {/* <KYCFileUpload /> */}
                   </DocumentWrapper>
                 </>
@@ -184,10 +103,21 @@ const DetailDocument = () => {
           <CardContainer>
             {data1?.map((doc, index) => (
               <>
-                <DocumentWrapper key={index}>
-                  <Title>{doc.title}</Title>
-                  <SubText> {doc.text} </SubText>
+                <DocumentWrapper
+                  key={index}
+                  onClick={async () => {
+                    await downLoadImage(doc?.documentUrl, doc?.documentName);
+                  }}
+                >
+                  <Title>{doc?.documentName}</Title>
+                  <SubText> {doc?.documentDescription} </SubText>
                 </DocumentWrapper>
+                {/* <Download
+                  
+                  type="button"
+                >
+                  <DownloadWhite />
+                </Download> */}
               </>
             ))}
           </CardContainer>
@@ -198,10 +128,6 @@ const DetailDocument = () => {
         cardAction={cardAction}
         title={cardAction === "edit" ? "Document Information" : "Add New Document"}
         documentInfo={clickedDocument}
-        submitAction={cardAction === "edit" ? handleDocumentUpdate : handleDocumentAdd}
-        loading={updateState.isLoading || addState.isLoading}
-        deleteState={deleteState}
-        handleDocumentDelete={handleDocumentDelete}
         setOpen={setOpen}
         open={open}
       />

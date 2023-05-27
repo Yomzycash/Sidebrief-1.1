@@ -17,7 +17,7 @@ const ServiceInfo = () => {
   const [countryISO, setCountryISO] = useState("");
 
   const countries = useGetAllCountriesQuery();
-  const services = useGetServicesByCountryQuery(countryISO);
+  const services = useGetServicesByCountryQuery(countryISO, { skip: !countryISO });
   const [createComply, createState] = useCreateComplyMutation();
   const [updateComply, updateState] = useUpdateComplyMutation();
 

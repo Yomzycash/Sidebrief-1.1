@@ -38,6 +38,7 @@ export const referralOptions = [
   { value: "Google", label: "Google" },
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Recommendation", label: "Recommendation" },
+  { value: "Referral", label: "Referral" },
   { value: "Other", label: "Other" },
 ];
 
@@ -218,13 +219,22 @@ export const BankAccountSchema = yup.object().shape({
 export const StaffDocumentSchema = yup.object().shape({
   name: yup.string().required("Enter document name"),
   description: yup.string().required("Enter document description"),
-  fileupload: yup.mixed().test('file-upload', 'File upload is required', function (value) {
-    if (value instanceof FileList) {
+  file: yup
+    .mixed()
+    .test("fileSize", "File size is too large", (value) => {
+      if (!value[0]) return true; // No file selected
+      return value[0].size <= 1048576; // 1MB
+    })
+    .test("fileExist", "file does not exist", (value) => {
       return value.length > 0;
-    }
-    return false;
-  }),
-})
+    })
+    .test("fileFormat", "Unsupported file format", (value) => {
+      if (!value[0]) return true; // No file selected
+      return ["image/jpeg", "image/png", "application/pdf"].includes(value[0].type);
+    })
+    .required("upload a file"),
+});
+
 export const userSidebarItems = [
   {
     id: 1,
@@ -401,6 +411,12 @@ export const staffSidebarItems = [
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
   },
+  // {
+  //   id: 8,
+  //   title: "Promo Code",
+  //   icon: RewardIcon,
+  //   path: "/staff-dashboard/promo-codes",
+  // },
   {
     id: 8,
     title: "Payments",

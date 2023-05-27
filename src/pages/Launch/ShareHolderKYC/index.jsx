@@ -9,8 +9,10 @@ import { store } from "redux/Store";
 import { useNavigate } from "react-router-dom";
 import {
   useAddMemberKYCMutation,
+  useDeleteMemberKYCMutation,
   useGetAllEntitiesQuery,
   useViewMembersKYCMutation,
+  useGetMembersKYCQuery,
   useViewMembersMutation,
   useViewShareholdersMutation,
 } from "services/launchService";
@@ -18,24 +20,28 @@ import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
 import { convertToLink, mergeInfo } from "utils/LaunchHelper";
-
 import { Puff } from "react-loading-icons";
 import KYCFileUpload from "components/FileUpload/KYCFileUpload";
+import { Upload } from "components/File";
 
 const ShareHolderKYC = () => {
+  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
+
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
   const [addMemberKYC] = useAddMemberKYCMutation();
   const [sameData, setSameData] = useState([]);
-  const [viewMemberKYC] = useViewMembersKYCMutation();
+  // const [viewMemberKYC] = useViewMembersKYCMutation();
   const [viewMember, viewMembersState] = useViewMembersMutation();
   const [viewShareholders, viewShareholderState] = useViewShareholdersMutation();
   const [shareholderContainer, setShareholder] = useState([]);
   const [requiredDocuments, setRequiredDocuments] = useState([]);
+  const [deleteMemberKYC] = useDeleteMemberKYCMutation();
+
+  const memberKYC = useGetMembersKYCQuery(launchResponse);
 
   let navigatedFrom = localStorage.getItem("navigatedFrom");
 
-  const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
   const countryISO = localStorage.getItem("countryISO");
 
   const [documentContainer, setDocumentContainer] = useState([]);
@@ -82,116 +88,159 @@ const ShareHolderKYC = () => {
     navigate(-1);
   };
 
-  const handleChange = async (files, shareholder, type) => {
-    setDocumentContainer((prev) => {
-      const updatedState = [...prev];
+  // const handleChange = async (files, shareholder, type) => {
+  //   setDocumentContainer((prev) => {
+  //     const updatedState = [...prev];
 
-      const index = updatedState.findIndex((el) => el.code === shareholder);
+  //     const index = updatedState.findIndex((el) => el.code === shareholder);
 
-      updatedState[index] = {
-        ...updatedState[index],
-        files: {
-          ...updatedState[index].files,
-          [type]: files[0].name,
-        },
-      };
+  //     updatedState[index] = {
+  //       ...updatedState[index],
+  //       files: {
+  //         ...updatedState[index].files,
+  //         [type]: files[0].name,
+  //       },
+  //     };
 
-      return updatedState;
-    });
+  //     return updatedState;
+  //   });
 
-    const res = await convertToLink(files[0]);
+  //   const res = await convertToLink(files[0]);
 
-    const formatType = type.split("_").join(" ");
+  //   const formatType = type.split("_").join(" ");
+  //   const requiredAddMemberData = {
+  //     launchCode: launchResponse.launchCode,
+  //     memberCode: shareholder,
+  //     memberKYC: {
+  //       documentType: formatType,
+  //       documentLink: res.url,
+  //       fileName: files[0].name,
+  //       fileType: files[0].type,
+  //     },
+  //   };
+  //   const response = await addMemberKYC(requiredAddMemberData);
+  //   if (response.data) {
+  //     toast.success("Document uploaded successfully");
+  //     setIsChanged(!isChanged);
+  //     handleShareHolderCheck();
+  //   } else if (response.error) {
+  //     toast.error(response.error?.data.message);
+  //   }
+  // };
+
+  const newHandleChange = async (uploadedFile, fileName, rawFile, shareholder) => {
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
       memberCode: shareholder,
       memberKYC: {
-        documentType: formatType,
-        documentLink: res.url,
-        fileName: files[0].name,
-        fileType: files[0].type,
+        documentType: fileName,
+        documentLink: uploadedFile.url,
+        fileName: rawFile.name,
+        fileType: rawFile.type,
       },
     };
+
     const response = await addMemberKYC(requiredAddMemberData);
+    memberKYC.refetch();
+    const documentCode = response.data.businessMembersKYC.slice(-1)[0].documentCode;
     if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
-      handleShareHolderCheck();
+      // handleShareHolderCheck();
     } else if (response.error) {
       toast.error(response.error?.data.message);
     }
+
+    return documentCode || "";
   };
 
   store.dispatch(setShareholderDocs(documentContainer));
-  const handleShareHolderCheck = async () => {
-    let newArr = [];
-    const response = await viewMemberKYC(launchResponse);
-    const MemberKYCInfo = [...response?.data?.businessMembersKYC];
+  // const handleShareHolderCheck = async () => {
+  //   let newArr = [];
+  //   const response = await viewMemberKYC(launchResponse);
+  //   const MemberKYCInfo = [...response?.data?.businessMembersKYC];
 
-    MemberKYCInfo?.forEach((member) => {
-      documentContainer?.forEach((document) => {
-        if (member?.memberCode === document?.code) {
-          let newList = { ...member, ...document };
-          console.log("issue", newList);
-          newArr.push(newList);
-        }
-      });
-    });
+  //   MemberKYCInfo?.forEach((member) => {
+  //     documentContainer?.forEach((document) => {
+  //       if (member?.memberCode === document?.code) {
+  //         let newList = { ...member, ...document };
+  //         console.log("issue", newList);
+  //         newArr.push(newList);
+  //       }
+  //     });
+  //   });
 
-    setSameData(newArr);
-  };
+  //   setSameData(newArr);
+  // };
 
-  useEffect(() => {
-    handleShareHolderCheck();
-  }, [documentContainer]);
+  // useEffect(() => {
+  //   handleShareHolderCheck();
+  // }, [documentContainer]);
 
   const handleNext = () => {
-    handleShareHolderCheck();
+    // handleShareHolderCheck();
 
     let a = requiredDocuments.length;
     let b = documentContainer.length;
     let c = sameData?.length;
     let d = a * b;
 
-    if (c === 0) {
-      toast.error("All documents are required");
-    } else if (d !== c) {
-      toast.error("All documents are required");
+    // if (c === 0) {
+    //   toast.error("All documents are required");
+    // } else if (d !== c) {
+    //   toast.error("All documents are required");
+    // } else {
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
     } else {
-      if (navigatedFrom) {
-        navigate(navigatedFrom);
-        localStorage.removeItem("navigatedFrom");
-      } else {
-        let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-        let beneficiaries = localStorage.getItem("beneficiaries");
+      let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+      let beneficiaries = localStorage.getItem("beneficiaries");
 
-        let navigateTo = "/launch/directors-kyc";
-        if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-        if (useSidebriefDirectors && beneficiaries === "false")
-          navigateTo = "/launch/review/business-info";
+      let navigateTo = "/launch/directors-kyc";
+      if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+      if (useSidebriefDirectors && beneficiaries === "false")
+        navigateTo = "/launch/review/business-info";
 
-        navigate(navigateTo);
-      }
+      navigate(navigateTo);
+    }
+    // }
+  };
+
+  const handleRemove = async (fileCode, memberCode) => {
+    const requiredDeleteData = {
+      launchCode: launchResponse.launchCode,
+      memberCode: memberCode,
+      documentCode: fileCode,
+    };
+    const response = await deleteMemberKYC(requiredDeleteData);
+    if (response.data) {
+      toast.success("Document deleted successfully");
+    } else if (response.error) {
+      console.log(response.error?.data.message);
+      toast.error(response.error?.data.message);
     }
   };
 
-  const handleRemove = async (documentName) => {
-    // console.log("shareholder deleteeeeeeeeeeee", shareholder);
-    // const requiredDeleteData = {
-    //   launchCode: generatedLaunchCode,
-    //   memberCode: shareholder,
-    //   documentCode: "",
-    // };
-    // console.log("delete data to be", requiredDeleteData);
-    // const response = await deleteMemberKYC(requiredDeleteData);
-    // console.log(response);
-    // if (response.data) {
-    //   toast.success("Document deleted successfully");
-    // } else if (response.error) {
-    //   console.log(response.error?.data.message);
-    //   toast.error(response.error?.data.message);
-    // }
+  const handleDocuments = (documents) => {
+    if (documents.length > 0) {
+      // get all document types
+      const documentTypes = [...new Set(documents.map((el) => el.documentType))];
+
+      const object = {};
+
+      documentTypes.forEach((key) => {
+        object[key] = documents.filter((el) => el.documentType === key).slice(-1)[0];
+      });
+
+      return object;
+    }
+    return {};
   };
+
+  const memberDocuments = memberKYC?.data?.businessMembersKYC || [];
+
+  const docs = handleDocuments(memberDocuments);
 
   // Set the progress of the application
   useEffect(() => {
@@ -220,19 +269,34 @@ const ShareHolderKYC = () => {
               <FileContainer key={index}>
                 <Name>{shareholder.name}</Name>
                 <ContentWrapper key={index}>
-                  {requiredDocuments?.map((document, index) => (
-                    <KYCFileUpload
-                      key={index}
-                      isChanged={isChanged}
-                      documentComponentType={document}
-                      TopText={document}
-                      memberCode={shareholder.code}
-                      onDrop={(files) => handleChange(files, shareholder.code, document)}
-                      handleRemove={() => handleRemove(document)}
-                      BottomText={`Please provide your ${document}`}
-                      handleRefetch={handleShareHolderCheck}
-                    />
-                  ))}
+                  {requiredDocuments?.map((document, index) => {
+                    const oldFile = docs[document];
+                    return (
+                      // <KYCFileUpload
+                      //   key={index}
+                      //   isChanged={isChanged}
+                      //   documentComponentType={document}
+                      //   TopText={document}
+                      //   memberCode={shareholder.code}
+                      //   onDrop={(files) => handleChange(files, shareholder.code, document)}
+                      //   handleRemove={() => handleRemove(document)}
+                      //   BottomText={`Please provide your ${document}`}
+                      //   handleRefetch={handleShareHolderCheck}
+                      // />
+                      <Upload
+                        key={index}
+                        docType={document}
+                        oldFile={
+                          oldFile
+                            ? { name: oldFile.fileName, code: oldFile.documentCode }
+                            : { name: "", code: "" }
+                        }
+                        uploadAction={newHandleChange}
+                        memberCode={shareholder.code}
+                        deleteAction={handleRemove}
+                      />
+                    );
+                  })}
                 </ContentWrapper>
               </FileContainer>
             ))}

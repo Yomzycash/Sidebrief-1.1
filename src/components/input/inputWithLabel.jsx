@@ -41,6 +41,7 @@ const InputWithLabel = ({
   inputId,
   nextElementId,
   step,
+  overlayComponent,
   ...rest
 }) => {
   const [show, setShow] = useState(false);
@@ -100,10 +101,10 @@ const InputWithLabel = ({
             disabled={disable}
             max={maxNumber}
             value={value}
-            onChange={onChange}
+            // onChange={onChange}
             onKeyDown={handleKeyDown}
             defaultValue={defaultValue}
-            {...register(name)}
+            {...register(name, { onChange: onChange })}
             {...rest}
           />
         ) : (
@@ -131,6 +132,8 @@ const InputWithLabel = ({
             <Show>{!show ? "show" : "hide"}</Show>
           </div>
         ) : null}
+
+        {overlayComponent && overlayComponent}
       </InputWrapper>
 
       {bottomText ? <BottomText className={bottomTextClass}>{bottomText}</BottomText> : null}

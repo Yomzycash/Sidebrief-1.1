@@ -6,7 +6,6 @@ import { ServiceForms } from "./styled";
 import InfoSection from "./InfoSection";
 import FormSection from "./FormSection";
 import DocsSection from "./DocsSection";
-import { useGetSingleServiceQuery } from "services/staffService";
 
 const StaffServicesModal = ({
   disableAll,

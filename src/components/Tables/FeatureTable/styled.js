@@ -67,3 +67,11 @@ export const TableBody = styled.tbody`
     }
   }
 `;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background-color: #fff;
+`;

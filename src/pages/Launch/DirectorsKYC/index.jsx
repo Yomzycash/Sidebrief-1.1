@@ -98,24 +98,24 @@ const DirectorKYC = () => {
     let c = sameData.length;
     let d = a * b;
 
-    if (c === 0) {
-      toast.error("All documents are required");
-    } else if (d !== c) {
-      toast.error("All documents are required");
+    // if (c === 0) {
+    //   toast.error("All documents are required");
+    // } else if (d !== c) {
+    //   toast.error("All documents are required");
+    // } else {
+    if (navigatedFrom) {
+      navigate(navigatedFrom);
+      localStorage.removeItem("navigatedFrom");
     } else {
-      if (navigatedFrom) {
-        navigate(navigatedFrom);
-        localStorage.removeItem("navigatedFrom");
-      } else {
-        let beneficiaries = localStorage.getItem("beneficiaries");
+      let beneficiaries = localStorage.getItem("beneficiaries");
 
-        if (beneficiaries === "false") {
-          navigate("/launch/review/business-info");
-        } else {
-          navigate("/launch/beneficiaries-kyc");
-        }
+      if (beneficiaries === "false") {
+        navigate("/launch/review/business-info");
+      } else {
+        navigate("/launch/beneficiaries-kyc");
       }
     }
+    // }
   };
 
   const handlePrev = () => {
