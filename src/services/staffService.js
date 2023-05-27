@@ -281,6 +281,11 @@ export const staffApi = createApi({
       query: () => "/launch/allusers",
     }),
 
+    // Get all users information
+    getAllRegisteredUsers: builder.query({
+      query: () => "/getAllUsers",
+    }),
+
     // Add a bank
     addBank: builder.mutation({
       query: (data) => ({
@@ -598,6 +603,7 @@ export const {
   useDeleteRewardMutation,
 
   useGetAllUsersQuery,
+  useGetAllRegisteredUsersQuery,
 
   useAddBankMutation,
   useUpdateBankMutation,

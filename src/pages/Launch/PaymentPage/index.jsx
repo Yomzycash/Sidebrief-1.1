@@ -12,6 +12,7 @@ import { useGetSingleEntityQuery, usePayLaunchMutation } from "services/launchSe
 import { setLaunchPaid } from "redux/Slices";
 import Payment from "containers/Payment/index.jsx";
 import { Puff } from "react-loading-icons";
+import { getPromoPrice } from "../actions.js";
 
 const PaymentPage = () => {
   const [entityInfo, setEntityInfo] = useState({
@@ -93,7 +94,7 @@ const PaymentPage = () => {
   let paymentInfo = {
     sendFlutterwaveRefToBackend: sendFlutterwaveRefToBackend,
     sendStripeRefToBackend: sendStripeRefToBackend,
-    amount: entityInfo?.entityFee,
+    amount: getPromoPrice(entityInfo) || entityInfo?.entityFee,
     currency: entityInfo?.entityCurrency,
     title: "Business Registration",
     description: `Payment for Business Registration in ${entityInfo?.entityCountry}`,

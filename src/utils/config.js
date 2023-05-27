@@ -22,7 +22,6 @@ import {
   EntityIcon,
   CountryIcon,
   ArrowDownIcon,
-  ServicesIcon,
   ManageIcon,
 } from "asset/Icons";
 // import ArrowDownIcon from "asset/Icons/ArrowDownIcon.svg";
