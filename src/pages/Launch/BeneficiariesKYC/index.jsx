@@ -12,32 +12,25 @@ import {
   useAddBeneficialKYCMutation,
   useGetAllEntitiesQuery,
   useViewBeneficiariesMutation,
+  useGetBeneficialsKYCQuery,
+  useDeleteBeneficialKYCMutation,
 } from "services/launchService";
 import { useSelector } from "react-redux";
 import { ContentWrapper, FileContainer, Loading, Name } from "./styles";
-import FileUpload from "components/FileUpload";
-import { convertToLink, isValidFileUploaded } from "utils/LaunchHelper";
+import { convertToLink } from "utils/LaunchHelper";
 import { Puff } from "react-loading-icons";
-import KYCFileUpload from "components/FileUpload/KYCFileUpload";
+import { Upload } from "components/File";
 
 const BeneficiariesKYC = () => {
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
   const [storeType, setStoreType] = useState("");
-  const [fileName, setFileName] = useState("");
-  const [type, setType] = useState("");
-  const [size, setSize] = useState(0);
-  const [error, setError] = useState("");
-  const [uploadedFileDetails, setUploadedFileDetails] = useState("");
   const [addBeneficialKYC] = useAddBeneficialKYCMutation();
-  const [documentCode, setDocumentCode] = useState("");
-
+  const [deleteBeneficialKYC] = useDeleteBeneficialKYCMutation();
   const launchResponse = useSelector((state) => state.LaunchReducer.launchResponse);
   const countryISO = localStorage.getItem("countryISO");
-  const entityType = localStorage.getItem("entityType");
   const [viewBeneficiaries, viewBeneficiariesState] = useViewBeneficiariesMutation();
-
+  const BeneficiaryKYC = useGetBeneficialsKYCQuery(launchResponse);
   const [requiredDocuments, setRequiredDocuments] = useState([]);
   const [beneficiaryContainer, setBeneficiaryContainer] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
@@ -84,76 +77,30 @@ const BeneficiariesKYC = () => {
     handleFetch();
   }, []);
 
-  const handleChange = async (files, beneficiary, type) => {
-    // const uploadedFile = e.target.files[0];
-    // setUploadedFileDetails(uploadedFile);
-    // setFileName(uploadedFile.name);
-    // setType(uploadedFile.type);
-    // setSize(uploadedFile.size);
-
-    // let fName = e.target.name;
-    // let value = e.target.value;
-
-    // setDocumentContainer((prev) => {
-    //   const updatedState = [...prev];
-
-    //   const index = updatedState.findIndex((el) => el.code === beneficiary);
-
-    //   updatedState[index] = {
-    //     ...updatedState[index],
-    //     files: {
-    //       ...updatedState[index].files,
-    //       [type]: files[0].name,
-    //     },
-    //   };
-    //   return updatedState;
-    // });
-
-    // if (!isValidFileUploaded(uploadedFile)) {
-    //   toast.error("Only PDFs and JPEGs are supported");
-    // } else if (size > 3000000) {
-    //   toast.error("File is too large");
-    // } else {
-    //   toast.success("Valid Document");
-
-    const res = await convertToLink(files[0]);
-    const formatType = type.split("_").join(" ");
-    const requiredBeneficialOwnerKYCData = {
+  const newHandleChange = async (uploadedFile, fileName, rawFile, beneficiary) => {
+    const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
       beneficialOwnerCode: beneficiary,
       beneficialOwnerKYC: {
-        documentType: formatType,
-        documentLink: res.url,
-        fileName: files[0].name,
-        fileType: files[0].type,
+        documentType: fileName,
+        documentLink: uploadedFile.url,
+        fileName: rawFile.name,
+        fileType: rawFile.type,
       },
     };
 
-    const beneficialResult = await addBeneficialKYC(requiredBeneficialOwnerKYCData);
-    if (beneficialResult.data) {
-      let returnedArray = beneficialResult.data.beneficialOwnersKYC;
-      let lastElememt = returnedArray[returnedArray.length - 1];
-
+    const response = await addBeneficialKYC(requiredAddMemberData);
+    BeneficiaryKYC.refetch();
+    const documentCode = response.data.beneficialOwnersKYC.slice(-1)[0].documentCode;
+    if (response.data) {
       toast.success("Document uploaded successfully");
       setIsChanged(!isChanged);
-
-      setDocumentContainer((prev) => {
-        const updatedState = [...prev];
-
-        const index = updatedState.findIndex((el) => el.code === beneficiary);
-
-        updatedState[index] = {
-          ...updatedState[index],
-          files: {
-            ...updatedState[index].files,
-            [type]: files[0].name,
-          },
-        };
-        return updatedState;
-      });
-    } else if (beneficialResult.error) {
-      toast.error(beneficialResult.error?.data.message);
+      // handleShareHolderCheck();
+    } else if (response.error) {
+      toast.error(response.error?.data.message);
     }
+
+    return documentCode || "";
   };
 
   const functionToPrintObject = (componentKey) => {
@@ -174,25 +121,38 @@ const BeneficiariesKYC = () => {
   }, [documentContainer]);
   store.dispatch(setBeneficiaryDocs(documentContainer));
 
-  const handleRemove = (beneficiary, type) => {
-    // if (type === storeType) {
-    //   // let generatedDocumentType
-    //   // const requiredDeleteData = {
-    //   //   launchCode: generatedLaunchCode,
-    //   //   memberCode: shareholder,
-    //   //   documentCode: generatedDocumentType,
-    //   // };
-    //   // console.log("delete data to be", requiredDeleteData);
-    //   // const response = await deleteMemberKYC(requiredDeleteData);
-    //   // console.log(response);
-    //   // if (response.data) {
-    //   //   toast.success("Document deleted successfully");
-    //   // } else if (response.error) {
-    //   //   console.log(response.error?.data.message);
-    //   //   toast.error(response.error?.data.message);
-    //   // }
-    // }
+  const handleRemove = async (fileCode, memberCode) => {
+    const requiredDeleteData = {
+      launchCode: launchResponse.launchCode,
+      beneficialOwnerCode: memberCode,
+      documentCode: fileCode,
+    };
+    const response = await deleteBeneficialKYC(requiredDeleteData);
+    if (response.data) {
+      toast.success("Document deleted successfully");
+    } else if (response.error) {
+      toast.error(response.error?.data.message);
+    }
   };
+
+  const handleDocuments = (documents, code) => {
+    if (documents.length > 0) {
+      // get all document types
+      const documentTypes = [...new Set(documents.map((el) => el.documentType))];
+      const object = {};
+
+      documentTypes.forEach((key) => {
+        object[key] = documents
+          .filter((el) => el.documentType === key && el.beneficialOwnerCode === code)
+          .slice(-1)[0];
+      });
+
+      return object;
+    }
+    return {};
+  };
+
+  const beneficiaryDocuments = BeneficiaryKYC?.data?.beneficialOwnersKYC || [];
 
   // Set the progress of the application
   useEffect(() => {
@@ -216,25 +176,32 @@ const BeneficiariesKYC = () => {
             </Loading>
           )}
           <LaunchFormContainer>
-            {documentContainer.map((beneficiary, index) => (
-              <FileContainer key={index}>
-                <Name>{beneficiary.name}</Name>
-                <ContentWrapper>
-                  {requiredDocuments?.map((document, index) => (
-                    <KYCFileUpload
-                      key={index}
-                      isChanged={isChanged}
-                      documentComponentType={document}
-                      TopText={document}
-                      beneficiaryCode={beneficiary.code}
-                      onDrop={(files) => handleChange(files, beneficiary.code, document)}
-                      handleRemove={() => handleRemove(document)}
-                      BottomText={`Please provide your ${document}`}
-                    />
-                  ))}
-                </ContentWrapper>
-              </FileContainer>
-            ))}
+            {documentContainer.map((beneficiary, index) => {
+              const docs = handleDocuments(beneficiaryDocuments, beneficiary.code);
+              return (
+                <FileContainer key={index}>
+                  <Name>{beneficiary.name}</Name>
+                  <ContentWrapper>
+                    {requiredDocuments?.map((document, index) => {
+                      const oldFile = docs[document];
+                      return (
+                        <Upload
+                          key={index}
+                          docType={document}
+                          oldFile={{
+                            name: oldFile?.fileName || "",
+                            code: oldFile?.documentCode || "",
+                          }}
+                          uploadAction={newHandleChange}
+                          memberCode={beneficiary.code}
+                          deleteAction={handleRemove}
+                        />
+                      );
+                    })}
+                  </ContentWrapper>
+                </FileContainer>
+              );
+            })}
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController

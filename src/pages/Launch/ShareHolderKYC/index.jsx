@@ -88,46 +88,6 @@ const ShareHolderKYC = () => {
     navigate(-1);
   };
 
-  // const handleChange = async (files, shareholder, type) => {
-  //   setDocumentContainer((prev) => {
-  //     const updatedState = [...prev];
-
-  //     const index = updatedState.findIndex((el) => el.code === shareholder);
-
-  //     updatedState[index] = {
-  //       ...updatedState[index],
-  //       files: {
-  //         ...updatedState[index].files,
-  //         [type]: files[0].name,
-  //       },
-  //     };
-
-  //     return updatedState;
-  //   });
-
-  //   const res = await convertToLink(files[0]);
-
-  //   const formatType = type.split("_").join(" ");
-  //   const requiredAddMemberData = {
-  //     launchCode: launchResponse.launchCode,
-  //     memberCode: shareholder,
-  //     memberKYC: {
-  //       documentType: formatType,
-  //       documentLink: res.url,
-  //       fileName: files[0].name,
-  //       fileType: files[0].type,
-  //     },
-  //   };
-  //   const response = await addMemberKYC(requiredAddMemberData);
-  //   if (response.data) {
-  //     toast.success("Document uploaded successfully");
-  //     setIsChanged(!isChanged);
-  //     handleShareHolderCheck();
-  //   } else if (response.error) {
-  //     toast.error(response.error?.data.message);
-  //   }
-  // };
-
   const newHandleChange = async (uploadedFile, fileName, rawFile, shareholder) => {
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
@@ -222,7 +182,7 @@ const ShareHolderKYC = () => {
     }
   };
 
-  const handleDocuments = (documents) => {
+  const handleDocuments = (documents, code) => {
     if (documents.length > 0) {
       // get all document types
       const documentTypes = [...new Set(documents.map((el) => el.documentType))];
@@ -230,7 +190,9 @@ const ShareHolderKYC = () => {
       const object = {};
 
       documentTypes.forEach((key) => {
-        object[key] = documents.filter((el) => el.documentType === key).slice(-1)[0];
+        object[key] = documents
+          .filter((el) => el.documentType === key && el.memberCode === code)
+          .slice(-1)[0];
       });
 
       return object;
@@ -239,8 +201,6 @@ const ShareHolderKYC = () => {
   };
 
   const memberDocuments = memberKYC?.data?.businessMembersKYC || [];
-
-  const docs = handleDocuments(memberDocuments);
 
   // Set the progress of the application
   useEffect(() => {
@@ -265,41 +225,32 @@ const ShareHolderKYC = () => {
               </Loading>
             ))}
           <LaunchFormContainer style={{ paddingTop: "40px" }}>
-            {documentContainer.map((shareholder, index) => (
-              <FileContainer key={index}>
-                <Name>{shareholder.name}</Name>
-                <ContentWrapper key={index}>
-                  {requiredDocuments?.map((document, index) => {
-                    const oldFile = docs[document];
-                    return (
-                      // <KYCFileUpload
-                      //   key={index}
-                      //   isChanged={isChanged}
-                      //   documentComponentType={document}
-                      //   TopText={document}
-                      //   memberCode={shareholder.code}
-                      //   onDrop={(files) => handleChange(files, shareholder.code, document)}
-                      //   handleRemove={() => handleRemove(document)}
-                      //   BottomText={`Please provide your ${document}`}
-                      //   handleRefetch={handleShareHolderCheck}
-                      // />
-                      <Upload
-                        key={index}
-                        docType={document}
-                        oldFile={
-                          oldFile
-                            ? { name: oldFile.fileName, code: oldFile.documentCode }
-                            : { name: "", code: "" }
-                        }
-                        uploadAction={newHandleChange}
-                        memberCode={shareholder.code}
-                        deleteAction={handleRemove}
-                      />
-                    );
-                  })}
-                </ContentWrapper>
-              </FileContainer>
-            ))}
+            {documentContainer.map((shareholder, index) => {
+              const docs = handleDocuments(memberDocuments, shareholder.code);
+              return (
+                <FileContainer key={index}>
+                  <Name>{shareholder.name}</Name>
+                  <ContentWrapper key={index}>
+                    {requiredDocuments?.map((document, index) => {
+                      const oldFile = docs[document];
+                      return (
+                        <Upload
+                          key={index}
+                          docType={document}
+                          oldFile={{
+                            name: oldFile?.fileName || "",
+                            code: oldFile?.documentCode || "",
+                          }}
+                          uploadAction={newHandleChange}
+                          memberCode={shareholder.code}
+                          deleteAction={handleRemove}
+                        />
+                      );
+                    })}
+                  </ContentWrapper>
+                </FileContainer>
+              );
+            })}
 
             {/* <button type="submit">test</button> */}
             {/* <DragAndDrop /> */}
