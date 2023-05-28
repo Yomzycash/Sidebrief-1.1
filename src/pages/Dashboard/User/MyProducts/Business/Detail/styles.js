@@ -159,3 +159,27 @@ export const EmptyContainer = styled.div`
     font-weight:normal;
   }
 `;
+export const Download = styled.button`
+  background: #00a2d4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  margin-top: auto;
+
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  transform: translateX(30px);
+  transition: all 0.2s ease-in-out;
+
+  cursor: pointer;
+
+  ${DocumentWrapper}:hover & {
+    transform: translateX(0);
+  }
+`;

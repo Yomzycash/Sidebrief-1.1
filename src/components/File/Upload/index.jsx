@@ -17,7 +17,7 @@ import { DeleteRedSvg } from "asset/svg";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
+export const Upload = ({ docType, disable, uploadAction, deleteAction, oldFile, memberCode, updateAction }) => {
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState({ name: "", code: "" });
   const [setOld, setSetOld] = useState(true);
@@ -34,7 +34,9 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
       const realFile = file[0];
       setUploading(true);
       const uploadedFile = await convertToLink(realFile);
-      const documentCode = await uploadAction(uploadedFile, docType, realFile);
+      const documentCode = !memberCode
+        ? await uploadAction(uploadedFile, docType, realFile)
+        : await uploadAction(uploadedFile, docType, realFile, memberCode);
       setFile({
         name: realFile.name,
         code: documentCode,
@@ -42,7 +44,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
       setSetOld(false);
       setUploading(false);
     },
-    [uploadAction, docType]
+    [uploadAction, docType, memberCode]
   );
 
   const nameLengthValidator = (file) => {
@@ -62,7 +64,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
 
   const performDelete = async () => {
     setDeleting(true);
-    await deleteAction(file.code);
+    !memberCode ? await deleteAction(file.code) : await deleteAction(file.code, memberCode);
     setFile({
       name: "",
       code: "",
@@ -81,6 +83,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
       "image/png": [],
     },
   });
+  
 
   return (
     <DocumentDownload>
@@ -92,7 +95,7 @@ export const Upload = ({ docType, uploadAction, deleteAction, oldFile }) => {
         {!file.name ? (
           <UploadWrapper
             {...getRootProps({
-              disabled: uploading,
+              disabled: uploading || disable,
               type: "button",
             })}
           >

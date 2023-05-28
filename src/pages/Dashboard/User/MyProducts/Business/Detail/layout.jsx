@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { Header } from "containers/BusinessDetail";
-import { Body, Container, ContinueButton, LastWrapper } from "./styles";
+import { Body, Container, LastWrapper } from "./styles";
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
 import { useEffect } from "react";
@@ -69,7 +69,6 @@ const BusinessDetailLayout = () => {
 
   // options passed
   let options = [
-
     {
       title: "Business Information",
       totalLength: 0,
@@ -91,7 +90,7 @@ const BusinessDetailLayout = () => {
       totalLength: beneficiaries?.length,
     },
     {
-      title: "Documents"
+      title: "Documents",
     },
   ];
   //removing empty element from the array
@@ -121,7 +120,7 @@ const BusinessDetailLayout = () => {
 
   // hashmap to help in  path navigation for selecting value
   let pathNavigation = {
-    "Documents": "document",
+    Documents: "document",
     "Business Information": "detail",
     "Payment Details": "payment",
     Shareholders: "shareholders",
