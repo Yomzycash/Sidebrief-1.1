@@ -23,6 +23,7 @@ export const Upload = ({
   deleteAction,
   oldFile = { name: "", code: "" },
   memberCode,
+  disable,
 }) => {
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState({ name: "", code: "" });
@@ -93,7 +94,6 @@ export const Upload = ({
       "image/png": [],
     },
   });
-  
 
   return (
     <DocumentDownload>
