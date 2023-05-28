@@ -91,6 +91,7 @@ const Modal1 = ({
             </TopIcons>
           </Title>
           <InputsWrapper>{children}</InputsWrapper>
+
           <CheckoutController
             backAction={handleClose}
             forwardAction={() => {}}

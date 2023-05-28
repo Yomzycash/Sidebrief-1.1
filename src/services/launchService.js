@@ -398,6 +398,15 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    getMembersKYC: builder.query({
+      query: (data) => ({
+        url: "/launch/members/viewkyc",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // add beneficial KYC
     addBeneficialKYC: builder.mutation({
       query: (data) => ({
@@ -454,8 +463,42 @@ export const launchApi = createApi({
       }),
       invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
+    uploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+    addUploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+    updateUploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+    deleteUploadDocument: builder.mutation({
+      query: (data) => ({
+        url: "launch/document-removal",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
+    }),
+  
   }),
 });
+
 
 export const {
   useGetUserDraftQuery,
@@ -513,6 +556,8 @@ export const {
   useAddMemberKYCMutation,
   useDeleteMemberKYCMutation,
   useViewMembersKYCMutation,
+  useGetMembersKYCQuery,
+  useLazyGetMembersKYCQuery,
 
   useAddBeneficialKYCMutation,
   useDeleteBeneficialKYCMutation,
@@ -524,4 +569,13 @@ export const {
 
   useDeleteLaunchRequestMutation,
   useBatchDeleteLaunchRequestsMutation,
+
+  useAddUploadDocumentMutation, 
+  useUpdateUploadDocumentMutation,
+  useDeleteUploadDocumentMutation, 
+
+
+
+
+
 } = launchApi;

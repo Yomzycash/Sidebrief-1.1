@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { Header } from "containers/BusinessDetail";
-import { Body, Container, ContinueButton, LastWrapper } from "./styles";
+import { Body, Container, LastWrapper } from "./styles";
 import { store } from "redux/Store";
 import { setLaunchResponse } from "redux/Slices";
 import { useEffect } from "react";
@@ -89,9 +89,15 @@ const BusinessDetailLayout = () => {
       title: beneficiaries?.length > 0 ? "Beneficiaries" : "",
       totalLength: beneficiaries?.length,
     },
+<<<<<<< HEAD
     // {
     //   title: "Documents"
     // },
+=======
+    {
+      title: "Documents",
+    },
+>>>>>>> origin/staging
   ];
   //removing empty element from the array
   options = options.filter((el) => el?.title !== "");
