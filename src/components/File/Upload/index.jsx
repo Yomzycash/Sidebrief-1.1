@@ -93,6 +93,7 @@ export const Upload = ({
       "image/png": [],
     },
   });
+  
 
   return (
     <DocumentDownload>
@@ -104,7 +105,7 @@ export const Upload = ({
         {!file.name ? (
           <UploadWrapper
             {...getRootProps({
-              disabled: uploading,
+              disabled: uploading || disable,
               type: "button",
             })}
           >
