@@ -89,15 +89,9 @@ const BusinessDetailLayout = () => {
       title: beneficiaries?.length > 0 ? "Beneficiaries" : "",
       totalLength: beneficiaries?.length,
     },
-<<<<<<< HEAD
-    // {
-    //   title: "Documents"
-    // },
-=======
     {
       title: "Documents",
     },
->>>>>>> origin/staging
   ];
   //removing empty element from the array
   options = options.filter((el) => el?.title !== "");
