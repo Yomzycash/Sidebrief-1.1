@@ -23,6 +23,8 @@ const All = () => {
     }
   }, [isSuccess, data]);
 
+  
+
   const sortedArr = useMemo(() => {
     const sortArr = [...tableArr];
     return sortArr.sort(sortTableData);

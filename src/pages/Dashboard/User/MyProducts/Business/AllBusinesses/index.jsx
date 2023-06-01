@@ -53,7 +53,6 @@ const AllBusinesses = () => {
   }, [searchValue]);
 
   const matches = useMediaQuery("(max-width:700px)");
-  console.log(dataArr);
 
   return (
     <Container>

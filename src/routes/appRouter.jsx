@@ -108,6 +108,9 @@ const StaffPaidDraftCompliances = lazy(() =>
 );
 const UserInfo = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail/UserInfo"));
 
+// CUSTOMER MANAGEMENT
+const CustomerManagement = lazy(() => import("pages/Dashboard/staffDashboard/CustomerManagement"))
+
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
 const Business = lazy(() => import("pages/Dashboard/User/MyProducts/Business"));
@@ -329,6 +332,7 @@ const Products = lazy(() => import("pages/Dashboard/User/Products"));
 //
 
 //
+
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -750,6 +754,10 @@ const AppRouter = () => {
                 <Route path="create" element={<PromoDetails />} />
                 <Route path=":promoCode" element={<PromoDetails />} />
               </Route>
+
+              <Route path="customer-management" element={<CustomerManagement />} />
+                {/* <Route index element={<CustomerManagement />} />
+              </Route> */}
 
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
 
