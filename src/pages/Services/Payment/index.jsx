@@ -49,7 +49,6 @@ const ServicePayment = () => {
     };
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(reference.status));
-    const payResponse = await addServicePayment(requiredData);
 
     let link = `/services/${option}/form`;
     link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
