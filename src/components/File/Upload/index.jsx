@@ -33,7 +33,11 @@ export const Upload = ({
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (setOld) {
+    if (
+      setOld &&
+      !(oldFile.name === "" || oldFile.name === undefined) &&
+      !(oldFile.code === "" || oldFile.code === undefined)
+    ) {
       setFile(oldFile);
     }
     if (reset) {
