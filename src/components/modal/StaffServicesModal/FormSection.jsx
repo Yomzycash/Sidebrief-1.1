@@ -5,7 +5,7 @@ import {
   SectionContainer,
   SectionInfoContainer,
 } from "./styled";
-import EditableQuestionnaire from "components/Form/Questionnaire/Editable";
+import EditableQuestionnaire from "components/Form/Questionnaire/Control";
 import { CheckoutController } from "containers";
 import { useActions } from "./actions";
 import { useSearchParams } from "react-router-dom";

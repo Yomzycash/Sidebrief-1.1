@@ -1,138 +1,159 @@
-import React, { useState, UseEffect } from "react";
-
+import UserDocument from "components/Form/UserDocument";
+import React from "react";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useOutletContext } from "react-router-dom";
 import {
-  Container,
-  TopContainer,
-  Left,
-  Right,
-  DetailWrapper,
-  DetailContainer,
-  CardContainer,
-  Image,
-  DocumentContainer,
-  DocumentWrapper,
-  Title,
-  SubText,
-  Body,
-  Loader,
-  EmptyContainer,
-  Download,
-} from "./styles";
-import { ReactComponent as UploadIcon } from "asset/svg/Upload.svg";
-import { useLocation } from "react-router-dom";
-// import {completed}  from 'asset/images/completed';
-import { CommonButton } from "components/button";
-import StaffDocumentModal from "components/modal/StaffDocumentModal";
+  useAddLaunchDocumentMutation,
+  useDeleteLaunchDocumentMutation,
+  useGetLaunchDocumentsQuery,
+  useUpdateLaunchDocumentMutation,
+} from "services/launchService";
+import { checkStaffEmail, handleError, handleResponse } from "utils/globalFunctions";
+import { convertToLink } from "utils/LaunchHelper";
+import { DocumentsContainer, DocumentsWrapper, DocumentTitle } from "./styles";
 
-import { useViewLaunchRequestQuery } from "services/launchService";
-import { downLoadImage } from "utils/staffHelper";
-import { ReactComponent as DownloadWhite } from "asset/svg/DownloadWhite.svg";
+const RegistrationDocument = () => {
+  const [fileLoading, setFileLoading] = useState(false);
 
-const DetailDocument = () => {
-  const [open, setOpen] = useState(false);
-  const [clickedDocument, setClickedDocument] = useState({});
-  const [cardAction, setCardAction] = useState("");
-  const { pathname, search } = useLocation();
-  const path = pathname.includes("staff");
+  const { data } = useOutletContext();
+  const launchCode = data?.launchCode;
 
-  const searchParams = new URLSearchParams(search);
-  const launchResponse = {
-    launchCode: searchParams.get("launchCode"),
-    registrationCountry: searchParams.get("registrationCountry"),
-    registrationType: searchParams.get("registrationType"),
+  const [addLaunchDocument, addState] = useAddLaunchDocumentMutation();
+  const [updateLaunchDocument, updateState] = useUpdateLaunchDocumentMutation();
+  const [deleteLaunchDocument, deleteState] = useDeleteLaunchDocumentMutation();
+  const document = useGetLaunchDocumentsQuery(launchCode);
+
+  //
+  // Adds a new document
+  const handleDocumentAdd = async (formInfo) => {
+    const realFile = formInfo.docFile[0];
+
+    setFileLoading(true);
+    const uploadedFile = await convertToLink(realFile);
+    setFileLoading(false);
+
+    if (!uploadedFile?.url) {
+      toast.error("Could not upload file");
+      return;
+    }
+
+    const payload = {
+      launchCode,
+      documentDetails: {
+        documentName: formInfo.documentName,
+        documentDescription: formInfo.documentDescription,
+        documentUrl: uploadedFile.url,
+        fileName: realFile.name,
+        fileType: realFile.type,
+      },
+    };
+
+    const response = await addLaunchDocument(payload);
+    const data = response?.data;
+    const error = response?.error;
+    if (data) {
+      handleResponse(response, "Document added successfully", document.refetch());
+      return true;
+    }
+    handleError(error);
   };
-  const launchRequest = useViewLaunchRequestQuery(launchResponse);
-  console.log(launchRequest);
 
-  const data1 = launchRequest?.data?.businessDocument;
+  //
+  // Update an existing document
+  const handleDocumentUpdate = async (formInfo) => {
+    const realFile = formInfo.docFile[0];
 
-  const handleCardClick = (document) => {
-    setCardAction("edit");
-    setOpen(true);
-    setClickedDocument(document);
+    setFileLoading(true);
+    const uploadedFile =
+      realFile?.name && realFile?.size
+        ? await convertToLink(realFile)
+        : { url: formInfo.documentUrl };
+    setFileLoading(false);
+
+    if (!uploadedFile?.url) {
+      toast.error("Could not upload file");
+      return;
+    }
+
+    const payload = {
+      launchCode,
+      documentCode: formInfo.documentCode,
+      documentDetails: {
+        documentName: formInfo.documentName,
+        documentDescription: formInfo.documentDescription,
+        documentUrl: uploadedFile?.url,
+        fileName: realFile?.name || formInfo.fileName,
+        fileType: realFile?.type || formInfo.fileType,
+      },
+    };
+
+    const response = await updateLaunchDocument(payload);
+    const data = response?.data;
+    const error = response?.error;
+    if (data) {
+      handleResponse(response, "Document updated successfully", document.refetch());
+      return true;
+    }
+    handleError(error);
   };
-  const handleAddButton = () => {
-    setOpen(true);
-    setCardAction("add");
+
+  //
+  // Deletes a document
+  const handleDocumentDelete = async (formInfo) => {
+    const payload = {
+      launchCode,
+      documentCode: formInfo.documentCode,
+    };
+
+    const response = await deleteLaunchDocument(payload);
+    const data = response?.data;
+    const error = response?.error;
+    if (data) {
+      handleResponse(response, "Document deleted successfully", document.refetch());
+      return true;
+    }
+    handleError(error);
   };
+
+  const isStaff = checkStaffEmail(localStorage.getItem("userEmail"));
 
   return (
-    <>
-      {path ? (
-        <Container>
-          <TopContainer>
-            <Left>
-              <h3>
-                {/* <span>
-                                <Image src={completed} alt=""/>
-                            </span> */}
-                Registration Completed
-                <span>
-                  ({data1?.length} Document{data1?.length === 1 ? "" : "s"} added)
-                </span>
-              </h3>
-              <SubText>
-                Your business registration has been successfully completed, you can now upload
-                necessary documents.
-              </SubText>
-            </Left>
-            <Right>
-              <CommonButton text="Add New Document" action={handleAddButton} />
-            </Right>
-          </TopContainer>
-          {data1?.length === 0 ? (
-            <EmptyContainer>
-              <h5>No Document Added</h5>
-            </EmptyContainer>
-          ) : (
-            <DocumentContainer>
-              {data1?.map((doc, index) => (
-                <>
-                  <DocumentWrapper key={index} onClick={() => handleCardClick(doc)}>
-                    <Title>{doc?.documentName}</Title>
-                    <SubText> {doc?.documentDescription} </SubText>
-                    {/* <KYCFileUpload /> */}
-                  </DocumentWrapper>
-                </>
-              ))}
-            </DocumentContainer>
-          )}
-        </Container>
-      ) : (
-        <Container>
-          <CardContainer>
-            {data1?.map((doc, index) => (
-              <>
-                <DocumentWrapper
-                  key={index}
-                  onClick={async () => {
-                    await downLoadImage(doc?.documentUrl, doc?.documentName);
-                  }}
-                >
-                  <Title>{doc?.documentName}</Title>
-                  <SubText> {doc?.documentDescription} </SubText>
-                </DocumentWrapper>
-                {/* <Download
-                  
-                  type="button"
-                >
-                  <DownloadWhite />
-                </Download> */}
-              </>
-            ))}
-          </CardContainer>
-        </Container>
-      )}
-      <StaffDocumentModal
-        disableAll={cardAction === "edit" ? true : false}
-        cardAction={cardAction}
-        title={cardAction === "edit" ? "Document Information" : "Add New Document"}
-        documentInfo={clickedDocument}
-        setOpen={setOpen}
-        open={open}
-      />
-    </>
+    <DocumentsContainer>
+      <DocumentTitle>
+        <p> Registration Completed</p>
+      </DocumentTitle>
+      <DocumentsWrapper>
+        {document.data?.data?.map((el, i) => (
+          <UserDocument
+            key={i}
+            index={i}
+            addState={addState}
+            updateState={updateState}
+            handleDocumentAdd={handleDocumentAdd}
+            handleDocumentUpdate={handleDocumentUpdate}
+            handleDocumentDelete={handleDocumentDelete}
+            info={el}
+            review={true}
+            deleteState={deleteState}
+            fileLoading={fileLoading}
+          />
+        ))}
+        {isStaff && (
+          <UserDocument
+            addState={addState}
+            updateState={updateState}
+            handleDocumentAdd={handleDocumentAdd}
+            handleDocumentUpdate={handleDocumentUpdate}
+            handleDocumentDelete={handleDocumentDelete}
+            info={document.data}
+            review={false}
+            fileLoading={fileLoading}
+          />
+        )}
+      </DocumentsWrapper>
+    </DocumentsContainer>
   );
 };
 
-export default DetailDocument;
+export default RegistrationDocument;

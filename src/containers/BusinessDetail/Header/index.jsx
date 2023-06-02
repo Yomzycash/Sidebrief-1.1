@@ -74,7 +74,7 @@ export const Header = ({ isStaff, code }) => {
   // when launch is submitted and userside
   const noDelete = !isStaff && launchRequest?.data?.registrationStatus === "submitted";
 
-  const completedRegistration = launchRequest?.data?.registrationStatus === "submitted"
+  const completedRegistration = launchRequest?.data?.registrationStatus === "submitted";
 
   const deleteAction = async () => {
     // perform delete action here
@@ -261,9 +261,16 @@ export const Header = ({ isStaff, code }) => {
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-        
-      
-
+        {completedRegistration && (
+          <ActiveNav
+            text={"Documents"}
+            path={`/${
+              isStaff ? "staff-dashboard" : "dashboard/my-products"
+            }/business/document?launchCode=${launchResponse.launchCode}&registrationCountry=${
+              launchResponse.registrationCountry
+            }&registrationType=${launchResponse.registrationType}`}
+          />
+        )}
         <ActiveNav
           text={"Business Information"}
           path={`/${
@@ -323,17 +330,6 @@ export const Header = ({ isStaff, code }) => {
             }&registrationType=${launchResponse.registrationType}`}
           />
         )}
-
-        {completedRegistration && 
-           <ActiveNav
-           text={"Documents"}
-           path={`/${
-             isStaff ? "staff-dashboard" : "dashboard/my-products"
-           }/business/document?launchCode=${launchResponse.launchCode}&registrationCountry=${
-             launchResponse.registrationCountry
-           }&registrationType=${launchResponse.registrationType}`}
-         />
-        }
       </SubHeader>
 
       <Dialog open={openModal} fullWidth maxWidth="sm">

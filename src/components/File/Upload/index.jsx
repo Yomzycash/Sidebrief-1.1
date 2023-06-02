@@ -17,7 +17,16 @@ import { DeleteRedSvg } from "asset/svg";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-export const Upload = ({ docType, disable, uploadAction, deleteAction, oldFile, memberCode, updateAction }) => {
+export const Upload = ({
+  docType,
+  disable,
+  uploadAction,
+  deleteAction,
+  oldFile,
+  memberCode,
+  containerStyle,
+  reset,
+}) => {
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState({ name: "", code: "" });
   const [setOld, setSetOld] = useState(true);
@@ -27,18 +36,22 @@ export const Upload = ({ docType, disable, uploadAction, deleteAction, oldFile, 
     if (setOld) {
       setFile(oldFile);
     }
-  }, [oldFile, setOld]);
+    if (reset) {
+      setFile({
+        name: "",
+        code: "",
+      });
+    }
+  }, [oldFile, setOld, reset]);
 
   const collectFile = useCallback(
     async (file) => {
-      const realFile = file[0];
       setUploading(true);
-      const uploadedFile = await convertToLink(realFile);
       const documentCode = !memberCode
-        ? await uploadAction(uploadedFile, docType, realFile)
-        : await uploadAction(uploadedFile, docType, realFile, memberCode);
+        ? await uploadAction(docType, file)
+        : await uploadAction(docType, file, memberCode);
       setFile({
-        name: realFile.name,
+        name: file[0].name,
         code: documentCode,
       });
       setSetOld(false);
@@ -83,15 +96,16 @@ export const Upload = ({ docType, disable, uploadAction, deleteAction, oldFile, 
       "image/png": [],
     },
   });
-  
 
   return (
-    <DocumentDownload>
+    <DocumentDownload style={containerStyle}>
       <DocumentFrame>
-        <Top>
-          <DocumentIcon />
-          <DocumentText>{docType}</DocumentText>
-        </Top>
+        {docType && (
+          <Top>
+            <DocumentIcon />
+            <DocumentText>{docType}</DocumentText>
+          </Top>
+        )}
         {!file.name ? (
           <UploadWrapper
             {...getRootProps({

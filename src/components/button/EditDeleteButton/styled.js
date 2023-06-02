@@ -8,6 +8,7 @@ export const Container = styled.div`
   border: 1px solid #edf1f7;
   border-radius: 12px;
   padding: 4px 12px;
+  height: max-content;
 
   button {
     background-color: transparent;

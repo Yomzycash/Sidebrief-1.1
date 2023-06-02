@@ -24,6 +24,7 @@ import {
   useDeleteComplyDocumentMutation,
   useViewComplyQuery,
 } from "services/complyService";
+import { convertToLink } from "utils/LaunchHelper";
 
 const ServiceDocuments = () => {
   const complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
@@ -55,7 +56,7 @@ const ServiceDocuments = () => {
 
     if (uploadedDocumentsLength === 0) {
       toast.error("All documents are required");
-    } else if (requiredDocumentsLength !== uploadedDocumentsLength) {
+    } else if (requiredDocumentsLength > uploadedDocumentsLength) {
       toast.error("All documents are required");
     } else {
       navigate(`/services/${option}/review/info`);
@@ -82,15 +83,18 @@ const ServiceDocuments = () => {
 
   const docs = handleDocuments(complyDocuments);
 
-  const newHandleChange = async (uploadedFile, fileName, rawFile) => {
+  const newHandleChange = async (fileName, file) => {
+    const realFile = file[0];
+    const uploadedFile = await convertToLink(realFile);
+
     const requiredData = {
       complyCode: complyCode,
       complyDocument: {
         documentName: fileName,
         documentType: fileName,
         documentLink: uploadedFile.url,
-        fileName: rawFile.name,
-        fileType: rawFile.type,
+        fileName: realFile.name,
+        fileType: realFile.type,
       },
     };
 
