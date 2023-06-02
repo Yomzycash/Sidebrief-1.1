@@ -137,3 +137,8 @@ export const LinkText = styled(Link)`
   line-height: 21px;
   color: ${({ theme }) => theme.blue2};
 `;
+
+export const Bottom = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+`;

@@ -12,11 +12,24 @@ import {
   Price,
   Text,
   LinkText,
+  Bottom,
 } from "./styles";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
 import { Info } from "asset/svg";
+import { SubscribeForm } from "./subscribeForm";
+import { useGetSingleServiceQuery } from "services/staffService.js";
+import numeral from "numeral";
+import { getCurrencyInfo } from "utils/globalFunctions";
 
 const Subscribe = () => {
+  let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let serviceId = complyInfo?.serviceId;
+
+  const viewService = useGetSingleServiceQuery(serviceId);
+  const serviceData = viewService.data;
+
+  const symbol = viewService.isSuccess ? getCurrencyInfo(serviceData.serviceCurrency)?.symbol : "$";
+
   return (
     <Container>
       <ServicesCheckoutHeader />
@@ -29,11 +42,15 @@ const Subscribe = () => {
             <Charges>
               <Charge>
                 <ChargeHeadText>starting 1st january</ChargeHeadText>
-                <Price actual>$72,000</Price>
+                <Price actual>
+                  {viewService.isSuccess
+                    ? `${symbol}${numeral(serviceData.servicePrice).format("0,0.00")}`
+                    : "--"}
+                </Price>
               </Charge>
               <Charge>
                 <ChargeHeadText>current charge</ChargeHeadText>
-                <Price>$0</Price>
+                <Price>{`${symbol}0`}</Price>
               </Charge>
             </Charges>
           </LHS>
@@ -49,6 +66,10 @@ const Subscribe = () => {
             <LinkText to={"#"}>About cancellation and refunds</LinkText>
           </RHS>
         </Top>
+        <Bottom>
+          <SubscribeForm priceId={serviceData.priceId} productId={serviceData.productId} />
+          <div />
+        </Bottom>
       </Body>
     </Container>
   );
