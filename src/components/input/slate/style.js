@@ -75,7 +75,19 @@ export const MenuDiv = styled.div`
 		margin-left: 15px;
 	}
 `;
+export const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
+export const ErrMsg = styled.div`
+  position: relative;
+  color: red;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+`;
 export const SlateTop = styled.div`
 	margin: 0 -13px;
 	border-bottom: 2px solid #eee;

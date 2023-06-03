@@ -1,4 +1,4 @@
-import { Container, SlateTop, ToolbarRight } from "./style";
+import { Container, SlateTop, ToolbarRight, Top, ErrMsg, Label } from "./style";
 import React, { useCallback, useMemo } from "react";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
@@ -36,6 +36,12 @@ export const SlateEditor = ({
 	setValue,
 	clearSlate = false,
 	unclear,
+	// label,
+	// labelStyle,
+	// register,
+	// name,
+	// errorMessage,
+	// disable
 }) => {
 	const renderElement = useCallback((props) => <Element {...props} />, []);
 	const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
@@ -62,6 +68,11 @@ export const SlateEditor = ({
 
 	return (
 		<Container>
+			{/* <Top>
+				{label && <Label className={labelStyle}>{label}</Label>}
+
+				{errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
+			</Top> */}
 			<Slate
 				editor={editor}
 				value={initialValue}

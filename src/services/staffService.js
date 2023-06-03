@@ -568,6 +568,17 @@ export const staffApi = createApi({
     getAllPromoCodes: builder.query({
       query: () => `/promocodes`,
     }),
+
+    sendMessage: builder.mutation({
+      query: (data) => ({
+        url: "/message",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },
+      })
+    })
   }),
 });
 
@@ -646,4 +657,7 @@ export const {
   useDeletePromoCodeMutation,
   useGetPromoCodeQuery,
   useGetAllPromoCodesQuery,
+
+  useSendMessageMutation,
+
 } = staffApi;

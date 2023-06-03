@@ -111,8 +111,25 @@ export const Label = styled.label`
   font-size: clamp(12px, 1.3vw, 14px);
 `;
 
+export const TextWrapper = styled.div`
+  margin-right: 10px;
+  font-size:0.8em;
+
+  @media screen and (max-width: 600px) {
+    margin-right: 18px;
+  }
+`
+
 export const Iconwrapper = styled.div`
   margin-right: 20px;
+
+  @media screen and (max-width: 600px) {
+    margin-right: 18px;
+  }
+`;
+
+export const RightIconwrapper = styled.div`
+ margin-left:14px;
 
   @media screen and (max-width: 600px) {
     margin-right: 18px;
