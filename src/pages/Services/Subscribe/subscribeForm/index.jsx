@@ -34,8 +34,6 @@ export const SubscribeForm = ({ productId, priceId }) => {
     reset();
   };
 
-  console.log({ productId, priceId });
-
   return (
     <Container onSubmit={handleSubmit(submitCard)}>
       {subFormElements.map((el) => (

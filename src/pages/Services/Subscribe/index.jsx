@@ -13,6 +13,7 @@ import {
   Text,
   LinkText,
   Bottom,
+  Loading,
 } from "./styles";
 import ServicesCheckoutHeader from "components/Header/ServicesCheckoutHeader.jsx";
 import { Info } from "asset/svg";
@@ -20,6 +21,7 @@ import { SubscribeForm } from "./subscribeForm";
 import { useGetSingleServiceQuery } from "services/staffService.js";
 import numeral from "numeral";
 import { getCurrencyInfo } from "utils/globalFunctions";
+import { Puff } from "react-loading-icons";
 
 const Subscribe = () => {
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
@@ -42,7 +44,7 @@ const Subscribe = () => {
             <Charges>
               <Charge>
                 <ChargeHeadText>starting 1st january</ChargeHeadText>
-                <Price actual>
+                <Price actual loading={viewService.isLoading || viewService.isFetching}>
                   {viewService.isSuccess
                     ? `${symbol}${numeral(serviceData.servicePrice).format("0,0.00")}`
                     : "--"}
@@ -60,14 +62,27 @@ const Subscribe = () => {
             <Text>
               By subscribing you agree to our <span>automatic yearly renewal</span> option which
               will start from 1st January. For now, you are not charged any fee but your
-              subscription will start next year and you will be charged <span>$72,000</span>. Feel
-              free to cancel anytime.
+              subscription will start next year and you will be charged{" "}
+              <span>
+                {viewService.isSuccess
+                  ? `${symbol}${numeral(serviceData.servicePrice).format("0,0.00")}`
+                  : "--"}
+              </span>
+              . Feel free to cancel anytime.
             </Text>
             <LinkText to={"#"}>About cancellation and refunds</LinkText>
           </RHS>
         </Top>
         <Bottom>
-          <SubscribeForm priceId={serviceData.priceId} productId={serviceData.productId} />
+          {viewService.isSuccess ? (
+            <SubscribeForm priceId={serviceData.priceId} productId={serviceData.productId} />
+          ) : (
+            viewService.isLoading && (
+              <Loading>
+                <Puff stroke="#00A2D4" />
+              </Loading>
+            )
+          )}
           <div />
         </Bottom>
       </Body>

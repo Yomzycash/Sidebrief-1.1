@@ -104,11 +104,15 @@ export const Price = styled.p`
   line-height: 40px;
   color: ${({ theme }) => theme.grey2};
 
-  ${({ actual, theme }) =>
+  ${({ actual, theme, loading }) =>
     actual
-      ? css`
-          text-decoration: line-through;
-        `
+      ? loading
+        ? css`
+            text-decoration: none;
+          `
+        : css`
+            text-decoration: line-through;
+          `
       : css`
           color: ${theme.statusGreen};
         `}
@@ -141,4 +145,13 @@ export const LinkText = styled(Link)`
 export const Bottom = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 100%;
+  height: 200px;
 `;
