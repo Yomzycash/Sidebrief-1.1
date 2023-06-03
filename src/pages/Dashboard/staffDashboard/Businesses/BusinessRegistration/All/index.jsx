@@ -11,8 +11,9 @@ import Paginator from "components/Paginator";
 import { useMediaQuery } from "@mui/material";
 import BusinessesCard from "components/cards/BusinessAddressCard";
 import { staffNavigateToDetailPage } from "utils/globalFunctions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Accordion from "components/Accordion";
+import { useBusinessActions } from "../actions";
 
 const All = () => {
   const [tableArr, setTableArr] = useState([]);
@@ -27,6 +28,15 @@ const All = () => {
 
   const matches = useMediaQuery("(max-width:700px)");
 
+  const { searchValue } = useOutletContext();
+  const hasFetched = !!allLaunch.data;
+
+  const { filterWhenSearched } = useBusinessActions({
+    searchValue,
+    hasFetched,
+    setDataArr: setTableArr,
+  });
+
   useEffect(() => {
     if (allLaunch.isSuccess && countries.isSuccess) {
       setTableArr(allLaunch.data);
@@ -37,6 +47,14 @@ const All = () => {
     const sortArr = [...tableArr];
     return sortArr.sort(sortTableData);
   }, [tableArr]);
+
+  // Filters data array by searched value
+  useEffect(() => {
+    if (searchValue) {
+      console.log(searchValue);
+      filterWhenSearched(allLaunch.data);
+    }
+  }, [searchValue, allLaunch.data]);
 
   const loadingData = allLaunch.isLoading;
 

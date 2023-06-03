@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { DropzoneOptions, useDropzone } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 
 const SimpleUpload = ({ register, name, unregister, setValue, watch }) => {
   const files = watch(name) || [];
   const onDrop = useCallback(
-      (droppedFiles) => {
-          console.log(droppedFiles)
+    (droppedFiles) => {
+      console.log(droppedFiles);
       setValue(name, droppedFiles, { shouldValidate: true });
     },
     [setValue, name]

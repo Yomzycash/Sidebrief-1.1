@@ -111,14 +111,11 @@ const Registrationlayout = () => {
     setAwaiting(awaiting ? awaiting : []);
   }, [all, awaiting, pending, approved]);
 
-  // WINDOW SIZE 
-  useEffect(() => {
-    
-  })
+  // WINDOW SIZE
+  useEffect(() => {});
   const location = useLocation();
 
   let home = location.pathname === "/staff-dashboard/businesses/registration" ? true : false;
-
 
   const searchStyle = {
     borderRadius: "12px",
@@ -159,8 +156,8 @@ const Registrationlayout = () => {
   // staff-dashboard/businesses/registration/pending
 
   const selectedValue = (option) => {
-    navigate(`/staff-dashboard/businesses/registration/${pathNavigation[option?.title]}`)
-  }
+    navigate(`/staff-dashboard/businesses/registration/${pathNavigation[option?.title]}`);
+  };
   const iconStyle = { width: "17px", height: "17px" };
   return (
     <Container>
@@ -231,9 +228,9 @@ const Registrationlayout = () => {
             </Flex> */}
           </BottomContent>
         </MainHeader>
-         
-         {!matches ? (
-            <SubHeader>
+
+        {!matches ? (
+          <SubHeader>
             <ActiveNav
               text="All"
               total={allReg}
@@ -267,21 +264,27 @@ const Registrationlayout = () => {
               total={rejected}
               path="/staff-dashboard/businesses/registration/rejected"
             />
-            </SubHeader>
-         ) : (
-          <MobileStaff 
+          </SubHeader>
+        ) : (
+          <MobileStaff
             title={"Business Registrations"}
-            originalOptions={options} 
+            originalOptions={options}
             initialTitle={"All"}
             initialLength={allReg}
             realSelectedValue={selectedValue}
             mobile
           />
-
-         )}
+        )}
       </Header>
       <Outlet
-        context={{ allLaunch, awaitingLaunch, rejectedLaunch, pendingLaunch, approvedLaunch }}
+        context={{
+          allLaunch,
+          awaitingLaunch,
+          rejectedLaunch,
+          pendingLaunch,
+          approvedLaunch,
+          searchValue,
+        }}
       />
     </Container>
   );
