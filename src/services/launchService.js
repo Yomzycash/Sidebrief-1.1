@@ -437,6 +437,15 @@ export const launchApi = createApi({
       invalidatesTags: ["Application"],
     }),
 
+    getBeneficialsKYC: builder.query({
+      query: (data) => ({
+        url: "/launch/beneficialowners/viewkyc",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Application"],
+    }),
+
     // Submit Launch Request
     submitLaunch: builder.mutation({
       query: (data) => ({
@@ -562,6 +571,7 @@ export const {
   useAddBeneficialKYCMutation,
   useDeleteBeneficialKYCMutation,
   useViewBeneficialsKYCMutation,
+  useGetBeneficialsKYCQuery,
 
   useViewLaunchRequestQuery,
 
