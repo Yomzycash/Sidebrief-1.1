@@ -51,7 +51,6 @@ const All = () => {
   // Filters data array by searched value
   useEffect(() => {
     if (searchValue) {
-      console.log(searchValue);
       filterWhenSearched(allLaunch.data);
     }
   }, [searchValue, allLaunch.data]);
