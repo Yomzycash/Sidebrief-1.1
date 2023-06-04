@@ -1,7 +1,7 @@
 import { GeneralTable } from "components/Tables";
 import React, { useEffect, useState, useMemo } from "react";
 import { useGetDraftLaunchQuery } from "services/staffService";
-import { Body, Container, Loading , MobileContainer} from "./styled";
+import { Body, Container, Loading, MobileContainer } from "./styled";
 import { format } from "date-fns";
 import { useGetAllCountriesQuery } from "services/launchService";
 import { Puff } from "react-loading-icons";
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import Accordion from "components/Accordion";
 import { setBatchDeleteArray } from "../../../../../../redux/Slices";
 import { useOutletContext } from "react-router-dom";
+import { useBusinessActions } from "../actions";
 
 const Draft = () => {
   const [tableArr, setTableArr] = useState([]);
@@ -26,6 +27,22 @@ const Draft = () => {
   const [currentItems, setCurrentItems] = useState([]);
 
   const navigate = useNavigate();
+
+  const { searchValue } = useOutletContext();
+  const hasFetched = !!pendingLaunch.data;
+
+  const { filterWhenSearched } = useBusinessActions({
+    searchValue,
+    hasFetched,
+    setDataArr: setTableArr,
+  });
+
+  // Filters data array by searched value
+  useEffect(() => {
+    if (searchValue) {
+      filterWhenSearched(pendingLaunch.data);
+    }
+  }, [searchValue, pendingLaunch.data]);
 
   useEffect(() => {
     if (pendingLaunch.isSuccess) {
@@ -74,46 +91,40 @@ const Draft = () => {
         )}
 
         {!matches && sortedArr.length > 0 ? (
-					<MemoisedGeneralTable
-						data={currentItems.map((element) => {
-							return {
-								name: element.businessNames
-									? element.businessNames.businessName1
-									: "No name ",
-								type: element?.registrationType,
-								country: element.registrationCountry,
-								date: format(
-									new Date(element.createdAt),
-									"dd/MM/yyyy"
-								),
-								code: element.launchCode,
-								countryISO: element.registrationCountry,
-							};
-						})}
-						columns={columns}
-					/>
-				) : (
-					<MobileContainer>
-						{ currentItems.map((element) => {
-							return (
-								<Accordion
-									key={element.launchCode}
-									name={element.businessNames ? element.businessNames.businessName1 : "No name "}
-									type={element?.registrationType}
-									country={element?.registrationCountry}
-									date={format(new Date(element.createdAt), "dd/MM/yyyy")}
-									code={element.launchCode}
-									countryISO={element.registrationCountry}
-									navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
-									/>
-							)
-						})}
-					</MobileContainer>
-				)}
+          <MemoisedGeneralTable
+            data={currentItems.map((element) => {
+              return {
+                name: element.businessNames ? element.businessNames.businessName1 : "No name ",
+                type: element?.registrationType,
+                country: element.registrationCountry,
+                date: format(new Date(element.createdAt), "dd/MM/yyyy"),
+                code: element.launchCode,
+                countryISO: element.registrationCountry,
+              };
+            })}
+            columns={columns}
+          />
+        ) : (
+          <MobileContainer>
+            {currentItems.map((element) => {
+              return (
+                <Accordion
+                  key={element.launchCode}
+                  name={element.businessNames ? element.businessNames.businessName1 : "No name "}
+                  type={element?.registrationType}
+                  country={element?.registrationCountry}
+                  date={format(new Date(element.createdAt), "dd/MM/yyyy")}
+                  code={element.launchCode}
+                  countryISO={element.registrationCountry}
+                  navigate={(launchInfo) => staffNavigateToDetailPage(navigate, launchInfo)}
+                />
+              );
+            })}
+          </MobileContainer>
+        )}
         {sortedArr?.length > itemsPerPage && (
           <Paginator handlePageClick={handlePageClick} pageCount={pageCount} />
         )}
-
       </Body>
     </Container>
   );
