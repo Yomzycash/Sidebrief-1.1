@@ -5,6 +5,8 @@ import {
   Input,
   Label,
   Iconwrapper,
+  RightIconwrapper,
+  TextWrapper,
   ErrMsg,
   Top,
   Show,
@@ -19,7 +21,9 @@ const InputWithLabel = ({
   error,
   errorMessage,
   rightText,
+  leftText,
   leftIcon,
+  rightIcon,
   container,
   placeholder,
   secureTextEntry,
@@ -89,6 +93,7 @@ const InputWithLabel = ({
         disable={disable}
       >
         {leftIcon && <Iconwrapper>{leftIcon}</Iconwrapper>}
+        {leftText && <TextWrapper>{leftText}</TextWrapper>}
         {register ? (
           <Input
             placeholder={placeholder}
@@ -126,7 +131,7 @@ const InputWithLabel = ({
             {...rest}
           />
         )}
-
+        {rightIcon && <RightIconwrapper>{rightIcon}</RightIconwrapper>}
         {rightText ? (
           <div onClick={() => setShow(!show)}>
             <Show>{!show ? "show" : "hide"}</Show>

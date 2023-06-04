@@ -198,6 +198,7 @@ const StripePaymentSuccess = lazy(() =>
 const ServiceInfo = lazy(() => import("pages/Services/ServiceInfo"));
 const ServiceForm = lazy(() => import("pages/Services/ServiceForm"));
 const ServicePayment = lazy(() => import("pages/Services/Payment"));
+const ServiceSubscription = lazy(() => import("pages/Services/Subscribe"));
 const ServiceDocuments = lazy(() => import("pages/Services/Documents"));
 const ServiceReview = lazy(() => import("pages/Services/Review"));
 const ServiceInfoReview = lazy(() => import("pages/Services/Review/ServiceInfo"));
@@ -805,6 +806,7 @@ const AppRouter = () => {
               <Route path=":option" element={<Outlet />}>
                 <Route index element={<ServiceInfo />} />
                 <Route path="payment" element={<ServicePayment />} />
+                <Route path="subscribe" element={<ServiceSubscription />} />
                 <Route path="form" element={<ServiceForm />} />
                 <Route path="documents" element={<ServiceDocuments />} />
                 <Route path="review" element={<ServiceReview />}>

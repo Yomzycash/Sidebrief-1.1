@@ -265,3 +265,56 @@ export const searchStyle = {
 };
 
 export const iconStyle = { width: "17px", height: "17px" };
+export const BackContainer = styled.div`
+  display: flex;
+  justify-content: flex-start
+  align-content: normal;
+  padding-top:15px;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+export const EmailSection = styled.div`
+  border: 1px solid #edf1f7;
+  height: 480px;
+  width: 100%;
+`;
+
+export const ToContainer = styled.div`
+  // display: flex;
+  // align-items: center;
+  padding: 15px;
+  bottom: 10px;
+`;
+
+export const SubjectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0px 15px;
+  position: relative;
+  bottom: 30px;
+`;
+export const IntroTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0px 15px;
+  position: relative;
+  bottom: 40px;
+`;
+
+export const MessageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0px 15px;
+  width: 100%;
+  // height:150px;
+  position: relative;
+  bottom: 50px;
+`;
+
+export const SendContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-content: normal;
+  padding: 0px 15px;
+`;

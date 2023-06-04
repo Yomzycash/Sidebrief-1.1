@@ -50,7 +50,11 @@ export const useActions = ({
         const link = getLink();
         navigate(link);
       } else {
-        navigate(`/services/${option}/payment`);
+        if (option === "onboard") {
+          navigate(`/services/${option}/subscribe`);
+        } else {
+          navigate(`/services/${option}/payment`);
+        }
       }
     } else handleError(error);
   };

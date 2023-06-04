@@ -21,3 +21,4 @@ export { ReactComponent as Download } from "./download.svg";
 export { ReactComponent as Send } from "./Send.svg";
 export { ReactComponent as Mail } from "./mailbox.svg";
 export { ReactComponent as DownloadSvg } from "./download.svg";
+export { ReactComponent as Info } from "./info.svg";
