@@ -110,6 +110,7 @@ const UserInfo = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Det
 
 // CUSTOMER MANAGEMENT
 const CustomerManagement = lazy(() => import("pages/Dashboard/staffDashboard/CustomerManagement"))
+const CustomerEmail = lazy(() => import("pages/Dashboard/staffDashboard/CustomerManagement/CustomEmail"))
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -756,9 +757,10 @@ const AppRouter = () => {
                 <Route path=":promoCode" element={<PromoDetails />} />
               </Route>
 
-              <Route path="customer-management" element={<CustomerManagement />} />
-                {/* <Route index element={<CustomerManagement />} />
-              </Route> */}
+              <Route path="customer-management" element={<Outlet />} >
+                <Route index element={<CustomerManagement />} />
+                <Route path="email" element={<CustomerEmail/>}/>
+              </Route>
 
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
 

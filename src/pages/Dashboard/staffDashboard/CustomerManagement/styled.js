@@ -47,6 +47,10 @@ export const Loading = styled.div`
 export const SearchBlock = styled.div`
     position:relative;
     right:30px;
+
+    @media screen and (max-width:700px){
+      display:none;
+    }
 `
 
 export const SearchWrapper = styled.div`
@@ -61,11 +65,15 @@ export const SearchWrapper = styled.div`
 
 export const HeaderText = styled.h3`
     font-weight: 700;
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 30px;
     letter-spacing: 0.01em;
     color: ${({ theme }) => theme.grey1};
     padding-top:10px;
+
+    @media screen and (max-width:700px){
+      font-size:1rem;
+    }
 `
 
 export const MainSection = styled.div`
@@ -73,7 +81,7 @@ export const MainSection = styled.div`
   display:flex;
   flex-direction: row;
   gap:30px;
-  padding-right: 20px
+  // padding-right: 20px
 `
 export const LeftSection = styled.div`
   display:flex
@@ -83,6 +91,10 @@ export const LeftSection = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  @media screen and (max-width:700px){
+    width:100%;
   }
 
 `;
@@ -200,4 +212,59 @@ export const RightSection = styled.div`
     display:none;
   }
 `;
+
+export const BackContainer = styled.div`
+  display: flex;
+  justify-content: flex-start
+  align-content: normal;
+  padding-top:15px;
+  gap: 8px;
+  cursor: pointer;
+`;
+
+export const EmailSection = styled.div`
+  border: 1px solid #edf1f7;
+  height:480px;
+  width:100%;
+`
+
+export const ToContainer = styled.div`
+  // display: flex;
+  // align-items: center;
+  padding:15px;
+  bottom:10px;
+`
+
+export const SubjectContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding:0px 15px;
+  position:relative;
+  bottom:30px;
+`
+export const IntroTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding:0px 15px;
+  position:relative;
+  bottom:40px;
+`
+
+export const MessageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding:0px 15px;
+  width:100%;
+  // height:150px;
+  position:relative;
+  bottom:50px;
+`
+
+
+export const SendContainer = styled.div`
+  display:flex;
+  justify-content:flex-end;
+  align-content:normal;
+  padding:0px 15px;
+`
 

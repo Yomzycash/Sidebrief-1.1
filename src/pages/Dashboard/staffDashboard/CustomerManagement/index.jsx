@@ -67,6 +67,8 @@ const UserManagement = () => {
     const { data, isLoading, isSuccess } = useViewAllComplyQuery();
     const loadingData = isLoading;
     
+    const navigate = useNavigate();
+
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
    
 
@@ -112,6 +114,10 @@ const UserManagement = () => {
 
     const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
 
+    const handleEmail = () => {
+        navigate("/staff-dashboard/customer-management/email")
+    }
+
     return (
         <Container>
             <Header>
@@ -123,6 +129,7 @@ const UserManagement = () => {
                         <ButtonContainer>
                             <CommonButton
                                 text="Send Mail"
+                                action={handleEmail}
                             />
                         </ButtonContainer>
                     </LeftContainer>
@@ -137,6 +144,7 @@ const UserManagement = () => {
                     </SearchBlock>
                 </TopSection>
             </Header>
+            
             <MainSection>
                 <LeftSection>   
                     <MetricSection>
