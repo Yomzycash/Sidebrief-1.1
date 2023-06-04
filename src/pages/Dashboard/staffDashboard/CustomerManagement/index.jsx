@@ -1,230 +1,294 @@
 import React, { useEffect, useState, useMemo } from "react";
 import {
-    Container,
-    Header,
-    HeaderText,
-    LeftContainer,
-    ButtonContainer,
-    TopSection,
-    SearchBlock,
-    SearchWrapper,
-    MainSection,
-    LeftSection,
-    MetricSection,
-    MetricContainer,
-    Number,
-    TopText,
-    Divider,
-    BottomText,
-    TableSection,
-    RightSection,
-    StyledWrapper,
-    SubHeader,
-    Loading
+  Container,
+  Header,
+  HeaderText,
+  LeftContainer,
+  ButtonContainer,
+  TopSection,
+  SearchBlock,
+  SearchWrapper,
+  MainSection,
+  LeftSection,
+  MetricSection,
+  MetricContainer,
+  Number,
+  TopText,
+  Divider,
+  BottomText,
+  TableSection,
+  RightSection,
+  StyledWrapper,
+  SubHeader,
+  Loading,
+  searchStyle,
+  iconStyle,
+  TableHeader,
+  EachDate,
+  DateWrapper,
+  LaunchClients,
+  Users,
+  ManageClients,
 } from "./styled";
-import {
-     EmptyContainer
-} from "./tableStyle"
-import { GeneralTable } from "components/Tables";
+import { EmptyContainer } from "./tableStyle";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
-import { CommonButton } from 'components/button'
-import { columns } from "./tableColumn";
-import { compareAsc, format } from "date-fns";
+import { CommonButton } from "components/button";
+import { compareAsc, format, isSameMonth, isWithinInterval } from "date-fns";
 import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
-import MobileStaff from "layout/MobileStaff";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { useCategoriesActions } from "./actions";
+import { useGetAllLaunchQuery, useGetAllRegisteredUsersQuery } from "services/staffService";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import FeatureTable from "components/Tables/FeatureTable";
+import { nav } from "./constants";
+import CustomDropDown from "components/input/CustomDropdown/CustomDropDown";
+import { BiFilter, BiSortAlt2 } from "react-icons/bi";
+import { useViewAllComplyQuery } from "services/complyService";
+import { useUserManagementActions } from "./actions";
+import { Outlet, useLocation } from "react-router-dom";
 
-import {
-    useGetAllLaunchQuery,
-    useGetApprovedLaunchQuery,
-    useGetDraftLaunchQuery,
-    useGetRejectedLaunchQuery,
-    useGetSubmittedLaunchQuery,
-    useGetServicesByCategoryQuery,
-    useGetAllUsersQuery,
-} from "services/staffService";
-import { 
-    useViewAllComplyQuery,
-    useViewAllComplyByMetaQuery
- } from "services/complyService";
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+const MetricCard = ({ number, percentage, topText, bottomText, onClick = () => {} }) => {
+  return (
+    <StyledWrapper tabIndex={0} className="button__effect" onClick={() => onClick(topText)}>
+      <TopText>{topText}</TopText>
+      <Number>{number}</Number>
+      <BottomText>{bottomText}</BottomText>
+    </StyledWrapper>
+  );
+};
 
-const MetricCard = ({ number, percentage, topText, bottomText}) => {
-    return (
-          <StyledWrapper>
-            <TopText>{topText}</TopText>
-            <Number>{number}</Number>
-            <Divider/>
-            <BottomText>{bottomText}</BottomText>
-        </StyledWrapper>
-    )
-}
 const UserManagement = () => {
-    const { data, isLoading, isSuccess } = useViewAllComplyQuery();
-    const loadingData = isLoading;
-    
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-   
+  const [calendarValue, setCalendarValue] = useState(new Date());
+  const [dataArr, setDataArr] = useState([]);
+  const [dateFrom, setdateFrom] = useState("");
+  const [dateTo, setdateTo] = useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [activeCard, setActiveCard] = useState("");
 
-    const filteredData = data?.filter(service => service.serviceId === "7249050587");
-    console.log("filteredData", filteredData)
+  const { handleSort } = useUserManagementActions({ dataArr, setDataArr });
 
-    const allUsers = useGetAllUsersQuery();
-    const allLaunches = useGetAllLaunchQuery();
-    console.log("all launches", allUsers?.data?.users )
+  const allUsers = useGetAllRegisteredUsersQuery();
+  const allLaunch = useGetAllLaunchQuery();
 
+  //  Products
+  const manage = useUserManagementActions({ category: "MANAGE" });
+  const tax = useUserManagementActions({ category: "TAX" });
+  const onboard = useUserManagementActions({ category: "Onboard" });
+  const compliance = useUserManagementActions({ category: "Compliance" });
+  const intellectual = useUserManagementActions({ category: "Intellectual" });
 
-   
-    // const CategoryServices = useGetServicesByCategoryQuery(category);
-    const allUserComply = useViewAllComplyByMetaQuery(
-        { meta: userInfo?.id },
-        { refetchOnMountOrArgChange: true }
+  // Products data
+  const allManage = manage?.complyFullInfo;
+  const allTax = tax?.complyFullInfo;
+  const allOnboard = onboard?.complyFullInfo;
+  const allCompliance = compliance?.complyFullInfo;
+  const allIntellectual = intellectual?.complyFullInfo;
+
+  // Users data
+  const launchUsers = dataArr?.filter((el) => el?.submitted_launch_requests?.length > 0);
+  const manageUsers = [...new Set(allManage?.map((el) => el?.meta))]?.length;
+  const usersThisMonth = dataArr?.filter((el) =>
+    isSameMonth(new Date(el?.createdAt), new Date(calendarValue))
+  );
+  const launchUsersThisMonth = launchUsers?.filter((el) =>
+    isSameMonth(new Date(el?.createdAt), new Date())
+  );
+  const draftLaunchUsersThisMonth = launchUsersThisMonth?.filter(
+    (el) => el?.submitted_launch_requests
+  );
+
+  const totalUsers = dataArr.length || 0;
+  const totalLaunchUsers = launchUsers?.length || 0;
+  const totalUsersWithNoLaunch = totalUsers - totalLaunchUsers || 0;
+
+  const submittedLaunch = allLaunch.data?.filter((el) => el?.registrationStatus === "submitted");
+  const pendingLaunch = allLaunch.data?.filter((el) => el?.registrationStatus === "pending");
+
+  // Filter Users
+  useEffect(() => {
+    const oneDayinMilli = 24 * 60 * 60 * 1000;
+    let users = allUsers.data?.data || [];
+    if (users) {
+      // Filter by the calendar value
+      users = users?.filter(
+        (el) =>
+          new Date(calendarValue).getTime() + oneDayinMilli - new Date(el?.createdAt).getTime() >= 0
+      );
+      // Filter by the selected date range
+      if (dateFrom && dateTo) {
+        users = users?.filter((el) =>
+          isWithinInterval(new Date(el?.createdAt), {
+            start: new Date(dateFrom),
+            end: new Date(dateTo),
+          })
+        );
+      }
+      // Filter by the searched value
+      if (searchValue) users = users?.filter((el) => handleSearch(el));
+    }
+    setDataArr(
+      [...users]?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
     );
+  }, [allUsers.data, calendarValue, dateFrom, dateTo, searchValue]);
 
-    console.log("allUserComply", allUserComply)
-    // const getServiceInfo = (id) => CategoryServices.data?.find((el) => el?.serviceId === id);
+  const handleDateFrom = (e) => {
+    const value = e.target.value;
+    setdateFrom(value);
+  };
 
-    // const CategoryComplies = allUserComply.data?.filter(
-    //     (el) => el?.serviceId === getServiceInfo(el?.serviceId)?.serviceId
-    // );
-    // const draftData = allUsers?.data?.users?.slice(0, 10)
-    // console.log("allUsers", draftData )
-    const searchStyle = {
-        borderRadius: "12px",
-        backgroundColor: "white",
-        width: "100%",
-        height: "100%",
-    };
+  const handleDateTo = (e) => {
+    const value = e.target.value;
+    setdateTo(value);
+  };
 
-    const totalUsers = allUsers?.data?.users.length || 0;
-    const activeUsers =  allLaunches?.data?.length || 0;
-    const inactiveUsers = totalUsers - activeUsers || 0;
-    
-    const [value, onChange] = useState(new Date());
+  const handleSearch = (el) => {
+    if (
+      includesSearch(el?.email) ||
+      includesSearch(el?.first_name) ||
+      includesSearch(el?.last_name) ||
+      includesSearch(el?.referral_code) ||
+      includesSearch(el?.phone) ||
+      includesSearch(el?.username)
+    ) {
+      return true;
+    }
+  };
 
-    const iconStyle = { width: "17px", height: "17px" };
+  const includesSearch = (text) => {
+    if (typeof text !== "string") text = text?.toString();
+    return text?.toLowerCase()?.includes(searchValue?.toLowerCase());
+  };
 
-    const matches = useMediaQuery("(max-width:700px)");
+  const handleCardClick = (topText) => {
+    setActiveCard(topText?.toLowerCase());
+    console.log(topText);
+  };
 
-    const MemoisedGeneralTable = useMemo(() => GeneralTable, []);
+  const { pathname } = useLocation();
+  const isHomePath = pathname === "/staff-dashboard/customer-management";
+  const matches = useMediaQuery("(max-width:700px)");
 
-    return (
-        <Container>
-            <Header>
-                <TopSection>
-                    <LeftContainer>
-                        <HeaderText>
-                            Customer Management Platform
-                        </HeaderText>
-                        <ButtonContainer>
-                            <CommonButton
-                                text="Send Mail"
-                            />
-                        </ButtonContainer>
-                    </LeftContainer>
-                    <SearchBlock>
-                        <SearchWrapper>
-                            <Search
-                                searchStyle={searchStyle}
-                                iconStyle={iconStyle}
-                                placeholder="Search customers"
-                            />
-                        </SearchWrapper>
-                    </SearchBlock>
-                </TopSection>
-            </Header>
-            <MainSection>
-                <LeftSection>   
-                    <MetricSection>
-                        <MetricContainer>
-                            <MetricCard
-                                topText={"All Customers"}
-                                number={totalUsers}
-                                bottomText={"25% increase last month"}
-                            />
-                                <MetricCard
-                                topText={"Active Customers"}
-                                number={activeUsers}
-                                bottomText={"85% active customers"}
-                            />
-                                <MetricCard
-                                topText={"Inactive Customers"}
-                                number={inactiveUsers}
-                                bottomText={"25% inactive customers"}
-                            />
-                        </MetricContainer>
-                    </MetricSection>
-                    <TableSection>
-                        {!matches ? (
-                            <SubHeader>
-                                <ActiveNav
-                                    text="All"
-                                    path={"/staff-dashboard/customer-management/all"}
-                                />
-                                 <ActiveNav
-                                    text="Managed"
-                                    path={"/staff-dashboard/customer-management/managed"}
-                                />
-                                <ActiveNav
-                                    text="Tax"
-                                    path={"/staff-dashboard/customer-management/taxes"}
-                                />
-                                <ActiveNav
-                                    text="Intellectual Property"
-                                    path={"/staff-dashboard/customer-management/intellectual"}
-                                />
-                                  <ActiveNav
-                                    text="Onboard"
-                                    path={"/staff-dashboard/customer-management/onboarded"}
-                                />
-                            </SubHeader>
-                        ) : (
-                            <MobileStaff
-                                initialTitle={"All"}
-                                mobile
-                            />
-                        )}
-                        {loadingData ? (
-                            <Loading>
-                                <Puff stroke="#00A2D4" />
-                            </Loading>
-                            ) : data?.length > 0 ? (
-                            <MemoisedGeneralTable
-                                data={[...data]
-                                    ?.sort((a,b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))) 
-                                    .map((element) => {
-                                    return {
-                                        key:element.complyCode,
-                                        name:element?.serviceName ? element?.serviceName : "No name ",
-                                        serviceId: element.serviceId,
-                                        date: format(
-                                            new Date(element?.createdAt),
-                                            "dd/MM/yyyy"
-                                        ),
-                                        status: element?.status
-                                    }
-                                })}
-                                columns={columns}
-                                normalLastRow
-                            />
-                            ):
-                            (
-                                <EmptyContainer>No Data Available</EmptyContainer>
-                            )
-                        }
-                    </TableSection>
-                </LeftSection>
-                <RightSection>
-                    <Calendar onChange={onChange} value={value} />
-                </RightSection>
-            </MainSection>
-            
-        </Container>
-    )
-}
+  return (
+    <Container>
+      <Header>
+        <LeftContainer>
+          <HeaderText>User Management</HeaderText>
+          <CommonButton text="Send Bulk Mail" />
+        </LeftContainer>
+        <SearchWrapper>
+          <Search
+            style={searchStyle}
+            iconStyle={iconStyle}
+            placeholder="Search customers"
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <DateWrapper>
+            <BiFilter size={24} />
+            <EachDate>
+              <span>From:</span>
+              <input type="date" onChange={handleDateFrom} />
+            </EachDate>
+            <EachDate>
+              <span>To:</span>
+              <input type="date" onChange={handleDateTo} />
+            </EachDate>
+          </DateWrapper>
+        </SearchWrapper>
+      </Header>
+      <MainSection>
+        <LeftSection>
+          <MetricSection>
+            <MetricContainer>
+              <MetricCard
+                topText={"All Users"}
+                number={totalUsers}
+                bottomText={
+                  <Users>
+                    <span>{usersThisMonth?.length}</span> users this month
+                  </Users>
+                }
+                onClick={handleCardClick}
+              />
+              <MetricCard
+                topText={"Launch Clients"}
+                number={totalLaunchUsers}
+                bottomText={
+                  <LaunchClients>
+                    <span>{submittedLaunch?.length || 0} </span> submitted{" "}
+                    <span>{pendingLaunch?.length || 0}</span> drafts
+                  </LaunchClients>
+                }
+                onClick={handleCardClick}
+              />
+              <MetricCard
+                topText={"Manage Clients"}
+                number={manageUsers}
+                bottomText={
+                  <ManageClients>
+                    <span>{allManage?.length || 0}</span> products managed
+                  </ManageClients>
+                }
+                onClick={handleCardClick}
+              />
+            </MetricContainer>
+          </MetricSection>
+          <TableSection>
+            <TableHeader>
+              <p>All Customers</p>
+              <CustomDropDown
+                initialValue="Sort"
+                options={["Old Users", "New Users"]}
+                onSelect={handleSort}
+                icon={<BiSortAlt2 />}
+              />
+            </TableHeader>
+            {!matches && (
+              <SubHeader>
+                {nav.map((el, i) => (
+                  <ActiveNav
+                    key={i}
+                    index={i}
+                    text={el.text}
+                    path={el.path}
+                    defaultActive={isHomePath}
+                  />
+                ))}
+              </SubHeader>
+            )}
+            <Outlet context={{ dataArr, setDataArr }} />
+          </TableSection>
+        </LeftSection>
+        <RightSection>
+          <Calendar value={calendarValue} onChange={setCalendarValue} />
+        </RightSection>
+      </MainSection>
+    </Container>
+  );
+};
 
-export default UserManagement
+export default UserManagement;
+
+/* {isLoading ? (
+              <Loading>
+                <Puff stroke="#00A2D4" />
+              </Loading>
+            ) : data?.length > 0 ? (
+              <MemoisedGeneralTable
+                data={[...data]
+                  ?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
+                  .map((element) => {
+                    return {
+                      key: element.complyCode,
+                      name: element?.serviceName ? element?.serviceName : "No name ",
+                      serviceId: element.serviceId,
+                      date: format(new Date(element?.createdAt), "dd/MM/yyyy"),
+                      status: element?.status,
+                    };
+                  })}
+                columns={columns}
+                normalLastRow
+              />
+            ) : (
+              <EmptyContainer>No Data Available</EmptyContainer>
+            )} */

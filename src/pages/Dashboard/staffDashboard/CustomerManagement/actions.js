@@ -1,18 +1,13 @@
+import { compareAsc } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { useViewAllComplyByMetaQuery } from "services/complyService";
+import { useViewAllComplyByMetaQuery, useViewAllComplyQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
-export const useCategoriesActions = ({ category }) => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+export const useUserManagementActions = ({ category, dataArr, setDataArr }) => {
+  const CategoryServices = useGetServicesByCategoryQuery(category, { skip: !category });
+  const allUserComply = useViewAllComplyQuery();
 
-  const CategoryServices = useGetServicesByCategoryQuery(category);
-  const allUserComply = useViewAllComplyByMetaQuery(
-    { meta: userInfo?.id },
-    { refetchOnMountOrArgChange: true }
-  );
-
-  console.log("allUserComply", allUserComply)
   const getServiceInfo = (id) => CategoryServices.data?.find((el) => el?.serviceId === id);
 
   const CategoryComplies = allUserComply.data?.filter(
@@ -36,7 +31,25 @@ export const useCategoriesActions = ({ category }) => {
   const isError = CategoryServices.isError || allUserComply.isError;
   const isSuccess = CategoryServices.isSuccess && allUserComply.isSuccess;
 
+  // Sort data
+  const handleSort = (option) => {
+    let dataCopy = dataArr;
+    if (option?.toLowerCase() === "new users") {
+      dataCopy = dataArr?.sort((a, b) =>
+        compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))
+      );
+    } else if (option?.toLowerCase() === "old users") {
+      dataCopy = dataArr?.sort((a, b) =>
+        compareAsc(new Date(a?.createdAt), new Date(b?.createdAt))
+      );
+    }
+    setDataArr([...dataCopy]);
+  };
 
+  // Runs when the table row is clicked
+  const handleTableClick = (data, row, col) => {
+    console.log(data, row, col);
+  };
 
   return {
     submitted,
@@ -46,5 +59,7 @@ export const useCategoriesActions = ({ category }) => {
     isError,
     isSuccess,
     complyFullInfo,
+    handleSort,
+    handleTableClick,
   };
 };
