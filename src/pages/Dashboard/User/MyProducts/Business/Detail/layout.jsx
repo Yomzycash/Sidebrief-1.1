@@ -68,9 +68,9 @@ const BusinessDetailLayout = () => {
 
   // options passed
   let options = [
-    {
-      title: "Documents",
-    },
+    // {
+    //   title: "Documents",
+    // },
     {
       title: "Business Information",
       totalLength: 0,

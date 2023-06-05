@@ -141,10 +141,15 @@ export const DocumentsContainer = styled.div`
 `;
 
 export const DocumentTitle = styled.div`
+  display: flex;
+  gap: 16px;
+
   p {
     font-size: 24px;
   }
 `;
+
+export const DocumentDescription = styled.div``;
 
 export const DocumentsWrapper = styled.div`
   display: grid;

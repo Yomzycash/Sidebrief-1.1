@@ -238,7 +238,7 @@ export const Header = ({ isStaff, code }) => {
               <UserName>{`${first_name} ${last_name}`}</UserName>
               <DotSeperator />
               <DateText>
-                {launchRequest?.isLoading
+                {launchRequest?.isLoading || launchRequest?.isError
                   ? `--`
                   : format(new Date(launchRequest?.data?.createdAt), "do MMMM yyyy")}
               </DateText>
@@ -261,7 +261,7 @@ export const Header = ({ isStaff, code }) => {
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-        {completedRegistration && (
+        {/* {completedRegistration && (
           <ActiveNav
             text={"Documents"}
             path={`/${
@@ -270,7 +270,7 @@ export const Header = ({ isStaff, code }) => {
               launchResponse.registrationCountry
             }&registrationType=${launchResponse.registrationType}`}
           />
-        )}
+        )} */}
         <ActiveNav
           text={"Business Information"}
           path={`/${

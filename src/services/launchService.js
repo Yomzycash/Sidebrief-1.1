@@ -498,6 +498,13 @@ export const launchApi = createApi({
         method: "GET",
       }),
     }),
+
+    updateLaunchStatus: builder.mutation({
+      query: (data) => ({
+        url: "status",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -576,4 +583,6 @@ export const {
   useUpdateLaunchDocumentMutation,
   useDeleteLaunchDocumentMutation,
   useGetLaunchDocumentsQuery,
+
+  useUpdateLaunchStatusMutation,
 } = launchApi;

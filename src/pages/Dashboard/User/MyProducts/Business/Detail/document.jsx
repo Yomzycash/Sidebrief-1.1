@@ -11,7 +11,8 @@ import {
 } from "services/launchService";
 import { checkStaffEmail, handleError, handleResponse } from "utils/globalFunctions";
 import { convertToLink } from "utils/LaunchHelper";
-import { DocumentsContainer, DocumentsWrapper, DocumentTitle } from "./styles";
+import { DocumentDescription, DocumentsContainer, DocumentsWrapper, DocumentTitle } from "./styles";
+import CheckIcon from "asset/Icons/CheckIcon.svg";
 
 const RegistrationDocument = () => {
   const [fileLoading, setFileLoading] = useState(false);
@@ -121,8 +122,12 @@ const RegistrationDocument = () => {
   return (
     <DocumentsContainer>
       <DocumentTitle>
-        <p> Registration Completed</p>
+        <img src={CheckIcon} alt="" />
+        <p>Registration Completed</p>
       </DocumentTitle>
+      <DocumentDescription>
+        Your registration has been completed, and your documents are now available for download.
+      </DocumentDescription>
       <DocumentsWrapper>
         {document.data?.data?.map((el, i) => (
           <UserDocument
