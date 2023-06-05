@@ -70,7 +70,7 @@ export const UploadWrapper = styled.button`
 `;
 
 export const Preview = styled.div`
-  border: 1px solid ${({ theme }) => theme.grey3};
+  border: 1px dashed ${({ theme }) => theme.grey3};
   padding: 10px 24px;
   border-radius: 8px;
   height: 40px;

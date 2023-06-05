@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { getSchema } from "./actions";
 import { Bottom, DynamicFormWrapper, Inputs } from "./styled";
-import UneditableQuestionnaire from "components/Form/Questionnaire/Uneditable";
+import UneditableQuestionnaire from "components/Form/Questionnaire/Response";
 
 const DynamicForm = ({
   formInfo,

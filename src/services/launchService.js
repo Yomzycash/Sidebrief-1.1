@@ -462,7 +462,6 @@ export const launchApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
     batchDeleteLaunchRequests: builder.mutation({
       query: (data) => ({
@@ -470,44 +469,44 @@ export const launchApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
-    uploadDocument: builder.mutation({
+
+    addLaunchDocument: builder.mutation({
       query: (data) => ({
         url: "launch/document",
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
-    addUploadDocument: builder.mutation({
-      query: (data) => ({
-        url: "launch/document",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
-    }),
-    updateUploadDocument: builder.mutation({
+    updateLaunchDocument: builder.mutation({
       query: (data) => ({
         url: "launch/document",
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
-    deleteUploadDocument: builder.mutation({
+    deleteLaunchDocument: builder.mutation({
       query: (data) => ({
         url: "launch/document-removal",
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["DraftLaunch", "PendingLaunch"],
     }),
-  
+    getLaunchDocuments: builder.query({
+      query: (launchCode) => ({
+        url: `launch/document/${launchCode}`,
+        method: "GET",
+      }),
+    }),
+
+    updateLaunchStatus: builder.mutation({
+      query: (data) => ({
+        url: "status",
+        method: "POST",
+      }),
+    }),
   }),
 });
-
 
 export const {
   useGetUserDraftQuery,
@@ -580,12 +579,10 @@ export const {
   useDeleteLaunchRequestMutation,
   useBatchDeleteLaunchRequestsMutation,
 
-  useAddUploadDocumentMutation, 
-  useUpdateUploadDocumentMutation,
-  useDeleteUploadDocumentMutation, 
+  useAddLaunchDocumentMutation,
+  useUpdateLaunchDocumentMutation,
+  useDeleteLaunchDocumentMutation,
+  useGetLaunchDocumentsQuery,
 
-
-
-
-
+  useUpdateLaunchStatusMutation,
 } = launchApi;

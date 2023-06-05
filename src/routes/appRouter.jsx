@@ -8,6 +8,13 @@ import { checkStaffEmail } from "utils/globalFunctions";
 import Test from "pages/Test";
 import AllPromocodes from "pages/Dashboard/staffDashboard/Promocode";
 import PromoDetails from "pages/Dashboard/staffDashboard/Promocode/PromoDetails";
+import CMUsers from "pages/Dashboard/staffDashboard/CustomerManagement/CMUsers";
+import CMLaunches from "pages/Dashboard/staffDashboard/CustomerManagement/CMLaunches";
+import CMManaged from "pages/Dashboard/staffDashboard/CustomerManagement/CMManaged";
+import CMTaxes from "pages/Dashboard/staffDashboard/CustomerManagement/CMTaxes";
+import CMOnboarded from "pages/Dashboard/staffDashboard/CustomerManagement/CMOnboarded";
+import CMIntellectuals from "pages/Dashboard/staffDashboard/CustomerManagement/CMIntellectuals";
+import CustomerDetails from "pages/Dashboard/staffDashboard/CustomerManagement/CustomerDetails";
 
 const StaffManage = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/StaffManage"));
 const StaffAllManage = lazy(() =>
@@ -109,8 +116,7 @@ const StaffPaidDraftCompliances = lazy(() =>
 const UserInfo = lazy(() => import("pages/Dashboard/User/MyProducts/Business/Detail/UserInfo"));
 
 // CUSTOMER MANAGEMENT
-const CustomerManagement = lazy(() => import("pages/Dashboard/staffDashboard/CustomerManagement"))
-const CustomerEmail = lazy(() => import("pages/Dashboard/staffDashboard/CustomerManagement/CustomEmail"))
+const CustomerManagement = lazy(() => import("pages/Dashboard/staffDashboard/CustomerManagement"));
 
 const BankAccount = lazy(() => import("pages/Dashboard/User/BankAccount"));
 const Resources = lazy(() => import("pages/Dashboard/User/Resources"));
@@ -334,7 +340,6 @@ const Products = lazy(() => import("pages/Dashboard/User/Products"));
 //
 
 //
-
 
 const AppRouter = () => {
   const userData = useSelector((store) => store.UserDataReducer);
@@ -757,10 +762,16 @@ const AppRouter = () => {
                 <Route path=":promoCode" element={<PromoDetails />} />
               </Route>
 
-              <Route path="customer-management" element={<Outlet />} >
-                <Route index element={<CustomerManagement />} />
-                <Route path="email" element={<CustomerEmail/>}/>
+              <Route path="customer-management" element={<CustomerManagement />}>
+                <Route index element={<CMUsers />} />
+                <Route path="users" element={<CMUsers />} />
+                <Route path="launches" element={<CMLaunches />} />
+                <Route path="managed" element={<CMManaged />} />
+                <Route path="taxes" element={<CMTaxes />} />
+                <Route path="onboarded" element={<CMOnboarded />} />
+                <Route path="intellectual" element={<CMIntellectuals />} />
               </Route>
+              <Route path="customer-management/users/:user" element={<CustomerDetails />} />
 
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
 

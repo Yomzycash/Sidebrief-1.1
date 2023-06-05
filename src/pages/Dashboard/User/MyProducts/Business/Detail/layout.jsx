@@ -10,7 +10,6 @@ import {
   useViewPayLaunchMutation,
 } from "services/launchService";
 import { checkPaymentStatus } from "pages/Launch/actions";
-import { Puff } from "react-loading-icons";
 import { CommonButton } from "components/button";
 import { useMediaQuery } from "@mui/material";
 import MobileBusiness from "layout/MobileBusiness";
@@ -69,6 +68,9 @@ const BusinessDetailLayout = () => {
 
   // options passed
   let options = [
+    // {
+    //   title: "Documents",
+    // },
     {
       title: "Business Information",
       totalLength: 0,
@@ -88,9 +90,6 @@ const BusinessDetailLayout = () => {
     {
       title: beneficiaries?.length > 0 ? "Beneficiaries" : "",
       totalLength: beneficiaries?.length,
-    },
-    {
-      title: "Documents",
     },
   ];
   //removing empty element from the array

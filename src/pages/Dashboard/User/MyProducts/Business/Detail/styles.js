@@ -76,74 +76,49 @@ export const LastWrapper = styled.div`
   }
 `;
 
-
-export const DocumentWrapper = styled.div`
-  width: 100%;
-  height: 190px;
-  background: #ffffff;
-  border: 1px solid #edf1f7;
-  border-radius: 16px;
-  padding: 40px 24px 56px 24px;
-`;
-
-
-export const DocumentContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 20px;
-
-  @media (max-width: 600px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
-`
-
 export const Title = styled.h2`
   font-weight: 500;
   line-height: 20px;
-  color: #4E5152;
-`
+  color: #4e5152;
+`;
 
 export const SubText = styled.h4`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
   color: #959697;
-  padding:20px 0;
-  max-width:500px;
-`
+  padding: 20px 0;
+  max-width: 500px;
+`;
 // STAFF SIDE
 export const TopContainer = styled.div`
-  display:flex;
+  display: flex;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @media (max-width: 600px) {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-
-`
+`;
 
 export const Left = styled.div`
-
   span {
-    color : #00A2D4;
-    font-weight:500;
-    font-size:14px;
-    padding-left:10px;
+    color: #00a2d4;
+    font-weight: 500;
+    font-size: 14px;
+    padding-left: 10px;
   }
-
-`
+`;
 export const Image = styled.img`
   width: 55px;
   object-fit: contain;
 `;
 
-export const Right = styled.div` 
-`
+export const Right = styled.div``;
 
 export const EmptyContainer = styled.div`
   display: flex;
@@ -152,34 +127,32 @@ export const EmptyContainer = styled.div`
   width: 100%;
   padding: 40px;
   height: ${({ height }) => height && height};
-  
 
   h5 {
     color: #959697;
-    font-weight:normal;
+    font-weight: normal;
   }
 `;
-export const Download = styled.button`
-  background: #00a2d4;
+
+export const DocumentsContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  border: none;
-  border-radius: 5px;
-  margin-top: auto;
+  flex-flow: column;
+  gap: 20px;
+`;
 
-  position: absolute;
-  bottom: 0;
-  right: 0;
+export const DocumentTitle = styled.div`
+  display: flex;
+  gap: 16px;
 
-  transform: translateX(30px);
-  transition: all 0.2s ease-in-out;
-
-  cursor: pointer;
-
-  ${DocumentWrapper}:hover & {
-    transform: translateX(0);
+  p {
+    font-size: 24px;
   }
+`;
+
+export const DocumentDescription = styled.div``;
+
+export const DocumentsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
 `;

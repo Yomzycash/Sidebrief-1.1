@@ -6,7 +6,7 @@ import { ReactComponent as DocumentIcon } from "asset/svg/Document.svg";
 import { downLoadImage } from "utils/staffHelper";
 import { SpinningCircles } from "react-loading-icons";
 
-export const Download = ({ docType, fileUrl }) => {
+export const Download = ({ docType, fileUrl, hideName, containerStyle, buttonStyle }) => {
   const [preparing, setPreparing] = useState(false);
 
   const download = async () => {
@@ -17,7 +17,7 @@ export const Download = ({ docType, fileUrl }) => {
   };
 
   return (
-    <DocumentDownload>
+    <DocumentDownload style={containerStyle}>
       <DocumentFrame>
         <DocumentIcon />
         <DocumentText>{docType}</DocumentText>
@@ -27,6 +27,7 @@ export const Download = ({ docType, fileUrl }) => {
           action={download}
           loading={preparing}
           LoadingIcon={<SpinningCircles height={24} width={24} />}
+          style={buttonStyle}
         />
       </DocumentFrame>
     </DocumentDownload>
