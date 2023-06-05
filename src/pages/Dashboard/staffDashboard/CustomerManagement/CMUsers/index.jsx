@@ -5,15 +5,15 @@ import { useOutletContext } from "react-router-dom";
 import { useUserManagementActions } from "../actions";
 
 const CMUsers = () => {
-  const { dataArr, setDataArr } = useOutletContext();
+  const { usersData } = useOutletContext();
 
-  const { handleTableClick } = useUserManagementActions({ dataArr, setDataArr });
+  const { handleTableClick } = useUserManagementActions({ usersData });
 
   // Tabele header
   const header = ["Name", "Phone", "Date", "Action"];
 
   // Table body
-  const dataBody = dataArr?.map((el) => [
+  const dataBody = usersData?.map((el) => [
     el?.first_name + " " + el.last_name,
     el?.phone,
     format(new Date(el?.createdAt), "dd-MMM-yyyy"),
@@ -25,7 +25,7 @@ const CMUsers = () => {
       header={header}
       body={dataBody}
       onClick={handleTableClick}
-      bodyFullData={dataArr}
+      bodyFullData={usersData}
     />
   );
 };

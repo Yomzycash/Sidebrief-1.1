@@ -1,10 +1,20 @@
-import { compareAsc } from "date-fns";
+import {
+  compareAsc,
+  format,
+  getYear,
+  isFirstDayOfMonth,
+  isSameDay,
+  isSameMonth,
+  isSameYear,
+} from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useViewAllComplyByMetaQuery, useViewAllComplyQuery } from "services/complyService";
 import { useGetServicesByCategoryQuery } from "services/staffService";
 import { removeComplyFromLocalStorage } from "utils/globalFunctions";
 
-export const useUserManagementActions = ({ category, dataArr, setDataArr }) => {
+export const useUserManagementActions = ({ category, usersData, setUsersData, calendarValue }) => {
+  const navigate = useNavigate();
+
   const CategoryServices = useGetServicesByCategoryQuery(category, { skip: !category });
   const allUserComply = useViewAllComplyQuery();
 
@@ -15,7 +25,8 @@ export const useUserManagementActions = ({ category, dataArr, setDataArr }) => {
   );
 
   const complyFullInfo = CategoryComplies?.map((el) => {
-    let serviceInfo = getServiceInfo(el?.serviceId);
+    const serviceInfo = getServiceInfo(el?.serviceId);
+
     return {
       ...el,
       ...serviceInfo,
@@ -33,22 +44,42 @@ export const useUserManagementActions = ({ category, dataArr, setDataArr }) => {
 
   // Sort data
   const handleSort = (option) => {
-    let dataCopy = dataArr;
+    let dataCopy = usersData;
     if (option?.toLowerCase() === "new users") {
-      dataCopy = dataArr?.sort((a, b) =>
+      dataCopy = usersData?.sort((a, b) =>
         compareAsc(new Date(b?.createdAt), new Date(a?.createdAt))
       );
     } else if (option?.toLowerCase() === "old users") {
-      dataCopy = dataArr?.sort((a, b) =>
+      dataCopy = usersData?.sort((a, b) =>
         compareAsc(new Date(a?.createdAt), new Date(b?.createdAt))
       );
     }
-    setDataArr([...dataCopy]);
+    setUsersData([...dataCopy]);
   };
 
   // Runs when the table row is clicked
   const handleTableClick = (data, row, col) => {
+    navigate(`/staff-dashboard/customer-management/users/${data?._id}`);
     console.log(data, row, col);
+  };
+
+  // Formats the selected date
+  const formatDate = () => {
+    const sameDay = isFirstDayOfMonth(new Date(calendarValue));
+    const prefix = !sameDay ? "1st - " : "";
+    const day = format(calendarValue, "do");
+    const month = format(calendarValue, "LLLL");
+    const year = getYear(new Date(calendarValue));
+
+    if (isSameYear(new Date(), new Date(calendarValue))) {
+      if (isSameMonth(new Date(), new Date(calendarValue))) {
+        return `this month (${prefix}${day})`;
+      } else {
+        return `in ${month} (${prefix} ${day})`;
+      }
+    } else {
+      return `in 1st - ${day} ${month}, ${year}`;
+    }
   };
 
   return {
@@ -61,5 +92,6 @@ export const useUserManagementActions = ({ category, dataArr, setDataArr }) => {
     complyFullInfo,
     handleSort,
     handleTableClick,
+    formatDate,
   };
 };

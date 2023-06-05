@@ -14,6 +14,7 @@ import CMManaged from "pages/Dashboard/staffDashboard/CustomerManagement/CMManag
 import CMTaxes from "pages/Dashboard/staffDashboard/CustomerManagement/CMTaxes";
 import CMOnboarded from "pages/Dashboard/staffDashboard/CustomerManagement/CMOnboarded";
 import CMIntellectuals from "pages/Dashboard/staffDashboard/CustomerManagement/CMIntellectuals";
+import CustomerDetails from "pages/Dashboard/staffDashboard/CustomerManagement/CustomerDetails";
 
 const StaffManage = lazy(() => import("pages/Dashboard/staffDashboard/Businesses/StaffManage"));
 const StaffAllManage = lazy(() =>
@@ -770,6 +771,7 @@ const AppRouter = () => {
                 <Route path="onboarded" element={<CMOnboarded />} />
                 <Route path="intellectual" element={<CMIntellectuals />} />
               </Route>
+              <Route path="customer-management/users/:user" element={<CustomerDetails />} />
 
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
 

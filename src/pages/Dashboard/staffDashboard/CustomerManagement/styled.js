@@ -29,6 +29,18 @@ export const Header = styled.div`
   }
 `;
 
+export const TopSection = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: 20px;
+  border: 1px solid #edf1f7;
+  border-top: none;
+`;
+
 export const LeftContainer = styled.div`
   display: flex;
   flex-flow: column;
@@ -44,6 +56,14 @@ export const Loading = styled.div`
   align-items: center;
   width: 100%;
   height: 200px;
+`;
+
+export const SearchBlock = styled.div`
+  position: relative;
+  right: 30px;
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 export const SearchWrapper = styled.div`
@@ -107,7 +127,7 @@ export const StyledWrapper = styled.div`
   cursor: pointer;
   width: 100%;
   height: 168px;
-  padding: 24px;
+  padding: clamp(18px, 1.8vw, 24px);
   background: #ffffff;
   box-shadow: 0px 10px 10px -5px #9596970a;
   border-radius: 16px;
@@ -162,7 +182,12 @@ export const LaunchClients = styled.div`
 
 export const ManageClients = styled.div`
   span {
-    color: #d400cc;
+    :nth-of-type(1) {
+      color: #1f9fbd;
+    }
+    :nth-of-type(2) {
+      color: #d400cc;
+    }
   }
 `;
 

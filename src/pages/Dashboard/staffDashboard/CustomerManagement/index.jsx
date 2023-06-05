@@ -34,7 +34,18 @@ import { EmptyContainer } from "./tableStyle";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
 import { CommonButton } from "components/button";
-import { compareAsc, format, isSameMonth, isWithinInterval } from "date-fns";
+import {
+  compareAsc,
+  format,
+  getDate,
+  getDay,
+  getDaysInMonth,
+  getMonth,
+  getYear,
+  isSameMonth,
+  isSameYear,
+  isWithinInterval,
+} from "date-fns";
 import { Puff } from "react-loading-icons";
 import { useMediaQuery } from "@mui/material";
 import { useGetAllLaunchQuery, useGetAllRegisteredUsersQuery } from "services/staffService";
@@ -48,7 +59,7 @@ import { useViewAllComplyQuery } from "services/complyService";
 import { useUserManagementActions } from "./actions";
 import { Outlet, useLocation } from "react-router-dom";
 
-const MetricCard = ({ number, percentage, topText, bottomText, onClick = () => {} }) => {
+const MetricCard = ({ number, topText, bottomText, onClick = () => {} }) => {
   return (
     <StyledWrapper tabIndex={0} className="button__effect" onClick={() => onClick(topText)}>
       <TopText>{topText}</TopText>
@@ -60,56 +71,76 @@ const MetricCard = ({ number, percentage, topText, bottomText, onClick = () => {
 
 const UserManagement = () => {
   const [calendarValue, setCalendarValue] = useState(new Date());
-  const [dataArr, setDataArr] = useState([]);
+  const [usersData, setUsersData] = useState([]);
   const [dateFrom, setdateFrom] = useState("");
   const [dateTo, setdateTo] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [activeCard, setActiveCard] = useState("");
 
-  const { handleSort } = useUserManagementActions({ dataArr, setDataArr });
+  const { handleSort, formatDate } = useUserManagementActions({
+    usersData,
+    setUsersData,
+    calendarValue,
+  });
 
   const allUsers = useGetAllRegisteredUsersQuery();
-  const allLaunch = useGetAllLaunchQuery();
+
+  const getComplyUsers = (complyInfo, usersInfo) => {
+    const filteredComply = usersInfo?.filter((el) =>
+      complyInfo?.find((val) => val?.meta === el?._id)
+    );
+    return filteredComply;
+  };
 
   //  Products
-  const manage = useUserManagementActions({ category: "MANAGE" });
-  const tax = useUserManagementActions({ category: "TAX" });
-  const onboard = useUserManagementActions({ category: "Onboard" });
-  const compliance = useUserManagementActions({ category: "Compliance" });
-  const intellectual = useUserManagementActions({ category: "Intellectual" });
+  const manage = useUserManagementActions({ category: "MANAGE" })?.complyFullInfo;
+  const submittedManage = useUserManagementActions({ category: "MANAGE" })?.submitted;
+  const pendingManage = useUserManagementActions({ category: "MANAGE" })?.drafts;
+  const tax = useUserManagementActions({ category: "TAX" })?.complyFullInfo;
+  const onboard = useUserManagementActions({ category: "Onboard" })?.complyFullInfo;
+  const compliance = useUserManagementActions({ category: "Compliance" })?.complyFullInfo;
+  const intellectual = useUserManagementActions({
+    category: "Intellectual Property",
+  })?.complyFullInfo;
 
-  // Products data
-  const allManage = manage?.complyFullInfo;
-  const allTax = tax?.complyFullInfo;
-  const allOnboard = onboard?.complyFullInfo;
-  const allCompliance = compliance?.complyFullInfo;
-  const allIntellectual = intellectual?.complyFullInfo;
+  // Products users
+  const manageUsers = getComplyUsers(manage, usersData);
+  const submittedManageUsers = getComplyUsers(submittedManage, usersData);
+  const pendingManageUsers = getComplyUsers(pendingManage, usersData);
+  const taxUsers = getComplyUsers(tax, usersData);
+  const onboardUsers = getComplyUsers(onboard, usersData);
+  const complianceUsers = getComplyUsers(compliance, usersData);
+  const intellectualUsers = getComplyUsers(intellectual, usersData);
 
   // Users data
-  const launchUsers = dataArr?.filter((el) => el?.submitted_launch_requests?.length > 0);
-  const manageUsers = [...new Set(allManage?.map((el) => el?.meta))]?.length;
-  const usersThisMonth = dataArr?.filter((el) =>
+  const usersUsernames = usersData?.map((el) => el?.username);
+  const launchUsers = usersData?.filter(
+    (el) => el?.submitted_launch_requests?.length > 0 || el?.draft_launch_requests?.length > 0
+  );
+  const submittedLaunchUsers = usersData?.filter((el) => el?.submitted_launch_requests?.length > 0);
+  // const manageUsers = [...new Set(allManage?.map((el) => el?.meta))]?.length;
+  const usersThisMonth = usersData?.filter((el) =>
     isSameMonth(new Date(el?.createdAt), new Date(calendarValue))
   );
-  const launchUsersThisMonth = launchUsers?.filter((el) =>
-    isSameMonth(new Date(el?.createdAt), new Date())
-  );
-  const draftLaunchUsersThisMonth = launchUsersThisMonth?.filter(
-    (el) => el?.submitted_launch_requests
-  );
 
-  const totalUsers = dataArr.length || 0;
-  const totalLaunchUsers = launchUsers?.length || 0;
-  const totalUsersWithNoLaunch = totalUsers - totalLaunchUsers || 0;
+  const totalUsers = usersData.length || 0;
+  const totalManageUsers = submittedManageUsers?.length + pendingManageUsers?.length || 0;
 
-  const submittedLaunch = allLaunch.data?.filter((el) => el?.registrationStatus === "submitted");
-  const pendingLaunch = allLaunch.data?.filter((el) => el?.registrationStatus === "pending");
+  let submittedLaunch = usersData
+    ?.filter((el) => el?.submitted_launch_requests?.length > 0)
+    ?.map((el) => el?.submitted_launch_requests);
+  submittedLaunch = submittedLaunch?.flat();
+
+  let pendingLaunch = usersData
+    ?.filter((el) => el?.draft_launch_requests?.length > 0)
+    ?.map((el) => el?.draft_launch_requests);
+  pendingLaunch = pendingLaunch?.flat();
 
   // Filter Users
   useEffect(() => {
-    const oneDayinMilli = 24 * 60 * 60 * 1000;
     let users = allUsers.data?.data || [];
     if (users) {
+      const oneDayinMilli = 24 * 60 * 60 * 1000;
       // Filter by the calendar value
       users = users?.filter(
         (el) =>
@@ -127,10 +158,12 @@ const UserManagement = () => {
       // Filter by the searched value
       if (searchValue) users = users?.filter((el) => handleSearch(el));
     }
-    setDataArr(
+    setUsersData(
       [...users]?.sort((a, b) => compareAsc(new Date(b?.createdAt), new Date(a?.createdAt)))
     );
   }, [allUsers.data, calendarValue, dateFrom, dateTo, searchValue]);
+
+  const handleFilter = () => {};
 
   const handleDateFrom = (e) => {
     const value = e.target.value;
@@ -205,14 +238,18 @@ const UserManagement = () => {
                 number={totalUsers}
                 bottomText={
                   <Users>
-                    <span>{usersThisMonth?.length}</span> users this month
+                    <span>{usersThisMonth?.length}</span> users {formatDate()}
                   </Users>
                 }
                 onClick={handleCardClick}
               />
               <MetricCard
                 topText={"Launch Clients"}
-                number={totalLaunchUsers}
+                number={
+                  <span>
+                    {launchUsers?.length} ({submittedLaunchUsers?.length || 0})
+                  </span>
+                }
                 bottomText={
                   <LaunchClients>
                     <span>{submittedLaunch?.length || 0} </span> submitted{" "}
@@ -223,10 +260,15 @@ const UserManagement = () => {
               />
               <MetricCard
                 topText={"Manage Clients"}
-                number={manageUsers}
+                number={
+                  <span>
+                    {totalManageUsers} ({submittedManageUsers?.length || 0})
+                  </span>
+                }
                 bottomText={
                   <ManageClients>
-                    <span>{allManage?.length || 0}</span> products managed
+                    <span>{submittedManage?.length || 0}</span> managed{" "}
+                    <span>{pendingManage?.length || 0}</span> drafts
                   </ManageClients>
                 }
                 onClick={handleCardClick}
@@ -238,7 +280,7 @@ const UserManagement = () => {
               <p>All Customers</p>
               <CustomDropDown
                 initialValue="Sort"
-                options={["Old Users", "New Users"]}
+                options={["New Users", "Old Users"]}
                 onSelect={handleSort}
                 icon={<BiSortAlt2 />}
               />
@@ -256,7 +298,18 @@ const UserManagement = () => {
                 ))}
               </SubHeader>
             )}
-            <Outlet context={{ dataArr, setDataArr }} />
+            <Outlet
+              context={{
+                usersData,
+                setUsersData,
+                launchUsers,
+                manageUsers,
+                taxUsers,
+                onboardUsers,
+                complianceUsers,
+                intellectualUsers,
+              }}
+            />
           </TableSection>
         </LeftSection>
         <RightSection>
