@@ -67,3 +67,16 @@ export const FileContainer = styled.div`
   width: 100%;
   margin-bottom: 20px;
 `;
+
+export const PromoCheck = styled.div`
+  animation: promo 1s ease;
+
+  @keyframes promo {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;

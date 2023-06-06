@@ -18,7 +18,7 @@ export const Container = styled.div`
 
   @media screen and (max-width: 600px) {
     flex-direction: column;
-	}
+  }
 `;
 
 export const LHS = styled.div`
@@ -33,16 +33,29 @@ export const RHS = styled.div`
   gap: 23px;
   min-width: max-content;
 
-  div {
+  @media screen and (max-width: 600px) {
+    flex-direction: row;
+    padding-top: 25px;
+  }
+`;
+
+export const Price = styled.div`
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  gap: 16px;
+
+  > div {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   }
+`;
 
-  @media screen and (max-width: 600px) {
-    flex-direction: row;
-    padding-top:25px;
-	}
+export const Timeline = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 export const NormalText = styled.p`

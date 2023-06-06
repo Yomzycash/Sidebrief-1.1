@@ -1,3 +1,4 @@
+import { isAfter } from "date-fns";
 import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 
@@ -18,6 +19,19 @@ export const getPromoPrice = (item) => {
   }
 
   return promoPrice ? promoPrice.toLocaleString("en-US") : 0;
+};
+
+export const getPromoWarn = (item) => {
+  let promoInfo = JSON.parse(localStorage.getItem("promoInfo"));
+  let message;
+
+  const expired = isAfter(new Date(), new Date(promoInfo?.promoExpiry));
+  if (expired) message = "This promo code has expired";
+  if (!promoInfo?.promoStatus) message = "This promo code has been disabled";
+  if (item?.entityCurrency !== promoInfo?.promoCurrency)
+    message = `Promo code currency is ${promoInfo?.promoCurrency} (can't use)`;
+
+  return message;
 };
 
 // Add a member

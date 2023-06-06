@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import { useGetPromoCodeQuery } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
 
 export const useActions = ({
@@ -10,6 +12,8 @@ export const useActions = ({
   createComply,
   updateComply,
   navigate,
+  promoResponse,
+  savePromo,
 }) => {
   const { option } = useParams();
 
@@ -23,6 +27,8 @@ export const useActions = ({
       toast.error("Select service");
       return;
     }
+
+    savePromo();
 
     let payload = {
       serviceId: selectedService?.serviceId,
@@ -74,7 +80,6 @@ export const useActions = ({
         titleSubText: "",
       };
 
-    // console.log(normalize(category));
     if (normalize(category) === "manage")
       return {
         title: "Manage a Business",
@@ -103,4 +108,40 @@ export const useActions = ({
     normalize,
     getHeaderText,
   };
+};
+
+//
+export const usePromoActions = ({ promoCode, setPromoCode, fetchPromo, setFetchPromo }) => {
+  const promoResponse = useGetPromoCodeQuery(promoCode, {
+    skip: !promoCode || !fetchPromo,
+    refetchOnMountOrArgChange: true,
+  });
+
+  const handlePromoKeyDown = (e) => {
+    if (e.key === "Enter") {
+      setFetchPromo(true);
+    } else {
+      setFetchPromo(false);
+    }
+  };
+
+  const handlePromo = (e) => {
+    const value = e.target.value;
+    setPromoCode(value);
+  };
+
+  const savePromo = () => {
+    const { data, error, isUninitialized, isLoading } = promoResponse;
+    if (data && !error && !isUninitialized && !isLoading) {
+      localStorage.setItem("promoInfo", JSON.stringify(promoResponse.data));
+    } else {
+      if (localStorage.getItem("promoInfo")) localStorage.removeItem("promoInfo");
+    }
+  };
+
+  useEffect(() => {
+    promoResponse.refetch();
+  }, [promoCode]);
+
+  return { promoResponse, handlePromoKeyDown, handlePromo, savePromo };
 };

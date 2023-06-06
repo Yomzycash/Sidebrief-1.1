@@ -11,6 +11,7 @@ import {
   Top,
   Show,
   BottomText,
+  WarnMsg,
 } from "./styled";
 
 const InputWithLabel = ({
@@ -20,6 +21,7 @@ const InputWithLabel = ({
   edit,
   error,
   errorMessage,
+  warningMessage,
   rightText,
   leftText,
   leftIcon,
@@ -85,6 +87,7 @@ const InputWithLabel = ({
         {label && <Label className={labelStyle}>{label}</Label>}
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
+        {warningMessage ? <WarnMsg>{warningMessage}</WarnMsg> : null}
       </Top>
 
       <InputWrapper
