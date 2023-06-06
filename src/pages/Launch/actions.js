@@ -1,6 +1,4 @@
 import { toast } from "react-hot-toast";
-import { setCurrentPage } from "redux/Slices";
-import { store } from "redux/Store";
 import { handleError } from "utils/globalFunctions";
 
 //

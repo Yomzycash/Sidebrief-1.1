@@ -281,6 +281,8 @@ export const RightSection = styled.div`
   }
 `;
 
+export const UserInfoCard = styled.div``;
+
 export const searchStyle = {
   borderRadius: "12px",
   backgroundColor: "white",

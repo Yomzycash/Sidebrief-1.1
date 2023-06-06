@@ -18,6 +18,7 @@ import {
   IntroTextContainer,
   MessageContainer,
   SendContainer,
+  UserInfoCard,
 } from "../styled";
 import "react-calendar/dist/Calendar.css";
 import { Send } from "asset/svg";
@@ -34,6 +35,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { customerEmailSchema } from "./schema";
 import { useGetUserDraftQuery } from "services/launchService";
+import CustomDropDown from "components/input/CustomDropdown/CustomDropDown";
+import TagInput2 from "components/input/TagInput2";
 
 const CustomerDetails = ({ loading, emailInfo, disable }) => {
   const [isActive, setIsActive] = useState(false);
@@ -50,7 +53,7 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
   });
 
   const { user } = useParams();
-  const userDetails = useGetUserByIdQuery(user, { skip: !user });
+  let userDetails = useGetUserByIdQuery(user, { skip: !user });
   const userLaunch = useGetUserDraftQuery();
   console.log(userLaunch.data);
 
@@ -58,9 +61,12 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
     navigate(-1);
   };
 
+  userDetails = userDetails.data?.data;
+  console.log(userDetails);
+
   const getRequired = (info) => {
     return {
-      emails: [`${info.emails}`],
+      emails: [info.emails],
       title: info.title,
       body: info.body,
       introText: info.introText,
@@ -125,6 +131,11 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
           <LeftSection>
             <EmailSection>
               <ToContainer>
+                <TagInput2
+                  initialValue="To:"
+                  options={["dkjfdf", "lekdsjfldk"]}
+                  selectStyle={{ justifyContent: "space-between" }}
+                />
                 <InputWithLabel
                   placeholder="Enter recipient(s)"
                   labelStyle="input-label"
@@ -193,25 +204,6 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
                   disable={disable}
                 />
               </MessageContainer>
-
-              {/* <TextBody>
-                      <Wrapper>
-                        <SlateEditor
-                            placeholder="Write your message here"
-                            setValue={setValue}
-                            name="body"
-                            labelStyle="input-label"
-                            clearSlate={clearSlate}
-                            unclear={() => setClearSlate(false)}
-                            register={register}
-                            errorMessage={errors.body?.message}
-                            disable={disable}
-
-                        />
-                      </Wrapper>
-                     
-                    </TextBody> */}
-
               <SendContainer>
                 <CommonButton
                   type={"submit"}
@@ -222,6 +214,17 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
               </SendContainer>
             </EmailSection>
           </LeftSection>
+          <RightSection>
+            <UserInfoCard>
+              <h2>User Details</h2>
+              <p>Full Name: {userDetails?.first_name + " " + userDetails?.last_name}</p>
+              <p>Email: {userDetails?.email}</p>
+              <p>Username: {userDetails?.username}</p>
+              <p>Phone: {userDetails?.phone}</p>
+              <p>Used Promo Code: {userDetails?.has_used_referral_code?.toString()}</p>
+              <p>Referred: {userDetails?.referral_code}</p>
+            </UserInfoCard>
+          </RightSection>
         </MainSection>
       </EmailForm>
     </Container>

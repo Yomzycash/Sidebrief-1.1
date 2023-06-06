@@ -38,6 +38,8 @@ const InputWithLabel = ({
   bottomTextClass,
   disable,
   onChange,
+  onBlur,
+  onKeyDown = () => {},
   maxNumber,
   defaultValue,
   value,
@@ -62,6 +64,7 @@ const InputWithLabel = ({
   };
 
   const handleKeyDown = (e) => {
+    onKeyDown(e);
     if (e.key === "Enter" && nextElementId) {
       e.preventDefault();
       let element = document.getElementById(nextElementId);
@@ -127,6 +130,7 @@ const InputWithLabel = ({
             defaultValue={defaultValue}
             value={value}
             onChange={onChange}
+            onBlur={onBlur}
             onKeyDown={handleKeyDown}
             {...rest}
           />
