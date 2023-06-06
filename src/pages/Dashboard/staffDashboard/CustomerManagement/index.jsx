@@ -4,7 +4,6 @@ import {
   Header,
   HeaderText,
   LeftContainer,
-  ButtonContainer,
   TopSection,
   SearchBlock,
   SearchWrapper,

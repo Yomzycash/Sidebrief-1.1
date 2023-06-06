@@ -78,50 +78,39 @@ const DirectorKYC = () => {
   }, [directorContainer]);
 
   const generatedLaunchCode = useSelector((store) => store.LaunchReducer.generatedLaunchCode);
-  const handleDirectorCheck = async () => {
-    const response = await viewMemberKYC(launchResponse);
-    const MemberKYCInfo = [...response?.data?.businessMembersKYC];
-    let newArr = [];
-    MemberKYCInfo?.forEach((member) => {
-      documentContainer.forEach((document) => {
-        if (member.memberCode === document.code) {
-          let newList = { ...member };
-          newArr.push(newList);
-        }
-      });
-    });
-
-    setSameData(newArr);
-  };
-
-  useEffect(() => {
-    handleDirectorCheck();
-  }, [documentContainer]);
 
   const handleNext = () => {
-    // let a = requiredDocuments.length;
-    // let b = documentContainer.length;
-    // let c = sameData.length;
-    // let d = a * b;
+    const personCodes = documentContainer.map((el) => el.code);
+    const uploadedDocuments = memberDocuments
+      .map((el) => {
+        if (personCodes.includes(el.memberCode)) return el;
+        else return null;
+      })
+      .filter((el) => el !== null);
 
-    // if (c === 0) {
-    //   toast.error("All documents are required");
-    // } else if (d !== c) {
-    //   toast.error("All documents are required");
-    // } else {
-    if (navigatedFrom) {
-      navigate(navigatedFrom);
-      localStorage.removeItem("navigatedFrom");
+    const requiredDocsPerPerson = requiredDocuments.length;
+    const numberOfPersons = documentContainer.length;
+    const uploadedDocumentsNumber = uploadedDocuments.length;
+    const totalNumberOfDocsRequired = requiredDocsPerPerson * numberOfPersons;
+
+    if (uploadedDocumentsNumber === 0) {
+      toast.error("All documents are required");
+    } else if (totalNumberOfDocsRequired !== uploadedDocumentsNumber) {
+      toast.error("All documents are required");
     } else {
-      let beneficiaries = localStorage.getItem("beneficiaries");
-
-      if (beneficiaries === "false") {
-        navigate("/launch/review/business-info");
+      if (navigatedFrom) {
+        navigate(navigatedFrom);
+        localStorage.removeItem("navigatedFrom");
       } else {
-        navigate("/launch/beneficiaries-kyc");
+        let beneficiaries = localStorage.getItem("beneficiaries");
+
+        if (beneficiaries === "false") {
+          navigate("/launch/review/business-info");
+        } else {
+          navigate("/launch/beneficiaries-kyc");
+        }
       }
     }
-    // }
   };
 
   const handlePrev = () => {
@@ -183,6 +172,7 @@ const DirectorKYC = () => {
       documentCode: fileCode,
     };
     const response = await deleteMemberKYC(requiredDeleteData);
+    memberKYC.refetch();
     if (response.data) {
       toast.success("Document deleted successfully");
     } else if (response.error) {
