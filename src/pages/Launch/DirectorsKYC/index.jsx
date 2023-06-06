@@ -145,18 +145,21 @@ const DirectorKYC = () => {
     handleMerge();
   }, []);
 
-  const newHandleChange = async (uploadedFile, fileName, rawFile, director) => {
+  const newHandleChange = async (fileName, rawFile, code) => {
+    const uploadedFile = await convertToLink(rawFile[0]);
+
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
-      memberCode: director,
+      memberCode: code,
       memberKYC: {
         documentType: fileName,
         documentLink: uploadedFile.url,
-        fileName: rawFile.name,
-        fileType: rawFile.type,
+        fileName: rawFile[0].name,
+        fileType: rawFile[0].type,
       },
     };
 
+    console.log(requiredAddMemberData);
     const response = await addMemberKYC(requiredAddMemberData);
     memberKYC.refetch();
     const documentCode = response.data.businessMembersKYC.slice(-1)[0].documentCode;

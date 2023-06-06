@@ -29,7 +29,7 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { handleBusinessInfo } from "./actions";
 import { InputWithLabel } from "components/input";
-import { useGetPromoCodeQuery } from "services/staffService";
+import { useGetPromoCodeQuery, useGetUserByIdQuery } from "services/staffService";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { debounce } from "utils/globalFunctions";
 
@@ -57,7 +57,7 @@ const BusinessInfo = () => {
   const [updateBusinessNames, updateNamesState] = useUpdateBusinessNamesMutation();
   const [updateBusinessObjectives, updateObjectivesState] = useUpdateBusinessObjectivesMutation();
   const promoResponse = useGetPromoCodeQuery(promoCode, {
-    skip: promoCode?.length !== 20,
+    skip: !promoCode,
     refetchOnMountOrArgChange: true,
   });
 
@@ -147,18 +147,6 @@ const BusinessInfo = () => {
         setCountries(countries);
         setselectedCountry(value);
       }
-      // else if (isError) {
-      //   let count = 0;
-      //   var intervalId = setInterval(() => {
-      //     if (isSuccess) {
-      //       clearInterval(intervalId);
-      //       return;
-      //     } else if (count <= 10) {
-      //       refetch();
-      //       count++;
-      //     }
-      //   }, 10000);
-      // }
     },
     [data]
   );
@@ -201,18 +189,6 @@ const BusinessInfo = () => {
     }
   }, [launchResponse, viewBusinessNames, viewBusinessObjectives]);
 
-  //
-
-  //
-  // // Check the payment status of the
-  // const handlePaymentStatus = async () => {
-  //   let actionInfo = {
-  //     ...launchResponse,
-  //     viewPayLaunch: viewPayLaunch,
-  //   };
-  //   setPaid(await checkPaymentStatus(actionInfo));
-  // };
-
   // Set the selected country's ISO
   useEffect(() => {
     viewDraft();
@@ -225,8 +201,10 @@ const BusinessInfo = () => {
     e.preventDefault();
   };
 
-  const handlePromo = () => {
-    debounce(() => console.log("Debouncing"));
+  const handlePromo = (e) => {
+    const value = e.target.value;
+    setPromoCode(value);
+    // debounce(() => console.log("Debouncing"));
   };
 
   // Set the progress of the application
@@ -295,7 +273,7 @@ const BusinessInfo = () => {
                   inputClass="input-class"
                   containerStyle="input-container-class"
                   errorMessage={promoResponse.error?.data?.message}
-                  onChange={(e) => debounce(e.target.value)}
+                  onChange={handlePromo}
                   value={promoCode}
                   overlayComponent={
                     !promoResponse.error &&
