@@ -88,15 +88,17 @@ const ShareHolderKYC = () => {
     navigate(-1);
   };
 
-  const newHandleChange = async (uploadedFile, fileName, rawFile, shareholder) => {
+  const newHandleChange = async (fileName, rawFile, code) => {
+    const uploadedFile = await convertToLink(rawFile[0]);
+
     const requiredAddMemberData = {
       launchCode: launchResponse.launchCode,
-      memberCode: shareholder,
+      memberCode: code,
       memberKYC: {
         documentType: fileName,
         documentLink: uploadedFile.url,
-        fileName: rawFile.name,
-        fileType: rawFile.type,
+        fileName: rawFile[0].name,
+        fileType: rawFile[0].type,
       },
     };
 

@@ -410,12 +410,12 @@ export const staffSidebarItems = [
     icon: RewardIcon,
     path: "/staff-dashboard/all-rewards",
   },
-  {
-    id: 8,
-    title: "Promo Code",
-    icon: RewardIcon,
-    path: "/staff-dashboard/promo-codes",
-  },
+  // {
+  //   id: 8,
+  //   title: "Promo Code",
+  //   icon: RewardIcon,
+  //   path: "/staff-dashboard/promo-codes",
+  // },
   // {
   //   id: 9,
   //   title: "User Management",
