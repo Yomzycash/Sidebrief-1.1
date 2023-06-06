@@ -28,7 +28,7 @@ const TagInput2 = ({
   };
 
   const toggleOptions = () => {
-    // setOpen(!open);
+    setOpen(!open);
   };
 
   const handleFocus = () => {
