@@ -17,8 +17,7 @@ import {
   useGetAllPromoCodesQuery,
   useUpdatePromoCodeMutation,
 } from "services/staffService";
-import { useActions } from "./actions";
-import { promoSchema } from "./constants";
+import { useActions, usePromoCodeSchema } from "./actions";
 import {
   deleteButtonStyle,
   Divider,
@@ -50,6 +49,8 @@ const PromoDetails = () => {
   const [updatePromoCode, updateState] = useUpdatePromoCodeMutation();
   const [deletePromoCode, deleteState] = useDeletePromoCodeMutation();
 
+  const { getPromoSchema } = usePromoCodeSchema({ data });
+
   const {
     handleSubmit,
     register,
@@ -57,7 +58,7 @@ const PromoDetails = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(promoSchema),
+    resolver: yupResolver(getPromoSchema()),
   });
 
   const {
@@ -68,6 +69,7 @@ const PromoDetails = () => {
     handleActiveToggle,
     handlePromoEdit,
   } = useActions({
+    data,
     promoCode,
     createPromoCode,
     updatePromoCode,
@@ -130,7 +132,7 @@ const PromoDetails = () => {
               name="promoCode"
               inputClass="input-class"
               containerStyle="input-container-class"
-              disable={true}
+              disable={promoCode}
               register={register}
               errorMessage={errors.promoCode?.message}
               overlayComponent={

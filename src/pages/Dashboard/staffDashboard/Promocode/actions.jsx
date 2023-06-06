@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { handleError, handleResponse } from "utils/globalFunctions";
 import voucher_gen from "voucher-code-generator";
 import { Action, Status } from "./styled";
+import * as yup from "yup";
 
 export const useActions = ({
   data,
@@ -21,13 +22,14 @@ export const useActions = ({
   reset,
   selectedPromo,
   setDeleteConfirm,
+  allPromoCodes,
 }) => {
   const navigate = useNavigate();
 
   // Returns the table header and body
   const getTable = () => {
     // Tabele header
-    const header = ["Promo Code", "Discount", "Expiry Date", "Status", "Action"];
+    const header = ["Promo Code", "Discount", "Expiry Date", "Status", "Actions"];
 
     // Table body
     const body = dataArr?.map((el, i) => [
@@ -205,4 +207,42 @@ export const useActions = ({
     handleActiveToggle,
     handlePromoEdit,
   };
+};
+
+//
+//
+export const usePromoCodeSchema = ({ data }) => {
+  const checkPromoExistence = () => {
+    const currentPromoCode = document.getElementById("promo-code")?.value;
+    const matchedPromo = data?.filter((el) => el.promoCode === currentPromoCode)[0];
+    if (matchedPromo) return false;
+    else return true;
+  };
+
+  const getPromoSchema = () => {
+    const promoSchema = yup.object().shape({
+      promoCode: yup
+        .string()
+        .test("promoCode", "Promo code already exists", checkPromoExistence)
+        .required("Enter promo code"),
+      promoDescription: yup.string().required("Enter promo code description"),
+      promoDiscount: yup.string().required("Enter promo code discount"),
+      promoCurrency: yup
+        .string()
+        .typeError("Select promo code currency")
+        .required("Select promo code currency"),
+      promoMaxAmount: yup
+        .number()
+        .typeError("Enter promo code max amount")
+        .required("Enter promo code max amount"),
+      promoExpiry: yup.string().required("Select promo code expiry date"),
+      promoStatus: yup
+        .string()
+        .typeError("Select promo code status")
+        .required("Select promo code status"),
+    });
+    return promoSchema;
+  };
+
+  return { getPromoSchema };
 };
