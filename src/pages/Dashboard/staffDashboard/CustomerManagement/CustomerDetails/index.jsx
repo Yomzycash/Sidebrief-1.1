@@ -137,18 +137,17 @@ const CustomerDetails = () => {
       body: formData.body,
       introText: formData.introText,
     };
-    console.log(requiredData);
-    let response = await sendMessage(requiredData);
+    // let response = await sendMessage(requiredData);
 
-    let data = response?.data;
-    let error = response?.error;
-    console.log("email response", response);
+    // let data = response?.data;
+    // let error = response?.error;
+    // console.log("email response", response);
 
-    if (data) {
-      toast.success("Email sent succcessfully");
-    } else {
-      handleError(error);
-    }
+    // if (data) {
+    //   toast.success("Email sent succcessfully");
+    // } else {
+    //   handleError(error);
+    // }
   };
 
   const getEmailList = (tags) => {
