@@ -8,13 +8,19 @@ import {
   TopSection,
   MainSection,
   LeftSection,
-  RightSection,
+  UserSection,
   EmailSection,
   SubjectContainer,
   IntroTextContainer,
   MessageContainer,
   SendContainer,
   UserInfoCard,
+  CategoryWrapper,
+  InitialsContainer,
+  Initials,
+  CategoryContainer,
+  Category,
+  CategoryItem
 } from "../styled";
 import "react-calendar/dist/Calendar.css";
 import { Send } from "asset/svg";
@@ -207,7 +213,7 @@ const CustomerDetails = () => {
               <FiArrowLeft color="#151717" size={24} />
               Back to Dashboard
             </BackContainer>
-            <HeaderText>From:Sidebrief@gmail.com</HeaderText>
+            <HeaderText>Email:Sidebrief@gmail.com</HeaderText>
           </LeftContainer>
         </TopSection>
       </Header>
@@ -265,22 +271,79 @@ const CustomerDetails = () => {
                   type={"submit"}
                   text={"Send"}
                   RightIcon={Send}
-                  loading={messageState.isLoading}
+                loading={messageState.isLoading}
                 />
               </SendContainer>
             </EmailSection>
           </LeftSection>
-          <RightSection>
+          <UserSection>
             <UserInfoCard>
-              <h2>User Details</h2>
-              <p>Full Name: {userDetails?.first_name + " " + userDetails?.last_name}</p>
-              <p>Email: {userDetails?.email}</p>
-              <p>Username: {userDetails?.username}</p>
-              <p>Phone: {userDetails?.phone}</p>
-              <p>Used Promo Code: {userDetails?.has_used_referral_code?.toString()}</p>
-              <p>Referred: {userDetails?.referral_code}</p>
+              <h5>USER DETAILS</h5>
+              <InitialsContainer>
+                  <Initials>
+                  {userDetails?.first_name.charAt(0) + "" + userDetails?.last_name.charAt(0)}
+                  </Initials>
+              </InitialsContainer>
+              
+              <CategoryWrapper>
+
+                <CategoryContainer>
+                  <Category>
+                    Full Name
+                  </Category>
+                  <CategoryItem>
+                    {userDetails?.first_name + " " + userDetails?.last_name}
+                  </CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>
+                    Email
+                  </Category>
+                  <CategoryItem>
+                    {userDetails?.email}
+                  </CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>
+                    Username
+                  </Category>
+                  <CategoryItem>
+                    {userDetails?.username}
+                  </CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>
+                    Phone
+                  </Category>
+                  <CategoryItem>
+                    {userDetails?.phone}
+                  </CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>
+                    Used Promo Code
+                  </Category>
+                  <CategoryItem>
+                  {userDetails?.has_used_referral_code?.toString() === "true" ? "Yes" : "No"}
+                  </CategoryItem>
+                </CategoryContainer>
+                
+                <CategoryContainer>
+                  <Category>
+                    Referral Option
+                  </Category>
+                  <CategoryItem>
+                  {userDetails?.referral_code}
+                  </CategoryItem>
+                </CategoryContainer>
+              </CategoryWrapper>
+
             </UserInfoCard>
-          </RightSection>
+          </UserSection>
         </MainSection>
       </EmailForm>
     </Container>
