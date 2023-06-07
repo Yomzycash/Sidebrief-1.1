@@ -12,7 +12,7 @@ import { useGetSingleEntityQuery, usePayLaunchMutation } from "services/launchSe
 import { setLaunchPaid } from "redux/Slices";
 import Payment from "containers/Payment/index.jsx";
 import { Puff } from "react-loading-icons";
-import { getPromoPrice } from "../actions.js";
+import { getPromoPrice, useLaunchActions } from "../actions.js";
 
 const PaymentPage = () => {
   const [entityInfo, setEntityInfo] = useState({
@@ -21,9 +21,12 @@ const PaymentPage = () => {
   });
 
   const [payLaunch] = usePayLaunchMutation();
+  const { handleUserUpdate } = useLaunchActions();
 
-  // const launchResponse = useSelector((store) => store.LaunchReducer.launchResponse);
   const launchResponse = JSON.parse(localStorage.getItem("launchInfo"));
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const email = localStorage.getItem("userEmail");
+  let promoInfo = JSON.parse(localStorage.getItem("promoInfo"));
 
   const { launchCode, registrationType } = launchResponse;
 
@@ -60,6 +63,7 @@ const PaymentPage = () => {
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
     store.dispatch(setLaunchPaid(reference.status));
     const payResponse = await payLaunch(requiredData);
+    await updateHasUsedRef();
 
     navigate("/launch/address");
     return payResponse;
@@ -82,6 +86,7 @@ const PaymentPage = () => {
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.paymentDetails));
     store.dispatch(setLaunchPaid(requiredData.paymentStatus));
     const payResponse = await payLaunch(requiredData);
+    await updateHasUsedRef();
 
     navigate("/launch/address");
 
@@ -89,6 +94,18 @@ const PaymentPage = () => {
   };
 
   //
+
+  //
+  const updateHasUsedRef = async () => {
+    const promoCode = promoInfo?.promoCode;
+    if (promoCode) {
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ ...userInfo, has_used_referral_code: true })
+      );
+      await handleUserUpdate({ useReferralCode: true }, email);
+    }
+  };
 
   // Passed to the payment component
   let paymentInfo = {
