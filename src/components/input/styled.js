@@ -113,12 +113,12 @@ export const Label = styled.label`
 
 export const TextWrapper = styled.div`
   margin-right: 10px;
-  font-size:0.8em;
+  font-size: 0.8em;
 
   @media screen and (max-width: 600px) {
     margin-right: 18px;
   }
-`
+`;
 
 export const Iconwrapper = styled.div`
   margin-right: 20px;
@@ -129,7 +129,7 @@ export const Iconwrapper = styled.div`
 `;
 
 export const RightIconwrapper = styled.div`
- margin-left:14px;
+  margin-left: 14px;
 
   @media screen and (max-width: 600px) {
     margin-right: 18px;
@@ -139,6 +139,14 @@ export const RightIconwrapper = styled.div`
 export const ErrMsg = styled.div`
   position: relative;
   color: red;
+  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const WarnMsg = styled.div`
+  position: relative;
+  color: #d77000;
   font-size: 12px;
   justify-content: center;
   align-items: center;

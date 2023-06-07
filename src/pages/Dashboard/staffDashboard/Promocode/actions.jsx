@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { handleError, handleResponse } from "utils/globalFunctions";
 import voucher_gen from "voucher-code-generator";
 import { Action, Status } from "./styled";
@@ -212,11 +212,13 @@ export const useActions = ({
 //
 //
 export const usePromoCodeSchema = ({ data }) => {
+  const { promoCode } = useParams();
+
   const checkPromoExistence = () => {
     const currentPromoCode = document.getElementById("promo-code")?.value;
     const matchedPromo = data?.filter((el) => el.promoCode === currentPromoCode)[0];
-    if (matchedPromo) return false;
-    else return true;
+    if (!matchedPromo || (matchedPromo && promoCode)) return true;
+    else return false;
   };
 
   const getPromoSchema = () => {

@@ -2,15 +2,19 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdClear } from "react-icons/md";
+import { TextWrapper } from "./styled";
 
 const TagInputWithSearch = ({
   label, // The input label
   list, // The list of options
+  placeholder, // The placeholder
   MultiSelect, //
   MaxError,
+  maxTag,
   ExistsError, // The error displayed when typed value does not match the available options
   MatchError, // The error to display when reselecting an already selected value
   EmptyError, // () The error to display when no value is selected
+  customError,
   getValue, // (function): returns the selected tags as an argument
   initialValue,
   initialValues,
@@ -19,6 +23,7 @@ const TagInputWithSearch = ({
   fetchingText,
   fetchFailedText,
   disabled,
+  validateTag,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredList, setFilteredList] = useState(list);
@@ -44,9 +49,6 @@ const TagInputWithSearch = ({
       setValue(initialValue);
     }
   }, [initialValue]);
-
-  // console.log(initialValue);
-  // console.log(initialValues);
 
   // Update list when it chages
   const theList = useMemo(() => list, [list]);
@@ -79,7 +81,7 @@ const TagInputWithSearch = ({
 
   // This fires off when a value is selected
   const setSelected = (value) => {
-    if (tags?.length > 3) {
+    if (tags?.length > (maxTag || 3)) {
       setError(MaxError);
       return "error";
     }
@@ -122,6 +124,7 @@ const TagInputWithSearch = ({
       if (MultiSelect) {
         let res = setSelected(value);
         if (res === "error") return;
+
         let valueCheck = list.filter(
           (element) => element.trim().toLowerCase() === value.trim().toLowerCase()
         );
@@ -172,6 +175,10 @@ const TagInputWithSearch = ({
   const handleNotExistAdd = () => {
     let res = setSelected(value);
     if (res === "error") return;
+    if (validateTag) {
+      const valid = validateTag(value);
+      if (valid?.error) return;
+    }
     setValue("");
     setTags([...tags, value]);
   };
@@ -187,7 +194,8 @@ const TagInputWithSearch = ({
     <Container>
       <Title>
         <span>{label}</span>
-        <span>{error}</span>
+        <ErrorMsg>{error}</ErrorMsg>
+        {customError && <ErrorMsg>{customError}</ErrorMsg>}
       </Title>
       <Tags>
         {tags.map((tag, index) => (
@@ -201,7 +209,7 @@ const TagInputWithSearch = ({
           <input
             ref={inputRef}
             type="text"
-            placeholder="--"
+            placeholder={placeholder || "--"}
             value={value}
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setShowSuggestions(false)}
@@ -220,17 +228,19 @@ const TagInputWithSearch = ({
                 <span>{fetchingText}</span>
               </NoSuggestion>
             )}
-            {!suggestionLoading && list?.length === 0 && (
+            {!suggestionLoading && list?.length === 0 && tags?.length === 0 && (
               <NoSuggestion>
                 <span>{fetchFailedText || "Could not fetch suggestions"}</span>
               </NoSuggestion>
             )}
-            {MultiSelect && filteredList?.length === 0 && list?.length > 0 && (
-              <NoSuggestion>
-                <span>{noSuggestionText}</span>
-                <button onMouseDown={handleNotExistAdd}>Add</button>
-              </NoSuggestion>
-            )}
+            {MultiSelect &&
+              filteredList?.length === 0 &&
+              (list?.length > 0 || tags?.length > 0) && (
+                <NoSuggestion>
+                  <span>{noSuggestionText}</span>
+                  <button onMouseDown={handleNotExistAdd}>Add</button>
+                </NoSuggestion>
+              )}
             {filteredList.map((element, index) => (
               <li
                 key={index}
@@ -264,15 +274,15 @@ const Title = styled.div`
   color: #4e5152;
   font-size: clamp(12px, 1.5rem, 14px);
   font-weight: 500;
-  > span:nth-of-type(2) {
-    font-size: clamp(10px, 1.5rem, 12px);
-    color: red;
-  }
 `;
 const Tags = styled.div`
   display: flex;
   flex-flow: row wrap;
   gap: 10px;
+`;
+const ErrorMsg = styled.span`
+  font-size: clamp(10px, 1.5rem, 12px);
+  color: red;
 `;
 const Tag = styled.p`
   display: flex;

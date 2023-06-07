@@ -6,23 +6,25 @@ import {
   LeftContainer,
   BackContainer,
   TopSection,
-  SearchBlock,
-  SearchWrapper,
   MainSection,
   LeftSection,
   RightSection,
   EmailSection,
-  ToContainer,
   SubjectContainer,
   IntroTextContainer,
   MessageContainer,
   SendContainer,
+  UserInfoCard,
 } from "../styled";
 import "react-calendar/dist/Calendar.css";
 import { Send } from "asset/svg";
 import styled from "styled-components";
-import { useGetUserByIdQuery, useSendMessageMutation } from "services/staffService";
-import { IoIosArrowDown } from "react-icons/io";
+import {
+  useGetAllRegisteredUsersQuery,
+  useGetAllServicesQuery,
+  useGetUserByIdQuery,
+  useSendMessageMutation,
+} from "services/staffService";
 import { FiArrowLeft } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { InputWithLabel, TextAreaWithLabel } from "components/input";
@@ -32,12 +34,92 @@ import { handleError } from "utils/globalFunctions";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { customerEmailSchema } from "./schema";
-import { useGetUserDraftQuery } from "services/launchService";
+import TagInputWithSearch from "components/input/TagInputWithSearch";
+import { useViewAllComplyQuery } from "services/complyService";
+import { useActions } from "./actions";
 
-const CustomerDetails = ({ loading, emailInfo, disable }) => {
-  const [isActive, setIsActive] = useState(false);
+const CustomerDetails = () => {
+  const [emailTags, setEmailTags] = useState([]);
+
   const navigate = useNavigate();
+  const { user } = useParams();
+
   const [sendMessage, messageState] = useSendMessageMutation();
+  let allUsers = useGetAllRegisteredUsersQuery();
+  let userDetails = useGetUserByIdQuery(user, { skip: !user });
+  let comply = useViewAllComplyQuery();
+  let services = useGetAllServicesQuery();
+
+  allUsers = allUsers.data?.data;
+  userDetails = userDetails.data?.data;
+  comply = comply.data;
+  services = services.data;
+
+  const getServiceInfo = (id) => services?.find((el) => el?.serviceId === id);
+  const getUser = (el) => allUsers?.find((val) => val?._id === el?.meta);
+
+  const complyFullInfo = comply?.map((el) => {
+    let serviceInfo = getServiceInfo(el?.serviceId);
+
+    return {
+      ...serviceInfo,
+      ...el,
+    };
+  });
+
+  //
+  const filterComply = (category, status) => {
+    if (!status) return complyFullInfo?.filter((el) => el?.serviceCategory === category);
+    else
+      return complyFullInfo?.filter(
+        (el) => el?.serviceCategory === category && el?.status === status
+      );
+  };
+
+  // Each product users emails
+  const allEmails = allUsers?.map((el) => el?.email);
+  const allLaunchEmails = allUsers
+    ?.filter((el) => el?.draft_launch_requests?.length > 0 || el?.submitted_launch_requests)
+    ?.map((el) => el?.email);
+  const allManageEmails = filterComply("MANAGE")?.map((el) => getUser(el)?.email);
+  const allOnboardEmails = filterComply("Onboard")?.map((el) => getUser(el)?.email);
+  const allTaxEmails = filterComply("TAX")?.map((el) => getUser(el)?.email);
+  const allComplianceEmails = filterComply("Compliance")?.map((el) => getUser(el)?.email);
+  const allIntellectualEmails = filterComply("Intellectual Property")?.map(
+    (el) => getUser(el)?.email
+  );
+
+  // Each product draft users emails
+  const allDraftLaunchEmails = allUsers
+    ?.filter((el) => el?.draft_launch_requests?.length > 0)
+    ?.map((el) => el?.email);
+  const allDraftManageEmails = filterComply("MANAGE", "pending")?.map((el) => getUser(el)?.email);
+  const allDraftOnboardEmails = filterComply("Onboard", "pending")?.map((el) => getUser(el)?.email);
+  const allDraftTaxEmails = filterComply("TAX", "pending")?.map((el) => getUser(el)?.email);
+  const allDraftComplianceEmails = filterComply("Compliance", "pending")?.map(
+    (el) => getUser(el)?.email
+  );
+  const allDraftIntellectualEmails = filterComply("Intellectual Property", "pending")?.map(
+    (el) => getUser(el)?.email
+  );
+
+  // Each product submitted users emails
+  const allSubmittedLaunchEmails = allUsers
+    ?.filter((el) => el?.submitted_launch_requests?.length > 0)
+    ?.map((el) => el?.email);
+  const allSubmittedManageEmails = filterComply("MANAGE", "submitted")?.map(
+    (el) => getUser(el)?.email
+  );
+  const allSubmittedOnboardEmails = filterComply("Onboard", "submitted")?.map(
+    (el) => getUser(el)?.email
+  );
+  const allSubmittedTaxEmails = filterComply("TAX", "submitted")?.map((el) => getUser(el)?.email);
+  const allSubmittedComplianceEmails = filterComply("Compliance", "submitted")?.map(
+    (el) => getUser(el)?.email
+  );
+  const allSubmittedIntellectualEmails = filterComply("Intellectual Property", "submitted")?.map(
+    (el) => getUser(el)?.email
+  );
 
   const {
     handleSubmit,
@@ -48,31 +130,19 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
     resolver: yupResolver(customerEmailSchema),
   });
 
-  const { user } = useParams();
-  const userDetails = useGetUserByIdQuery(user, { skip: !user });
-  const userLaunch = useGetUserDraftQuery();
-  console.log(userLaunch.data);
-
-  const goBack = () => {
-    navigate(-1);
-  };
-
-  const getRequired = (info) => {
-    return {
-      emails: [`${info.emails}`],
-      title: info.title,
-      body: info.body,
-      introText: info.introText,
-    };
-  };
-
   const submitAction = async (formData) => {
-    let requiredData = getRequired(formData);
+    let requiredData = {
+      emails: getEmails(),
+      title: formData.title,
+      body: formData.body,
+      introText: formData.introText,
+    };
+    console.log(requiredData);
     let response = await sendMessage(requiredData);
 
     let data = response?.data;
     let error = response?.error;
-    console.log("email response", formData);
+    console.log("email response", response);
 
     if (data) {
       toast.success("Email sent succcessfully");
@@ -81,36 +151,60 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
     }
   };
 
-  useEffect(() => {
-    if (emailInfo) {
-      setValue("emails", emailInfo.emails, {
-        shouldValidate: true,
-      });
-      setValue("title", emailInfo.title, {
-        shouldValidate: true,
-      });
-      setValue("body", emailInfo.body, {
-        shouldValidate: true,
-      });
-      setValue("introText", emailInfo.introText, {
-        shouldValidate: true,
-      });
-    }
-  }, [emailInfo]);
+  const getEmailList = (tags) => {
+    setEmailTags(tags);
+  };
 
-  const DropdownOptions = [
-    "All Users",
-    "All Users in Managed",
-    "All Users in Taxes",
-    "All Users in Intellectual Property",
-  ];
+  useEffect(() => {
+    if (emailTags?.length > 0) {
+      setValue("emails", emailTags, { shouldValidate: true });
+    } else setValue("emails", [], { shouldValidate: true });
+  }, [emailTags?.length]);
+
+  const getEmails = () => {
+    let emails = emailTags.map((el) => {
+      if (isValidEmail(el)) return [el];
+      else return customEmailFullLists.find((val) => val.text === el)?.emails;
+    });
+    emails = [].concat(...emails);
+    return emails;
+  };
+
+  const { customEmailFullLists, isValidEmail } = useActions({
+    allEmails,
+    allLaunchEmails,
+    allDraftLaunchEmails,
+    allSubmittedLaunchEmails,
+    allManageEmails,
+    allDraftManageEmails,
+    allSubmittedManageEmails,
+    allTaxEmails,
+    allDraftTaxEmails,
+    allSubmittedTaxEmails,
+    allComplianceEmails,
+    allDraftComplianceEmails,
+    allSubmittedComplianceEmails,
+    allIntellectualEmails,
+    allDraftIntellectualEmails,
+    allSubmittedIntellectualEmails,
+    allOnboardEmails,
+    allDraftOnboardEmails,
+    allSubmittedOnboardEmails,
+  });
+
+  const customEmailLists = customEmailFullLists?.map((el) => el?.text);
+
+  const tagIsValid = (tag) => {
+    const valid = isValidEmail(tag);
+    if (!valid) return { error: true };
+  };
 
   return (
     <Container>
       <Header>
         <TopSection>
           <LeftContainer>
-            <BackContainer onClick={goBack}>
+            <BackContainer onClick={() => navigate(-1)}>
               <FiArrowLeft color="#151717" size={24} />
               Back to Dashboard
             </BackContainer>
@@ -123,37 +217,16 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
         <MainSection>
           <LeftSection>
             <EmailSection>
-              <ToContainer>
-                <InputWithLabel
-                  placeholder="Enter recipient(s)"
-                  labelStyle="input-label"
-                  type="text"
-                  name="emails"
-                  inputClass="input-class"
-                  containerStyle="input-container-class"
-                  leftText="To:"
-                  rightIcon={
-                    <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive}>
-                      <IoIosArrowDown />
-                    </ArrowDown>
-                  }
-                  register={register}
-                  errorMessage={errors.emails?.message}
-                  disable={disable}
-                />
-                {isActive && (
-                  <DropdownContainer>
-                    <DropdownContent>
-                      {DropdownOptions.map((item, index) => (
-                        <DropdownList key={index}>
-                          <DropdownItem>{item}</DropdownItem>
-                          <CheckboxInput type="checkbox" />
-                        </DropdownList>
-                      ))}
-                    </DropdownContent>
-                  </DropdownContainer>
-                )}
-              </ToContainer>
+              <TagInputWithSearch
+                list={customEmailLists.filter((el) => !emailTags.find((val) => val === el))}
+                getValue={getEmailList}
+                MultiSelect
+                placeholder="To:"
+                maxTag={999}
+                ExistsError="Already selected"
+                customError={errors.emails?.message}
+                validateTag={tagIsValid}
+              />
 
               <SubjectContainer>
                 <InputWithLabel
@@ -162,10 +235,9 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
                   name="title"
                   inputClass="input-class"
                   containerStyle="input-container-class"
-                  leftText="Subject:"
+                  placeholder="Subject"
                   register={register}
                   errorMessage={errors.title?.message}
-                  disable={disable}
                 />
               </SubjectContainer>
               <IntroTextContainer>
@@ -175,42 +247,20 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
                   name="introText"
                   inputClass="input-class"
                   containerStyle="input-container-class"
-                  placeholder="Dear Sir"
+                  placeholder="Dear Sir,"
                   register={register}
                   errorMessage={errors.introText?.message}
-                  disable={disable}
                 />
               </IntroTextContainer>
               <MessageContainer>
                 <TextAreaWithLabel
-                  containerStyle={{ height: "100px" }}
                   name="body"
                   labelStyle="input-label"
                   placeholder="Write your messsage here"
                   register={register}
                   errorMessage={errors.body?.message}
-                  disable={disable}
                 />
               </MessageContainer>
-
-              {/* <TextBody>
-                      <Wrapper>
-                        <SlateEditor
-                            placeholder="Write your message here"
-                            setValue={setValue}
-                            name="body"
-                            labelStyle="input-label"
-                            clearSlate={clearSlate}
-                            unclear={() => setClearSlate(false)}
-                            register={register}
-                            errorMessage={errors.body?.message}
-                            disable={disable}
-
-                        />
-                      </Wrapper>
-                     
-                    </TextBody> */}
-
               <SendContainer>
                 <CommonButton
                   type={"submit"}
@@ -221,6 +271,17 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
               </SendContainer>
             </EmailSection>
           </LeftSection>
+          <RightSection>
+            <UserInfoCard>
+              <h2>User Details</h2>
+              <p>Full Name: {userDetails?.first_name + " " + userDetails?.last_name}</p>
+              <p>Email: {userDetails?.email}</p>
+              <p>Username: {userDetails?.username}</p>
+              <p>Phone: {userDetails?.phone}</p>
+              <p>Used Promo Code: {userDetails?.has_used_referral_code?.toString()}</p>
+              <p>Referred: {userDetails?.referral_code}</p>
+            </UserInfoCard>
+          </RightSection>
         </MainSection>
       </EmailForm>
     </Container>
@@ -229,63 +290,8 @@ const CustomerDetails = ({ loading, emailInfo, disable }) => {
 
 export default CustomerDetails;
 
-const ArrowDown = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transform: ${({ isActive }) => (isActive ? "rotate(180deg)" : "")};
-  transition: 0.3s transform ease;
-  padding: 0 5px;
-`;
-
 const EmailForm = styled.form``;
 
-const DropdownContainer = styled.div`
-  padding: 10px;
-  background: #ffffff;
-  position: relative;
-  bottom: 20px;
-  border: 1px solid #edf1f7;
-  box-shadow: 0px 10px 10px -5px #9596970a;
-  border-radius: 16px;
-`;
-
-const DropdownContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 5px 15px;
-`;
-const DropdownList = styled.div`
-  display: flex;
-  align-items: center;
-`;
-const DropdownItem = styled.li`
-  list-style-type: none;
-  padding-top: 8px;
-  font-size: 0.6em;
-  flex: 1;
-`;
-
-const CheckboxInput = styled.input`
-  margin: 10px 0 0 10px;
-`;
-
-const TextBody = styled.div`
-  width: 100%;
-  height: 130px;
-  display: flex;
-  position: relative;
-  bottom: 50px;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 15px;
-
-  button {
-    margin-top: 5px;
-  }
-`;
-
-const Wrapper = styled.div`
-  flex: 1;
-  width: 100%;
-`;
+//
+//
+//

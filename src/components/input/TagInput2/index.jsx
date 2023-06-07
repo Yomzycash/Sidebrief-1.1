@@ -1,12 +1,11 @@
 import React from "react";
+import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-import { useState } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import styled from "styled-components";
-import { Container, Options, Select } from "./style";
+import { Container, Options, Select, Tags } from "./styled";
 
-const CustomDropDown = ({
+const TagInput2 = ({
   initialValue,
   options,
   onSelect = () => {},
@@ -14,9 +13,11 @@ const CustomDropDown = ({
   style,
   selectStyle,
   optionsStyle,
+  left,
 }) => {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(initialValue);
+  const [tags, setTags] = useState([]);
 
   const optionsRef = useRef();
 
@@ -26,8 +27,12 @@ const CustomDropDown = ({
     setOpen(false);
   };
 
-  const toggleOpen = () => {
+  const toggleOptions = () => {
     setOpen(!open);
+  };
+
+  const handleFocus = () => {
+    if (!open) setOpen(true);
   };
 
   useEffect(() => {
@@ -36,8 +41,15 @@ const CustomDropDown = ({
 
   return (
     <Container onBlur={() => setOpen(false)} ref={optionsRef} tabIndex={0} style={style}>
-      <Select onClick={toggleOpen} style={selectStyle}>
-        {icon} {selectedValue} {!icon && <MdOutlineKeyboardArrowDown />}
+      <Select onClick={toggleOptions} style={selectStyle}>
+        {left}
+        <Tags>
+          {tags?.map((el) => (
+            <span>{el}</span>
+          ))}
+        </Tags>
+        <input type="text" />
+        {icon ? icon : <MdOutlineKeyboardArrowDown />}
       </Select>
       {open && (
         <Options style={optionsStyle}>
@@ -52,4 +64,4 @@ const CustomDropDown = ({
   );
 };
 
-export default CustomDropDown;
+export default TagInput2;

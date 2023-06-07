@@ -11,6 +11,7 @@ import {
   Top,
   Show,
   BottomText,
+  WarnMsg,
 } from "./styled";
 
 const InputWithLabel = ({
@@ -20,6 +21,7 @@ const InputWithLabel = ({
   edit,
   error,
   errorMessage,
+  warningMessage,
   rightText,
   leftText,
   leftIcon,
@@ -38,6 +40,8 @@ const InputWithLabel = ({
   bottomTextClass,
   disable,
   onChange,
+  onBlur,
+  onKeyDown = () => {},
   maxNumber,
   defaultValue,
   value,
@@ -62,6 +66,7 @@ const InputWithLabel = ({
   };
 
   const handleKeyDown = (e) => {
+    onKeyDown(e);
     if (e.key === "Enter" && nextElementId) {
       e.preventDefault();
       let element = document.getElementById(nextElementId);
@@ -82,6 +87,7 @@ const InputWithLabel = ({
         {label && <Label className={labelStyle}>{label}</Label>}
 
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
+        {warningMessage ? <WarnMsg>{warningMessage}</WarnMsg> : null}
       </Top>
 
       <InputWrapper
@@ -127,6 +133,7 @@ const InputWithLabel = ({
             defaultValue={defaultValue}
             value={value}
             onChange={onChange}
+            onBlur={onBlur}
             onKeyDown={handleKeyDown}
             {...rest}
           />

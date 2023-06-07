@@ -12,11 +12,13 @@ import { useGetSingleServiceQuery } from "services/staffService.js";
 import { useAddComplyPaymentMutation } from "services/complyService.js";
 import Payment from "containers/Payment/index.jsx";
 import { Puff } from "react-loading-icons";
+import { getPromoPrice } from "../actions.js";
 
 const ServicePayment = () => {
   const navigate = useNavigate();
 
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let promoInfo = JSON.parse(localStorage.getItem("promoInfo"));
   let serviceId = complyInfo?.serviceId;
 
   const [addServicePayment] = useAddComplyPaymentMutation();
@@ -81,12 +83,15 @@ const ServicePayment = () => {
   };
 
   //
+  let promoPrice = getPromoPrice(serviceData);
+  promoPrice = promoPrice ? parseInt(promoPrice.replace(/,/g, ""), 10) : 0;
+  //
 
   // Passed to the payment component
   let paymentInfo = {
     sendFlutterwaveRefToBackend: sendFlutterwaveRefToBackend,
     sendStripeRefToBackend: sendStripeRefToBackend,
-    amount: serviceData?.servicePrice,
+    amount: promoPrice ? promoPrice : serviceData?.servicePrice,
     currency: serviceData?.serviceCurrency,
     title: serviceData?.serviceName,
     description: `Payment for ${serviceData?.serviceName} in ${serviceData?.serviceCountry}`,
@@ -99,6 +104,8 @@ const ServicePayment = () => {
   useEffect(() => {
     store.dispatch(setServiceCheckoutProgress({ total: 2, current: 1 })); // total- total pages and current - current page
   }, []);
+
+  //
 
   return (
     <Container>

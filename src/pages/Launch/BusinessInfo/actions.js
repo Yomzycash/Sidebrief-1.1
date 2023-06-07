@@ -1,12 +1,11 @@
 import { toast } from "react-hot-toast";
+import { useGetPromoCodeQuery } from "services/staffService";
 
 // info should entail: businessNames, selectedObjectives, responseData, viewBusinessNames, viewBusinessObjectives, updateBusinessNames, updateBusinessObjectives, addBusinessNames, addBusinessObjectives
 export const handleBusinessInfo = async (info) => {
   // Check if business names or objectives exists
   let existingNames = await info?.viewBusinessNames(info?.responseData);
-  let existingObjectives = await info?.viewBusinessObjectives(
-    info?.responseData
-  );
+  let existingObjectives = await info?.viewBusinessObjectives(info?.responseData);
 
   let namesExists = existingNames?.data?.businessNames;
   let objectivesExists = existingObjectives?.data?.businessObjects;
@@ -47,4 +46,27 @@ export const handleBusinessInfo = async (info) => {
 
   if (error) toast.error(error.data.message);
   if (error2) toast.error(error2.data.message);
+};
+
+//
+export const useActions = ({ promoCode, setPromoCode, fetchPromo, setFetchPromo }) => {
+  const promoResponse = useGetPromoCodeQuery(promoCode, {
+    skip: !promoCode || !fetchPromo,
+    refetchOnMountOrArgChange: true,
+  });
+
+  const handlePromoKeyDown = (e) => {
+    if (e.key === "Enter") {
+      setFetchPromo(true);
+    } else {
+      setFetchPromo(false);
+    }
+  };
+
+  const handlePromo = (e) => {
+    const value = e.target.value;
+    setPromoCode(value);
+  };
+
+  return { promoResponse, handlePromoKeyDown, handlePromo };
 };

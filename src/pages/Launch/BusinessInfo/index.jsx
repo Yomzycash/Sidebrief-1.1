@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import HeaderCheckout from "components/Header/HeaderCheckout";
-// import DropDownWithSearch from "components/input/DropDownWithSearch";
 import TagInput from "components/input/TagInput";
 import { CheckoutController, CheckoutSection } from "containers";
 import { Body, Bottom, Container, PromoCheck } from "../styled";
@@ -21,20 +20,19 @@ import {
   useUpdateBusinessObjectivesMutation,
   useViewBusinessNamesMutation,
   useViewBusinessObjectivesMutation,
-  useViewPayLaunchMutation,
 } from "services/launchService";
 import LaunchFormContainer from "containers/Checkout/CheckoutFormContainer/LaunchFormContainer";
 import LaunchPrimaryContainer from "containers/Checkout/CheckoutFormContainer/LaunchPrimaryContainer";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { handleBusinessInfo } from "./actions";
+import { handleBusinessInfo, useActions } from "./actions";
 import { InputWithLabel } from "components/input";
-import { useGetPromoCodeQuery, useGetUserByIdQuery } from "services/staffService";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import { debounce } from "utils/globalFunctions";
+import { MdError } from "react-icons/md";
 
 const BusinessInfo = () => {
   const [promoCode, setPromoCode] = useState("");
+  const [fetchPromo, setFetchPromo] = useState(false);
 
   const LaunchInfo = useSelector((store) => store.LaunchReducer);
   const { launchResponse } = LaunchInfo;
@@ -56,14 +54,19 @@ const BusinessInfo = () => {
   const [viewBusinessObjectives, viewObjectivesState] = useViewBusinessObjectivesMutation();
   const [updateBusinessNames, updateNamesState] = useUpdateBusinessNamesMutation();
   const [updateBusinessObjectives, updateObjectivesState] = useUpdateBusinessObjectivesMutation();
-  const promoResponse = useGetPromoCodeQuery(promoCode, {
-    skip: !promoCode,
-    refetchOnMountOrArgChange: true,
+
+  const { promoResponse, handlePromoKeyDown, handlePromo } = useActions({
+    promoCode,
+    setPromoCode,
+    fetchPromo,
+    setFetchPromo,
   });
 
   const navigate = useNavigate();
 
   let navigatedFrom = localStorage.getItem("navigatedFrom");
+
+  const { has_used_referral_code, isPartner } = JSON.parse(localStorage.getItem("userInfo"));
 
   // Get payment information from the local storage
   const paymentDetails = JSON.parse(localStorage.getItem("paymentDetails"));
@@ -74,11 +77,8 @@ const BusinessInfo = () => {
     store.dispatch(setCountry(selectedCountry));
     store.dispatch(setCountryISO(selectedCountryISO));
     localStorage.setItem("countryISO", selectedCountryISO);
-    if (promoResponse.data && promoCode?.length === 20)
-      localStorage.setItem("promoInfo", JSON.stringify(promoResponse.data));
-    else {
-      localStorage.removeItem("promoInfo");
-    }
+    if (promoResponse.data) localStorage.setItem("promoInfo", JSON.stringify(promoResponse.data));
+    else localStorage.removeItem("promoInfo");
     // store.dispatch(setCountryISO(selectedCountryISO));
     let resultToReturn = false;
     // call some function with callback function as argument
@@ -201,12 +201,6 @@ const BusinessInfo = () => {
     e.preventDefault();
   };
 
-  const handlePromo = (e) => {
-    const value = e.target.value;
-    setPromoCode(value);
-    // debounce(() => console.log("Debouncing"));
-  };
-
   // Set the progress of the application
   useEffect(() => {
     let review = localStorage.getItem("navigatedFrom");
@@ -224,6 +218,9 @@ const BusinessInfo = () => {
   useEffect(() => {
     handleSavedInfo();
     viewDraft();
+    if (savedPromo) {
+      setFetchPromo(true);
+    }
   }, [viewDraft]);
 
   return (
@@ -263,29 +260,34 @@ const BusinessInfo = () => {
                 disabled={paidStatus}
               />
             </div>
-            {/* {!paidStatus && (
+            {(!has_used_referral_code || isPartner) && (
               <div style={{ maxWidth: "430px" }}>
                 <InputWithLabel
                   label="Promo Code (Optional)"
                   labelStyle="input-label"
-                  placeholder="Enter promo code, if you have one"
+                  placeholder="Enter promo code if you have one"
                   type="text"
                   inputClass="input-class"
                   containerStyle="input-container-class"
                   errorMessage={promoResponse.error?.data?.message}
                   onChange={handlePromo}
+                  onKeyDown={handlePromoKeyDown}
+                  onBlur={() => setFetchPromo(true)}
                   value={promoCode}
                   overlayComponent={
-                    !promoResponse.error &&
-                    promoResponse.isSuccess && (
-                      <PromoCheck>
-                        <IoIosCheckmarkCircle color="green" />
-                      </PromoCheck>
+                    promoResponse.error ? (
+                      <MdError color="red" />
+                    ) : (
+                      promoResponse.isSuccess && (
+                        <PromoCheck>
+                          <IoIosCheckmarkCircle color="green" />
+                        </PromoCheck>
+                      )
                     )
                   }
                 />
               </div>
-            )} */}
+            )}
           </LaunchFormContainer>
           <Bottom>
             <CheckoutController
