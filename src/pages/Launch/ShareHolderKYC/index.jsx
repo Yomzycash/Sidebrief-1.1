@@ -50,7 +50,7 @@ const ShareHolderKYC = () => {
   useEffect(() => {
     const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
-  }, [data]);
+  }, [data, launchResponse.registrationType]);
 
   useEffect(() => {
     const mapping = shareholderContainer.map((shareholder) => {
@@ -117,56 +117,43 @@ const ShareHolderKYC = () => {
   };
 
   store.dispatch(setShareholderDocs(documentContainer));
-  // const handleShareHolderCheck = async () => {
-  //   let newArr = [];
-  //   const response = await viewMemberKYC(launchResponse);
-  //   const MemberKYCInfo = [...response?.data?.businessMembersKYC];
 
-  //   MemberKYCInfo?.forEach((member) => {
-  //     documentContainer?.forEach((document) => {
-  //       if (member?.memberCode === document?.code) {
-  //         let newList = { ...member, ...document };
-  //         console.log("issue", newList);
-  //         newArr.push(newList);
-  //       }
-  //     });
-  //   });
-
-  //   setSameData(newArr);
-  // };
-
-  // useEffect(() => {
-  //   handleShareHolderCheck();
-  // }, [documentContainer]);
+  const memberDocuments = memberKYC?.data?.businessMembersKYC || [];
 
   const handleNext = () => {
-    // handleShareHolderCheck();
+    const personCodes = documentContainer.map((el) => el.code);
+    const uploadedDocuments = memberDocuments
+      .map((el) => {
+        if (personCodes.includes(el.memberCode)) return el;
+        else return null;
+      })
+      .filter((el) => el !== null);
 
-    let a = requiredDocuments.length;
-    let b = documentContainer.length;
-    let c = sameData?.length;
-    let d = a * b;
+    const requiredDocsPerPerson = requiredDocuments.length;
+    const numberOfPersons = documentContainer.length;
+    const uploadedDocumentsNumber = uploadedDocuments.length;
+    const totalNumberOfDocsRequired = requiredDocsPerPerson * numberOfPersons;
 
-    // if (c === 0) {
-    //   toast.error("All documents are required");
-    // } else if (d !== c) {
-    //   toast.error("All documents are required");
-    // } else {
-    if (navigatedFrom) {
-      navigate(navigatedFrom);
-      localStorage.removeItem("navigatedFrom");
+    if (uploadedDocumentsNumber === 0) {
+      toast.error("All documents are required");
+    } else if (totalNumberOfDocsRequired !== uploadedDocumentsNumber) {
+      toast.error("All documents are required");
     } else {
-      let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
-      let beneficiaries = localStorage.getItem("beneficiaries");
+      if (navigatedFrom) {
+        navigate(navigatedFrom);
+        localStorage.removeItem("navigatedFrom");
+      } else {
+        let useSidebriefDirectors = localStorage.getItem("useSidebriefDirectors");
+        let beneficiaries = localStorage.getItem("beneficiaries");
 
-      let navigateTo = "/launch/directors-kyc";
-      if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
-      if (useSidebriefDirectors && beneficiaries === "false")
-        navigateTo = "/launch/review/business-info";
+        let navigateTo = "/launch/directors-kyc";
+        if (useSidebriefDirectors) navigateTo = "/launch/beneficiaries-kyc";
+        if (useSidebriefDirectors && beneficiaries === "false")
+          navigateTo = "/launch/review/business-info";
 
-      navigate(navigateTo);
+        navigate(navigateTo);
+      }
     }
-    // }
   };
 
   const handleRemove = async (fileCode, memberCode) => {
@@ -176,6 +163,7 @@ const ShareHolderKYC = () => {
       documentCode: fileCode,
     };
     const response = await deleteMemberKYC(requiredDeleteData);
+    memberKYC.refetch();
     if (response.data) {
       toast.success("Document deleted successfully");
     } else if (response.error) {
@@ -201,8 +189,6 @@ const ShareHolderKYC = () => {
     }
     return {};
   };
-
-  const memberDocuments = memberKYC?.data?.businessMembersKYC || [];
 
   // Set the progress of the application
   useEffect(() => {
