@@ -1,26 +1,17 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Header,
   HeaderText,
   LeftContainer,
-  ButtonContainer,
-  TopSection,
-  SearchBlock,
   SearchWrapper,
   MainSection,
   LeftSection,
   MetricSection,
   MetricContainer,
-  Number,
-  TopText,
-  Divider,
-  BottomText,
   TableSection,
   RightSection,
-  StyledWrapper,
   SubHeader,
-  Loading,
   searchStyle,
   iconStyle,
   TableHeader,
@@ -30,44 +21,20 @@ import {
   Users,
   ManageClients,
 } from "./styled";
-import { EmptyContainer } from "./tableStyle";
 import Search from "components/navbar/Search";
 import ActiveNav from "components/navbar/ActiveNav";
 import { CommonButton } from "components/button";
-import {
-  compareAsc,
-  format,
-  getDate,
-  getDay,
-  getDaysInMonth,
-  getMonth,
-  getYear,
-  isSameMonth,
-  isSameYear,
-  isWithinInterval,
-} from "date-fns";
-import { Puff } from "react-loading-icons";
+import { compareAsc, isSameMonth, isWithinInterval } from "date-fns";
 import { useMediaQuery } from "@mui/material";
-import { useGetAllLaunchQuery, useGetAllRegisteredUsersQuery } from "services/staffService";
+import { useGetAllRegisteredUsersQuery } from "services/staffService";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import FeatureTable from "components/Tables/FeatureTable";
 import { nav } from "./constants";
 import CustomDropDown from "components/input/CustomDropdown/CustomDropDown";
 import { BiFilter, BiSortAlt2 } from "react-icons/bi";
-import { useViewAllComplyQuery } from "services/complyService";
 import { useUserManagementActions } from "./actions";
 import { Outlet, useLocation } from "react-router-dom";
-
-const MetricCard = ({ number, topText, bottomText, onClick = () => {} }) => {
-  return (
-    <StyledWrapper tabIndex={0} className="button__effect" onClick={() => onClick(topText)}>
-      <TopText>{topText}</TopText>
-      <Number>{number}</Number>
-      <BottomText>{bottomText}</BottomText>
-    </StyledWrapper>
-  );
-};
+import MetricCard from "components/cards/MetricCard";
 
 const UserManagement = () => {
   const [calendarValue, setCalendarValue] = useState(new Date());
