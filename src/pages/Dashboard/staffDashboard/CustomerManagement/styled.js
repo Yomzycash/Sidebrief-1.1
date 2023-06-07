@@ -228,7 +228,7 @@ export const RightSection = styled.div`
 `;
 
 export const UserInfoCard = styled.div`
-  padding:10px;
+  padding: 10px;
 `;
 
 export const searchStyle = {
@@ -243,10 +243,11 @@ export const iconStyle = { width: "17px", height: "17px" };
 export const BackContainer = styled.div`
   display: flex;
   justify-content: flex-start
-  align-content: normal;
+  align-content: center;
   padding-top:15px;
   gap: 8px;
   cursor: pointer;
+
 `;
 
 export const UserSection = styled.div`
@@ -318,46 +319,45 @@ export const SendContainer = styled.div`
 `;
 
 export const InitialsContainer = styled.div`
-  display:flex;
-  justify-content:center;
-  align-content:center;
-`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;
 
 export const Initials = styled.p`
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-radius:50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
   width: 102px;
   height: 102px;
-  background: #00A2D4;
-  color:#fff;
-  font-size:2em;
-`
+  background: #00a2d4;
+  color: #fff;
+  font-size: 2em;
+`;
 export const CategoryWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
-
-`
+`;
 export const CategoryContainer = styled.div`
-  display:flex;
-  flex-basis:33.33%;
+  display: flex;
+  flex-basis: 33.33%;
   flex-direction: column;
-  padding-top:14px;
-  padding-right:10px;
-`
+  padding-top: 14px;
+  padding-right: 10px;
+`;
 export const Category = styled.p`
-  text-transform:uppercase;
-  font-weight:light;
-  font-style:normal;
-  font-size:10px;
+  text-transform: uppercase;
+  font-weight: light;
+  font-style: normal;
+  font-size: 10px;
   color: #9e9ea7;
   // color:#00A2D4;
-`
+`;
 export const CategoryItem = styled.p`
-  font-weight:600;
-  color:#000;
-  font-size:12px;
+  font-weight: 600;
+  color: #000;
+  font-size: 12px;
   white-space: nowrap;
-`
+`;

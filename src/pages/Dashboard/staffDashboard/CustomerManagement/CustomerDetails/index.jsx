@@ -20,7 +20,7 @@ import {
   Initials,
   CategoryContainer,
   Category,
-  CategoryItem
+  CategoryItem,
 } from "../styled";
 import "react-calendar/dist/Calendar.css";
 import { Send } from "asset/svg";
@@ -211,9 +211,8 @@ const CustomerDetails = () => {
           <LeftContainer>
             <BackContainer onClick={() => navigate(-1)}>
               <FiArrowLeft color="#151717" size={24} />
-              Back to Dashboard
+              <span>Back to user management</span>
             </BackContainer>
-            <HeaderText>Email:Sidebrief@gmail.com</HeaderText>
           </LeftContainer>
         </TopSection>
       </Header>
@@ -271,7 +270,7 @@ const CustomerDetails = () => {
                   type={"submit"}
                   text={"Send"}
                   RightIcon={Send}
-                loading={messageState.isLoading}
+                  loading={messageState.isLoading}
                 />
               </SendContainer>
             </EmailSection>
@@ -280,68 +279,46 @@ const CustomerDetails = () => {
             <UserInfoCard>
               <h5>USER DETAILS</h5>
               <InitialsContainer>
-                  <Initials>
+                <Initials>
                   {userDetails?.first_name.charAt(0) + "" + userDetails?.last_name.charAt(0)}
-                  </Initials>
+                </Initials>
               </InitialsContainer>
-              
-              <CategoryWrapper>
 
+              <CategoryWrapper>
                 <CategoryContainer>
-                  <Category>
-                    Full Name
-                  </Category>
+                  <Category>Full Name</Category>
                   <CategoryItem>
                     {userDetails?.first_name + " " + userDetails?.last_name}
                   </CategoryItem>
                 </CategoryContainer>
 
                 <CategoryContainer>
-                  <Category>
-                    Email
-                  </Category>
+                  <Category>Email</Category>
+                  <CategoryItem>{userDetails?.email}</CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>Username</Category>
+                  <CategoryItem>{userDetails?.username}</CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>Phone</Category>
+                  <CategoryItem>{userDetails?.phone}</CategoryItem>
+                </CategoryContainer>
+
+                <CategoryContainer>
+                  <Category>Used Promo Code</Category>
                   <CategoryItem>
-                    {userDetails?.email}
+                    {userDetails?.has_used_referral_code?.toString() === "true" ? "Yes" : "No"}
                   </CategoryItem>
                 </CategoryContainer>
 
                 <CategoryContainer>
-                  <Category>
-                    Username
-                  </Category>
-                  <CategoryItem>
-                    {userDetails?.username}
-                  </CategoryItem>
-                </CategoryContainer>
-
-                <CategoryContainer>
-                  <Category>
-                    Phone
-                  </Category>
-                  <CategoryItem>
-                    {userDetails?.phone}
-                  </CategoryItem>
-                </CategoryContainer>
-
-                <CategoryContainer>
-                  <Category>
-                    Used Promo Code
-                  </Category>
-                  <CategoryItem>
-                  {userDetails?.has_used_referral_code?.toString() === "true" ? "Yes" : "No"}
-                  </CategoryItem>
-                </CategoryContainer>
-                
-                <CategoryContainer>
-                  <Category>
-                    Referral Option
-                  </Category>
-                  <CategoryItem>
-                  {userDetails?.referral_code}
-                  </CategoryItem>
+                  <Category>Referral Option</Category>
+                  <CategoryItem>{userDetails?.referral_code}</CategoryItem>
                 </CategoryContainer>
               </CategoryWrapper>
-
             </UserInfoCard>
           </UserSection>
         </MainSection>

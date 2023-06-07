@@ -33,7 +33,7 @@ import { nav } from "./constants";
 import CustomDropDown from "components/input/CustomDropdown/CustomDropDown";
 import { BiFilter, BiSortAlt2 } from "react-icons/bi";
 import { useUserManagementActions } from "./actions";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import MetricCard from "components/cards/MetricCard";
 
 const UserManagement = () => {
@@ -43,6 +43,8 @@ const UserManagement = () => {
   const [dateTo, setdateTo] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [activeCard, setActiveCard] = useState("");
+
+  const navigate = useNavigate();
 
   const { handleSort, formatDate } = useUserManagementActions({
     usersData,
@@ -174,7 +176,10 @@ const UserManagement = () => {
       <Header>
         <LeftContainer>
           <HeaderText>User Management</HeaderText>
-          <CommonButton text="Send Bulk Mail" />
+          <CommonButton
+            text="Send Bulk Mail"
+            action={() => navigate("/staff-dashboard/customer-management/users")}
+          />
         </LeftContainer>
         <SearchWrapper>
           <Search
