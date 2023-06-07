@@ -1,5 +1,6 @@
 import { isAfter } from "date-fns";
 import { toast } from "react-hot-toast";
+import { useUpdateUserMutation } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
 
 //
@@ -195,4 +196,22 @@ export const checkPaymentStatus = async (info) => {
       return { status: false };
     }
   } else return { status: false };
+};
+
+export const useLaunchActions = () => {
+  const [updateUser, updateState] = useUpdateUserMutation();
+
+  const handleUserUpdate = async (payload, email) => {
+    const response = await updateUser({ payload, email });
+    const data = response?.data;
+    const error = response?.error;
+
+    console.log(response);
+    if (data) console.log("Successfully updated user");
+    else if (error) console.log("Error updating user", error);
+
+    return { data, error };
+  };
+
+  return { handleUserUpdate };
 };

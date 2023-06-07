@@ -3,8 +3,10 @@ import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useGetPromoCodeQuery } from "services/staffService";
 import { handleError } from "utils/globalFunctions";
+import { useServiceActions } from "../actions";
 
 export const useActions = ({
+  email,
   selectedCountry,
   selectedService,
   complyInfo,
@@ -20,6 +22,7 @@ export const useActions = ({
   // Submits form
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!selectedCountry) {
       toast.error("Select service country");
       return;
