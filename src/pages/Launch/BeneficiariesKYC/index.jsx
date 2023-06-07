@@ -35,11 +35,14 @@ const BeneficiariesKYC = () => {
   const [beneficiaryContainer, setBeneficiaryContainer] = useState([]);
   const [documentContainer, setDocumentContainer] = useState([]);
   const { data, isLoading, isSuccess } = useGetAllEntitiesQuery(countryISO);
+
   let navigatedFrom = localStorage.getItem("navigatedFrom");
+
   useEffect(() => {
     const check = data?.find((entity) => entity.entityCode === launchResponse.registrationType);
     setRequiredDocuments(check?.entityRequiredDocuments);
   }, [data]);
+
   useEffect(() => {
     const mapping = beneficiaryContainer.map((beneficiary) => {
       return {
