@@ -518,6 +518,18 @@ export const staffApi = createApi({
       query: () => `/all-category`,
     }),
 
+    // Update user information
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `/updateUser/${data.email}`,
+        method: "PUT",
+        body: data.payload,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
+
     // Get a user information
     getUserById: builder.query({
       query: (userId) => `/getUser/${userId}`,
@@ -575,10 +587,10 @@ export const staffApi = createApi({
         method: "POST",
         body: data,
         headers: {
-          "Content-type": "application/json; charset=UTF-8"
+          "Content-type": "application/json; charset=UTF-8",
         },
-      })
-    })
+      }),
+    }),
   }),
 });
 
@@ -650,6 +662,7 @@ export const {
   useDeleteCategoryMutation,
   useGetAllCategoriesQuery,
 
+  useUpdateUserMutation,
   useGetUserByIdQuery,
 
   useCreatePromoCodeMutation,
@@ -659,5 +672,4 @@ export const {
   useGetAllPromoCodesQuery,
 
   useSendMessageMutation,
-
 } = staffApi;

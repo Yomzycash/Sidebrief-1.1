@@ -261,7 +261,7 @@ export const Header = ({ isStaff, code }) => {
         onMouseLeave={() => setSubHeaderHovered(false)}
         $hovered={subHeaderHovered}
       >
-        {/* {completedRegistration && (
+        {completedRegistration && (
           <ActiveNav
             text={"Documents"}
             path={`/${
@@ -270,7 +270,7 @@ export const Header = ({ isStaff, code }) => {
               launchResponse.registrationCountry
             }&registrationType=${launchResponse.registrationType}`}
           />
-        )} */}
+        )}
         <ActiveNav
           text={"Business Information"}
           path={`/${

@@ -21,6 +21,7 @@ const ServiceInfo = () => {
   const [countryISO, setCountryISO] = useState("");
   const [promoCode, setPromoCode] = useState("");
   const [fetchPromo, setFetchPromo] = useState(false);
+  // const [promoPrice, setPromoPrice] = useState(0);
 
   const countries = useGetAllCountriesQuery();
   const services = useGetServicesByCountryQuery(countryISO, { skip: !countryISO });
@@ -98,13 +99,15 @@ const ServiceInfo = () => {
 
   //
 
-  // Populates country information, if available
+  // Populates country information and promo code, if available
   useEffect(() => {
     let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
     let serviceCountry = complyInfo?.serviceCountry;
+    let promoInfo = JSON.parse(localStorage.getItem("promoInfo"));
 
     setSelectedCountry(serviceCountry);
     handleServices();
+    if (promoInfo?.promoCode) setPromoCode(promoInfo.promoCode);
   }, [countries]);
 
   //
@@ -116,7 +119,7 @@ const ServiceInfo = () => {
     handleServiceSelect(serviceName);
   }, [services.data]);
 
-  //Save promo info to localStorage
+  // Save promo info to localStorage
   useEffect(() => {
     savePromo();
   }, [promoResponse.isError, promoResponse.isSuccess]);
@@ -186,7 +189,8 @@ const ServiceInfo = () => {
                         promoResponse.error || promoWarn ? (
                           <MdError color={promoWarn ? "#D77000" : "red"} />
                         ) : (
-                          promoResponse.isSuccess && (
+                          promoResponse.isSuccess &&
+                          selectedService?.serviceId && (
                             <PromoCheck>
                               <IoIosCheckmarkCircle color={"green"} />
                             </PromoCheck>

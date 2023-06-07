@@ -12,12 +12,15 @@ import { useGetSingleServiceQuery } from "services/staffService.js";
 import { useAddComplyPaymentMutation } from "services/complyService.js";
 import Payment from "containers/Payment/index.jsx";
 import { Puff } from "react-loading-icons";
-import { getPromoPrice } from "../actions.js";
+import { getPromoPrice, useServiceActions } from "../actions.js";
 
 const ServicePayment = () => {
   const navigate = useNavigate();
+  const { handleUserUpdate } = useServiceActions();
 
+  const email = localStorage.getItem("userEmail");
   let complyInfo = JSON.parse(localStorage.getItem("complyInfo"));
+  let userInfo = JSON.parse(localStorage.getItem("userInfo"));
   let promoInfo = JSON.parse(localStorage.getItem("promoInfo"));
   let serviceId = complyInfo?.serviceId;
 
@@ -51,11 +54,15 @@ const ServicePayment = () => {
     };
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(reference.status));
+    const payResponse = await addServicePayment(requiredData);
+    await updateHasUsedRef();
 
     let link = `/services/${option}/form`;
     link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
     link = serviceRequirements?.length < 1 ? `/services/${option}/review/info` : link;
     navigate(link);
+
+    return payResponse;
   };
 
   // Stripe required data to be sent to the backend a successful payment
@@ -73,6 +80,7 @@ const ServicePayment = () => {
     localStorage.setItem("paymentDetails", JSON.stringify(requiredData.complyPayment));
     store.dispatch(setLaunchPaid(requiredData));
     const payResponse = await addServicePayment(requiredData);
+    await updateHasUsedRef();
 
     let link = `/services/${option}/form`;
     link = serviceForm?.length < 1 ? `/services/${option}/documents` : link;
@@ -106,6 +114,16 @@ const ServicePayment = () => {
   }, []);
 
   //
+  const updateHasUsedRef = async () => {
+    const promoCode = promoInfo?.promoCode;
+    if (promoCode) {
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({ ...userInfo, has_used_referral_code: true })
+      );
+      await handleUserUpdate({ useReferralCode: true }, email);
+    }
+  };
 
   return (
     <Container>
