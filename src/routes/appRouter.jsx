@@ -772,6 +772,7 @@ const AppRouter = () => {
                 <Route path="intellectual" element={<CMIntellectuals />} />
               </Route>
               <Route path="customer-management/users/:user" element={<CustomerDetails />} />
+              <Route path="customer-management/users/bulk-email" element={<CustomerDetails />} />
 
               <Route path="hiring-and-payroll" element={<StaffComingSoon />} />
 

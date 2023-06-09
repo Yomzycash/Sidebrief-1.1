@@ -60,7 +60,6 @@ export const useUserManagementActions = ({ category, usersData, setUsersData, ca
   // Runs when the table row is clicked
   const handleTableClick = (data, row, col) => {
     navigate(`/staff-dashboard/customer-management/users/${data?._id}`);
-    console.log(data, row, col);
   };
 
   // Formats the selected date

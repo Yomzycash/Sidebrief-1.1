@@ -10,14 +10,13 @@ const CMIntellectuals = () => {
   const { handleTableClick } = useUserManagementActions({ intellectualUsers });
 
   // Tabele header
-  const header = ["Name", "Phone", "Date", "Action"];
+  const header = ["Name", "Phone", "Date"];
 
   // Table body
   const dataBody = intellectualUsers?.map((el) => [
     el?.first_name + " " + el.last_name,
     el?.phone,
     format(new Date(el?.createdAt), "dd-MMM-yyyy"),
-    "Email",
   ]);
 
   return (
@@ -26,6 +25,7 @@ const CMIntellectuals = () => {
       body={dataBody}
       onClick={handleTableClick}
       bodyFullData={intellectualUsers}
+      rowCursor="pointer"
     />
   );
 };

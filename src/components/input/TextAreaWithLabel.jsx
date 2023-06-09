@@ -1,19 +1,12 @@
 import React from "react";
-import {
-  BottomText,
-  ErrMsg,
-  InputWrapper,
-  Label,
-  TextArea,
-  Top,
-  Wrapper,
-} from "./styled";
+import { BottomText, ErrMsg, InputWrapper, Label, TextArea, Top, Wrapper } from "./styled";
 
 const TextAreaWithLabel = ({
   label,
   labelStyle,
   containerStyle,
   text,
+  id,
   errorMessage,
   placeholder,
   name,
@@ -39,6 +32,7 @@ const TextAreaWithLabel = ({
       </Top>
       {register ? (
         <TextArea
+          id={id}
           placeholder={placeholder}
           name={name}
           disabled={disable}
@@ -47,6 +41,7 @@ const TextAreaWithLabel = ({
         />
       ) : (
         <TextArea
+          id={id}
           placeholder={placeholder}
           name={name}
           disabled={disable}
@@ -56,9 +51,7 @@ const TextAreaWithLabel = ({
         />
       )}
 
-      {bottomText ? (
-        <BottomText className={bottomTextClass}>{bottomText}</BottomText>
-      ) : null}
+      {bottomText ? <BottomText className={bottomTextClass}>{bottomText}</BottomText> : null}
     </Wrapper>
   );
 };

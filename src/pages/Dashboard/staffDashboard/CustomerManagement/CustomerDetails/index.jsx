@@ -7,9 +7,9 @@ import {
   BackContainer,
   TopSection,
   MainSection,
-  LeftSection,
-  UserSection,
   EmailSection,
+  UserSection,
+  EmailInputs,
   SubjectContainer,
   IntroTextContainer,
   MessageContainer,
@@ -21,6 +21,7 @@ import {
   CategoryContainer,
   Category,
   CategoryItem,
+  FooterContainer,
 } from "../styled";
 import "react-calendar/dist/Calendar.css";
 import { Send } from "asset/svg";
@@ -39,13 +40,16 @@ import { toast } from "react-hot-toast";
 import { handleError } from "utils/globalFunctions";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { customerEmailSchema } from "./schema";
+import { customerEmailSchema, OTPSchema } from "./schema";
 import TagInputWithSearch from "components/input/TagInputWithSearch";
 import { useViewAllComplyQuery } from "services/complyService";
 import { useActions } from "./actions";
+import voucher_gen from "voucher-code-generator";
 
 const CustomerDetails = () => {
   const [emailTags, setEmailTags] = useState([]);
+  const [emailConfirmCode, setEmailConfirmCode] = useState();
+  const [emailFormData, setEmailFormData] = useState({});
 
   const navigate = useNavigate();
   const { user } = useParams();
@@ -136,24 +140,66 @@ const CustomerDetails = () => {
     resolver: yupResolver(customerEmailSchema),
   });
 
+  const OTPActions = useForm({
+    resolver: yupResolver(OTPSchema),
+  });
+
   const submitAction = async (formData) => {
-    let requiredData = {
-      emails: getEmails(),
-      title: formData.title,
-      body: formData.body,
-      introText: formData.introText,
+    const OTP = voucher_gen.generate({
+      length: 6,
+      count: 1,
+      charset: "0123456789",
+    });
+
+    const requiredData = {
+      emails: ["hello@sidebrief.com"],
+      title: "Email Authorization",
+      introText: "Hello,",
+      body: `Your One-Time Password (OTP) is: ${OTP}\n\nPlease use this OTP to complete your verification process.`,
+      footer: `Thank you,\nDevs\nSidebrief`,
     };
-    // let response = await sendMessage(requiredData);
 
-    // let data = response?.data;
-    // let error = response?.error;
-    // console.log("email response", response);
+    let response = await sendMessage(requiredData);
 
-    // if (data) {
-    //   toast.success("Email sent succcessfully");
-    // } else {
-    //   handleError(error);
-    // }
+    let data = response?.data;
+    let error = response?.error;
+
+    if (data) {
+      setEmailConfirmCode(OTP[0]);
+      setEmailFormData(formData);
+      toast.success("OTP sent to hello@sidebrief.com");
+    } else {
+      handleError(error);
+    }
+  };
+
+  const submitOTP = async (formData) => {
+    const { title, introText, body, footer } = emailFormData;
+
+    const requiredData = {
+      emails: getEmails(),
+      title,
+      introText,
+      body,
+      footer,
+    };
+
+    if (parseInt(emailConfirmCode) === parseInt(formData.otp)) {
+      const response = await sendMessage(requiredData);
+
+      const data = response?.data;
+      const error = response?.error;
+
+      if (data) {
+        setEmailFormData(formData);
+        toast.success("Email sent succcessfully");
+        navigate("/staff-dashboard/customer-management");
+      } else {
+        handleError(error);
+      }
+    } else {
+      toast.error("Invalid OTP");
+    }
   };
 
   const getEmailList = (tags) => {
@@ -217,120 +263,179 @@ const CustomerDetails = () => {
         </TopSection>
       </Header>
 
-      <EmailForm onSubmit={handleSubmit(submitAction)}>
+      <EmailContainer>
         <MainSection>
-          <LeftSection>
-            <EmailSection>
-              <TagInputWithSearch
-                list={customEmailLists.filter((el) => !emailTags.find((val) => val === el))}
-                getValue={getEmailList}
-                MultiSelect
-                placeholder="To:"
-                maxTag={999}
-                ExistsError="Already selected"
-                customError={errors.emails?.message}
-                validateTag={tagIsValid}
+          {emailConfirmCode ? (
+            <EmailSection onSubmit={OTPActions.handleSubmit(submitOTP)}>
+              <InputWithLabel
+                label="OTP"
+                labelStyle="input-label"
+                type="number"
+                name="otp"
+                inputClass="input-class"
+                containerStyle="input-container-class"
+                placeholder="Enter OTP"
+                register={OTPActions.register}
+                errorMessage={OTPActions.formState.errors.otp?.message}
+                bottomText="Please enter the 6-digits one-time-password (OTP) sent to hello@sidebrief.com"
               />
-
-              <SubjectContainer>
-                <InputWithLabel
-                  labelStyle="input-label"
-                  type="text"
-                  name="title"
-                  inputClass="input-class"
-                  containerStyle="input-container-class"
-                  placeholder="Subject"
-                  register={register}
-                  errorMessage={errors.title?.message}
-                />
-              </SubjectContainer>
-              <IntroTextContainer>
-                <InputWithLabel
-                  labelStyle="input-label"
-                  type="text"
-                  name="introText"
-                  inputClass="input-class"
-                  containerStyle="input-container-class"
-                  placeholder="Dear Sir,"
-                  register={register}
-                  errorMessage={errors.introText?.message}
-                />
-              </IntroTextContainer>
-              <MessageContainer>
-                <TextAreaWithLabel
-                  name="body"
-                  labelStyle="input-label"
-                  placeholder="Write your messsage here"
-                  register={register}
-                  errorMessage={errors.body?.message}
-                />
-              </MessageContainer>
               <SendContainer>
                 <CommonButton
-                  type={"submit"}
+                  type="submit"
                   text={"Send"}
                   RightIcon={Send}
                   loading={messageState.isLoading}
                 />
               </SendContainer>
             </EmailSection>
-          </LeftSection>
-          <UserSection>
-            <UserInfoCard>
-              <h5>USER DETAILS</h5>
-              <InitialsContainer>
-                <Initials>
-                  {userDetails?.first_name.charAt(0) + "" + userDetails?.last_name.charAt(0)}
-                </Initials>
-              </InitialsContainer>
+          ) : (
+            <EmailSection onSubmit={handleSubmit(submitAction)}>
+              <EmailInputs>
+                <TagInputWithSearch
+                  list={customEmailLists.filter((el) => !emailTags.find((val) => val === el))}
+                  getValue={getEmailList}
+                  MultiSelect
+                  placeholder="To:"
+                  maxTag={999}
+                  ExistsError="Already selected"
+                  customError={errors.emails?.message}
+                  validateTag={tagIsValid}
+                />
 
-              <CategoryWrapper>
-                <CategoryContainer>
-                  <Category>Full Name</Category>
-                  <CategoryItem>
-                    {userDetails?.first_name + " " + userDetails?.last_name}
-                  </CategoryItem>
-                </CategoryContainer>
+                <SubjectContainer>
+                  <InputWithLabel
+                    labelStyle="input-label"
+                    type="text"
+                    name="title"
+                    inputClass="input-class"
+                    containerStyle="input-container-class"
+                    placeholder="Subject"
+                    register={register}
+                    errorMessage={errors.title?.message}
+                  />
+                </SubjectContainer>
+                <IntroTextContainer>
+                  <InputWithLabel
+                    labelStyle="input-label"
+                    type="text"
+                    name="introText"
+                    inputClass="input-class"
+                    containerStyle="input-container-class"
+                    placeholder="Dear Sir,"
+                    register={register}
+                    errorMessage={errors.introText?.message}
+                  />
+                </IntroTextContainer>
+                <MessageContainer>
+                  <TextAreaWithLabel
+                    name="body"
+                    labelStyle="input-label"
+                    containerStyle="input-container-class"
+                    placeholder="Write your messsage here"
+                    register={register}
+                    errorMessage={errors.body?.message}
+                  />
+                </MessageContainer>
+                <FooterContainer>
+                  <TextAreaWithLabel
+                    name="footer"
+                    labelStyle="input-label"
+                    placeholder="Enter email footer"
+                    register={register}
+                    errorMessage={errors.footer?.message}
+                  />
+                </FooterContainer>
+              </EmailInputs>
+              <SendContainer>
+                <CommonButton
+                  type="submit"
+                  text={"Send"}
+                  RightIcon={Send}
+                  loading={messageState.isLoading}
+                />
+              </SendContainer>
+            </EmailSection>
+          )}
+          {user && (
+            <UserSection>
+              <UserInfoCard>
+                <h5>USER DETAILS</h5>
+                <InitialsContainer>
+                  <Initials>
+                    {userDetails?.first_name.charAt(0) + "" + userDetails?.last_name.charAt(0)}
+                  </Initials>
+                </InitialsContainer>
 
-                <CategoryContainer>
-                  <Category>Email</Category>
-                  <CategoryItem>{userDetails?.email}</CategoryItem>
-                </CategoryContainer>
+                <CategoryWrapper>
+                  <CategoryContainer>
+                    <Category>Full Name</Category>
+                    <CategoryItem>
+                      {userDetails?.first_name + " " + userDetails?.last_name}
+                    </CategoryItem>
+                  </CategoryContainer>
 
-                <CategoryContainer>
-                  <Category>Username</Category>
-                  <CategoryItem>{userDetails?.username}</CategoryItem>
-                </CategoryContainer>
+                  <CategoryContainer>
+                    <Category>Email</Category>
+                    <CategoryItem>{userDetails?.email}</CategoryItem>
+                  </CategoryContainer>
 
-                <CategoryContainer>
-                  <Category>Phone</Category>
-                  <CategoryItem>{userDetails?.phone}</CategoryItem>
-                </CategoryContainer>
+                  <CategoryContainer>
+                    <Category>Username</Category>
+                    <CategoryItem>{userDetails?.username}</CategoryItem>
+                  </CategoryContainer>
 
-                <CategoryContainer>
-                  <Category>Used Promo Code</Category>
-                  <CategoryItem>
-                    {userDetails?.has_used_referral_code?.toString() === "true" ? "Yes" : "No"}
-                  </CategoryItem>
-                </CategoryContainer>
+                  <CategoryContainer>
+                    <Category>Phone</Category>
+                    <CategoryItem>{userDetails?.phone}</CategoryItem>
+                  </CategoryContainer>
 
-                <CategoryContainer>
-                  <Category>Referral Option</Category>
-                  <CategoryItem>{userDetails?.referral_code}</CategoryItem>
-                </CategoryContainer>
-              </CategoryWrapper>
-            </UserInfoCard>
-          </UserSection>
+                  <CategoryContainer>
+                    <Category>Used Promo Code</Category>
+                    <CategoryItem>
+                      {userDetails?.has_used_referral_code?.toString() === "true" ? "Yes" : "No"}
+                    </CategoryItem>
+                  </CategoryContainer>
+
+                  <CategoryContainer>
+                    <Category>Referral Option</Category>
+                    <CategoryItem>{userDetails?.referral_code}</CategoryItem>
+                  </CategoryContainer>
+                </CategoryWrapper>
+              </UserInfoCard>
+            </UserSection>
+          )}
         </MainSection>
-      </EmailForm>
+      </EmailContainer>
     </Container>
   );
 };
 
 export default CustomerDetails;
 
-const EmailForm = styled.form``;
+const EmailContainer = styled.div``;
 
 //
 //
 //
+
+// const submitOTP = async (formData) => {
+//   const requiredData = {
+//     emails: getEmails(),
+//     introText: formData.introText,
+//     title: formData.title,
+//     body: formData.body,
+//     footer: formData.footer,
+//   };
+
+//   let response = await sendMessage(requiredData);
+
+//   let data = response?.data;
+//   let error = response?.error;
+
+//   if (data) {
+//     setEmailFormData(formData);
+//     toast.success("Email sent succcessfully");
+//   } else {
+//     handleError(error);
+//   }
+// };

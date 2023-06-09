@@ -178,7 +178,7 @@ const UserManagement = () => {
           <HeaderText>User Management</HeaderText>
           <CommonButton
             text="Send Bulk Mail"
-            action={() => navigate("/staff-dashboard/customer-management/users")}
+            action={() => navigate("/staff-dashboard/customer-management/users/bulk-email")}
           />
         </LeftContainer>
         <SearchWrapper>

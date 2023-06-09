@@ -115,6 +115,9 @@ export const LeftSection = styled.div`
   flex-flow: column;
   gap: 24px;
   width: 70%;
+  margin-bottom: 20px;
+  padding: 10px 15px 20px;
+  border: 1px solid #edf1f7;
 
   ::-webkit-scrollbar {
     display: none;
@@ -268,13 +271,25 @@ export const UserSection = styled.div`
   }
 `;
 
-export const EmailSection = styled.div`
+export const EmailSection = styled.form`
+  display: flex;
+  flex-flow: column;
+  gap: 24px;
+  width: 70%;
+  margin-bottom: 20px;
+  padding: 10px 15px 20px;
+  border: 1px solid #edf1f7;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const EmailInputs = styled.div`
   display: flex;
   flex-flow: column;
   gap: 16px;
-  border: 1px solid #edf1f7;
   width: 100%;
-  padding: 0px 15px 20px;
   border-radius: 8px;
 
   .input-container-class {
@@ -308,6 +323,17 @@ export const MessageContainer = styled.div`
 
   textarea {
     height: 150px;
+  }
+`;
+
+export const FooterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+
+  textarea {
+    height: 100px;
   }
 `;
 
