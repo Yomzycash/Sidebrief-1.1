@@ -69,10 +69,10 @@ const SignIn = () => {
       ? await loginStaff(JSON.stringify(formData))
       : await loginNewUser(JSON.stringify(formData));
 
-    if (!staffCheck) {
-      Mixpanel.identify(formData.email);
-      Mixpanel.track("Logged in");
-    }
+    // if (!staffCheck) {
+    //   Mixpanel.identify(formData.email);
+    //   Mixpanel.track("Logged in");
+    // }
 
     let data = response?.data;
     let error = response?.error;

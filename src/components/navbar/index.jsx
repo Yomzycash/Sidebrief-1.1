@@ -38,7 +38,9 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   let userEmail = localStorage.getItem("userEmail");
   let staffEmail = checkStaffEmail(userEmail);
 
-  const { data, refetch, error } = useGetAllNotificationsQuery(staffEmail, { skip: !staffEmail });
+  const { data, refetch, error, isUninitialized } = useGetAllNotificationsQuery(staffEmail, {
+    skip: !staffEmail,
+  });
 
   const userNotifications = useViewNotificationsByUserIdQuery(
     {
@@ -75,7 +77,7 @@ const Navbar = ({ dashboard, rewards, displayMobile, imgStyles, style, hideSearc
   };
 
   useEffect(() => {
-    refetch();
+    if (!isUninitialized) refetch();
   }, [refreshNotifications]);
 
   let newNotifications = getUnReadNotifications(staffEmail ? data : userNotifications?.data);
