@@ -25,6 +25,7 @@ const RegistrationDocument = () => {
   const [deleteLaunchDocument, deleteState] = useDeleteLaunchDocumentMutation();
   const document = useGetLaunchDocumentsQuery(launchCode);
 
+  console.log(data);
   //
   // Adds a new document
   const handleDocumentAdd = async (formInfo) => {
@@ -121,13 +122,17 @@ const RegistrationDocument = () => {
 
   return (
     <DocumentsContainer>
-      <DocumentTitle>
-        <img src={CheckIcon} alt="" />
-        <p>Registration Completed</p>
-      </DocumentTitle>
-      <DocumentDescription>
-        Your registration has been completed, and your documents are now available for download.
-      </DocumentDescription>
+      {!isStaff && (
+        <DocumentTitle>
+          <img src={CheckIcon} alt="" />
+          <p>Registration Completed</p>
+        </DocumentTitle>
+      )}
+      {!isStaff && (
+        <DocumentDescription>
+          Your registration has been completed, and your documents are now available for download.
+        </DocumentDescription>
+      )}
       <DocumentsWrapper>
         {document.data?.data?.map((el, i) => (
           <UserDocument

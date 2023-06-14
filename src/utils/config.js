@@ -38,6 +38,7 @@ export const referralOptions = [
   { value: "LinkedIn", label: "LinkedIn" },
   { value: "Recommendation", label: "Recommendation" },
   { value: "Referral", label: "Referral" },
+  { value: "SMS", label: "SMS" },
   { value: "Other", label: "Other" },
 ];
 
