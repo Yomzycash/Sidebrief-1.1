@@ -16,7 +16,7 @@ export const PaymentForm = ({ paymentProvider, paymentInfo }) => {
   const config = {
     public_key:
       process.env.NODE_ENV === "production"
-        ? process.env.REACT_APP_FLUTTERWAVE_LIVE_KEY
+        ? process.env.REACT_APP_FLUTTERWAVE_TEST_KEY
         : process.env.REACT_APP_FLUTTERWAVE_TEST_KEY,
     tx_ref: Date.now(),
     amount: paymentInfo?.amount,
